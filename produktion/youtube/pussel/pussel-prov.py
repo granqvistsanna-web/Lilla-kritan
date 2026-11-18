@@ -71,7 +71,7 @@ from liv_extra import Extra; import pusseldata; pusseldata.anslut(PUSSEL, REPLIK
 IN, VISA, LAGG, MELLAN = 0.8, 1.3, 0.8, 0.8      # lugnare: biten visas längre, längre paus mellan bitarna
 FRAGA = 4.0                             # tyst gissningspaus efter frågan
 TAKTER = {'dar': [0, 2, 4]}             # efter vilka bitar Malin säger "Där!"/"Den passar!"
-UTAN_DEN_PASSAR = {'pussel-vanliga'}    # Sanna 2026-11-18: bara "Där!" efter bit 1, inget "Den passar!" efter bit 3
+UTAN_DEN_PASSAR = {'pussel-vanliga', 'pussel-mix-5', 'pussel-mix-5b'}    # Sanna 2026-11-18: bara "Där!" efter bit 1, inget "Den passar!" efter bit 3
 TYST_FORSTA = {'pussel-jul'}            # Sanna 2026-11-18: filmens allra första bit får ingen kommentar
 FORSTA_TYST = False                     # sätts i main
 

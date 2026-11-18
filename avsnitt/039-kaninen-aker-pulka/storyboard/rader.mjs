@@ -35,11 +35,11 @@ export const RADER = [
 
   // --- Kritan ritar (papperet): de gråa vantarna ---
   { id: '01a', d: 6.0, plats: 'Papperet, helbild', malin: [[1, 1.0]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],
-    bild: 'Kritan ritar vantarnas kontur i lugna drag, tummen och muddkanten som egna drag. Halvvägs här', ljudtext: 'kritan ritar', ansikte: '–' },
+    bild: 'Kritan ritar pulkans kontur i lugna drag (Sanna 2026-11-18: ritintrot ritar pulkan)', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
     bild: 'Konturen klar, kritan väntar bredvid och svajar (ingen knackning): barnet gissar', ljudtext: 'kritan ritar klart, sedan tyst', ansikte: '–' },
-  { id: '01c', d: 0.6 + L(3) + 0.8, plats: 'Papperet → zoom in', malin: [[3, 0.6]],
-    bild: 'De gråa vantarna fylls i inifrån. Sista 0,8 s: zoom in i teckningen, som blir vantarna på hängaren', ljudtext: '`glitter`', ansikte: '–' },
+  { id: '01c', d: 0.6 + 1.05 + 0.8, plats: 'Papperet → zoom in', malin: [[41, 0.6, 0, 1.05]],   // "En pulka!" ur replik 41
+    bild: 'Pulkan fylls i inifrån. Sista 0,8 s: zoom in i teckningen, vitt, sedan julhallen', ljudtext: '`glitter`', ansikte: '–' },
 
   // --- Julhallen ---
   { id: '1', d: 2.0 + L(4) + 1.4, plats: 'Julhallen, helbild', malin: [[4, 2.0]], ljud: [['hopp-mjuk/hopp-mjuk-1', 0.75], ['hopp-mjuk/hopp-mjuk-2', 1.55], [HEJ, 2.3 + L(4)]],

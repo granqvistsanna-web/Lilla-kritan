@@ -1,4 +1,6 @@
-# Mix 5 – plan (sparad 16 nov 2026, inte påbörjad)
+# Mix 5 – plan (sparad 16 nov 2026)
+
+**Byggd 2026-11-18:** `mix-5/mix-5.mp4`, 68:54 (utökad samma dag med 013, 016, 020, 036, 039, tre pussel till och fyra Gissa till; se `mix-5/youtube.md`; första versionen 47:53, -14,8 LUFS, med `mix-5/satt-ihop.sh` (kapitlen i `mix-5/kapitel.txt`). Ändrat mot planen nedan (Sanna 2026-11-18): nytt intro "Mix · sjung, pussla och gissa", två Tittut (leoparden på ängen, lammet i skogen-2) utan outro, fyra pussel (`pussel/pussel-mix-5.mp4`), åtta Gissa teckningen (lekplatsen + flygplanet, bollen igen från Mix 3), inga långa intron. Utan 037, Sov gott och Gissa-samlingarna.
 
 Allt som är publicerat men inte finns i Mix 3 eller Mix 4, plus Gissa teckningen och sex pussel. Mix 1 och 2 är aldrig uppladdade. Ca **54–55 min**.
 

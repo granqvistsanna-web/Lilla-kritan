@@ -510,7 +510,8 @@ async function kor(g) {
   // pyntVid: sekunder in i biten när pyntet byts (standard 0), t.ex. när luckan hunnit stänga helt.
   for (const [id, bild, ank, x, y, s, rot = 0] of g.pynt ?? []) (fig.querySelector('.kropp') ?? fig.querySelector('.figuren')).insertAdjacentHTML('beforeend',
     `<g class="pynt" data-pynt="${id}" opacity="0" transform="translate(${x} ${y}) rotate(${rot})">${ritbild('pynt-' + id, bild, 1024, 1024, ank, s, '#9E2A22')}</g>`);
-  const K = await lucka.bygg(svg, g.lucka, { kvall: g.kvall, ...(g.pekare && { pekare: g.pekare }), ...(g.slut && { slut: g.slut }), ...(g.badd && { badd: g.badd }) }), blinka = skapaBlinka(11);
+  // ramKvall: false = nya introt (Vinterkvällen, vinterkvallen-tom) bakom kalendern fast scenen är kväll (lucka 7, Sanna 2026-11-18)
+  const K = await lucka.bygg(svg, g.lucka, { kvall: g.ramKvall ?? g.kvall, ...(g.pekare && { pekare: g.pekare }), ...(g.slut && { slut: g.slut }), ...(g.badd && { badd: g.badd }) }), blinka = skapaBlinka(11);
 
   // rörelserna: (tl = sekunder in i biten, d = bitens längd, b = biten) → [ansikte, pose, [x, y] = hela djuret flyttat]
   const P = o => ({ ...F.POSE0, ...o }), glad = F.blanda('neutral', 'glad', 1), [va, vs] = g.vinkArm ?? [92, 12], STEG = 55;

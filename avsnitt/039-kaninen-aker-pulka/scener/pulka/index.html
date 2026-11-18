@@ -85,7 +85,9 @@ const OVERALL = { fil: R + 'overall/cut/overall.png', w: 796, h: 760 };
 const GRA = { fil: R + 'vantar-gra/cut/vantar-gra.png', w: 990, h: 676 };
 const ROSA = n => R + `tumvantar-rosa/cut/tumvante-rosa-${n}.png`, ROSA_W = 449, ROSA_H = 685;
 const PULKA = { fil: R + 'pulka/cut/pulka.png', w: 1024, h: 572, mitt: [479, 392] };   // medarnas mitt nertill (Sanna 2026-11-18: 489 var snörets botten, pulkan svävade)
-const PK_SITS = [-40, -76 + (489 - 392) * 0.6];   // kaninen på sitsen, samma ställe på pulkan som förut
+// Pulkans skala (Sanna 2026-11-18 "kaninen för stor för pulkan"): 0,6 → 0,85, sitsen (x 115–725, ovankant y 243) är nu bredare än kaninen.
+// Kaninen sitter mitt på sitsen; fötternas ankare 71 px under sitsens ovankant som förut.
+const PK = 0.85, PK_SITS = [(420 - PULKA.mitt[0]) * PK - 5, (243 - PULKA.mitt[1]) * PK + 71];
 const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
 let KONTUR = {};                                    // vantarnas och pulkans konturer (json), laddas i klar
 
@@ -259,20 +261,6 @@ const ALLT = { strumpor: [1, 1], overall: 1, stovlar: [1, 1], band: 0 }, ALLT_V 
 const SITT = { sank: 48, bred: 0.03, benFram: 1, ben: [20, 20], benY: [-28, -28] };
 const VINKA = { armar: [0, 150] };
 
-// --- Ritintrot: kritan ritar de gråa vantarna på papperet ---------------------------------------------------------------------
-const PAPPER_V = [[700, 330, 'vante-gra-1'], [1220, 330, 'vante-gra-2']], PV_S = 0.62;   // vänster överkant per vante
-function papperVantar(k, fyll) {
-  papper(); kamera(1);
-  let spets = null;
-  PAPPER_V.forEach(([x, y, n], i) => {
-    const t = `translate(${x - 488 * PV_S / 2} ${y}) scale(${PV_S})`, ki = Math.max(0, Math.min(1, k * 2 - i));
-    if (fyll > 0) lagg('saker', `<g transform="${t}"><clipPath id="pv${i}"><circle cx="244" cy="380" r="${560 * fyll}"/></clipPath>
-      <image href="${R}vantar-gra/cut/${n}.png" width="488" height="676" clip-path="url(#pv${i})"/></g>`);
-    if (ki > 0) { const p = kontur(n, t, ki, 11 / PV_S); if (ki < 1 || (i === 1 && k >= 1)) spets = p; }
-  });
-  if (k < 1 && spets) krita(...spets); else if (fyll < 1) krita(1500, 300, 140);
-}
-
 // --- Kritan ritar tumvantarna i luften (uppslag 19) ----------------------------------------------------------------------
 const TV_S = 0.26;
 function luftVantar(k, fyll) {
@@ -287,7 +275,6 @@ function luftVantar(k, fyll) {
 }
 
 // --- Pulkan på backen: u 0 = foten, ~0,86 = krönet. Kaninen sitter på den, båda lutar med backen -------------------------------
-const PK = 0.6;
 function pulka(u, { kaninPa = true, ritad = 1, f = F('jatteglad'), p = {}, plagg = ALLT_V } = {}) {
   const [x, y] = pBacke(u), v = lutning(u);
   const g = document.createElementNS(NS, 'g'); g.setAttribute('transform', `translate(${x.toFixed(1)} ${(y + 6).toFixed(1)}) rotate(${v.toFixed(1)})`);
@@ -311,8 +298,11 @@ const efter = (id, n) => IDX[id] > IDX[n], fran = (id, n) => IDX[id] >= IDX[n];
 
 // kameror [zoom, cx, cy], bara hårda klipp (zoomen in i teckningen är den enda åkningen)
 // Sanna 2026-11-17: närmare på kaninen i hallen (K_VID i stället för hela plattan), öppnare närbilder (som 024: 1,35–2)
-const K_HEL = [1, 960, 540], K_VID = [1.25, 960, 610], K_HALV = [1.4, STA[0] + 110, 620], K_NARA = [1.75, STA[0], 620], K_BEN = [1.7, STA[0] - 20, 720],
-  K_HUVUD = [1.9, STA[0], 590], K_HANG = [1.8, 1380, 560], K_KORG = [2.1, 1430, 780], K_LUFT = [1.4, 820, 600], K_VANT = [1.7, 780, 610];
+// Bildutsnitten (Sanna 2026-11-18 "bättre bildutsnitt"): helbild och halvbild skär aldrig mitt i en sak. K_VID visar dörren och hängaren hela
+// (x 121–1657, pallen helt utanför), K_HALV har dörrens kant med vredet till vänster och hängaren hel (x 380–1660, ingen pallflisa).
+// Reaktionerna får närbild på ansiktet (K_ANSIKTE).
+const K_HEL = [1, 960, 540], K_VID = [1.25, 889, 610], K_HALV = [1.5, 1020, 620], K_NARA = [1.75, STA[0], 620], K_BEN = [1.7, STA[0] - 20, 720],
+  K_HUVUD = [1.9, STA[0], 590], K_ANSIKTE = [2.3, STA[0], 590], K_HANG = [1.45, 1250, 600], K_KORG = [2.1, 1430, 780], K_LUFT = [1.27, 889, 600], K_VANT = [1.7, 780, 610];
 function kam(k) { KAM = k; kamera(...k); }
 const skarm = ([x, y]) => { const [z, cx, cy] = KAM, tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z)); return [tx + x * z, ty + y * z]; };
 
@@ -440,6 +430,35 @@ function snopuffar(u0, u1, k) {   // snöpuffar bakom medarna, bleknar
   for (let i = 1; i <= 4; i++) { const uu = u0 + (u1 - u0) * i * 0.05; if (uu > KRON) continue; const [x, y] = pBacke(uu), op = k * (1 - i / 5);
     lagg('fram', `<g opacity="${op.toFixed(2)}">${[[0, 0, 22], [-26, 6, 15], [18, -8, 13]].map(([dx, dy, r]) => `<circle cx="${f1(x + dx)}" cy="${f1(y + dy - 8)}" r="${f1(r * (0.7 + 0.15 * i))}" fill="#fff" stroke="#d6e8f3" stroke-width="3"/>`).join('')}</g>`); }
 }
+// Backen fylls ut (Sanna 2026-11-18 "backen är kal"): en blek kulle långt bort med snögranar (Pulkabackens gran-sno.png, stammens fot i
+// (120, 290)), klippt till himlen ovanför backens kant; och en snödriva vid backens fot, där pulkan stannar.
+const GRAN_SNO = '/assets/bakgrunder/pulkabacken/gran-sno.png';
+const granB = (x, y, k) => `<image href="${GRAN_SNO}" x="${f1(x - 120 * k)}" y="${f1(y - 290 * k)}" width="${f1(240 * k)}" height="${f1(292 * k)}"/>`;
+const yFjarr = x => 818 - 125 * Math.sin(Math.PI * kl((x - 720) / 870));
+const HIMMEL_KLIPP = 'M0 0H1920V817' + Array.from({ length: 41 }, (_, i) => { const [x, y] = pBacke(i / 40); return `L${f1(x)} ${f1(y)}`; }).join('') + 'L0 499Z';
+function fjarran() {
+  let d = 'M720 822'; for (let x = 720; x <= 1590; x += 15) d += `L${x} ${f1(yFjarr(x))}`;
+  lagg('bak', `<clipPath id="himmelklipp"><path d="${HIMMEL_KLIPP}"/></clipPath><g clip-path="url(#himmelklipp)">
+    <path d="${d}L1590 822Z" fill="#E4F0F8" stroke="#C9E0EF" stroke-width="4" stroke-linejoin="round"/>
+    ${[[930, 0.36], [1065, 0.46], [1195, 0.4], [1330, 0.44], [1465, 0.34]].map(([x, k]) => granB(x, yFjarr(x) + 10, k)).join('')}</g>`);
+}
+const DRIVA = 'M1428 824 C1436 792 1478 772 1528 770 C1576 768 1606 752 1648 760 C1690 768 1716 800 1724 824Z';
+const driva = () => lagg('sakerbak', `<ellipse cx="1590" cy="828" rx="160" ry="12" fill="#9EC3DC" opacity=".35"/>
+  <path d="${DRIVA}" fill="#FFFFFF" stroke="#B9D6EA" stroke-width="7" stroke-linejoin="round"/><path d="M1470 800 C1500 784 1540 780 1570 784" fill="none" stroke="#DCEBF5" stroke-width="6" stroke-linecap="round"/>`);
+// snöspruten: medan pulkan åker sprutar snö bakåt och uppåt från medarnas bakände (som J05). uAt(t) = pulkans läge vid radtiden t
+function sprut(uAt, tl) {
+  let h = '';
+  for (let i = 0; i < 28; i++) { const te = tl - i / 30; if (te < 0) break; const age = tl - te, u0 = uAt(te), [x0, y0] = pBacke(u0), [x1, y1] = pBacke(uAt(te + 1 / 30));
+    const fart = Math.hypot(x1 - x0, y1 - y0) * 30; if (fart < 180) continue;
+    const b = pkM(u0).transformPoint(new DOMPoint(150, 385)), k = kl(fart / 800, 0.45, 1);
+    for (let j = 0; j < 2; j++) { const n = Math.round(te * 30) * 2 + j, vx = -(90 + 200 * slump(n + 1)), vy = -(160 + 240 * slump(n + 2)), r = (6 + 8 * slump(n + 3)) * k;
+      h += `<circle cx="${f1(b.x + 24 * slump(n) + vx * age)}" cy="${f1(b.y - 6 + vy * age + 640 * age * age)}" r="${f1(r)}" fill="#fff" stroke="#d6e8f3" stroke-width="2.5" opacity="${(0.95 * (1 - age / 0.93)).toFixed(2)}"/>`; } }
+  lagg('fram', h);
+}
+// pulkans nos når drivan: en mjuk snöpuff som stiger och bleknar (age = s sedan)
+function puffDriva(age) { if (age < 0 || age > 1.2) return; const u = age / 1.2, s = 0.6 + 0.8 * Math.sin(Math.PI * Math.min(1, u * 1.2));
+  lagg('fram', [[0, 0, 34], [-42, 10, 26], [40, 6, 24], [-14, -28, 22], [22, -32, 18]].map(([dx, dy, r]) =>
+    `<circle cx="${f1(1478 + dx * (1 + 1.3 * u))}" cy="${f1(788 + dy * (1 + 1.5 * u) - 36 * Math.sin(Math.PI * Math.min(1, u * 1.6)))}" r="${f1(r * s)}" fill="#fff" stroke="#d6e8f3" stroke-width="3" opacity="${(1 - u).toFixed(2)}"/>`).join('')); }
 // snö som faller lugnt (Sanna: "snow falling snow light outside"): ett bakre lager små flingor bakom kaninen och pulkan (långsamt,
 // svagare) och ett främre med större, mjuka flingor som driver lite fortare och svajar mer: lugn parallax
 function sno(t) {
@@ -512,7 +531,7 @@ function siffror(T, tl, ut = 0) {
 }
 // --- Rad 39: kaninen hoppar av pulkan, drar den uppför backen i ett snöre och hoppar upp på den igen ---------------------------
 // kaninen går DRA_AVST (≈ 280 px längs backen) framför pulkans mitt, så att den står framför pulkans bakre ände
-const DRA_AVST = 0.24, DRA_TOPP = 0.86, DRA_SLED = 0.62, DRA_HOPP = [1.1, 1.78, 2.46, 3.14, 3.82], DRA_U0 = 0.05 + 0.24;
+const DRA_AVST = 0.32, DRA_TOPP = 0.86, DRA_SLED = 0.62, DRA_HOPP = [1.1, 1.78, 2.46, 3.14, 3.82], DRA_U0 = 0.05 + 0.24;
 const draU = t => { let n = 0, f = 0; DRA_HOPP.forEach((h, i) => { if (t >= h + 0.5) n = i + 1; else if (t > h) f = mjuk((t - h) / 0.5); });
   return lerp(DRA_U0, DRA_TOPP, (n + (n < 5 ? f : 0)) / 5); };
 const pkM = u => { const [x, y] = pBacke(u); return new DOMMatrix().translate(x, y + 6).rotate(lutning(u)).scale(PK).translate(-PULKA.mitt[0], -PULKA.mitt[1]); };
@@ -554,7 +573,7 @@ const S = {
   '2': (tl, d) => { const t0 = 0.6 + LN(5); const [f, p] = nick(FF(tl < t0 ? 'nyfiken' : 'glad', { titt: [-14, 0] }), P({ rikt: -0.6 * del(0, 0.4, tl) }), tl - t0);
     return HALL('2', { kam: K_HALV, f, p }); },
   '3': (tl, d) => { const t0 = 0.5 + LN(6); const [f, p] = nick(FF('jatteglad', { titt: [-10, 0] }), P({ rikt: -0.6, oron: [-10 * del(0, 0.5, tl), -10 * del(0, 0.5, tl)] }), tl - t0);
-    return HALL('3', { kam: K_HALV, f, p }); },
+    return HALL('3', { kam: K_ANSIKTE, f, p }); },
   // dörren blåser upp, kall vind och snö in i hallen, kaninen huttrar (brr) … "Då behöver du varma kläder. Det är kallt ute!"
   // Feedback 18/11: dörren blåser upp först och längre (öppnas på 0,8 s, står öppen till 4,4 s), Malin säger "varma kläder" efter (1,6 s)
   '4': tl => { const pu = pust(tl, 0.4, 4.4, 0.8), brr = del(0.75, 1.0, tl) - del(4.5, 5.0, tl), skak = brr * Math.sin(2 * Math.PI * 9 * tl) * (1 - 0.6 * del(2.2, 3.0, tl));   // lugnare huttrande medan Malin pratar
@@ -609,7 +628,7 @@ const S = {
   '17': (tl, d) => { const a = 0.6 + LN(20), ut = del(0.3, 1.1, tl) - del(d - 1.3, d - 0.5, tl), [x0, y0] = [KROK[3][0], KROK[3][1] - 2], [x1, y1] = [STA[0] + 330, GOLV - 330];
     let [f, p] = skaka(FF(tl < a - 0.2 ? 'nyfiken' : 'ledsen', { le: -0.4 * del(a - 0.2, a + 0.2, tl) }), P({ luta: -6 * del(a, a + 0.4, tl), oron: [10 * del(a, a + 0.6, tl), 10 * del(a, a + 0.6, tl)] }), tl - a + 0.2);
     return HALL('17', { dorr: false, kam: K_HALV, f, p, hang: { gra: 0 }, mer: () => lagg('saker', graFri([lerp(x0, x1, mjuk(ut)), lerp(y0, y1, mjuk(ut)) - 30 * Math.sin(Math.PI * ut)])) }); },
-  '18': tl => HALL('18', { dorr: false, kam: K_NARA, f: FF('ledsen', { le: -0.3, titt: [-12 * del(0.1, 0.6, tl), 4] }), p: P({ rikt: -0.8 * del(0.1, 0.7, tl), oron: [18 * del(0.2, 1.0, tl), 18 * del(0.2, 1.0, tl)] }) }),
+  '18': tl => HALL('18', { dorr: false, kam: K_ANSIKTE, f: FF('ledsen', { le: -0.3, titt: [-12 * del(0.1, 0.6, tl), 4] }), p: P({ rikt: -0.8 * del(0.1, 0.7, tl), oron: [18 * del(0.2, 1.0, tl), 18 * del(0.2, 1.0, tl)] }) }),
   // kritan ritar två rosa tumvantar i luften (4 s), gisspaus, de fylls i
   '19a': (tl, d) => { const a = 0.4 + LN(23); return HALL('19a', { dorr: false, kam: K_LUFT, f: FF('nyfiken', { titt: [-14 * del(0.3, 0.8, tl), -4] }), p: P({ rikt: -0.4 * del(0.3, 0.8, tl), upp: 0.3 }), luft: { k: (tl - a) / 4, fyll: 0 }, kritaIn: [tl, a] }); },
   '19b': tl => HALL('19b', { dorr: false, kam: K_LUFT, f: FF('nyfiken', { titt: [-14, -4] }), p: P({ rikt: -0.4, upp: 0.3 }), luft: { k: 1, fyll: 0 }, krita: [...kritaVanta([LUFT[0] + 210, LUFT[1] - 150], TT)] }),
@@ -624,7 +643,7 @@ const S = {
   '23': (tl, d) => { const [tx, ty] = tass('l'); return HALL('23', { dorr: false, kam: [1.4, 820, 620], f: FF('glad', { titt: [-14, 0] }), p: P({ rikt: -0.4, armar: [40, 0] }),
     mer: () => { bildM('saker', ROSA(2), ROSA_W, ROSA_H, LUFT_M(2)); bildM('saker', ROSA(1), ROSA_W, ROSA_H, glidM(LUFT_M(1), ROSA_M(tx - 40, ty - 90, -20, 0.14), (tl - 0.2) / (d - 0.2), 30)); } }); },
   '24': (tl, d) => { const [tx, ty] = tass('l'), l = 1.1;   // Sanna 2026-11-18: långsammare till örat (0,35 → 1,1 s), plopp på landningen
-    return HALL('24', { dorr: false, kam: [1.4, 820, 580], f: tl < l ? FF('glad', { titt: [-10, -10] }) : FF(tl < 1.5 + LN(30) ? 'forvanad' : 'fnissig', { titt: [10, -14] }), p: P({ upp: 0.6 * del(l, l + 0.3, tl), oron: [0, -6 * del(l, l + 0.3, tl)], armar: [40 * (1 - del(0.2, 0.7, tl)), 0] }), pa: { oronvante: +(tl >= l) },
+    return HALL('24', { dorr: false, kam: [2.0, 860, 540], f: tl < l ? FF('glad', { titt: [-10, -10] }) : FF(tl < 1.5 + LN(30) ? 'forvanad' : 'fnissig', { titt: [10, -14] }), p: P({ upp: 0.6 * del(l, l + 0.3, tl), oron: [0, -6 * del(l, l + 0.3, tl)], armar: [40 * (1 - del(0.2, 0.7, tl)), 0] }), pa: { oronvante: +(tl >= l) },
       mer: () => { bildM('saker', ROSA(2), ROSA_W, ROSA_H, LUFT_M(2)); if (tl < l) bildM('saker', ROSA(1), ROSA_W, ROSA_H, glidV(ROSA_M(tx - 40, ty - 90, -20, 0.14), rigM(G.querySelector('.pl-oronvante')), tl / l, 120)); } }); },
   '25': (tl, d) => { const o = ORD[31], x = tl - 0.3, v = paV(x, o, 0.5, 2.0), lyft = del(0.2, 1.2, x) - del(o.pa + 0.4, o.pa + 1.0, x);
     // örat → tassen: armen lyfts ut mot vanten, vanten glider till strax nedanför tassen och dras på (Sanna: "improve how vantar is put on")
@@ -641,7 +660,7 @@ const S = {
     const M = tl < 1.5 ? glidM(LUFT_M(2), golv, flyg, 400).multiply(C) : glidM(golv, GOMD_M(), glida);   // högt över huvudet
     return HALL('26', { dorr: false, pust: pu, f: FF('forvanad', { titt: [lerp(-14, 16, del(0.3, 1.8, tl)), lerp(-4, 10, del(0.3, 1.6, tl))], lock: [0.3 * pu.vind, 0.3 * pu.vind] }),
       p: P({ rikt: lerp(-0.3, 0.4, del(0.4, 1.8, tl)), luta: -4 * pu.vind, oron: [16 * pu.vind, 10 * pu.vind] }), forKorg: () => bildM('saker', ROSA(2), ROSA_W, ROSA_H, M) }); },
-  '27': tl => { const r = -0.45 * del(0.15, 0.6, tl) + 0.9 * del(1.6, 2.1, tl); return HALL('27', { dorr: false, kam: K_HALV, f: FF('nyfiken', { titt: [36 * r, 2] }), p: P({ rikt: r }), forKorg: GOMDR }); },
+  '27': tl => { const r = -0.45 * del(0.15, 0.6, tl) + 0.9 * del(1.6, 2.1, tl); return HALL('27', { dorr: false, kam: K_ANSIKTE, f: FF('nyfiken', { titt: [36 * r, 2] }), p: P({ rikt: r }), forKorg: GOMDR }); },
   '28a': tl => HALL('28a', { dorr: false, f: FF('nyfiken', { titt: [0, 2] }), p: P({}), forKorg: GOMDR }),
   '28b': tl => HALL('28b', { dorr: false, kam: K_KORG, f: FF('nyfiken'), p: P({}), forKorg: GOMDR, skimmer: [TUMME(), 0.5 * del(1.9, 2.9, tl), 24] }),
   '29': (tl, d) => HALL('29', { dorr: false, kam: [1.45, 1100, 640], f: FF(tl < 0.4 ? 'forvanad' : 'kawaii', { titt: [14, 8] }), p: skutt(P({ rikt: 0.4 }), tl, 0.3 + LN(35), 30), forKorg: GOMDR,
@@ -669,16 +688,17 @@ const S = {
   // "Ett … två … tre …" (Sanna 2026-11-18 "animate better 123"): en stor siffra poppar upp på varje ord, pulkan gungar och kaninen lutar sig
   '37': (tl, d) => { const T = [0.22, 1.43, 2.97], g = T.reduce((s, q) => s + bump(q - 0.05, q + 0.45, tl), 0);
     return { plats: 'backe', pk: { u: KRON, f: FF(tl < 0.2 ? 'jatteglad' : 'skrattar', { titt: [10, 6] }), p: { luta: 3 + 5 * g, oron: [-12 * g, -12 * g] }, gung: 7 * g }, pkKam: [1.3, 260, -160], siffror: [T, tl] }; },
-  '38': tl => { const u = lerp(KRON, 0.05, del(0.1, 2.4, tl)), uf = lerp(KRON, 0.05, del(0.1, 2.4, tl - 0.15));
-    return { plats: 'backe', kam: K_HEL, pk: { u, f: FF(tl < 2.5 ? 'skrattar' : 'jatteglad'), p: { oron: [-12 * bump(0.1, 2.6, tl), -12 * bump(0.1, 2.6, tl)] } }, puff: [u, uf, kl(tl * 3) * (1 - del(2.4, 3.2, tl))],
+  // åket (Sanna 2026-11-18 "gör pulkaåket till höjdpunkten"): kameran följer pulkan, snön sprutar, pulkan stannar mjukt i drivan med en puff
+  '38': tl => { const uAt = t => lerp(KRON, 0.05, del(0.1, 2.4, t)), u = uAt(tl), uf = uAt(tl - 0.15);
+    return { plats: 'backe', pkKam: [1.3, 260, -160], sprut: [uAt, tl], puffDriva: tl - 2.15, pk: { u, f: FF(tl < 2.5 ? 'skrattar' : 'jatteglad'), p: { oron: [-12 * bump(0.1, 2.6, tl), -12 * bump(0.1, 2.6, tl)] } }, puff: [u, uf, kl(tl * 3) * (1 - del(2.4, 3.2, tl))],
       siffror: [[-9, -9, -9], 0, del(0, 0.35, tl)] }; },
   // "En gång till!" (Sanna 2026-11-18 "can we make kaninen pull up sleigh"): kaninen hoppar av, drar pulkan i ett snöre uppför backen
   // med fem lugna hopp, hoppar upp på den högst upp, sedan "Ett … två … tre …" med siffrorna och en tur till. Repliken är delad i rader.mjs.
   '39': (tl, d) => { const R = RR['39'].malin[1][1], s0 = R + LN(46) - 1.8 - 0.8, T = [R + 0.14, R + 1.41, R + 2.88];
     if (tl < 0.45) return { plats: 'backe', kam: K_HEL, pk: { u: 0.05, f: FF('jatteglad'), p: {} } };
     if (tl < 5.2) return { plats: 'backe', kam: K_HEL, dra: { tl } };
-    const u = lerp(DRA_SLED, 0.12, del(s0, s0 + 1.6, tl)), g = T.reduce((s, q) => s + bump(q - 0.05, q + 0.45, tl), 0);
-    return { plats: 'backe', kam: K_HEL, pk: { u, f: FF(tl < s0 ? 'jatteglad' : 'skrattar', { titt: tl < s0 ? [10, 6] : [0, 0] }), p: { luta: 3 * g, oron: [-10 * bump(s0, s0 + 1.8, tl) - 10 * g, -10 * bump(s0, s0 + 1.8, tl) - 10 * g] }, gung: 6 * g },
+    const uAt = t => lerp(DRA_SLED, 0.12, del(s0, s0 + 1.6, t)), u = uAt(tl), g = T.reduce((s, q) => s + bump(q - 0.05, q + 0.45, tl), 0);
+    return { plats: 'backe', kam: K_HEL, sprut: tl > s0 ? [uAt, tl] : null, pk: { u, f: FF(tl < s0 ? 'jatteglad' : 'skrattar', { titt: tl < s0 ? [10, 6] : [0, 0] }), p: { luta: 3 * g, oron: [-10 * bump(s0, s0 + 1.8, tl) - 10 * g, -10 * bump(s0, s0 + 1.8, tl) - 10 * g] }, gung: 6 * g },
       puff: [u, lerp(DRA_SLED, 0.12, del(s0, s0 + 1.6, tl - 0.15)), bump(s0, s0 + 2.2, tl)], siffror: [T, tl, del(s0, s0 + 0.35, tl)] }; },
   // vinken (feedback 18/11 "putsa vinkanimationen", "tummen ska peka inåt"): armen lyfts lugnt (0,9 s), vinkar jämnt fram och tillbaka
   // (1 gång/s, ±14°) och vinket fortsätter i samma takt in i rad 41 (tiden räknas från rad 40:s början), kroppen lutar lite med.
@@ -735,22 +755,19 @@ function rita(t) {
   $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
   window.kant?.uppdatera();
 }
+// Ritintrot ritar pulkan (Sanna 2026-11-18 "draw sled"): målet syns från första sekunden, och kritan ritar samma pulka i backen sedan.
+// Pulkans bild (1024 × 572, motivet x 93–960, y 173–491) mitt på papperet, skala 1,15.
+const PP_S = 1.15, PP_T = `translate(${f1(960 - 526 * PP_S)} ${f1(520 - 332 * PP_S)}) scale(${PP_S})`;
 function ritaPapper(st, t) {
   papper2(); kam(st.kam || K_HEL);
-  const fyll = st.fyll || 0, KS = 0.4, { k1, u, k2 } = TVA(st.k), tr = [], P0 = [];
-  PAPPER_V.forEach(([x, y, n], i) => {
-    tr[i] = `translate(${x - 488 * PV_S / 2} ${y}) scale(${PV_S})`; const ki = i ? k2 : k1;
-    if (fyll > 0) lagg('saker', `<g transform="${tr[i]}"><clipPath id="pv${i}"><circle cx="244" cy="380" r="${560 * fyll}"/></clipPath>
-      <image href="${R}vantar-gra/cut/${n}.png" width="488" height="676" clip-path="url(#pv${i})"/></g>`);
-    if (fyll < 1 && ki > 0) P0[i] = kontur(n, tr[i], ki, 11 / PV_S);
-  });
-  const pt = (i, kk) => konturPunkt(PAPPER_V[i][2], tr[i], kk), VANT = [1520, 300], w = kritaVanta(VANT, TT);
+  const fyll = st.fyll || 0, KS = 0.4, k = kl(st.k), w = kritaVanta([1560, 260], TT);
+  if (fyll > 0) lagg('saker', `<g transform="${PP_T}"><clipPath id="pp"><circle cx="512" cy="330" r="${fyll >= 1 ? 9999 : f1(700 * fyll)}"/></clipPath>
+    <image href="${PULKA.fil}" width="${PULKA.w}" height="${PULKA.h}" clip-path="url(#pp)"/></g>`);
+  const sp = fyll < 1 && k > 0 ? kontur('pulka', PP_T, k, 11 / PP_S) : null;
   if (fyll >= 1) return;
-  if (st.k <= 0) { if (st.inn != null) kritaRita(glid([[2100, -120], 150], [pt(0, 0), 125], st.inn / 0.8), KS); }
-  else if (k1 < 1) kritaRita([P0[0], 125, true], KS);
-  else if (u < 1 || k2 <= 0) kritaRita([lyftGlid(pt(0, 1), pt(1, 0), u), 125, false], KS);
-  else if (k2 < 1) kritaRita([P0[1], 125, true], KS);
-  else { const v = st.efter != null ? glid([pt(1, 1), 125], w, st.efter / 0.6) : w; kritaRita(st.ut != null ? glid(v, [[2200, -150], 140], st.ut / 0.9) : v, KS); }
+  if (st.k <= 0) { if (st.inn != null) kritaRita(glid([[2100, -120], 150], [konturPunkt('pulka', PP_T, 0), 125], st.inn / 0.8), KS); }
+  else if (k < 1) kritaRita([sp, 125, true], KS);
+  else { const v = st.efter != null ? glid([konturPunkt('pulka', PP_T, 1), 125], w, st.efter / 0.6) : w; kritaRita(st.ut != null ? glid(v, [[2200, -150], 140], st.ut / 0.9) : v, KS); }
 }
 function ritaHall(st, t) {
   hall(st.dorr ?? true); kam(st.kam);
@@ -790,7 +807,7 @@ function luftVantarG(k, fyll, gung = 0) {
   return { spets, lyft, start: pt(0, 0), slut: pt(1, 1) };
 }
 function ritaBacke(st, t) {
-  backe();
+  backe(); fjarran(); driva();
   if (st.pk && st.pk.u == null) {   // kritan ritar pulkan på krönet, kaninen står nedanför
     kam(st.kam || K_HEL);
     kanin(st.pos, BLINKA(st.f, t), liv(st.p, t), { ...ALLT_V });
@@ -812,6 +829,8 @@ function ritaBacke(st, t) {
     kam(st.kam || K_HEL);
     kanin(st.pos, BLINKA(st.f, t), liv(st.p, t), { ...ALLT_V });
   }
+  if (st.sprut) sprut(...st.sprut);
+  if (st.puffDriva != null) puffDriva(st.puffDriva);
   if (st.krita) kritaRita(st.krita);
   if (st.siffror) siffror(...st.siffror);
   sno(t);
@@ -834,7 +853,7 @@ function ljud() {
   [['7', 0.4], ['8', 0.4], ['9', 1.5], ['13', 0.2], ['13', 0.25 + ORD[15].en], ['14', 0.1], ['17', 0.2], ['17', RR['17'].d - 1.4], ['23', 0.1],
    ['25', 0.7], ['26', 0.1], ['30', 0]].forEach(([id, o], i) => ut.push({ t: RR[id].s + o, fil: E + `klad-sus/klad-sus-${i % 4 + 1}.m4a`, vol: 0.45 }));
   const rit = (t, langd, n) => ut.push({ t, fil: E + `krita-ritar/krita-ritar-${n}.m4a`, vol: 1.0, langd, loop: true, fade: 0.3 });
-  rit(RR['01a'].s + 0.8, 5.0, 1);                    // vantarna på papperet
+  rit(RR["01a"].s + 0.8, 5.0, 1);                    // pulkan på papperet
   rit(RR['19a'].s + 0.4 + LN(23), 4.0, 2);           // tumvantarna
   rit(RR['34a'].s + 0.4 + LN(40), 2.4, 3);           // pulkan
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: RR['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });

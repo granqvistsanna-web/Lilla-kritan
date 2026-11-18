@@ -657,6 +657,10 @@ async function load() {
     const [f, v] = await Promise.all([ghGet("feedback.json"), ghGet("videos.json")]);
     remote.feedback = f.data; remote.videos = v.data;
     const l = token ? {} : readLocal();
+    // a note fixed on GitHub (or copied there unchanged) wins over this browser's old copy of it
+    if (!token && l.feedback) { for (const k in l.feedback) { const r = f.data[k], m = l.feedback[k];
+      if (r && (r.fixed || JSON.stringify(r) === JSON.stringify(m))) delete l.feedback[k]; }
+      try { localStorage.setItem(LOCAL, JSON.stringify(l)); } catch (e) {} }
     store.feedback = merge(f.data, l.feedback); store.videos = merge(v.data, l.videos);
     db = token ? writer : localWriter;
     $("#dbStatus").textContent = token ? "" : "Sparas i den här webbläsaren. Det du skriver kopieras också direkt, klistra in det hos Claude.";
