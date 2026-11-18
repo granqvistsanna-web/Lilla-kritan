@@ -26,7 +26,7 @@ const ST = 141, LY = -256, LS = 0.7, VY = v => LY + LS * (v - ST), VIND = (vid, 
 const SUS = (vid, vol = 2.2) => ['sus', vid - 0.1, 1, vol, 1.8, 1.0];
 // Granskning C 2026-11-15: närbilder (kam, bildens pixlar) på ljusen när de slocknar och tänds, och på fönstret när lammet stänger det
 // three.js (Sanna 2026-11-16): väggen (bakgrunden), fönstrets kvällshimmel med snön, den öppna rutan och tavlan på djupet 900 (som lucka 7), resten i z 0
-const LJUSEN = [800, 450, 1.9], FONSTRET = [580, 470, 1.5];
+const LJUSEN = [800, 450, 1.9], FONSTRET = [430, 440, 1.5];
 // kritsiffrorna över ljusen när vi räknar (1 och 2 ur lucka.js SIFFRA, ruta 100×160): vit klisterkant, röd krita (syns mot månen). SX/SY = ovanför lågan på ljus i (scenens mått)
 const SIFFRA = { 1: 'M30 42 L60 10 L60 150', 2: 'M15 45 C15 0 85 0 85 45 C85 80 30 110 12 150 L90 150' };
 const SX = i => -330 + LS * 124 * i, SY = -690, siffra = n => `<g transform="scale(0.62) translate(-50 -80)" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -36,7 +36,7 @@ const SIFFRA_UT = (i, v) => [[v, SX(i), SY, 1, 1], [v + 0.6, SX(i), SY, 0.8, 0]]
 // grundbilder (granskning 2026-11-17: figurerna för små): KE = leoparden, ljusen och fönstret; KT = leoparden, lammet och ljusen. Helbild i början, när lammet kommer in och när det går till fönstret
 const KE = [840, 520, 1.45], KT = [1120, 580, 1.2];
 julDjur.kor({
-  lucka: 6, kamBas: KE, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 260, sak: 'ljus', sakPlats: [-330, -256], sakSkala: 0.7, kvall: true, kvallMork: 0.04, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/granrummet-tom/granrummet-tom.jpeg', vrum: { x0: 486, x1: 773, y0: 208, y1: 522, mask: '/assets/bakgrunder/granrummet/fonster-mask.png' }, fonster: true, snoa: true, stake: true, sakBakom: true, varmtStyrka: 1.3, baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, tre: { z: { ':scope > g[mask="url(#vrum-mask)"]': 900, '#bage': 900, ':scope > image[href*="tavla"]': 900 } }, djup: { bak: 900 },
+  lucka: 6, kamBas: KE, figur: 'leoparden-lova', vinkArm: [38, 16], skala: 0.8, x: 260, sak: 'ljus', sakPlats: [-330, -256], sakSkala: 0.7, kvall: true, kvallMork: 0.04, plats: 'vardagsrummet', platsBild: '/assets/bakgrunder/matsalen-tom/matsalen-tom.jpeg', vrum: { x0: 224, x1: 554, y0: 139, y1: 510, mask: '/assets/bakgrunder/matsalen-tom/fonster-mask.png' }, fonster: true, snoa: true, stake: true, sakBakom: true, varmtStyrka: 1.3, baddFil: 'assets/ljud/musik/jul/karol-joy-to-the-world.mp3', baddLangd: 134.008, baddVol: 0.3, tre: { z: { ':scope > g[mask="url(#vrum-mask)"]': 900, '#bage': 900, ':scope > image[href*="tavla"]': 900 } }, djup: { bak: 900 },
   // Runda 4 (Sanna 2026-11-14): en golvlampa i rummet (lampa, kod) och ljusare kväll (kvallMork 0,1); ingen bjällerklang, i stället Joy to the World (instrumental, karol-joy-to-the-world) som jämn bädd (baddFil), som 035/036; ljusbordet från 036 i stället för skåpet (rekvisita/ljusbord, tillsammans med ljusen). Gamla: aldre/index-fore-runda4.html
   // Sanna 2026-11-13 runda 3 ("a bit more cosy room"): 034:s vardagsrum (fåtölj med filt, randig matta, trägolv, röda gardiner) med kvällshimmel och
   // snö som faller i fönstret (djur.js: plats 'vardagsrummet', snoa), lite ljusare kväll (kvallMork 0,22). "maybe xmas bg sound": bjällror lågt under hela (bakljud, effekter/bjallror, CC0). Gamla: aldre/index-fore-runda3.html
@@ -75,14 +75,15 @@ julDjur.kor({
     // E: lammet kommer in. Sanna 2026-11-13 (runda 2): lammet tröstar inte leoparden (nospussen borta) och kan inte hålla händerna runt lågan,
     // utan stänger fönstret. Barnets tur: peka på fönstret (paus ca 5 s). Nya repliker (tysta tills Sanna godkänt och de spelats in):
     //   06-peka-fonstret [curious] Kan du peka på fönstret?     06-lammet-stanger [happy] Lammet stänger fönstret.
-    [3.6, 'oj', { kam: 0, in: 0, sag: [['jul/titta-lammet', 'Titta, där kommer lammet!', 0.6]], ljud: [['hopp-mjuk', 0.1, 3], ['landa-mjuk', 1.05, 3]] }],
+    // Sanna 2026-11-18 (J06-zoom: "the lamb can come in from the other side"): lammet går in på tå från vänster (fran: -1), förbi ljusen och leoparden, vänt åt höger medan det går. Gamla: aldre/index-fore-lammet-vanster.html
+    [4.0, 'oj', { kam: 0, in: 0, fran: -1, tass: true, tassTid: 3.4, sag: [['jul/titta-lammet', 'Titta, där kommer lammet!', 0.6]], ljud: [['smasteg', 0.3, 1, 1.3], ['smasteg', 1.8, 1, 1.3]] }],
     [3.0, 'tittar', { bas: KT, uttryck: 'glad', ljud: [['ba-gullig', 1.0, 2, 1.2, 0.95]] }],
     [3.0, 'tittar', { ser: true, uttryck: 'ivrig', sag: [['jul/kan-du-hjalpa-till', 'Kan du hjälpa till?', 0.4]] }],
     [3.6, 'tittar', { ser: true, med: { 0: 'vanta' }, sag: [['jul/06-peka-fonstret', 'Kan du peka på fönstret?', 0.4]] }],
     // barnets tur (granskning C): 2 s efter frågan skramlar det öppna fönstret i vinden och lammet tittar dit
     [3.6, 'tittar', { med: { 0: ['uppat', [-8, -5]] }, fonster: [[0.1, 0.72], [0.5, 1], [0.9, 0.78], [1.3, 1]], ljud: [SUS(0.2, 1.4), ['gung-knarr', 0.15, 1, 1.2]] }],
     // lammet nickar, går ända fram till fönstret, hoppar högt, sträcker ut armen och slår igen rutan på toppen (närbild), och går tillbaka
-    [10.0, 'tittar', { bas: 0, uttryck: 'ivrig', med: { 0: ['hamta', { ner: [[0, 0.7]], gang: [[0, 0], [0.8, 0], [3.8, -1260], [6.4, -1260], [9.4, 0]], luft: [[4.2, 5.2, 200]], arm: [[3.9, 5.6, 120]] }] },
+    [10.0, 'tittar', { bas: 0, uttryck: 'ivrig', med: { 0: ['hamta', { ner: [[0, 0.7]], gang: [[0, 0], [0.8, 0], [3.8, -1400], [6.4, -1400], [9.4, 0]], luft: [[4.2, 5.2, 200]], arm: [[3.9, 5.6, 120]] }] },
       fonster: [[4.6, 0]], kam: [...FONSTRET, 3.6, 6.2],
       sag: [['jul/06-lammet-stanger', 'Lammet stänger fönstret.', 5.4]], ljud: [['hopp-mjuk', 4.15, 3], ['dunk', 4.7, 2, 1.0], ['landa-mjuk', 5.2, 3]] }],
     // F: nu blåser det inte: kritan tänder båda, lågorna står stilla och skenet lyser varmt
