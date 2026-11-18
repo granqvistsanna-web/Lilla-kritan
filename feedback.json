@@ -4878,9 +4878,10 @@
   "sec": 5,
   "tags": [],
   "note": "first puzzle peice no comment",
-  "fixed": false,
+  "fixed": true,
   "at": 1794997339199,
-  "render": "2026-11-17 16:04 (med Malins röst, inga textrader)"
+  "render": "2026-11-17 16:04 (med Malins röst, inga textrader)",
+  "fixedAt": 1795030869516
  },
  "m83xr4mee7mwm77uyf": {
   "ep": "P-jul",
@@ -4888,9 +4889,10 @@
   "sec": 25,
   "tags": [],
   "note": "remove den passar och där",
-  "fixed": false,
+  "fixed": true,
   "at": 1795011024759,
-  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))"
+  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))",
+  "fixedAt": 1795030869516
  },
  "ylkq9di6uwmwm789y6": {
   "ep": "P-jul",
@@ -4898,9 +4900,10 @@
   "sec": 29,
   "tags": [],
   "note": "have malin comment on what shows when puzzle is laying down",
-  "fixed": false,
+  "fixed": true,
   "at": 1795011044190,
-  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))"
+  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))",
+  "fixedAt": 1795030869516
  },
  "9ulkm7u9fxmwm78q8a": {
   "ep": "P-jul",
@@ -4908,9 +4911,10 @@
   "sec": 38,
   "tags": [],
   "note": "have malin comment on what shows when puzzle is laying down\nunless its the last puzzle peice",
-  "fixed": false,
+  "fixed": true,
   "at": 1795011065290,
-  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))"
+  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))",
+  "fixedAt": 1795030869516
  },
  "nettn0jichmwm79rwb": {
   "ep": "P-jul",
@@ -4918,9 +4922,10 @@
   "sec": 66,
   "tags": [],
   "note": "julgrnen visar varken rödkula eller hjärta än",
-  "fixed": false,
+  "fixed": true,
   "at": 1795011114107,
-  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))"
+  "render": "2026-11-18 12:08 (Första biten utan kommentar (0:05))",
+  "fixedAt": 1795030869516
  },
  "h1hbqeu3pjmwmi65ue": {
   "ep": "P-jul",
@@ -4928,9 +4933,10 @@
   "sec": 7,
   "tags": [],
   "note": "ska vi lägga ett pussel? ja! update VO and vary among puzzles",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029421333,
-  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)"
+  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)",
+  "fixedAt": 1795030869516
  },
  "mhug4x85ilmwmi8ei6": {
   "ep": "P-jul",
@@ -4938,9 +4944,10 @@
   "sec": 38,
   "tags": [],
   "note": "another xmas soundtrack a bit faster, maybe 03-up-on-the-housetop-instrumental",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029525869,
-  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)"
+  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)",
+  "fixedAt": 1795030869516
  },
  "74tkxgiv18mwmi8sn5": {
   "ep": "P-jul",
@@ -4948,9 +4955,10 @@
   "sec": 63,
   "tags": [],
   "note": "a tiny bit faster pace",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029544193,
-  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)"
+  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)",
+  "fixedAt": 1795030869516
  },
  "dy9wqndvabmwmi9fi3": {
   "ep": "P-jul",
@@ -4958,9 +4966,10 @@
   "sec": 78,
   "tags": [],
   "note": "for some items it would be nice to see them fully like julgran",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029573819,
-  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)"
+  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)",
+  "fixedAt": 1795030869516
  },
  "c0znfodgjqmwmi9ufk": {
   "ep": "P-jul",
@@ -4968,8 +4977,9 @@
   "sec": 175,
   "tags": [],
   "note": "snöflinnga show whole too",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029593168,
-  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)"
+  "render": "2026-11-18 15:25 (Bit 1–2 tysta, bit 3–4 kommenteras när de ligger, inget Där/Den passar, julgranens kula och hjärta syns, julkarol som bädd)",
+  "fixedAt": 1795030869516
  }
 }
