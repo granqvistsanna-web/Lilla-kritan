@@ -4738,8 +4738,9 @@
   "sec": 142,
   "tags": [],
   "note": "smaller rug",
-  "fixed": false,
+  "fixed": true,
   "at": 1795012171914,
-  "render": "2026-11-18 15:20 (Introts musik tonas ut när luckan öppnas och Joy to the World börjar där. Livligare eld, större krans högre upp, granen längre till höger och större, färre, mindre och långsammare glitter, kulan gungar tydligt (den stod still förut: ett fel gjorde att den inte gungade alls), fyrkantig matta framför brasan.)"
+  "render": "2026-11-18 15:20 (Introts musik tonas ut när luckan öppnas och Joy to the World börjar där. Livligare eld, större krans högre upp, granen längre till höger och större, färre, mindre och långsammare glitter, kulan gungar tydligt (den stod still förut: ett fel gjorde att den inte gungade alls), fyrkantig matta framför brasan.)",
+  "fixedAt": 1795012645583
  }
 }
