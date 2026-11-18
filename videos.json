@@ -1401,5 +1401,36 @@
   "file": "produktion/youtube/alfabet/abc-bokstaven/abc-bokstaven.mp4",
   "status": "granska",
   "name": "Kritans ABC riktning 3: Stora bokstaven"
+ },
+ "J08-bg": {
+  "stills": [
+   {
+    "label": "1 Björkdungen (0:38)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-bg-1118-1127-1.jpg"
+   },
+   {
+    "label": "2 Snögården (0:38)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-bg-1118-1127-2.jpg"
+   },
+   {
+    "label": "3 Granbrynet (0:38)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-bg-1118-1127-3.jpg"
+   },
+   {
+    "label": "1 Björkdungen (1:02)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-bg-1118-1127-4.jpg"
+   },
+   {
+    "label": "2 Snögården (1:02)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-bg-1118-1127-5.jpg"
+   },
+   {
+    "label": "3 Granbrynet (1:02)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-bg-1118-1127-6.jpg"
+   }
+  ],
+  "rendered": "2026-11-18 11:27",
+  "status": "granska",
+  "name": "J08 Hunden snögubbe – välj bakgrund (utan förgrundssaker)"
  }
 }
