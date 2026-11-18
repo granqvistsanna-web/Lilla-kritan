@@ -1446,5 +1446,13 @@
   "file": "produktion/youtube/alfabet/abc-b/abc-b.mp4",
   "status": "granska",
   "name": "Kritans ABC: B (recept 1)"
+ },
+ "J12": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1119-0006.mp4",
+  "duration": 146.3,
+  "rendered": "2026-11-19 00:06",
+  "file": "produktion/youtube/shorts/jul/12-tittut-grisen/12-tittut-grisen.mp4",
+  "status": "granska",
+  "name": "Tittut grisen"
  }
 }
