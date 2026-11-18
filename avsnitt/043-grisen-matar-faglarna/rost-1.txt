@@ -1,0 +1,47 @@
+01-kritan-ritar  Kritan ritar …
+02-vad-blir-det  Hm … vad blir det nu?
+03-oj-en-gris-kasserad  Oj! En gris!
+04-hej-grisen  Hej, grisen! Hej, hej!
+05-vad-har-du-i-pasen  Vad har du i påsen?
+06-fron-till-faglarna  Frön! Till fåglarna.
+07-en-rod-fagel  Titta! En röd fågel.
+08-en-gul-fagel  Och en gul fågel!
+09-pick-pick-pick  Pick, pick, pick. Mums!
+10-pasen-ar-tom  Oj! Påsen är tom.
+11-liten-bla-kasserad  Och en liten blå fågel.
+12-fick-ingenting  Oj då. Den lilla fågeln fick ingenting.
+13-vad-gor-vi-nu  Hm … vad gör vi nu?
+14-kritan-ritar-nagot  Titta! Kritan ritar något.
+15-en-julkarve  En julkärve! Varsågod, grisen.
+16-full-med-korn  Full med korn till fåglarna.
+17-ska-vi-saga-tack  Ska vi säga tack?
+18-tack  Tack!
+19-en-tva-tre-faglar  En fågel … två fåglar … tre fåglar!
+20-lilla-fageln-ocksa  Nu får den lilla fågeln också. Mums!
+21-faglarnas-mat  Nej, nej, grisen. Det är fåglarnas mat.
+22-pratar-med-varandra  Ni pratar visst med varandra.
+23-saga-pip  Kan du säga pip, grisen?
+24-blev-ett-noff  Det blev ett noff!
+25-fagel-pa-huvudet  Oj! En fågel på huvudet!
+26-hopp-tillbaka  Hopp! Tillbaka till kärven.
+27-det-snoar  Oj! Det snöar.
+28-inga-korn  Nu syns inga korn.
+29-skaka-bort-snon  Kan du skaka bort snön, grisen?
+30-skaka-pick-1  Skaka, skaka … pick!
+31-skaka-pick-2  Skaka, skaka … pick!
+32-kommer-inte  Oj, den lilla fågeln kommer inte. Grisen vet inte var den är.
+33-kan-du-hjalpa  Kan du hjälpa grisen? Kan du se var den lilla fågeln är?
+34-ja-dar  Ja, där! I granen!
+35-skaka-pick-3  Skaka, skaka … pick!
+36-alla-ater  Nu äter alla fåglarna. Mums!
+37-mer-sno  Oj, mer snö!
+38-kritan-ritar-igen  Kritan ritar igen.
+39-ett-tak  Ett tak! Nu kommer ingen snö på kornen.
+40-tack-kritan  Tack, kritan!
+41-faglarna-tackar  Fåglarna säger tack också. Pip, pip, pip!
+42-tre-faglar-pa-grisen  En … två … tre! Tre fåglar på grisen!
+43-snoflinga  Oj! En snöflinga på trynet!
+44-kan-du-blasa  Kan du blåsa bort den?
+45-fff  Fff!
+46-hej-da-god-jul  Hej då, grisen! Hej då, fåglarna! God jul!
+47-vi-ses-snart  Hej då! Vi ses snart!
