@@ -5516,9 +5516,10 @@
   "sec": 155,
   "tags": [],
   "note": "a bit longer outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795035746241,
-  "render": "2026-11-18 21:44 (Tydligare spegelbild, lammet gråter före Malins fråga, hunden vinkar, de gungar före Malins kommentar.)"
+  "render": "2026-11-18 21:44 (Tydligare spegelbild, lammet gråter före Malins fråga, hunden vinkar, de gungar före Malins kommentar.)",
+  "fixedAt": 1795037176868
  },
  "53mror2dr4mwmlz2an": {
   "ep": "041",
