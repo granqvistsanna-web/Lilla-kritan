@@ -57,7 +57,7 @@ Kritan ritar hunden: konturen i lugna drag (7 s), väntar medan barnet gissar, d
 | 10 | Kritan kommer in och ritar en potta på golvet: konturen i ett drag (4 s), kort gisspaus, pottan fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En potta! Varsågod, hunden. | krita-ritar, `glitter` |
 | 11 | Hunden nickar direkt, fortfarande vickande | Tack, kritan! | `vov-ja` |
 | 12 | Hunden travar till pottan och sätter sig, pottan glider in framför | Snabbt, snabbt! Upp på pottan. | små snabba steg |
-| 13 | Halvbild, hunden sitter på pottan. Kort paus, sedan lättad min | *(paus 2 s)* Ahh. | **öppet:** mjukt litet porl eller bara sucken |
+| 13 | Halvbild, hunden sitter på pottan. Kort paus, sedan lättad min | *(paus 2 s)* Ahh. | ett mycket tyst, kort litet porl (ca 1,5 s, −18 dBFS) under pausen, sedan mysig suck |
 | 14 | Hunden ser glad ut, svansen viftar | Så där! Bra, hunden! | `vov-ja`, `svansvift` |
 | 15 | Hunden tittar åt vänster, sedan åt höger, öronen faller lite | Nu ska hunden torka sig. Oj! Inget papper! | frågande `vov-pip` |
 | 16 | Kritan kommer in och ritar en toarulle bredvid pottan: konturen (3 s), gisspaus, rullen fylls i | Kritan ritar igen. *(gisspaus 3 s)* En toarulle! Varsågod. | krita-ritar, `glitter` |
@@ -121,7 +121,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 ## Hundens röst
 
-Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov-pip`, `vov-babbel`, `vov-hejda`, `flamt-valp`, `nos`, `svansvift`. Övrigt: `klunk`, `glitter`, `tindra`, `klapp`, `hopp-mjuk`, `boing`, `hemmaljud`, `duns`. Saknas: en mysig suck för hunden (13), ett mjukt rull för pappersrullen, ett litet ritsch när papperet rivs av, och kissljudet om Sanna vill ha det. Openverse först.
+Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov-pip`, `vov-babbel`, `vov-hejda`, `flamt-valp`, `nos`, `svansvift`. Övrigt: `klunk`, `glitter`, `tindra`, `klapp`, `hopp-mjuk`, `boing`, `hemmaljud`, `duns`. Saknas: en mysig suck för hunden (13), ett mjukt rull för pappersrullen, ett litet ritsch när papperet rivs av, och kissljudet: ett mycket tyst, kort porl (Sanna 2026-11-18). Openverse först.
 
 ## Regelkoll
 
@@ -138,7 +138,7 @@ Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov
 
 ## Öppet
 
-1. **Kissljudet** i uppslag 13: ett mycket tyst litet porl, eller bara pausen och den lättade sucken.
+1. **Kissljudet** (uppslag 13): valt, ett tyst litet porl (Sanna 2026-11-18). Openverse först, annars ElevenLabs SFX.
 2. **Toarullen** är en ny sak: tagningar i Flow med pottan som stilreferens (grind 2).
 3. **Vattenglaset:** mjölkglasets urklipp med vatten i kod, eller ett eget glas (grind 2).
 4. **Fåtöljen** sitter i plattan (x 40–410), så rullen gömmer sig bakom den i bildens vänsterkant. Pappersslingan läggs mellan golvet och fåtöljen.
