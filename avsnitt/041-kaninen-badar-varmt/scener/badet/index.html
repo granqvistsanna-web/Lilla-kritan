@@ -32,6 +32,7 @@
     <g filter="url(#boil)"><g id="figurer"></g></g>
     <g filter="url(#boil)"><g id="saker"></g></g>
     <g id="kar"></g>
+    <g filter="url(#boil)"><g id="figurerFram"></g></g>
     <g id="fram" filter="url(#boil)"></g>
     <g id="pilar"></g>
   </g>
@@ -55,7 +56,7 @@ const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return 
 const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
 const KAR_S = 0.88, KAR = R + 'badkar/cut/badkar-bla-kran-tunn.png', KAR_W = 1044 * KAR_S, KAR_H = 687 * KAR_S, KAR_LAPP = 240 * KAR_S, KAR_Y0 = 905 - 668 * KAR_S;
 const KAR_PIP = [765 * KAR_S, 118 * KAR_S];
-const PALL = R + 'pall/cut/pall.png', PALL_KS = 0.5;
+const PALL = R + 'pall/cut/pall.png', PALL_KS = 0.58;   // stegen ungefär lika breda som kaninens fötter (0,5 var för smal)
 const HANDDUK = [R + 'handduk/cut/handduk-rutig.png', 538, 1033];
 const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
 const BAT_BILD = R + 'badbat/cut/badbat.png';
@@ -66,18 +67,33 @@ const PK = [R + 'pepparkakshjarta/cut/pepparkakshjarta.png', R + 'pepparkaksstja
 const GOLV = 905, KX = 1420;
 const KANT = KAR_Y0 + KAR_LAPP;
 const GS = 0.5, BADKANT = 660;
-const STA = [330, GOLV], VID_KAR = [700, GOLV];
+const STA = [330, GOLV], VID_KAR = [400, GOLV];   // vid karet: precis till vänster om pallen, så att första skuttet går upp på nedre steget
 const PALL_X0 = KX - KAR_W / 2 + 25 - 778 * PALL_KS, PALL_Y0 = GOLV - 548 * PALL_KS;
-const PALL_TOPP = [PALL_X0 + 330, PALL_Y0 + 40];
+// pallens två steg (pall.png 781 × 551): nedre stegets ovansida y 212, x 40–330; övre y 4, x 360–760. Fötterna mitt på ovansidan.
+const STEG1 = [PALL_X0 + 185 * PALL_KS, PALL_Y0 + 238 * PALL_KS], STEG2 = [PALL_X0 + 565 * PALL_KS, PALL_Y0 + 32 * PALL_KS];
+// skutt i följd: lista = [[start, längd, mål, höjd]] från A. Blicken går till nästa mål 0,3 s före, en huk, armarna lyfts lite
+// i luften, öronen släpar (skutt) och landningen trycker ihop kroppen mjukt. Ger [pos, p, blick (−1 … 1 åt sidan)].
+function skuttar(tl, A, lista, p) {
+  let pos = A, blick = 0, prev = A;
+  for (const [t0, d, B, h] of lista) {
+    if (tl >= t0) { pos = hoppVag(tl, t0, t0 + d, prev, B); }
+    const fore = del(t0 - 0.35, t0 - 0.1, tl) * (1 - del(t0 + d - 0.1, t0 + d + 0.2, tl));
+    if (fore > 0.01) blick = Math.sign(B[0] - prev[0]) * fore;
+    p = skutt(p, tl, t0, h, d);
+    const luft = bump(t0, t0 + d, tl); p = { ...p, armar: p.armar.map(a => a + 22 * luft), upp: (p.upp || 0) + 0.15 * Math.sign(prev[1] - B[1]) * fore };
+    prev = B;
+  }
+  return [pos, p, blick];
+}
 let FOT = 947;
-const IKAR0 = () => [KX - 40, KANT + (FOT - BADKANT) * GS];
+const IKAR0 = () => [KX + 40, KANT + (FOT - BADKANT) * GS];   // lite till höger, så att båten får plats till vänster
 const KRAN = [KX - KAR_W / 2 + KAR_PIP[0], KAR_Y0 + KAR_PIP[1] - 14];
 const DORR = [0, 300, 175];
 const FONSTER = [540, 105, 300, 250];
 const KROK = [330, 92], HANDDUK_H = 250;
 const FL = [150, GOLV], FL_S = 0.33;
 const FL_MITT = [FL[0], FL[1] - (FLAKT_H - FLAKT_C[1]) * FL_S];
-const BAT = () => [KX - 290, KANT + 22], BAT_H = 160;
+const BAT = () => [KX - 280, KANT + 4], BAT_H = 160;   // x 1140: båten ryms mellan karets vänstra kant och kaninen
 
 let L, G, BLINKA, TT = 0, KAM = [1, 960, 540], RAD = [], RR = {}, IDX = {}, ROSTER = [], BORTA = {}, DURATION = 0;
 const SVART = 0.6;
@@ -134,7 +150,7 @@ const skimra = ([x, y], k, Rr = 36) => { if (k <= 0.01) return;
   lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s], i) => stjarna(x + dx * Rr, y + dy * Rr * 0.83, 14 * s * k * (0.75 + 0.25 * Math.sin(TT * 3 + i * 1.7)), 0.4 + k)).join('')); };
 
 // --- Kritan --------------------------------------------------------------------------------------------------------------------
-const kritaS = () => 0.33 * (KAM[0] > 1.5 ? 0.7 : 1);
+const kritaS = () => 0.33 * (KAM[0] > 1.3 ? 0.7 : 1);
 const krita = (x, y, v = 125, s = kritaS()) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
   transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
 const kritaVanta = ([x, y]) => [[x + 3 * Math.sin(TT * 1.1), y + 5 * Math.sin(TT * 1.6)], 125 + 4 * Math.sin(TT * 1.3)];
@@ -205,9 +221,14 @@ function snoIn(g) {
   g.querySelector('.drag').insertAdjacentHTML('beforeend', `<g class="sno-nos"></g><g class="sno-huvud"></g>`);
   g.querySelector('.kropp').insertAdjacentHTML('beforebegin', `<g class="cape"><path d="M250 360 Q512 250 774 360 L800 790 Q512 850 224 790Z" fill="#F4A6B8"/>
     <path d="M300 380 V800 M420 330 V820 M604 330 V820 M724 380 V800" stroke="#fff" stroke-width="16" opacity=".7"/></g>`);
-  g.querySelector('.mage').insertAdjacentHTML('afterend', `<g class="cape"><path d="M262 360 Q300 330 372 352 L360 640 Q300 650 250 630Z" fill="#F4A6B8"/>
-    <path d="M762 360 Q724 330 652 352 L664 640 Q724 650 774 630Z" fill="#F4A6B8"/>
-    <path d="M300 360 V640 M724 360 V640" stroke="#fff" stroke-width="14" opacity=".7"/></g>`);
+  // framsidan: handduken knuten om magen (läses som "har handduken på sig"), axelflikar ovanför
+  g.querySelector('.mage').insertAdjacentHTML('afterend', `<g class="cape"><path d="M262 360 Q300 330 372 352 L366 600 Q300 610 252 596Z" fill="#F4A6B8"/>
+    <path d="M762 360 Q724 330 652 352 L658 600 Q724 610 772 596Z" fill="#F4A6B8"/>
+    <path d="M300 360 V596 M724 360 V596" stroke="#fff" stroke-width="14" opacity=".7"/>
+    <path d="M214 600 Q512 556 810 600 L824 810 Q512 880 200 810Z" fill="#F4A6B8"/>
+    <path d="M214 600 Q512 556 810 600 L812 650 Q512 610 212 650Z" fill="#E88CA2"/>
+    <path d="M212 700 Q512 660 816 700 M206 770 Q512 740 820 770" stroke="#fff" stroke-width="16" fill="none" opacity=".7"/>
+    <path d="M600 610 L660 600 L690 700 L640 720Z" fill="#E88CA2"/></g>`);
 }
 const NER = -30, VINKA = 150;
 const P = o => ({ ...L.POSE0, ...o });
@@ -245,12 +266,13 @@ function dropparRita(t) {   // 3 droppar per tuss rinner ner från "smälter" ti
     if (t < a || t > b) continue;
     const el = G.querySelector('.sno-' + n), M = DOMMatrix.fromMatrix($('kamera').getCTM()).inverse().multiply(el.getCTM());
     for (let i = 0; i < 3; i++) { const t0 = a + i * (b - a - 0.8) / 3, age = t - t0; if (age < 0 || age > 1.1) continue;
-      const [x, y] = SNO_C[n], q = M.transformPoint(new DOMPoint(x + (i - 1) * SNO_R[n] * 0.6, y + SNO_R[n] * 0.5));
-      lagg('fram', droppe(q.x, q.y + 90 * age * age + 20 * age, 0.9, 1 - age / 1.1)); }
+      const [x, y] = SNO_C[n], sida = n === 'nos' ? (i % 2 ? 1 : -1) * (1.6 + 0.3 * i) : (i - 1) * 0.6, q = M.transformPoint(new DOMPoint(x + sida * SNO_R[n], y + SNO_R[n] * (n === 'nos' ? -0.2 : 0.5)));
+      const ut = n === 'nos' ? Math.sign(sida) * 30 * age : 0;   // nosens droppar glider ut åt sidorna, aldrig ner under nosen (såg ut som snor)
+      lagg('fram', droppe(q.x + ut, q.y + 90 * age * age + 20 * age, 0.9, 1 - age / 1.1)); }
   }
 }
-function kanin(pos, f, p, { ikar = false, cape = 0, sjunk = 0 } = {}) {
-  $('figurer').appendChild(G);
+function kanin(pos, f, p, { ikar = false, cape = 0, sjunk = 0, framfor = false } = {}) {
+  $(framfor ? 'figurerFram' : 'figurer').appendChild(G);   // framfor: på pallen, framför karets kant
   G.setAttribute('transform', `translate(${f1(pos[0])} ${f1(pos[1])}) scale(${GS}) translate(-512 ${-FOT})`);
   L.rita(G, { ...f, armar: L.NEUTRAL.armar }, { ...p, armar: (p.armar || [0, 0]).map(a => a + NER) });
   G.querySelectorAll('.cape').forEach(e => e.setAttribute('opacity', kl(cape).toFixed(2)));
@@ -306,17 +328,18 @@ const S = {
     return RUM({ pos: VID_KAR, kran: 1 - del(d - 1.6, d - 1.0, tl), skum: 0.6 + 0.4 * del(0, 1.5, tl), anga: 0.7 + 0.3 * del(0, 2, tl),
       f: FF(tl > 1.0 + LN(11) + 1.0 ? 'jatteglad' : 'nyfiken', { titt: [12 * str, -8 * str] }), p: P({ strack: 0.05 * str, rikt: 0.5 * str, upp: 0.4 * str, oron: [-8, -8] }) }); },
   // ett skutt upp på pallen, ett skutt ner i karet
-  '8': (tl, d) => { const t1 = 0.4, t2 = 1.3, A = VID_KAR, B = PALL_TOPP, C = IKAR();
-    let pos = tl < t2 ? hoppVag(tl, t1, t1 + 0.6, A, B) : hoppVag(tl, t2, t2 + 0.7, B, C);
-    let p = skutt(P({}), tl, t1, 50, 0.6); p = skutt(p, tl, t2, 90, 0.7);
-    const i = tl > t2 + 0.55;
-    return RUM({ pos, ikar: i, skum: 1, anga: 1, f: FF('jatteglad'), p, sjunkIn: i ? 0 : null }); },
+  // Sanna 18/11 "improve bunny stepping on stairs": ett skutt per steg, landar på orden (skutt 0,68, två skutt 1,39, plask 1,98)
+  '8': (tl, d) => { const t3 = 1.45;
+    const [pos, p0, bl] = skuttar(tl, VID_KAR, [[0.25, 0.43, STEG1, 34], [0.96, 0.43, STEG2, 30], [t3, 0.53, IKAR(), 70]], P({}));
+    const p = { ...p0, rikt: 0.35 * bl };
+    const i = tl > t3 + 0.42;
+    return RUM({ pos, ikar: i, skum: 1, anga: 1, f: FF('jatteglad', { titt: [10 * bl, -4 * Math.abs(bl)] }), p, framfor: tl < t3 + 0.26 }); },
   '9': (tl, d) => BAD({ anga: 1, f: FF('somnig', { lock: [1, 1] }), p: P({ oron: [10, 10] }) }),
   // snön på öronen smälter
   '10': (tl, d) => { const pos = IKAR(), b = 0.3 + LN(15) + 0.4 + BORTA[16], vipp = bump(b, b + 0.6, tl);
-    return BAD({ kam: K_HUVUD(pos, -150, 2.2), anga: 0.8, f: FF('glad'), p: P({ oron: [-12 * vipp, -12 * vipp] }) }); },
+    return BAD({ kam: K_HUVUD(pos, -30, 2.2), anga: 0.8, f: FF('glad'), p: P({ oron: [-12 * vipp, -12 * vipp] }) }); },
   '11': (tl, d) => { const pos = IKAR(), b = 0.3 + BORTA[17];
-    return BAD({ kam: K_HUVUD(pos, 60, 2.6), anga: 0.8, f: FF(tl > b ? 'fnissig' : 'glad'), p: P({ nos: Math.sin(tl * 9) * bump(b - 0.2, b + 0.6, tl) }) }); },
+    return BAD({ kam: K_HUVUD(pos, 15, 2.6), anga: 0.8, f: FF(tl > b ? 'fnissig' : 'glad'), p: P({ nos: Math.sin(tl * 9) * bump(b - 0.2, b + 0.6, tl) }) }); },
   // tittar åt vänster, sedan åt höger
   '12': (tl, d) => { const v = del(0.4, 0.9, tl) - 2 * del(1.6, 2.2, tl) + del(d - 0.8, d - 0.3, tl);
     return BAD({ anga: 0.6, f: FF('nyfiken', { titt: [16 * v, 0] }), p: P({ rikt: 0.35 * v }) }); },
@@ -337,54 +360,56 @@ const S = {
   '17': (tl, d) => { const up = del(0.1, 0.5, tl), [f, p] = nick(FF(tl > 0.6 + LN(48) ? 'glad' : 'nyfiken', { titt: [-12, 0] }), P({ rikt: -0.4, oron: [-12 * up, -12 * up] }), tl - (0.7 + LN(48)));
     return BAD({ f, p, bat: [BAT()[0], guppV(tl)] }); },
   // båten glider fram och tillbaka, kaninen följer den
-  '19': (tl, d) => { const x = BAT()[0] + 110 * Math.sin(2 * Math.PI * tl / 4), v = Math.cos(2 * Math.PI * tl / 4);
-    return BAD({ f: FF('glad', { titt: [-10 + 6 * Math.sin(2 * Math.PI * tl / 4), 4] }), p: P({ rikt: -0.3 }), bat: [x, guppV(tl) + 4 * v] }); },
+  '19': (tl, d) => { const x = BAT()[0] + 55 * Math.sin(2 * Math.PI * tl / 4), v = Math.cos(2 * Math.PI * tl / 4);
+    return BAD({ f: FF('glad', { titt: [-12 + 4 * Math.sin(2 * Math.PI * tl / 4), 4] }), p: P({ rikt: -0.3 }), bat: [x, guppV(tl) + 4 * v] }); },
   // sjunker ner i skummet, båten glider dit
-  '20a': (tl, d) => BAD({ f: FF('glad'), p: P({}), sjunk: 420 * del(0.3, 1.0, tl), bat: [lerp(BAT()[0], KX - 40, del(1.0, 2.6, tl)), guppV(tl)] }),
+  '20a': (tl, d) => BAD({ f: FF('glad'), p: P({}), sjunk: 420 * del(0.3, 1.0, tl), bat: [lerp(BAT()[0], IKAR0()[0], del(1.0, 2.6, tl)), guppV(tl)] }),
   // kommer upp under båten, som sitter kvar på huvudet
   '20b': (tl, d) => { const upp = 1 - del(0.2, 0.7, tl);
     return BAD({ f: FF(tl > 1.0 + LN(29) ? 'fnissig' : 'forvanad', { titt: [0, -10] }), p: P({}), sjunk: 420 * upp, batHuvud: 1 }); },
   // öronen vippar, båten glider ner på vattnet
   '21': (tl, d) => { const v = bump(0.3, 0.9, tl);
-    return BAD({ f: FF('glad'), p: P({ oron: [-16 * v, -16 * v] }), batHuvud: 1 - del(0.5, 1.4, tl), batTill: [BAT()[0] + 60, 0] }); },
+    return BAD({ f: FF('glad'), p: P({ oron: [-16 * v, -16 * v] }), batHuvud: 1 - del(0.5, 1.4, tl), batTill: [BAT()[0] + 30, 0] }); },
   // skakar på huvudet och sjunker till ögonen
   '22': (tl, d) => { const sk = tl > 0.3 + LN(30) - 0.2 ? 0 : 0, a = 0.4, luta = 6 * Math.sin(2 * Math.PI * 1.6 * (tl - a)) * bump(a, a + 1.9, tl);
-    return BAD({ kam: K_HEL, f: FF('ledsen', { le: -0.4 }), p: P({ luta, oron: [8, 8] }), sjunk: 170 * del(0.3 + LN(30), 0.8 + LN(30), tl), bat: [BAT()[0] + 60, guppV(tl)] }); },
-  '23': (tl, d) => BAD({ kam: [2.4, IKAR()[0], KANT - 110], f: FF('ledsen', { le: -0.3, titt: [0, -6] }), p: P({ oron: [10, 10] }), sjunk: 170, bat: [BAT()[0] + 60, guppV(tl)] }),
+    return BAD({ kam: K_HEL, f: FF('ledsen', { le: -0.4 }), p: P({ luta, oron: [8, 8] }), sjunk: 130 * del(0.3 + LN(30), 0.8 + LN(30), tl), bat: [BAT()[0] + 30, guppV(tl)] }); },
+  '23': (tl, d) => BAD({ kam: [2.4, IKAR()[0], KANT - 110], f: FF('ledsen', { le: -0.3, titt: [0, -6] }), p: P({ oron: [10, 10] }), sjunk: 130, bat: [BAT()[0] + 30, guppV(tl)] }),
   // kritan kommer in mot dörren
-  '24a': (tl, d) => BAD({ kam: K_HEL, f: FF('nyfiken', { titt: [-16, 0] }), p: P({ rikt: -0.6 }), sjunk: 120, bat: [BAT()[0] + 60, guppV(tl)], kritaG: kritaPa(tl, d, [FL[0] + 230, FL[1] - 380], [[1100, -150], 150]) }),
+  '24a': (tl, d) => BAD({ kam: K_HEL, f: FF('nyfiken', { titt: [-16, 0] }), p: P({ rikt: -0.6 }), sjunk: 120, bat: [BAT()[0] + 30, guppV(tl)], kritaG: kritaPa(tl, d, [FL[0] + 230, FL[1] - 380], [[1100, -150], 150]) }),
   // ritar fläkten: foten, halsen, ringen (4 s), väntar
   '24b': tl => ({ plats: 'bad', kam: K_FLAKT(), skum: 1, flaktK: kl(tl / 4), flaktVanta: tl - 4 }),
   '24c': (tl, d) => ({ plats: 'bad', kam: K_FLAKT(), skum: 1, flaktFyll: del(0, 0.6, tl), kritaUt: tl }),
   // kommer upp till nosen och tittar på fläkten
-  '25': (tl, d) => BAD({ kam: K_HEL, f: FF('nyfiken', { titt: [-16, 0] }), p: P({ rikt: -0.6 }), sjunk: lerp(120, 40, del(0.1, 0.8, tl)), bat: [BAT()[0] + 60, guppV(tl)] }),
+  '25': (tl, d) => BAD({ kam: K_HEL, f: FF('nyfiken', { titt: [-16, 0] }), p: P({ rikt: -0.6 }), sjunk: lerp(120, 40, del(0.1, 0.8, tl)), bat: [BAT()[0] + 30, guppV(tl)] }),
   // bladen snurrar, virvlarna kommer in genom dörren mot karet, båten glider åt höger
-  '26': (tl, d) => BAD({ kam: K_HEL, f: FF('nyfiken', { titt: [-16, 0] }), p: P({ rikt: -0.6 }), sjunk: 40, bat: [BAT()[0] + 60 + 120 * del(1.6, d, tl), guppV(tl)] }),
+  '26': (tl, d) => BAD({ kam: K_HEL, f: FF('nyfiken', { titt: [-16, 0] }), p: P({ rikt: -0.6 }), sjunk: 40, bat: [BAT()[0] + 30 + 30 * del(1.6, d, tl), guppV(tl)] }),
   // virvlarna når nosen, nosen rycker tre gånger, öronen lyfts ett i taget
   '27': (tl, d) => { const s0 = 0.6 + LN(38) + 0.2, nos = [0, 1, 2].reduce((a, i) => a + bump(s0 + i * 0.9, s0 + i * 0.9 + 0.35, tl), 0);
-    return BAD({ kam: K_HUVUD(IKAR(40), 50, 2.4), f: FF('nyfiken', { titt: [-10, 0] }), p: P({ rikt: -0.3, nos: nos, oron: [-14 * del(s0 + 0.5, s0 + 0.9, tl), -14 * del(s0 + 1.6, s0 + 2.0, tl)], upp: 0.1 * nos }), sjunk: 40, bat: [BAT()[0] + 180, guppV(tl)] }); },
+    return BAD({ kam: K_HUVUD(IKAR(40), 50, 2.4), f: FF('nyfiken', { titt: [-10, 0] }), p: P({ rikt: -0.3, nos: nos, oron: [-14 * del(s0 + 0.5, s0 + 0.9, tl), -14 * del(s0 + 1.6, s0 + 2.0, tl)], upp: 0.1 * nos }), sjunk: 40, bat: [BAT()[0] + 60, guppV(tl)] }); },
   // pepparkakorna i virvlarna, sedan kaninen med stora glada ögon
   '28': (tl, d) => { const c = 0.8 + LN(40);
-    return BAD({ kam: tl < c ? [1.5, 640, 560] : K_HUVUD(IKAR(40), 20, 2.0), f: FF(tl < c ? 'nyfiken' : 'jatteglad', { ogonS: tl < c ? [1, 1] : [1.12, 1.12] }), p: P({ oron: [-12 * del(c, c + 0.4, tl), -12 * del(c, c + 0.4, tl)] }), sjunk: 40, kakor: del(0.2, 0.8, tl), bat: [BAT()[0] + 180, guppV(tl)] }); },
+    return BAD({ kam: tl < c ? [1.5, 640, 560] : K_HUVUD(IKAR(40), 20, 2.0), f: FF(tl < c ? 'nyfiken' : 'jatteglad', { ogonS: tl < c ? [1, 1] : [1.12, 1.12] }), p: P({ oron: [-12 * del(c, c + 0.4, tl), -12 * del(c, c + 0.4, tl)] }), sjunk: 40, kakor: del(0.2, 0.8, tl) * (1 - del(c - 0.35, c - 0.05, tl)), bat: [BAT()[0] + 60, guppV(tl)] }); },
   // upp ur badet: pallen, golvet, repliken, huttrar lite
-  '29': (tl, d) => { const t1 = 0.3, t2 = 1.3, A = IKAR(40), B = PALL_TOPP, C = [560, GOLV];
-    const pos = tl < t2 ? hoppVag(tl, t1, t1 + 0.7, A, B) : hoppVag(tl, t2, t2 + 0.6, B, C);
-    let p = skutt(P({}), tl, t1, 90, 0.7); p = skutt(p, tl, t2, 50, 0.6);
-    const h = huttra(tl, 2.4 + LN(41) + 0.4, 0.9);
-    return RUM({ pos: [pos[0] + h, pos[1]], ikar: tl < t1 + 0.15, sjunk: tl < t1 ? 40 : 0, f: FF(tl > 2.4 + LN(41) ? 'ledsen' : 'glad', tl > 2.4 + LN(41) ? { le: 0.2 } : {}), p: { ...p, oron: p.oron.map(o => o + 10 * del(2.4 + LN(41), 2.8 + LN(41), tl)) }, bat: [BAT()[0] + 180, guppV(tl)] }); },
+  // ur karet steg för steg: övre steget, nedre steget, golvet, sedan repliken (Malin efter handlingen)
+  '29': (tl, d) => { const t1 = 0.35, L0 = 2.8 + LN(41);
+    const [pos, p0, bl] = skuttar(tl, IKAR(40), [[t1, 0.6, STEG2, 70], [1.32, 0.43, STEG1, 24], [2.07, 0.43, VID_KAR, 24]], P({}));
+    const p = { ...p0, rikt: 0.35 * bl * (1 - del(2.5, 2.8, tl)) };
+    const h = huttra(tl, L0 + 0.4, 0.9);
+    return RUM({ pos: [pos[0] + h, pos[1]], ikar: tl < t1 + 0.12, framfor: tl > t1 + 0.3, sjunk: tl < t1 ? 40 : 0, f: FF(tl > L0 ? 'ledsen' : 'glad', { ...(tl > L0 ? { le: 0.2 } : {}), titt: [10 * bl, 0] }),
+      p: { ...p, oron: p.oron.map(o => o + 10 * del(L0, L0 + 0.4, tl)) }, bat: [BAT()[0] + 60, guppV(tl)] }); },
   // skuttar till kroken, handduken glider ner över axlarna
-  '30': (tl, d) => { const pos = hoppVag(tl, 0.2, 0.8, [560, GOLV], STA), p = skutt(P({}), tl, 0.2, 45, 0.6), g = del(1.0, 1.6, tl);
-    return RUM({ kam: [1.5, STA[0] + 200, 600], pos, f: FF(tl > 1.8 ? 'glad' : 'nyfiken', tl > 1.8 + LN(43) ? { lock: [0.4, 0.4] } : {}), p, handdukGlid: g, cape: del(1.45, 1.75, tl), bat: [BAT()[0] + 180, guppV(tl)] }); },
+  '30': (tl, d) => { const pos = hoppVag(tl, 0.2, 0.8, VID_KAR, STA), p = skutt(P({}), tl, 0.2, 45, 0.6), g = del(1.0, 1.6, tl);
+    return RUM({ kam: [1.5, STA[0] + 200, 600], pos, f: FF(tl > 1.8 ? 'glad' : 'nyfiken', tl > 1.8 + LN(43) ? { lock: [0.4, 0.4] } : {}), p, handdukGlid: g, cape: del(1.45, 1.75, tl), bat: [BAT()[0] + 60, guppV(tl)] }); },
   // vänder sig mot dörren, nosen rycker mot doften
   '31': (tl, d) => { const r = del(0.1, 0.6, tl), nos = bump(0.6 + LN(44) - 0.2, 0.6 + LN(44) + 0.4, tl);
-    return RUM({ kam: [1.5, STA[0] + 200, 600], f: FF('glad', { titt: [-16 * r, 0] }), p: P({ rikt: -1 * r, nos }), cape: 1, bat: [BAT()[0] + 180, guppV(tl)] }); },
+    return RUM({ kam: [1.5, STA[0] + 200, 600], f: FF('glad', { titt: [-16 * r, 0] }), p: P({ rikt: -1 * r, nos }), cape: 1, bat: [BAT()[0] + 60, guppV(tl)] }); },
   // vinkar med handduken på
   '32': (tl, d) => { const v = del(0.3, 0.8, tl) - del(d - 0.8, d - 0.3, tl);
-    return RUM({ f: FF('jatteglad'), p: vinka(P({}), v, tl), cape: 1, bat: [BAT()[0] + 180, guppV(tl)] }); },
+    return RUM({ f: FF('jatteglad'), p: vinka(P({}), v, tl), cape: 1, bat: [BAT()[0] + 60, guppV(tl)] }); },
   // skuttar mot dörren och stannar i kanten
   '33': (tl, d) => { const B = [DORR[0] + 130, GOLV], pos = hoppVag(tl, 0.3, 0.95, STA, B), p = skutt(P({ rikt: -1 }), tl, 0.3, 45, 0.65);
-    return RUM({ pos, f: FF('glad', { titt: [-16, 0] }), p, cape: 1, bat: [BAT()[0] + 180, guppV(tl)] }); },
-  '34': (tl, d) => RUM({ pos: [DORR[0] + 130, GOLV], f: FF('glad', { titt: [-8, 0] }), p: P({ rikt: -0.6 }), cape: 1, bat: [BAT()[0] + 180, guppV(tl)], iris: tl / d }),
+    return RUM({ pos, f: FF('glad', { titt: [-16, 0] }), p, cape: 1, bat: [BAT()[0] + 60, guppV(tl)] }); },
+  '34': (tl, d) => RUM({ pos: [DORR[0] + 130, GOLV], f: FF('glad', { titt: [-8, 0] }), p: P({ rikt: -0.6 }), cape: 1, bat: [BAT()[0] + 60, guppV(tl)], iris: tl / d }),
 };
 
 function lage(t) {
@@ -398,7 +423,7 @@ function lage(t) {
 }
 
 // --- Bildrutan ------------------------------------------------------------------------------------------------------------------
-const LAGER = ['platta', 'vagg', 'bak', 'flakt', 'figurer', 'saker', 'fram', 'pilar', 'ram'];
+const LAGER = ['platta', 'vagg', 'bak', 'flakt', 'figurer', 'figurerFram', 'saker', 'fram', 'pilar', 'ram'];
 let SNO_KONTUR;
 const SNO_S = 0.62, SNO_T = (r = 0) => `translate(960 540) rotate(${f1(r)}) scale(${SNO_S}) translate(-512 -512)`;
 function ritaPapper(st) {
@@ -423,8 +448,13 @@ function ritaBad(st, t) {
   // fläkten: syns från 24c, bladen snurrar från rad 26
   if (efter(st.id, '24c') || st.id === '24c') flakt(flaktVrid(t), st.flaktFyll ?? 1);
   // doften: från rad 26 (en stund efter att bladen börjat), till slutet av 33
-  if (fran(st.id, '26')) { const a = RR['26'].s + 1.6, k = del(a, a + 3.0, t), o = flaktFart(t) * (1 - del(RR['33'].s, RR['33'].s + RR['33'].d, t));
-    const mal = st.pos ? (st.ikar ? huvud(st.pos ?? IKAR(), [512, 447]) : huvud(st.pos, [512, 447])) : [700, 560];
+  if (fran(st.id, '26')) { const a = RR['26'].s + 1.6, k = del(a, a + 3.0, t);
+    // doften tonas ner när barnet vet vad den är (Sanna 18/11 "tone down lukt animation after established"): full i 26–28 till
+    // "Pepparkakor från köket!", sedan ner till en svag rest (0,2) som bara visar att fläkten fortfarande blåser
+    const r28 = RR['28'], est = r28.s + r28.malin[0][1] + LN(40) + 0.6, ner = 1 - 0.8 * del(est, est + 1.6, t);
+    const o = flaktFart(t) * ner * (1 - del(RR['33'].s, RR['33'].s + RR['33'].d, t));
+    // virvlarna slutar framför nosen, aldrig över ansiktet
+    const mal = st.pos ? huvud(st.pos, [512 - 260, 440]) : [700, 560];
     doft(st.id === '28' && st.tl < 0.8 + LN(40) ? [900, 560] : mal, k, Math.max(o, 0), st.kakor || 0); }
   // båten
   if (fran(st.id, '16c') || st.id === '16c') {
@@ -450,7 +480,7 @@ function ritaBad(st, t) {
   if (st.f && st.pos) {
     const pos = st.ikar ? IKAR(st.sjunk || 0) : st.pos;
     if (st.ikar) st.pos = pos;
-    kanin(pos, BLINKA(st.f, t), liv(st.p, t), { ikar: st.ikar, cape: st.cape ?? (efter(st.id, '30') ? 1 : 0) });
+    kanin(pos, BLINKA(st.f, t), liv(st.p, t), { ikar: st.ikar, framfor: st.framfor, cape: st.cape ?? (efter(st.id, '30') ? 1 : 0) });
     dropparRita(t);
   }
   if (st.skimmer) skimra(...st.skimmer);

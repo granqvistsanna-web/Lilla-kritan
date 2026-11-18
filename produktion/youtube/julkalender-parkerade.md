@@ -4,7 +4,7 @@ Sanna 2026-11-18: vi jobbar med **två avsnitt åt gången** och gör dem riktig
 (status `arkiv`) och väntar här. Ta upp en lucka genom att säga dess nummer; sätt då tillbaka den med
 `python3 verktyg/feedback.py status granska J05` (och `-bg`-sidan om bakgrunden ska väljas om).
 
-**Nu:** 039 Kaninen ska åka pulka (ligger som **lucka 20**, `20-kaninen-aker-pulka`, hel video med nya introt, 18/11) och J07 Lammet och julkulan.
+**Nu:** 039 Kaninen ska åka pulka (ligger som **lucka 20**, `20-kaninen-aker-pulka`, hel video med nya introt, 18/11) och J07 Lammet och julkulan. Dessutom 040 Leoparden går och lägger sig som **lucka 21** (`21-leoparden-gar-och-lagger-sig`, hel video med nya introt, 18/11, byggs som avsnitt).
 
 | Lucka | Mapp (`produktion/youtube/shorts/jul/`) | Läge när den parkerades |
 |---|---|---|
@@ -27,10 +27,10 @@ Sanna 2026-11-18: vi jobbar med **två avsnitt åt gången** och gör dem riktig
 | J18 | `18-rosa-sangen` | granska, hel video, 17/11 – gamla introt |
 | J19 | `19-tittut-lammet` | granska, hel video, 16/11 – gamla introt |
 | J20 (gamla) | `20-bjornen-fyra-ljus` | var redan arkiverad (17/11); J20-bg ej vald. **Platsen tagen av 039** (18/11, Sanna: "find a spot and add to kal"): J20 på feedbacksidan är nu `20-kaninen-aker-pulka` |
-| J21 | `21-blinka-lilla-stjarna` | granska, hel video, 17/11 – gamla introt |
+| J21 (gamla) | `21-blinka-lilla-stjarna` | granska, hel video, 17/11 – gamla introt . **Platsen tagen av 040** (18/11, Sanna: \"Yes, lucka 21\") |
 | J22 | `22-julgranen` | granska, renderad 16/11 – gamla introt |
 | J23 | `23-grisen-granen` | granska, ny bakgrund Granbrynet (18/11); **J23-bg godkänd (klar)**; J23-zoom ej vald |
-| J24 | `24-julafton` | granska, Gula vardagsrummet (05:39 på sidan); **J24-bg godkänd (klar)**. Filmen från 18/11 12:13 är trasig och måste renderas om |
+| J24 | `24-julafton` | granska, Gula vardagsrummet (05:39 på sidan); **J24-bg godkänd (klar)**. Filmen från 18/11 12:13 är trasig och måste renderas om. Öppen feedback (18/11): 1:17 julgransfot, 1:17 matcha Malins replik bättre, 1:42 leoparden i stället för björnen |
 
 "Gamla introt" = renderad före det nya kalenderintrot (lucka.js, 17/11 09:15). Renderas om när luckan tas upp:
 hela-video-luckor med `hel-video.sh <mapp>`, kodluckor med `node verktyg/render-delat.mjs <mapp>` och sedan `mastra.sh <mapp>`.

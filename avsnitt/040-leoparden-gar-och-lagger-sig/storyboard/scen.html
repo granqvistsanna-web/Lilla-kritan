@@ -22,16 +22,17 @@
     <radialGradient id="rumsken"><stop offset="0" stop-color="#FFD98A" stop-opacity=".55"/><stop offset=".5" stop-color="#FFC27A" stop-opacity=".15"/><stop offset="1" stop-color="#FFC27A" stop-opacity="0"/></radialGradient>
     <radialGradient id="manesken"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".45"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
     <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
-    <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="/assets/bakgrunder/julsovrummet/fonster-mask-valvt.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
+    <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="/assets/bakgrunder/rosa-sovrummet/fonster-mask.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
     <g id="snodefs"></g>
     <!-- julbäddningen i kod (Sanna 2026-11-18): rött täcke med vita snöflingor, gräddvit vikt kant med röda ränder, rutig kudde -->
     <pattern id="flingor" width="64" height="56" patternUnits="userSpaceOnUse">
       <rect width="64" height="56" fill="#c8323a"/>
       <g stroke="#fff4e4" stroke-width="3.2" stroke-linecap="round"><path d="M16 8v16M8 16h16M10.5 10.5l11 11M21.5 10.5l-11 11"/><path d="M48 36v14M41 43h14M43 38l10 10M53 38l-10 10"/></g>
-      <circle cx="44" cy="12" r="2.6" fill="#fff4e4"/><circle cx="14" cy="44" r="2.6" fill="#fff4e4"/></pattern>
-    <pattern id="randig" width="26" height="26" patternUnits="userSpaceOnUse"><rect width="26" height="26" fill="#fff4e4"/><rect width="9" height="26" fill="#d8434b"/></pattern>
-    <pattern id="rutig" width="44" height="44" patternUnits="userSpaceOnUse"><rect width="44" height="44" fill="#fff4e4"/>
-      <rect width="44" height="12" fill="#d8434b" opacity=".75"/><rect width="12" height="44" fill="#d8434b" opacity=".75"/><rect x="26" width="4" height="44" fill="#3f8a55"/><rect y="26" width="44" height="4" fill="#3f8a55"/></pattern>
+      <g stroke="#ffb3cf"><path d="M48 36v14M41 43h14M43 38l10 10M53 38l-10 10"/></g>
+      <path d="M44 9c-3-4-8 0-4 4l4 4 4-4c4-4-1-8-4-4z" fill="#ffb3cf"/><circle cx="14" cy="44" r="2.6" fill="#fff4e4"/></pattern>
+    <pattern id="randig" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="#fff4e4"/><rect width="11" height="34" fill="#f29bbb"/><rect x="20" width="4" height="34" fill="#d8434b"/></pattern>
+    <pattern id="rutig" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#fff4f7"/>
+      <rect width="40" height="16" fill="#f7a8c4" opacity=".7"/><rect width="16" height="40" fill="#f7a8c4" opacity=".7"/><rect x="28" width="3" height="40" fill="#d8434b" opacity=".8"/><rect y="28" width="40" height="3" fill="#d8434b" opacity=".8"/></pattern>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
@@ -165,33 +166,38 @@ const stank = (x, y) => lagg('fram', [[-30, -10], [24, -18], [-6, -30], [38, 4],
 const HEL_B = () => kamera(1), HALV_B = () => kamera(1.6, BX + 40, 450), ANS_B = () => kamera(2.4, BX, VID[1] - (L.FOTTER - 420) * GS), MUN_B = () => kamera(3.6, BX + 12, VID[1] - (L.FOTTER - 455) * GS);
 
 // --- Julsovrummet (produktion/rum/julsovrummet): plattan, kvällshimlen och snön i fönstret, lampan, ljusstaken, sängen, nallen ---
-const SOVR = A + 'bakgrunder/julsovrummet/julsovrummet-valvt-v2.jpeg';
-const FON = { x0: 430, x1: 711, y0: 148, y1: 539 }, MANE = { x: 640, y: 262, r: 40 }, LAMPA = { x: 1770, y: 585 };
-const STJ_FON = [571, 345, 0.26];   // större (Sanna 2026-11-18), hänger i ett snöre från fönstrets valv                    // stjärnan i fönstret [mitt x, mitt y, skala]
+const SOVR = A + 'bakgrunder/rosa-sovrummet/rosa-sovrummet-v2.jpeg';
+const FON = { x0: 276, x1: 641, y0: 179, y1: 549 }   // rosa sovrummet v2: runt fönster med vit ram (Sanna 2026-11-18)
+, MANE = { x: 640, y: 262, r: 40 }, LAMPA = { x: 1770, y: 585 };
+const STJ_FON = [458, 380, 0.24];   // större (Sanna 2026-11-18), hänger i ett snöre från fönstrets valv                    // stjärnan i fönstret [mitt x, mitt y, skala]
 let SNO;
 // sängen (sangen.png 1273 × 667, madrassen y 288, huvudgaveln till vänster) skala 0,6 med mitten på 1130; leoparden bakom den
 const GOLV_S = 905, RIM_S = 772, SANG = { s: 0.76, x: 1130 - 0.76 * 636, y: RIM_S - 0.76 * 288 };   // större säng (Sanna 2026-11-18)
 const LX = 1330, VID_S = [LX, RIM_S + (922 - 700) * 0.5];   // FATKANT 700 som zebran, skala 0,5
 // täcket (rekvisita/tacket, julrött) över sängen; nallen ligger lutad mot kudden med täcket över benen (Sanna 2026-11-18)
-const TACKE = { x: 880, w: 670, h: 100 }, TACKE_SOV = { x: 1010, w: 540, h: 112 };
-const KUDDE = [790, RIM_S + 18, 0.25], NALLE_SANG = [945, RIM_S + 6, 0.17], NALLE_GOLV = [1530, 848, 0.19];
+const TACKE = { x: 688, w: 888, h: 132, b: RIM_S + 114 }, TACKE_SOV = TACKE;   // hela madrassen (Sanna 2026-11-18)
+const KUDDE = [790, RIM_S + 6, 0.25], NALLE_SANG = [945, RIM_S + 6, 0.17], NALLE_GOLV = [1530, 848, 0.19];
 // ljusstaken framför lampan på nattduksbordet; fyra adventsljus i kopparna (x 231, 487,5, 745, 1002 i bilden, kanten y 23)
 const STAKE = { x: 1770, y: 712, s: 0.11 }, LJUS_S = 0.05;
 // Kudden: pösig, julrutig, med hörnen utdragna. (x, y) = mitt nere, där den vilar på madrassen.
-function kuddeSvg(x, y, w = 230, h = 170) {
-  const l = x - w / 2, r = x + w / 2, t = y - h, d = `M${l + 6} ${t + 4} Q${x} ${t + 22} ${r - 6} ${t + 4} Q${r - 20} ${t + h / 2} ${r - 2} ${y - 2}
-    Q${x} ${y - 20} ${l + 2} ${y - 2} Q${l + 18} ${t + h / 2} ${l + 6} ${t + 4}Z`;
-  return `<g transform="rotate(-6 ${x} ${y})"><path d="${d}" fill="#fff" stroke="#fff" stroke-width="16" stroke-linejoin="round"/>
-    <path d="${d}" fill="url(#rutig)" stroke="#b9a68c" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M${l + 40} ${t + 40} Q${x} ${t + 56} ${r - 40} ${t + 40}" fill="none" stroke="#fff" stroke-width="5" opacity=".45" stroke-linecap="round"/></g>`;
+function kuddeSvg(x, y, w = 240, h = 160) {   // pösig, rosarutig, röd kantsnodd, vit volang och ett litet rött hjärta (Sanna 2026-11-18)
+  const l = x - w / 2, r = x + w / 2, t = y - h, d = `M${l + 10} ${t + 8} Q${x} ${t + 30} ${r - 10} ${t + 8} Q${r - 26} ${t + h / 2} ${r - 6} ${y - 6}
+    Q${x} ${y - 26} ${l + 6} ${y - 6} Q${l + 24} ${t + h / 2} ${l + 10} ${t + 8}Z`;
+  return `<g transform="rotate(-5 ${x} ${y})">
+    <path d="${d}" fill="none" stroke="#fff" stroke-width="34" stroke-linejoin="round"/>
+    <path d="${d}" fill="none" stroke="#ffe3ec" stroke-width="22" stroke-dasharray="1 15" stroke-linecap="round"/>
+    <path d="${d}" fill="url(#rutig)" stroke="#d8434b" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M${l + 34} ${t + 40} Q${x} ${t + 58} ${r - 34} ${t + 40}" fill="none" stroke="#fff" stroke-width="7" opacity=".55" stroke-linecap="round"/>
+    <path d="M${l + 30} ${y - 30} Q${x} ${y - 48} ${r - 30} ${y - 30}" fill="none" stroke="#b03a5a" stroke-width="10" opacity=".14" stroke-linecap="round"/>
+    <path d="M${x} ${t + h * 0.62} c-14 -16 -34 0 -14 16 l14 12 14 -12 c20 -16 0 -32 -14 -16z" fill="#d8434b" stroke="#fff" stroke-width="3"/></g>`;
 }
-// Täcket: pösigt rött med snöflingor, hänger lite över madrassens framkant; gräddvit vikt kant med röda ränder och grön kant mot kudden.
-function tackeSvg({ x, w, h }) {
-  const b = RIM_S + 40, t = b - h, r = x + w, n = 4, bula = Array.from({ length: n }, (_, i) => {
+// Täcket: pösigt rött med vita och rosa snöflingor och rosa hjärtan, täcker hela madrassen och hänger lite över framkanten; vikt kant i rosa och rött mot kudden.
+function tackeSvg({ x, w, h, b }) {
+  const t = b - h, r = x + w, n = 4, bula = Array.from({ length: n }, (_, i) => {
     const a = x + 20 + (w - 40) * i / n, c = x + 20 + (w - 40) * (i + 1) / n; return `Q${(a + c) / 2} ${t - 22} ${c} ${t + 4}`; }).join(' ');
   const d = `M${x} ${t + 24} Q${x} ${t + 2} ${x + 20} ${t + 4} ${bula} Q${r} ${t + 4} ${r} ${t + 28} L${r + 6} ${b - 8} Q${r + 4} ${b + 6} ${r - 14} ${b + 4}
     Q${x + w / 2} ${b + 14} ${x + 10} ${b + 4} Q${x - 6} ${b} ${x - 4} ${b - 10}Z`;
-  const kant = Math.min(110, w * 0.17);
+  const kant = Math.min(200, w * 0.22);
   return `<g id="tacke"><clipPath id="tackeKlipp"><path d="${d}"/></clipPath>
     <path d="${d}" fill="#fff" stroke="#fff" stroke-width="16" stroke-linejoin="round"/>
     <path d="${d}" fill="url(#flingor)"/>
@@ -226,14 +232,14 @@ function julrum({ lampa = 1, ljus = [1, 1, 1, 1], rok = [0, 0, 0, 0], natt = 0, 
   if (sang) lagg('kar', bild(R + 'sangen/cut/sangen.png', 1273, 667, `translate(${SANG.x} ${SANG.y}) scale(${SANG.s})`));
   if (kudde) lagg('saker', kuddeSvg(KUDDE[0], KUDDE[1]));
   if (sang) lagg('saker', tackeSvg(nalle === 'sov' ? TACKE_SOV : TACKE));
-  if (nalle) { const [x, y, s] = nalle === 'golv' ? NALLE_GOLV : nalle === 'sov' ? [1190, RIM_S + 6, 0.17] : NALLE_SANG, vrid = nalle === 'golv' ? 0 : nalle === 'sov' ? -12 : -14;
+  if (nalle) { const [x, y, s] = nalle === 'golv' ? NALLE_GOLV : nalle === 'sov' ? [1180, RIM_S + 22, 0.18] : NALLE_SANG, vrid = nalle === 'golv' ? 0 : nalle === 'sov' ? -12 : -14;
     lagg('saker', `<g class="nalleG" transform="rotate(${vrid} ${x} ${y}) translate(${x - 424 * s} ${y - 831 * s}) scale(${s})">
       <image href="${R}nalle/cut/nalle-v2-ljus-tunn.png" width="848" height="856"/>${nalleAnsikte(nalleBlund)}
       <image href="${R}tomteluva/cut/tomteluva.png" x="232" y="-196" width="${1024 * 0.46}" height="${1024 * 0.46}" transform="rotate(-8 424 170)"/></g>`); }
   if (natt) lagg('natt', `<rect x="-100" y="-100" width="2120" height="1280" fill="#16205A" opacity="${0.42 * natt}"/>`);
 }
 const HEL_S = () => kamera(1), HALV_S = () => kamera(1.6, LX - 60, 600), ANS_S = () => kamera(2.4, LX, VID_S[1] - (922 - 420) * 0.5),
-  FON_S = () => kamera(1.5, 820, 470), STAKE_S = () => kamera(3.2, STAKE.x - 40, STAKE.y - 60), STAKE_LOVA = () => kamera(2.0, 1560, 600);
+  FON_S = () => kamera(1.5, 700, 440), STAKE_S = () => kamera(3.2, STAKE.x - 40, STAKE.y - 60), STAKE_LOVA = () => kamera(2.0, 1560, 600);
 
 // --- Ritintrot: kritan ritar adventsstjärnan på papperet ----------------------------------------------------------------------
 function papperStjarna(k, fyll, tand = 0) { papper(); kamera(1);
@@ -312,8 +318,12 @@ const RAD = {
   '39': () => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); kamera(1.3, 900, 520); stjarna(...STJ_FON, { tand: 1 }); S_(F('somnig'), {}); },
   '40': () => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); ANS_S(); S_({ ...F('somnig'), mun: [16, 22, 0, 470] }, {}); },
   '41': () => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); HALV_S(); stjarna(...STJ_FON, { tand: 1 }); S_(F('somnig'), { armar: [0, 120] }); },
-  '42': () => { julrum({ nalle: 'sov', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1, kudde: true }); kamera(1.3, 900, 560); stjarna(...STJ_FON, { tand: 1 });
-    GS = 0.5; lova([960, RIM_S + 22], L.param('sover'), P({ sovbild: 1 }), { s: 0.5 }); $('saker').appendChild(G); $('saker').appendChild($('tacke')); $('saker').appendChild($('saker').querySelector('.nalleG')); text(1160, 600, 'z z z', 30); },
+  '42': () => {   // Sovbilden i sängen (Flow, tagning 2, Sanna 2026-11-18): leoparden ner bäddad under täcket, huvudet på kudden, nallen bredvid.
+    // Ersätter sängen, bäddningen och nallen. Sängbenen på samma linje som sängen i de andra bilderna.
+    julrum({ nalle: false, sang: false, kudde: false, lampa: 0, ljus: [0, 0, 0, 0], natt: 1 }); kamera(1.15, 960, 600); stjarna(...STJ_FON, { tand: 1 });
+    const sb = SANG.s * 1273 / 1157;
+    lagg('saker', bild(A + 'karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-sangen-jul.png', 1157, 649, `translate(${SANG.x} ${SANG.y + 667 * SANG.s - 649 * sb}) scale(${sb})`));
+    text(1040, 600, 'z z z', 34); },
   '43': () => { RAD['42'](); $('pilar').innerHTML = ''; $('fram').innerHTML = ''; kamera(1);
     const cx = 800, cy = 480, r = 380, ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
       return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';

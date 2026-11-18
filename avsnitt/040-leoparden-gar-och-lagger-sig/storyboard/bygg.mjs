@@ -40,7 +40,7 @@ const rad = r => `| [${r.id}](frames/${r.id}.jpg) | ${tid(r.t)} | ${r.d.toFixed(
 const tabell = ['| Bild | Tid | Längd | Plats, kamera | Malin säger (start) | I bild | Leoparden, ljud | Ansikte |', '|---|---|---|---|---|---|---|---|', ...RADER.map(rad)].join('\n');
 const md = await readFile(HÄR + 'storyboard.md', 'utf8');
 await writeFile(HÄR + 'storyboard.md', md.replace(/<!-- tabell -->[\s\S]*<!-- \/tabell -->/, `<!-- tabell -->\n${tabell}\n<!-- /tabell -->`)
-  .replace(/\*\*Längd:\*\*[^\n]*/, `**Längd:** ${tid(LANGD)} med introt (räknat av bygg.mjs ur raderna).`));
+  .replace(/\*\*Längd:\*\*[^\n]*/, `**Längd:** ${tid(LANGD)} utan intro, lucka 21 i julkalendern (räknat av bygg.mjs ur raderna).`));
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>').replace(/`(.+?)`/g, '<code>$1</code>');
 const kort = r => `<figure class="frame"><img src="frames/${r.id}.jpg" alt="Bild ${r.id}" loading="lazy"><figcaption>
@@ -67,7 +67,7 @@ figcaption { padding:12px 14px 14px; display:grid; gap:6px; font-size:14px } fig
 .ans { color:var(--muted); font-size:13px }
 </style></head><body><div class="wrap">
 <h1>Leoparden går och lägger sig <span>storyboard</span></h1>
-<p class="lede">Avsnitt 040, ${tid(LANGD)} med introt. En stillbild per uppslag, tajmad efter Malins klippta repliker (Sannas putsade version) och manusets pauser. Badrummet och julsovrummet, Lovas v2-rigg med pyjamasskjortan som lager. Lila streckade pilar visar rörelsen. ${RADER.length} bilder.</p>
+<p class="lede">Avsnitt 040, ${tid(LANGD)}, utan eget intro (julkalenderns lucka 21). En stillbild per uppslag, tajmad efter Malins klippta repliker (Sannas putsade version) och manusets pauser. Badrummet och julsovrummet, Lovas v2-rigg med pyjamasskjortan som lager. Lila streckade pilar visar rörelsen. ${RADER.length} bilder.</p>
 <div class="frames">${RADER.map(kort).join('\n')}</div>
 </div></body></html>
 `);
@@ -82,7 +82,6 @@ if (process.argv.includes('--animatik')) {
     for (const [n, o] of r.malin || []) ljud.push([RÖST + ROST[n - 1][0] + '.m4a', r.t + o, 1.0]);
     for (const [f, o] of r.ljud || []) if (f) ljud.push([EFF + f + '.m4a', r.t + o, 0.7]);
   }
-  ljud.push([ROT + 'produktion/youtube/bilderbok-intro-jul/intro-effekter.wav', 0, 0.8]);
   // mattorna: badrummets hemmaljud från 1 till kritsvepet (25), julsovrummets från 25 till slutet
   const rd = id => RADER.find(r => r.id === id), bad0 = rd('1').t, sov0 = rd('25').t;
   const mattor = [[EFF + 'hemmaljud/hemmaljud-1.m4a', bad0, sov0 - bad0], [ROT + 'produktion/rum/julsovrummet/julsovrummet-effekter.wav', sov0, LANGD - sov0]];

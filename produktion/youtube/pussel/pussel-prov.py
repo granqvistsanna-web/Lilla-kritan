@@ -42,6 +42,14 @@ REPLIKER = {
     'en-kanin':         '[excited] En kanin!',
     'sa-fint-hej-da':   '[warm] Så fint! Hej då!',
 }
+# Sanna 2026-11-18: julfilmen öppnar varje pussel på sitt eget sätt, med ett "Ja!" i stället för samma "Ett nytt pussel!"
+JUL_OPPNA = ['[excited] Ska vi lägga ett pussel? … Ja!', '[excited] Ett pussel till? … Ja!', '[warm] Här kommer ett nytt pussel!',
+             '[excited] Ska vi ta ett till? … Ja!', '[curious] Oj, ett nytt pussel!', '[excited] Ett till? … Ja, ett till!',
+             '[warm] Titta, ett nytt pussel!', '[excited] Ska vi lägga ett till? … Ja!', '[warm] Nu kommer nästa pussel!',
+             '[excited] Ett sista pussel? … Ja!']
+REPLIKER.update({f'jul-oppna-{n + 1}': txt for n, txt in enumerate(JUL_OPPNA)})
+OPPNA = {'pussel-jul': [f'jul-oppna-{n + 1}' for n in range(len(JUL_OPPNA))]}   # film -> öppningsreplik per pussel
+OPPNA_LISTA = None                      # sätts i main
 
 # Bitarna: 0 överst till vänster, 1 överst till höger, 2 nederst till vänster, 3 nederst i mitten, 4 nederst till höger.
 # snitt (andelar av bildytan): y = vågräta skarven, topp = lodräta skarven överst, botten = de två nederst.
@@ -73,6 +81,10 @@ FRAGA = 4.0                             # tyst gissningspaus efter frågan
 TAKTER = {'dar': [0, 2, 4]}             # efter vilka bitar Malin säger "Där!"/"Den passar!"
 UTAN_DEN_PASSAR = {'pussel-vanliga', 'pussel-mix-5', 'pussel-mix-5b'}    # Sanna 2026-11-18: bara "Där!" efter bit 1, inget "Den passar!" efter bit 3
 TYST_FORSTA = {'pussel-jul'}            # Sanna 2026-11-18: filmens allra första bit får ingen kommentar
+TEMPO = {'pussel-jul': 0.88}           # Sanna 2026-11-18: julfilmen lite raskare (bitarnas rörelser och pauserna, inte gissningspausen)
+K = 1.0                                 # sätts i main
+TYSTA_BITAR = {'pussel-jul'}            # Sanna 2026-11-18: bit 1–2 tysta (svåra att se), bit 3–4 kommenteras när de ligger, bit 5 i närbild; inget "Där!"/"Den passar!"
+LIGG_KOMMENTAR = False                  # sätts i main
 FORSTA_TYST = False                     # sätts i main
 
 
@@ -384,7 +396,7 @@ MAXLANGD = {'tuff-tuff': 2.5, 'bjallror': 2.5, 'vagor': 2.5, 'mums': 1.8, 'jubel
 
 
 MUSIK = {'pussel-vanliga': ('assets/ljud/musik/stada-radion-slinga.m4a', 0.13),
-         'pussel-jul': ('assets/ljud/musik/jul/jul-badd-2.m4a', 0.10),
+         'pussel-jul': ('assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', 0.13),   # Sanna 2026-11-18: raskare julmusik (7,5 LU starkare än förra, samma nivå)
          'pussel-lucka-13': ('assets/ljud/musik/jul/jul-badd-2.m4a', 0.10)}
 
 
@@ -483,12 +495,16 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
         return d
 
     t = 0.4
-    t += sag('ska-vi-lagga' if forsta else tagn.ta('nytt-pussel'), t) + 0.9
+    oppna = OPPNA_LISTA[k] if OPPNA_LISTA else ('ska-vi-lagga' if forsta else tagn.ta('nytt-pussel'))
+    t += sag(oppna, t) + 0.9 * K
     plan = []
     for n, (i, rid) in enumerate(p['ordning']):
         sida = -1 if n % 2 == 0 else 1
         fram = t + IN
         if forsta and n == 0 and FORSTA_TYST: rid = None
+        ligg = None
+        if LIGG_KOMMENTAR and n < 4:                    # tyst i närbild; bit 3–4 sägs när biten har landat
+            ligg, rid = (rid if n >= 2 else None), None
         fil, d, _ = replik(rid) if rid else (None, 0, '')
         visa = max(VISA, 0.2 + d + 0.7)
         land = fram + visa + LAGG
@@ -500,7 +516,9 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
         if n == 4:
             ljud.append((E + 'ding/ding-1.m4a', T0 + land + 0.05, 0.4))
         t = land
-        if n in TAKTER['dar'] and n != 4:
+        if ligg:
+            t += 0.4 * K + sag(ligg, t + 0.4 * K) + 0.6 * K
+        elif n in TAKTER['dar'] and n != 4:
             d2 = sag(tagn.ta('dar', 'den-passar') if n == 0 else tagn.ta('den-passar', 'dar'), t + 0.45)
             t += 0.45 + d2 + 0.7
         else:
@@ -660,6 +678,10 @@ if __name__ == '__main__':
     VISA_TEXT = any(replik(r)[0] is None for r in REPLIKER)
     if namn in UTAN_DEN_PASSAR: TAKTER['dar'] = [0]
     FORSTA_TYST = namn in TYST_FORSTA
+    LIGG_KOMMENTAR = namn in TYSTA_BITAR
+    OPPNA_LISTA = OPPNA.get(namn)
+    K = TEMPO.get(namn, 1.0); IN, VISA, LAGG, MELLAN = IN * K, VISA * K, LAGG * K, MELLAN * K
+    if LIGG_KOMMENTAR: TAKTER['dar'] = []
     rd = os.path.join(UT, 'rutor-' + namn); os.makedirs(rd, exist_ok=True)
     for x in os.listdir(rd): os.remove(os.path.join(rd, x))
     ljud, f0, tagn = [], 0, Tagningar()

@@ -55,6 +55,16 @@ bilen-hjul           [excited] Ett hjul!
 bilen-hjul-till      [excited] Ett hjul till!
 en-bil               [excited] En bil!
 en-kanin             [excited] En kanin!
+jul-oppna-1          [excited] Ska vi lägga ett pussel? … Ja!
+jul-oppna-2          [excited] Ett pussel till? … Ja!
+jul-oppna-3          [warm] Här kommer ett nytt pussel!
+jul-oppna-4          [excited] Ska vi ta ett till? … Ja!
+jul-oppna-5          [curious] Oj, ett nytt pussel!
+jul-oppna-6          [excited] Ett till? … Ja, ett till!
+jul-oppna-7          [warm] Titta, ett nytt pussel!
+jul-oppna-8          [excited] Ska vi lägga ett till? … Ja!
+jul-oppna-9          [warm] Nu kommer nästa pussel!
+jul-oppna-10         [excited] Ett sista pussel? … Ja!
 kaninen-brunt        [curious] Något brunt.
 kaninen-svans        [curious] En rund svans.
 kaninen-tass         [curious] En liten tass.
@@ -115,9 +125,9 @@ pepparkakan-ben      [curious] Och ett ben.
 pepparkakan-ansikte  [excited] Ett glatt ansikte!
 en-pepparkaksgubbe   [excited] En pepparkaksgubbe!
 julgranen-gront      [curious] Oj, grönt.
+julgranen-stam       [curious] Och en stam.
 julgranen-kula       [excited] En röd kula!
 julgranen-hjarta     [curious] Ett hjärta.
-julgranen-stam       [curious] Och en stam.
 julgranen-stjarna    [excited] En stjärna!
 en-julgran           [excited] En julgran!
 tomten-rott          [curious] Något rött.
@@ -141,7 +151,6 @@ en-snoflinga         [excited] En snöflinga!
 snogubben-vitt       [amused] Ännu mer vitt!
 snogubben-runt       [curious] Runt och vitt.
 snogubben-halsduk    [curious] En röd halsduk.
-snogubben-ogon       [curious] Två små ögon.
 snogubben-morot      [excited] En morot!
 en-snogubbe          [excited] En snögubbe!
 julklappen-rott      [curious] Här är något rött.
@@ -151,8 +160,8 @@ julklappen-kvist     [curious] Och en grankvist.
 julklappen-rosett    [excited] En rosett!
 en-julklapp          [excited] En julklapp!
 groten-blatt         [curious] Något blått.
-groten-prickar       [curious] Små vita prickar.
 groten-runt          [curious] Något runt.
+groten-prickar       [curious] Små vita prickar.
 groten-sked          [excited] En sked!
 groten-smor          [excited] Smör och kanel!
 risgrynsgrot         [excited] Risgrynsgröt!

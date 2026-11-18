@@ -9,6 +9,7 @@
 # Utökad samma dag till ca en timme (Sanna): + 013 röda, 020 grisen badar, 036 hunden äter julmat (3,3 s kort), 039 pulka (inget intro),
 # 016 Blinka sist (som i Mix 3: eget svep, 3,6 s svart kapat), tre pussel till (pussel-mix-5b: bilen, grisen, hunden) och fyra Gissa
 # från Mix 3 (traktor, ko, brandbil, båt). 013, 020 och 016 börjar under sitt eget kritsvep (egen), som i Mix 3.
+# 003 och 004 utan "lilla kritan"-outrot (bilden krymper till ett kort, loggan; Sanna 2026-11-18): kapa 12,3 och 9,8 s, musiken tonas ut 1,2 s.
 # Kör: produktion/youtube/mix/mix-5/satt-ihop.sh
 set -e
 cd "$(dirname "$0")"
@@ -30,7 +31,7 @@ DELAR=(
   "intro|intro/intro.mp4|"
   "short|$G/fordon/flygplan/flygplan-liggande-mix.mp4|f7c225"
   "short|$LP/gunga/gunga-liggande-mix.mp4|"
-  "avsnitt|$A/003-bussen-halsar-pa/film/avsnitt-003-youtube.mp4|2fb3b5|11"
+  "avsnitt|$A/003-bussen-halsar-pa/film/avsnitt-003-youtube.mp4|2fb3b5|11||12.3"
   "bok|$A/022-kaninen-ater-frukost/film/avsnitt-022.mp4|f2a33a|3.3"
   "tittut|$TT/angen/leoparden-lova/leoparden-lova.mp4|63ab54|3.9||24.2"
   "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|de4b2b|9|egen"
@@ -42,7 +43,7 @@ DELAR=(
   "bok|$A/024-lammet-klar-pa-sig/film/avsnitt-024.mp4|2fb5a8|3.3"
   "short|$G/bondgarden/traktor/traktor-liggande-mix.mp4|f7c225"
   "short|$G/bondgarden/ko/ko-liggande-mix.mp4|"
-  "avsnitt|$A/004-bussen-badar/film/avsnitt-004.mp4|e93c8f|11"
+  "avsnitt|$A/004-bussen-badar/film/avsnitt-004.mp4|e93c8f|11||9.8"
   "bok|$A/028-leoparden-bygger-i-sanden/film/avsnitt-028.mp4|f2c230|3.3"
   "short|$LP/rutschkana/rutschkana-liggande-mix.mp4|de4b2b"
   "short|$LP/sandlada/sandlada-liggande-mix.mp4|"

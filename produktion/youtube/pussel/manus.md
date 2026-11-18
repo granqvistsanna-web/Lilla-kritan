@@ -35,16 +35,20 @@ Frågan *"Hmm … vad blir det?"* kommer efter bit 3.
 
 ## Film 2: Jul (10 pussel)
 
+**2026-11-18 (Sannas feedback):** i julfilmen är bit 1 och 2 tysta (för svåra att se), bit 3 och 4 kommenteras när biten har landat, bit 5 i närbild som förut. Inget "Där!" eller "Den passar!". Bädden är `karol-pynta-salen-slinga` (julmusik). Styrs av `TYSTA_BITAR` i `pussel-prov.py`. Julgranen fick ny bitordning så att kulan och hjärtat syns när de sägs, snögubbens bit 4 visar bara ett öga.
+
+**2026-11-18 kl 16 (feedback 2):** varje pussel öppnas med en egen replik med "Ja!" (`jul-oppna-1…10`, se `rost.txt`), bädden är `karol-up-on-the-housetop-slinga` (raskare), tempot 0,88 (`TEMPO`, gissningspausen orörd), och julgranen, snöflingan och pepparkaksgubben syns hela i brickan (nya snitt, granens kula och hjärta på bit 3–4).
+
 | # | Pussel | Bit 1 | Bit 2 | Bit 3 | Bit 4 | Bit 5 (avgör) | Svar | Levande |
 |---|---|---|---|---|---|---|---|---|
 | 1 | Pepparkaksgubben | Brunt … | Vita, vita streck. | Knappar! | Och ett ben. | Ett glatt ansikte! | En pepparkaksgubbe! | skutta, fniss |
-| 2 | Julgranen | Oj, grönt. | En röd kula! | Ett hjärta. | Och en stam. | En stjärna! | En julgran! | gunga, tindra |
+| 2 | Julgranen | Oj, grönt. | Och en stam. | En röd kula! | Ett hjärta. | En stjärna! | En julgran! | gunga, tindra |
 | 3 | Tomten | Något rött. | En vante! | En vit tofs. | Och en luva … | Ett vitt skägg! | En tomte! | skutta, hoho |
 | 4 | Tomteluvan | Vitt … | Och rött. | Rött och vitt … | En liten spets. | En tofs! | En tomteluva! | gunga, bjallror |
 | 5 | Snöflingan | Vitt igen! | Något blått. | Titta, en gren. | Fler grenar! | Så många grenar! | En snöflinga! | singla, tindra |
-| 6 | Snögubben | Ännu mer vitt! | Runt och vitt. | En röd halsduk. | Två små ögon. | En morot! | En snögubbe! | gunga, jippi |
+| 6 | Snögubben | Ännu mer vitt! | Runt och vitt. | En röd halsduk. | Ett litet öga. | En morot! | En snögubbe! | gunga, jippi |
 | 7 | Julklappen | Här är något rött. | Vita stjärnor! | Ett snöre. | Och en grankvist. | En rosett! | En julklapp! | studsa |
-| 8 | Gröten | Något blått. | Små vita prickar. | Något runt. | En sked! | Smör och kanel! | Risgrynsgröt! | gunga, mums |
+| 8 | Gröten | Något blått. | Något runt. | Små vita prickar. | En sked! | Smör och kanel! | Risgrynsgröt! | gunga, mums |
 | 9 | Julskinkan | Något gult. | Och rosa. | Rutor! | Gult och rosa … | Ett litet ben! | En julskinka! | gunga, mums |
 | 10 | Kälken | Något brunt. | Ett snöre. | Brädor av trä. | Två medar! | En böj! | En kälke! | kora, glid |
 

@@ -52,8 +52,8 @@ export const RADER = [
     ljud: [[K(2, 'b'), 1.2 + L(11) + 1.0 + L(12)]],
     bild: 'Kaninen sträcker på sig igen. Skummet står högt, ångan ringlar. Kranen stängs', ljudtext: 'förtjust (2b)', ansikte: 'jätteglad' },
   { id: '8', d: 0.4 + L(13) + 1.2, plats: 'Badrummet, helbild', malin: [[13, 0.4]],
-    ljud: [['tass/tass-4', 0.6], ['tass/tass-5', 1.5], ['plask/plask-1', 0.2 + L(13)]],
-    bild: 'Ett skutt upp på pallen, ett skutt ner bakom karets kant', ljudtext: '`tass`, `tass`, `plask`', ansikte: 'jätteglad' },
+    ljud: [['tass/tass-4', 0.66], ['tass/tass-5', 1.36], ['plask/plask-1', 1.96]],   // landningarna på orden (whisper: skutt 0,28, två skutt 0,99, plask 1,58 s in i repliken)
+    bild: 'Ett skutt upp på pallens nedre steg ("skutt"), ett på det övre ("två skutt"), ett ner i karet ("plask")', ljudtext: '`tass`, `tass`, `plask`', ansikte: 'jätteglad' },
   { id: '9', d: 0.6 + L(14) + 1.8, plats: 'Badet', malin: [[14, 0.6]], ljud: [[K(4), 0.8 + L(14)]],
     bild: 'Bara huvudet ovanför kanten, ångan ringlar, kaninen blundar', ljudtext: 'mysig suck (4)', ansikte: 'sömnig, blundar' },
 
@@ -83,11 +83,11 @@ export const RADER = [
     bild: 'Kritan ritar båtens kontur på vattnet (ca 4 s), väntar och svävar ca 3 s: barnet gissar', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '16c', d: 0.4 + L(25) + 0.8, plats: 'Båtens utsnitt → badet', malin: [[25, 0.4]], ljud: [['glitter/glitter-2', 0.1]],
     bild: 'Den riktiga båten fylls i och landar på vattnet', ljudtext: '`glitter`', ansikte: 'jätteglad' },
-  { id: '17', d: 0.6 + L(48) + 1.4, plats: 'Badet', malin: [[48, 0.6]], ljud: [[K(5), 0.1], [K(2, 'b'), 0.8 + L(48)]],
+  { id: '17', d: 0.6 + L(48) + 1.4, plats: 'Badet', malin: [[48, 0.6]], ljud: [[K(5), 0.1], [K(2), 0.8 + L(48)]],
     bild: 'Kaninen tittar på båten, öronen reser sig, och nickar mot kritan', ljudtext: 'nyfiken (5), förtjust (2b)', ansikte: 'nyfiken → glad' },
 
   // --- Båtleken ---
-  { id: '19', d: 2.0 + L(28) + 1.0, plats: 'Badet', malin: [[28, 2.0]], ljud: [['bat-tut/bat-tut-1', 1.4 + L(28)], ['ja-babbel/ja-babbel-3', 2.2 + L(28)]],
+  { id: '19', d: 2.0 + L(28) + 1.0, plats: 'Badet', malin: [[28, 2.0]], ljud: [['bat-tut/bat-tut-1', 1.4 + L(28)], ['ja-babbel/ja-babbel-1', 2.2 + L(28)]],
     bild: 'Båten glider lugnt fram och tillbaka och guppar, kaninen följer den med blicken', ljudtext: '`bat-tut`, `ja-babbel`', ansikte: 'glad' },
   { id: '20a', d: 3.0, plats: 'Badet', ljud: [['plask/plask-2', 0.3]],
     bild: 'Kaninen sjunker ner i skummet, båten glider dit', ljudtext: '`plask`', ansikte: '– (under skummet)' },
@@ -117,13 +117,13 @@ export const RADER = [
     bild: 'Bladen snurrar. Fläkten drar in varma virvlar genom dörren och blåser dem mot karet. Båten glider åt höger i vinden', ljudtext: '`flakt` lågt (går till rad 33)', ansikte: 'nyfiken' },
   { id: '27', d: 0.6 + L(38) + 3.0 + L(39) + 1.0, plats: 'Närbild nosen', malin: [[38, 0.6], [39, 0.6 + L(38) + 3.0]], ljud: [['nos/nos-1', 0.8 + L(38) + 3.0 + L(39)]],
     bild: 'Virvlarna når nosen. Nosen rycker, öronen lyfts ett i taget. Luktpaus 3 s', ljudtext: '`nos`', ansikte: 'nyfiken' },
-  { id: '28', d: 0.8 + L(40) + 1.8, plats: 'Närbild virvlarna → kaninen', malin: [[40, 0.8]], ljud: [['glimt/glimt-1', 0.3], ['jippi/jippi-1', 1.0 + L(40)]],
-    bild: 'Små pepparkakor (ett hjärta, en stjärna) svävar i virvlarna, sedan kaninen med stora glada ögon', ljudtext: '`glimt`, `jippi`', ansikte: 'jätteglad' },
+  { id: '28', d: 0.8 + L(40) + 1.8, plats: 'Närbild virvlarna → kaninen', malin: [[40, 0.8]], ljud: [['glimt/glimt-1', 0.3], [K(2), 1.0 + L(40)]],
+    bild: 'Små pepparkakor (ett hjärta, en stjärna) svävar i virvlarna, sedan kaninen med stora glada ögon', ljudtext: '`glimt`, förtjust (2) (jippi-1 lät som "Nej!", QA 18/11)', ansikte: 'jätteglad' },
 
   // --- Upp ur badet ---
-  { id: '29', d: 2.4 + L(41) + 0.6 + L(42) + 1.0, plats: 'Badrummet, helbild', malin: [[41, 2.4], [42, 2.4 + L(41) + 0.6]],
-    ljud: [['plask/plask-1', 0.2], ['tass/tass-6', 1.0], ['tass/tass-1', 1.8], ['huttra/huttra-1', 2.4 + L(41) + 0.4]],
-    bild: 'Kaninen skuttar upp på pallen och ner på golvet, sedan repliken. Den huttrar lite', ljudtext: '`plask`, `tass`, `huttra`', ansikte: 'glad → lite kall' },
+  { id: '29', d: 2.8 + L(41) + 0.6 + L(42) + 1.0, plats: 'Badrummet, helbild', malin: [[41, 2.8], [42, 2.8 + L(41) + 0.6]],
+    ljud: [['plask/plask-1', 0.2], ['tass/tass-6', 0.95], ['tass/tass-1', 1.75], ['tass/tass-2', 2.5], ['huttra/huttra-1', 2.8 + L(41) + 0.4]],
+    bild: 'Kaninen skuttar ur karet upp på pallens övre steg, ner på det nedre och ner på golvet, sedan repliken. Den huttrar lite', ljudtext: '`plask`, `tass`, `huttra`', ansikte: 'glad → lite kall' },
   { id: '30', d: 1.6 + L(43) + 1.6, plats: 'Badrummet', malin: [[43, 1.6]], ljud: [['tass/tass-2', 0.2], ['prassel-tyg/prassel-tyg-1', 1.0], [K(4, 'b'), 1.8 + L(43)]],
     bild: 'Kaninen skuttar till kroken. Handduken glider ner över axlarna och ryggen, öppen fram (ritad i kod)', ljudtext: '`prassel-tyg`, mysig suck (4b)', ansikte: 'mysig' },
   { id: '31', d: 0.6 + L(44) + 1.2, plats: 'Badrummet', malin: [[44, 0.6]], ljud: [['mmm/mmm-1', 0.7 + L(44)]],
