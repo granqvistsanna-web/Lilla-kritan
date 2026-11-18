@@ -4,7 +4,7 @@ Sanna 2026-11-18: vi jobbar med **två avsnitt åt gången** och gör dem riktig
 (status `arkiv`) och väntar här. Ta upp en lucka genom att säga dess nummer; sätt då tillbaka den med
 `python3 verktyg/feedback.py status granska J05` (och `-bg`-sidan om bakgrunden ska väljas om).
 
-**Nu:** 039 Kaninen ska åka pulka och J07 Lammet och julkulan.
+**Nu:** 039 Kaninen ska åka pulka (ligger som **lucka 20**, `20-kaninen-aker-pulka`, hel video med nya introt, 18/11) och J07 Lammet och julkulan.
 
 | Lucka | Mapp (`produktion/youtube/shorts/jul/`) | Läge när den parkerades |
 |---|---|---|
@@ -26,7 +26,7 @@ Sanna 2026-11-18: vi jobbar med **två avsnitt åt gången** och gör dem riktig
 | J17 | `17-borsta-borsta-jul` | granska, hel video, 17/11 – gamla introt |
 | J18 | `18-rosa-sangen` | granska, hel video, 17/11 – gamla introt |
 | J19 | `19-tittut-lammet` | granska, hel video, 16/11 – gamla introt |
-| J20 | `20-bjornen-fyra-ljus` | var redan arkiverad (17/11); J20-bg ej vald |
+| J20 (gamla) | `20-bjornen-fyra-ljus` | var redan arkiverad (17/11); J20-bg ej vald. **Platsen tagen av 039** (18/11, Sanna: "find a spot and add to kal"): J20 på feedbacksidan är nu `20-kaninen-aker-pulka` |
 | J21 | `21-blinka-lilla-stjarna` | granska, hel video, 17/11 – gamla introt |
 | J22 | `22-julgranen` | granska, renderad 16/11 – gamla introt |
 | J23 | `23-grisen-granen` | granska, ny bakgrund Granbrynet (18/11); **J23-bg godkänd (klar)**; J23-zoom ej vald |
