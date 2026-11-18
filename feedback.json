@@ -4759,9 +4759,10 @@
   "sec": 87,
   "tags": [],
   "note": "close up on öronen",
-  "fixed": false,
+  "fixed": true,
   "at": 1795029002236,
-  "render": "2026-11-18 15:38 (slutrendering: byxbenen kommer med stövlarna, vanten över örat, tassen syns, kaninen skuttar upp till pulkan, kortare paus före 1-2-3)"
+  "render": "2026-11-18 15:38 (slutrendering: byxbenen kommer med stövlarna, vanten över örat, tassen syns, kaninen skuttar upp till pulkan, kortare paus före 1-2-3)",
+  "fixedAt": 1795030232878
  },
  "zm4cea0s0vmwmhxlrj": {
   "ep": "039",
