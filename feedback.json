@@ -4625,5 +4625,25 @@
   "fixed": false,
   "at": 1795011892037,
   "render": "2026-11-18 15:23 (slutrendering, 0:06 utan avklippt ord)"
+ },
+ "0v1ploy5jdmwm7s3b6": {
+  "ep": "039",
+  "time": "3:33",
+  "sec": 213,
+  "tags": [],
+  "note": "better animation bunny walking and sitting on pulka",
+  "fixed": false,
+  "at": 1795011968706,
+  "render": "2026-11-18 15:23 (slutrendering, 0:06 utan avklippt ord)"
+ },
+ "k7gau9dx5cmwm7sfla": {
+  "ep": "039",
+  "time": "3:46",
+  "sec": 226,
+  "tags": [],
+  "note": "remove this pause",
+  "fixed": false,
+  "at": 1795011984622,
+  "render": "2026-11-18 15:23 (slutrendering, 0:06 utan avklippt ord)"
  }
 }
