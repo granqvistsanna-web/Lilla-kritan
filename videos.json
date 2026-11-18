@@ -1061,9 +1061,9 @@
   "name": "Jul (parkerad): Tittut lammet"
  },
  "J01": {
-  "duration": 277.3,
+  "duration": 277.4,
   "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka.mp4",
-  "rendered": "2026-11-18 20:55 (hela 039 bakom luckan, nya kalenderintrot (ersätter björnen och fyra ljus, arkiverad))",
+  "rendered": "2026-11-18 23:28 (hela 039 bakom luckan, nya kalenderintrot, nu lucka 1 (var lucka 20))",
   "status": "granska",
   "stills": [
    {
@@ -1091,8 +1091,9 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1118-2055.mp4",
-  "videoId": "d9317d5aeafb90b0249f9fa3fd410530"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1118-2327.mp4",
+  "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
+  "name": "Lucka 1: Kaninen ska åka pulka"
  },
  "JP-bjornen-fyra-ljus-bg": {
   "layout": "rader",
