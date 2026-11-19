@@ -120,7 +120,8 @@ document.body.innerHTML = `<div id="scen"><svg id="botten" viewBox="0 0 1920 108
   <g id="bak"></g><rect width="1920" height="1080" filter="url(#korn)"/><g id="klosskuggor"></g></svg>
   <canvas id="klossar" width="1920" height="1080"></canvas>
   <svg id="topp" viewBox="0 0 1920 1080" xmlns="${NS}"><defs></defs><g id="saker"></g><g id="gnistor"></g><g filter="url(#boil)" id="krita"></g>
-  <rect width="1920" height="1080" fill="#FFB36B" opacity=".05" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett-g)"/></svg></div>`;
+  <rect width="1920" height="1080" fill="#FFB36B" opacity=".05" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett-g)"/></svg>
+  <canvas id="bokstav" width="1920" height="1080"></canvas></div>`;
 const defs = document.querySelector('defs'), sakerG = document.getElementById('saker'), kritaG = document.getElementById('krita');
 const ladda = f => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = '/' + f; });
 const bildEl = async (f, w, h, transform, parent) => { await ladda(`assets/rekvisita/${f}.png`);
@@ -187,6 +188,9 @@ const BILDKLOSS = ['bjorn', 'banan', 'ballong', 'ko', 'anka', 'bi', 'buss', 'bol
 const K = await bokstavsklossar(document.getElementById('klossar'), [{ fram: 'B', farg: A_ROD, drag: A_DRAG, rund: 0, platta: A_ROD, skala: A_SKALA, klister: true, djup: 0.02 },
   ...BILDKLOSS.map(n => ({ platta: SAKER[n].platta[0], bakgrund: SAKER[n].platta[4], rund: 0.12, tra: 'mer' }))]);
 BILDKLOSS.forEach((n, i) => { SAKER[n].ki = i + 1; SAKER[n].snett = SAKER[n].platta[3]; });
+// B-märket ritas också i ett eget lager överst (feedback 2026-11-19 3:32 "b letter in corner should be cover content"): i K är den
+// osynlig (bara för måtten), i KB syns den ovanpå klossarna, sakerna och gnistorna, och kritan som ritar B:et följer med upp.
+const KB = await bokstavsklossar(document.getElementById('bokstav'), [{ fram: 'B', farg: A_ROD, drag: A_DRAG, rund: 0, platta: A_ROD, skala: A_SKALA, klister: true, djup: 0.02 }]);
 
 // ---------- tidslinjen: repliker efter sina riktiga längder ----------
 const TAL = {
@@ -265,7 +269,7 @@ const klossLage = (kf, t) => {   // [x, y, z, sidan]
   const i = kf.findIndex(k => k[0] > t);
   if (i === -1) return kf.at(-1).slice(1, 5);
   if (i === 0) return kf[0].slice(1, 5);
-  const a = kf[i - 1], b = kf[i], d = del([a[0], b[0]], t), k = b[6] ? d * d : inUt(d);
+  const a = kf[i - 1], b = kf[i], d = del([a[0], b[0]], t), k = b[6] === 2 ? d : b[6] ? d * d : inUt(d);   // 2 = jämn fart, annat sant = fart upp
   const v = [1, 2, 3, 4].map(j => lerp(a[j], b[j], k)); v[1] -= (b[5] || 0) * bage(d); return v;
 };
 const flyttaK = (X, t, [x, y, z], sd, sek = 0.9, bage = 0) => { X.kk.push([t, ...klossLage(X.kk, t)], [t + sek, x, y, z, sd, bage]); return t + sek; };
@@ -491,9 +495,8 @@ const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_
 // en i taget hoppar på stället och snurrar ett varv med sitt eget ljud. Sedan närbild på den dansande björnen, alla klossar hoppar
 // tillsammans, björnen hoppar tillbaka in i sin kloss och raden glider ihop igen.
 // Feedback 2026-11-19 (3:26 "bigger bear", 3:35 "more stacking of blocks", "improved disco scene"): björnen dansar stor mitt i
-// bild, klossarna bygger två torn bredvid den, en i taget (varje sak med sitt ljud, och dess klistermärke slås upp i bågen runt
-// kulan som i 005:s disco), och när björnen har hoppat tillbaka bygger alla en pyramid mitt i bild med björnens kloss överst.
-const KLISTER = [];   // [t, sak] – klistermärket slås upp i bågen
+// bild, klossarna bygger två torn bredvid den, en i taget (varje sak med sitt ljud), och när björnen har hoppat tillbaka bygger
+// alla en pyramid mitt i bild med björnens kloss överst. Inga klistermärken vid kulan (feedback 2026-11-19 3:27).
 { const PS = 180, g = PS * 1.14, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)], o = [0, -PS * Math.cos(RX), PS * Math.sin(RX)];
   const torn = (x, k) => [x + k * o[0], golvY(PS) + k * o[1], k * o[2]];   // k klossar upp
   const B = [960 - h[0], golvY(PS), 0], pp = (a, b) => [0, 1, 2].map(j => B[j] + a * h[j] + b * o[j]);   // pyramiden: a åt höger, b upp
@@ -503,12 +506,12 @@ const KLISTER = [];   // [t, sak] – klistermärket slås upp i bågen
   const UR = [slag(1) + 0.1, slag(2) + 0.1], IN = [slag(19) - 0.2, slag(20) - 0.2];   // hoppet ut och in, ca 0,6 s
   bjorn.av = [...UR, ...IN]; bjorn.kf.push([UR[0], 960, 694, 1.15]);   // stor mitt på golvet framför klossarna, fötterna ca 985
   fx(UR[0] - 0.1, 'nalle-hopp', 0.7, { langd: 1.6, fade: 0.4 }); fxf(UR[1] + 0.2, BRUM(2), 0.9, { langd: 1.8, fade: 0.3 });
-  bjorn.levande.push([UR[1], 'dansa', IN[0] - 0.2]); KLISTER.push([UR[1], bjorn]);
+  bjorn.levande.push([UR[1], 'dansa', IN[0] - 0.2]);
   // tornen: en i taget, vartannat slag; basen hoppar på stället, de andra hoppar upp på den. Ett varv i luften, sitt eget ljud.
   [[lb, torn(LX, 0)], [a1, torn(LX, 1)], [a2, torn(LX, 2)], [c1, torn(RX0, 1)], [c2, torn(RX0, 2)]].forEach(([s, mal], j) => {
     const t0 = slag(3 + 2 * j) - 0.45;
     flyttaK(s, t0, mal, PS, 0.9, 130); s.spinn.push([t0, t0 + 0.9]); s.landa.push(t0 + 0.9);
-    latFx(s, t0 + 0.15); fx(t0 + 0.9, 'duns', 0.35); KLISTER.push([t0 + 0.5, s]); });
+    latFx(s, t0 + 0.15); fx(t0 + 0.9, 'duns', 0.35); });
   kamTill(slag(13) - 0.6, 960, 690, 1.5, 1.1); kamTill(slag(17) - 0.5, 960, 540, 1, 1.1);   // närbild på den dansande björnen
   GN.push([slag(14), 960, 640, 300, 250], [slag(16), 960, 640, 300, 250]);   // stjärnregn runt den som dansar
   for (const k of [17, 18]) for (const s of RADEN) if (s !== bjorn) s.hopp.push(slag(k) - 0.2);   // alla klossar hoppar tillsammans
@@ -531,19 +534,28 @@ for (const s of [A, ...RADEN]) s.hopp.push(t + 0.1);
 bjorn.levande.push([t, 'vinka', t + D['p-hej-da-slut'] + 1.6]);
 t = sag(t + 0.2, 'p-hej-da-slut');
 // Utrullningen (Sanna 2026-11-18): klossarna rullar åt höger, kant över kant (vrids bara i bildplanet, så bilderna följer med),
-// stannar en kort stund och hoppar ut ur bild. Den högra först, så att de aldrig krockar. A-klistermärket sitter kvar.
+// den högra först. Putsat 2026-11-19 (3:49 "polish outro"): de rullar i jämn fart hela vägen ut ur bild i stället för att stanna och
+// hoppa (då hann nästa kloss ikapp och gick in i den), och sedan hoppar B-märket från hörnet till mitten, stort, med gnistor,
+// och står kvar en stund innan allt tonar ut. Bokstaven sist, som i alfabet.md.
+const RULL_V = 620;   // px/s
 let sist = t;
-[...RADEN].reverse().forEach((s, i) => { const t0 = t + 0.3 + i * 0.45, [x0, y0, , sd] = klossLage(s.kk, t0);
-  const x1 = x0 + Math.max(1, Math.round((1700 - x0) / sd)) * sd, t1 = t0 + (x1 - x0) / 650;
-  s.rull = [t0, x0]; s.kk.push([t0, x0, y0, 0, sd], [t1, x1, y0, 0, sd], [t1 + 0.25, x1, y0, 0, sd], [t1 + 1.0, 2500, y0 - 60, 0, sd, 220]);
-  for (let k = 1; k <= Math.round((x1 - x0) / sd); k++) fx(t0 + (t1 - t0) * k / Math.round((x1 - x0) / sd), 'duns', 0.3);
-  fx(t1 + 0.25, 'boing', 0.5); sist = Math.max(sist, t1 + 1.0); });
-const UT = [sist + 0.6, sist + 1.4], DURATION = UT[1] + 0.4;   // A-klistermärket står kvar en stund, sedan tonar allt ut
+[...RADEN].reverse().forEach((s, i) => { const t0 = t + 0.3 + i * 0.5, [x0, y0, , sd] = klossLage(s.kk, t0);
+  const n = Math.ceil((2150 - x0) / sd), x1 = x0 + n * sd, ta = t0 + 2 * sd / RULL_V, t1 = ta + (x1 - x0 - sd) / RULL_V;   // första sidan: farten kommer upp
+  s.rull = [t0, x0, x1]; s.kk.push([t0, x0, y0, 0, sd], [ta, x0 + sd, y0, 0, sd, 0, 1], [t1, x1, y0, 0, sd, 0, 2]);
+  for (let k = 1; k <= n; k++) { const tk = k === 1 ? ta : ta + (k - 1) * sd / RULL_V; if (tk < t1 - 0.6) fx(tk, 'duns', 0.28); }
+  sist = Math.max(sist, ta + (1920 + sd - x0 - sd) / RULL_V); });   // när den sista har lämnat bilden
+{ const t0 = sist - 1.1, B_MITT = [960, 460, 0], B_S = 470;
+  flyttaK(A, t0, B_MITT, B_S, 1.1, 90); fx(t0, 'swoosh', 0.5); fx(t0 + 1.08, 'pop', 0.8);
+  A.hopp.push(t0 + 1.15, t0 + 2.2); GN.push([t0 + 1.15, 960, 460, 330, 260]); fx(t0 + 1.2, 'pling', 0.45);
+  sist = t0 + 3.2; }
+const UT = [sist, sist + 0.9], DURATION = UT[1] + 0.4;   // B-märket står kvar en stund, sedan tonar allt ut
 // Musiken i tre delar (Sanna 2026-11-18 kväll: den korta slingan hördes gå om): Gissa teckningens bädd medan kritan ritar,
 // Städa-radions sömlösa slinga (64 s) under leken och den funkiga tagningen (disco-funkig.m4a) i discot och till slutet.
 LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
   { t: NULEKER - 0.2, fil: 'assets/ljud/musik/stada-radion-slinga.m4a', vol: 0.42, loop: true, langd: MUSIK_DISCO - NULEKER - 0.6, fade: 1.2, fadeIn: 1.0 },
   { t: MUSIK_DISCO, fil: 'assets/ljud/musik/disco-funkig.m4a', vol: 0.75, langd: Math.min(20.7, DURATION - MUSIK_DISCO), fade: 1.5 });
+// discotagningen är 20,8 s och tar slut medan klossarna rullar ut: introts bädd tar över mjukt till slutet (outrot, 2026-11-19)
+if (DURATION > MUSIK_DISCO + 20.7) LJUD.push({ t: MUSIK_DISCO + 19.2, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.4, loop: true, langd: DURATION - MUSIK_DISCO - 19.2, fade: 1.2, fadeIn: 1.5 });
 const STRECK = [];   // alla streck i tidsordning, för kritan
 for (const s of Object.values(SAKER)) for (const x of s.streck) STRECK.push([s, x[0], ...s.T[x[0]], x[2]]);
 STRECK.sort((a, b) => a[2] - b[2]);
@@ -568,6 +580,24 @@ document.querySelector('#botten defs').insertAdjacentHTML('beforeend', '<filter 
 const LJUSF = ['#FFC2D9', '#FFE19A', '#C4E0FF', '#DCC8FF', '#C6EFD3', '#FFD2B8'];
 const FLACK = [[330, 320, 160, 115, 220, 11, 0], [1580, 300, 150, 110, 200, 13, 2], [960, 470, 180, 100, 380, 15, 4],
   [420, 900, 260, 60, 260, 12, 1], [1450, 910, 270, 62, 280, 14, 3], [960, 990, 300, 56, 420, 16, 5]];   // [x, y, rx, ry, svep, period, fas]
+// Mer dansgolv och mer sken (feedback 2026-11-19 3:27), som 006:s discoljus.js: golvet blir ett dansgolv av rutor i perspektiv
+// som alla lyser svagt i pastell, och några i taget lyser upp mjukt i en båge över takten (nya varje takt, inget blinkar).
+// Fem mjuka ljuskäglor från kulan svajar sakta över väggen och golvet, bakom klossarna.
+document.querySelector('#botten defs').insertAdjacentHTML('beforeend', `<filter id="rutsken" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="4"/></filter>
+  <filter id="kaglasken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="10"/></filter>
+  ${['#FFB3CF', '#FFE08A', '#A9D2FF'].map((c, i) => `<linearGradient id="kagla-g${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".8"/><stop offset=".6" stop-color="${c}" stop-opacity=".35"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient>`).join('')}`);
+const GOLVF = ['#F7A6C4', '#FFD36E', '#9CC8F5', '#C3A8F2', '#9EDDB3', '#FFB98F'];   // dansgolvets rutor: lite mer färg än fläckarna, golvet är beige
+const RUTOR = (() => { const VP = [960, GOLV - 1500], rader = Array.from({ length: 5 }, (_, i) => GOLV + 4 + (1100 - GOLV) * ((1.5 ** i - 1) / (1.5 ** 4 - 1)));
+  const at = (xb, y) => VP[0] + (xb - VP[0]) * (y - VP[1]) / (1080 - VP[1]), u = [];
+  for (let j = 0; j < 4; j++) for (let i = -6; i < 6; i++) { const [y0, y1] = [rader[j], rader[j + 1]], xa = 960 + i * 250, xb = xa + 250;
+    if (at(xb, y0) < -60 || at(xa, y0) > 1980) continue;
+    u.push({ i, j, d: `M${at(xa, y0) + 3} ${y0 + 2}L${at(xb, y0) - 3} ${y0 + 2}L${at(xb, y1) - 4} ${y1 - 3}L${at(xa, y1) + 4} ${y1 - 3}Z` }); }
+  return u; })();
+const rutG = el('g', { filter: 'url(#rutsken)', style: 'display:none' }, document.getElementById('bak'));
+const rutor = RUTOR.map(r => ({ ...r, e: el('path', { d: r.d }, rutG) }));
+const KAGLA = [-50, -25, 0, 25, 50];
+const kaglaG = el('g', { filter: 'url(#kaglasken)', style: 'display:none' }, document.getElementById('bak'));
+const kaglor = KAGLA.map((_, i) => el('path', { d: 'M-16 0L16 0L230 1150L-230 1150Z', fill: `url(#kagla-g${i % 3})` }, kaglaG));
 const flackar = FLACK.map(() => el('ellipse', { filter: 'url(#ljus)', opacity: 0 }, document.getElementById('bak')));
 const hex = c => [1, 3, 5].map(i => parseInt(c.slice(i, i + 2), 16));
 const blanda = (a, b, k) => 'rgb(' + hex(a).map((v, i) => Math.round(lerp(v, hex(b)[i], k))).join(',') + ')';
@@ -579,6 +609,14 @@ el('image', { href: '/' + KULA_F, width: 1024, height: 1024, transform: `scale($
 function disco(t, ut) {
   const inn = inUt(del([DISCO[0] - 0.3, DISCO[0] + 0.9], t)) * (1 - inUt(del([DISCO[1] - 0.4, DISCO[1] + 0.8], t)));
   const d = t - DISCO[0] - 0.1, takt = Math.floor(d / (4 * SLAG)), kb = clamp((d - takt * 4 * SLAG) / 0.6);
+  rutG.style.display = kaglaG.style.display = inn > 0 ? '' : 'none';
+  const tk = d / (4 * SLAG) - takt, bg = Math.sin(Math.PI * clamp(tk)) ** 2;   // tändningen: en mjuk båge över takten
+  if (inn > 0) rutor.forEach(({ i, j, e }, n) => { const tand = ((i + 6) * 3 + j * 5 + takt * 4) % 5 === 0;
+    e.setAttribute('fill', blanda(GOLVF[(n + takt + 60) % 6], GOLVF[(n + takt + 61) % 6], kb));
+    e.setAttribute('opacity', ((0.38 + (tand ? 0.45 * bg : 0)) * inn * ut).toFixed(3)); });
+  const ky = lerp(-320, 90, inUt(del([KULA.ner, KULA.ner + 1.1], t)) - inUt(del([KULA.upp, KULA.upp + 1.2], t)));
+  if (inn > 0) kaglor.forEach((e, i) => e.setAttribute('transform', `translate(960 ${ky.toFixed(1)}) rotate(${(KAGLA[i] + 9 * Math.sin(2 * Math.PI * t / 12 + i * 1.7)).toFixed(2)})`));
+  kaglaG.setAttribute('opacity', (0.6 * inn * ut).toFixed(3));
   flackar.forEach((e, i) => { const [x, y, rx, ry, sv, per, fas] = FLACK[i];
     if (inn <= 0) return e.setAttribute('opacity', 0);
     e.setAttribute('fill', blanda(LJUSF[(i + takt + 59) % 6], LJUSF[(i + takt + 60) % 6], kb));
@@ -590,30 +628,13 @@ function disco(t, ut) {
   kulaG.setAttribute('transform', `rotate(${sv.toFixed(2)} 960 -200) translate(960 ${y.toFixed(1)})`);
   prickar.forEach(([e, a0, R, r, fas]) => {   // kulans ljusprickar sveper lugnt över väggen
     const a = a0 + 2 * Math.PI * (t - DISCO[0]) / 24, x = 960 + R * Math.sin(a), y = 430 + 0.32 * R * Math.cos(a);
-    const k = inn * ut * clamp((GOLV - 20 - y) / 60) * (0.55 + 0.25 * Math.sin(t * 1.3 + fas));
+    const k = inn * ut * clamp((GOLV - 20 - y) / 60) * (0.7 + 0.25 * Math.sin(t * 1.3 + fas));
     for (const [n, v] of Object.entries({ cx: x, cy: y, r, opacity: k })) e.setAttribute(n, v.toFixed(2)); });
   varmEl.setAttribute('opacity', (0.05 + 0.03 * inn).toFixed(3));   // lite varmare ton i discot
-  for (const [t0, e, [x, y], vx] of klister) {   // 005:s klistermärken: faller in, trycks ihop, vickar, och hänger kvar i bågen
-    const d = t - t0, k = d < 0 ? 0 : inUt(clamp(d / 0.3)), tr = 0.12 * bage((d - 0.25) / 0.25), v = vx * 8 * Math.sin(d * 2 * Math.PI / 0.7) * Math.exp(-d / 0.8) + vx * 4;
-    const borta = 1 - inUt(del([DISCO[1] - 0.6, DISCO[1] + 0.3], t));
-    e.style.display = k > 0 && borta > 0 ? '' : 'none';
-    e.setAttribute('opacity', (borta * ut).toFixed(3));
-    e.setAttribute('transform', `translate(${x} ${(y - 60 * (1 - k)).toFixed(1)}) rotate(${v.toFixed(2)}) scale(${(k * (1 + tr * 0.6)).toFixed(3)} ${(k * (1 - tr)).toFixed(3)})`);
-  }
 }
 const varmEl = document.querySelector('#topp rect[style*="soft-light"]');
-const prickar = Array.from({ length: 16 }, (_, i) => [el('circle', { fill: i % 3 ? '#FFFFFF' : LJUSF[i % 6], filter: 'url(#mjuk)' }, document.getElementById('bak')),
-  2 * Math.PI * i / 16, 380 + (i * 197) % 520, 14 + (i * 7) % 10, i]);
-// klistermärkena i en båge runt kulan, i den ordning sakerna dansar (björnen först); varannan vickar åt andra hållet
-const BAGEN = [[770, 160], [1150, 160], [590, 205], [1330, 205], [420, 235], [1500, 235]];   // över tornen och runt björnens huvud, inte på dem
-const klisterG = el('g', { filter: 'url(#klisterskugga)' }); document.getElementById('topp').insertBefore(klisterG, document.getElementById('gnistor'));
-document.querySelector('#topp defs').insertAdjacentHTML('beforeend', '<filter id="klisterskugga" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="5" dy="8" stdDeviation="6" flood-color="#3b3431" flood-opacity=".2"/></filter>');
-const klister = await Promise.all(KLISTER.map(async ([t0, s], i) => {
-  const [f, w, h] = s === bjorn ? ['../karaktarer/bjornen-bulle/cut/bjornen-bulle', 1024, 1024] : s.bild, k = (s === bjorn ? 260 : 165) / h;   // urklippen har sin vita kant inbakad
-  const e = el('g', { style: 'display:none' }, klisterG);
-  await bildEl(f, w, h, `translate(${(-w * k / 2).toFixed(1)} ${(-h * k / 2).toFixed(1)}) scale(${k.toFixed(4)})`, e);
-  return [t0, e, BAGEN[i % BAGEN.length], i % 2 ? -1 : 1];
-}));
+const prickar = Array.from({ length: 26 }, (_, i) => [el('circle', { fill: i % 3 ? '#FFFFFF' : LJUSF[i % 6], filter: 'url(#mjuk)' }, document.getElementById('bak')),
+  2 * Math.PI * i / 26, 300 + (i * 197) % 640, 14 + (i * 7) % 12, i]);
 
 // ---------- en bildruta ----------
 const lage = (s, t) => {   // [x, y, skala] ur nyckelrutorna, lugnt in och ut mellan dem
@@ -717,7 +738,7 @@ function klossO(X, t) {
   const fram = X.fram.reduce((f, [a, b]) => f + inUt(clamp((t - a) / 0.3)) * inUt(clamp((b - t) / 0.3)), 0);   // klossen som Malin pratar om
   const tr = (X.landa ?? []).reduce((v, l) => { const d = t - l; return d > 0 && d < 0.22 ? v + 0.12 * Math.sin(Math.PI * d / 0.22) : v; }, 0);
   // rullning: en kvarts varv per sida, och mitten lyfts när klossen står på kanten
-  const rull = X.rull && t > X.rull[0] ? -(Math.PI / 2) * (Math.min(x, X.rull[1] + Math.round((1700 - X.rull[1]) / sd) * sd) - X.rull[1]) / sd : 0;
+  const rull = X.rull && t > X.rull[0] ? -(Math.PI / 2) * (Math.min(x, X.rull[2]) - X.rull[1]) / sd : 0;
   const fi = Math.abs(rull) % (Math.PI / 2), kant = rull ? sd / 2 * (Math.SQRT2 * Math.cos(fi - Math.PI / 4) - 1) : 0;
   const topp = X.toppT?.some(([a, b]) => t >= a && t < b), lyft = (mur ? (topp ? 22 : 0) : 40) * hopp + kant, S = sd * pop;
   const slut = X.slutVrid ? X.slutVrid * inUt(del([MURTID[1] + (X === bjorn ? 0.5 : 0), MURTID[1] + (X === bjorn ? 1.5 : 1.0)], t)) : 0;   // vrids medan den flyttar till slutraden
@@ -746,7 +767,8 @@ function rita(t) {
   KN = kamLage(t); const [cx, cy, z] = KN;
   const ut = 1 - del(UT, t), L = KLOSSAR.map(X => klossO(X, t));
   for (const e of SVGER) e.setAttribute('viewBox', `${(cx - 960 / z).toFixed(2)} ${(cy - 540 / z).toFixed(2)} ${(1920 / z).toFixed(2)} ${(1080 / z).toFixed(2)}`);
-  K.rita({ klossar: L, krita: klossKrita(t), opacitet: ut, kam: { x: cx, y: cy, zoom: z } });
+  K.rita({ klossar: [{ ...L[0], syns: false }, ...L.slice(1)], opacitet: ut, kam: { x: cx, y: cy, zoom: z } });
+  KB.rita({ klossar: [L[0]], krita: klossKrita(t), opacitet: ut, kam: { x: cx, y: cy, zoom: z } });
   if (L[0].syns) { const [ax, ay] = skarmV(0, -0.5, 0.5), [bx, by] = skarmV(0, 0.5, -0.5);   // A-plattans mjuka skugga på väggen
     for (const [k, v] of Object.entries({ x: ax + 8, y: ay + 14, width: bx - ax, height: by - ay, rx: (bx - ax) * lerp(0.14, 0.5, L[0].form ?? 1) })) vaggskugga.setAttribute(k, v.toFixed(1)); }
   vaggskugga.setAttribute('opacity', L[0].syns ? (0.22 * ut).toFixed(3) : 0);
