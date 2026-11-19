@@ -1,8 +1,10 @@
 // Renderar en kodscen i bitar, några åt gången, med avsnittets egen render.mjs (--fran/--till) och sätter ihop bilden.
 //   node verktyg/render-delat.mjs <scenmapp> [--bitar 4] [--samtidigt 2] [flaggor till render.mjs: --snabb --en --staende …]
 // Bitarna skrivs i en egen tillfällig mapp per körning, så två körningar krockar aldrig. Utfilen blir samma som render.mjs
-// utan --fran/--till ger (t.ex. badet.mp4), utan ljud (-an) som i rendera.sh; sammanslagningen lägger ljudet. Den gamla
-// filen flyttas först till <scenmapp>/aldre/. Effekt-wav:en skrivs om med --bara-ljud. Antalet bildrutor kontrolleras
+// utan --fran/--till ger (t.ex. badet.mp4). Effekt-wav:en skrivs om med --bara-ljud och läggs på som filmens ljud (AAC 192k),
+// så att filmen inte blir stum (J04, 2026-11-19). Har scenen en sång ligger bara effekterna i filmen: sammanslagningen lägger
+// sången (och tar effekterna ur wav:en som förut). Med --ut blir det bara bilden. Den gamla filen flyttas till <scenmapp>/aldre/.
+// Antalet bildrutor kontrolleras
 // (fyra Chromium samtidigt tappade ibland bilder i 019, därför 2 åt gången som standard).
 import { execFileSync, spawn } from 'node:child_process';
 import { readFileSync, mkdtempSync, writeFileSync, rmSync, copyFileSync, mkdirSync, existsSync, renameSync } from 'node:fs';
@@ -35,9 +37,16 @@ try {
   const n = parseInt(execFileSync('ffprobe', ['-v', 'error', '-count_packets', '-select_streams', 'v', '-show_entries', 'stream=nb_read_packets', '-of', 'csv=p=0', hel], { encoding: 'utf8' }));   // skriver "1900,"
   if (n !== frames) throw new Error(`fel antal bildrutor: ${n}, väntade ${frames}. Gamla ${basename(ut)} är orörd.`);
 
+  // ljudet: effekt-wav:en (render.mjs --bara-ljud skriver ut sökvägen) under bilden; saknas den blir filmen stum med en varning
+  let film = hel;
+  if (!UT) { const wav = execFileSync('node', [R, dir, ...args.filter(a => a !== '--snabb'), '--bara-ljud'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] })
+      .trim().split('\n').reverse().find(l => l.trim().endsWith('.wav'))?.trim();
+    if (wav && existsSync(wav)) { film = join(tmp, 'med-ljud.mp4');
+      execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', hel, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-t', String(langd), '-movflags', '+faststart', film]); }
+    else console.error('varning: ingen effekt-wav, filmen blir utan ljud'); }
+
   if (existsSync(ut)) { mkdirSync(join(dirname(ut), 'aldre'), { recursive: true }); renameSync(ut, join(dirname(ut), 'aldre',basename(ut, '.mp4') + '-' + new Date().toISOString().replace(/\D/g, '').slice(0, 12) + '.mp4')); }
-  copyFileSync(hel, ut);   // copy, inte rename: tmp kan ligga på en annan volym
-  if (!UT) execFileSync('node', [R, dir, ...args.filter(a => a !== '--snabb'), '--bara-ljud'], { stdio: ['ignore', 'ignore', 'inherit'] });
-  console.log(`${ut}: ${langd} s, ${n} bildrutor, ${((Date.now() - t0) / 1000).toFixed(0)} s`);
+  copyFileSync(film, ut);   // copy, inte rename: tmp kan ligga på en annan volym
+  console.log(`${ut}: ${langd} s, ${n} bildrutor, ${film === hel ? 'utan ljud' : 'med ljud'}, ${((Date.now() - t0) / 1000).toFixed(0)} s`);
 } catch (e) { console.error(e.message); process.exitCode = 1; }
 finally { stada(); }
