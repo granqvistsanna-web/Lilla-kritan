@@ -1487,5 +1487,13 @@
   "file": "produktion/youtube/shorts/jul/13-grona-sangen/13-grona-sangen.mp4",
   "status": "granska",
   "name": "Gröna sången"
+ },
+ "J10": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J10-1119-0712.mp4",
+  "duration": 131.9,
+  "rendered": "2026-11-19 07:12 (Julgranen, snögubben och julklappen, samma upplägg som lucka 5)",
+  "file": "produktion/youtube/shorts/jul/10-tre-pussel-till/10-tre-pussel-till.mp4",
+  "status": "granska",
+  "name": "Lucka 10: Tre pussel till"
  }
 }
