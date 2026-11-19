@@ -253,7 +253,8 @@ async function tittut(g) {
   // kvar blir det tyst där (eller figurens eget ljud), så fler tagningar gör filmen rikare.
   const anvand = new Set();
   const ny = lista => () => { const f = lista.find(f => f && !anvand.has(f)); if (f) anvand.add(f); return f ?? null; };
-  const borta = ny(BORTOR), bortaIgen = ny(IGENS), tittutR = ny(TITTUTS), dar = ny(DARS), busig = ny(BUSIGA), gomma = ny(GOMMA),
+  const borta = ny(BORTOR), bortaIgen = ny(IGENS), tittutR = ny(TITTUTS), dar = ny(DARS), busig = ny(BUSIGA), gomma = g.gomma === false ? () => null : ny(GOMMA),   // g.gomma false (björnen, Sanna 2026-11-19): ingen "Var gömmer du dig nu?"
+   
     sagNagot = ny(SAGS), igen = ny(IGEN);
   const LANGD = {};
   await Promise.all([...new Set([...BORTOR, ...TITTUTS, ...HEJDOR2, ...IGENS, ...DARS, ...BUSIGA, ...SAGS, ...LEK, ...IGEN, ...SLUT,
@@ -407,7 +408,7 @@ async function tittut(g) {
     e = sag(Math.max(R.ljud + 1.0, R.hopp[1] + 0.3), efter);
     // flåsar glatt efter hoppet (Hugo), sedan fnisset: bara när ingen replik kommer, annars pratar han i munnen på berättaren
     if (!efter) { if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6); R.fniss2 = R.hopp[1] + (g.glad ? 1.6 : 0.6); fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
-    R.slut = Math.max(R.hopp[1] + 1.0, e + 0.5);
+    R.slut = Math.max(R.hopp[1] + 1.0, e + 0.5) + (g.reaktion ?? 0);   // g.reaktion: ett reaktionsslag i närbild efter hoppet (björnen 2026-11-19)
     // var den står när den kommit fram: upp = kvar bakom saken med huvudet över, sida/ur = bredvid saken (i gången om det är trångt)
     const nasta = SAKER[g.rundor[i + 1]?.[0]], ar = g.utSida?.[ut.namn] ?? (Math.sign((nasta?.x ?? START[0]) - ut.x) || (ut.x < 960 ? 1 : -1));   // g.utSida: { sak: -1|1 } tvingar vilken sida den går ut åt (grisen: granen åt vänster, bort från säcken och snödrivan)
     R.dir = ar;
@@ -481,7 +482,8 @@ async function tittut(g) {
 
   // ---------- kameran: [tid, x, y, zoom] i 1920-mått, mjukt mellan punkterna ----------
   const MITT = START, halv = y => y - H * 0.5;   // hej då där hej var
-  const KAMERA = [[0, 960, 540, 1], [T.in[0] + 0.8, 960, 540, 1], [T.in[1] + 0.2, START[0], halv(START[1]), 1.35], [T.vinka[1] + 0.2, START[0], halv(START[1]), 1.35]];
+  const ZH = g.narbild ? 1.6 : 1.35, ZD = g.narbild ? 1.6 : 1.4;   // g.narbild: hej och hej då närmare
+  const KAMERA = [[0, 960, 540, 1], [T.in[0] + 0.8, 960, 540, 1], [T.in[1] + 0.2, START[0], halv(START[1]), ZH], [T.vinka[1] + 0.2, START[0], halv(START[1]), ZH]];
   for (const R of T.rundor) {
     const xs = [R.sak.x, R.ut.x, R.rorelse === 'upp' ? R.ut.x : R.slutPos[0], R.vagFran[0], R.fran[0]], cx = (Math.min(...xs) + Math.max(...xs)) / 2;
     // med alla saker den kan stå uppe på (och hoppa över) i rundan, så att öronen aldrig klipps (Sanna 2026-11-07); lugnare zoom
@@ -491,7 +493,7 @@ async function tittut(g) {
     const z = clamp(1080 / (RAD - topp + 200), 1, R.ut === R.sak ? 1.2 : 1.08);
     KAMERA.push([R.ga[0] - 0.2, ...KAMERA.at(-1).slice(1)], [Math.min(R.ga[0] + 1.2, R.ga[1]), cx, cy, z], [R.slut - 0.2, cx, cy, z]);   // hela vägen i bild
   }
-  KAMERA.push([T.mitt[0] + 0.4, ...KAMERA.at(-1).slice(1)], [T.mitt[1] + 0.3, MITT[0], halv(MITT[1]), 1.4], [T.ga[0] + 0.6, MITT[0], halv(MITT[1]), 1.4], [T.ga[1], 960, 540, 1]);
+  KAMERA.push([T.mitt[0] + 0.4, ...KAMERA.at(-1).slice(1)], [T.mitt[1] + 0.3, MITT[0], halv(MITT[1]), ZD], [T.ga[0] + 0.6, MITT[0], halv(MITT[1]), ZD], [T.ga[1], 960, 540, 1]);
 
   // ---------- kortet: introt och slutbilden. Kritbokstäverna från kanalbilderna (kanal/kanal.js) ----------
   defs.insertAdjacentHTML('beforeend', `
@@ -796,7 +798,7 @@ async function tittut(g) {
     const R = T.rundor.find(R => t >= R.tittut && t < R.slut);
     if (R) {
       const u = t - R.tittut;
-      if (u < 0.4) return { ogon: 'big', mun: 0.9 };
+      if (u < (g.reaktioner ? 0.9 : 0.4)) return { ogon: 'big', mun: 0.9 };   // g.reaktioner: förvånad längre (Sanna 2026-11-19: "more reaction faces")
       if (u < 1.6) return { ogon: 'open', mun: 0.55 + 0.15 * Math.sin(u * 18) * (u > 0.7 ? 1 : 0) };   // fnissar
       // öppna ögon och tittar på barnet; glada (stängda) bara medan den fnissar (Sanna 2026-11-10: blundade för ofta)
       const fn = R.fniss2 && t > R.fniss2 && t < R.fniss2 + 0.8;
@@ -804,6 +806,13 @@ async function tittut(g) {
     }
     // busig blick, utan att blinka med ena ögat (Sanna 2026-11-07)
     if (L.smyg) return { ogon: 'open', mun: 0, titt: L.titt };   // smyger: stängd mun, tittar mot barnet
+    // g.reaktioner (björnen, Sanna 2026-11-19): när den kikar tittar den först nyfiket på barnet, blir upptäckt (stora ögon) och
+    // dyker undan fnissande (glada ögon)
+    if (L.kikar && g.reaktioner) {
+      const R = T.rundor.find(R => t >= R.retas[0] && t < R.retas2[1]), RT = R && [R.retas, R.retas2].find(([a, b]) => t >= a && t < b);
+      const k = RT ? del(RT[0], RT[1], t) : 0;
+      return k < 0.45 ? { ogon: 'open', mun: 0.3, titt: L.titt } : k < 0.68 ? { ogon: 'big', mun: 0.75 } : { ogon: 'happy', mun: 0.55 };
+    }
     if (L.blick || L.kikar) return { ogon: 'open', mun: 0.35 };
     if (L.nick) return { ogon: 'happy', mun: 0.5 };
     if (g.gang && L.hopp > 0.3) return { ogon: 'big', mun: 0.6 };   // glad i luften, med stora ögon
@@ -989,6 +998,21 @@ async function tittut(g) {
     }
   }
 
+  // g.narbild (björnen i julskogen, Sanna 2026-11-19: "close crops more often"): tät bild på gömstället från första kiken tills den
+  // har hoppat fram, så att kikarna och ansiktet syns stort. Rutan räknas ur figurens egna lägen i rundan (med mössan), zoomen högst g.narbild.
+  if (g.narbild) {
+    const nya = [];
+    for (const R of T.rundor) {
+      const ps = []; for (let u = R.retas[0]; u <= R.hopp[1] + 0.3; u += 0.1) ps.push(lage(u));
+      const topp = Math.min(...ps.map(p => p.y + (p.sjunk ?? 0) - H * (g.luva ? 1.2 : 1.05)));
+      const x0 = Math.min(...ps.map(p => p.x)) - figB * 0.75, x1 = Math.max(...ps.map(p => p.x)) + figB * 0.75;
+      const y0 = Math.min(topp, R.ut.y - 120) - 40, y1 = Math.max(R.ut.y, ...ps.map(p => p.y)) + 50;
+      const z = clamp(Math.min(1920 / (x1 - x0), 1080 / (y1 - y0)), 1.2, g.narbild);
+      const vid = KAMERA.filter(k => k[0] <= R.slut - 0.2).at(-1).slice(1), nar = [(x0 + x1) / 2, (y0 + y1) / 2, z];
+      nya.push([R.retas[0] - 0.8, ...vid], [R.retas[0] + 0.1, ...nar], [R.slut - 1.0, ...nar]);
+    }
+    KAMERA.push(...nya); KAMERA.sort((a, b) => a[0] - b[0]);
+  }
   kit.kor(render, DURATION);
   for (const c of ljud) if (c.fil && await finns(c.fil)) window.LJUD.push(c);
   window.TIDER = T; T.saker = SAKER; T.lage = lage;
