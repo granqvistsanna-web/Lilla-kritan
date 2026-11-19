@@ -6018,5 +6018,115 @@
   "at": 1795069652648,
   "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)",
   "fixedAt": 1795071293142
+ },
+ "a8dhgcq0u9mwn768dm": {
+  "ep": "J03",
+  "time": "0:33",
+  "sec": 33,
+  "tags": [],
+  "note": "remove ticking sound. imprive transition from drawing to leo start scene. lower music a bit. hide toothbrush cup and water and bring them up from uner sunk when needed, or add pyjamas standing on flor. drink water left hand. add snooring sound . no bää sounf",
+  "fixed": false,
+  "at": 1795071415018,
+  "render": "2026-11-19 07:07 (Runda 4 (förhandsvisning --snabb): kalenderns intro och outro (allt +11 s), kranen ren (svansen trasslar inte in sig), muggen med borsten och glaset står på handfatet från början, ny övergång in i sovbilden (kameran backar och bilden sjunker mjukt i nattblått), större z z z högre upp, QA runt alla 44 skarvar (svansen i tittut-hoppet, kritan i fönstret))"
+ },
+ "a3v98jnxdqmwn9ipwa": {
+  "ep": "ABC-b",
+  "time": "1:36",
+  "sec": 96,
+  "tags": [],
+  "note": "update recipe with B findings",
+  "fixed": false,
+  "at": 1795075356826,
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+ },
+ "igni9jpcg9mwn9jo7b": {
+  "ep": "ABC-b",
+  "time": "3:27",
+  "sec": 207,
+  "tags": [],
+  "note": "no stickers next to discoball, more disco floor and disco lights sheen",
+  "fixed": false,
+  "at": 1795075401287,
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+ },
+ "fy7eiw116wmwn9k2ux": {
+  "ep": "ABC-b",
+  "time": "3:32",
+  "sec": 212,
+  "tags": [],
+  "note": "b letter in corner should be cover content",
+  "fixed": false,
+  "at": 1795075420281,
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+ },
+ "c23xkgazp4mwn9kl0u": {
+  "ep": "ABC-b",
+  "time": "3:49",
+  "sec": 229,
+  "tags": [],
+  "note": "polish outro",
+  "fixed": false,
+  "at": 1795075443822,
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+ },
+ "sjyx3mz2zmmwn9lup6": {
+  "ep": "J06",
+  "time": "1:37",
+  "sec": 97,
+  "tags": [],
+  "note": "lower vinter sountrack",
+  "fixed": false,
+  "at": 1795075503018,
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+ },
+ "jnm98bsw65mwn9m6yn": {
+  "ep": "J06",
+  "time": "1:45",
+  "sec": 105,
+  "tags": [],
+  "note": "remove winter wind sound",
+  "fixed": false,
+  "at": 1795075518911,
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+ },
+ "7sst1htptmmwn9mcpb": {
+  "ep": "J06",
+  "time": "2:34",
+  "sec": 154,
+  "tags": [],
+  "note": "more closeups",
+  "fixed": false,
+  "at": 1795075526351,
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+ },
+ "43ce2p8z42mwn9mqaz": {
+  "ep": "J06",
+  "time": "2:41",
+  "sec": 161,
+  "tags": [],
+  "note": "match VO with animations",
+  "fixed": false,
+  "at": 1795075543979,
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+ },
+ "tu0u7lpv1mwn9mzk2": {
+  "ep": "J12",
+  "time": "0:02",
+  "sec": 2,
+  "tags": [],
+  "note": "match VO better with animations",
+  "fixed": false,
+  "at": 1795075555970,
+  "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")"
+ },
+ "9l3dlwipo7mwn9nj4f": {
+  "ep": "J12",
+  "time": "1:00",
+  "sec": 60,
+  "tags": [],
+  "note": "bigger tree, better crop of tree",
+  "fixed": false,
+  "at": 1795075581327,
+  "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")"
  }
 }
