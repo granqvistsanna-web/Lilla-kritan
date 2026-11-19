@@ -41,18 +41,26 @@ tittut({
   gang: true,                     // v2-gången
   mjukaSteg: true, klattra: false,   // mjuka tassteg; går på snön framför sakerna, aldrig uppe på taket (som björnen)
   varv: 2,
+  // Sanna 2026-11-19 (som J06 björnen): ingen "Var gömmer du dig nu?", "tittut" lite senare, tätare närbilder, fler reaktionsansikten,
+  // samtal med barnet och ett slut där barnet hittar grisen. sag-med-1, nej-1, nej-2 och ropa-1 är kopior av björnens (inget djur sägs)
+  gomma: false,
+  tittutSen: 0.3,
+  narbild: 1.7,
+  reaktioner: true,
+  reaktion: 0.6,
+  samtal: { leta: ['gran', 'pepparkakshus'], tofs: -0.12 },   // tofs: bara mössan över säcken (säcken är smal upptill, huvudet syntes bredvid),
   rost: 'gris-jul',               // egna repliker (rost.txt här)
   rundor: [
     ['pepparkakshus', 'ur'],                 // huvudet kommer upp över taket 
     ['gran', 'sida'],
     ['sack', 'ur'],
     ['sack', 'ur'],                           // knorren sticker upp (svansKik, runda 4)
-    ['sack', 'sida', 'pepparkakshus'],       // överraskningen: gömmer sig i säcken, kommer fram vid pepparkakshusets hörn
+    ['sack', 'ur'],                           // 2026-11-19: sista rundan letar vi (samtal): granen? pepparkakshuset? tofsen syns ur säcken, vi ropar tittut
   ],
   utSida: { gran: -1 },           // Sanna 2026-11-14: gick ut åt höger genom säcken och snödrivan; ut åt vänster i den fria gången
   skakar: ['sack'],
   sno: 60,                        // lätt snöfall bakom allt, som björnen (Sanna 2026-11-13)
-  luva: [505, 272, 0.56, -8],     // Sanna 2026-11-13: kläder på grisen också — tomteluva …
+  luva: [505, 272, 0.44, -8],     // Sanna 2026-11-13: kläder på grisen också — tomteluva …; 2026-11-19: mindre, som björnens (J06 "make hat smaller")
   halsduk: { y: 560, farg: '#3F7CC4' },   // … och blå halsduk (björnens är grön, snögubbens röd)
   nara: [                         // snö i förgrunden nära kameran (parallax), på andra sidor än hos björnen
     { fil: 'assets/bakgrunder/julskogen-saker/snobuskar.png', x: -30, y: 1095, h: 230 },

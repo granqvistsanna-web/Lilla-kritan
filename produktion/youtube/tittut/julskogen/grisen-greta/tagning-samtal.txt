@@ -1,0 +1,7 @@
+vinka-1        [warm] Kan du vinka till grisen?
+var-ar-1       [curious] Var är grisen? Ser du?
+sag-du-1       [happy] Du såg grisen!
+leta-1         [curious] Nu har grisen gömt sig. Är grisen bakom granen?
+leta-2         [curious] Bakom pepparkakshuset?
+tofs-1         [whispers] Titta… en röd tofs! Är det grisens mössa?
+hittade-1      [excited] Du hittade grisen!
