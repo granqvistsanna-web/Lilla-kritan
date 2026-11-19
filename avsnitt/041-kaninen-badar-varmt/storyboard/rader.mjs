@@ -24,7 +24,7 @@ export const RADER = [
   { id: '00', d: 3.3, plats: 'Intro (fast)', bild: 'Det gemensamma introt *Djuren hittar på!* (`produktion/youtube/bilderbok-intro/`). Platshållare i storyboarden', ljudtext: 'introts eget', ansikte: '–' },
 
   // --- Kritan ritar (papperet): snöflingan ---
-  { id: '01a', d: 6.0, plats: 'Papperet, helbild', malin: [[1, 1.0]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],
+  { id: '01a', d: 8.0, plats: 'Papperet, helbild', malin: [[1, 1.0]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],
     bild: 'Kritan ritar snöflingans kontur i lugna drag: mitten, sedan en arm i taget med sina V-grenar', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
     bild: 'Konturen klar, kritan väntar bredvid och svajar (ingen knackning): barnet gissar', ljudtext: 'tyst', ansikte: '–' },
@@ -124,15 +124,16 @@ export const RADER = [
   { id: '29', d: 2.8 + L(41) + 0.6 + L(42) + 1.0, plats: 'Badrummet, helbild', malin: [[41, 2.8], [42, 2.8 + L(41) + 0.6]],
     ljud: [['plask/plask-1', 0.2], ['tass/tass-6', 0.95], ['tass/tass-1', 1.75], ['tass/tass-2', 2.5], ['huttra/huttra-1', 2.8 + L(41) + 0.4]],
     bild: 'Kaninen skuttar ur karet upp på pallens övre steg, ner på det nedre och ner på golvet, sedan repliken. Den huttrar lite', ljudtext: '`plask`, `tass`, `huttra`', ansikte: 'glad → lite kall' },
-  { id: '30', d: 1.6 + L(43) + 1.6, plats: 'Badrummet', malin: [[43, 1.6]], ljud: [['tass/tass-2', 0.2], ['prassel-tyg/prassel-tyg-1', 1.0], [K(4, 'b'), 1.8 + L(43)]],
-    bild: 'Kaninen skuttar till kroken. Handduken glider ner över axlarna och ryggen, öppen fram (ritad i kod)', ljudtext: '`prassel-tyg`, mysig suck (4b)', ansikte: 'mysig' },
+  // Sanna 19/11 "make bunny add towel back after drying": torkar sig (gnuggar), lyfter av handduken och hänger tillbaka den på kroken
+  { id: '30', d: 1.6 + L(43) + 1.6 + 2.4, plats: 'Badrummet', malin: [[43, 1.6]], ljud: [['prassel-tyg/prassel-tyg-1', 1.0], [K(4, 'b'), 1.8 + L(43)], ['prassel-tyg/prassel-tyg-1', 1.6 + L(43) + 0.35], ['klad-sus/klad-sus-1', 1.6 + L(43) + 2.0]],
+    bild: 'Handduken glider från kroken ner över axlarna (ritad i kod). Kaninen torkar sig, lyfter av handduken och hänger tillbaka den på kroken', ljudtext: '`prassel-tyg`, mysig suck (4b), `klad-sus`', ansikte: 'mysig' },
   { id: '31', d: 0.6 + L(44) + 1.2, plats: 'Badrummet', malin: [[44, 0.6]], ljud: [['mmm/mmm-1', 0.7 + L(44)]],
     bild: 'Kaninen vänder sig mot dörren (riktningsposen), nosen rycker mot doften', ljudtext: '`mmm`', ansikte: 'glad' },
   { id: '32', d: 0.6 + L(45) + 1.6, plats: 'Badrummet, helbild', malin: [[45, 0.6]], ljud: [[HEJDA, 0.8 + L(45)], ['bat-tut/bat-tut-1', 1.6 + L(45)]],
-    bild: 'Kaninen vinkar med handduken på, båten guppar, fläkten snurrar', ljudtext: '`kanin-hejda`, `bat-tut`', ansikte: 'jätteglad' },
-  { id: '33', d: 0.3 + L(46) + 1.4, plats: 'Badrummet, helbild', malin: [[46, 0.3]], ljud: [['tass/tass-3', 0.5 + L(46)]],
-    bild: 'Kaninen skuttar mot dörren och stannar i kanten. Fläkten stannar', ljudtext: '`tass`', ansikte: 'glad' },
-  { id: '34', d: 2.5, plats: 'Kritirisen', bild: 'Kritirisen drar ihop sig runt kaninen', ljudtext: 'mattan klingar ut', ansikte: 'glad' },
+    bild: 'Kaninen vinkar, båten guppar, fläkten snurrar', ljudtext: '`kanin-hejda`, `bat-tut`', ansikte: 'jätteglad' },
+  { id: '33', d: 0.3 + L(46) + 1.4, plats: 'Badrummet, helbild', malin: [[46, 0.3]], ljud: [['tass/tass-3', 1.05], ['tass/tass-1', 1.85]],
+    bild: 'Kaninen skuttar bakom fläkten ut genom dörren (Sanna 19/11). Fläkten stannar', ljudtext: '`tass`', ansikte: 'glad' },
+  { id: '34', d: 2.5, plats: 'Kritirisen', bild: 'Kritirisen drar ihop sig runt dörröppningen', ljudtext: 'mattan klingar ut', ansikte: 'glad' },
 ];
 
 // Receptets luft: 0,7 s extra på varje rad med en replik (inte under ritintrots kontur och gisspaus).

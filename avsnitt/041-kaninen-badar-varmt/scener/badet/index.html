@@ -182,9 +182,9 @@ const flaktT = `translate(${FL[0]} ${FL[1]}) scale(${FL_S}) translate(${-FLAKT_C
 const FLAKT_KONTUR = (() => { const fot = [[270, 700], [272, 790], [160, 850], [140, 905], [620, 905], [600, 850], [490, 790], [492, 700]];
   const ring = Array.from({ length: 41 }, (_, i) => { const a = Math.PI / 2 + i / 40 * 2 * Math.PI; return [FLAKT_C[0] + 330 * Math.cos(a), FLAKT_C[1] + 330 * Math.sin(a)]; });
   return 'M' + [...fot, ...ring].map(p => p.map(v => v.toFixed(0)).join(' ')).join(' L'); })();
-function flakt(vrid, o = 1) {
+function flakt(vrid, o = 1, lager = 'flakt') {
   const blad = [0, 1, 2].map(i => `<g transform="rotate(${f1(vrid + i * 120)} ${FLAKT_C[0]} ${FLAKT_C[1]})"><ellipse cx="${FLAKT_C[0]}" cy="${FLAKT_C[1] - 150}" rx="105" ry="130" fill="#FFF4E2"/></g>`).join('');
-  lagg('flakt', `<g transform="${flaktT}" filter="url(#boil)" opacity="${kl(o).toFixed(2)}">
+  lagg(lager, `<g transform="${flaktT}" filter="url(#boil)" opacity="${kl(o).toFixed(2)}">
     <circle cx="${FLAKT_C[0]}" cy="${FLAKT_C[1]}" r="${FLAKT_RIN}" fill="#FFF8EC" opacity=".35"/>${blad}
     <path d="M${FLAKT_C[0] - FLAKT_RIN} ${FLAKT_C[1]} H${FLAKT_C[0] + FLAKT_RIN} M${FLAKT_C[0]} ${FLAKT_C[1] - FLAKT_RIN} V${FLAKT_C[1] + FLAKT_RIN}" stroke="#F2C64C" stroke-width="12"/>
     <image href="${FLAKT_RAM}" width="${FLAKT_W}" height="${FLAKT_H}"/>
@@ -289,15 +289,16 @@ const K_STA = () => [1.9, STA[0] + 60, 640];
 const K_BAD = () => [1.45, KX - 120, 500];
 const K_KRAN = () => [2.4, KRAN[0] - 40, KRAN[1] + 80];
 const K_HUVUD = (pos, dy = 0, z = 2.2) => [z, pos[0], huvud(pos)[1] + dy];
-const K_BAT = () => [2.3, BAT()[0], BAT()[1] - 90];
+const K_BAT = () => [2.3, BAT()[0] + 140, BAT()[1] - 90];   // +140: kaninen ryms i bild (QA 19/11)
+const K_HANDDUK = [1.2, 700, 500];   // dörren, fläkten, kaninen och kroken i bild
 const K_FLAKT = () => [2.2, FL[0] + 60, FL[1] - 160];
 const BAD = (o = {}) => ({ plats: 'bad', kam: K_BAD(), pos: IKAR(), ikar: true, ...o });
 const RUM = (o = {}) => ({ plats: 'bad', kam: K_HEL, pos: STA, ...o });
 
 function kritaPa(tl, a, mal, [p0, v0] = [[2200, -150], 150]) { return glid([p0, v0], [mal, 125], kl(tl / a)); }
 const S = {
-  // ritintrot: kritan glider in, ritar snöflingans kontur (5 s), väntar svajande, flingan fylls inifrån och snurrar, zoom in
-  '01a': tl => ({ plats: 'papper', k: (tl - 0.8) / 5, inn: tl }),
+  // ritintrot: kritan glider in, ritar snöflingans kontur (7 s, QA 19/11), väntar svajande, flingan fylls inifrån och snurrar, zoom in
+  '01a': tl => ({ plats: 'papper', k: (tl - 0.8) / 7, inn: tl }),
   '01b': tl => ({ plats: 'papper', k: 1, efter: tl }),
   '01c': (tl, d) => ({ plats: 'papper', k: 1, fyll: del(0, 0.9, tl), snurr: tl, ut: tl, zoom: lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), vit: del(d - 0.45, d, tl) }),
   // skuttar in från dörren, vinkar
@@ -397,19 +398,24 @@ const S = {
     const h = huttra(tl, L0 + 0.4, 0.9);
     return RUM({ pos: [pos[0] + h, pos[1]], ikar: tl < t1 + 0.12, framfor: tl > t1 + 0.3, sjunk: tl < t1 ? 40 : 0, f: FF(tl > L0 ? 'ledsen' : 'glad', { ...(tl > L0 ? { le: 0.2 } : {}), titt: [10 * bl, 0] }),
       p: { ...p, oron: p.oron.map(o => o + 10 * del(L0, L0 + 0.4, tl)) }, bat: [BAT()[0] + 60, guppV(tl)] }); },
-  // skuttar till kroken, handduken glider ner över axlarna
-  '30': (tl, d) => { const pos = hoppVag(tl, 0.2, 0.8, VID_KAR, STA), p = skutt(P({}), tl, 0.2, 45, 0.6), g = del(1.0, 1.6, tl);
-    return RUM({ kam: [1.5, STA[0] + 200, 600], pos, f: FF(tl > 1.8 ? 'glad' : 'nyfiken', tl > 1.8 + LN(43) ? { lock: [0.4, 0.4] } : {}), p, handdukGlid: g, cape: del(1.45, 1.75, tl), bat: [BAT()[0] + 60, guppV(tl)] }); },
+  // Sanna 19/11 "make bunny add towel back after drying": kaninen står kvar vid pallen (vid kroken stod den på fläkten). Handduken
+  // glider ner över axlarna, repliken, kaninen torkar sig (vaggar lugnt), lyfter av handduken och den glider tillbaka upp på kroken
+  '30': (tl, d) => { const g = del(1.0, 1.6, tl), a = 1.6 + LN(43) + 0.35, b = a + 1.55, g2 = del(b + 0.3, b + 1.0, tl);
+    const gnugg = bump(a, a + 1.5, tl), luta = 5 * Math.sin(2 * Math.PI * 1.4 * (tl - a)) * gnugg;
+    const lyft = del(b, b + 0.35, tl) * (1 - del(b + 0.8, b + 1.2, tl)), titta = del(b, b + 0.3, tl) * (1 - del(b + 1.2, b + 1.6, tl));
+    const mysig = tl > 1.8 + LN(43) && tl < b;
+    return RUM({ kam: K_HANDDUK, pos: VID_KAR, f: FF(tl > 1.8 ? 'glad' : 'nyfiken', { ...(mysig ? { lock: [0.4, 0.4] } : {}), titt: [-12 * titta, -12 * titta] }),
+      p: P({ luta, armar: [25 * gnugg + 70 * lyft, 25 * gnugg + 70 * lyft], strack: 0.012 * Math.sin(2 * Math.PI * 2.8 * (tl - a)) * gnugg, rikt: -0.3 * titta, upp: 0.4 * titta }),
+      handdukGlid: g, handdukTillbaka: g2, handduk: g2 >= 1 ? 1 : 0, cape: del(1.45, 1.75, tl) * (1 - del(b + 0.25, b + 0.45, tl)), bat: [BAT()[0] + 60, guppV(tl)] }); },
   // vänder sig mot dörren, nosen rycker mot doften
   '31': (tl, d) => { const r = del(0.1, 0.6, tl), nos = bump(0.6 + LN(44) - 0.2, 0.6 + LN(44) + 0.4, tl);
-    return RUM({ kam: [1.5, STA[0] + 200, 600], f: FF('glad', { titt: [-16 * r, 0] }), p: P({ rikt: -1 * r, nos }), cape: 1, bat: [BAT()[0] + 60, guppV(tl)] }); },
-  // vinkar med handduken på
+    return RUM({ kam: K_HANDDUK, pos: VID_KAR, f: FF('glad', { titt: [-16 * r, 0] }), p: P({ rikt: -1 * r, nos }), bat: [BAT()[0] + 60, guppV(tl)] }); },
   '32': (tl, d) => { const v = del(0.3, 0.8, tl) - del(d - 0.8, d - 0.3, tl);
-    return RUM({ f: FF('jatteglad'), p: vinka(P({}), v, tl), cape: 1, bat: [BAT()[0] + 60, guppV(tl)] }); },
-  // skuttar mot dörren och stannar i kanten
-  '33': (tl, d) => { const B = [DORR[0] + 130, GOLV], pos = hoppVag(tl, 0.3, 0.95, STA, B), p = skutt(P({ rikt: -1 }), tl, 0.3, 45, 0.65);
-    return RUM({ pos, f: FF('glad', { titt: [-16, 0] }), p, cape: 1, bat: [BAT()[0] + 60, guppV(tl)] }); },
-  '34': (tl, d) => RUM({ pos: [DORR[0] + 130, GOLV], f: FF('glad', { titt: [-8, 0] }), p: P({ rikt: -0.6 }), cape: 1, bat: [BAT()[0] + 60, guppV(tl)], iris: tl / d }),
+    return RUM({ pos: VID_KAR, f: FF('jatteglad'), p: vinka(P({}), v, tl), bat: [BAT()[0] + 60, guppV(tl)] }); },
+  // Sanna 19/11: skuttar bakom fläkten ut genom dörren (fläkten ritas framför kaninen), sedan iris på dörröppningen
+  '33': (tl, d) => { const [pos, p0, bl] = skuttar(tl, VID_KAR, [[0.45, 0.6, [190, GOLV], 40], [1.25, 0.6, [-240, GOLV], 40]], P({}));
+    return RUM({ pos, f: FF('glad', { titt: [-16, 0] }), p: { ...p0, rikt: -1 * Math.max(del(0.1, 0.4, tl), Math.abs(bl)) }, flaktFram: true, bat: [BAT()[0] + 60, guppV(tl)] }); },
+  '34': (tl, d) => ({ plats: 'bad', kam: K_HEL, flaktFram: true, bat: [BAT()[0] + 60, guppV(tl)], iris: tl / d, irisC: [DORR[0] + 90, 640] }),
 };
 
 function lage(t) {
@@ -440,13 +446,13 @@ function ritaPapper(st) {
   else kritaRita([...glid([sp, 125], w, (st.efter || 0) / 0.6), false], KS);
 }
 function ritaBad(st, t) {
-  const handduk = st.handdukGlid != null ? 0 : fran(st.id, '30') ? 0 : 1;
+  const handduk = st.handduk ?? 1;
   const skum = st.skum ?? (fran(st.id, '8') ? 1 : 0);
   const anga = st.anga ?? (fran(st.id, '16a') ? 0.25 : 0);
   badrum({ handduk, kran: st.kran || 0, skum, anga });
   kam(st.kam || K_HEL);
   // fläkten: syns från 24c, bladen snurrar från rad 26
-  if (efter(st.id, '24c') || st.id === '24c') flakt(flaktVrid(t), st.flaktFyll ?? 1);
+  if (efter(st.id, '24c') || st.id === '24c') flakt(flaktVrid(t), st.flaktFyll ?? 1, st.flaktFram ? 'fram' : 'flakt');
   // doften: från rad 26 (en stund efter att bladen börjat), till slutet av 33
   if (fran(st.id, '26')) { const a = RR['26'].s + 1.6, k = del(a, a + 3.0, t);
     // doften tonas ner när barnet vet vad den är (Sanna 18/11 "tone down lukt animation after established"): full i 26–28 till
@@ -476,15 +482,19 @@ function ritaBad(st, t) {
   if (st.handdukGlid != null && st.handdukGlid < 1 && st.pos) { const w = HANDDUK_H * HANDDUK[1] / HANDDUK[2], g = st.handdukGlid, [hx, hy] = huvud(st.pos, [512, 360]);
     const x = lerp(KROK[0], hx, mjuk(g)), y = lerp(KROK[1] - 6, hy - 40, mjuk(g)), s = lerp(1, 1.25, g);
     lagg('saker', `<image href="${HANDDUK[0]}" x="${f1(x - w * s / 2)}" y="${f1(y)}" width="${f1(w * s)}" height="${f1(HANDDUK_H * s)}" opacity="${(1 - del(0.75, 1, g)).toFixed(2)}"/>`); }
+  // och tillbaka: från axlarna upp på kroken (rad 30, efter torkningen)
+  if (st.handdukTillbaka > 0 && st.handdukTillbaka < 1 && st.pos) { const w = HANDDUK_H * HANDDUK[1] / HANDDUK[2], g = st.handdukTillbaka, [hx, hy] = huvud(st.pos, [512, 360]);
+    const x = lerp(hx, KROK[0], mjuk(g)), y = lerp(hy - 150, KROK[1] - 6, mjuk(g)), s = lerp(1.1, 1, g);   // lyfts över huvudet
+    lagg('saker', `<image href="${HANDDUK[0]}" x="${f1(x - w * s / 2)}" y="${f1(y)}" width="${f1(w * s)}" height="${f1(HANDDUK_H * s)}" opacity="${del(0, 0.2, g).toFixed(2)}"/>`); }
   // kaninen
   if (st.f && st.pos) {
     const pos = st.ikar ? IKAR(st.sjunk || 0) : st.pos;
     if (st.ikar) st.pos = pos;
-    kanin(pos, BLINKA(st.f, t), liv(st.p, t), { ikar: st.ikar, framfor: st.framfor, cape: st.cape ?? (efter(st.id, '30') ? 1 : 0) });
+    kanin(pos, BLINKA(st.f, t), liv(st.p, t), { ikar: st.ikar, framfor: st.framfor, cape: st.cape ?? 0 });
     dropparRita(t);
   }
   if (st.skimmer) skimra(...st.skimmer);
-  if (st.iris != null) { const [cx, cy] = huvud(st.pos, [512, 600]), r = lerp(1500, 0, mjuk(st.iris * 1.15));
+  if (st.iris != null) { const [cx, cy] = st.irisC ?? huvud(st.pos, [512, 600]), r = lerp(1500, 0, mjuk(st.iris * 1.15));
     if (r < 1400) { const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.07 * Math.sin(9 * a + t * 0.8)); return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
       lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4).toFixed(1)}" filter="url(#boil)"/>` : ''}`); } }
 }
@@ -512,7 +522,9 @@ function ljud() {
     for (const [f, o] of r.ljud || []) if (f && !/^(krita-ritar|kran|flakt)\//.test(f)) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f) });
   }
   const rit = (t, langd, n) => ut.push({ t, fil: E + `krita-ritar/krita-ritar-${n}.m4a`, vol: 1.0, langd, loop: true, fade: 0.3 });
-  rit(RR['01a'].s + 0.8, 5.0, 1); rit(RR['16b'].s, 4.0, 2); rit(RR['24b'].s, 4.0, 3);
+  rit(RR['01a'].s + 0.8, 7.0, 1);
+  // skogsljud under ritintrot (format/bilderbok.md), så att gisspausen inte blir helt tyst; tonar över i badrumsmattan
+  ut.push({ t: 0.2, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.4, langd: RR['1'].s + 0.6, loop: true, fadeIn: 1.0, fade: 1.2 }); rit(RR['16b'].s, 4.0, 2); rit(RR['24b'].s, 4.0, 3);
   // kranen rinner från rad 4 till att den stängs i rad 7
   const k0 = RR['4'].s + 0.3, k1 = RR['7'].s + RR['7'].d - 1.0;
   ut.push({ t: k0, fil: E + 'kran/kran-1.m4a', vol: 0.6, langd: k1 - k0, loop: true, fadeIn: 0.3, fade: 0.6 });
