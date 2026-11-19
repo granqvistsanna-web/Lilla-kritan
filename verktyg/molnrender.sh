@@ -3,7 +3,8 @@
 #   bash verktyg/molnrender.sh <scenmapp> [--bitar 8] [--ut fil.mp4] [flaggor till render.mjs: --en …]
 # Molnet ser bara det som är pushat: skriptet stoppar om scenens avsnitt, verktyg/ eller assets/ skiljer sig från origin.
 # Efteråt: stoppar om en fil som saknades i molnet finns lokalt (inte pushad), flyttar den gamla filmen till aldre/,
-# lägger in den nya och skriver effekt-wav:en lokalt (inte med --ut). Se produktion/molnrendering-plan.md.
+# lägger in den nya och skriver effekt-wav:en lokalt och lägger den på som filmens ljud (AAC 192k, som render-delat.mjs;
+# molnets film är bara bild). Med --ut blir det bara bilden. Se produktion/molnrendering-plan.md.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 SCEN=${1:?användning: bash verktyg/molnrender.sh <scenmapp> [--bitar 8] [--ut fil.mp4] [--en …]}; shift
@@ -45,10 +46,16 @@ gh run download "$ID" -n film -D "$TMP"
 LOKALT=$(sed -n 's/^saknas: \/*//p' "$TMP/saknas.txt" | while read -r f; do [ -e "$f" ] && echo "$f"; done || true)
 if [ -n "$LOKALT" ]; then echo "Saknades i molnet men finns lokalt (inte pushat?), filmen läggs inte in:"; echo "$LOKALT"; exit 1; fi
 
-if [ -e "$UT" ]; then mkdir -p "$(dirname "$UT")/aldre"; mv "$UT" "$(dirname "$UT")/aldre/$(basename "$UT" .mp4)-$(date +%Y%m%d%H%M).mp4"; fi
-cp "$TMP/film.mp4" "$UT"
+FILM="$TMP/film.mp4" ANM="utan ljud"
 if [ "$UT" = "$STD" ]; then
+  # effekt-wav:en (render.mjs --bara-ljud skriver ut sökvägen) under bilden; saknas den blir filmen stum med en varning
   LJUD=(); for f in "${FLAGGOR[@]+"${FLAGGOR[@]}"}"; do [ "$f" = --snabb ] || LJUD+=("$f"); done
-  node "$R" "$SCEN" "${LJUD[@]+"${LJUD[@]}"}" --bara-ljud > /dev/null
+  WAV=$(node "$R" "$SCEN" "${LJUD[@]+"${LJUD[@]}"}" --bara-ljud | grep '\.wav$' | tail -1 || true)
+  if [ -n "$WAV" ] && [ -f "$WAV" ]; then
+    ffmpeg -loglevel error -y -i "$TMP/film.mp4" -i "$WAV" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart "$TMP/med-ljud.mp4"
+    FILM="$TMP/med-ljud.mp4" ANM="med ljud"
+  else echo "varning: ingen effekt-wav, filmen blir utan ljud"; fi
 fi
-echo "$UT: $(ffprobe -v error -show_entries format=duration -of csv=p=0 "$UT") s från molnet"
+if [ -e "$UT" ]; then mkdir -p "$(dirname "$UT")/aldre"; mv "$UT" "$(dirname "$UT")/aldre/$(basename "$UT" .mp4)-$(date +%Y%m%d%H%M).mp4"; fi
+cp "$FILM" "$UT"
+echo "$UT: $(ffprobe -v error -show_entries format=duration -of csv=p=0 "$UT") s från molnet, $ANM"
