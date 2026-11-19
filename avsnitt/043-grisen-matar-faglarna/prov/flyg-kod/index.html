@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>043 flygprov, vinge och näbb i kod</title>
+<style>html,body{margin:0;background:#CFE3F0;overflow:hidden} svg{width:100vw;height:100vh;display:block}</style></head>
+<body>
+<!-- Flygprov 2 (Sanna 2026-11-19): vingen och näbben i kod (../../fagel.js). Vänster: den röda fågeln stor, fladdrar 0–3 s,
+     pipar (näbben öppnas) 3–5 s, pickar 5–7 s. Höger: de tre fåglarna flyger in över snögården och landar, pickar, lyfter igen.
+     Rendera: node avsnitt/043-grisen-matar-faglarna/scener/render.mjs avsnitt/043-grisen-matar-faglarna/prov/flyg-kod --snabb -->
+<svg viewBox="0 0 1920 1080">
+  <defs><filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+    <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs>
+  <image href="/assets/bakgrunder/snogarden/snogarden.jpeg" x="660" y="0" width="1260" height="709" preserveAspectRatio="xMidYMid slice"/>
+  <rect x="0" y="0" width="660" height="1080" fill="#f4efe4"/><rect x="660" y="709" width="1260" height="371" fill="#f4efe4"/>
+  <g id="g" filter="url(#boil)"></g>
+</svg>
+<script src="/avsnitt/043-grisen-matar-faglarna/fagel.js"></script>
+<script>
+const ease = u => u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u), bump = (a, b, t) => t <= a || t >= b ? 0 : Math.sin(Math.PI * (t - a) / (b - a));
+const fagel = (f, x, y, s, o) => `<g transform="translate(${x} ${y}) scale(${-s} ${s}) rotate(${o.tilt || 0}) translate(-400 -689)">${fagelSvg(f, o)}</g>`;
+const blink = (t, i) => ((t + i * 1.3) % 3.1) < 0.12 ? 1 : 0;
+// till höger: snögården i 1260 × 709 (skala 0,656), fötterna på snön y ≈ 567
+const MARK = 575, FAG = [['rod', 0.10, 0.4, 1000], ['gul', 0.10, 1.4, 1150], ['bla', 0.08, 2.6, 1290]];
+window.DURATION = 9;
+window.seek = t => {
+  let h = '';
+  // vänster: närbild
+  const fl = t < 3 ? 1 : 0, op = Math.max(bump(3.2, 3.6, t), bump(3.9, 4.3, t), bump(4.6, 5.0, t)) + 0.5 * bump(5.2, 5.5, t) + 0.5 * bump(6.0, 6.3, t);
+  const pick = 22 * (bump(5.1, 5.6, t) + bump(5.9, 6.4, t)), hopp = t < 3 ? 14 * Math.sin(t * 8) : 0;
+  h += fagel('rod', 330, 760 - hopp, 0.62, { t, flax: fl, oppen: op, blink: blink(t, 0), tilt: pick });
+  // höger: in-flygning
+  FAG.forEach(([f, s, start, land], i) => {
+    const u = (t - start) / 1.6; let x, y, flax = 0, tilt = 0;
+    const lyft = t - (6.6 + i * 0.4);
+    if (lyft > 0) { const w = ease(lyft / 1.4); x = land + 380 * w; y = MARK - 460 * w; flax = 1; tilt = -12 * Math.min(1, lyft * 2); }
+    else if (u < 1) { const k = ease(Math.max(u, 0)); x = 640 + (land - 640) * k; y = MARK - 330 * (1 - k) - 50 * Math.sin(Math.PI * k); flax = u < 0.88 ? 1 : (1 - u) / 0.12; tilt = -8 * (1 - k); }
+    else { x = land; y = MARK; const p = (t - start - 1.6) % 1.5; tilt = 20 * bump(0, 0.35, p); }
+    const pickO = u >= 1 && lyft <= 0 ? 0.6 * bump(0.05, 0.3, (t - start - 1.6) % 1.5) : 0;
+    h += fagel(f, x, y, s, { t: t + i * 0.07, flax, oppen: pickO, blink: blink(t, i + 1), tilt });
+  });
+  document.getElementById('g').innerHTML = h;
+};
+window.ready = new Promise(r => { const i = new Image(); i.onload = i.onerror = () => { window.seek(0); r(true); }; i.src = '/assets/rekvisita/smafaglar/cut/fagel-kropp-rod.png'; });
+</script></body></html>

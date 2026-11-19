@@ -481,7 +481,7 @@ for (const s of RADEN) s.hopp.push(t);
 kamTill(t, 960, 540, 1, 1.2);   // hela bilden, så att kulan och ljusen syns
 const KULA = { ner: t + 0.2 };
 t = sag(t + 0.3, 'p-nu-dansar') + 0.1;
-const SLAG = 60 / 98.35, MUSIK_DISCO = t, SLAG_N = 26;   // disco-funkig.m4a: 98,35 BPM, första slaget 0,10 s
+const SLAG = 60 / 98.35, MUSIK_DISCO = t, SLAG_N = 30;   // disco-funkig.m4a: 98,35 BPM, första slaget 0,10 s
 const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_N)];
 // Torndansen (Sanna 2026-11-18 kväll: "building a tower, rotating spinning, one at a time"): raden glider isär åt sidorna,
 // klossarna hoppar en i taget till mitten och snurrar ett varv i luften, och bygger en pyramid (tre, två, en) med apan överst.
@@ -490,20 +490,38 @@ const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_
 // björnen hoppar ur sin kloss ner mitt på golvet och dansar (riggens dans, ett gung på två slag). Klossarna dansar runt den:
 // en i taget hoppar på stället och snurrar ett varv med sitt eget ljud. Sedan närbild på den dansande björnen, alla klossar hoppar
 // tillsammans, björnen hoppar tillbaka in i sin kloss och raden glider ihop igen.
-{ const PS = 180, SIDA = [170, 360, 550, 1370, 1560, 1750].map(x => [x, golvY(PS), 0]);
-  RADEN.forEach((s, i) => flyttaK(s, slag(0) - 0.3, SIDA[i], PS, 0.9)); fx(slag(0) - 0.3, 'swoosh', 0.5);
-  const UR = [slag(1) + 0.1, slag(2) + 0.1], IN = [slag(21) - 0.2, slag(22) - 0.2];   // hoppet ut och in, ca 0,6 s
-  bjorn.av = [...UR, ...IN]; bjorn.kf.push([UR[0], 960, 790, 0.75]);   // mitt på golvet framför klossarna, fötterna ca 980
+// Feedback 2026-11-19 (3:26 "bigger bear", 3:35 "more stacking of blocks", "improved disco scene"): björnen dansar stor mitt i
+// bild, klossarna bygger två torn bredvid den, en i taget (varje sak med sitt ljud, och dess klistermärke slås upp i bågen runt
+// kulan som i 005:s disco), och när björnen har hoppat tillbaka bygger alla en pyramid mitt i bild med björnens kloss överst.
+const KLISTER = [];   // [t, sak] – klistermärket slås upp i bågen
+{ const PS = 180, g = PS * 1.14, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)], o = [0, -PS * Math.cos(RX), PS * Math.sin(RX)];
+  const torn = (x, k) => [x + k * o[0], golvY(PS) + k * o[1], k * o[2]];   // k klossar upp
+  const B = [960 - h[0], golvY(PS), 0], pp = (a, b) => [0, 1, 2].map(j => B[j] + a * h[j] + b * o[j]);   // pyramiden: a åt höger, b upp
+  const andra = RADEN.filter(s => s !== bjorn), [lb, a1, a2, c1, c2] = andra, LX = 360, RX0 = 1560;
+  const START = new Map([[a1, 170], [lb, LX], [a2, 550], [c1, 1370], [bjorn, RX0], [c2, 1750]]);
+  RADEN.forEach(s => flyttaK(s, slag(0) - 0.3, torn(START.get(s), 0), PS, 0.9)); fx(slag(0) - 0.3, 'swoosh', 0.5);
+  const UR = [slag(1) + 0.1, slag(2) + 0.1], IN = [slag(19) - 0.2, slag(20) - 0.2];   // hoppet ut och in, ca 0,6 s
+  bjorn.av = [...UR, ...IN]; bjorn.kf.push([UR[0], 960, 694, 1.15]);   // stor mitt på golvet framför klossarna, fötterna ca 985
   fx(UR[0] - 0.1, 'nalle-hopp', 0.7, { langd: 1.6, fade: 0.4 }); fxf(UR[1] + 0.2, BRUM(2), 0.9, { langd: 1.8, fade: 0.3 });
-  bjorn.levande.push([UR[1], 'dansa', IN[0] - 0.2]);
-  RADEN.forEach((s, j) => { const t0 = slag(4 + 2 * j) - 0.45, i = RADEN.indexOf(s);   // en i taget, vartannat slag
-    flyttaK(s, t0, SIDA[i], PS, 0.9, 110); s.spinn.push([t0, t0 + 0.9]); s.landa.push(t0 + 0.9);
-    latFx(s, t0 + 0.15); fx(t0 + 0.9, 'duns', 0.3); });
-  kamTill(slag(15) - 0.6, 960, 760, 1.7, 1.1); kamTill(slag(19) - 0.5, 960, 540, 1, 1.1);   // närbild på den dansande björnen
-  for (const k of [19, 20]) for (const s of RADEN) if (s !== bjorn) s.hopp.push(slag(k) - 0.2);   // alla klossar hoppar tillsammans
+  bjorn.levande.push([UR[1], 'dansa', IN[0] - 0.2]); KLISTER.push([UR[1], bjorn]);
+  // tornen: en i taget, vartannat slag; basen hoppar på stället, de andra hoppar upp på den. Ett varv i luften, sitt eget ljud.
+  [[lb, torn(LX, 0)], [a1, torn(LX, 1)], [a2, torn(LX, 2)], [c1, torn(RX0, 1)], [c2, torn(RX0, 2)]].forEach(([s, mal], j) => {
+    const t0 = slag(3 + 2 * j) - 0.45;
+    flyttaK(s, t0, mal, PS, 0.9, 130); s.spinn.push([t0, t0 + 0.9]); s.landa.push(t0 + 0.9);
+    latFx(s, t0 + 0.15); fx(t0 + 0.9, 'duns', 0.35); KLISTER.push([t0 + 0.5, s]); });
+  kamTill(slag(13) - 0.6, 960, 690, 1.5, 1.1); kamTill(slag(17) - 0.5, 960, 540, 1, 1.1);   // närbild på den dansande björnen
+  GN.push([slag(14), 960, 640, 300, 250], [slag(16), 960, 640, 300, 250]);   // stjärnregn runt den som dansar
+  for (const k of [17, 18]) for (const s of RADEN) if (s !== bjorn) s.hopp.push(slag(k) - 0.2);   // alla klossar hoppar tillsammans
   fx(IN[0] - 0.1, 'nalle-hopp', 0.6, { langd: 1.4, fade: 0.4 }); fx(IN[1], 'klistra', 0.8); bjorn.hopp.push(IN[1]);
-  RADEN.forEach((s, i) => flyttaK(s, slag(25) - 0.2, [SX[i], golvY(SS), 0], SS, 0.9)); fx(slag(25) - 0.2, 'swoosh', 0.5);
-  for (const k of [4, 12, 20]) GN.push([slag(k), 960, 150, 210, 110]);   // gnistor runt kulan
+  // pyramiden: ett slag per kloss, översta först ur tornen, björnens kloss (med björnen i) sist och överst
+  [[a2, pp(0, 0), 110], [c2, pp(2, 0), 110], [a1, pp(1, 0), 110], [c1, pp(0.5, 1), 200], [lb, pp(1.5, 1), 300], [bjorn, pp(1, 2), 300]].forEach(([s, mal, bg], j) => {
+    const t0 = slag(21 + j) - 0.3;
+    flyttaK(s, t0, mal, PS, 0.9, bg); s.landa.push(t0 + 0.9); fx(t0, 'swoosh', 0.3); fx(t0 + 0.88, 'duns', 0.4); });
+  fx(slag(26) - 0.2, 'nalle-hopp', 0.5, { langd: 1.2, fade: 0.4 });
+  { const [x, y] = pp(1, 2); GN.push([slag(26) + 0.7, x, y, 200, 150]); fx(slag(26) + 0.7, 'pling', 0.4); }
+  for (const s of RADEN) s.hopp.push(slag(27) + 0.3);   // hela pyramiden hoppar en gång
+  RADEN.forEach((s, i) => flyttaK(s, slag(28) - 0.2, [SX[i], golvY(SS), 0], SS, 1.0, 60)); fx(slag(28) - 0.2, 'swoosh', 0.5);
+  for (const k of [4, 12, 20, 28]) GN.push([slag(k), 960, 150, 210, 110]);   // gnistor runt kulan
   for (let k = 0; k < SLAG_N; k += 4) A.hopp.push(slag(k) - 0.1);
 }
 for (const s of [banan, ballong, bi, buss, boll]) s.levande.push([DISCO[0], 'gunga', DISCO[1]]);
@@ -570,7 +588,32 @@ function disco(t, ut) {
   kulaG.style.display = ner > 0 ? '' : 'none';
   const y = lerp(-320, 90, ner), sv = 1.6 * Math.sin(2 * Math.PI * (t - KULA.ner) / (8 * SLAG));   // pendlar lugnt
   kulaG.setAttribute('transform', `rotate(${sv.toFixed(2)} 960 -200) translate(960 ${y.toFixed(1)})`);
+  prickar.forEach(([e, a0, R, r, fas]) => {   // kulans ljusprickar sveper lugnt över väggen
+    const a = a0 + 2 * Math.PI * (t - DISCO[0]) / 24, x = 960 + R * Math.sin(a), y = 430 + 0.32 * R * Math.cos(a);
+    const k = inn * ut * clamp((GOLV - 20 - y) / 60) * (0.55 + 0.25 * Math.sin(t * 1.3 + fas));
+    for (const [n, v] of Object.entries({ cx: x, cy: y, r, opacity: k })) e.setAttribute(n, v.toFixed(2)); });
+  varmEl.setAttribute('opacity', (0.05 + 0.03 * inn).toFixed(3));   // lite varmare ton i discot
+  for (const [t0, e, [x, y], vx] of klister) {   // 005:s klistermärken: faller in, trycks ihop, vickar, och hänger kvar i bågen
+    const d = t - t0, k = d < 0 ? 0 : inUt(clamp(d / 0.3)), tr = 0.12 * bage((d - 0.25) / 0.25), v = vx * 8 * Math.sin(d * 2 * Math.PI / 0.7) * Math.exp(-d / 0.8) + vx * 4;
+    const borta = 1 - inUt(del([DISCO[1] - 0.6, DISCO[1] + 0.3], t));
+    e.style.display = k > 0 && borta > 0 ? '' : 'none';
+    e.setAttribute('opacity', (borta * ut).toFixed(3));
+    e.setAttribute('transform', `translate(${x} ${(y - 60 * (1 - k)).toFixed(1)}) rotate(${v.toFixed(2)}) scale(${(k * (1 + tr * 0.6)).toFixed(3)} ${(k * (1 - tr)).toFixed(3)})`);
+  }
 }
+const varmEl = document.querySelector('#topp rect[style*="soft-light"]');
+const prickar = Array.from({ length: 16 }, (_, i) => [el('circle', { fill: i % 3 ? '#FFFFFF' : LJUSF[i % 6], filter: 'url(#mjuk)' }, document.getElementById('bak')),
+  2 * Math.PI * i / 16, 380 + (i * 197) % 520, 14 + (i * 7) % 10, i]);
+// klistermärkena i en båge runt kulan, i den ordning sakerna dansar (björnen först); varannan vickar åt andra hållet
+const BAGEN = [[760, 180], [1160, 180], [560, 270], [1360, 270], [370, 400], [1550, 400]];
+const klisterG = el('g', { filter: 'url(#klisterskugga)' }); document.getElementById('topp').insertBefore(klisterG, document.getElementById('gnistor'));
+document.querySelector('#topp defs').insertAdjacentHTML('beforeend', '<filter id="klisterskugga" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="5" dy="8" stdDeviation="6" flood-color="#3b3431" flood-opacity=".2"/></filter>');
+const klister = await Promise.all(KLISTER.map(async ([t0, s], i) => {
+  const [f, w, h] = s === bjorn ? ['../karaktarer/bjornen-bulle/cut/bjornen-bulle', 1024, 1024] : s.bild, k = (s === bjorn ? 200 : 165) / h;   // urklippen har sin vita kant inbakad
+  const e = el('g', { style: 'display:none' }, klisterG);
+  await bildEl(f, w, h, `translate(${(-w * k / 2).toFixed(1)} ${(-h * k / 2).toFixed(1)}) scale(${k.toFixed(4)})`, e);
+  return [t0, e, BAGEN[i % BAGEN.length], i % 2 ? -1 : 1];
+}));
 
 // ---------- en bildruta ----------
 const lage = (s, t) => {   // [x, y, skala] ur nyckelrutorna, lugnt in och ut mellan dem

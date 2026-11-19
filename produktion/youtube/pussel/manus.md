@@ -33,11 +33,15 @@ Två filmer: **Vanliga** (11 pussel) och **Jul** (10). Varje pussel har fem bita
 
 Frågan *"Hmm … vad blir det?"* kommer efter bit 3.
 
+**2026-11-18 kl 23 (Sannas feedback):** i `pussel-vanliga` säger Malin ledtråden för bit 1–4 när biten har landat i brickan, inte i närbild (`LIGG_ALLA` i `pussel-prov.py`). Bit 5 i närbild som förut, inget "Där!". Mix 5-filmerna är orörda.
+
 ## Film 2: Jul (10 pussel)
 
 **2026-11-18 (Sannas feedback):** i julfilmen är bit 1 och 2 tysta (för svåra att se), bit 3 och 4 kommenteras när biten har landat, bit 5 i närbild som förut. Inget "Där!" eller "Den passar!". Bädden är `karol-pynta-salen-slinga` (julmusik). Styrs av `TYSTA_BITAR` i `pussel-prov.py`. Julgranen fick ny bitordning så att kulan och hjärtat syns när de sägs, snögubbens bit 4 visar bara ett öga.
 
 **2026-11-18 kl 16 (feedback 2):** varje pussel öppnas med en egen replik med "Ja!" (`jul-oppna-1…10`, se `rost.txt`), bädden är `karol-up-on-the-housetop-slinga` (raskare), tempot 0,88 (`TEMPO`, gissningspausen orörd), och julgranen, snöflingan och pepparkaksgubben syns hela i brickan (nya snitt, granens kula och hjärta på bit 3–4).
+
+**2026-11-18 kl 22 (feedback 3):** hela julskinkan får plats i brickan (`bredd=0.92`), kälken är nyklippt utan vitt mellan brädorna och har en jämn vit kant (10 px i källbilden, gjord från alfakanalen; `tunn_kant.py` fyller hålen och passar inte här). Förra urklippet ligger i `aldre/kalke-fore-urklipp.png`.
 
 | # | Pussel | Bit 1 | Bit 2 | Bit 3 | Bit 4 | Bit 5 (avgör) | Svar | Levande |
 |---|---|---|---|---|---|---|---|---|

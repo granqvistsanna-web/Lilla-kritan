@@ -1,0 +1,47 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-fagel  [excited] Oj! En fågel!
+04-hej-grisen  [happy] Hej, grisen! Hej, hej!
+05-vad-har-du-i-pasen  [curious] Vad har du i påsen?
+06-fron-till-faglarna  [delighted] Frön! Till fåglarna.
+07-en-rod-fagel  [excited] Titta! En röd fågel.
+08-en-gul-fagel  [delighted] Och en gul fågel!
+09-pick-pick-pick  [happy] Pick, pick, pick. Mums!
+10-pasen-ar-tom  [surprised] Oj! Påsen är tom.
+11-den-lilla-bla-fageln  [warmly] Och där kommer den lilla blå fågeln.
+12-fick-ingenting  [gently] Oj då. Den lilla fågeln fick ingenting.
+13-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+14-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+15-en-julkarve  [happy] En julkärve! Varsågod, grisen.
+16-full-med-korn  [warmly] Full med korn till fåglarna.
+17-ska-vi-saga-tack  [warmly] Ska vi säga tack?
+18-tack  [happy] Tack!
+19-en-tva-tre-faglar  [cheerfully] En fågel … två fåglar … tre fåglar!
+20-lilla-fageln-ocksa  [warmly] Nu får den lilla fågeln också. Mums!
+21-faglarnas-mat  [playfully] Nej, nej, grisen. Det är fåglarnas mat.
+22-pratar-med-varandra  [giggles] Ni pratar visst med varandra.
+23-saga-pip  [curious] Kan du säga pip, grisen?
+24-blev-ett-noff  [laughs] Det blev ett noff!
+25-fagel-pa-huvudet  [surprised] Oj! En fågel på huvudet!
+26-hopp-tillbaka  [playfully] Hopp! Tillbaka till kärven.
+27-det-snoar  [surprised] Oj! Det snöar.
+28-inga-korn  [curious] Nu syns inga korn.
+29-skaka-bort-snon  [cheerfully] Kan du skaka bort snön, grisen?
+30-skaka-pick-1  [happy] Skaka, skaka … pick!
+31-skaka-pick-2  [happy] Skaka, skaka … pick!
+32-kommer-inte  [curious] Oj, den lilla fågeln kommer inte. Grisen vet inte var den är.
+33-kan-du-hjalpa  [warmly] Kan du hjälpa grisen? Kan du se var den lilla fågeln är?
+34-ja-dar  [excited] Ja, där! I granen!
+35-skaka-pick-3  [happy] Skaka, skaka … pick!
+36-alla-ater  [warmly] Nu äter alla fåglarna. Mums!
+37-mer-sno  [surprised] Oj, mer snö!
+38-kritan-ritar-igen  [curious] Kritan ritar igen.
+39-ett-tak  [happy] Ett tak! Nu kommer ingen snö på kornen.
+40-tack-kritan  [warmly] Tack, kritan!
+41-faglarna-tackar  [happy] Fåglarna säger tack också. Pip, pip, pip!
+42-tre-faglar-pa-grisen  [laughs] En … två … tre! Tre fåglar på grisen!
+43-snoflinga  [surprised] Oj! En snöflinga på trynet!
+44-kan-du-blasa  [playfully] Kan du blåsa bort den?
+45-fff  [playfully] Fff!
+46-hej-da-god-jul  [happy] Hej då, grisen! Hej då, fåglarna! God jul!
+47-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

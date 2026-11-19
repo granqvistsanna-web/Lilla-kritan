@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>043 flygprov</title>
+<style>
+  html,body{margin:0;background:#CFE3F0;overflow:hidden}
+  #scen{position:absolute;inset:0;width:1920px;height:1080px;transform-origin:0 0}
+  #bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .fagel{position:absolute;left:0;top:0;width:800px;height:689px;transform-origin:400px 689px}
+  .fagel img{position:absolute;left:0;top:0}
+  .vinge{width:675px;transform-origin:150px 140px}
+  .oga{position:absolute;width:44px;height:44px;border-radius:50%;background:#2B2321;left:610px;top:215px;transform-origin:22px 22px}
+  .oga::after{content:'';position:absolute;width:13px;height:13px;border-radius:50%;background:#fff;left:9px;top:8px}
+</style></head>
+<body><div id="scen"><img id="bg" src="../../../../assets/bakgrunder/snogarden/snogarden.jpeg"></div>
+<script>
+// Flygprov: tre fåglar (saker, ingen rigg). Kropp + lös vinge som vrids kring axeln. 1920×1080.
+const C = '../../../../assets/rekvisita/smafaglar/cut/';
+const FAGLAR = [
+  { f: 'rod', s: 0.20, x0: -200, start: 0.4, land: 700 },
+  { f: 'gul', s: 0.20, x0: -200, start: 1.4, land: 900 },
+  { f: 'bla', s: 0.16, x0: -200, start: 2.6, land: 1100 },
+];
+const MARK = 885;                     // fötterna på snön (82 % av höjden)
+const scen = document.getElementById('scen');
+for (const b of FAGLAR) {
+  const el = document.createElement('div'); el.className = 'fagel';
+  el.innerHTML = `<img src="${C}fagel-kropp-${b.f}.png"><div class="oga"></div><img class="vinge" src="${C}fagel-vinge-${b.f}.png">`;
+  scen.appendChild(el); b.el = el; b.vinge = el.querySelector('.vinge'); b.oga = el.querySelector('.oga');
+}
+// vingens vila: axeln vid kroppens rygg (mätt i kroppens 800×689-ruta)
+const VILA = { x: 310, y: 230, r: 0 };   // vingens rot på ryggen
+const ease = u => u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u);
+
+function pose(b, t) {
+  const FLYG = 1.6;                   // in-flygningen
+  const u = (t - b.start) / FLYG;
+  let x, y, flax = 0, tilt = 0;
+  if (u < 1) {                        // båge in från vänster, landar på snön
+    const k = ease(Math.max(u, 0));
+    x = b.x0 + (b.land - b.x0) * k;
+    y = MARK - 420 * Math.sin(Math.PI * Math.min(Math.max(u, 0), 1) * 0.5 + Math.PI * 0.5) * (1 - k) - 60 * Math.sin(Math.PI * k);
+    flax = u < 0.85 ? 1 : (1 - u) / 0.15;   // fladdrar, slutar fladdra just före landningen
+    tilt = -8 * (1 - k);
+  } else {                            // på marken: små hopp och pick
+    const v = t - b.start - FLYG;
+    x = b.land; y = MARK;
+    const lyft = t > 6.4 + b.start * 0.3;    // flyger upp igen sist
+    if (lyft) { const w = t - (6.4 + b.start * 0.3); x += 420 * ease(w / 1.4); y -= 520 * ease(w / 1.4); flax = 1; tilt = -10 * Math.min(w * 2, 1); }
+    else {
+      const p = (v + b.start) % 1.6;          // pick var 1,6 s, förskjutet per fågel
+      if (p < 0.25) tilt = 15 * Math.sin(Math.PI * p / 0.25);
+      if (v < 0.3) y -= 0;                    // landningen: tryck ihop syns i skalan nedan
+    }
+  }
+  // vingslag: 4 Hz, uppslaget långsammare än nedslaget; vinkeln mellan vila och uppåt bakåt
+  const fas = (t * 4) % 1, slag = fas < 0.55 ? ease(fas / 0.55) : 1 - ease((fas - 0.55) / 0.45);
+  const vr = VILA.r + flax * (20 - 135 * slag);   // nedslag +20° (under magen), uppslag −115° (över ryggen)
+  const vsy = 1 - flax * 0.25 * (1 - slag);   // vingen lite kortare i nedslaget (sedd snett)
+  // landningens tryck ihop
+  const v2 = t - b.start - FLYG, tryck = v2 > 0 && v2 < 0.3 ? 1 - 0.08 * Math.sin(Math.PI * v2 / 0.3) : 1;
+  b.el.style.transform = `translate(${x - 400}px, ${y - 689}px) scale(${b.s}) rotate(${tilt}deg) scale(${1 / tryck * 0.98 + 0.02}, ${tryck})`;
+  b.vinge.style.transform = `translate(${VILA.x - 150}px, ${VILA.y - 140}px) scale(0.42) rotate(${vr}deg) scale(1, ${vsy})`;   // roten (150, 140) i vingens bild sitter på VILA
+  const blink = ((t + b.x0 * 0 + FAGLAR.indexOf(b) * 1.3) % 3.1) < 0.12;
+  b.oga.style.transform = `scale(1, ${blink ? 0.12 : 1})`;
+}
+
+// ?nara: bara röda fågeln, stor, fladdrar på stället (för att granska vingen)
+if (true) {
+  document.getElementById('bg').style.display = 'none';
+  FAGLAR.splice(1).forEach(b => b.el.style.display = 'none');
+  const gammal = pose;
+  pose = (b, t) => { b.start = t - 0.5; gammal(b, t); b.el.style.transform = `translate(560px, 160px) scale(0.9)`; };
+}
+window.DURATION = 9;
+window.seek = t => { for (const b of FAGLAR) pose(b, t); };
+const s = () => { const k = Math.min(innerWidth / 1920, innerHeight / 1080); scen.style.transform = `scale(${k})`; };
+addEventListener('resize', s); s();
+window.ready = Promise.all([...document.images].map(i => i.decode().catch(() => {}))).then(() => (window.seek(0), true));
+</script></body></html>

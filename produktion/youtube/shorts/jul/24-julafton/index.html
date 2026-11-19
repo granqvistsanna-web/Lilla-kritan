@@ -44,9 +44,9 @@ julDjur.kor({ kamBas: KE,
     // A: kameran glider från ljusen förbi granen och ut till hela bilden
     [6.0, 'stilla', { kam: 0, glida: true, ljud: [['tindra', 2.4, 3, 1.2]] }],
     // B: hej, paketet från lucka 9, ett glädjehopp, paketet skramlar
-    [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.75]], ljud: [['kanin-gullig/kanin-hej', 2.25, 4, 1.3]] }],
+    [3.0, 'vinka', { sag: [['tittut/kanin-hej', 'Hej kaninen!', 0.75]], ljud: [['kanin-ny/kanin-ny-hej', 2.25, 2, 1.3]] }],
     [4.6, 'tittar', { sag: [[R + '24-paketet-vi-sag', 'Paketet vi såg! Nu är det julafton!', 0.6]] }],
-    [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['kanin-gullig', 1.6, 2, 1.3]] }],
+    [2.6, 'hoppa', { ljud: [['hopp-mjuk', 0.35, 1], ['landa-mjuk', 1.35, 1], ['kanin-ny/kanin-ny-fortjust', 1.6, 1, 1.3]] }],
     [3.0, 'tittar', { skramlar: [0.4], sag: [[R + '24-vad-finns-i-paketet', 'Vad finns i paketet?', 1.0]], ljud: [['skrammel', 0.4, 1, 2]] }],
     // reaktion (2026-11-16): närbild på paketet, som skramlar och fnissar (glada stängda ögon och öppen mun), sedan Malin
     [4.0, 'tittar', { kam: [...KAM.paket, 0, 4.0, 0.8], skramlar: [0.3, 1.3], paketFniss: [[0.3, 1.9]], sag: [[R + '24-paketet-fnissar', 'Paketet fnissar!', 2.0]],
@@ -56,7 +56,7 @@ julDjur.kor({ kamBas: KE,
     // reaktion: kaninen lägger örat mot paketet och blundar, paketet fnissar igen, kaninen rycker till och fnissar tillbaka
     [3.6, 'lyssna', { kam: [...KAM.lyssna, 0, 3.6, 1.0], vid: 2.4, skramlar: [2.4], paketFniss: [[2.4, 3.4]], sag: [[R + '24-kaninen-lyssnar', 'Kaninen lyssnar…', 0.6]],
       ljud: [['fniss', 2.4, 6, 1.6], ['skrammel', 2.4, 2, 2]] }],
-    [1.8, 'fniss', { kam: KAM.lyssna, mot: 1, vid: 0.5, paketFniss: [[0.2, 1.3]], ljud: [['kanin-gullig', 0.3, 3, 1.2]] }],
+    [1.8, 'fniss', { kam: KAM.lyssna, mot: 1, vid: 0.5, paketFniss: [[0.2, 1.3]], ljud: [['kanin-ny/kanin-ny-fniss', 0.3, 1, 1.2]] }],
     [3.0, 'klappa', { ljud: [['tass-klapp', 1.0, 1, 1.3], ['tass-klapp', 1.5, 2, 1.3], ['tass-klapp', 2.0, 1, 1.3]] }],
     // C: tre försök: det första längst, 2 och 3 korta. Paketet vickar, men locket sitter kvar
     [2.6, 'lyfta', { vid: [0.4], skramlar: [0.8], sag: [[LYFT, 'Lyft!', 0.3, 0.15, 0.4]], ljud: [['skrammel', 0.8, 1, 1.3], ['dunk', 1.0, 1, 1.6]] }],
@@ -88,18 +88,18 @@ julDjur.kor({ kamBas: KE,
     [3.0, 'oj', { oppnas: 0.0, kam: KAM.nalle, sag: [[R + '24-en-nalle', 'En nalle!', 1.2]], ljud: [['pop', 0.0, 1, 1.1]] }],
     // nallens egen stund: den vinkar till kaninen (gungar), kaninen vinkar tillbaka, och de kramas
     [3.4, 'tittar', { kam: KAM.nalle, nalleVinkar: 0.2, sag: [[R + '24-nallen-vinkar', 'Nallen vinkar!', 1.2]], ljud: [['glitter', 0.3, 2, 0.8]] }],
-    [3.0, 'vinka', { kam: KAM.nalle, ser: true, ljud: [['kanin-gullig/kanin-hej', 1.2, 2, 1.3]] }],
-    [4.2, 'nyfiken', { kam: KAM.kram, uttryck: 'kawaii', nalleKram: 0.3, hjarta: 0.9, sag: [[R + '24-en-kram', 'En … kram!', 1.0]], ljud: [['kanin-gullig', 3.1, 4, 1.2]] }],   // kaninens läte efter repliken
+    [3.0, 'vinka', { kam: KAM.nalle, ser: true, ljud: [['kanin-ny/kanin-ny-hej', 1.2, 4, 1.3]] }],
+    [4.2, 'nyfiken', { kam: KAM.kram, uttryck: 'kawaii', nalleKram: 0.3, hjarta: 0.9, sag: [[R + '24-en-kram', 'En … kram!', 1.0]], ljud: [['kanin-ny/kanin-ny-mmm', 3.1, 2, 1.2]] }],   // kaninens läte efter repliken
     // G: kaninen blir glad och tackar vännerna
     // reaktion: tät bild på kaninen och nallen tillsammans, båda gungar lugnt
-    [4.2, 'vagga', { kam: [...KAM.tva, 0, 4.2, 1.0], uttryck: 'jatteglad', nalleGung: 0.1, sag: [[R + '24-sa-glad', 'Kaninen blir så glad!', 0.6]], ljud: [['kanin-gullig', 2.6, 2, 1.1]] }],
-    [2.6, 'stilla', { med: { 0: 'nicka', 1: 'nicka' }, sag: [[R + '24-tack', 'Tack!', 0.3]], ljud: [['kanin-gullig', 1.0, 2, 1.2]] }],
+    [4.2, 'vagga', { kam: [...KAM.tva, 0, 4.2, 1.0], uttryck: 'jatteglad', nalleGung: 0.1, sag: [[R + '24-sa-glad', 'Kaninen blir så glad!', 0.6]], ljud: [['kanin-ny/kanin-ny-jippi', 2.6, 1, 1.1]] }],
+    [2.6, 'stilla', { med: { 0: 'nicka', 1: 'nicka' }, sag: [[R + '24-tack', 'Tack!', 0.3]], ljud: [['kanin-ny/kanin-ny-ja', 1.0, 1, 1.2]] }],
     // H: alla vinkar, stjärnan skimrar, och alla säger "God jul!" tillsammans
     [2.4, 'stilla', { sag: [[R + '24-kan-du-vinka', 'Kan du vinka?', 0.2]] }],
     [3.0, 'vinka', { med: { 0: 'vinka', 1: 'vinka' }, glans: 0.4, ljud: [['glitter', 0.4, 1, 1.4]] }],
     [2.8, 'vinka', { sag: [[R + '24-alla-tillsammans', 'Alla tillsammans!', 0.1]] }],
     [3.6, 'vinka', { kam: KAM.gojul, sag: [[R + '24-god-jul', 'God jul!', 0.1]],
-      ljud: [['kanin-gullig', 1.0, 2, 1.2], ['ba-gullig', 1.0, 2, 1.2], ['spinn-gullig', 1.0, 2, 1.2]] }],
+      ljud: [['kanin-ny/kanin-ny-fortjust', 1.0, 2, 1.2], ['ba-gullig', 1.0, 2, 1.2], ['spinn-gullig', 1.0, 2, 1.2]] }],
   ],
 }).then(() => {
   const NS = 'http://www.w3.org/2000/svg', svg = document.querySelector('svg'), rita = window.render;

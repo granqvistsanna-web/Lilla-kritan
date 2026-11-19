@@ -893,7 +893,8 @@ async function kor(g) {
       const u = lp ? lp(tl)[0] : b.uttryck ? { ...F.blanda('neutral', b.uttryck, 1), titt: f.titt } : f;
       return [b.ser ? { ...u, titt: b.ser === true ? titt : blick(b.ser) } : b.titt ? { ...u, titt: b.titt } : u, p, fl]; };   // titt: [x, y] på en bit = blicken dit (lucka 2: upp mot pyntet på huvudet)
     let [f, p, fl] = gor(b, tl);
-    if (fore && tl < 0.4) { const [f0, p0, fl0] = gor(fore, fore.d), k = mjuk(tl / 0.4);
+    // hart: true på en bit = den börjar med ett hårt klipp, ingen glidning från förra bitens läge (lucka 4: grisen drogs annars baklänges ut ur bild innan den åkte in)
+    if (fore && tl < 0.4 && !b.hart) { const [f0, p0, fl0] = gor(fore, fore.d), k = mjuk(tl / 0.4);
       f = F.blanda(f0, f, k); p = F.blandaPose(p0, p, k); fl = fl.map((v, j) => lerp(fl0[j], v, k)); }
     // medan djuret står och väntar (stilla) lever det: blicken går åt sidan en stund, tyngden flyttas, ett öra vippar (riggens vila)
     if (b.typ === 'stilla') { const [fv, pv] = F.vila(f, p, tt), w = mjuk(kl(Math.min(tl, b.d - tl) / 0.4)); f = F.blanda(f, fv, w); p = F.blandaPose(p, pv, w); if (b.armar != null) p = { ...p, armar: [b.armar, b.armar] }; }

@@ -80,7 +80,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     // stannar i dalen och skrattar, "En gång till!" och grisen nickar; sedan är den tillbaka i backen och gungar glatt, redo igen (då ritar kritan säcken)
     [3.8, 'stilla', { armar: ARM, uttryck: 'skrattar', kullar: { vila: 2 * KULL.P, zoom: ZV, in: true }, nick: [1.9], sag: [['jul/05v2-en-gang-till', 'En gång till!', 1.4]], ljud: [['noff-fniss', 0.5, 1, 1.5, 1.2]] }],
     // 11-19 (feedback J04 0:44): tillbaka i backen åker grisen in från vänster och bromsar in på sin plats (glid utan sats och utan åket ut)
-    [2.2, 'glid', { armar: ARM, sats: 0, klipp: [-1e5, KL[1]], ljud: [glid(0)] }],
+    [2.2, 'glid', { armar: ARM, sats: 0, hart: true, klipp: [-1e5, KL[1]], ljud: [glid(0)] }],   // 11-19 runda 3 (0:43, "looks messy"): hart = ingen glidning baklänges ut ur bild före inåket
     [2.6, 'vagga', { gung: 0.6, uttryck: 'jatteglad', ljud: [['noff-gullig', 0.6, 2, 1.5, 1.2]] }],
     // C: kritan ritar säcken med paketen på pulkan bakom grisen; sedan växer en snödriva fram framför pulkan och pulkan sjunker ner i den
     // 11-18 kväll: Malin säger att kritan ritar och sedan vad den ritade; säcken ritas längre bak på sitsen (SX0), där grisen inte skymmer konturen, och glider fram till SX
@@ -142,6 +142,20 @@ KOR.then(async () => {
   window.ready = false;   // render.mjs väntar tills kullarnas bilder är laddade (nedan)
   const svg = document.querySelector('svg'), [VW, VH] = [svg.viewBox.baseVal.width, svg.viewBox.baseVal.height], STA = VH > VW;
   const B = window.BITAR2, KB = B.filter(b => b.kullar), kamera = svg.querySelector('#kamera'), akare = svg.querySelector('#akare'), scen = akare.parentElement;
+  // 11-19 runda 3 (feedback J04 1:59, "add halsduk to bear (same as tittut)"): björnens gröna halsduk ur tittut.js (g.halsduk, y 552), i kod över kroppen
+  // med kroppen som mask och en flik som hänger ner; ligger i .kropp och följer björnen också när den sitter i pulkan (#gasterbak). Som 23 Grisen granen
+  { const kr = svg.querySelector('#gaster .kropp, #gasterbak .kropp'), y = 552, farg = '#4A8F55', rand = '#F4EFE6', mork = '#35673D';
+    const kb = ([...kr.querySelectorAll(':scope > image')].find(i => /body|kropp/.test(i.getAttribute('href'))) ?? kr.querySelector('image')).getAttribute('href');
+    svg.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="klad-vax" filterUnits="userSpaceOnUse" x="-60" y="-60" width="1144" height="1144">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/><feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/><feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter><filter id="klad-krymp"><feMorphology operator="erode" radius="12"/></filter>`);
+    kr.insertAdjacentHTML('beforeend', `<mask id="klad-kropp" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha"><image href="${kb}" width="1024" height="1024" filter="url(#klad-krymp)"/></mask>
+      <g filter="url(#klad-vax)"><g mask="url(#klad-kropp)"><path d="M0 ${y - 30} Q512 ${y + 50} 1024 ${y - 30} V${y + 40} Q512 ${y + 120} 0 ${y + 40}Z" fill="${farg}"/>
+      <path d="M0 ${y + 2} Q512 ${y + 82} 1024 ${y + 2}" fill="none" stroke="${rand}" stroke-width="14" opacity="0.9"/><path d="M0 ${y + 40} Q512 ${y + 120} 1024 ${y + 40}" fill="none" stroke="${mork}" stroke-width="10"/></g>
+      <g transform="rotate(-8 600 ${y + 60})"><rect x="566" y="${y + 50}" width="74" height="170" rx="18" fill="${farg}"/>
+      <rect x="566" y="${y + 105}" width="74" height="14" fill="${rand}" opacity="0.9"/><rect x="566" y="${y + 150}" width="74" height="14" fill="${rand}" opacity="0.9"/>
+      <path d="M576 ${y + 212} v26 M592 ${y + 214} v28 M608 ${y + 214} v28 M624 ${y + 212} v26" stroke="${farg}" stroke-width="9" stroke-linecap="round"/></g></g>`); }
   const kl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x)), mjuk = k => k * k * (3 - 2 * k), lerp = (a, b, k) => a + (b - a) * k;
   const { P, A } = KULL, Y0 = STA ? 0.74 * VH : 0.86 * VH, SK = STA ? 0.34 : 0.3, VARLD = 7 * P + 600, BACKE = STA ? 9 : 18;
   // kullarnas höjd (11-18 natt: "some hills high and some low"): HK = höjden per kulle (dal till dal, k · P), R1/R2 börjar på den höga, R2 och R3 tar en hög och en låg

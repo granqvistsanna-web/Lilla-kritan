@@ -183,3 +183,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Pyjamasskjortan | [pyjamasskjorta.md](pyjamasskjorta.md) | 040 |
 | Adventsstjärnan | [adventsstjarna.md](adventsstjarna.md) | 040 |
 | Fläkten | [flakt.md](flakt.md) | 041 |
+| Småfåglarna | [smafaglar.md](smafaglar.md) | 043 |
+| Julkärven | [julkarve.md](julkarve.md) | 043 |
+| Fröpåsen | [fropase.md](fropase.md) | 043 |
+| Kvisten | [kvist.md](kvist.md) | 044 |

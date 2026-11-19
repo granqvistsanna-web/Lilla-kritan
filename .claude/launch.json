@@ -45,6 +45,15 @@
         "cd /tmp/lk-harness && exec python3 -m http.server ${PORT:-8841} --bind 127.0.0.1"
       ],
       "port": 8841
+    },
+    {
+      "name": "feedback-review",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/9907b27c-b41c-4e25-8155-b2069918dd3c/scratchpad/fb && exec python3 -m http.server 8812 --bind 127.0.0.1"
+      ],
+      "port": 8812
     }
   ]
 }

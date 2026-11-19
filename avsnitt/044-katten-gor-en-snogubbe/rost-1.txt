@@ -1,0 +1,43 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-snogubbe  [excited] Oj! En snögubbe!
+04-hej-katten  [happy] Hej, katten! Hej, hej!
+05-vad-vill-du-hitta-pa  [curious] Vad vill du hitta på, katten?
+06-ja-vad-kul  [excited] Bygga en snögubbe? Ja, vad kul!
+07-hur-gor-man  [curious] Hur gör man då?
+08-forst-en-boll  [warmly] Först en boll.
+09-en-stor-boll  [cheerfully] Rulla, rulla … en stor boll!
+10-en-boll-till  [cheerfully] Rulla, rulla … en boll till!
+11-en-liten-boll  [happy] Rulla, rulla … en liten boll!
+12-en-riktig-snogubbe  [excited] Oj! En riktig snögubbe!
+13-vad-for-ogon  [curious] Vad ska det vara för ögon?
+14-ja-stenar  [happy] Ja, stenar!
+15-dar-ar-stenar  [warmly] Titta, där är stenar du kan använda.
+16-tva-ogon  [gently] Ett öga … två ögon!
+19-ingen-nasa  [surprised] Men … snögubben har ingen näsa!
+20-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+21-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+22-en-morot  [happy] En morot! Varsågod, katten.
+23-tack-for-moroten  [happy] Tack för moroten, kritan!
+24-inte-pa-magen  [laughs] Oj! Inte på magen!
+25-upp-pa-nasan  [playfully] Hopp! Upp på näsan.
+26-en-nasa  [warmly] Nu har snögubben en näsa. Den ser glad ut!
+27-inga-armar  [curious] Men snögubben har inga armar. Ska vi leta kvistar?
+28-leta-en-kvist  [cheerfully] Leta, leta … en kvist!
+29-var-ar-kvisten  [curious] En arm! Men var är den andra kvisten? Katten vet inte var.
+30-kan-du-hjalpa  [warmly] Kan du hjälpa katten? Kan du se var kvisten är?
+31-ja-dar  [excited] Ja, där! Vid fågelholken!
+32-leta-en-kvist-2  [happy] Leta, leta … en kvist!
+33-tva-armar  [laughs] Ha ha! Två armar! Snögubben vinkar!
+34-oj-en-fagel  [surprised] Oj! Titta, en fågel!
+35-pa-huvudet  [delighted] Den sätter sig på snögubbens huvud!
+36-letar-mat  [curious] Fågeln letar mat.
+37-kritan-ritar-igen  [excited] Kritan ritar igen! En påse med frön.
+38-varsagod-fageln  [warmly] Varsågod, fågeln!
+39-pick-pick  [happy] Pick, pick, pick. Mums!
+40-sager-tack  [warmly] Fågeln säger tack. Pip!
+41-kan-du-saga-pip  [playfully] Kan du säga pip?
+42-blev-ett-mjau  [laughs] Det blev ett mjau!
+43-vilken-fin-snogubbe  [delighted] Vilken fin snögubbe!
+44-hej-da-katten  [happy] Hej då, katten! Hej då, snögubben! God jul!
+45-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

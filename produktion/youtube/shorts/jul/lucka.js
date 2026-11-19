@@ -6,7 +6,7 @@
 // olika storlekar så att de fyller tavlan (MUR) och kaninen står i förgrunden till höger. Stående (Shorts) är tavlan hög med
 // 6 × 4 lika stora luckor, kaninen står under den, och öppningen är kort (ca 3,7 s, se bygg).
 // Varje lucka börjar på kalendern med alla 24 luckor: de tidigare dagarna står öppna. Introt (ca 11 s), en sak i taget:
-//   1 kaninen vinkar, "Hej kaninen!", och kaninen svarar med sitt hej-läte   tittut/kanin-hej, effekter/kanin-gullig/kanin-hej-4
+//   1 kaninen vinkar, "Hej kaninen!", och kaninen svarar med sitt hej-läte   tittut/kanin-hej, effekter/kanin-ny/kanin-ny-hej-2
 //   2 "Vilken dag är det idag?", 1,5 s för barnet medan kaninen tittar längs tavlan; sedan får dagens lucka sin guldram och kaninen pekar
 //   3 "Just det, ett!"                                              jul/just-det-N (finns den inte: jul/lucka-N, "Idag öppnar vi lucka ett!")
 //   4 kameran börjar åka in, "Nu öppnar vi och ser vad som finns där!", och luckan öppnas precis när repliken slutar   jul/nu-oppnar-vi
@@ -193,7 +193,7 @@ async function bygg(svg, N, { pekare = 'kaninen-kanel', kvall = false, slut = 'v
     slut(t) { stang = [t, t + 0.8]; ut = [t + 0.8, t + 1.7]; return SLUT = t + 2.4; },   // kameran backar först när luckan är helt stängd
     ljud: () => [...(L ? [
       { t: VINK + 0.4, fil: 'assets/ljud/roster/tittut/kanin-hej.m4a', vol: 2.5, tal: 'Hej kaninen!' },
-      { t: LATE, fil: 'assets/ljud/effekter/kanin-gullig/kanin-hej-4.m4a', vol: 1.3 },   // kaninens eget hej, lägre än berättaren
+      { t: LATE, fil: 'assets/ljud/effekter/kanin-ny/kanin-ny-hej-2.m4a', vol: 1.3 },   // kaninens eget hej, lägre än berättaren
       { t: FRAGA, fil: `${ROST}/vilken-dag.m4a`, vol: 2.5, tal: 'Vilken dag är det idag?' },
       { t: PEK + 0.5, fil: `${ROST}/${JUST}.m4a`, vol: 2.5, tal: harJust ? `Just det, ${TAL[N]}!` : `Idag öppnar vi lucka ${TAL[N]}!` },
       { t: zoom[0] + 0.4, fil: `${ROST}/nu-oppnar-vi.m4a`, vol: 2.5, tal: 'Nu öppnar vi och ser vad som finns där!' },
