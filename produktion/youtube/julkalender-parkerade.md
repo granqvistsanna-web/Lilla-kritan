@@ -1,6 +1,6 @@
 # Julkalendern – parkerade luckor
 
-**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 7–11 och 13–24 står öppna (tomma) tills vidare.
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 8–11 och 13–24 står öppna (tomma) tills vidare.
 Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
 | Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
@@ -11,7 +11,8 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 4 | J04 | `05-grisen-pulka` | granska. Feedback 19/11 fixad (säcken högre, åket ut på kullarna utan ut-och-in, längre kullåk, grisen nickar), 169,7 s, ingen overall; luckan (hel-video.sh) byggs om när filmen är godkänd |
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
-| 7–11 | – | – | öppna |
+| 7 | J07 | `07-hunden-ater-julmat` (ny) | 036 Hunden äter julmat, hel video (`fran: 3.34`, utan bilderboksintrot). Sanna 2026-11-19 |
+| 8–11 | – | – | öppna |
 | 12 | J12 | `12-tittut-grisen` (ny) | Tittut med grisen i julskogen, hel video (`fran: 4.0, till: 136.4`), inte renderad. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
 | 13–24 | – | – | öppna |
 

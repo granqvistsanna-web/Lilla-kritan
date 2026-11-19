@@ -309,7 +309,7 @@ const GROUPS = [
     ["016","Blinka lilla stjärna"],["017","Mors lilla Olle"],["011","Gula helikoptern"],
     ["031","Borsta borsta, bondgården"],["032","Borsta borsta, apan"],["025","Katten borstar tänderna"],
     ["018","Bada bada"] ]},
-  { name: "Julkalender", eps: ["Kaninen åker pulka","Lammet julkula","Leoparden går och lägger sig","Björnen pepparkaka","Tre pussel","Tittut björnen"].map((n, i) => ["J" + String(i + 1).padStart(2, "0"), n]) },
+  { name: "Julkalender", eps: Object.entries({ 1: "Kaninen åker pulka", 2: "Lammet julkula", 3: "Leoparden går och lägger sig", 4: "Grisen åker pulka", 5: "Tre pussel", 6: "Tittut björnen", 7: "Hunden äter julmat", 12: "Tittut grisen" }).map(([i, n]) => ["J" + i.padStart(2, "0"), n]) },
   { name: "Live", eps: [
     ["003","Bussen hälsar på"],["004","Vi ska bada!"],["005","Rosa bilen"],["006","Orangea sången"],
     ["007","Bruna sången"],["013","Röda sången"],["014","Gröna traktorn"],["015","Ba ba vita lamm"],
@@ -703,7 +703,8 @@ function apply() {
   // a few old notes have `at` as a date string; make it a number so sorting and "Uppdaterad" work
   items = Object.entries(store.feedback).map(([id, d]) => ({ id, ...d, at: typeof d.at === "number" ? d.at : +new Date(String(d.at || "").replace(" ", "T")) || 0 }));
   videos = store.videos;
-  for (const id of Object.keys(videos)) if (!ALL.find(e => e.id === id)) ALL.push({ id, name: videos[id].name || id, group: "" });
+  // a name in videos.json wins over the list above, so a reused id (e.g. a julkalender lucka) shows its current film
+  for (const id of Object.keys(videos)) { const e = ALL.find(e => e.id === id); if (!e) ALL.push({ id, name: videos[id].name || id, group: "" }); else if (videos[id].name) e.name = videos[id].name; }
   loaded = true; render();
 }
 // a refresh that started before (or right after) a save may read the old file; it must not undo the tick on screen
