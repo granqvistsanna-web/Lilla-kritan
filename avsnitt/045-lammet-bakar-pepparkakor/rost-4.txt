@@ -1,0 +1,4 @@
+53-oj-grytvantarna  [curious] Oj, grytvantarna! Lammet vet inte var.
+54-kan-du-se-grytvantarna  [warmly] Kan du hjälpa lammet? Kan du se var grytvantarna är?
+55-ja-dar-pa-vaggen  [excited] Ja, där! På väggen!
+56-grytvantar-pa  [cheerfully] Grytvantar på!

@@ -7,8 +7,7 @@
 07-gillar-du  [curious] Gillar du pepparkakor?
 08-ja-det-ar-gott  [happy] Ja, det är gott!
 09-deg-har-du  [cheerfully] Deg har du. Ska du forma degen?
-10-lite-deg-en-form  [warmly] Lite deg, en form … och så tryck!
-11-men-med-tassen  [curious] Men lammet trycker med tassen …
+11-men-med-tassen  [curious] Lammet trycker med tassen …
 12-oj-det-kladdar  [surprised] Oj! Det kladdar!
 13-vilken-form  [curious] Vilken form ska du börja med?
 14-stjarnan-ja  [happy] Stjärnan? Ja, vad fint!

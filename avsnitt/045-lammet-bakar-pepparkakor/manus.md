@@ -1,6 +1,6 @@
 # Avsnitt 045 – Lammet bakar pepparkakor (plan)
 
-**Status:** ✅ grind 1 godkänd 2026-11-19 (*"Ja, kör grind 2"*), sedan omskriven efter Sannas repliker samma dag: formarna och plåten finns från början, kritan ritar en **ringklocka**, lammet tar på **grytlappar**. ✅ grind 2 (Sanna 2026-11-19: formarna 1, plåten 2, ringklockan 1, grytlapparna 3), urklipp i `assets/rekvisita/{pepparkaksformar,bakplat,ringklocka,grytlappar}/cut/`, alla fyra i `grind2-alla.jpg`. Grind 3 (rösten) väntar på Malins tagning. Julbilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med lammet, lammet svarar med bä, öron och svans. Bygger på idé 33 i `harriets-favoriter.md`, med lammet i stället för musen (Sanna 2026-11-19). Till julkalenderns **lucka 15** (`produktion/youtube/julkalender-parkerade.md`). Förlagor: [036 Hunden äter julmat](../036-hunden-ater-julmat/manus.md) (djuret bakom bordet i köket) och [044 Katten gör en snögubbe](../044-katten-gor-en-snogubbe/manus.md) (kritan ritar idén i ritintrot).
+**Status:** ✅ grind 1 godkänd 2026-11-19 (*"Ja, kör grind 2"*), sedan omskriven efter Sannas repliker samma dag: formarna och plåten finns från början, kritan ritar en **ringklocka**, lammet tar på **grytlappar**. ✅ grind 2 (Sanna 2026-11-19: formarna 1, plåten 2, ringklockan 1, grytlapparna 3), urklipp i `assets/rekvisita/{pepparkaksformar,bakplat,ringklocka,grytlappar}/cut/`, alla fyra i `grind2-alla.jpg`. Grind 3: tagning 1 (`malin-tagning-1.mp3`, 92,8 s) delad för hand längs pauserna (dela-tagning.py drev på upprepningarna) till 46 filer i `assets/ljud/roster/lammet-bakar-pepparkakor/`, −3 dBFS, längderna i `rost-langder.txt`, allt i rad i `ljud/provlyssna-rost.m4a`. Rad 10 saknas i tagningen och rad 11 saknar *"Men"*: kort tagning 2 (`rost-2.txt`). Ett extra *"Så du!"* i rad 9 och ett extra *"Fint!"* efter rad 19 är bortklippta. ✅ grind 3 (Sanna 2026-11-19: *"Alla bra"*). Tagning 2 (rad 10 och 11) återstår. Grind 4: lammets ljud finns (024). Nya effekter från Openverse (CC0, Sanna sa ja till nedladdningen): `deg-kladd` 1–3, `tick` 1–2, `ringklocka` 1–2. `deg-tryck` prövas med `sno-duns` 1–2. Allt i rad i `ljud/provlyssna-ljud.m4a`. ✅ grind 4 (Sanna 2026-11-19): `deg-tryck` = `sno-duns-1`, `deg-kladd-1`, `ringklocka-1`, och `tick-1` i takt med visaren. Julbilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med lammet, lammet svarar med bä, öron och svans. Bygger på idé 33 i `harriets-favoriter.md`, med lammet i stället för musen (Sanna 2026-11-19). Till julkalenderns **lucka 15** (`produktion/youtube/julkalender-parkerade.md`). Förlagor: [036 Hunden äter julmat](../036-hunden-ater-julmat/manus.md) (djuret bakom bordet i köket) och [044 Katten gör en snögubbe](../044-katten-gor-en-snogubbe/manus.md) (kritan ritar idén i ritintrot).
 
 | | |
 |---|---|
@@ -77,7 +77,12 @@ Kritan ritar **en pepparkaksstjärna** (som snögubben i 044: teckningen är id�
 | 2b | Närbild på degen | Jaha! Baka pepparkakor! | – |
 | 3 | Halvbild, glatt skutt, öronen upp | Gillar du pepparkakor? | `ba-gullig-2` |
 | 3b | Lammet nickar två gånger | Ja, det är gott! | – |
-| 4 | Halvbild, lammet tittar på degen | Deg har du. Ska du forma degen? | `ba-gullig-1b` |
+| 3c | Halvbild, lammet tittar ner på bordet och sedan upp på oss | Har du allt du behöver? | `ba-gullig-7` (pratar) |
+| 3d | Närbild, tassen klappar på degen, degen glimtar | Pepparkaksdeg … ja! | `deg-tryck` lågt, `ba-gullig-2` |
+| 3e | Närbild, tassen pekar på formarna, stjärnan och hjärtat glimtar på varsitt ord | Formar … en stjärna och ett hjärta! | `pling` × 2 lågt |
+| 3f | Närbild, tassen klappar på plåten, plåten glimtar | Och en plåt … ja! | `tass` lågt, `ba-gullig-2b` |
+| 3g | Halvbild, lammet gör ett glatt skutt, öronen upp | Perfekt! Då kan vi börja! | `ba-gullig-3` (fniss) |
+| ~~4~~ | *(struken 2026-11-19 kväll: 3c–3g visar allt i stället)* | ~~Deg har du. Ska du forma degen?~~ | – |
 | 4b | Närbild på degen och formarna bredvid: degen, sedan stjärnformen glimtar, sedan gör formen en liten nick nedåt (sjunker 4 px och upp) | Lite deg, en form … och så tryck! | `pling` lågt på *"form"* |
 | 5 | Halvbild, lammet struntar i formen och trycker tassen rakt i degen | Men lammet trycker med tassen … | `deg-tryck` |
 | 6 | Närbild, tassen lyfts och en klick deg sitter fast. Lammet skakar av den | Oj! Det kladdar! | `deg-kladd`, `ba-gullig-6` |
@@ -102,10 +107,10 @@ Kritan ritar **en pepparkaksstjärna** (som snögubben i 044: teckningen är id�
 | 25 | Halvbild, lammet blundar och lyfter nosen, doftstreck från höger | Mmm … det doftar gott! | `ba-gullig-4`, `tick` |
 | 26 | Närbild, klockan skakar och ringer | Oj, redan! Nu ringer klockan! | `ringklocka` |
 | 27 | Halvbild, lammet öppnar ögonen, öronen upp | Kakorna är klara! | `ba-gullig-2b` |
-| 27b | Halvbild, lammet tittar åt vänster, Malin efter, sedan åt höger | Oj, grytlapparna! Lammet vet inte var. | frågande `ba-gullig-7` |
-| 27c | Bred bild för frågan, sedan klipp till närbild på klockan: en rutig kant sticker fram vid sidan. Efter 3 s skimrar den | Kan du hjälpa lammet? Kan du se var grytlapparna är? *(paus 5 s)* | tyst, blinkar |
-| 27d | Närbild kvar, kanten skimrar tydligt, lammet tittar dit och blir jätteglad | Ja, där! Bakom klockan! | `ba-gullig-2`, `tindra` |
-| 28 | Närbild, grytlapparna sätter sig på tassarna | Grytlappar på! | `tass` lågt |
+| 27b | Halvbild, lammet tittar åt vänster, Malin efter, sedan åt höger | Oj, grytvantarna! Lammet vet inte var. *(rad 53, Sanna 19/11: grytvantar)* | frågande `ba-gullig-7` |
+| 27c | Bred bild för frågan, sedan klipp till närbild på klockan: en rutig kant sticker fram vid sidan. Efter 3 s skimrar den | Kan du hjälpa lammet? Kan du se var grytvantarna är? *(paus 5 s)* | tyst, blinkar |
+| 27d | Närbild kvar, kanten skimrar tydligt, lammet tittar dit och blir jätteglad | Ja, där! På väggen! | `ba-gullig-2`, `tindra` |
+| 28 | Närbild, grytlapparna sätter sig på tassarna | Grytvantar på! | `tass` lågt |
 | 29 | Armarna ut till höger, plåten glider in med bruna kakor och ånga | Ta ut kakorna … sådär! | – |
 | 30 | Närbild på kakorna med ångan | Oj, oj, de är varma! | – |
 | 31 | Bred bild, lammet tittar ut mot oss | Kan du blåsa på kakorna? *(paus 4 s)* | tyst, ångan krymper ett streck i taget |
