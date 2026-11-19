@@ -1471,5 +1471,13 @@
   "file": "produktion/youtube/shorts/jul/07-hunden-ater-julmat/07-hunden-ater-julmat.mp4",
   "status": "granska",
   "name": "Hunden äter julmat"
+ },
+ "J08": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1119-0652.mp4",
+  "duration": 167.2,
+  "rendered": "2026-11-19 06:52 (Röda sången (013) som lucka 8, nya kalenderintrot, mastrad -16 LUFS)",
+  "file": "produktion/youtube/shorts/jul/11-roda-sangen/11-roda-sangen.mp4",
+  "status": "granska",
+  "name": "Lucka 8: Röda sången"
  }
 }
