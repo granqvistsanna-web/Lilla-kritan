@@ -33,17 +33,18 @@ mat() { local f=$1; shift; ffmpeg -hide_banner -nostats "$@" -i "$f" -vn -af "lo
 
 # 1. stillbilderna
 fran=$(sed -n "s/.*fran: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1); fran=${fran:-0}   # valfritt: hoppa över filmens början (introt)
-f0=$(python3 -c "print(round($fran * 30))")   # första bildrutan som spelas
+ffps=$(python3 -c "print($(sond v:0 r_frame_rate $film))")   # filmens bildfrekvens (--snabb: 15), bildrutorna nedan räknas i den (2026-11-19: J06 med 30 här klipptes bilden vid 8 s och ljudet vid 4 s)
+f0=$(python3 -c "print(round($fran * $ffps))")   # första bildrutan som spelas
 ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$f0)" -frames:v 1 -fps_mode passthrough $mapp/forst.png
 till=$(sed -n "s/.*till: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: kapa filmens slut
 nb=$(sond v:0 nb_frames $film)
 if [[ -n $till ]]; then   # sista bilden är bild nb-1 av den kapade filmen
-  nb=$(python3 -c "print(round($till * 30))")
+  nb=$(python3 -c "print(round($till * $ffps))")
   ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$((nb - 1)))" -frames:v 1 -fps_mode passthrough $mapp/sist.png
 else
   ffmpeg -hide_banner -loglevel error -y -sseof -1 -i $film -update 1 $mapp/sist.png   # skriver varje bild, den sista blir kvar
 fi
-nb=$((nb - f0)); fdur=$(python3 -c "print($nb / 30)")   # det som spelas, i hela bildrutor
+nb=$((nb - f0)); fdur=$(python3 -c "print($nb / $ffps)")   # det som spelas, i hela bildrutor
 
 # 2. tider: sidans längd är OPPEN + 3 + 2,4 s (video.js), och --bara-ljud skriver en wav av exakt den längden
 node avsnitt/004-bussen-badar/scener/render.mjs $mapp --bara-ljud > /dev/null
@@ -92,7 +93,7 @@ zsh ${0:A:h}/mastra.sh $mapp > $tmp/mastra.txt   # -16 LUFS och -liten.mp4
 
 # 5. kontroller
 langd=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $ut); vfram=$(sond v:0 nb_frames $ut)
-vantat=$(python3 -c "print(($n0 + 1 + $nb + ($sidlangd * 30 - ($n0 + 90 - $hall)) ) / 30)")   # öppning + film + stängning, i sekunder
+vantat=$(python3 -c "print(($n0 + 1 + $nb * 30 / $ffps + ($sidlangd * 30 - ($n0 + 90 - $hall)) ) / 30)")   # öppning + film + stängning, i sekunder
 # skarvarna: sista bilden före och första efter, och 1 s
 last() { ffmpeg -hide_banner -loglevel error -y -i $ut -vf "select=eq(n\,$1)" -frames:v 1 -fps_mode passthrough $stills/$2.png; }
 f1=$(python3 -c "print(round($n0 + $nb))"); last $n0 skarv1-fore; last $((n0 + 1)) skarv1-efter; last $((f1)) skarv2-fore; last $((f1 + 1)) skarv2-efter

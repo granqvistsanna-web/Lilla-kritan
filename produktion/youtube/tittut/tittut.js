@@ -371,16 +371,19 @@ async function tittut(g) {
     // "borta" bara varannan runda (Sanna 2026-11-07: för tjatigt); filen tas ändå varje runda så att tagningarna följer gömställena
     const bortaFil = i % 3 ? (bortaIgen() ?? borta()) : (borta() ?? bortaIgen());
     // g.bortaVarje (hunden, Sanna 2026-11-11: för tyst mellan replikerna): filmens egna borta-repliker nämner gömstället, så alla sägs
-    R.borta = R.ner[1] - 0.05; e = sag(R.borta, i % 2 === 0 || g.bortaVarje ? bortaFil : null);
+    // g.voEfter (grisen i julskogen, Sanna 2026-11-19 J12: "match VO with animations"): Malins repliker kommer så här långt efter att rörelsen
+    // landat (minnet "Malin efter handlingen": 0,4–0,8 s), i stället för samtidigt. Utan g.voEfter är tiderna som förut
+    const VE = g.voEfter;
+    R.borta = R.ner[1] + (VE ?? -0.05); e = sag(R.borta, i % 2 === 0 || g.bortaVarje ? bortaFil : null);
     R.paus = e + ANDAS;
     e = sag(R.paus, i === 0 ? gomma() : null);   // "Var gömmer du dig nu?" när den just gömt sig första gången
     if (i === 0 && SM['var-ar-1']) e = sag(e, SM['var-ar-1']) + 1.2;   // "Var är björnen? Ser du?" och tid att svara
     // sista rundan med g.samtal: vi letar. Malin frågar vid granen och säcken (de skakar, tomma), sedan syns mössans tofs över saken
     R.leta = !!(g.samtal && SM['leta-1'] && i === g.rundor.length - 1);
     if (R.leta) {
-      let u = R.ner[1] + 0.6; R.letaSteg = [];
+      let u = VE != null ? Math.max(R.ner[1] + 0.6, e + ANDAS) : R.ner[1] + 0.6; R.letaSteg = [];   // voEfter: inte ovanpå "I paketen igen…"
       for (const [fraga, svar, namn] of [['leta-1', 'nej-1', g.samtal.leta?.[0] ?? 'gran'], ['leta-2', 'nej-2', g.samtal.leta?.[1] ?? 'sack']]) {
-        const t0 = u; u = sag(u, SM[fraga]); const skak = u + 0.2;
+        const t0 = u; u = sag(u + (VE != null ? 0.9 + VE : 0), SM[fraga]); const skak = u + 0.2;   // voEfter: kameran är framme (t0 + 0,9) innan frågan
         fx(skak, PRASSEL[namn] ?? 'prassel-buske', 1.1); R.letaSteg.push({ sak: SAKER[namn], t: t0, skak });
         u = sag(skak + 1.0, SM[svar]) + 0.5;
       }
@@ -400,7 +403,7 @@ async function tittut(g) {
     if (R.kik === 'arm' && (fig.rigg.ritadeDelar || g.armar)) R.kik = hk ? 'sida' : 'topp';
     const huvud = hk ? 'sida' : 'topp';   // andra kiken: huvudet om första var en arm/ett ben, annars ett ben
     // "Jag ser ett öra." sägs medan öronen faktiskt syns (Sanna 2026-11-07): den rundan kikar huvudet först
-    if (i % 4 === 3) { R.kik = huvud; R.sag = sagNagot(); if (R.sag) sag(R.retas[0] + (g.svansKik ? 0.3 : 0.75), R.sag); }   // svansKik: tidigare, så att svansen syns hela repliken
+    if (i % 4 === 3) { R.kik = huvud; R.sag = sagNagot(); if (R.sag) sag(R.retas[0] + (g.svansKik ? (VE != null ? 0.55 : 0.3) : 0.75), R.sag); }   // svansKik: tidigare, så att svansen syns hela repliken
     R.kik2 = R.kik === huvud ? 'ben' : huvud;
     // g.retas 'huvud' (v2-Kanel, Sanna 2026-11-07: armen som sticker ut såg konstig ut): bara huvudet, två gånger
     if (HUVUD) { R.kik = R.kik2 = huvud; }
@@ -423,18 +426,23 @@ async function tittut(g) {
     const medR = R.leta ? SM['ropa-1'] : g.samtal && i === 2 ? SM['sag-med-1'] : null, tf = medR ? null : tf0;
     const off = UT[tf?.split('/').slice(-2).join('/')] ?? 0.3, SEN0 = g.tittutSen ?? 0;
     R.tittut = medR ? sag(e + 0.3, medR) + (R.leta ? 1.3 : 0.9) - POPP - SEN0 : e + 0.5 + Math.max(0, off - POPP - 0.3);
-    R.fram = [R.tittut, R.tittut + (rorelse === 'ur' ? 3.0 : rorelse === 'sida' ? 3.0 : 1.7)];
+    // R.hall (sista rundan med g.samtal, Sanna 2026-11-19 J06: "match VO with animations"): björnen står kvar med huvudet över kanten i
+    // närbild medan Malin säger "Du hittade björnen!", i stället för att gå ut innan repliken kommer. Pausen läggs in mitt i 'ur':s stillastående del.
+    R.hall = R.leta && SM['hittade-1'] ? g.samtal.hall ?? 1.6 : 0;
+    R.fram = [R.tittut, R.tittut + (rorelse === 'ur' ? 3.0 : rorelse === 'sida' ? 3.0 : 1.7) + R.hall];
     // g.tittutSen (kaninen vid svampen, Sanna 2026-11-14: Malin är alltid lite före handlingen): "ut" och poppljudet kommer så mycket senare, när huvudet faktiskt syns
     const SEN = g.tittutSen ?? 0;
     sag(R.tittut + POPP - off + SEN, tf); e = tf ? R.tittut + POPP - off + SEN + LANGD[tf] : R.tittut;
     fx(R.tittut + POPP + SEN, 'pop', 0.8);
     if (g.glad) { fx(R.tittut + POPP + 0.5, 'svansvift', 0.5); if (i % 2) fx(R.tittut + POPP + 0.1, 'vov-pip', 0.7); }   // svansen viftar, och ett litet vov när babblet inte hörs (Hugo)   // svansen viftar (Hugo); tyst tills familjen finns
-    R.ljud = Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) bla(R.ljud);   // djurljudet varannan gång, annars tjatigt
+    // sista rundan: "Du hittade björnen!" 0,9 s efter poppet (huvudet är uppe efter 0,75 s), björnens brum efter repliken
+    R.hittade = R.hall ? R.tittut + 0.9 : null;
+    R.ljud = R.hall ? R.hittade + LANGD[SM['hittade-1']] + 0.2 : Math.max(e, R.tittut + 0.7) + 0.1; if (i % 2 === 0) bla(R.ljud);   // djurljudet varannan gång, annars tjatigt
     R.hopp = [R.fram[1] + 0.25, R.fram[1] + 1.45]; hupp(R.hopp[0] - 0.05, 0.3); duns(R.hopp[1] - 0.05, 0.7);
     // g.darVarje (hunden): "Där är du ju!" också efter fjärde rundan, så att alla Malins tagningar används
     const efter = R.leta ? SM['hittade-1'] : g.samtal && i === 3 && SM['sag-du-1'] ? SM['sag-du-1']
       : i % 4 === 1 || (g.darVarje && i % 4 === 3) ? dar() : i % 4 === 2 ? busig() : null;
-    e = sag(Math.max(R.ljud + 1.0, R.hopp[1] + 0.3), efter);
+    e = sag(R.hittade ?? Math.max(R.ljud + 1.0, R.hopp[1] + (VE ?? 0.3)), efter);
     // flåsar glatt efter hoppet (Hugo), sedan fnisset: bara när ingen replik kommer, annars pratar han i munnen på berättaren
     if (!efter) { if (g.glad) fx(R.hopp[1] + 0.15, 'flamt-valp', 0.6); R.fniss2 = R.hopp[1] + (g.glad ? 1.6 : 0.6); fx(R.fniss2, FNISS, 1.0); e = Math.max(e, R.fniss2 + 0.8); }
     R.slut = Math.max(R.hopp[1] + 1.0, e + 0.5) + (g.reaktion ?? 0);   // g.reaktion: ett reaktionsslag i närbild efter hoppet (björnen 2026-11-19)
@@ -458,7 +466,7 @@ async function tittut(g) {
   if (franTopp) { T.lamna = [t, t + 1.3]; hupp(t + 0.05); duns(t + 1.25, 0.5); T.mittFran = hem ? [...START] : [beside(franTopp, Math.sign(START[0] - fran[0]) || 1), RAD]; t = T.lamna[1]; }
   T.mitt = [t, t + (hem ? 0.6 : 4.2)];   // långsammare och studsigare (Sanna 2026-11-07)
   if (!hem) steg(T.mitt, 4);
-  e = sag(T.mitt[1] + 0.2, ny(SLUT)());
+  e = sag(T.mitt[1] + (g.voEfter ?? 0.2), ny(SLUT)());
   // hej då: djuret vinkar stort och säger själv "bä!", berättaren "Hej då!", ett fniss till sist
   T.vinka2 = [e + 0.2, 0];
   bla(e + 0.4);
@@ -470,7 +478,7 @@ async function tittut(g) {
   const k0 = T.vinka2[1];
   T.slut = { ner: [k0, k0 + 1.0], skriv: [k0 + 0.8, k0 + 2.0], upp: [k0 + 2.2, k0 + 2.7] };
   fx(k0, 'swoosh', 0.7); fx(T.slut.skriv[0], 'skrrrrt-lang', 2.0); fx(T.slut.skriv[1] + 0.1, 'glimt', 0.45); fx(T.slut.upp[0] + 0.05, 'pop', 0.8);
-  e = sag(T.slut.upp[1], ny(HEJDOR2)());
+  e = sag(T.slut.upp[1] + (g.voEfter != null ? g.voEfter - 0.1 : 0), ny(HEJDOR2)());
   fx(e + 0.1, LJUD, 1.0);
   T.slut.dyk = [e + 1.0, e + 1.35];
   T.slut.kort = [T.slut.dyk[1] + 0.3, T.slut.dyk[1] + 1.3];
@@ -704,7 +712,8 @@ async function tittut(g) {
         return { x: x + kx, y, z: nu.y - 6, sjunk: sj, klipp: nu, sx: 1, sy: 1, tilt: lut, titt: tt || (kx ? R.dir : 0), kik, kikar: !!RT };
       }
       // fram: upp = sträcker sig upp över saken; sida/ur = upp vid kanten, ut bredvid saken, och sedan fram i gången om det är trångt
-      const k = del(R.fram[0], R.fram[1], t), h = hoppa(t, R.hopp, g.glad ? 95 : 46), kvar = behov(ut, R.inne);
+      const tf = R.hall ? Math.min(t, Math.max(R.fram[0] + 1.2, t - R.hall)) : t;   // R.hall: tiden står still 1,2 s in (huvudet uppe)
+      const k = del(R.fram[0], R.fram[1] - R.hall, tf), h = hoppa(t, R.hopp, g.glad ? 95 : 46), kvar = behov(ut, R.inne);
       if (R.rorelse === 'upp') {
         const q = over(k), st = Math.sin(Math.PI * clamp(k / 0.8));
         return { x: ut.x, y: ut.y - 6 + h.dy - R.lyft * q, z: ut.y - 6, sjunk: kvar * (1 - q), klipp: ut,
@@ -1041,10 +1050,13 @@ async function tittut(g) {
       const z = clamp(Math.min(1920 / (x1 - x0), 1080 / (y1 - y0)), 1.2, g.narbild);
       const vid = KAMERA.filter(k => k[0] <= R.slut - 0.2).at(-1).slice(1), nar = [(x0 + x1) / 2, (y0 + y1) / 2, z];
       if (R.leta) {   // kameran letar med: granen, säcken, sedan saken där tofsen syns, och närbild när den poppar fram
-        const vy = s => [s.x, s.y - Math.min(s.h, 560) * 0.5, 1.5];
+        // J06 2026-11-19 ("more closeups"): granen och säcken närmare (1,5 → 1,8), och när tofsen syns går kameran in tätt på taket och
+        // stannar där genom "Ett, två, tre…", poppet och "Du hittade björnen!"; först när björnen går ut blir bilden vidare
+        const vy = (s, z = 1.8) => [s.x, s.y - Math.min(s.h, 560) * 0.5, z];
+        const pp = lage(R.tittut + 1.0), tak = [pp.x, pp.y + (pp.sjunk ?? 0) - H * 0.72, 2.0], ut0 = R.tittut + 1.2 + R.hall;
         nya.push([R.ner[1] + 0.2, ...vid]);
         for (const st of R.letaSteg) nya.push([st.t + 0.9, ...vy(st.sak)], [st.skak + 1.4, ...vy(st.sak)]);
-        nya.push([R.letaHus + 0.9, ...vy(R.ut)], [R.tittut - 0.2, ...vy(R.ut)], [R.tittut + 0.6, ...nar], [R.slut - 1.0, ...nar]);
+        nya.push([R.letaHus + 0.9, ...vy(R.ut, 1.5)], [R.retas[0] + 1.6, ...tak], [ut0, ...tak], [ut0 + 1.2, ...nar], [R.slut - 1.0, ...nar]);
         continue;
       }
       nya.push([R.retas[0] - 0.8, ...vid], [R.retas[0] + 0.1, ...nar], [R.slut - 1.0, ...nar]);
