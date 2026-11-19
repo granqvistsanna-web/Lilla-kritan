@@ -6003,9 +6003,10 @@
   "sec": 43,
   "tags": [],
   "note": "polish this, looks messy",
-  "fixed": false,
+  "fixed": true,
   "at": 1795069625252,
-  "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)"
+  "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)",
+  "fixedAt": 1795071291424
  },
  "7abtaeimlhmwn64giw": {
   "ep": "J04",
