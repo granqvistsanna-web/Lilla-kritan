@@ -6080,9 +6080,10 @@
   "sec": 97,
   "tags": [],
   "note": "lower vinter sountrack",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075503018,
-  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")",
+  "fixedAt": 1795077200540
  },
  "jnm98bsw65mwn9m6yn": {
   "ep": "J06",
