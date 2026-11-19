@@ -8,7 +8,7 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 1 | J01 | `20-kaninen-aker-pulka` | 039 hel video, granska. Omrenderad som lucka 1 (18/11), uppladdad som J01 |
 | 2 | J02 | `07-lammet-julkula` | granska. Renderad som lucka 7, renderas om |
 | 3 | J03 | `21-leoparden-gar-och-lagger-sig` | 040 byggs (animatiken godkänd), ingen film på sidan än |
-| 4 | J04 | `05-grisen-pulka` | granska. Renderad som lucka 5, renderas om |
+| 4 | J04 | `05-grisen-pulka` | granska. Feedback 19/11 fixad (säcken högre, åket ut på kullarna utan ut-och-in, längre kullåk, grisen nickar), 169,7 s, ingen overall; luckan (hel-video.sh) byggs om när filmen är godkänd |
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
 | 7–11 | – | – | öppna |
