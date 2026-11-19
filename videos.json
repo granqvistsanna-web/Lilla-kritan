@@ -1519,5 +1519,13 @@
   "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
   "status": "granska",
   "name": "Blinka lilla stjärna"
+ },
+ "ABC-a5": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-a5-1119-1913.mp4",
+  "duration": 232.7,
+  "rendered": "2026-11-19 19:13 (Förhandsvisning (--snabb). A byggd om efter B: A-märket överst, apans närbilder, sakernas ljud, nytt disco och outro.)",
+  "file": "produktion/youtube/alfabet/abc-a/abc-a.mp4",
+  "status": "granska",
+  "name": "Kritans ABC: A omgjord (lärdomar från B)"
  }
 }
