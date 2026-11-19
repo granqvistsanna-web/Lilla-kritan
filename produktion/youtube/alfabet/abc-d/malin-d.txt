@@ -1,0 +1,41 @@
+p-abc  [excited] Kritans ABC!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-d  [excited] Det är ju D!
+p-bokstaven-d  [warm] Bokstaven D.
+p-d-som-i-docka  [warm] D som i docka.
+p-d-d-docka  [playful] D, d, docka!
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven D.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-dino  [excited] Dinosaurie!
+p-en-dino  [excited] En dinosaurie!
+p-dino-d  [excited] Ja! Dinosaurie börjar på bokstaven D.
+p-vad-blir  [curious] Vad blir det?
+p-docka  [excited] Docka!
+p-en-docka  [excited] En docka!
+p-ocksa-docka  [warm] Docka börjar också på D!
+p-dorr  [excited] Dörr!
+p-en-dorr  [excited] En dörr!
+p-ocksa-dorr  [warm] Dörr börjar också på D!
+p-nuleker  [excited] Nu leker vi!
+p-entill  [curious] Titta! En till.
+p-vilken  [curious] Vilken ska bort?
+p-inte-d  [curious] Vilken börjar inte på D?
+p-gris  [curious] Gris.
+p-grisen  [excited] Grisen!
+p-gris-inte  [playful] Gris börjar inte på D.
+p-hej-da-grisen  [warm] Hej då, grisen!
+p-engang  [excited] En gång till!
+p-anka  [curious] Anka.
+p-ankan  [excited] Ankan!
+p-anka-inte  [playful] Anka börjar inte på D.
+p-hej-da  [warm] Hej då!
+p-delfin  [excited] Delfin!
+p-druvor  [excited] Druvor!
+p-duva  [excited] Duva!
+p-bil  [curious] Bil.
+p-bilen  [excited] Bilen!
+p-bil-inte  [playful] Bil börjar inte på D.
+p-alla-d  [warm] Alla börjar på bokstaven D.
+p-nu-dansar  [excited] Nu dansar vi!
+p-hej-da-slut  [warm] Hej då!
