@@ -6119,9 +6119,10 @@
   "sec": 2,
   "tags": [],
   "note": "match VO better with animations",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075555970,
-  "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")"
+  "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")",
+  "fixedAt": 1795076992538
  },
  "9l3dlwipo7mwn9nj4f": {
   "ep": "J12",
@@ -6129,8 +6130,9 @@
   "sec": 60,
   "tags": [],
   "note": "bigger tree, better crop of tree",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075581327,
-  "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")"
+  "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")",
+  "fixedAt": 1795076992538
  }
 }
