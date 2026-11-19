@@ -20,7 +20,8 @@
 <script>
 tittut({
   plats: 'julskogen',
-  platsVol: 0.6,                  // vinterljud-2, svag (Sanna 2026-11-13: "subtle … low"), samma som björnen
+  platsVol: 0,                    // inget vindljud (Sanna 2026-11-19, J06: "remove winter wind sound", samma för grisen); förr vinterljud-2 på 0,6
+  voEfter: 0.5,                   // Sanna 2026-11-19 (J12 0:02): "match VO with animations" – Malin 0,5 s efter att rörelsen landat
   figur: 'grisen-greta-v2',
   ljud: 'noff-gullig',            // hälsar tillbaka med ett glatt noff vid hej, varannan tittut och hej då
   fniss: 'noff-fniss',            // det busiga småljudet, grisens eget
@@ -31,7 +32,7 @@ tittut({
   saker: {                        // egen komposition (Sanna 2026-11-13: "change up composition and add some new item"), spegelvänd mot björnens
     pepparkakshus: [560, 945, { h: 460, farg: '#B5743B' }],   // vänster, bakom gången (högst ca 460, annars hoppar figuren över taket)
     snogubbe:      [160, 990, { h: 560, farg: '#F7F9FC', fil: 'assets/rekvisita/snogubbe/cut/snogubbe.png' }],   // ny stor sak (rekvisita/snogubbe.md, lucka 8), står bara i bild
-    gran:          [1430, 890, { h: 1100, farg: '#397653' }],  // höger, toppen utanför bild
+    gran:          [1420, 900, { h: 1450, farg: '#397653' }],  // höger, toppen tydligt utanför bild (Sanna 2026-11-19 J12 1:00: "bigger tree, better crop"; förr h 1100, bara spetsen avskuren)
     sack:          [1690, 950, { h: 420, farg: '#D9382E' }],   // framför granens nedersta gren till höger
   },
   retas: 'oron',                  // första kiken är öronspetsarna (grisens hängöron), sedan huvudet

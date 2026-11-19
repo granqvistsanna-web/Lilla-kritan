@@ -16,7 +16,7 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 9 | J09 | `09-kaninen-badar-varmt` (ny) | 041 Kaninen badar varmt, hel video (scenens badet.mp4, ingen `fran`). Sanna 2026-11-19 |
 | 10 | J10 | `10-tre-pussel-till` (ny) | Tre julpussel till: julgranen, snögubben, julklappen (`pussel-prov.py pussel-lucka-10`, samma upplägg som lucka 5). Sanna 2026-11-19: "ett till julpussel" |
 | 11 | J11 | `21-blinka-lilla-stjarna` | 016 Blinka lilla stjärna, hel video (`fran: 9.9, till: 157.0`), nya kalenderintrot, 161,0 s, −16,1 LUFS. **Grovklippet** som platshållare: byt filen i index.html och kör hel-video.sh igen när 016 är färdigt. Sanna 2026-11-19 |
-| 12 | J12 | `12-tittut-grisen` (ny) | Tittut med grisen i julskogen, hel video (`fran: 4.0, till: 136.4`), inte renderad. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
+| 12 | J12 | `12-tittut-grisen` (ny) | granska. Feedback 19/11 fixad: Malin 0,5 s efter rörelsen genom hela filmen (`voEfter`; förra förhandsvisningen hade dessutom bilden 4 s före rösten, 15 fps-felet i hel-video.sh), större gran med toppen tydligt utanför bild, inget vindljud. Hel video (`fran: 4.0, till: 169.3`), 179,2 s, −16,15 LUFS. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
 | 13 | J13 | `13-grona-sangen` (ny) | 014 Gröna sången, hel video (`fran: 11.0`, utan logotypintrot). Sanna 2026-11-19. OBS: sången har *"Vad kan det vara?"* (ca 0:05 in i luckans film), den går inte att klippa bort |
 | 14–17 | – | – | öppna |
 | 18 | J18 | `14-bruna-sangen` | 007 Bruna sången, hel video (`fran: 8.8`), nya kalenderintrot, 235,7 s, −16,1 LUFS. Sanna 2026-11-19 |
