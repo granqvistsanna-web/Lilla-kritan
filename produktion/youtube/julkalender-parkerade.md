@@ -1,6 +1,6 @@
 # Julkalendern – parkerade luckor
 
-**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 8–11 och 13–24 står öppna (tomma) tills vidare.
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 8, 10–11 och 14–24 står öppna (tomma) tills vidare.
 Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
 | Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
@@ -12,9 +12,11 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
 | 7 | J07 | `07-hunden-ater-julmat` (ny) | 036 Hunden äter julmat, hel video (`fran: 3.34`, utan bilderboksintrot). Sanna 2026-11-19 |
-| 8–11 | – | – | öppna |
+| 8, 10–11 | – | – | öppna |
+| 9 | J09 | `09-kaninen-badar-varmt` (ny) | 041 Kaninen badar varmt, hel video (scenens badet.mp4, ingen `fran`). Sanna 2026-11-19 |
 | 12 | J12 | `12-tittut-grisen` (ny) | Tittut med grisen i julskogen, hel video (`fran: 4.0, till: 136.4`), inte renderad. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
-| 13–24 | – | – | öppna |
+| 13 | J13 | `13-grona-sangen` (ny) | 014 Gröna sången, hel video (`fran: 11.0`, utan logotypintrot). Sanna 2026-11-19. OBS: sången har *"Vad kan det vara?"* (ca 0:05 in i luckans film), den går inte att klippa bort |
+| 14–24 | – | – | öppna |
 
 Allt annat är arkiverat på feedbacksidan under id `JP-<namn>` (t.ex. `JP-stjarna`), med sin feedback kvar.
 De redan publicerade (Bä bä, Röda, Bruna, Rosa, Tittut lammet) är borttagna ur kalendern.
