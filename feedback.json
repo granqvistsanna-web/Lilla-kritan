@@ -6025,9 +6025,10 @@
   "sec": 33,
   "tags": [],
   "note": "remove ticking sound. imprive transition from drawing to leo start scene. lower music a bit. hide toothbrush cup and water and bring them up from uner sunk when needed, or add pyjamas standing on flor. drink water left hand. add snooring sound . no bää sounf",
-  "fixed": false,
+  "fixed": true,
   "at": 1795071415018,
-  "render": "2026-11-19 07:07 (Runda 4 (förhandsvisning --snabb): kalenderns intro och outro (allt +11 s), kranen ren (svansen trasslar inte in sig), muggen med borsten och glaset står på handfatet från början, ny övergång in i sovbilden (kameran backar och bilden sjunker mjukt i nattblått), större z z z högre upp, QA runt alla 44 skarvar (svansen i tittut-hoppet, kritan i fönstret))"
+  "render": "2026-11-19 07:07 (Runda 4 (förhandsvisning --snabb): kalenderns intro och outro (allt +11 s), kranen ren (svansen trasslar inte in sig), muggen med borsten och glaset står på handfatet från början, ny övergång in i sovbilden (kameran backar och bilden sjunker mjukt i nattblått), större z z z högre upp, QA runt alla 44 skarvar (svansen i tittut-hoppet, kritan i fönstret))",
+  "fixedAt": 1795077016438
  },
  "a3v98jnxdqmwn9ipwa": {
   "ep": "ABC-b",
