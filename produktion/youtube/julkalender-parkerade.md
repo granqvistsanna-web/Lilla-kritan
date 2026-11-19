@@ -12,7 +12,7 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 182.6`). Feedback 19/11 fixad: bild och ljud i takt (hel-video.sh räknade --snabb-filmer i 30 fps, bilden låg 4 s före rösten), lägre musik (0,28), inget vindljud, närbilder i sista rundan, björnen stannar i närbild under "Du hittade björnen!". Förhandsvisning 3 (--snabb), 192,4 s, −16 LUFS; slutrendering kvar |
 | 7 | J07 | `07-hunden-ater-julmat` (ny) | 036 Hunden äter julmat, hel video (`fran: 3.34`, utan bilderboksintrot). Sanna 2026-11-19 |
-| 8 | J08 | `08-katten-snogubbe` (ny) | 044 Katten gör en snögubbe, bilderbok, hel video (scenens film, ingen `fran`). Sanna 2026-11-19: "Yes, lucka 8". Runda 2 och nya kattljud inne; djup QA pågår, slutrendering kvar |
+| 8 | J08 | `08-katten-snogubbe` (ny) | 044 Katten gör en snögubbe, bilderbok, hel video (scenens film, ingen `fran`), 275,1 s, −16,06 LUFS. **Godkänd av Sanna 2026-11-19** |
 | 9 | J09 | `09-kaninen-badar-varmt` (ny) | 041 Kaninen badar varmt, hel video (scenens badet.mp4, ingen `fran`). Sanna 2026-11-19 |
 | 10 | J10 | `10-tre-pussel-till` (ny) | Tre julpussel till: julgranen, snögubben, julklappen (`pussel-prov.py pussel-lucka-10`, samma upplägg som lucka 5). Sanna 2026-11-19: "ett till julpussel" |
 | 11 | J11 | `21-blinka-lilla-stjarna` | 016 Blinka lilla stjärna, hel video (`fran: 9.9, till: 157.0`), nya kalenderintrot, 161,0 s, −16,1 LUFS. **Grovklippet** som platshållare: byt filen i index.html och kör hel-video.sh igen när 016 är färdigt. Sanna 2026-11-19 |
