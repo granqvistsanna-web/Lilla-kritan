@@ -785,7 +785,7 @@
   "duration": 176.3,
   "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka-liten.mp4",
   "rendered": "2026-11-19 07:54 (runda 3: rent inåk från vänster (0:42), grön halsduk på björnen som i tittut)",
-  "status": "granska",
+  "status": "klar",
   "stills": [
    {
     "label": "0:29",
@@ -977,7 +977,7 @@
   "duration": 133.6,
   "file": "produktion/youtube/shorts/jul/13-tre-pussel/13-tre-pussel.mp4",
   "rendered": "2026-11-18 23:53 (pusslen som julfilmen: egna Ja!-repliker, bit 1–2 tysta, raskare bädd och tempo, nyklippt kälke)",
-  "status": "granska",
+  "status": "klar",
   "stills": [
    {
     "label": "0:32",
@@ -1434,7 +1434,7 @@
   "name": "041 Kaninen badar varmt"
  },
  "J06": {
-  "status": "granska",
+  "status": "klar",
   "name": "Tittut björnen",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-1119-0933.mp4",
   "duration": 192.4,
@@ -1442,7 +1442,7 @@
   "file": "produktion/youtube/shorts/jul/06-tittut-bjornen/06-tittut-bjornen-liten.mp4"
  },
  "J03": {
-  "status": "granska",
+  "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1119-0930.mp4",
   "duration": 247.7,
   "rendered": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
@@ -1469,7 +1469,7 @@
   "duration": 237.3,
   "rendered": "2026-11-19 06:27 (Lucka 7: hela 036 bakom luckan, utan bilderboksintrot)",
   "file": "produktion/youtube/shorts/jul/07-hunden-ater-julmat/07-hunden-ater-julmat.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Hunden äter julmat"
  },
  "J08": {
