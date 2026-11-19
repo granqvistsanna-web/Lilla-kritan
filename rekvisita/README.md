@@ -187,3 +187,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Julkärven | [julkarve.md](julkarve.md) | 043 |
 | Fröpåsen | [fropase.md](fropase.md) | 043 |
 | Kvisten | [kvist.md](kvist.md) | 044 |
+| Pepparkaksformarna | [pepparkaksformar.md](pepparkaksformar.md) | 045 |
+| Bakplåten | [bakplat.md](bakplat.md) | 045 |
+| Ringklockan | [ringklocka.md](ringklocka.md) | 045 |
+| Grytlapparna | [grytlappar.md](grytlappar.md) | 045 |

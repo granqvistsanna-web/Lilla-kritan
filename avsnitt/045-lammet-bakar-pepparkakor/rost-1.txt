@@ -1,0 +1,47 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-pepparkaka  [excited] Oj! En pepparkaka!
+04-hej-lammet  [happy] Hej, lammet! Hej, hej!
+05-vad-ska-du-gora  [cheerfully] Vad ska du göra, lammet?
+06-jaha-baka  [excited] Jaha! Baka pepparkakor!
+07-gillar-du  [curious] Gillar du pepparkakor?
+08-ja-det-ar-gott  [happy] Ja, det är gott!
+09-deg-har-du  [cheerfully] Deg har du. Ska du forma degen?
+10-lite-deg-en-form  [warmly] Lite deg, en form … och så tryck!
+11-men-med-tassen  [curious] Men lammet trycker med tassen …
+12-oj-det-kladdar  [surprised] Oj! Det kladdar!
+13-vilken-form  [curious] Vilken form ska du börja med?
+14-stjarnan-ja  [happy] Stjärnan? Ja, vad fint!
+15-tryck-en-stjarna  [playfully] Tryck, tryck … en stjärna!
+16-och-pa-platen  [cheerfully] Så. Och på plåten!
+17-en-till-och-en-till  [warmly] Och en till … och en till. Fint!
+18-tryck-ett-hjarta  [playfully] Tryck, tryck … ett hjärta!
+19-oj-vad-fin  [laughs] Oj, vad fin!
+20-ar-du-klar  [curious] Är du klar nu?
+21-hurra  [excited] Hurra!
+22-in-i-ugnen  [cheerfully] Ska de in i ugnen? Sådär!
+23-hur-lange  [curious] Hur länge ska de vara inne?
+24-vet-du-inte  [curious] Vet du inte?
+25-du-behover-en-klocka  [warmly] Du behöver en klocka. Har du ingen?
+26-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+27-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+28-en-ringklocka  [excited] En ringklocka! Perfekt! Varsågod, lammet.
+29-ska-vi-saga-tack  [warmly] Ska vi säga tack?
+30-tack  [happy] Tack!
+31-nu-vantar-vi  [warmly] Nu väntar vi.
+32-det-doftar-gott  [happy sigh] Mmm … det doftar gott!
+33-nu-ringer-klockan  [surprised] Oj, redan! Nu ringer klockan!
+34-kakorna-ar-klara  [excited] Kakorna är klara!
+35-oj-grytlapparna  [curious] Oj, grytlapparna! Lammet vet inte var.
+36-kan-du-hjalpa  [warmly] Kan du hjälpa lammet? Kan du se var grytlapparna är?
+37-ja-dar-bakom-klockan  [excited] Ja, där! Bakom klockan!
+38-grytlappar-pa  [cheerfully] Grytlappar på!
+39-ta-ut-kakorna  [playfully] Ta ut kakorna … sådär!
+40-de-ar-varma  [surprised] Oj, oj, de är varma!
+41-kan-du-blasa  [warmly] Kan du blåsa på kakorna?
+42-nu-ar-de-lagom  [playfully] Fff … nu är de lagom!
+43-en-tugga-mums  [happy] En tugga … mums!
+44-smulor-pa-nosen  [laughs] Oj! Smulor på nosen!
+45-pepparkakor-till-jul  [happy sigh] Mmm … pepparkakor till jul.
+46-hej-da-lammet  [happy] Hej då, lammet!
+47-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
