@@ -5827,9 +5827,10 @@
   "sec": 86,
   "tags": [],
   "note": "make hat smaller. apply same updates for engaign as björnen video",
-  "fixed": false,
+  "fixed": true,
   "at": 1795065723763,
-  "render": "2026-11-19 00:06"
+  "render": "2026-11-19 00:06",
+  "fixedAt": 1795068099030
  },
  "nlbqencd03mwn3wpee": {
   "ep": "J03",
