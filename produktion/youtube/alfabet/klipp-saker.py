@@ -2,7 +2,7 @@
 (namn:scen:vald tagning). Originalen i assets/rekvisita/<namn>/original/, urklippet i cut/<namn>.png, kontrollbild på mörkblått."""
 import sys, shutil, subprocess, os
 from PIL import Image
-F = os.path.expanduser('~/flow-mcp-out/lk-alfabet-a')
+F = os.path.expanduser('~/flow-mcp-out/' + os.environ.get('FLOWMAPP', 'lk-alfabet-a'))
 for arg in sys.argv[1:]:
     namn, scen, val = arg.split(':'); d = f'assets/rekvisita/{namn}'
     os.makedirs(f'{d}/original', exist_ok=True); os.makedirs(f'{d}/cut', exist_ok=True)

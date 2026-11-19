@@ -1,0 +1,37 @@
+p-abc  [excited] Kritans ABC!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-c  [excited] Det är ju C!
+p-bokstaven-c  [warm] Bokstaven C.
+p-c-som-i-cykel  [warm] C som i cykel.
+p-c-c-cykel  [playful] C, c, cykel!
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven C.
+p-hmm  [curious] Hmm …
+p-vad-blir  [curious] Vad blir det?
+p-cykel  [excited] Cykel!
+p-en-cykel  [excited] En cykel!
+p-cykel-c  [excited] Ja! Cykel börjar på bokstaven C.
+p-citron  [excited] Citron!
+p-en-citron  [excited] En citron!
+p-ocksa-citron  [warm] Citron börjar också på C!
+p-cirkel  [excited] Cirkel!
+p-en-cirkel  [excited] En cirkel!
+p-ocksa-cirkel  [warm] Cirkel börjar också på C!
+p-nuleker  [excited] Nu leker vi!
+p-entill  [curious] Titta! En till.
+p-vilken  [curious] Vilken ska bort?
+p-inte-c  [curious] Vilken börjar inte på C?
+p-boll  [curious] Boll.
+p-bollen  [excited] Bollen!
+p-boll-inte  [playful] Boll börjar inte på C.
+p-hej-da-bollen  [warm] Hej då, bollen!
+p-engang  [excited] En gång till!
+p-anka  [curious] Anka.
+p-ankan  [excited] Ankan!
+p-anka-inte  [playful] Anka börjar inte på C.
+p-hej-da  [warm] Hej då!
+p-apelsin  [curious] Apelsin.
+p-apelsinen  [excited] Apelsinen!
+p-apelsin-inte  [playful] Apelsin börjar inte på C.
+p-alla-c  [warm] Alla börjar på bokstaven C.
+p-nu-dansar  [excited] Nu dansar vi!
+p-hej-da-slut  [warm] Hej då!

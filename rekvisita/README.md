@@ -172,6 +172,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Risgrynsgröten | [risgrynsgrot.md](risgrynsgrot.md) | Pusslet (jul) |
 | Apelsinen | [apelsin.md](apelsin.md) | Ljudjakten A |
 | Ananasen | [ananas.md](ananas.md) | Ljudjakten A |
+| Citronen | [citron.md](citron.md) | Kritans ABC: C |
+| Cirkeln | [cirkel.md](cirkel.md) | Kritans ABC: C |
 | Avokadon | [avokado.md](avokado.md) | Ljudjakten A |
 | Ambulansen | [ambulans.md](ambulans.md) | Ljudjakten A |
 | Klädhängaren | [kladhangare.md](kladhangare.md) | 039 |
