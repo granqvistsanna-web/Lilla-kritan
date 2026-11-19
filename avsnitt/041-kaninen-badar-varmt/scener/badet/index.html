@@ -398,14 +398,14 @@ const S = {
     const h = huttra(tl, L0 + 0.4, 0.9);
     return RUM({ pos: [pos[0] + h, pos[1]], ikar: tl < t1 + 0.12, framfor: tl > t1 + 0.3, sjunk: tl < t1 ? 40 : 0, f: FF(tl > L0 ? 'ledsen' : 'glad', { ...(tl > L0 ? { le: 0.2 } : {}), titt: [10 * bl, 0] }),
       p: { ...p, oron: p.oron.map(o => o + 10 * del(L0, L0 + 0.4, tl)) }, bat: [BAT()[0] + 60, guppV(tl)] }); },
-  // Sanna 19/11 "make bunny add towel back after drying": kaninen står kvar vid pallen (vid kroken stod den på fläkten). Handduken
-  // glider ner över axlarna, repliken, kaninen torkar sig (vaggar lugnt), lyfter av handduken och den glider tillbaka upp på kroken
-  '30': (tl, d) => { const g = del(1.0, 1.6, tl), a = 1.6 + LN(43) + 0.35, b = a + 1.55, g2 = del(b + 0.3, b + 1.0, tl);
-    const gnugg = bump(a, a + 1.5, tl), luta = 5 * Math.sin(2 * Math.PI * 1.4 * (tl - a)) * gnugg;
-    const lyft = del(b, b + 0.35, tl) * (1 - del(b + 0.8, b + 1.2, tl)), titta = del(b, b + 0.3, tl) * (1 - del(b + 1.2, b + 1.6, tl));
+  // Sanna 19/11 "make bunny add towel back after drying": kaninen står kvar vid pallen, handduken glider ner över axlarna och tillbaka upp på kroken.
+  // Sanna 19/11 "simplyfy animation kaninen torkar sig": en lugn gungning åt varje håll med armarna stilla mot handduken,
+  // ingen gnuggning, inga lyfta armar, ingen huvudvridning; handduken glider sedan bara tillbaka upp på kroken
+  '30': (tl, d) => { const g = del(1.0, 1.6, tl), a = 1.6 + LN(43) + 0.35, b = a + 1.9, g2 = del(b + 0.3, b + 1.0, tl);
+    const torka = bump(a, b, tl), luta = 3 * Math.sin(2 * Math.PI * (tl - a) / 1.9) * torka;
     const mysig = tl > 1.8 + LN(43) && tl < b;
-    return RUM({ kam: K_HANDDUK, pos: VID_KAR, f: FF(tl > 1.8 ? 'glad' : 'nyfiken', { ...(mysig ? { lock: [0.4, 0.4] } : {}), titt: [-12 * titta, -12 * titta] }),
-      p: P({ luta, armar: [25 * gnugg + 70 * lyft, 25 * gnugg + 70 * lyft], strack: 0.012 * Math.sin(2 * Math.PI * 2.8 * (tl - a)) * gnugg, rikt: -0.3 * titta, upp: 0.4 * titta }),
+    return RUM({ kam: K_HANDDUK, pos: VID_KAR, f: FF(tl > 1.8 ? 'glad' : 'nyfiken', { ...(mysig ? { lock: [0.4, 0.4] } : {}) }),
+      p: P({ luta, armar: [12 * torka, 12 * torka] }),
       handdukGlid: g, handdukTillbaka: g2, handduk: g2 >= 1 ? 1 : 0, cape: del(1.45, 1.75, tl) * (1 - del(b + 0.25, b + 0.45, tl)), bat: [BAT()[0] + 60, guppV(tl)] }); },
   // vänder sig mot dörren, nosen rycker mot doften
   '31': (tl, d) => { const r = del(0.1, 0.6, tl), nos = bump(0.6 + LN(44) - 0.2, 0.6 + LN(44) + 0.4, tl);
