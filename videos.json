@@ -1535,5 +1535,13 @@
   "file": "produktion/youtube/alfabet/abc-c/abc-c.mp4",
   "status": "granska",
   "name": "Kritans ABC: C"
+ },
+ "ABC-d": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-d-1119-2029.mp4",
+  "duration": 234.9,
+  "rendered": "2026-11-19 20:29 (Förhandsvisning (--snabb) med datorrösten (Alva). Dinosaurie, docka, dörr; udda gris och anka; tredje rundan delfin, druvor, duva och bil.)",
+  "file": "produktion/youtube/alfabet/abc-d/abc-d.mp4",
+  "status": "granska",
+  "name": "Kritans ABC: D"
  }
 }
