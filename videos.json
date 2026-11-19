@@ -1495,5 +1495,13 @@
   "file": "produktion/youtube/shorts/jul/10-tre-pussel-till/10-tre-pussel-till.mp4",
   "status": "granska",
   "name": "Lucka 10: Tre pussel till"
+ },
+ "J18": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J18-1119-0713.mp4",
+  "duration": 235.7,
+  "rendered": "2026-11-19 07:14",
+  "file": "produktion/youtube/shorts/jul/14-bruna-sangen/14-bruna-sangen.mp4",
+  "status": "granska",
+  "name": "Bruna sången"
  }
 }
