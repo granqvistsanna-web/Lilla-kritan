@@ -6035,9 +6035,10 @@
   "sec": 96,
   "tags": [],
   "note": "update recipe with B findings",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075356826,
-  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)",
+  "fixedAt": 1795076502821
  },
  "igni9jpcg9mwn9jo7b": {
   "ep": "ABC-b",
