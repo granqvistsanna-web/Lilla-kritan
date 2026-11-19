@@ -1234,7 +1234,7 @@
   "file": "produktion/youtube/pussel/pussel-jul.mp4",
   "name": "Pusslet jul (10 pussel)",
   "rendered": "2026-11-18 22:36 (Hela julskinkan får plats i brickan (5:24). Kälken nyklippt: inget vitt mellan brädorna och en jämn vit kant runt (6:10).)",
-  "status": "granska",
+  "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/P-jul-1118-2236.mp4"
  },
  "P-test": {
@@ -1250,7 +1250,7 @@
   "file": "produktion/youtube/pussel/pussel-vanliga.mp4",
   "name": "Pusslet vanliga (11 pussel)",
   "rendered": "2026-11-18 23:47 (Malin säger ledtråden när biten har landat i brickan (bit 1–4), t.ex. 'En lång svans' när svansen ligger (nu 3:57). Bit 5 som förut i närbild. Inget 'Där!' efter bit 1.)",
-  "status": "granska",
+  "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/P-vanliga-1118-2343.mp4"
  },
  "T-bjornen": {
