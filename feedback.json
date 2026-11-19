@@ -6057,9 +6057,10 @@
   "sec": 212,
   "tags": [],
   "note": "b letter in corner should be cover content",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075420281,
-  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)",
+  "fixedAt": 1795076506586
  },
  "c23xkgazp4mwn9kl0u": {
   "ep": "ABC-b",
