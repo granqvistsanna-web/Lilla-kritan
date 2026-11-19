@@ -1511,5 +1511,13 @@
   "file": "produktion/youtube/shorts/jul/18-rosa-sangen/18-rosa-sangen.mp4",
   "status": "granska",
   "name": "Rosa sången"
+ },
+ "J11": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J11-1119-0731.mp4",
+  "duration": 161.0,
+  "rendered": "2026-11-19 07:31 (grovklipp av 016)",
+  "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
+  "status": "granska",
+  "name": "Blinka lilla stjärna"
  }
 }
