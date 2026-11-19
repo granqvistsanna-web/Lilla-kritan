@@ -1,6 +1,6 @@
 # Avsnitt 044 – Katten gör en snögubbe (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-19 (Sanna: *"Ja, kör grind 2"*), sedan ändrad till två kvistar. ✅ grind 2 (kvisten, tagning 1). Nästa: grind 3, Malins röst. Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med katten, katten svarar med mjau, öron och svans. Inget är byggt. Ca 3 min. Till julkalendern (Sanna 2026-11-19), lucka inte vald än: 10–11 och 14–24 står öppna (`produktion/youtube/julkalender-parkerade.md`).
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-19 (Sanna: *"Ja, kör grind 2"*), sedan ändrad till två kvistar. ✅ grind 2 (kvisten, tagning 1). Grind 3: tagning 1 (43 repliker, `rost-1.txt`) delad och normaliserad till `assets/ljud/roster/katten-gor-en-snogubbe/`; 17 *Och en mun!* och 18 *Och knappar!* från tagning 2 (`rost-2.txt`). Alla 45 normaliserade (−3 dBFS), längderna i `rost-langder.txt`. ✅ grind 3 (Sanna: *"Alla bra"*). ✅ grind 4: alla ljud fanns (035, 043), `ljud/provlyssna-ljud.m4a`. ✅ grind 5 (animatiken, Sanna: *"Ja, bygg scenen"*). Grind 6: scenen `scener/bjorkdungen/`, förhandsvisning 2 (`--snabb`, ca 4:09) efter feedback 19/11: tydligare ritintro med ögon, morot, knappar och kvistarmar, mindre snögubbe, större katt (0,5), närmare bilder och starkare uttryck, katten kommer in i närbild, skjuter bollarna med tassarna och går efter dem (rad 7–8 +1,8 s), moroten utan blast som näsa, kvistarna och stenarna i snön från början, närbild på fågeln i holken (rad 30 +1,6 s), lugnare takt (GLES 1,1). Runda 2 efter feedback 19/11: mjuk övergång från teckningen till katten (vit tona efter Malins replik), mer snöfall, nickar och "ooo"-reaktioner, närbild på stenarna, glad stenmun, katten tittar sig omkring och går fram till båda kvistarna, `jul-badd-2` lågt under scenen, helbild på "kan du hjälpa katten", närbild på fågeln som äter och katten som klappar, kortare paus efter pip, katten står närmare snögubben. Fullrendering `film/avsnitt-044.mp4` (256 s), som julkalenderlucka 8 i `produktion/youtube/shorts/jul/08-katten-snogubbe/` (269,7 s, −16 LUFS; lucka 8, Sanna 2026-11-19, Röda sången flyttad till 14). Nya kattljud (mjau-ooo, mjau-oj, mjau-puttar, mjau-trill, mjau-spinn), förhandsvisning 3 (--snabb, 259 s), djup QA i egen session. Väntar på Sanna. Avsteg från storyboarden: stenarna ligger till vänster om katten (bollen rullar inte över dem), katten går inte till stolpen (kvisten flyger själv), påsen och fröna närmare katten. Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med katten, katten svarar med mjau, öron och svans. Ca 3 min. Till julkalendern (Sanna 2026-11-19), lucka inte vald än: 10–11 och 14–24 står öppna (`produktion/youtube/julkalender-parkerade.md`).
 
 Snögubben och fågeln är **saker, inte figurer** (som 043:s fåglar): snögubben byggs av tre snöbollar med stenögon och stenknappar i kod, fågeln är den lilla blå fågeln från 043 med öga, vinge, näbb och ben i kod.
 
@@ -151,7 +151,23 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 ## Ljuden
 
-**Allt finns:** kattens röst `mjau-gullig` 1–8 (035), `fagel-pip` och `vingflax` (043), `knarr-sno`, `sno-duns`, `pick`, `pop`, `glitter`, `fagelkvitter`, `krita-ritar`. **Saknas:** ett mjukt prassel när fröna strös (samma som 043 behöver, gör det en gång). Inget nytt i ElevenLabs.
+**Allt finns, inget nytt behövs** (grind 4, 2026-11-19). Provlyssna: `ljud/provlyssna-ljud.m4a` (34 s, i den här ordningen):
+
+| Tid | Ljud | Till |
+|---|---|---|
+| 0,0 | `mjau-gullig-1` … `-8` | kattens röst (035): 1 hej, 2 förtjust, 3 fniss, 4 mysig suck med spinn, 5 nyfiken, 6 trumpen, 7 pratar, 8 hej då |
+| 15,4 | `fagel-pip-1` | fågeln, hej och vanligt pip (som 043) |
+| 16,6 | `fagel-pip-5` | fågeln, glad (som 043). **CC BY 4.0, kevinmead: kredit i YouTube-texten** |
+| 18,1 | `fagel-pip-3` | fågeln, frågande (som 043), rad 33 *Fågeln letar mat* |
+| 19,2 | `vingflax-3` | fågeln flyger (som 043) |
+| 21,0 | `fro-prassel-1` | katten strör frön (som 043) |
+| 23,3 | `knarr-sno-1` | kattens steg i snön |
+| 26,2 | `sno-duns-1` | snöbollen stannar eller landar |
+| 27,6 | `pop-1` | stenarna, moroten och kvistarna på plats |
+| 28,9 | `pick-1` | fågeln pickar |
+| 31,4 | `glimt-1` | stenarna glimmar, kvisten skimrar |
+
+Plus `krita-ritar` (ritintrot och kritan i scenen), `glitter` (moroten och påsen fylls i) och `fagelkvitter` mycket lågt från rad 31, när fågeln kommer.
 
 ## Regelkoll
 
