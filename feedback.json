@@ -5618,9 +5618,10 @@
   "sec": 79,
   "tags": [],
   "note": "move säck up a bit on kälke. need to work n grisen anmation åker pulka , make it make more sense review and make flow better. going on hills a longer time. make grise nicka till svar whe reevant",
-  "fixed": false,
+  "fixed": true,
   "at": 1795063865466,
-  "render": "2026-11-19 00:42 (Lucka 4: omrenderad med lucka 4 i introt, mastrad (−16 LUFS, papper))"
+  "render": "2026-11-19 00:42 (Lucka 4: omrenderad med lucka 4 i introt, mastrad (−16 LUFS, papper))",
+  "fixedAt": 1795065885680
  },
  "5tdarkl5c5mwn2sd6f": {
   "ep": "J06",
