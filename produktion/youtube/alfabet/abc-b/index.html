@@ -605,11 +605,11 @@ const varmEl = document.querySelector('#topp rect[style*="soft-light"]');
 const prickar = Array.from({ length: 16 }, (_, i) => [el('circle', { fill: i % 3 ? '#FFFFFF' : LJUSF[i % 6], filter: 'url(#mjuk)' }, document.getElementById('bak')),
   2 * Math.PI * i / 16, 380 + (i * 197) % 520, 14 + (i * 7) % 10, i]);
 // klistermärkena i en båge runt kulan, i den ordning sakerna dansar (björnen först); varannan vickar åt andra hållet
-const BAGEN = [[760, 180], [1160, 180], [560, 270], [1360, 270], [370, 400], [1550, 400]];
+const BAGEN = [[770, 160], [1150, 160], [590, 205], [1330, 205], [420, 235], [1500, 235]];   // över tornen och runt björnens huvud, inte på dem
 const klisterG = el('g', { filter: 'url(#klisterskugga)' }); document.getElementById('topp').insertBefore(klisterG, document.getElementById('gnistor'));
 document.querySelector('#topp defs').insertAdjacentHTML('beforeend', '<filter id="klisterskugga" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="5" dy="8" stdDeviation="6" flood-color="#3b3431" flood-opacity=".2"/></filter>');
 const klister = await Promise.all(KLISTER.map(async ([t0, s], i) => {
-  const [f, w, h] = s === bjorn ? ['../karaktarer/bjornen-bulle/cut/bjornen-bulle', 1024, 1024] : s.bild, k = (s === bjorn ? 200 : 165) / h;   // urklippen har sin vita kant inbakad
+  const [f, w, h] = s === bjorn ? ['../karaktarer/bjornen-bulle/cut/bjornen-bulle', 1024, 1024] : s.bild, k = (s === bjorn ? 260 : 165) / h;   // urklippen har sin vita kant inbakad
   const e = el('g', { style: 'display:none' }, klisterG);
   await bildEl(f, w, h, `translate(${(-w * k / 2).toFixed(1)} ${(-h * k / 2).toFixed(1)}) scale(${k.toFixed(4)})`, e);
   return [t0, e, BAGEN[i % BAGEN.length], i % 2 ? -1 : 1];
