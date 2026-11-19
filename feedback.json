@@ -5963,5 +5963,55 @@
   "at": 1795066717812,
   "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))",
   "fixedAt": 1795068445361
+ },
+ "fz9vegqbvwmwn54uwn": {
+  "ep": "ABC-b",
+  "time": "3:26",
+  "sec": 206,
+  "tags": [],
+  "note": "bigger bear",
+  "fixed": false,
+  "at": 1795067991671,
+  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)"
+ },
+ "2qa2bweyq1mwn558f7": {
+  "ep": "ABC-b",
+  "time": "3:35",
+  "sec": 215,
+  "tags": [],
+  "note": "more stacking of blocks",
+  "fixed": false,
+  "at": 1795068009187,
+  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)"
+ },
+ "3qz82pwaavmwn55e4n": {
+  "ep": "ABC-b",
+  "time": "3:35",
+  "sec": 215,
+  "tags": [],
+  "note": "improved disco svcene",
+  "fixed": false,
+  "at": 1795068016583,
+  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)"
+ },
+ "c4335727xzmwn63vdw": {
+  "ep": "J04",
+  "time": "0:43",
+  "sec": 43,
+  "tags": [],
+  "note": "polish this, looks messy",
+  "fixed": false,
+  "at": 1795069625252,
+  "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)"
+ },
+ "7abtaeimlhmwn64giw": {
+  "ep": "J04",
+  "time": "1:59",
+  "sec": 119,
+  "tags": [],
+  "note": "add halsduk to bear (same as tittut)",
+  "fixed": false,
+  "at": 1795069652648,
+  "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)"
  }
 }
