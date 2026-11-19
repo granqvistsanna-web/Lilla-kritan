@@ -1543,5 +1543,13 @@
   "file": "produktion/youtube/alfabet/abc-d/abc-d.mp4",
   "status": "granska",
   "name": "Kritans ABC: D"
+ },
+ "ABC-e": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-e-1119-2110.mp4",
+  "duration": 237.8,
+  "rendered": "2026-11-19 21:10 (Förhandsvisning (--snabb) med datorrösten (Alva). Elefant (Elsa), ekorre, ekollon; udda katt och hund; tredje rundan enhörning, ek, emu och kotte.)",
+  "file": "produktion/youtube/alfabet/abc-e/abc-e.mp4",
+  "status": "granska",
+  "name": "Kritans ABC: E"
  }
 }
