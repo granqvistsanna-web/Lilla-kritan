@@ -126,6 +126,7 @@ Djurrösterna kommer från piloten Lilla Kvack (`produktion/sfx/new/`). Inga ord
 | `kvak` | 4 | 0,4–0,6 s | grodan kväker |
 | `ba` | 4 | 3 s | fåret bräker |
 | `snark-pip` | 4 | 4 s | någon sover |
+| `snark-katt` | 1 | 6,9 s | en katt snarkar mjukt, fyra andetag (leoparden sover, julkalenderns lucka 3 / 040). 1,7–8,6 s ur [Snoring Cat.wav](https://freesound.org/people/lolamadeus/sounds/196255), lolamadeus, CC0, högpass 100 Hz, lågpass 6 kHz, −21,6 LUFS (Openverse 2026-11-19). Originalet i `produktion/ljud-original/effekter/snark-katt/` |
 | `bobo` | 5 | 0,6–0,8 s | ett lågt, vänligt "bo bo!" med Nalles nallebjörnsröst, som ett hej då (lejonet säger godnatt i Godnattsagan), ur `teddy-byebye-2` i `produktion/sfx/new/` (Lilla Kvack) |
 | `mums` | 4 | 8 s | någon äter glass. Långa tagningar med toppen sent: använd hellre `mums-5`–`8` |
 | `slurp` | 2 | 8 s | **tyst, använd inte** (`slurp-1`/`2` toppar på −43/−40 dB). Använd `slurp-3`–`6` |

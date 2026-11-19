@@ -23,6 +23,8 @@
     <clipPath id="tubkropp"><rect width="386" height="594"/></clipPath><clipPath id="tubkork"><rect y="594" width="386" height="147"/></clipPath>
     <!-- J03 "polish the sink tap": svansen (en del av kroppsbilden, x > 790, y > 640 i riggens ruta) klipps bort bakom handfatet, annars trasslar den in sig i kranen -->
     <clipPath id="utanSvans" clipPathUnits="userSpaceOnUse"><path id="utanSvansP" d="M-600 -600H1700V640H790V1700H-600Z"/></clipPath>
+    <!-- J03 runda 5: saker som stiger upp bakom handfatets läpp syns bara ovanför den (höjden sätts i badrum()) -->
+    <clipPath id="overLapp" clipPathUnits="userSpaceOnUse"><rect id="overLappR" x="-600" y="-600" width="3200" height="1"/></clipPath>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <radialGradient id="sken"><stop offset="0" stop-color="#FFE38A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE38A" stop-opacity="0"/></radialGradient>
     <radialGradient id="nattsken"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".55"/><stop offset=".45" stop-color="#FFD27A" stop-opacity=".18"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient>
@@ -171,8 +173,10 @@ const SAKER = {
   // J03: borsten utan kvist och rosett (../../saker/), med en rand tandkräm (.pasta) som tuben lägger på i rad 13
   borste: () => ({ ...L.sakBild(BORSTE, 877, 238, { grepp: [700, 119], fot: [438, 238], skala: 0.32, folj: 1, kant: 3, mun: [110, 119] }),
     svg: `<image href="${BORSTE}" width="877" height="238"/>${PASTA_D.map((c, i) => `<path class="pasta" d="M42 6 q24 -24 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="${c}" stroke-width="${[40, 30, 10][i]}" stroke-linecap="round" stroke-dasharray="0 2"/>`).join('')}` }),
-  // J03 "another glass of water": ett eget vattenglas (mjölkglaset tomt, vatten i kod), inte tandborstmuggen
-  mugg: () => ({ ...L.sakBild(GLAS, 665, 901, { grepp: [610, 470], greppFram: [60, 470], fot: [332, 895], skala: 0.2, folj: 0, kant: 8, mun: [190, 30] }), svg: glasSvg() }) };
+  // J03 "another glass of water": ett eget vattenglas (mjölkglaset tomt, vatten i kod), inte tandborstmuggen.
+  // Runda 5 "drink water left hand": glaset i vänster tass i bild (arm-l, hand 0), greppen och mun-punkten spegelvända mot höger tass
+  mugg: () => ({ ...L.sakBild(GLAS, 665, 901, { grepp: [55, 470], greppFram: [605, 470], fot: [332, 895], skala: 0.2, folj: 0, kant: 8, mun: [475, 30] }), svg: glasSvg() }) };
+const DRICK = { hand: 0, vinkel: 25 };
 const PASTA_D = ['#fff', '#fbfffd', '#8fe3d2'];   // vit kant, tandkrämen, en mintrand
 const pasta = k => G.querySelectorAll('.pasta').forEach(e => e.setAttribute('stroke-dasharray', `${kl(k).toFixed(3)} 2`));
 let SAK = null;
@@ -203,13 +207,14 @@ const PALL = { x: 560, w: 300 }, PALL_S = PALL.w / 781, PALL_TOPP = [PALL.x + 56
 const HANDDUK = [1560, 150, 330], KROK = [1810, 230]; // julhandduken [mitt x, överkant, höjd]; kroken för skjortan till höger om den
 const TAVLA = [700, 130, 0.27];                       // tomtetavlan på väggen till vänster om handfatet [mitt x, överkant, skala] (Sanna 2026-11-18: ingen grankvist) [mitt x, överkant, skala]
 const MUGG = [HX - 200, RIM - 2, 0.13];               // tandborstmuggen på läppens vänstra ände [mitt x, botten, skala]
-// J03 "glasses and toothbrush show up out of nowhere": muggen med borsten och vattenglaset står på handfatet från första bilden.
-// Borsten står i muggen tills rad 13 tar den (och igen från rad 21), glaset står där utom när det är i tassen (rad 21–22).
+// J03 runda 5 "hide toothbrush cup and water and bring them up from under sink when needed": inget står på handfatet från början.
+// Muggen med borsten stiger upp bakom handfatet i rad 13 (borsten flyger sedan in i tassen) och står kvar; borsten är tillbaka i
+// muggen från rad 21. Vattenglaset stiger upp i rad 21, flyger in i tassen och står på handfatet efter drickandet (från rad 23).
 let I_BADRUM = false;
 function badrum({ skjortaPaKrok = true, skjortaVrid = 0 } = {}) {
-  I_BADRUM = true; const n = parseFloat(CUR.id);
-  if (n < 13 || n >= 21) lagg('saker', bild(BORSTE, 877, 238, `translate(${MUGG[0] + 10} ${RIM - 95}) rotate(-80) scale(0.11) translate(-438 -119)`));
-  mugg(); if (n < 21 || n >= 23) glas();
+  I_BADRUM = true; const n = parseFloat(CUR.id); $('overLappR').setAttribute('height', RIM + 604);
+  if (n >= 21) lagg('saker', borsteIMugg());
+  if (n >= 14) mugg(); if (n >= 23) glas();
   const [hx, hy, hh] = HANDDUK, hw = hh * 538 / 981, [kx, ky, ks] = TAVLA;
   $('platta').innerHTML = `<image href="${BAD}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   lagg('sakerbak', `<image href="${R}handduk-jul/cut/handduk-jul-krok.png" x="${hx - hw / 2}" y="${hy}" width="${hw}" height="${hh}"/>`
@@ -224,7 +229,8 @@ const BORSTE = '/avsnitt/040-leoparden-gar-och-lagger-sig/saker/tandborste-jul-u
 const glasSvg = () => `<path d="M64 232 L602 232 L546 852 L118 852Z" fill="#8fd3ef" opacity=".55"/><image href="${GLAS}" width="665" height="901"/>
   <path d="M84 236 Q330 252 584 236" fill="none" stroke="#fff" stroke-width="10" opacity=".8" stroke-linecap="round"/><path d="M110 300 L150 780" stroke="#fff" stroke-width="16" opacity=".45" stroke-linecap="round"/>`;
 const GLAS_P = [HX - 135, RIM - 2, 0.125];               // vattenglaset bredvid muggen på läppen [mitt x, botten, skala]
-const glas = (x = GLAS_P[0], y = GLAS_P[1], s = GLAS_P[2]) => lagg('saker', `<g transform="translate(${x} ${y}) scale(${s}) translate(-332 -895)">${glasSvg()}</g>`);
+const glasS = (x = GLAS_P[0], y = GLAS_P[1], s = GLAS_P[2]) => `<g transform="translate(${x} ${y}) scale(${s}) translate(-332 -895)">${glasSvg()}</g>`;
+const glas = (...a) => lagg('saker', glasS(...a));
 // tandkrämstuben (rekvisita/tandkramen, 386 × 741, står på korken; korken = y 594 och nedåt, som 038): x, y = öppningen, v = lutning, sx = klämd
 const tub = (x, y, { v = 0, sx = 1, s = 0.2, korkPa = false } = {}) => lagg('fram', korkPa
   ? `<g transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-193 -741)"><image href="${TUB}" width="386" height="741"/></g>`
@@ -233,7 +239,12 @@ const kork = (x, y, v, s = 0.2) => lagg('fram', `<g transform="translate(${x} ${
 // en punkt på tandkrämsranden (u 0–1 längs den) i kamerans ruta
 function pastaPunkt(u) { const e = [...G.querySelectorAll('.pasta')].find(x => x.closest('.sak-plats')?.getAttribute('display') === 'inline'); if (!e) return null;
   const q = e.getPointAtLength(e.getTotalLength() * kl(u, 0, 0.999)), m = $('kamera').getScreenCTM().inverse().multiply(e.getScreenCTM()), pt = new DOMPoint(q.x, q.y).matrixTransform(m); return [pt.x, pt.y]; }
-const mugg = (x = MUGG[0], y = MUGG[1], s = MUGG[2], v = 0) => lagg('saker', bild(R + 'tandborstmuggen/cut/tandborstmuggen.png', 758, 768, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-379 -740)`));
+const muggS = (x = MUGG[0], y = MUGG[1], s = MUGG[2], v = 0) => bild(R + 'tandborstmuggen/cut/tandborstmuggen.png', 758, 768, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-379 -740)`);
+const mugg = (...a) => lagg('saker', muggS(...a));
+const borsteIMugg = () => bild(BORSTE, 877, 238, `translate(${MUGG[0] + 10} ${RIM - 95}) rotate(-80) scale(0.11) translate(-438 -119)`);
+// J03 runda 5: en sak stiger lugnt upp bakom handfatets läpp till sin plats (UPP s från scenens början), med en glimt
+const UPP = 0.5;
+const uppur = (svg, tl) => lagg('saker', `<g clip-path="url(#overLapp)"><g transform="translate(0 ${(170 * (1 - mjuk(kl(tl / UPP)))).toFixed(1)})">${svg}</g></g>`);
 const borste = (x, y, v = 0, s = 0.12) => lagg('saker', bild(R + 'tandborste-jul/cut/tandborste-jul.png', 877, 238, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-120 -119)`));
 function strale() { const [x, y] = KRAN;
   lagg('fram', `<path d="M${x - 8} ${y + 8} Q${x - 11} ${(y + RIM) / 2} ${x - 8} ${RIM + 4} L${x + 8} ${RIM + 4} Q${x + 11} ${(y + RIM) / 2} ${x + 8} ${y + 8}Z" fill="#a9dcf0" opacity="0.9"/>`); }
@@ -359,7 +370,7 @@ const skaka = (f, p, tl, d = 1.8) => tl > 0 && tl < d ? L.skakaHuvud(f, p, tl, d
 const vink = (p, k, tl) => ({ ...p, armar: [p.armar ? p.armar[0] : 0, k * (125 + 18 * Math.sin(7 * tl))], luta: (p.luta || 0) - 2 * k });
 // J03 "better transition": 006:s kritsvep (krita som färglägger bilden i sovrummets rosa, sedan smular bort) i stället för gula bandet.
 // SVEP = kritsvepets k i den här bildrutan (0 av, 0–0,5 täcker, 0,5–0,8 smular bort). Rad 24 täcker de sista SVEP_IN s, rad 25 smular SVEP_UT s.
-let SVEP = 0; const SVEP_IN = 1.0, SVEP_UT = 0.7, SVEP_FARG = '#E89CB2';
+let SVEP = 0, SVEP_F; const SVEP_IN = 1.0, SVEP_UT = 0.7, SVEP_FARG = '#E89CB2', BAD_FARG = '#74BFB4';   // SVEP_F: nya scenens väggfärg (rosa sovrummet, badrummets turkos)
 // kritsvepet (gult kritband från höger): l, r = bandets vänstra och högra kant i bild
 function svep(l, r) { if (r <= l) return; const w = x => x + 40 * Math.sin(TT * 3 + x / 90);
   lagg('ram', `<path d="M${w(l)} -40 Q${l - 90} 540 ${w(l) + 30} 1120 L${r} 1120 L${r} -40Z" fill="#f2c94c" opacity=".97" filter="url(#boil)"/>`); }
@@ -391,13 +402,15 @@ const S = {
   '01b': tl => { papper(); kamera(1); stjarna(960, 520, 0.85, { k: 1, fyll: 0, tand: 0 }); krita(1400 + 14 * Math.sin(tl * 1.6), 300 + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3), 0.42); },
   '01c': (tl, d) => { papper(); const z = del(d - 0.8, d, tl); kamera(lerp(1, 2.6, z * z), 960, 520);
     stjarna(960, 520, 0.85, { k: 1, fyll: del(0, 0.9, tl), tand: del(0.4, 1.4, tl) }); krita(lerp(1400, 2000, del(0.6, 1.6, tl)), lerp(300, 100, del(0.6, 1.6, tl)), 140, 0.42);
-    if (tl > 1.0) skimmer(960, 520, 0.6 + 0.3 * Math.sin(tl * 3), 2.4); },
+    if (tl > 1.0) skimmer(960, 520, 0.6 + 0.3 * Math.sin(tl * 3), 2.4);
+    SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = BAD_FARG; },   // J03 runda 5 "improve transition from drawing to leo": kritsvep till badrummet
 
   // --- Badrummet ---
   '1': (tl, d) => { badrum(); HEL_B(); const T = kl(tl / 1.9) * 1.9, x = lerp(-180, STA[0], 1 - Math.pow(1 - kl(tl / 1.9), 1.7));
     let [f, p] = tl < 1.9 ? gaPose(T * 0.95) : [F('jatteglad'), P({})]; f = F('jatteglad', { titt: f.titt });
     const vk = del(mo(0) + 0.1, mo(0) + 0.5, tl) * (1 - del(d - 1.2, d - 0.6, tl));
-    lova([x, GOLV_B], f, P(vink(p, vk, tl)), { skjorta: 0 }); },
+    lova([x, GOLV_B], f, P(vink(p, vk, tl)), { skjorta: 0 });
+    SVEP = tl < SVEP_UT ? 0.5 + 0.3 * del(0, SVEP_UT, tl) : 0; SVEP_F = BAD_FARG; },
   '2': tl => { badrum(); kamera(1.35, 600, 560); /* J03 granskning: hela leoparden och tavlan */ const u = del(0.3, 0.9, tl);
     lova(STA, F('glad', { titt: [8 * u, -14 * u] }), P(skutt({ upp: 0.8 * u }, tl, lo(1), 18)), { skjorta: 0 });
     skimmer(TAVLA[0], TAVLA[1] + 110, 0.5 * bump(lo(0) - 0.1, lo(0) + 1.4, tl) + 0.15, 0.9); },
@@ -465,10 +478,11 @@ const S = {
   // klämmer ut en rand längs borsten, lyfter och flyger bort; en glimt på tandkrämen; sedan ler leoparden mot borsten
   '13': (tl, d) => { badrum({ skjortaPaKrok: false }); SAK = 'borste'; const u = del(lo(0) - 0.75, lo(0), tl), T0 = mo(0) + LN(18) + 0.3, KO = lo(1), K1 = lo(2), K2 = K1 + 1.4, UT = K2 + 0.15, SLUT = UT + 1.2;
     if (tl < T0) { kamera(2.2, BX - 60, RIM - 110); B(F('glad', { titt: [lerp(-14, 6, u), lerp(2, 10, u)] }), BP(0));
-      flyg('borste', u, [MUGG[0] + 10, RIM - 95], (x, y, u) => lagg('saker', bild(BORSTE, 877, 238, `translate(${x} ${y}) rotate(${lerp(-80, -15, u)}) scale(${lerp(0.11, 0.17, u)}) translate(-438 -119)`)));
-      if (u < 0.5) mugg();
+      if (u <= 0) { const h = sakSkarm(); if (h) h[2].setAttribute('display', 'none'); uppur(muggS() + borsteIMugg(), tl); }   // runda 5: muggen stiger upp
+      else { mugg(); flyg('borste', u, [MUGG[0] + 10, RIM - 95], (x, y, u) => lagg('saker', bild(BORSTE, 877, 238, `translate(${x} ${y}) rotate(${lerp(-80, -15, u)}) scale(${lerp(0.11, 0.17, u)}) translate(-438 -119)`))); }
+      const sk = bump(0, UPP + 0.3, tl); if (sk > 0.02) skimmer(MUGG[0], RIM - 60, 0.35 * sk, 0.4);
       const g = bump(lo(0) - 0.05, lo(0) + 0.8, tl), h = sakSkarm(); if (g > 0.02 && h) skimmer(h[0], h[1], 0.4 * g, 0.4); return; }
-    if (tl >= SLUT) { ANS_B(); const ner = 1 - del(SLUT + 0.6, SLUT + 1.1, tl); B(F('jatteglad', { titt: [-6 * ner, 12 * ner] }), skutt(BP(0), tl, SLUT + 0.2, 10, 0.4)); pasta(1); return; }
+    mugg(); if (tl >= SLUT) { ANS_B(); const ner = 1 - del(SLUT + 0.6, SLUT + 1.1, tl); B(F('jatteglad', { titt: [-6 * ner, 12 * ner] }), skutt(BP(0), tl, SLUT + 0.2, 10, 0.4)); pasta(1); return; }
     B(F('glad', { titt: [-6, 12] }), BP(0)); const k = del(K1, K2, tl); pasta(k);
     const c = pastaPunkt(0.5); if (!c) return; kamera(4.6, c[0] + 4, c[1] - 10);
     const S0 = 0.11, nu = pastaPunkt(k) || c, mal = [nu[0] + 2, nu[1] - 4];
@@ -504,10 +518,12 @@ const S = {
   '20': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'borste'; B(F('flinar'), skutt(BP(0), tl, lo(0), 12, 0.35)); },
   // "Och sist lite vatten.": muggen flyger in i tassen, två små klunkar (riggens dricka, klunkarna på ljuden)
   '21': tl => { badrum({ skjortaPaKrok: false }); kamera(2.2, BX - 60, RIM - 110); SAK = 'mugg'; const u = del(0.5, 1.1, tl), t0 = lo(0) - 1.45; kamera(1.9, BX - 20, RIM - 175); /* J03 granskning: hela huvudet när den dricker */
-    const [f, p] = L.ataDel('dricka', kl(tl - t0, 0, 4.4), 4.4, { hand: 1, vinkel: -25 }); B(tl < t0 ? F('glad', { titt: [lerp(-14, 6, u), 8] }) : { ...f, glad: [0, 0] }, p);
-    flyg('mugg', u, [GLAS_P[0], GLAS_P[1] - 90], (x, y, u) => { const sm = lerp(GLAS_P[2], 0.11, u); glas(x, y + 448 * sm, sm); }); },
+    const [f, p] = L.ataDel('dricka', kl(tl - t0, 0, 4.4), 4.4, DRICK); B(tl < t0 ? F('glad', { titt: [lerp(-14, 6, u), 8] }) : { ...f, glad: [0, 0] }, p);
+    // runda 5: glaset stiger upp bakom handfatet till sin plats och flyger därifrån in i tassen
+    flyg('mugg', u, [GLAS_P[0], GLAS_P[1] - 448 * GLAS_P[2]], (x, y, u) => { const sm = lerp(GLAS_P[2], 0.11, u); if (u > 0) glas(x, y + 448 * sm, sm); else uppur(glasS(), tl); });
+    const sk = bump(0, UPP + 0.3, tl); if (sk > 0.02) skimmer(GLAS_P[0], RIM - 60, 0.35 * sk, 0.4); },
   '22': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'mugg'; const T = tl + RR['21'].d - (RR['21'].ljud[0][1] - 1.45);
-    const [f, p] = L.ataDel('dricka', kl(T, 0, 4.4), 4.4, { hand: 1, vinkel: -25 }); B({ ...f, glad: [0, 0] }, p); },
+    const [f, p] = L.ataDel('dricka', kl(T, 0, 4.4), 4.4, DRICK); B({ ...f, glad: [0, 0] }, p); },
   // gäspar, "Är du trött nu?", nickar sömnigt
   '23': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); const g = bump(0.2, 1.4, tl), n0 = mo(0) + LN(28) + 0.15;
     const [f, p] = nick({ ...F('somnig'), mun: [lerp(10, 22, g), lerp(8, 30, g), 0, 470] }, P({ strack: 0.04 * g, armar: [30 * g, 30 * g] }), tl - n0, 1.4); B(f, p); },
@@ -611,22 +627,23 @@ function ljud() {
     for (const [f, o, x = {}] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', ...x, vol: VOL(f) * (x.vol ?? 1) });
   }
   // kritsvepet till sovrummet (J03 "better transition"): ett kort skrrrrt per kritdrag
-  const sv = RR['24'].s + RR['24'].d - SVEP_IN;
-  (window.kritsvep?.LJUD || []).forEach((k, i) => ut.push({ t: sv + (k / 0.5) * SVEP_IN, fil: E + `skrrrrt-kort/skrrrrt-kort-${i % 4 + 1}.m4a`, vol: 0.45 }));
-  const b0 = RR['1'].s, s0 = RR['25'].s;
-  ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.35, langd: s0 - b0, loop: true, fadeIn: 0.6, fade: 0.8 });
+  // J03 runda 5: samma kritsvep från ritintrot till badrummet
+  for (const id of ['01c', '24']) { const sv = RR[id].s + RR[id].d - SVEP_IN;
+    (window.kritsvep?.LJUD || []).forEach((k, i) => ut.push({ t: sv + (k / 0.5) * SVEP_IN, fil: E + `skrrrrt-kort/skrrrrt-kort-${i % 4 + 1}.m4a`, vol: 0.45 })); }
+  // J03 runda 5 "remove ticking sound": hemmaljud-1 (en klocka som tickar) är borta ur badrummet; julmusiken bär rummet
+  const s0 = RR['25'].s;
   ut.push({ t: s0, fil: 'produktion/rum/rosa-sovrummet/rosa-sovrummet-effekter.wav', vol: 0.35, langd: DURATION - s0, loop: true, fadeIn: 0.6, fade: 2.0 });
   // julmusiken under hela filmen, mjuk (runda 2: "julmusik soft soundtrack"): kalenderns kvällsbädd (celesta och speldosa), ca −31 LUFS
-  ut.push({ t: 0, fil: 'assets/ljud/musik/jul/jul-kvall.m4a', vol: 0.12, langd: DURATION, loop: true, fadeIn: 2.0, fade: 3.0 });
+  ut.push({ t: 0, fil: 'assets/ljud/musik/jul/jul-kvall.m4a', vol: 0.09, langd: DURATION, loop: true, fadeIn: 2.0, fade: 3.0 });   // runda 5 "lower music a bit": 0,12 → 0,09 (−2,5 dB)
   return ut.filter(c => c.t < DURATION);
 }
 
 function rita(t) {
   TT = t; let r = RAD_L.find(x => t < x.s + x.d) || RAD_L.at(-1); CUR = r;
   ['bak', 'sakerbak', 'pall', 'kar', 'saker', 'natt', 'fram', 'pilar', 'ram', 'platta', 'figurer'].forEach(n => $(n).innerHTML = '');
-  GS = 0.55; SAK = null; SVEP = 0; NATT = 0; $('snoFon').setAttribute('display', 'none'); if (G) pasta(0); L.HAND.mun = [512, 462]; G.removeAttribute('clip-path'); I_BADRUM = false; $('figurer').removeAttribute('opacity'); $('gomda').appendChild(G); kamera(1);
+  GS = 0.55; SAK = null; SVEP = 0; SVEP_F = SVEP_FARG; NATT = 0; $('snoFon').setAttribute('display', 'none'); if (G) pasta(0); L.HAND.mun = [512, 462]; G.removeAttribute('clip-path'); I_BADRUM = false; $('figurer').removeAttribute('opacity'); $('gomda').appendChild(G); kamera(1);
   S[r.id](Math.min(t - r.s, r.d), r.d);
-  window.kritsvep?.(SVEP, SVEP_FARG);
+  window.kritsvep?.(SVEP, SVEP_F);
   if (t > DURATION - SVART) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>`);
   window.kant?.uppdatera();
 }
