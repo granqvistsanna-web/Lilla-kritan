@@ -33,7 +33,7 @@ export const RADER = [
     bild: 'Tomtetavlan på väggen glimmar, leoparden tittar upp mot den', ljudtext: '`glimt`, förtjust (2)', ansikte: 'glad, tittar upp' },
   { id: '3', d: 0.3 + L(8) + 2.2, plats: 'Badrummet, helbild', malin: [[8, 0.3]], ljud: [['hopp-mjuk/hopp-mjuk-2', 0.6 + L(8)], ['puff/puff-1', 1.1 + L(8)]],
     bild: 'Leoparden **nickar** och kliver upp på pallen bakom handfatet (som björnen i 023), syns från magen och upp', ljudtext: '–', ansikte: 'glad' },
-  { id: '4', d: 1.0 + L(9) + 1.0, plats: 'Närbild, tassarna under kranen', malin: [[9, 1.0]], ljud: [['kran/kran-1', 0.2], ['plask/plask-1', 1.0 + L(9) - 1.0], ['plask/plask-2', 1.0 + L(9) - 0.4]],
+  { id: '4', d: 1.0 + L(9) + 2.0, plats: 'Närbild, tassarna under kranen', malin: [[9, 1.0]], ljud: [['kran/kran-1', 0.2, { langd: 1.0 + L(9) + 0.9, vol: 0.4, fade: 0.6 }], ['plask/plask-1', 1.0 + L(9) - 1.0], ['plask/plask-2', 1.0 + L(9) - 0.4]],   // J03: kranen kortare och lägre
     bild: 'Vattnet rinner (i kod), tassarna framför kroppen under strålen, små stänk på *"Plask, plask!"*', ljudtext: '`kran`, `plask` ×2', ansikte: 'glad' },
   { id: '5', d: 0.6 + L(10) + 1.4, plats: 'Halvbild', malin: [[10, 0.6]], ljud: [['glimt/glimt-2', 0.4], [S(2), 0.9 + L(10)]],
     bild: 'Leoparden lyfter tassarna, en glimt på dem', ljudtext: '`glimt`, förtjust (2)', ansikte: 'jätteglad' },
@@ -51,7 +51,7 @@ export const RADER = [
     bild: 'Tre stjärnor på skjortan glimmar en i taget på *"En, två, tre!"*', ljudtext: '`glimt` ×3', ansikte: '–' },
   { id: '12', d: 0.3 + L(17) + 3.0, plats: 'Ansiktsbild', malin: [[17, 0.3]], ljud: [['spinn-fniss/spinn-fniss-2', 0.3 + L(17) + 1.6]],
     bild: 'Leoparden tittar ner på stjärnorna och sedan ut mot barnet. Paus 3 s: barnet svarar', ljudtext: '`spinn-fniss`', ansikte: 'glad' },
-  { id: '13', d: 0.6 + L(18) + 0.8, plats: 'Närbild, borsten', malin: [[18, 0.6]], ljud: [['glimt/glimt-1', 0.6 + L(18) * 0.6]],
+  { id: '13', d: 0.6 + L(18) + 0.8 + 3.8, plats: 'Närbild, borsten', malin: [[18, 0.6]], ljud: [['glimt/glimt-1', 0.6 + L(18) * 0.6], ['plopp/plopp-1', 0.6 + L(18) + 1.15], ['klistra/klistra-1', 0.6 + L(18) + 1.5, { vol: 0.6 }], ['glimt/glimt-2', 0.6 + L(18) + 2.9]],   // J03: tandkräm på borsten
     bild: 'Julborsten glider från muggen till tassen, närbild på *"borstar"*', ljudtext: '`glimt`', ansikte: '–' },
   { id: '14', d: 0.3 + L(19) + 1.7, plats: 'Ansiktsbild', malin: [[19, 0.3]], ljud: [['plopp/plopp-1', 0.3 + L(19) + 0.3]],
     bild: '"Kan du visa tänderna?" Leoparden nickar och gapar stort: båda tandraderna syns (runda 2 2026-11-18: ny replik 19)', ljudtext: '`plopp` lågt när munnen öppnas', ansikte: 'gap' },
@@ -104,7 +104,7 @@ export const RADER = [
     bild: 'Leoparden **nickar** mot stjärnan', ljudtext: 'förtjust (2)', ansikte: 'glad' },
   { id: '37', d: 0.3 + L(43) + 2.0, plats: 'Närbild, ljusstaken och leoparden', malin: [[43, 0.3]], ljud: [1, 2, 3, 4].map(i => ['puff/puff-' + (i % 3 + 1), 0.3 + L(43) - 0.3 + 0.45 * i]),
     bild: 'Leoparden lutar sig mot ljusstaken och blåser: lågorna slocknar en i taget med en liten rökpuff', ljudtext: '`puff` ×4', ansikte: 'blåser' },
-  { id: '38', d: 0.3 + L(44) + 1.2, plats: 'Halvbild', malin: [[44, 0.3]], ljud: [['lampa-klick/lampa-klick-1', 0.3 + L(44) * 0.3]],
+  { id: '38', d: 0.3 + L(44) - 1.22 + 1.2, plats: 'Halvbild', malin: [[44, 0.3, { ss: 1.22 }]], ljud: [['lampa-klick/lampa-klick-1', 0.3]],   // J03: utan "God natt, lampan" (repliken börjar på "God natt, nallen")
     bild: 'Lampan släcks på *"lampan"*, nallen blundar på *"nallen"*, snön faller lugnt. Rummet blir varmt blått', ljudtext: '`lampa-klick`', ansikte: 'sömnig' },
   { id: '39', d: 0.6 + L(45) + 1.4, plats: 'Halvbild, mörkt rum', malin: [[45, 0.6]], ljud: [['tindra/tindra-2', 0.3]],
     bild: 'Bara stjärnan lyser, skenet dämpas och växer', ljudtext: '`tindra`', ansikte: 'sömnig' },
@@ -112,7 +112,7 @@ export const RADER = [
     bild: 'Leoparden gäspar stort', ljudtext: '`gaspning`', ansikte: 'sömnig, gäspar' },
   { id: '41', d: 0.4 + L(47) + 1.4, plats: 'Halvbild', malin: [[47, 0.4]], ljud: [[HEJDA, 0.6 + L(47)]],
     bild: 'Leoparden vinkar sömnigt (armen bakom kroppen)', ljudtext: '`spinn-hejda`', ansikte: 'sömnig' },
-  { id: '42', d: 3.4 + L(48) + 1.6, plats: 'Halvbild', malin: [[48, 3.4]], ljud: [['hopp-mjuk/hopp-mjuk-3', 2.3], ['snark-pip/snark-pip-1', 3.6], ['godnatt-pling/godnatt-pling-1', 3.4 + L(48)]],
+  { id: '42', d: 8.6 + L(48) + 1.6, plats: 'Halvbild', malin: [[48, 8.6]], ljud: [['hopp-mjuk/hopp-mjuk-3', 1.0], ['spinn-gullig/spinn-gullig-4', 3.2], ['snark-pip/snark-pip-1', 7.8], ['godnatt-pling/godnatt-pling-1', 8.6 + L(48)]],   // J03: ligger med öppna ögon, blundar sakta och somnar
     bild: 'Somnar C: ett litet hopp och landar liggande i pyjamas med huvudet på kudden, nallen bredvid, zzz. Malin när den ligger', ljudtext: '`hopp-mjuk`, `snark-pip`, `godnatt-pling`', ansikte: 'sover' },
   { id: '43', d: 2.5, plats: 'Kritirisen', bild: 'Kritirisen drar ihop sig runt leoparden och stjärnan', ljudtext: 'mattan klingar ut', ansikte: 'sover' },
 ];
