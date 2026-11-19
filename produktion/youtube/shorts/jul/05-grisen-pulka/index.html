@@ -52,9 +52,13 @@ const wiii = R => R.ner.map((v, i) => ['jul/05v2-wiii-' + (i % 3 + 1), 'Wiii!', 
 const KE = [960, 480, 1.2], KW = [900, 500, 1.05], KW1 = [990, 500, 1.05], KW2 = [1080, 500, 1.05], KW3 = [1170, 500, 1.05], KW4 = [1230, 500, 1.05];   // KW 1,05 (11-18 kväll): björnen får plats
 // nick: [sekunder, …] på en stilla-bit = grisen nickar (riggens nick, 1,6 s) till svar på Malins fråga (11-19, feedback J04). djur.js är orörd: grisens
 // rigg lindas så att vilan (som djur.js lägger på stilla-bitar) får nicken ovanpå
-const V2 = window.v2rigg; window.v2rigg = async m => { const F = await V2(m); if (m !== 'grisen-greta') return F; const vila = F.vila;
-  F.vila = (f, p, tt) => { const r = vila(f, p, tt), b = window.BITAR2?.findLast(q => tt >= q.t0), v = b?.nick?.find(v => tt - b.t0 >= v && tt - b.t0 <= v + 1.6);
-    return v == null ? r : F.nicka(r[0], r[1], tt - b.t0 - v); };
+// skaka: [sekunder, …] = grisen skakar surt på huvudet (1,4 s). Benen (11-19, feedback J04 2:13): alltid bakom kroppen, också när den sitter i pulkan
+// (djur.js pulka har benFram 1 för 039-stilen med benen fram)
+const V2 = window.v2rigg; window.v2rigg = async m => { const F = await V2(m); if (m !== 'grisen-greta') return F; const vila = F.vila, rita = F.rita;
+  F.vila = (f, p, tt) => { const r = vila(f, p, tt), b = window.BITAR2?.findLast(q => tt >= q.t0), v = b?.nick?.find(v => tt - b.t0 >= v && tt - b.t0 <= v + 1.6),
+    s = b?.skaka?.find(v => tt - b.t0 >= v && tt - b.t0 <= v + 1.4);
+    return v != null ? F.nicka(r[0], r[1], tt - b.t0 - v) : s != null ? F.skakaHuvud(r[0], r[1], tt - b.t0 - s, 1.4, 2) : r; };
+  F.rita = (g, f, p) => rita(g, f, { ...p, benFram: 0 });
   return F; };
 const MED = (o = {}) => ({ 0: ['akmed', { x: AX, bak: true, ...o }] });
 const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
@@ -75,18 +79,25 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [D1, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R1 }, sag: wiii(R1), ljud: [...R1.ner.map(v => glid(v)), ['noff-fniss', R1.ner[0] + 1.6, 1, 1.5, 1.2]] }],
     // stannar i dalen och skrattar, "En gång till!" och grisen nickar; sedan är den tillbaka i backen och gungar glatt, redo igen (då ritar kritan säcken)
     [3.8, 'stilla', { armar: ARM, uttryck: 'skrattar', kullar: { vila: 2 * KULL.P, zoom: ZV, in: true }, nick: [1.9], sag: [['jul/05v2-en-gang-till', 'En gång till!', 1.4]], ljud: [['noff-fniss', 0.5, 1, 1.5, 1.2]] }],
-    [3.4, 'vagga', { gung: 0.6, uttryck: 'jatteglad', ljud: [['noff-gullig', 1.2, 2, 1.5, 1.2]] }],
+    // 11-19 (feedback J04 0:44): tillbaka i backen åker grisen in från vänster och bromsar in på sin plats (glid utan sats och utan åket ut)
+    [2.2, 'glid', { armar: ARM, sats: 0, klipp: [-1e5, KL[1]], ljud: [glid(0)] }],
+    [2.6, 'vagga', { gung: 0.6, uttryck: 'jatteglad', ljud: [['noff-gullig', 0.6, 2, 1.5, 1.2]] }],
     // C: kritan ritar säcken med paketen på pulkan bakom grisen; sedan växer en snödriva fram framför pulkan och pulkan sjunker ner i den
     // 11-18 kväll: Malin säger att kritan ritar och sedan vad den ritade; säcken ritas längre bak på sitsen (SX0), där grisen inte skymmer konturen, och glider fram till SX
-    [11.6, 'tittar', { sag: [['jul/05v2-ritar-mer', 'Kritan ritar något mer…', 0.2], ['jul/05v2-en-sack', 'Titta, en säck med julklappar!', 4.5], ['jul/05v2-far-aka-med', 'Dom får åka med på pulkan.', 6.9]], rit: [[1.6, 'sack', 2.6]],
-      sjunk: [[9.1, 0], [9.7, 16], [10.1, 16], [10.6, 34]],
-      ting: { sack: [[1.2, SX0, SY0, 1, 1, 0, 1], [7.8, SX0, SY0, 1, 1, 0, 1], [8.8, SX, SY, 1, 1, 0, 1]], driva: [[9.1, DX, DY, 0.8, 0, 0, 1], [10.5, DX, DY, 2.0, 1, 0, 1]] },
-      ljud: [['sno-duns', 8.8, 2, 1.2], ['pulka-glid', 9.1, 3, 0.7], ['sno-duns', 9.7, 1, 1.8]] }],   // 11-18 natt: Openverse-ljuden (sno-duns, pulka-glid)
+    // 11-19 (feedback J04 0:50): när säcken är ritad, ett reaktionsslag: hårt klipp till en närbild där grisen blir förvånad, sedan säger Malin vad det är
+    [5.6, 'tittar', { sag: [['jul/05v2-ritar-mer', 'Kritan ritar något mer…', 0.2]], rit: [[1.6, 'sack', 2.6]], ting: { sack: [[1.2, SX0, SY0, 1, 1, 0, 1]] } }],
+    [3.4, 'oj', { nara: true, sag: [['jul/05v2-en-sack', 'Titta, en säck med julklappar!', 0.6]], ljud: [['noff-gullig', 0.25, 4, 1.5, 0.8]] }],
+    [5.0, 'tittar', { sag: [['jul/05v2-far-aka-med', 'Dom får åka med på pulkan.', 0.3]],
+      sjunk: [[2.5, 0], [3.1, 16], [3.5, 16], [4.0, 34]],
+      ting: { sack: [[1.2, SX0, SY0, 1, 1, 0, 1], [2.2, SX, SY, 1, 1, 0, 1]], driva: [[2.5, DX, DY, 0.8, 0, 0, 1], [3.9, DX, DY, 2.0, 1, 0, 1]] },
+      ljud: [['sno-duns', 2.2, 2, 1.2], ['pulka-glid', 2.5, 3, 0.7], ['sno-duns', 3.1, 1, 1.8]] }],   // 11-18 natt: Openverse-ljuden (sno-duns, pulka-glid)
     [2.2, 'oj', { nara: true, ljud: [['noff-gullig', 0.5, 4, 1.5, 1.0]] }],
     [4.9, 'stilla', { armar: ARM, uttryck: 'forvanad', kam: KDRIVA, sag: [['jul/05v2-sjunker', 'Oj! Pulkan sjunker ner i snön.', 0.3], ['jul/05v2-tung', 'Säcken är så tung.', 2.9]] }],
     // D: grisen försöker glida, tre försök: pulkan sitter fast
     [4.4, 'ga', { armar: ARM, gang: [[0, 0], [0.8, -18], [1.6, 0], [2.4, -18], [3.2, 0]], glidar: true, uttryck: 'arg', nara: [0.8, 4.2], sag: [['jul/05v2-forsoker-aka', 'Grisen försöker åka.', 0.2], ['jul/05v2-sitter-fast-1', 'Nej, den sitter fast.', 2.0]], ljud: [['tra-knarr', 0.8, 1, 1.3], ['tra-knarr', 2.4, 2, 1.3], ['noff-gullig', 4.0, 4, 1.5, 1.0]] }],
     [3.6, 'ga', { armar: ARM, gang: [[0, 0], [0.7, -18], [1.4, 0]], glidar: true, uttryck: 'arg', sag: [['jul/05v2-forsoker-igen', 'Grisen försöker igen.', 0.1], ['jul/05v2-sitter-fast-2', 'Den sitter fast.', 1.7]], ljud: [['tra-knarr', 0.7, 1, 1.3]] }],
+    // 11-19 (feedback J04 1:10, "more focus on grisen blir sur"): reaktionsslag i närbild, grisen fnyser och skakar surt på huvudet
+    [2.8, 'stilla', { armar: ARM, uttryck: 'arg', nara: true, skaka: [0.7], ljud: [['fnys', 0.35, 1, 1.2], ['noff-djup', 1.6, 1, 1.3, 0.8]] }],
     [4.8, 'ga', { armar: ARM, gang: [[0, 0], [0.6, -18], [1.2, 0]], glidar: true, uttryck: 'ledsen', nara: [1.3, 4.8], sag: [['jul/05v2-trott', 'Grisen blir trött.', 1.6], ['jul/05v2-vad-gor-vi', 'Vad gör vi nu?', 3.6]], ljud: [['tra-knarr', 0.6, 1, 1.3], ['noff-gullig', 3.0, 4, 1.5, 1.0]] }],
     // E: björnen går in från vänster på tå (ner för krönet) medan kameran glider ut lite, vinkar hej, grisen blir glad. Barnets tur: heja på grisen
     [3.8, 'stilla', { armar: ARM, in: 0, tass: true, tassTid: 3.0, kamTill: [...KW, 0.2, 2.4], ser: [-60, 0], sag: [['jul/05v2-titta-bjornen', 'Titta, där kommer björnen!', 1.0]] }],
@@ -139,8 +150,9 @@ KOR.then(async () => {
   const slump = i => { const v = Math.sin(i * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
   const kurva = (f, x0, x1, botten) => { let d = `M${x0} ${botten}`; for (let x = x0; x <= x1; x += 20) d += ` L${x} ${f(x).toFixed(1)}`; return d + ` L${x1} ${botten} Z`; };
   const yM = x => Y0 - 230 - 120 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (x + 300) / 1500)), yL = x => Y0 - 380 - 110 * (0.5 - 0.5 * Math.cos(2 * Math.PI * (x + 900) / 2300));
-  // granarna på kullarna: snögranen ur Pulkabackens platta (gran-sno.png, utklippt 11-18 kväll: "bättre granar med snö på"), stammens fot i (120, 290)
-  const gran = (x, y, k) => `<image href="/assets/bakgrunder/pulkabacken/gran-sno.png" x="${(x - 120 * k).toFixed(0)}" y="${(y - 290 * k).toFixed(0)}" width="${(240 * k).toFixed(0)}" height="${(292 * k).toFixed(0)}"/>`;
+  // granarna på kullarna: snögranen ur Pulkabackens platta (gran-sno.png, utklippt 11-18 kväll: "bättre granar med snö på"), stammens fot i (120, 290).
+  // 11-19 (feedback J04 2:30, "refine trees"): gran-sno-ren.png = samma gran utan grannträdets flisa och snöremsan i botten, stammen tonas ut
+  const gran = (x, y, k) => `<image href="/assets/bakgrunder/pulkabacken/gran-sno-ren.png" x="${(x - 120 * k).toFixed(0)}" y="${(y - 290 * k).toFixed(0)}" width="${(240 * k).toFixed(0)}" height="${(292 * k).toFixed(0)}"/>`;
   const GRANAR = Array.from({ length: 22 }, (_, i) => { const x = -200 + i * 290 + 120 * slump(i); return gran(x, yM(x) + 24, 0.8 + 0.4 * slump(i + 5)); }).join('');
   const FL = 46, SPRUT = [];
   // snön som yr i åken: när pulkan åker nerför sprutar snö bakåt och uppåt från medarnas bakände
