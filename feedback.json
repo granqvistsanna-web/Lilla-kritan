@@ -5628,9 +5628,10 @@
   "sec": 20,
   "tags": [],
   "note": "make hat smaller on bear. remove var gömmer du dig nu. match tittut a bit later. close crops more often. more reaction faces. consider how to make episode more engaging. make more conversation. engaging child find bear at end",
-  "fixed": false,
+  "fixed": true,
   "at": 1795064049591,
-  "render": "2026-11-19 00:19 (Tittut med björnen i julskogen, ny lucka 6)"
+  "render": "2026-11-19 00:19 (Tittut med björnen i julskogen, ny lucka 6)",
+  "fixedAt": 1795065501628
  },
  "np1y8b2rb8mwn2wkub": {
   "ep": "J03",
