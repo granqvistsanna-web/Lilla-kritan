@@ -1,20 +1,21 @@
 # Julkalendern – parkerade luckor
 
-**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 10–11 och 14–24 står öppna (tomma) tills vidare.
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 11 och 14–24 står öppna (tomma) tills vidare.
 Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
 | Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
 |---|---|---|---|
 | 1 | J01 | `20-kaninen-aker-pulka` | 039 hel video, granska. Omrenderad som lucka 1 (18/11), uppladdad som J01 |
 | 2 | J02 | `07-lammet-julkula` | granska. Renderad som lucka 7, renderas om |
-| 3 | J03 | `21-leoparden-gar-och-lagger-sig` | 040 byggs (animatiken godkänd), ingen film på sidan än |
+| 3 | J03 | `21-leoparden-gar-och-lagger-sig` | granska, runda 4 (19/11): hel lucka med kalenderns intro/outro, kranen, mugg/glas från början, ny insomningsövergång, större zzz, QA av skarvarna; förhandsvisning (--snabb), slutrendering kvar |
 | 4 | J04 | `05-grisen-pulka` | granska. Feedback 19/11 runda 2 fixad (in från vänster efter kullarna, förvånad närbild på säcken, sur närbild med fnys och huvudskak, benen bakom kroppen, städade granar), 176,3 s, −16 LUFS, ingen overall; luckan (hel-video.sh) byggs om när filmen är godkänd |
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
 | 7 | J07 | `07-hunden-ater-julmat` (ny) | 036 Hunden äter julmat, hel video (`fran: 3.34`, utan bilderboksintrot). Sanna 2026-11-19 |
 | 8 | J08 | `11-roda-sangen` | 013 Röda sången, hel video (`fran: 9.9`), nya kalenderintrot, 167,2 s. **Godkänd av Sanna 2026-11-19** |
 | 9 | J09 | `09-kaninen-badar-varmt` (ny) | 041 Kaninen badar varmt, hel video (scenens badet.mp4, ingen `fran`). Sanna 2026-11-19 |
-| 10–11 | – | – | öppna |
+| 10 | J10 | `10-tre-pussel-till` (ny) | Tre julpussel till: julgranen, snögubben, julklappen (`pussel-prov.py pussel-lucka-10`, samma upplägg som lucka 5). Sanna 2026-11-19: "ett till julpussel" |
+| 11 | – | – | öppen |
 | 12 | J12 | `12-tittut-grisen` (ny) | Tittut med grisen i julskogen, hel video (`fran: 4.0, till: 136.4`), inte renderad. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
 | 13 | J13 | `13-grona-sangen` (ny) | 014 Gröna sången, hel video (`fran: 11.0`, utan logotypintrot). Sanna 2026-11-19. OBS: sången har *"Vad kan det vara?"* (ca 0:05 in i luckans film), den går inte att klippa bort |
 | 14–24 | – | – | öppna |
