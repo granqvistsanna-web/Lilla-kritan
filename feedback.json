@@ -6014,8 +6014,9 @@
   "sec": 119,
   "tags": [],
   "note": "add halsduk to bear (same as tittut)",
-  "fixed": false,
+  "fixed": true,
   "at": 1795069652648,
-  "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)"
+  "render": "2026-11-19 07:04 (Feedback 19/11 runda 2: grisen åker in från vänster (0:44), förvånad närbild på säcken (0:51), sur närbild med fnys och huvudskak (1:15), benen bakom kroppen, städade granar på kullarna. 176 s)",
+  "fixedAt": 1795071293142
  }
 }
