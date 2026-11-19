@@ -48,7 +48,9 @@ JUL_OPPNA = ['[excited] Ska vi lägga ett pussel? … Ja!', '[excited] Ett pusse
              '[warm] Titta, ett nytt pussel!', '[excited] Ska vi lägga ett till? … Ja!', '[warm] Nu kommer nästa pussel!',
              '[excited] Ett sista pussel? … Ja!']
 REPLIKER.update({f'jul-oppna-{n + 1}': txt for n, txt in enumerate(JUL_OPPNA)})
-OPPNA = {'pussel-jul': [f'jul-oppna-{n + 1}' for n in range(len(JUL_OPPNA))]}   # film -> öppningsreplik per pussel
+OPPNA = {'pussel-jul': [f'jul-oppna-{n + 1}' for n in range(len(JUL_OPPNA))],
+         'pussel-lucka-13': ['jul-oppna-1', 'jul-oppna-2', 'jul-oppna-10'],
+         'pussel-lucka-10': ['jul-oppna-1', 'jul-oppna-2', 'jul-oppna-10']}   # lucka 10: samma öppningar som lucka 5   # lucka 5: samma som julfilmen   # film -> öppningsreplik per pussel
 OPPNA_LISTA = None                      # sätts i main
 
 # Bitarna: 0 överst till vänster, 1 överst till höger, 2 nederst till vänster, 3 nederst i mitten, 4 nederst till höger.
@@ -80,12 +82,14 @@ IN, VISA, LAGG, MELLAN = 0.8, 1.3, 0.8, 0.8      # lugnare: biten visas längre,
 FRAGA = 4.0                             # tyst gissningspaus efter frågan
 TAKTER = {'dar': [0, 2, 4]}             # efter vilka bitar Malin säger "Där!"/"Den passar!"
 UTAN_DEN_PASSAR = {'pussel-vanliga', 'pussel-mix-5', 'pussel-mix-5b'}    # Sanna 2026-11-18: bara "Där!" efter bit 1, inget "Den passar!" efter bit 3
-TYST_FORSTA = {'pussel-jul'}            # Sanna 2026-11-18: filmens allra första bit får ingen kommentar
-TEMPO = {'pussel-jul': 0.88}           # Sanna 2026-11-18: julfilmen lite raskare (bitarnas rörelser och pauserna, inte gissningspausen)
+TYST_FORSTA = {'pussel-jul', 'pussel-lucka-13', 'pussel-lucka-10'}            # Sanna 2026-11-18: filmens allra första bit får ingen kommentar
+TEMPO = {'pussel-jul': 0.88, 'pussel-lucka-13': 0.88, 'pussel-lucka-10': 0.88}           # Sanna 2026-11-18: julfilmen lite raskare (bitarnas rörelser och pauserna, inte gissningspausen)
 K = 1.0                                 # sätts i main
-TYSTA_BITAR = {'pussel-jul'}            # Sanna 2026-11-18: bit 1–2 tysta (svåra att se), bit 3–4 kommenteras när de ligger, bit 5 i närbild; inget "Där!"/"Den passar!"
+TYSTA_BITAR = {'pussel-jul', 'pussel-lucka-13', 'pussel-lucka-10'}            # Sanna 2026-11-18: bit 1–2 tysta (svåra att se), bit 3–4 kommenteras när de ligger, bit 5 i närbild; inget "Där!"/"Den passar!"
 LIGG_KOMMENTAR = False                  # sätts i main
+LIGG_ALLA = {'pussel-vanliga'}          # Sanna 2026-11-18: bit 1–4 sägs när biten har landat (i stället för i närbild), bit 5 i närbild
 FORSTA_TYST = False                     # sätts i main
+NAMN = ''                               # sätts i main
 
 
 def ease_ut_bak(x, c=1.7):
@@ -397,7 +401,8 @@ MAXLANGD = {'tuff-tuff': 2.5, 'bjallror': 2.5, 'vagor': 2.5, 'mums': 1.8, 'jubel
 
 MUSIK = {'pussel-vanliga': ('assets/ljud/musik/stada-radion-slinga.m4a', 0.13),
          'pussel-jul': ('assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', 0.13),   # Sanna 2026-11-18: raskare julmusik (7,5 LU starkare än förra, samma nivå)
-         'pussel-lucka-13': ('assets/ljud/musik/jul/jul-badd-2.m4a', 0.10)}
+         'pussel-lucka-13': ('assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', 0.13),
+         'pussel-lucka-10': ('assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', 0.13)}   # Sanna 2026-11-18: lucka 5 följer julfilmen
 
 
 def musikbadd(fil, langd, ut, mjuk=96):
@@ -503,8 +508,8 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
         fram = t + IN
         if forsta and n == 0 and FORSTA_TYST: rid = None
         ligg = None
-        if LIGG_KOMMENTAR and n < 4:                    # tyst i närbild; bit 3–4 sägs när biten har landat
-            ligg, rid = (rid if n >= 2 else None), None
+        if LIGG_KOMMENTAR and n < 4:                    # tyst i närbild; bit 3–4 sägs när biten har landat (alla fyra i LIGG_ALLA)
+            ligg, rid = (rid if n >= 2 or NAMN in LIGG_ALLA else None), None
         fil, d, _ = replik(rid) if rid else (None, 0, '')
         visa = max(VISA, 0.2 + d + 0.7)
         land = fram + visa + LAGG
@@ -678,7 +683,7 @@ if __name__ == '__main__':
     VISA_TEXT = any(replik(r)[0] is None for r in REPLIKER)
     if namn in UTAN_DEN_PASSAR: TAKTER['dar'] = [0]
     FORSTA_TYST = namn in TYST_FORSTA
-    LIGG_KOMMENTAR = namn in TYSTA_BITAR
+    NAMN = namn; LIGG_KOMMENTAR = namn in TYSTA_BITAR or namn in LIGG_ALLA
     OPPNA_LISTA = OPPNA.get(namn)
     K = TEMPO.get(namn, 1.0); IN, VISA, LAGG, MELLAN = IN * K, VISA * K, LAGG * K, MELLAN * K
     if LIGG_KOMMENTAR: TAKTER['dar'] = []

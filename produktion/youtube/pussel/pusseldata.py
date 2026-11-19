@@ -127,7 +127,8 @@ FILMER = {
     'pussel-jul': ['pepparkakan', 'julgranen', 'tomten', 'tomteluvan', 'snoflingan', 'snogubben', 'julklappen', 'groten', 'julskinkan', 'kalken'],
     'pussel-mix-5': ['applet', 'kaninen', 'kon', 'katten'],   # Mix 5: fyra vanliga pussel (2026-11-18)
     'pussel-mix-5b': ['bilen', 'grisen', 'hunden'],   # Mix 5, andra pusselstunden
-    'pussel-lucka-13': ['pepparkakan', 'tomten', 'kalken'],   # julkalenderns lucka 13 (Sanna 2026-11-17: tre pussel i stället för Lucia)
+    'pussel-lucka-13': ['pepparkakan', 'tomten', 'kalken'],
+    'pussel-lucka-10': ['julgranen', 'snogubben', 'julklappen'],   # julkalenderns lucka 10 (Sanna 2026-11-19: ett till julpussel)   # julkalenderns lucka 13 (Sanna 2026-11-17: tre pussel i stället för Lucia)
 }
 
 
