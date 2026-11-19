@@ -5838,9 +5838,10 @@
   "sec": 73,
   "tags": [],
   "note": "polish the sink tap (kranen)",
-  "fixed": false,
+  "fixed": true,
   "at": 1795065931670,
-  "render": "2026-11-19 06:22 (Runda 3 (förhandsvisning): mer flyt, ny handtvätt med skum, eget vattenglas, tandkräm på borsten, vita tänder och närbild på borstningen, borsten utan kvist och rosett, rosa kritsvep, diskretare kudde, ny snö, snöret ritas efter stjärnan, mer glöd, utan 'God natt, lampan', längre insomning med öppna ögon)"
+  "render": "2026-11-19 06:22 (Runda 3 (förhandsvisning): mer flyt, ny handtvätt med skum, eget vattenglas, tandkräm på borsten, vita tänder och närbild på borstningen, borsten utan kvist och rosett, rosa kritsvep, diskretare kudde, ny snö, snöret ritas efter stjärnan, mer glöd, utan 'God natt, lampan', längre insomning med öppna ögon)",
+  "fixedAt": 1795068445361
  },
  "d6s9ltxe19mwn3x4fl": {
   "ep": "J03",
@@ -5848,9 +5849,10 @@
   "sec": 85,
   "tags": [],
   "note": "glasses and toothbrush show up out of nowehere",
-  "fixed": false,
+  "fixed": true,
   "at": 1795065951153,
-  "render": "2026-11-19 06:22 (Runda 3 (förhandsvisning): mer flyt, ny handtvätt med skum, eget vattenglas, tandkräm på borsten, vita tänder och närbild på borstningen, borsten utan kvist och rosett, rosa kritsvep, diskretare kudde, ny snö, snöret ritas efter stjärnan, mer glöd, utan 'God natt, lampan', längre insomning med öppna ögon)"
+  "render": "2026-11-19 06:22 (Runda 3 (förhandsvisning): mer flyt, ny handtvätt med skum, eget vattenglas, tandkräm på borsten, vita tänder och närbild på borstningen, borsten utan kvist och rosett, rosa kritsvep, diskretare kudde, ny snö, snöret ritas efter stjärnan, mer glöd, utan 'God natt, lampan', längre insomning med öppna ögon)",
+  "fixedAt": 1795068445361
  },
  "ge0bi7wbjzmwn3yka0": {
   "ep": "J03",
@@ -5858,9 +5860,10 @@
   "sec": 1,
   "tags": [],
   "note": "julkalederintro + outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795066018344,
-  "render": "2026-11-19 06:22 (Runda 3 (förhandsvisning): mer flyt, ny handtvätt med skum, eget vattenglas, tandkräm på borsten, vita tänder och närbild på borstningen, borsten utan kvist och rosett, rosa kritsvep, diskretare kudde, ny snö, snöret ritas efter stjärnan, mer glöd, utan 'God natt, lampan', längre insomning med öppna ögon)"
+  "render": "2026-11-19 06:22 (Runda 3 (förhandsvisning): mer flyt, ny handtvätt med skum, eget vattenglas, tandkräm på borsten, vita tänder och närbild på borstningen, borsten utan kvist och rosett, rosa kritsvep, diskretare kudde, ny snö, snöret ritas efter stjärnan, mer glöd, utan 'God natt, lampan', längre insomning med öppna ögon)",
+  "fixedAt": 1795068445361
  },
  "amxxalbm51mwn458gy": {
   "ep": "J04",
@@ -5923,9 +5926,10 @@
   "sec": -1,
   "tags": [],
   "note": "add julkalender intro and outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795066596179,
-  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))"
+  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))",
+  "fixedAt": 1795068445361
  },
  "0889l3o3hwmwn4d1mj": {
   "ep": "J03",
@@ -5933,9 +5937,10 @@
   "sec": 220,
   "tags": [],
   "note": "bettwe transition animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795066694011,
-  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))"
+  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))",
+  "fixedAt": 1795068445361
  },
  "dpw7t3wfg4mwn4d4rm": {
   "ep": "J03",
@@ -5943,9 +5948,10 @@
   "sec": 220,
   "tags": [],
   "note": "deep qa",
-  "fixed": false,
+  "fixed": true,
   "at": 1795066698082,
-  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))"
+  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))",
+  "fixedAt": 1795068445361
  },
  "ueptbvea1cmwn4djzo": {
   "ep": "J03",
@@ -5953,8 +5959,9 @@
   "sec": 229,
   "tags": [],
   "note": "bigger z z z a bit more high up",
-  "fixed": false,
+  "fixed": true,
   "at": 1795066717812,
-  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))"
+  "render": "2026-11-19 06:30 (Runda 3b: kameran står still, ingen lampa (bara julljusen), bättre utsnitt (rad 2, drickandet, fönsterbilderna))",
+  "fixedAt": 1795068445361
  }
 }
