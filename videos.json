@@ -1463,5 +1463,13 @@
   "file": "produktion/youtube/shorts/jul/12-tittut-grisen/12-tittut-grisen.mp4",
   "status": "granska",
   "name": "Tittut grisen"
+ },
+ "J07": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J07-1119-0627.mp4",
+  "duration": 237.3,
+  "rendered": "2026-11-19 06:27 (Lucka 7: hela 036 bakom luckan, utan bilderboksintrot)",
+  "file": "produktion/youtube/shorts/jul/07-hunden-ater-julmat/07-hunden-ater-julmat.mp4",
+  "status": "granska",
+  "name": "Hunden äter julmat"
  }
 }
