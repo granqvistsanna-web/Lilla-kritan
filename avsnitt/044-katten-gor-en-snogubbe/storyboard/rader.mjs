@@ -43,7 +43,7 @@ export const RADER = [
     bild: 'Snögubben fylls i inifrån (med näsa och halsduk: idén). Zoom in i papperet, in i den tomma björkdungen', ljudtext: '`glitter`', ansikte: '–' },
 
   // --- Björkdungen: bygga ---
-  { id: '1', d: 2.8 + L(4) + 1.4, plats: 'Björkdungen, helbild → närbild', malin: [[4, 2.8]], ljud: [[STEG(1), 0.5], [STEG(2), 1.3], [STEG(3), 2.0], [M(1), 3.1 + L(4)]],
+  { id: '1', d: 4.0 + L(4) + 1.4, plats: 'Björkdungen, helbild → närbild', malin: [[4, 4.0]], ljud: [[STEG(1), 0.5], [STEG(2), 1.4], [STEG(3), 2.3], [STEG(4), 3.2], [M(1), 4.3 + L(4)]],   // feedback 19/11: lugnare intåg (3,6 s)
     bild: 'Snön faller. Katten med tomteluvan trippar in från vänster och vinkar (armen bakom kroppen). Fotspår i snön', ljudtext: '`knarr-sno`, mjau hej (1)', ansikte: 'jätteglad' },
   { id: '2', d: 0.3 + L(5) + 2.0, plats: 'Halvbild', malin: [[5, 0.3]], ljud: [[M(7), 0.6 + L(5)]],
     bild: 'Katten står still och tittar på oss. Svarar med tre mjau, svansen vippar', ljudtext: 'mjau pratar (7)', ansikte: 'nyfiken → glad' },
@@ -55,7 +55,7 @@ export const RADER = [
     bild: 'En liten snöboll ligger vid tassen. Katten tittar på den', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '6', d: 1.5 + L(9) + 1.0, plats: 'Björkdungen, helbild', malin: [[9, 1.5]], ljud: [[PUTT, 0.45], [DUNS, 1.3 + L(9)]],   // QA 19/11: puttljudet före Malin
     bild: 'Katten knuffar bollen med tassen. Den rullar till mitten och växer, ett blekt spår efter. *"Rulla, rulla …"* medan den rullar, *"… en stor boll!"* när den stannar', ljudtext: '`sno-duns`', ansikte: 'glad' },
-  { id: '7', d: BAK + 0.8 + L(10) + 1.0, plats: 'Björkdungen, helbild', malin: [[10, BAK + 0.8]], ljud: [[STEG(3), 0.3], [STEG(4), 1.0], [DUNS, BAK + 0.6 + L(10)], [M(5), BAK + 0.8 + L(10)]],
+  { id: '7', d: BAK + 1.5 + L(10) + 1.0, plats: 'Björkdungen, helbild', malin: [[10, BAK + 1.5]], ljud: [[STEG(3), 0.3], [STEG(4), 1.0], [PUTT, BAK + 0.45], [DUNS, BAK + 1.3 + L(10)], [M(5), BAK + 1.5 + L(10)]],   // QA 19/11: puttljudet som rad 6 och 8
     bild: 'Ny boll, knuff, den rullar, lyfter i en mjuk båge och landar på den stora', ljudtext: '`sno-duns`, nyfiken (5)', ansikte: 'glad' },
   { id: '8', d: BAK + 1.5 + L(11) + 1.0, plats: 'Björkdungen, helbild', malin: [[11, BAK + 1.5]], ljud: [[STEG(1), 0.3], [STEG(2), 1.0], [PUTT, BAK + 0.45], [DUNS, BAK + 1.3 + L(11)]],   // QA 19/11
     bild: 'En liten boll, knuff, den lyfter och landar överst', ljudtext: '`sno-duns`', ansikte: 'glad' },
@@ -63,13 +63,13 @@ export const RADER = [
     bild: 'Tre bollar, inget ansikte. Katten tar ett steg bakåt, glatt skutt', ljudtext: 'förtjust (2)', ansikte: 'jätteglad' },
 
   // --- Stenarna ---
-  { id: '10', d: 0.3 + L(13) + 3.0, plats: 'Närbild, huvudbollen', malin: [[13, 0.3]],
+  { id: '10', d: 0.3 + L(13) + 3.0, plats: 'Närbild, huvudbollen', malin: [[13, 0.3]], ljud: [[M(5), 0.3 + L(13) + 2.4]],   // QA 19/11: klipp till katten, frågande mjau sist i gisspausen
     bild: 'Huvudbollen utan ansikte. Paus 3 s: barnet gissar', ljudtext: 'tyst', ansikte: '–' },
   { id: '11', d: 0.3 + L(14) + 0.8, plats: 'Halvbild, katten och stenarna', malin: [[14, 0.3]], ljud: [[GLIMT(1), 0.1]],
     bild: 'Tio små gråa stenar i snön vid kattens fötter glimmar till', ljudtext: '`glimt`', ansikte: 'förvånad' },
   { id: '12', d: 1.0 + L(15) + 1.0, plats: 'Halvbild, katten och stenarna', malin: [[15, 1.0]], ljud: [[OOO(2), 0.05], [M(2), 1.2 + L(15)]],
     bild: 'Katten tittar ner på stenarna', ljudtext: 'förtjust (2)', ansikte: 'glad' },
-  { id: '13', d: 0.5 + L(16) + 1.0, plats: 'Närbild, huvudbollen', malin: [[16, 0.5]], ljud: [[POP, 0.7], [POP, 0.5 + L(16) * 0.6]],
+  { id: '13', d: 0.5 + L(16) + 1.0, plats: 'Närbild, huvudbollen', malin: [[16, 0.5]], ljud: [[POP, 0.5 + 0.65], [POP, 0.5 + 1.5]],   // QA 19/11: på "öga" och "ögon" (whisper 0,5–1,16 / 1,4–1,98 s)
     bild: 'En sten i taget lyfter från snön och sätter sig: *"ett öga … två ögon"*', ljudtext: '`pop` ×2', ansikte: '–' },
   { id: '14', d: 0.3 + L(17) + 1.0, plats: 'Närbild, huvudbollen', malin: [[17, 0.3]], ljud: [[POP, 0.3 + L(17) - 0.3]],
     bild: 'Fem små stenar lyfter tillsammans och lägger sig i en rak rad under ögonen', ljudtext: '`pop`', ansikte: '–' },
@@ -81,9 +81,10 @@ export const RADER = [
     bild: 'Katten tittar på snögubben, sedan på oss, öronen ner', ljudtext: 'trumpen (6)', ansikte: 'trumpen' },
 
   // --- Kritan ritar moroten ---
-  { id: '18a', d: 0.3 + L(21) + 4.5, plats: 'Björkdungen, helbild', malin: [[21, 0.3]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(21)]],
+  { id: '18a', d: 0.3 + L(21) + 4.0,   // QA 19/11: kortare gisspaus (var 9,7 s utan Malin)
+    plats: 'Björkdungen, helbild', malin: [[21, 0.3]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(21)]],
     bild: 'Kritan kommer in och ritar morotens kontur i snön bredvid katten', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '18b', d: 3.0, plats: 'Samma', bild: 'Gisspaus 3 s: konturen klar, kritan svajar bredvid', ljudtext: 'tyst', ansikte: 'nyfiken' },
+  { id: '18b', d: 1.5, plats: 'Samma', bild: 'Gisspaus 3 s: konturen klar, kritan svajar bredvid', ljudtext: 'tyst', ansikte: 'nyfiken' },
   { id: '18c', d: 1.1 + L(22) + 1.0, plats: 'Halvbild, moroten', malin: [[22, 1.1]], ljud: [['glitter/glitter-2', 0.0], [OOO(1), 0.25], [M(2), 1.3 + L(22)]],
     bild: 'Moroten fylls i inifrån, glimt', ljudtext: '`glitter`, förtjust (2)', ansikte: 'glad' },
   { id: '19', d: 0.3 + L(23) + 1.2, plats: 'Halvbild', malin: [[23, 0.3]], ljud: [[M(2), 0.5 + L(23)]],   // QA 19/11: mjauet efter repliken
@@ -104,7 +105,7 @@ export const RADER = [
     bild: 'Snögubben med en arm. Katten tittar åt vänster, sedan åt höger', ljudtext: 'frågande mjau (5)', ansikte: 'nyfiken' },
   { id: '26a', d: 0.3 + L(30) + 1.0, plats: 'Björkdungen, helbild', malin: [[30, 0.3]],
     bild: 'Helbild för frågan', ljudtext: 'tyst', ansikte: 'nyfiken' },
-  { id: '26b', d: 4.0, plats: 'Närbild, fågelholkens stolpe', ljud: [[GLIMT(2), 2.0]],
+  { id: '26b', d: 3.0, plats: 'Närbild, fågelholkens stolpe', ljud: [[GLIMT(2), 1.5]],   // QA 19/11: pausen 6,4 → 5,4 s
     bild: 'Klipp till stolpen: en kvistspets sticker upp ur snön. Efter 3 s av pausen skimrar den svagt', ljudtext: 'tyst, svagt `glimt`', ansikte: '–' },
   { id: '27', d: 0.3 + L(31) + 1.0, plats: 'Närbild, fågelholkens stolpe', malin: [[31, 0.3]], ljud: [[GLIMT(1), 0.2], [M(2), 0.5 + L(31)]],
     bild: 'Skimret blir tydligt', ljudtext: '`glimt`, förtjust (2)', ansikte: '–' },
@@ -114,7 +115,7 @@ export const RADER = [
     bild: 'Kvistarmarna vickar en gång, som en vinkning. Katten fnissar', ljudtext: 'fniss (3)', ansikte: 'fnissig' },
 
   // --- Fågeln ---
-  { id: '30', d: HOLKN + 1.3 + L(34) + 1.0, plats: 'Närbild holken → helbild', malin: [[34, HOLKN + 1.3]], ljud: [[PIP, 0.5], [FLAX, HOLKN + 0.4], [OJ(2), HOLKN + 0.5], [M(5), HOLKN + 1.5 + L(34)]],
+  { id: '30', d: HOLKN + 1.3 + L(34) + 1.0, plats: 'Närbild holken → helbild', malin: [[34, HOLKN - 0.3]], ljud: [[PIP, 0.5], [FLAX, HOLKN + 0.4], [OJ(2), HOLKN + 1.8], [M(5), HOLKN + 1.5 + L(34)]],   // QA 19/11: "Oj! Titta, en fågel!" i närbilden när fågeln tittar ut
     bild: 'Den lilla blå fågeln tittar ut ur holken och flyger i en båge mot snögubben', ljudtext: 'pip, flax, nyfiken (5)', ansikte: 'förvånad' },
   { id: '31', d: 0.6 + L(35) + 1.4, plats: 'Halvbild, snögubben och katten', malin: [[35, 0.6]], ljud: [[FLAX, 0.0], [PIP_GLAD, 0.8 + L(35)], [M(2), 1.2 + L(35)]],
     bild: 'Fågeln landar överst på snögubbens huvud, en snötuss puffar upp', ljudtext: 'flax, glatt pip, förtjust (2)', ansikte: 'jätteglad' },
@@ -131,7 +132,8 @@ export const RADER = [
     bild: 'Fågeln hoppar ner och pickar på *"pick, pick, pick"*', ljudtext: 'flax, `pick` ×3', ansikte: 'glad' },
   { id: '36', d: 0.6 + L(40) + 1.0, plats: 'Halvbild, snögubben och katten', malin: [[40, 0.6]], ljud: [[FLAX, 0.0], [PIP_GLAD, 0.8 + L(40)]],
     bild: 'Fågeln flyger tillbaka upp på snögubbens huvud', ljudtext: 'flax, glatt pip', ansikte: 'glad' },
-  { id: '37', d: 0.3 + L(41) + 2.5, plats: 'Halvbild', malin: [[41, 0.3]],
+  { id: '37', d: 0.3 + L(41) + 2.5,   // utan GLES: pip-pausen ca 2,5 s (QA 19/11)
+    plats: 'Halvbild', malin: [[41, 0.3]],
     bild: 'Katten tittar på oss. Paus 4 s: barnet piper', ljudtext: 'tyst', ansikte: 'nyfiken' },
   { id: '38', d: 1.1 + L(42) + 1.0, plats: 'Halvbild', malin: [[42, 1.1]], ljud: [[M(1), 0.0], [PIP, 1.3 + L(42)]],
     bild: 'Katten svarar med ett mjau, fågeln piper efter', ljudtext: 'mjau (1), pip', ansikte: 'stolt' },
@@ -146,4 +148,4 @@ export const RADER = [
 
 // Receptets luft: 0,7 s extra på varje rad med en replik (inte under ritintrots kontur och gisspaus).
 export const GLES = 1.1;   // 0,7 → 1,1: lite lugnare takt (Sanna 2026-11-19)
-for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;
+for (const r of RADER) if (r.malin && !['01a', '01b', '37'].includes(r.id)) r.d += GLES;

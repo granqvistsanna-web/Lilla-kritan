@@ -5,7 +5,7 @@
 05-vad-vill-du-hitta-pa  [curious] Vad vill du hitta på, katten?
 06-ja-vad-kul  [excited] Bygga en snögubbe? Ja, vad kul!
 07-hur-gor-man  [curious] Hur gör man då?
-08-forst-en-boll  [warmly] Först en boll.
+08-forst-en-stor-snoboll  [warmly] Först en stor snöboll.
 09-en-stor-boll  [cheerfully] Rulla, rulla … en stor boll!
 10-en-boll-till  [cheerfully] Rulla, rulla … en boll till!
 11-en-liten-boll  [happy] Rulla, rulla … en liten boll!

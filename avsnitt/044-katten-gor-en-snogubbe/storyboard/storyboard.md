@@ -15,7 +15,7 @@ En stillbild per uppslag, tajmad efter Malins klippta repliker (`../rost-langder
 | [2](frames/2.jpg) | 0:24.1 | 4.5 s | Halvbild | *"Vad vill du hitta på, katten?"* (0:24.4) | Katten står still och tittar på oss. Svarar med tre mjau, svansen vippar | mjau pratar (7) | nyfiken → glad |
 | [3](frames/3.jpg) | 0:28.6 | 5.1 s | Halvbild | *"Bygga en snögubbe? Ja, vad kul!"* (0:29.2) | Glatt skutt (20 px), öronen upp. Malin efter skuttet | förtjust (2) | jätteglad |
 | [4](frames/4.jpg) | 0:33.7 | 3.0 s | Halvbild | *"Hur gör man då?"* (0:34.0) | Katten tittar ner på snön och lutar huvudet | nyfiken (5) | nyfiken |
-| [5](frames/5.jpg) | 0:36.7 | 2.9 s | Halvbild | *"Först en boll."* (0:37.0) | En liten snöboll ligger vid tassen. Katten tittar på den | – | nyfiken |
+| [5](frames/5.jpg) | 0:36.7 | 2.9 s | Halvbild | *"Först en stor snöboll."* (0:37.0) | En liten snöboll ligger vid tassen. Katten tittar på den | – | nyfiken |
 | [6](frames/6.jpg) | 0:39.6 | 4.8 s | Björkdungen, helbild | *"Rulla, rulla … en stor boll!"* (0:40.4) | Katten knuffar bollen med tassen. Den rullar till mitten och växer, ett blekt spår efter. *"Rulla, rulla …"* medan den rullar, *"… en stor boll!"* när den stannar | `sno-duns` | glad |
 | [7](frames/7.jpg) | 0:44.4 | 4.6 s | Björkdungen, helbild | *"Rulla, rulla … en boll till!"* (0:45.2) | Ny boll, knuff, den rullar, lyfter i en mjuk båge och landar på den stora | `sno-duns`, nyfiken (5) | glad |
 | [8](frames/8.jpg) | 0:49.0 | 4.8 s | Björkdungen, helbild | *"Rulla, rulla … en liten boll!"* (0:49.8) | En liten boll, knuff, den lyfter och landar överst | `sno-duns` | glad |

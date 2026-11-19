@@ -6,7 +6,11 @@
 
 Bildbevis i `qa/bilder/` (numren står vid fynden).
 
-> **Status 19/11:** fynd 1–6 (måste fixas) är åtgärdade i `index.html` och `storyboard/rader.mjs` (rader.json ombyggd), plus fynd 15 (picken på orden) som följde med rad 35. Ny förhandsvisning: `qa/forhandsvisning-4-snabb.mp4` (262,2 s, scenen +2,9 s). Fynd 7–22 är kvar. Originalen före ändringen ligger i scratchpaden, inte i repot.
+> **Status 19/11, runda 2:** fynd 1–6 fixade (förhandsvisning 4, committad i 3230965b). Nu också fynd 7–12, 14–20 och 22 i `index.html` och `storyboard/rader.mjs` (rader.json ombyggd med `bygg.mjs --rader=1`). Ny förhandsvisning: `qa/forhandsvisning-5-snabb.mp4` (258,8 s).
+> - **Fynd 10:** `fagelkvitter-1` är en mycket svag fil (−53 dB i snitt), så kvittret under ritintrot ligger på vol 1,0 och hörs bara som enstaka svaga kvitter (topp ca −42 dB mot Malins ca −13 dB). Vill Sanna ha ett tydligare platsljud på papperet behöver hon välja ljudet.
+> - **Fynd 12:** bädden sänkt 0,16 → 0,11 (−3 dB). Det är en smakfråga för Sanna att godkänna.
+> - **Fynd 13, inte fixat:** påsen bakom katten (som 043) gömmer den bakom svansen, så det blev sämre och är tillbakaställt. Det kräver att tasspetsen ritas ovanpå påsen i riggen.
+> - **Fynd 21:** ingen ändring behövs (bara ett kort ögonblick).
 
 ---
 

@@ -5,7 +5,7 @@
 05-vad-vill-du-hitta-pa 1.49
 06-ja-vad-kul 2.77
 07-hur-gor-man 0.79
-08-forst-en-boll 1.13
+08-forst-en-stor-snoboll 2.53
 09-en-stor-boll 2.30
 10-en-boll-till 2.08
 11-en-liten-boll 2.25
