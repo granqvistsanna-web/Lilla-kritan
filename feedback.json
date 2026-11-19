@@ -5970,9 +5970,10 @@
   "sec": 206,
   "tags": [],
   "note": "bigger bear",
-  "fixed": false,
+  "fixed": true,
   "at": 1795067991671,
-  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)"
+  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)",
+  "fixedAt": 1795070904628
  },
  "2qa2bweyq1mwn558f7": {
   "ep": "ABC-b",
@@ -5980,9 +5981,10 @@
   "sec": 215,
   "tags": [],
   "note": "more stacking of blocks",
-  "fixed": false,
+  "fixed": true,
   "at": 1795068009187,
-  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)"
+  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)",
+  "fixedAt": 1795070904629
  },
  "3qz82pwaavmwn55e4n": {
   "ep": "ABC-b",
@@ -5990,9 +5992,10 @@
   "sec": 215,
   "tags": [],
   "note": "improved disco svcene",
-  "fixed": false,
+  "fixed": true,
   "at": 1795068016583,
-  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)"
+  "render": "2026-11-19 06:52 (Bananens ansikte på magen. Björnen i närbild när den udda landar och när den åker ut (med brum). Sakerna låter efter sina ord och när de snurrar i dansen. Dansen: björnen hoppar ur klossen och dansar i mitten, klossarna snurrar en i taget, närbild, sedan tillbaka in. Förhandsvisning (--snabb).)",
+  "fixedAt": 1795070904629
  },
  "c4335727xzmwn63vdw": {
   "ep": "J04",
