@@ -5805,9 +5805,10 @@
   "sec": 202,
   "tags": [],
   "note": "simplyfy animation kaninen torkar sig",
-  "fixed": false,
+  "fixed": true,
   "at": 1795065485533,
-  "render": "2026-11-19 06:15 (Snabb v5: kaninen torkar sig och hänger tillbaka handduken på kroken (3:17–3:25), skuttar ut bakom fläkten genom dörren och irisen stängs på dörren (3:36). QA: står inte längre på fläkten, ritintrot 7 s med skogsljud (ingen tyst gisspaus), båtens närbild visar hela kaninen (1:52).)"
+  "render": "2026-11-19 06:15 (Snabb v5: kaninen torkar sig och hänger tillbaka handduken på kroken (3:17–3:25), skuttar ut bakom fläkten genom dörren och irisen stängs på dörren (3:36). QA: står inte längre på fläkten, ritintrot 7 s med skogsljud (ingen tyst gisspaus), båtens närbild visar hela kaninen (1:52).)",
+  "fixedAt": 1795068043990
  },
  "8xn8xi84x6mwn3ni9r": {
   "ep": "041",
@@ -5815,9 +5816,10 @@
   "sec": 0,
   "tags": [],
   "note": "add julkalender intro and outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795065502527,
-  "render": "2026-11-19 06:15 (Snabb v5: kaninen torkar sig och hänger tillbaka handduken på kroken (3:17–3:25), skuttar ut bakom fläkten genom dörren och irisen stängs på dörren (3:36). QA: står inte längre på fläkten, ritintrot 7 s med skogsljud (ingen tyst gisspaus), båtens närbild visar hela kaninen (1:52).)"
+  "render": "2026-11-19 06:15 (Snabb v5: kaninen torkar sig och hänger tillbaka handduken på kroken (3:17–3:25), skuttar ut bakom fläkten genom dörren och irisen stängs på dörren (3:36). QA: står inte längre på fläkten, ritintrot 7 s med skogsljud (ingen tyst gisspaus), båtens närbild visar hela kaninen (1:52).)",
+  "fixedAt": 1795068043990
  },
  "rdh178g3ljmwn3s8z7": {
   "ep": "J12",
