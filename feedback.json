@@ -6091,9 +6091,10 @@
   "sec": 105,
   "tags": [],
   "note": "remove winter wind sound",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075518911,
-  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")",
+  "fixedAt": 1795077202553
  },
  "7sst1htptmmwn9mcpb": {
   "ep": "J06",
