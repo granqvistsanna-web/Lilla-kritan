@@ -1,0 +1,11 @@
+vinka-1        [warm] Kan du vinka till björnen?
+var-ar-1       [curious] Var är björnen? Ser du?
+sag-med-1      [playful] Säg tittut med mig! Titt…
+sag-du-1       [happy] Du såg björnen!
+leta-1         [curious] Nu har björnen gömt sig. Är björnen bakom granen?
+nej-1          [softly] Nej…
+leta-2         [curious] Bakom paketen?
+nej-2          [laughs] Nej!
+tofs-1         [whispers] Titta… en röd tofs! Är det björnens mössa?
+ropa-1         [excited] Ska vi ropa tittut? Ett, två, tre…
+hittade-1      [excited] Du hittade björnen!
