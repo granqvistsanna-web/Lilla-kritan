@@ -6102,9 +6102,10 @@
   "sec": 154,
   "tags": [],
   "note": "more closeups",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075526351,
-  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")"
+  "render": "2026-11-19 06:37 (Förhandsvisning 2 (snabb), ersätter 06:33 (slutet var kapat): samtal med barnet (vinka, \"Var är björnen? Ser du?\", \"Säg tittut med mig! Titt…\" med paus för barnets \"ut\", \"Du såg björnen!\") och nytt slut där vi letar: granen? säcken? mössan syns över pepparkakshuset, vi ropar tittut, \"Du hittade björnen!\")",
+  "fixedAt": 1795077204449
  },
  "43ce2p8z42mwn9mqaz": {
   "ep": "J06",
