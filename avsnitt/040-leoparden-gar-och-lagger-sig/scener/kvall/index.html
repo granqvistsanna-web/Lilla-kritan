@@ -78,7 +78,6 @@ const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.
 
 // --- Kameran: zoom 1 = hela plattan; visar aldrig utanför bakgrunden -------------------------------------------------------
 function kamera(zoom = 1, cx = 960, cy = 540) {
-  zoom *= 1 + 0.018 * (1 - Math.cos(2 * Math.PI * TT / 16)) / 2;   // J03 "more flow": kameran andas långsamt in och ut (1,8 %, 16 s), aldrig helt stilla
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
   $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
@@ -282,22 +281,26 @@ function tackeSvg({ x, w, h, b }) {
     <path d="${d}" fill="none" stroke="#8f1f27" stroke-width="4" stroke-linejoin="round"/></g>`;
 }
 function julrum({ lampa = 1, ljus = [1, 1, 1, 1], rok = [0, 0, 0, 0], boj = [0, 0, 0, 0], natt = 0, nalle = 'golv', nalleBlund = 0, sang = true, kudde = true, snoTat = 0, nallePos = null } = {}) {
+  // J03 "no lampa, just julljus": bakgrundens målade lampa på nattduksbordet täcks med väggen två ränder till vänster (period ca 122 px)
   $('platta').innerHTML = `<image href="${SOVR}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>
+  <clipPath id="utanLampa"><rect x="1676" y="470" width="180" height="226"/></clipPath>
+  <image href="${SOVR}" x="244" width="1920" height="1080" preserveAspectRatio="xMidYMid slice" clip-path="url(#utanLampa)"/>
   <g mask="url(#glas)"><rect x="${FON.x0 - 10}" y="${FON.y0 - 10}" width="${FON.x1 - FON.x0 + 20}" height="${FON.y1 - FON.y0 + 20}" fill="url(#kvall)"/>
     <path d="M${FON.x0 - 10} ${FON.y1 - 34} Q${FON.x0 + 90} ${FON.y1 - 64} ${FON.x0 + 180} ${FON.y1 - 44} T${FON.x1 + 10} ${FON.y1 - 48} V${FON.y1 + 10} H${FON.x0 - 10}Z" fill="#EEF3FA"/>
     </g>
   ${snoTat > 0.01 ? `<g mask="url(#glas)" opacity="${(0.8 * snoTat).toFixed(2)}" filter="url(#sno-mjuk)">${sno(0.6)}</g>` : ''}
   <rect width="1920" height="1080" fill="#2A2560" opacity=".12"/>
   <rect y="819" width="1920" height="261" fill="#EBC79A" style="mix-blend-mode:multiply" opacity=".45"/>`;
-  if (lampa) lagg('bak', `<ellipse cx="${LAMPA.x}" cy="${LAMPA.y + 40}" rx="620" ry="480" fill="url(#rumsken)"/><circle cx="${LAMPA.x}" cy="${LAMPA.y}" r="110" fill="url(#sken)"/>`);
-  else lagg('bak', `<circle cx="${LAMPA.x}" cy="${LAMPA.y - 4}" r="70" fill="#5a4a6a" opacity=".35"/>`);   // släckt skärm
+  // J03: ingen lampa i rummet, bara julljusen. Det varma rumsskenet kommer från ljusstaken så länge något ljus brinner.
+  const brinner = ljus.reduce((a, b) => a + b, 0) / 4;
+  if (brinner > 0) lagg('bak', `<ellipse cx="${STAKE.x}" cy="${STAKE.y - 60}" rx="560" ry="420" fill="url(#rumsken)" opacity="${(0.6 + 0.4 * brinner).toFixed(2)}"/>`);
   // ljusstaken och ljusen
   const kx = i => STAKE.x + (231 + 257 * i - 616) * STAKE.s, ky = STAKE.y - (416 - 23) * STAKE.s;
   let h = '';
   [0, 1, 2, 3].forEach(i => { const x = kx(i), y = ky + 6;
     h += bild(R + 'adventsljus/cut/adventsljus.png', 1024, 1371, `translate(${x} ${y}) scale(${LJUS_S}) translate(-512 -1173)`);
     const vek = [x, y - (1173 - 221) * LJUS_S];
-    if (ljus[i]) { lagg('bak', `<circle cx="${vek[0]}" cy="${vek[1] - 20}" r="46" fill="url(#sken)"/>`);
+    if (ljus[i]) { lagg('bak', `<circle cx="${vek[0]}" cy="${vek[1] - 6}" r="24" fill="url(#sken)" opacity=".75"/>`);   // J03: små sken per låga (de stora flöt ihop till en lampa)
       const fl = 1 + 0.07 * Math.sin(TT * 9.1 + i * 1.7) + 0.04 * Math.sin(TT * 15.3 + i), sw = 2.5 * Math.sin(TT * 5.3 + i * 2.1) + 38 * boj[i];
       h += bild(R + 'laga/cut/laga.png', 1024, 1024, `translate(${vek[0]} ${vek[1]}) rotate(${sw.toFixed(2)}) scale(${(0.05 / fl).toFixed(4)} ${(0.05 * fl * (1 - 0.35 * boj[i])).toFixed(4)}) translate(-511.5 -901)`); }
     if (rok[i] > 0.01) { const r = rok[i]; h += [0, 1, 2].map(j => `<circle cx="${vek[0] + 4 * Math.sin(j * 2 + TT * 2)}" cy="${vek[1] - 14 - j * 14 - 30 * (1 - r)}" r="${5 + j * 2 + 4 * (1 - r)}" fill="#e8e6f0" opacity="${((0.8 - j * 0.2) * r).toFixed(2)}"/>`).join(''); }
@@ -317,7 +320,7 @@ const kamS = (z, y, dx = 0) => kamera(z, LX + dx, VID_S[1] - (922 - y) * 0.5);
 const ljusVek = i => [STAKE.x + (231 + 257 * i - 616) * STAKE.s, STAKE.y - (416 - 23) * STAKE.s + 6 - (1173 - 221) * LJUS_S];
 const TANDER0 = [0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75];   // J03 "teeth look pink": nästan vita redan före borstningen
 const HEL_S = () => kamera(1), HALV_S = () => kamS(2.0, 470, -40), ANS_S = () => kamS(2.9, 390),
-  FON_S = () => kamera(1.5, 700, 440), STAKE_S = () => kamera(3.2, STAKE.x - 40, STAKE.y - 60), STAKE_LOVA = () => kamera(2.0, 1560, 600);
+  FON_S = () => kamera(1.3, 830, 470), STAKE_S = () => kamera(3.2, STAKE.x - 40, STAKE.y - 60), STAKE_LOVA = () => kamera(2.0, 1560, 600);
 
 // --- Ritintrot: kritan ritar adventsstjärnan på papperet ----------------------------------------------------------------------
 function papperStjarna(k, fyll, tand = 0) { papper(); kamera(1);
@@ -386,7 +389,7 @@ const S = {
     let [f, p] = tl < 1.9 ? gaPose(T * 0.95) : [F('jatteglad'), P({})]; f = F('jatteglad', { titt: f.titt });
     const vk = del(mo(0) + 0.1, mo(0) + 0.5, tl) * (1 - del(d - 1.2, d - 0.6, tl));
     lova([x, GOLV_B], f, P(vink(p, vk, tl)), { skjorta: 0 }); },
-  '2': tl => { badrum(); kamera(1.45, 560, 470); const u = del(0.3, 0.9, tl);
+  '2': tl => { badrum(); kamera(1.35, 600, 560); /* J03 granskning: hela leoparden och tavlan */ const u = del(0.3, 0.9, tl);
     lova(STA, F('glad', { titt: [8 * u, -14 * u] }), P(skutt({ upp: 0.8 * u }, tl, lo(1), 18)), { skjorta: 0 });
     skimmer(TAVLA[0], TAVLA[1] + 110, 0.5 * bump(lo(0) - 0.1, lo(0) + 1.4, tl) + 0.15, 0.9); },
   // upp på pallens höga steg och sedan in bakom handfatet (runda 2: pallen bredvid handfatet)
@@ -490,7 +493,7 @@ const S = {
     const gl = bump(lo(0), lo(0) + 1.4, tl); if (gl > 0.02) skimmer(...iFig(VID, [520, 460]), 0.6 * gl, 0.45); },
   '20': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'borste'; B(F('flinar'), skutt(BP(0), tl, lo(0), 12, 0.35)); },
   // "Och sist lite vatten.": muggen flyger in i tassen, två små klunkar (riggens dricka, klunkarna på ljuden)
-  '21': tl => { badrum({ skjortaPaKrok: false }); kamera(2.2, BX - 60, RIM - 110); SAK = 'mugg'; const u = del(0.5, 1.1, tl), t0 = lo(0) - 1.45;
+  '21': tl => { badrum({ skjortaPaKrok: false }); kamera(2.2, BX - 60, RIM - 110); SAK = 'mugg'; const u = del(0.5, 1.1, tl), t0 = lo(0) - 1.45; kamera(1.9, BX - 20, RIM - 175); /* J03 granskning: hela huvudet när den dricker */
     const [f, p] = L.ataDel('dricka', kl(tl - t0, 0, 4.4), 4.4, { hand: 1, vinkel: -25 }); B(tl < t0 ? F('glad', { titt: [lerp(-14, 6, u), 8] }) : { ...f, glad: [0, 0] }, p);
     mugg(); flyg('mugg', u, [GLAS_P[0], GLAS_P[1] - 90], (x, y, u) => { const sm = lerp(GLAS_P[2], 0.11, u); glas(x, y + 448 * sm, sm); }); },
   '22': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'mugg'; const T = tl + RR['21'].d - (RR['21'].ljud[0][1] - 1.45);
@@ -547,8 +550,8 @@ const S = {
     P4.forEach(i => { const a = del(lo(i) - 0.3, lo(i), tl), o = bump(lo(i) - 0.32, lo(i) + 0.05, tl); if (o < 0.02) return;
       const m = huvudS(90, 470), v = ljusVek(i), x = lerp(m[0] + 30, v[0] - 22, a), y = lerp(m[1], v[1] - 8, a);
       lagg('fram', [-18, 0, 18].map(dy => `<path d="M${(x - 50).toFixed(1)} ${(y + dy).toFixed(1)} q25 -10 50 0" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${(0.85 * o).toFixed(2)}"/>`).join('')); }); },
-  '38': tl => { const klick = lo(0), k = tl >= klick, natt = del(klick, klick + 0.6, tl);
-    julrum({ nalle: 'sang', lampa: !k, ljus: [0, 0, 0, 0], nalleBlund: tl >= mo(0) + 0.75, natt: 0.7 * natt }); HALV_S(); stjarna(...STJ_FON, { tand: 1 });
+  '38': tl => { const natt = del(0.3, 1.5, tl);   // J03: ingen lampa, rummet mörknar mjukt när ljusen är släckta
+    julrum({ nalle: 'sang', ljus: [0, 0, 0, 0], nalleBlund: tl >= mo(0) + 0.75, natt: 0.7 * natt }); HALV_S(); stjarna(...STJ_FON, { tand: 1 });
     S_(F('somnig'), { luta: 1.5 * Math.sin(tl * 1.2) }); },
   '39': tl => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: lerp(0.7, 1, del(0, 0.6, tl)) }); kamera(1.3, 900, 520);
     stjarna(...STJ_FON, { tand: 0.85 + 0.15 * Math.sin(tl * 2.2) }); const g = bump(lo(0), lo(0) + 1.6, tl); if (g > 0.02) skimmer(STJ_FON[0], STJ_FON[1], 0.5 * g, 1.2);

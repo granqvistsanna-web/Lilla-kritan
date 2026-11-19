@@ -104,7 +104,7 @@ export const RADER = [
     bild: 'Leoparden **nickar** mot stjärnan', ljudtext: 'förtjust (2)', ansikte: 'glad' },
   { id: '37', d: 0.3 + L(43) + 2.0, plats: 'Närbild, ljusstaken och leoparden', malin: [[43, 0.3]], ljud: [1, 2, 3, 4].map(i => ['puff/puff-' + (i % 3 + 1), 0.3 + L(43) - 0.3 + 0.45 * i]),
     bild: 'Leoparden lutar sig mot ljusstaken och blåser: lågorna slocknar en i taget med en liten rökpuff', ljudtext: '`puff` ×4', ansikte: 'blåser' },
-  { id: '38', d: 0.3 + L(44) - 1.22 + 1.2, plats: 'Halvbild', malin: [[44, 0.3, { ss: 1.22 }]], ljud: [['lampa-klick/lampa-klick-1', 0.3]],   // J03: utan "God natt, lampan" (repliken börjar på "God natt, nallen")
+  { id: '38', d: 0.3 + L(44) - 1.22 + 1.2, plats: 'Halvbild', malin: [[44, 0.3, { ss: 1.22 }]], ljud: [],   // J03: ingen lampa, inget klick   // J03: utan "God natt, lampan" (repliken börjar på "God natt, nallen")
     bild: 'Lampan släcks på *"lampan"*, nallen blundar på *"nallen"*, snön faller lugnt. Rummet blir varmt blått', ljudtext: '`lampa-klick`', ansikte: 'sömnig' },
   { id: '39', d: 0.6 + L(45) + 1.4, plats: 'Halvbild, mörkt rum', malin: [[45, 0.6]], ljud: [['tindra/tindra-2', 0.3]],
     bild: 'Bara stjärnan lyser, skenet dämpas och växer', ljudtext: '`tindra`', ansikte: 'sömnig' },
