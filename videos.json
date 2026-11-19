@@ -1503,5 +1503,13 @@
   "file": "produktion/youtube/shorts/jul/14-bruna-sangen/14-bruna-sangen.mp4",
   "status": "granska",
   "name": "Bruna sången"
+ },
+ "J21": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J21-1119-0727.mp4",
+  "duration": 219.4,
+  "rendered": "2026-11-19 07:27",
+  "file": "produktion/youtube/shorts/jul/18-rosa-sangen/18-rosa-sangen.mp4",
+  "status": "granska",
+  "name": "Rosa sången"
  }
 }
