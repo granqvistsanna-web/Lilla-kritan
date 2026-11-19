@@ -784,7 +784,7 @@
  "J04": {
   "duration": 169.7,
   "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka.mp4",
-  "rendered": "2026-11-19 06:24 (Feedback 1:19: säcken högre upp på kälken; första åket går ut till höger och rakt vidare på kullarna (inget ut-och-in längre, andra backåket borta), stannar i dalen och skrattar, 'En gång till!', tillbaka i backen när kritan ritar säcken; längre på kullarna (första åket 6,4 s, åken med björnen 10,4 s över tre kullar); grisen nickar på 'Är du ute och leker i snön?', 'Ska du åka pulka?', 'En gång till!' och 'Vad roligt det var.' 169,7 s, utan overall (som du bad om).)",
+  "rendered": "2026-11-19 06:26 (samma film som 06:24, nu med ljud (förra uppladdningen saknade ljudspår). Feedback 1:19: säcken högre upp på kälken; första åket rakt ut på kullarna; längre kullåk; grisen nickar; utan overall)",
   "status": "granska",
   "stills": [
    {
@@ -812,8 +812,9 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9fab59d51b9ddc56010dcaabfe8b06a8.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J04-1119-0624.mp4",
-  "videoId": "088d118be17591e25241f4de714abb2b"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J04-1119-0626.mp4",
+  "videoId": "088d118be17591e25241f4de714abb2b",
+  "name": "Grisen åker pulka"
  },
  "J04-bg": {
   "layout": "rader",
