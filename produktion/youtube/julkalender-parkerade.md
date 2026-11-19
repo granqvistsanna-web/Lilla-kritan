@@ -8,7 +8,7 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 1 | J01 | `20-kaninen-aker-pulka` | 039 hel video, granska. Omrenderad som lucka 1 (18/11), uppladdad som J01 |
 | 2 | J02 | `07-lammet-julkula` | granska. Renderad som lucka 7, renderas om |
 | 3 | J03 | `21-leoparden-gar-och-lagger-sig` | granska, runda 4 (19/11): hel lucka med kalenderns intro/outro, kranen, mugg/glas från början, ny insomningsövergång, större zzz, QA av skarvarna; förhandsvisning (--snabb), slutrendering kvar |
-| 4 | J04 | `05-grisen-pulka` | granska. Feedback 19/11 runda 2 fixad (in från vänster efter kullarna, förvånad närbild på säcken, sur närbild med fnys och huvudskak, benen bakom kroppen, städade granar), 176,3 s, −16 LUFS, ingen overall; luckan (hel-video.sh) byggs om när filmen är godkänd |
+| 4 | J04 | `05-grisen-pulka` | granska. Feedback 19/11 runda 3 fixad (rent inåk från vänster efter kullarna utan baklängesryck och svävande snö, grön halsduk på björnen som i tittut); runda 2: förvånad närbild på säcken, sur närbild med fnys och huvudskak, benen bakom kroppen, städade granar. 176,3 s, −16 LUFS, ingen overall; luckan (hel-video.sh) byggs om när filmen är godkänd |
 | 5 | J05 | `13-tre-pussel` | granska. Renderad som lucka 13 med gamla introt, renderas om |
 | 6 | J06 | `06-tittut-bjornen` (ny) | Tittut med björnen i julskogen, hel video (`fran: 4.0, till: 159.5`), inte renderad |
 | 7 | J07 | `07-hunden-ater-julmat` (ny) | 036 Hunden äter julmat, hel video (`fran: 3.34`, utan bilderboksintrot). Sanna 2026-11-19 |
