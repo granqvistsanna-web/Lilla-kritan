@@ -1479,5 +1479,13 @@
   "file": "produktion/youtube/shorts/jul/11-roda-sangen/11-roda-sangen.mp4",
   "status": "klar",
   "name": "Lucka 8: Röda sången"
+ },
+ "J13": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J13-1119-0701.mp4",
+  "duration": 219.9,
+  "rendered": "2026-11-19 07:02",
+  "file": "produktion/youtube/shorts/jul/13-grona-sangen/13-grona-sangen.mp4",
+  "status": "granska",
+  "name": "Gröna sången"
  }
 }
