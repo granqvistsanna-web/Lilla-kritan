@@ -6046,9 +6046,10 @@
   "sec": 207,
   "tags": [],
   "note": "no stickers next to discoball, more disco floor and disco lights sheen",
-  "fixed": false,
+  "fixed": true,
   "at": 1795075401287,
-  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)"
+  "render": "2026-11-19 07:48 (3:23–3:42: större björn, klossarna bygger två torn en i taget och sedan en pyramid med björnens kloss överst, klistermärken i bågen runt kulan som i 005, ljusprickar och gnistor)",
+  "fixedAt": 1795076504843
  },
  "fy7eiw116wmwn9k2ux": {
   "ep": "ABC-b",
