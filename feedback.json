@@ -5596,9 +5596,10 @@
   "sec": 65,
   "tags": [],
   "note": "deep qa revire animation and issues and what can be imrpoved",
-  "fixed": false,
+  "fixed": true,
   "at": 1795037217295,
-  "render": "2026-11-18 22:22 (Snabb v4: handduken knuten om magen så att kaninen tydligt har den på sig när den går ut (3:36). Plus stegen på pallen och 1:04/1:12 från v3.)"
+  "render": "2026-11-18 22:22 (Snabb v4: handduken knuten om magen så att kaninen tydligt har den på sig när den går ut (3:36). Plus stegen på pallen och 1:04/1:12 från v3.)",
+  "fixedAt": 1795065319628
  },
  "g80moorsqemwmmujkg": {
   "ep": "041",
@@ -5606,9 +5607,10 @@
   "sec": 203,
   "tags": [],
   "note": "make bunny add towel back after drying",
-  "fixed": false,
+  "fixed": true,
   "at": 1795037277328,
-  "render": "2026-11-18 22:22 (Snabb v4: handduken knuten om magen så att kaninen tydligt har den på sig när den går ut (3:36). Plus stegen på pallen och 1:04/1:12 från v3.)"
+  "render": "2026-11-18 22:22 (Snabb v4: handduken knuten om magen så att kaninen tydligt har den på sig när den går ut (3:36). Plus stegen på pallen och 1:04/1:12 från v3.)",
+  "fixedAt": 1795065319628
  },
  "nk8yc7ylfumwn2of3u": {
   "ep": "J04",
