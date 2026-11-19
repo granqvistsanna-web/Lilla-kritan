@@ -1457,10 +1457,10 @@
   "name": "Kritans ABC: B (recept 1)"
  },
  "J12": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1119-0701.mp4",
-  "duration": 176.4,
-  "rendered": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")",
-  "file": "produktion/youtube/shorts/jul/12-tittut-grisen/12-tittut-grisen-liten.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1119-0929.mp4",
+  "duration": 179.2,
+  "rendered": "2026-11-19 09:29 (Malin 0,5 s efter rörelsen genom hela filmen, och förra förhandsvisningen hade bilden 4 s före rösten (15 fps-fel i luckbygget, fixat); större gran med toppen tydligt utanför bild; inget vindljud; 179 s)",
+  "file": "produktion/youtube/shorts/jul/12-tittut-grisen/12-tittut-grisen.mp4",
   "status": "granska",
   "name": "Tittut grisen"
  },
