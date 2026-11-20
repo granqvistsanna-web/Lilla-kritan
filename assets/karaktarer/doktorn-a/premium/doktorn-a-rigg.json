@@ -1,0 +1,46 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/doktorn-a-body.png",
+  "hals": [
+    511,
+    360
+  ],
+  "delar": {
+    "arm-l": {
+      "fil": "cut/doktorn-a-arm-l.png",
+      "vridpunkt": [
+        376,
+        447
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/doktorn-a-arm-r.png",
+      "vridpunkt": [
+        646,
+        447
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/doktorn-a-leg-l.png",
+      "vridpunkt": [
+        431,
+        772
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/doktorn-a-leg-r.png",
+      "vridpunkt": [
+        594,
+        772
+      ]
+    },
+    "head": {
+      "fil": "cut/doktorn-a-head.png",
+      "vridpunkt": [
+        511,
+        360
+      ]
+    }
+  },
+  "fotter": 975
+}

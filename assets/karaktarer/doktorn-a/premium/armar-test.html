@@ -1,0 +1,67 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Doktorn A – armar med armbåge (prov)</title>
+<!-- Prov (Sanna 2026-11-20: "try making arms with elbows + claude code"): armarna ritas i kod som två ärmdelar och en rund hand,
+     med rockens egen kritstruktur (cut/doktorn-a-rock-tile.png). Axeln är en rund led djupt inne i rocken, så ingen rot syns
+     när armen vrids. Armar bakom kroppen ritas före kroppen; armar framför (stetoskopet, klappen) efter, utan vit kant vid axeln.
+     ?ark=1 = alla poser bredvid varandra. Annars en loop som går mellan poserna (render(t)). -->
+<style>html,body{margin:0;background:#f5efe4}svg{display:block;width:100vw;height:56.25vw}</style>
+<svg id="s" viewBox="0 0 1920 1080">
+  <defs><pattern id="rock" patternUnits="userSpaceOnUse" width="128" height="128"><image href="cut/doktorn-a-rock-tile.png" width="128" height="128"/></pattern></defs>
+  <rect width="1920" height="1080" fill="#f5efe4"/><g id="figurer"></g>
+</svg>
+<script>
+const S = { l: [398, 462], r: [626, 462] };     // axelleden, strax innanför rockens kant (x 387 / 637 vid y 450): axelns runda topp blir ärmens axel
+const L1 = 118, L2 = 104, W = 66, HAND = 35, RING = 9, KANT = '#cfc8bc', HUD = '#f7ba99', HUDKANT = '#e3a07f';
+// Poser: [överarm, underarm] i grader från rakt ner, positivt = utåt från kroppen. fram = armen framför rocken.
+const POSER = {
+  vila:      { l: [22, 14],   r: [22, 14] },
+  vinkar:    { l: [22, 14],    r: [62, 152], vink: 1 },
+  lyssnar:   { l: [22, 14],    r: [14, -78], fram: { r: 1 } },
+  haller:    { l: [22, 14],    r: [38, 84] },
+  klappar:   { l: [16, -72],  r: [16, -72], fram: { l: 1, r: 1 } },
+  magen:     { l: [10, -62],  r: [10, -62], fram: { l: 1, r: 1 } },
+  pekar:     { l: [22, 14],    r: [128, 146] },
+  hurra:     { l: [118, 160], r: [118, 160] },
+};
+const rad = g => g * Math.PI / 180;
+function arm(sida, [a1, a2], fram) {
+  const s = sida === 'l' ? -1 : 1, [sx, sy] = S[sida];
+  const ex = sx + s * L1 * Math.sin(rad(a1)), ey = sy + L1 * Math.cos(rad(a1));
+  const hx = ex + s * L2 * Math.sin(rad(a2)), hy = ey + L2 * Math.cos(rad(a2));
+  const d = `M${sx} ${sy} L${ex} ${ey} L${hx} ${hy}`;
+  // Framför rocken: vita kanten börjar 55 px ut längs överarmen, så att axeln smälter in i rocken.
+  const k = fram ? 55 / L1 : 0, rd = `M${sx + (ex - sx) * k} ${sy + (ey - sy) * k} L${ex} ${ey} L${hx} ${hy}`;
+  const hx2 = hx + s * 20 * Math.sin(rad(a2)), hy2 = hy + 20 * Math.cos(rad(a2));
+  return `<g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="${rd}" stroke="#fff" stroke-width="${W + 2 * RING + 6}"/>
+    <circle cx="${hx2}" cy="${hy2}" r="${HAND + RING}" fill="#fff"/>
+    <circle cx="${hx2}" cy="${hy2}" r="${HAND}" fill="${HUD}" stroke="${HUDKANT}" stroke-width="3"/>
+    <path d="${d}" stroke="${KANT}" stroke-width="${W + 6}"/>
+    <path d="${d}" stroke="url(#rock)" stroke-width="${W}"/>
+    <path d="M${hx - 26 * Math.cos(rad(a2))} ${hy + s * 26 * Math.sin(rad(a2))} L${hx + 26 * Math.cos(rad(a2))} ${hy - s * 26 * Math.sin(rad(a2))}" stroke="${KANT}" stroke-width="4"/>
+  </g>`;
+}
+function figur(x, y, skala, pose, t = 0) {
+  const p = POSER[pose], fram = p.fram || {}, v = p.vink ? 18 * Math.sin(t * 9) : 0;
+  const vinkel = n => n === 'r' && p.vink ? [p.r[0], p.r[1] + v] : p[n];
+  const bak = ['l', 'r'].filter(n => !fram[n]).map(n => arm(n, vinkel(n), false)).join('');
+  const fr = ['l', 'r'].filter(n => fram[n]).map(n => arm(n, vinkel(n), true)).join('');
+  const im = n => `<image href="cut/doktorn-a-${n}.png" width="1024" height="1024"/>`;
+  const ogon = [[461, 252], [563, 252]].map(([ox, oy]) => `<ellipse cx="${ox}" cy="${oy}" rx="12.5" ry="17" fill="#2a1d1a"/><circle cx="${ox + 3}" cy="${oy - 6}" r="4" fill="#fff"/>`).join('');
+  return `<g transform="translate(${x} ${y}) scale(${skala}) translate(-512 -975)">
+    <ellipse cx="512" cy="961" rx="260" ry="30" fill="#000" opacity="0.08"/>
+    ${im('leg-l')}${im('leg-r')}${bak}${im('body')}${im('head')}${ogon}
+    <ellipse cx="443" cy="281" rx="22" ry="13" fill="#ec8f96" opacity=".75"/><ellipse cx="582" cy="281" rx="22" ry="13" fill="#ec8f96" opacity=".75"/>
+    <path d="M497 302 Q512 314 527 302" fill="none" stroke="#3a2a22" stroke-width="4.5" stroke-linecap="round"/>${fr}
+    <text x="512" y="1040" text-anchor="middle" font-family="sans-serif" font-size="44" fill="#5b4636">${pose}</text></g>`;
+}
+const fig = document.getElementById('figurer'), ark = new URLSearchParams(location.search).has('ark');
+const NAMN = Object.keys(POSER);
+window.render = t => {
+  if (ark) { fig.innerHTML = NAMN.map((n, i) => figur(240 + (i % 4) * 480, 500 + Math.floor(i / 4) * 520, 0.42, n, t)).join(''); return; }
+  fig.innerHTML = figur(960, 1000, 0.9, NAMN[Math.floor(t / 2) % NAMN.length], t);
+};
+const start = performance.now();
+(function loop() { if (!window.stilla) render((performance.now() - start) / 1000); requestAnimationFrame(loop); })();
+</script>

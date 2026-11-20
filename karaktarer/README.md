@@ -45,6 +45,8 @@ För gamla visor som handlar om barn. Sången får säga deras namn, eftersom de
 |---|---|
 | Pojken Olle | [pojken-olle.md](pojken-olle.md) (v2-rigg i `assets/karaktarer/pojken-olle/premium/`) |
 | Mamma Mor | [mamma-mor.md](mamma-mor.md) (v2-rigg i `assets/karaktarer/mamma-mor/premium/`) |
+| Doktorn A | [doktorn-a.md](doktorn-a.md) (v2-rigg i `assets/karaktarer/doktorn-a/premium/`, Besöket) |
+| Doktorn B | [doktorn-b.md](doktorn-b.md) (v2-rigg i `assets/karaktarer/doktorn-b/premium/`, Besöket) |
 
 ## Fordon
 
