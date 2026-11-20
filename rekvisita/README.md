@@ -183,6 +183,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Duvan | [duva.md](duva.md) | Kritans ABC: D |
 | Dörren (ABC) | [dorr-abc.md](dorr-abc.md) | Kritans ABC: D |
 | Ekollonet | [ekollon.md](ekollon.md) | Kritans ABC: E |
+| Ekorren (ABC) | [ekorre-abc.md](ekorre-abc.md) | Kritans ABC: E (provet av recept 3) |
+| Katten (ABC) | [katt-abc.md](katt-abc.md) | Kritans ABC: E (provet av recept 3) |
 | Enhörningen | [enhorning.md](enhorning.md) | Kritans ABC: E |
 | Eken | [ek.md](ek.md) | Kritans ABC: E |
 | Emun | [emu.md](emu.md) | Kritans ABC: E |

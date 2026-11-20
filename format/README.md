@@ -16,6 +16,7 @@ Alla avsnitt har **samma ram**. Bara berättelsen i mitten är ny. Intro, outro,
 | [shorts.md](shorts.md) | Egna regler för Shorts som görs från början (Gissa teckningen, Godnattsagan) |
 | [pussel.md](pussel.md) | Pusslet: fem tjocka bitar läggs i en bricka en i taget, frågan *"Vad blir det?"* efter bit 3, svaret med det riktiga ljudet (utkast, prov i `produktion/youtube/pussel/`) |
 | [alfabet.md](alfabet.md) | Ljudjakten: en bokstav per film efter hur den **låter** (*"Aaaa … apa!"*), gisspaus, barnet säger ljudet själv, kritan ritar bokstaven sist. Hur Malins ensamma ljud görs (utkast, pilot A) |
+| [abc-recept-3-kompisen-vill.md](abc-recept-3-kompisen-vill.md) | Kritans ABC, recept 3 (Sanna gillar formen 2026-11-20): Kompisen vill något. Kritan ritar bara konturen och bilden fylls i inifrån. Ord 1 är en figur som står kvar stor på golvet och vill något, kritan ritar fel en gång (*"Busiga kritan!"*), ord 2 och 3 behövs i handlingen, och *Vilken ska bort?* spelas en gång. Meningen att fylla i, fem handlingar som går att animera och rörelsemenyn (provet `produktion/youtube/alfabet/abc-e-recept-3/`) |
 | [abc-recept-2-stora-bokstaven.md](abc-recept-2-stora-bokstaven.md) | Kritans ABC, recept 2: Stora bokstaven. Ett färgat fält med ett jättestort krämvitt A, klistermärkena samlas på fältet, Vilken ska bort? med fyra pastelltallrikar. Mått, filter, gnistor och hur nästa bokstav görs (förlagan `produktion/youtube/alfabet/abc-bokstaven/`) |
 | [tittut.md](tittut.md) | Serien Tittut: en figur gömmer sig bakom flera saker (utkast) |
 
