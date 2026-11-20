@@ -150,8 +150,8 @@ function formarNu() {
 
 // --- Plåten och kakorna --------------------------------------------------------------------------------------------------------
 function platX() {
-  if (TT < at('29')) return lerp(PLAT_X, 2250, del(at('16', 0.3), at('16', 1.5), TT));
-  return PLAT_X;
+  // Sanna 20/11: lammet bär plåten till ugnen (rad 16) och tillbaka (rad 29); de raderna ritar plåten själva
+  return TT >= at('16') && TT < at('30') ? 2250 : PLAT_X;
 }
 // när varje kaka landar på plåten: stjärna 1 (rad 10, på tass-ljudet), stjärna 2 och 3 (rad 11, på popparna), hjärtat (bakom bild, rad 12)
 const LANDAR = () => [at('10', lj('10', 0)), at('11', lj('11', 1)), at('11', lj('11', 3)), at('13') - 0.05];
@@ -298,9 +298,10 @@ let LX = LX0, ARMAR_UPP = 0;
 // lammets gång in från vänster (rad 1)
 const STEG = 46;
 function lammX() { const a = at('1', 0.3), b = at('1', 3.6), u = kl((TT - a) / (b - a)); return { x: lerp(-260, LX0, mjuk(u)), gar: u > 0 && u < 1, vag: (LX0 + 260) * mjuk(u) }; }
-function lamm(f, p = {}, { vinka = null, lyft = 0, dx = 0 } = {}) {
-  const g = TT < at('2') ? lammX() : { x: LX0, gar: false }; LX = g.x + dx;
-  if (g.gar && L.steg) { const [, q] = L.steg(g.vag / (2 * STEG) / 1.2, 1, 1); const { x, ...r } = q; p = { ...p, ...r, luta: (r.luta || 0) + (p.luta || 0) + 2 }; }
+function lamm(f, p = {}, { vinka = null, lyft = 0, dx = 0, gang = null } = {}) {
+  const g = gang || (TT < at('2') ? lammX() : { x: LX0, gar: false }); LX = g.x + dx;
+  if (g.gar && L.steg) { const [, q] = L.steg(g.vag / (2 * STEG) / 1.2, g.amp ?? 1, g.rikt ?? 1); const { x, ...r } = q;
+    p = gang ? { ...r, ...p, luta: (r.luta || 0) + (p.luta || 0) } : { ...p, ...r, luta: (r.luta || 0) + (p.luta || 0) + 2 }; }
   if (vinka && vinka.upp > 0.001) { const u = mjuk(vinka.upp), a = [...(p.armar || [0, 0])]; a[0] += u * (55 + 16 * Math.sin(2 * Math.PI * 1.15 * vinka.tl) * vinka.sving); p = { ...p, armar: a, luta: (p.luta || 0) + 1.5 * u }; }
   if (ARMAR_UPP) { const a = p.armar || [0, 0]; p = { ...p, armar: [a[0] + 40 * ARMAR_UPP, a[1] + 40 * ARMAR_UPP] }; }
   { const a = (1 - Math.cos(2 * Math.PI * TT / 3.6)) / 2; p = { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a }; }
@@ -332,6 +333,16 @@ function armOverst(sida, [x0, y0, x1, y1]) {
   g.innerHTML = `<clipPath id="armklipp"><rect x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}"/></clipPath>`;
   const c = document.createElementNS('http://www.w3.org/2000/svg', 'g'); c.setAttribute('clip-path', 'url(#armklipp)'); c.appendChild(k); g.appendChild(c); $('fram').appendChild(g);
 }
+// gång från x0 till x1 mellan a och b (radens tid): riktningen och stegen tonas in och ut, så att lammet vänder sig mjukt
+const gang = (tl, a, b, x0, x1) => { const u = kl((tl - a) / (b - a)), e = kl(Math.min(u, 1 - u) * 6);
+  return { x: lerp(x0, x1, mjuk(u)), gar: u > 0 && u < 1, vag: Math.abs(x1 - x0) * mjuk(u), rikt: Math.sign(x1 - x0) * e, amp: 0.4 + 0.6 * e }; };
+// båda tassarna fram och lite upp, som när de håller plåten (c 0–1)
+const BAR = c => ({ fram: [c, c], hand: 1, klapp: 78, armar: [-124 * c, -124 * c], armY: -46 * c });
+// tassarnas mitt (armbildens HAND-punkt) i kamerans rum
+const tassMitt = () => { const q = [-1, 1].map(sd => rigM(ARMEL(sd)).transformPoint(new DOMPoint(...VK[sd > 0 ? 'r' : 'l'].h))); return [(q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2]; };
+const BAR_DY = 34;   // plåtens underkant under tassarnas mitt
+// plåten i tassarna: ritas efter lammet, tassarna överst (kopior av armarna), grytvantarna överst i rad 29
+function barPlat(x, y) { platNu(x, y); armOverst(-1, [-400, -400, 2400, 1600]); armOverst(1, [-400, -400, 2400, 1600]); vantarPa(); }
 const huvud = (dx = 0, y = 250) => [LX + dx * DS, LFOT + (y - 927) * DS];
 const HEL = () => kamera(1), HALV = () => kamera(1.9, 958, 480), FORMN = () => kamera(2.6, 760, TY - 85), PLN = () => kamera(2.6, PLAT_X, TY - 85),
   KLN = () => kamera(2.4, KL_X - 110, MAT_Y - 150), NARL = () => kamera(2.4, 930, 440);
@@ -412,9 +423,12 @@ const S = {
     DEG_TRYCK = sjunk; kok();
     lamm(ANS('flinar', { titt: [-6, 16] }), { luta: 5 * fram, fram: [fram, 0], hand: 1, klapp: 78, armar: [-124 * fram, 0], armY: (28 + tryckY + 46 * sjunk) * fram }, { lyft: -6 * tr });
     armOverst(-1, [DEG_X - 160, 0, DEG_X + 160, TY - 4]); },
-  '6': (tl, d) => { kok(); kamera(1.9, 980, 470); const upp = del(0.1, 0.6, tl), sk1 = d - 1.6, sk = bump(sk1, sk1 + 0.35, tl) - bump(sk1 + 0.35, sk1 + 0.7, tl);
-    const fall = del(sk1 + 0.5, sk1 + 0.9, tl), sur = del(lo(1) - 0.3, lo(1), tl);
-    lamm(mellan(ANS('forvanad', { titt: [14, 0] }), ANS('ledsen', { titt: [10, 6] }), sur), { armar: [70 * upp + 10 * sk, 0], oron: [16 * sur, 16 * sur] });
+  // Sanna 20/11 (1:22, "more smooth"): tassen lyfts mjukt från degen där rad 5 slutade (samma kamera), sänks före rad 7, ansiktet glider
+  '6': (tl, d) => { kok(); HALV(); const r = 1 - del(0.0, 0.9, tl), upp = del(0.3, 1.2, tl) * (1 - del(d - 0.8, d - 0.1, tl)), sk1 = d - 1.6, sk = bump(sk1, sk1 + 0.35, tl) - bump(sk1 + 0.35, sk1 + 0.7, tl);
+    const fall = del(sk1 + 0.5, sk1 + 0.9, tl), sur = del(lo(1) - 0.3, lo(1), tl), slut = del(d - 0.7, d, tl);
+    const ans = mellan(mellan(mellan(ANS('flinar', { titt: [-6, 16] }), ANS('forvanad', { titt: [14, 0] }), del(0, 0.5, tl)), ANS('ledsen', { titt: [10, 6] }), sur), ANS('nyfiken'), slut);
+    lamm(ans, { luta: 5 * r, fram: [r, 0], ...(r > 0.001 ? { hand: 1, klapp: 78 } : {}), armar: [-124 * r + 70 * upp + 10 * sk, 0], armY: -12 * r, oron: [16 * sur * (1 - slut), 16 * sur * (1 - slut)] });
+    if (r > 0.01) armOverst(-1, [DEG_X - 160, 0, DEG_X + 160, TY - 4]);
     const [x, y] = tass(-1); if (fall < 1) lagg('fram', `<ellipse cx="${f1(x - 4)}" cy="${f1(y + 4 + 120 * fall * fall)}" rx="22" ry="16" fill="#c98a52" stroke="#fff" stroke-width="3" filter="url(#kritkorn)" opacity="${(1 - fall * 0.6).toFixed(2)}"/>`); },
 
   // --- Formarna: stjärnan, en till, en till, hjärtat ---
@@ -434,7 +448,13 @@ const S = {
   // --- In i ugnen, ingen klocka ---
   '14': tl => { kok(); PLN(); lamm(ANS('glad', { titt: [16, 12] })); },
   '15': tl => { kok(); HALV(); lamm(ANS('jatteglad'), { upp: 0.5 * del(0, 0.3, tl), oron: [-10, -10] }, { lyft: skutt(tl, 0, 0.6, 22) }); },
-  '16': tl => { kok(); HALV(); const u = del(0.3, 1.5, tl); lamm(ANS('nyfiken', { titt: [lerp(10, 16, u), 8 - 6 * u] }), { rikt: 0.5 * u, luta: 4 * u }); },
+  // Sanna 20/11 (3:18): lammet lyfter plåten (0,2–0,9), går ut till höger med den (1,1–3,1), "Sådär!" vid ugnen (3,4), tillbaka utan (4,0–6,0)
+  '16': (tl, d) => { kok({ plat: false }); const H = [1.9, 958, 480], W = [1, 960, 540];
+    kameraMix(H, W, del(0.1, 1.2, tl)); if (tl > 5.6) kameraMix(W, H, del(5.6, d - 0.1, tl));
+    const ut = tl < 3.6, g = ut ? gang(tl, 1.1, 3.1, LX0, 2250) : gang(tl, 4.0, 6.0, 2250, LX0);
+    const c = ut ? del(0.1, 0.6, tl) : 0, lyft = del(0.35, 0.9, tl);
+    lamm(ut ? ANS('jatteglad', { titt: [10, 6] }) : mellan(ANS('glad', { titt: [-8, 2] }), ANS('jatteglad'), del(5.6, 6.2, tl)), BAR(c), { gang: g });
+    if (ut) { const [mx, my] = tassMitt(); barPlat(lerp(PLAT_X, mx, mjuk(lyft)), lerp(TY + 6, my + BAR_DY, mjuk(lyft))); } },
   '17': tl => { kok(); HALV(); const u = del(0, 0.6, tl); lamm(ANS('nyfiken', { titt: [16 * (1 - u), 2] }), { rikt: 0.5 * (1 - u) }); },
   '18': tl => { kok(); HALV(); const k = del(mo(0) + 0.2, mo(0) + 0.6, tl), o = omkring(tl - mo(0), 1.6);
     lamm(ANS('nyfiken', { titt: o.titt.map(v => v * k) }), { rikt: o.rikt * k, luta: o.luta * k, oron: [16 * k, 16 * k] }); },
@@ -476,11 +496,13 @@ const S = {
   '28': tl => { const pa = PA_TID() - CUR.s, v = del(0.1, 0.8, tl), h = del(pa - 1.4, pa - 0.6, tl), satt = bump(pa - 0.02, pa + 0.38, tl) + bump(1.18, 1.56, tl);
     kok(); kamera(1.7, 1000, 500); lamm(mellan(ANS('nyfiken', { titt: [14, -4] }), ANS('jatteglad', { titt: [0, 6] }), del(pa, pa + 0.3, tl)),
       { armar: [56 * v, 56 * h], strack: -0.03 * satt, bred: 0.02 * satt, luta: -3 * v + 3 * h }); },
-  '29': tl => { kok({ plat: false }); HALV(); const slut = mo(0) + rl(39), na = del(0, 0.6, tl), dra = del(0.7, slut - 0.8, tl), ner = del(slut - 0.75, slut - 0.3, tl);
-    lamm(mellan(ANS('nyfiken', { titt: [16, 4] }), ANS('jatteglad', { titt: [6, 10] }), dra), { armar: [40 - 20 * ner, lerp(56, 66, na) - 30 * dra - 14 * ner], rikt: 0.35 * (1 - dra), luta: 5 * (1 - dra) });
-    const q = PA_M(1).transformPoint(new DOMPoint(GC[0], GC[1])), hx = q.x - 95, hy = q.y + 30;
-    const x = tl < 0.6 ? lerp(2150, hx, mjuk(tl / 0.6)) : lerp(hx, PLAT_X, ner), y = lerp(hy, TY + 6, ner);
-    platNu(x, y); vantarPa(); },
+  // Sanna 20/11 (3:18): lammet går med grytvantarna ut till höger (0,6–2,5), bär tillbaka plåten (3,0–5,0) och ställer den på bordet (5,1–5,8)
+  '29': (tl, d) => { kok({ plat: false }); kameraMix([1.7, 1000, 500], [1, 960, 540], del(0, 1.0, tl));
+    const ut = tl < 2.8, g = ut ? gang(tl, 0.6, 2.5, LX0, 2250) : gang(tl, 3.0, 5.0, 2250, LX0);
+    const c = ut ? 0.35 * (1 - del(0.2, 0.8, tl)) : 1 - del(5.3, 6.0, tl), ner = del(5.1, 5.8, tl);
+    lamm(ut ? mellan(ANS('nyfiken', { titt: [14, -4] }), ANS('jatteglad', { titt: [10, 6] }), del(0.2, 0.7, tl)) : mellan(ANS('glad', { titt: [-6, 10] }), ANS('jatteglad'), del(5.5, 6.0, tl)), BAR(c), { gang: g });
+    if (ut) return;
+    const [mx, my] = tassMitt(); barPlat(lerp(mx, PLAT_X, mjuk(ner)), lerp(my + BAR_DY, TY + 6, mjuk(ner))); },
 
   // --- Varma, blåsa, mums ---
   '30': tl => { ARMAR_UPP = 1; kok(); PLN(); lamm(ANS('forvanad', { titt: [10, 14] })); },
@@ -497,15 +519,18 @@ const S = {
 
 // --- Ljud: Malin och effekterna ur raderna, julmusiken lågt under köket ------------------------------------------------------------
 const E = 'assets/ljud/effekter/';
-const VOL = f => /^ba-/.test(f) ? 0.85 : /^(glitter|tindra)/.test(f) ? 0.7 : /^tick/.test(f) ? 0.55 : /^(sno-duns|tass)/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : 0.75;
+const VOL = f => /^ba-/.test(f) ? 0.6 : /^(glitter|tindra)/.test(f) ? 0.7 : /^tick/.test(f) ? 0.55 : /^(sno-duns|tass)/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : 0.75;
 function ljud() {
   const ut = [];
   for (const r of RAD_L) {
-    for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/lammet-bakar-pepparkakor/${ROSTER[n - 1][0]}.m4a`, vol: 1.0 });
+    for (const [n, o, ss, l] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/lammet-bakar-pepparkakor/${ROSTER[n - 1][0]}.m4a`, vol: 1.0,
+      ...(ss ? { ss } : {}), ...(l ? { langd: l, fade: 0.08 } : {}) });   // [n, tid, ss, längd]: en del av repliken (rad 16 och 29)
     for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f), ...(/^krita-ritar/.test(f) ? { loop: true, langd: f.endsWith('-1') ? 9.7 : RR['21a'].d - 3.0, fade: 0.4 } : {}) });
   }
   // julmusiken (befintlig bädd, ingen ny musik) under hela filmen, från ritintrot (Sanna 2026-11-19: "add xmas soundtrack")
-  ut.push({ t: 0.2, fil: 'assets/ljud/musik/jul/jul-badd-2.m4a', vol: 0.11, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
+  // Sanna 20/11 (0:42, "xmas music like jingle bells instrumental"): karolen från 039/042 (Up on the Housetop, instrumental, slinga) i stället för
+  // marimbabädden, lite tydligare. Ingen ny musik.
+  ut.push({ t: 0.2, fil: 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', vol: 0.15, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
   return ut.filter(c => c.t < DURATION);
 }
 

@@ -81,8 +81,11 @@ export const RADER = [
     bild: 'Plåten med fyra råa kakor (tre stjärnor, ett hjärta) som står upp som små klistermärken', ljudtext: 'bä ja (1)', ansikte: '–' },
   { id: '15', d: 0.7 + L(21) + G, plats: 'Halvbild', malin: [[21, 0.7]],
     bild: 'Glatt skutt. Malin efter skuttet', ljudtext: '–', ansikte: 'jätteglad' },
-  { id: '16', d: 1.2 + L(22) + G, plats: 'Halvbild', malin: [[22, 1.2]],
-    bild: 'Plåten glider lugnt ut till höger, ur bild (in i ugnen, som aldrig syns). Lammet tittar efter den', ljudtext: '–', ansikte: 'nyfiken' },
+  // Sanna 20/11 (3:18): lammet går själv bort med plåten till ugnen och hämtar den, plåten flyger inte. Repliken delas i två:
+  // [n, tid, ss, längd]: "Ska de in i ugnen?" före, "Sådär!" när lammet är borta vid ugnen (utanför bild).
+  { id: '16', d: 6.8, plats: 'Halvbild → helbild → halvbild', malin: [[22, 0.3, 0, 1.1], [22, 3.4, 1.2]],
+    ljud: [[TASS(1), 1.3], [TASS(2), 1.9], [TASS(3), 2.5], [TASS(4), 4.3], [TASS(1), 4.9], [TASS(2), 5.5]],
+    bild: 'Lammet lyfter plåten med båda tassarna och går med den ut till höger (till ugnen, som aldrig syns). Sådär! Lammet kommer tillbaka utan plåten', ljudtext: 'tassar', ansikte: 'glad' },
   { id: '17', d: 0.3 + L(23) + G, plats: 'Halvbild', malin: [[23, 0.3]],
     bild: 'Lammet tittar på oss', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '18', d: 0.6 + L(24) + G + 1.2, plats: 'Halvbild', malin: [[24, 0.6]], ljud: [[B('7b'), 0.8 + L(24)]],
@@ -121,8 +124,10 @@ export const RADER = [
     bild: 'Kanten skimrar tydligt, grytlapparna glider fram bakom klockan', ljudtext: '`tindra`, förtjust (2)', ansikte: 'jätteglad' },
   { id: '28', d: 0.8 + L(56) + G, plats: 'Närbild: tassarna', malin: [[56, 0.8]], ljud: [[TASS(6), 0.7]],
     bild: 'Grytlapparna glider upp från bordet och sätter sig på tasspetsarna på *"på!"*', ljudtext: '`tass` lågt', ansikte: '–' },
-  { id: '29', d: 0.9 + L(39) + G, plats: 'Närbild: bordets högra kant → halvbild', malin: [[39, 0.9]],
-    bild: 'Plåten glider in från höger med en grytlapp i varje hörn. Klipp: plåten på bordet med bruna glansiga kakor och tre ångstreck, grytlapparna på lammets tassar', ljudtext: '–', ansikte: 'glad' },
+  // Sanna 20/11 (3:18): lammet går med grytvantarna till ugnen och bär tillbaka plåten. "Ta ut kakorna …" när lammet går, "sådär!" när plåten står på bordet.
+  { id: '29', d: 6.6, plats: 'Helbild', malin: [[39, 0.4, 0, 1.05], [39, 5.75, 1.1]],
+    ljud: [[TASS(3), 0.9], [TASS(4), 1.5], [TASS(1), 2.1], [TASS(2), 3.5], [TASS(3), 4.1], [TASS(4), 4.7], [TASS(5), 5.6]],
+    bild: 'Lammet går med grytvantarna ut till höger och kommer tillbaka med den varma plåten: bruna glansiga kakor och tre ångstreck. Plåten ställs på bordet', ljudtext: 'tassar', ansikte: 'glad' },
 
   // --- Varma, blåsa, mums ---
   { id: '30', d: 0.4 + L(40) + G, plats: 'Närbild: kakorna', malin: [[40, 0.4]],

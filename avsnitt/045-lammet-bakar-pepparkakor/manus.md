@@ -208,3 +208,10 @@ Hela familjen finns från 024: `ba-gullig-1` … `8` med en b-tagning per känsl
 3. **"Först stjärnan."** och den gamla andra halvan (kritan ritar plåten, väntar, pling) är borttagna: de dubblerade din nya väntan med klockan.
 4. **Lammkakan och bunken** behövs inte längre, så de görs inte i grind 2.
 5. **Lammets storlek** bakom bordet: prov innan animatiken med samma skala som 024, så att degen, formarna och plåten får plats bredvid.
+
+## Feedback 2026-11-20 (lucka 15, runda 1)
+
+- **0:42 julmusik som bjällror:** marimbabädden byttes mot karolen *Up on the Housetop* (instrumental, slingan från 039/042), 0,15 i stället för 0,11. Ingen ny musik.
+- **1:22 mjukare:** rad 6 börjar där rad 5 slutar (samma kamera, tassen lyfts mjukt från degen), tassen sänks och ansiktet glider till nyfiken före rad 7.
+- **1:30 lägre bää:** alla bää 0,85 → 0,6 (−3 dB).
+- **3:18 lammet går till ugnen:** rad 16 (6,8 s): lammet lyfter plåten med båda tassarna, går ut till höger och kommer tillbaka utan den, *"Sådär!"* när det är borta vid ugnen. Rad 29 (6,6 s): lammet går med grytvantarna, bär tillbaka den varma plåten och ställer den på bordet på *"sådär!"*. Replik 22 och 39 delas i två (`[n, tid, ss, längd]` i rader.mjs). Filmen blev 5,8 s längre.
