@@ -180,7 +180,7 @@ const DRICK = { hand: 0, vinkel: 25 };
 const PASTA_D = ['#fff', '#fbfffd', '#8fe3d2'];   // vit kant, tandkrämen, en mintrand
 const pasta = k => G.querySelectorAll('.pasta').forEach(e => e.setAttribute('stroke-dasharray', `${kl(k).toFixed(3)} 2`));
 let SAK = null;
-const MUN0 = [512, 488];   // J03: större gap (mun 58 × 48), borsten lägre                                // borsthuvudets mål: mitt i den öppna munnen (GAP); flyttas när den gnuggar
+const MUN0 = [512, 528];   // J03 runda 6 (1:45): borsten lite lägre, 488 → 528   // J03: större gap (mun 58 × 48), borsten lägre                                // borsthuvudets mål: mitt i den öppna munnen (GAP); flyttas när den gnuggar
 // borsten i tassen: m 0 framför magen … 1 vid munnen, g gnuggandet −1 … 1, rad 0 övre raden … 1 nedre
 const BP = (m, g = 0, rad = 0, extra = {}) => { L.HAND.mun = [MUN0[0] + 22 * g * m, MUN0[1] - 8 + 18 * rad];
   return { hall: [0, 1], fram: [0, 1], hand: 1, klapp: 40, armar: [0, -95 + 4 * g * m], sakGrepp: 1, sakMun: m, sakV: -72 + 30 * m + 4 * g * m, ...extra }; };
@@ -411,8 +411,11 @@ const S = {
     const vk = del(mo(0) + 0.1, mo(0) + 0.5, tl) * (1 - del(d - 1.2, d - 0.6, tl));
     lova([x, GOLV_B], f, P(vink(p, vk, tl)), { skjorta: 0 });
     SVEP = tl < SVEP_UT ? 0.5 + 0.3 * del(0, SVEP_UT, tl) : 0; SVEP_F = BAD_FARG; },
-  '2': tl => { badrum(); kamera(1.35, 600, 560); /* J03 granskning: hela leoparden och tavlan */ const u = del(0.3, 0.9, tl);
-    lova(STA, F('glad', { titt: [8 * u, -14 * u] }), P(skutt({ upp: 0.8 * u }, tl, lo(1), 18)), { skjorta: 0 });
+  // J03 runda 6 (0:40): jätteglad på "Kul det ska bli!", ett glädjehopp (hopp-mjuk, lo(2)) och svansen viftar till raden slutar
+  '2': (tl, d) => { badrum(); kamera(1.35, 600, 560); /* J03 granskning: hela leoparden och tavlan */ const u = del(0.3, 0.9, tl), h0 = lo(2), gl = del(mo(1) - 0.3, mo(1) + 0.2, tl);
+    const huk = bump(h0 - 0.2, h0, tl), land = bump(h0 + 0.55, h0 + 0.85, tl), vift = del(h0 - 0.3, h0, tl) * (1 - del(d - 0.8, d - 0.2, tl));
+    lova(STA, F(gl > 0.5 ? 'jatteglad' : 'glad', { titt: [8 * u, -14 * u] }), P({ upp: 0.8 * u, lyft: -45 * bump(h0, h0 + 0.55, tl), strack: -0.05 * (huk + land), bred: 0.05 * (huk + land),
+      armar: [40 * bump(h0 - 0.1, h0 + 0.8, tl), 40 * bump(h0 - 0.1, h0 + 0.8, tl)], svans: 16 * Math.sin(tl * 9) * vift }), { skjorta: 0 });
     skimmer(TAVLA[0], TAVLA[1] + 110, 0.5 * bump(lo(0) - 0.1, lo(0) + 1.4, tl) + 0.15, 0.9); },
   // upp på pallens höga steg och sedan in bakom handfatet (runda 2: pallen bredvid handfatet)
   '3': tl => { badrum(); HEL_B(); const n0 = mo(0) + 0.1, a = lo(0) - 0.15, b = a + 0.45, c = b + 0.2, e = c + 0.45;
@@ -453,7 +456,8 @@ const S = {
     let x, y, k = GS, v = 0;
     if (tl < 1.8) { const b = del(0.7, 1.8, tl); x = lerp(KROK[0], topp[0], b); y = lerp(KROK[1] - 8, topp[1], b) - 260 * Math.sin(Math.PI * b); k = lerp(0.27, GS, b); v = 8 * Math.sin(Math.PI * b); }
     else if (tl < 2.25) { const f = kl((tl - 1.8) / 0.45); x = slut[0]; y = lerp(topp[1], slut[1], f * f); }
-    else { const s = kl((tl - 2.25) / 0.25); x = slut[0]; y = slut[1] + 16 * Math.sin(Math.PI * s) * (1 - s) * (tl < 2.5); v = 2 * Math.sin((tl - 2.5) * 3) * del(2.5, 2.8, tl); }
+    else { const s = kl((tl - 2.25) / 0.25), fn = bump(lo(2), lo(2) + 1.6, tl);   // J03 runda 6 (1:09): leoparden fnissar under skjortan (spinn-fniss-3), skjortan skakar lite
+      x = slut[0]; y = slut[1] + 16 * Math.sin(Math.PI * s) * (1 - s) * (tl < 2.5) - 5 * Math.abs(Math.sin(tl * 11)) * fn; v = 2 * Math.sin((tl - 2.5) * 3) * del(2.5, 2.8, tl) + 2.5 * Math.sin(tl * 17) * fn; }
     skjortaFri(x, y, k, v); },
   // "Tittut!": huk, hopp, bytet till lagren på väg upp, bålen snäpper ner, öronen ploppar upp, landar
   '8': tl => { badrum({ skjortaPaKrok: false }); HALV_B(); const H0 = 0.05, BYT = 0.3, slut = [VID[0], VID[1] + (170 - L.FOTTER) * GS];
@@ -508,14 +512,17 @@ const S = {
   '17': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'borste'; const [f, p] = nick(F('glad'), P(BP(0)), tl - (lo(0) - 0.25), 1.4); B(f, p); },   // "Är du redan klar?": nickar ja
   // "Nej, lite till. Du har inte borstat där nere.": tittar ner, gapar, borsten gnuggar nedre raden
   '18': tl => { badrum({ skjortaPaKrok: false }); SAK = 'borste'; const a = lo(0) - 0.5;
-    if (tl < a) { ANS_B(); B(F('nyfiken', { titt: [0, 12 * del(0.6, 1.1, tl)] }), BP(0, 0, 0, { upp: -0.5 * del(0.6, 1.1, tl) })); return; }
+    if (tl < a) { const ned = del(0.3, 1.7, tl);   // J03 runda 6 (1:54): huvudet sänks mjukt på 1,4 s (var 0,5 s, ryckigt)
+      ANS_B(); B(F('nyfiken', { titt: [0, 12 * ned] }), BP(0, 0, 0, { upp: -0.5 * ned })); return; }
     MUN_B(); const m = del(a, a + 0.35, tl), g = Math.sin(2 * Math.PI * 2.4 * tl) * del(a + 0.35, a + 0.5, tl);
     B(GAP({ tander: [1, 1, 1, 1, 0.4, 0.4, 0.4, 0.4], titt: [-4, 8] }), BP(m, g, 1)); bubblor(...iFig(VID, [512, 450]), del(a + 0.4, a + 0.8, tl), tl); },
   '19': tl => { badrum({ skjortaPaKrok: false }); MUN_B(); SAK = 'borste'; const st = 0.25, m = 1 - del(st, st + 0.45, tl), b = del(0, st + 0.3, tl);
     const g = Math.sin(2 * Math.PI * 2.4 * (tl + 5)) * (1 - del(st - 0.15, st, tl));
     B(GAP({ tander: [1, 1, 1, 1, ...[0, 0, 0, 0].map(() => lerp(0.8, 1, b))] }), BP(m, g, 1)); bubblor(...iFig(VID, [512, 450]), 1 - del(0, st + 0.3, tl), tl + 5);
     const gl = bump(lo(0), lo(0) + 1.4, tl); if (gl > 0.02) skimmer(...iFig(VID, [520, 460]), 0.6 * gl, 0.45); },
-  '20': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'borste'; B(F('flinar'), skutt(BP(0), tl, lo(0), 12, 0.35)); },
+  // J03 runda 6 (2:01): rörelsen följer spinnet (spinn-gullig-3, 1,4 s): vaggar mjukt från sida till sida och vickar öronen så länge det låter
+  '20': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'borste'; const s = tl - lo(0), sp = bump(lo(0) - 0.05, lo(0) + 1.45, tl), o = 6 * Math.sin(2 * Math.PI * 2.2 * s) * sp;
+    B(F('flinar'), { ...BP(0), luta: 4 * Math.sin(2 * Math.PI * 1.1 * s) * sp, oron: [o, -o], strack: 0.02 * sp }); },
   // "Och sist lite vatten.": muggen flyger in i tassen, två små klunkar (riggens dricka, klunkarna på ljuden)
   '21': tl => { badrum({ skjortaPaKrok: false }); kamera(2.2, BX - 60, RIM - 110); SAK = 'mugg'; const u = del(0.5, 1.1, tl), t0 = lo(0) - 1.45; kamera(1.9, BX - 20, RIM - 175); /* J03 granskning: hela huvudet när den dricker */
     const [f, p] = L.ataDel('dricka', kl(tl - t0, 0, 4.4), 4.4, DRICK); B(tl < t0 ? F('glad', { titt: [lerp(-14, 6, u), 8] }) : { ...f, glad: [0, 0] }, p);
@@ -618,7 +625,7 @@ const S = {
 
 // --- Ljud: Malin och effekterna ur raderna, rummens mattor ---------------------------------------------------------------------
 const E = 'assets/ljud/effekter/';
-const VOL = f => /^spinn-gullig/.test(f) ? 0.9 : /^(glimt|glitter|tindra|pling)/.test(f) ? 0.7 : /^(tass|klad-sus|prassel)/.test(f) ? 0.6 : 0.75;
+const VOL = f => /^spinn-gullig/.test(f) ? 0.9 : /^(glimt|glitter|tindra|pling)/.test(f) ? 0.7 : /^tass/.test(f) ? 0.38 : /^(klad-sus|prassel)/.test(f) ? 0.6 : 0.75;   // J03 runda 6 (0:34): stegen lägre, 0,6 → 0,38
 function ljud() {
   const ut = [];
   for (const r of RAD_L) {
@@ -634,7 +641,7 @@ function ljud() {
   const s0 = RR['25'].s;
   ut.push({ t: s0, fil: 'produktion/rum/rosa-sovrummet/rosa-sovrummet-effekter.wav', vol: 0.35, langd: DURATION - s0, loop: true, fadeIn: 0.6, fade: 2.0 });
   // julmusiken under hela filmen, mjuk (runda 2: "julmusik soft soundtrack"): kalenderns kvällsbädd (celesta och speldosa), ca −31 LUFS
-  ut.push({ t: 0, fil: 'assets/ljud/musik/jul/jul-kvall.m4a', vol: 0.09, langd: DURATION, loop: true, fadeIn: 2.0, fade: 3.0 });   // runda 5 "lower music a bit": 0,12 → 0,09 (−2,5 dB)
+  ut.push({ t: 0, fil: 'assets/ljud/musik/jul/jul-kvall.m4a', vol: 0.07, langd: DURATION, loop: true, fadeIn: 2.0, fade: 3.0 });   // runda 5 "lower music a bit": 0,12 → 0,09 (−2,5 dB); runda 6: 0,09 → 0,07 (−2,2 dB)
   return ut.filter(c => c.t < DURATION);
 }
 
