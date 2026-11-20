@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/farmor-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/farmor-arm-l.png",
+      "vridpunkt": [
+        206,
+        572
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/farmor-ear-l.png",
+      "vridpunkt": [
+        335,
+        260
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/farmor-leg-l.png",
+      "vridpunkt": [
+        433,
+        838
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/farmor-leg-r.png",
+      "vridpunkt": [
+        602,
+        834
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/farmor-ear-r.png",
+      "vridpunkt": [
+        679,
+        261
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/farmor-arm-r.png",
+      "vridpunkt": [
+        813,
+        575
+      ]
+    },
+    "tail": {
+      "fil": "cut/farmor-tail.png",
+      "vridpunkt": [
+        758,
+        730
+      ]
+    }
+  }
+}

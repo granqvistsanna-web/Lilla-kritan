@@ -16,6 +16,8 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Lammet Ludde | [lammet-ludde.md](lammet-ludde.md) |
 | Grodan Gurra | [grodan-gurra.md](grodan-gurra.md) |
 | Katten Kaj | [katten-kaj.md](katten-kaj.md) (v2-rigg i `assets/karaktarer/katten-kaj/premium/`) |
+| Farmor (grå katt) | [farmor-katt.md](farmor-katt.md) (v2-rigg i `assets/karaktarer/farmor-katt/premium/`, kattens rigg omfärgad grå, 047) |
+| Farfar (grå katt) | [farfar-katt.md](farfar-katt.md) (v2-rigg i `assets/karaktarer/farfar-katt/premium/`, kattens rigg omfärgad grå, 047) |
 | Musen Mille | [musen-mille.md](musen-mille.md) |
 | Kycklingen Pip | [kycklingen-pip.md](kycklingen-pip.md) |
 | Kaninen Kanel | [kaninen-kanel.md](kaninen-kanel.md) |

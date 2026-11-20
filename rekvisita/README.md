@@ -101,6 +101,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Badankan | [badanka.md](badanka.md) | 020 |
 | Tvålen | [tval.md](tval.md) | 020 |
 | Pallen | [pall.md](pall.md) | 020, 022 |
+| Bussen | [buss.md](buss.md) | 047 |
+| Snöplogen | [snoplog.md](snoplog.md) | 047 |
 | Badbåten | [badbat.md](badbat.md) | 020 |
 | Bordet | [bordet.md](bordet.md) | 022 |
 | Sängen | [sangen.md](sangen.md) | 026, 027 |

@@ -1,0 +1,52 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-hm-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-buss  [surprised] Oj! En buss!
+04-hej-katten-hej-hej  [happy] Hej, katten! Hej, hej!
+05-idag-ska-katten-aka  [cheerfully] Idag ska katten åka buss. Till farmor och farfar!
+06-och-nallen-ar-med  [happy] Och nallen är med!
+07-nu-vantar-vi-pa  [warmly] Nu väntar vi på bussen. Vänta, vänta …
+08-hor-du-dar-kommer  [curious] Hör du? Där kommer bussen! Brum, brum.
+09-dar-ar-bussen-den  [excited] Där är bussen! Den stannar.
+10-dorren-oppnas-pschhh  [playfully] Dörren öppnas … pschhh!
+11-ett-stort-kliv-hopp  [cheerfully] Ett stort kliv … hopp!
+12-nu-blippar-vi-kortet  [cheerfully] Nu blippar vi kortet. Pip!
+13-titta-sa-ser-det  [curious] Titta, så ser det ut i bussen. Stolar … och stänger att hålla i.
+14-och-dar-en-rod  [excited] Och där! En röd knapp.
+15-katten-vill-trycka-pa  [warmly] Katten vill trycka på knappen! Inte än. Vi trycker när vi är nästan framme.
+16-katten-sitter-vid-fonstret  [happy] Katten sitter vid fönstret. Nallen också.
+17-nu-aker-bussen-brum  [cheerfully] Nu åker bussen. Brum, brum!
+18-vi-tittar-ut-genom  [warmly] Vi tittar ut genom fönstret. Snö … och granar …
+19-roda-hus-med-ljus  [cheerfully] Röda hus. Med ljus i fönstren.
+20-och-en-sjo-med  [delighted] Och en sjö med is. Blank, blank!
+21-titta-dar-aker-nagon  [excited] Titta! Där åker någon pulka. Det är kaninen!
+22-vinka-till-kaninen  [happy] Vinka till kaninen!
+23-hej-kaninen  [happy] Hej, kaninen!
+24-bussen-stannar-titta-vad  [curious] Bussen stannar. Titta! Vad ser katten?
+25-en-snogubbe  [excited] En snögubbe!
+26-hej-snogubben  [happy] Hej, snögubben!
+27-oj-en-liten-fagel  [surprised] Oj! En liten fågel. Den sätter sig på snögubbens hatt!
+28-bussen-aker-igen-brum  [cheerfully] Bussen åker igen. Brum, brum!
+29-nu-aker-bussen-genom  [excited] Nu åker bussen genom skogen … och över en bro! Dunk, dunk.
+30-bussen-stannar-titta-vad  [curious] Bussen stannar. Titta! Vad ser katten nu?
+31-en-snoplog-den-skjuter  [excited] En snöplog! Den skjuter undan snön.
+32-skrap-skrap  [playfully] Skrap, skrap!
+33-bussen-aker-igen-oj  [surprised] Bussen åker igen. Oj! Fönstret blev alldeles vitt.
+34-titta-kritan-ritar  [excited] Titta! Kritan ritar.
+35-ett-hjarta-till-farmor  [delighted] Ett hjärta! Till farmor och farfar.
+36-kan-du-ocksa-rita  [warmly] Kan du också rita ett hjärta? Med fingret.
+37-nu-ar-vi-i  [delighted] Nu är vi i stan. Så många ljus!
+38-bussen-stannar-titta-vad  [curious] Bussen stannar. Titta! Vad ser katten?
+39-en-julgran-med-massor  [delighted] En julgran! Med massor av ljus.
+40-snart-ar-katten-hos  [warmly] Snart är katten hos farmor och farfar.
+41-ar-det-dags-nu  [excited] Är det dags nu? Ja! Nu får katten trycka!
+42-tryck-pa-knappen-sa  [cheerfully] Tryck på knappen, så vet bussen att vi ska av.
+43-kan-du-ocksa-trycka  [warmly] Kan du också trycka? Tryck!
+44-pling  [excited] Pling!
+45-bussen-stannar-titta-vems  [curious] Bussen stannar. Titta! Vems hus är det?
+46-farmors-och-farfars-hus  [delighted] Farmors och farfars hus!
+47-pschhh-och-ner-nu  [playfully] Pschhh … och ner! Nu går vi till dörren.
+48-knacka-pa-knack-knack  [cheerfully] Knacka på! Knack, knack.
+49-kan-du-ocksa-knacka  [warmly] Kan du också knacka?
+50-dar-ar-farmor-hej  [excited] Där är farmor! Hej, farmor!
+51-en-stor-kram-katten  [warmly] En stor kram. Katten är framme!
+52-hej-da-katten-vi  [warmly] Hej då, katten! Vi ses snart! [giggles]

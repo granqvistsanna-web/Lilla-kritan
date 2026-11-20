@@ -8,7 +8,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Bondgården | solgul `#F6C21C` | [bondgarden.md](bondgarden.md) |
 | Äppelträdet | orange `#F26B1D` (v2 utan träd och träd med bred stam som urklipp: 029) | [appeltradet.md](appeltradet.md) |
 | Dammen | turkos `#2BB7A6` | [dammen.md](dammen.md) |
-| Busshållplatsen | lila `#8E44C9` | [busshallplatsen.md](busshallplatsen.md) |
+| Busshållplatsen | lila `#8E44C9`; vinter v2: kraftig blå himmel, snö, grå väg, gul skylt, röd bänk (047) | [busshallplatsen.md](busshallplatsen.md) |
 | Glasskiosken | rosa `#F06EAA` | [glasskiosken.md](glasskiosken.md) |
 | Badplatsen | havsblå `#3A6FD8` | [badplatsen.md](badplatsen.md) |
 | Vägen | ljusgrön `#A6D86B` (glider, för körscener) | [vagen.md](vagen.md) |
@@ -29,6 +29,9 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Sovrummet | väggfärg väljs (förslag blå `#3F6EA6`), runt tomt fönster och lampa i plattan, vitt golv, v2, 16:9 (026, 027) | [sovrummet.md](sovrummet.md) |
 | Vardagsrummet | kvällsblå `#2F4F7F`, stort fönster med tom vit insida (snön i kod), gardiner, fåtölj och matta i plattan, varmt trägolv, v2, 16:9 (034) | [vardagsrummet.md](vardagsrummet.md) |
 | Mottagningen | klar himmelsblå `#4FA8E0`, vit golvlist, korallröd brits med papper, vit pall, undersökningslampa på väggarm, ljust golv, höger tredjedel tom för doktorn, v2, 16:9 (046, Besöket) | [mottagningen.md](mottagningen.md) |
+| I bussen | kraftig solgul vägg, stort fönster (hål för landskapet), röd bänk, blå stång med stoppknapp, v2, 16:9 (047) | [i-bussen.md](i-bussen.md) |
+| Utsikt från bussen | blå himmel och snö, sex remsor som glider förbi i fönstret: hus, sjö, pulkabacke, skog och bro, stan, farmors hus, v2, 16:9 (047) | [utsikt-buss.md](utsikt-buss.md) |
+| Farmors dörr | falurött, vit dörr med julkrans, stängd och öppen, v2, 16:9 (047) | [farmors-dorr.md](farmors-dorr.md) |
 | Julrummet | granggrön vägg, fönster med tom vit insida (snön i kod), röda gardiner, gran och julstrumpor i plattan, gräddvitt golv, 16:9 (julkalendern lucka 6) | [julrummet.md](julrummet.md) |
 | Stranden | ljusblå himmel `#89CFF3`, havet, ljust grå-beige sand (inte gul), v2, tom platta (011) | [stranden.md](stranden.md) |
 | Ängen på natten | djup nattblå `#283C78`, mörkt gräs, blomtuvor nere till vänster och höger, 9:16 (Godnattsagan: Fjärilen Fia) | [angen-natt.md](angen-natt.md) |
