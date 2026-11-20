@@ -46,3 +46,4 @@
 46-hejda-doktorn  [happy] Hej då, doktorn!
 47-hejda-kaninen  [happy] Hej då, kaninen! Hej då, nallen!
 48-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
+49-ett-stetoskop  [delighted] Ett stetoskop! Med det lyssnar doktorn.

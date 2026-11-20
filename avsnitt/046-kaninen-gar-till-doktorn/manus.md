@@ -55,7 +55,7 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), de långa öronen och armarna
 | 8 | Kaninen nickar direkt och kramar nallen | Tack! | `kanin-ny-fortjust` |
 | 9 | Närbild, kaninen med nallen i famnen, huvudet lutar mot nallen | Nallen är med. Då går det bra. | `kanin-gullig-4` (mysig suck) |
 | 10 | Helbild. Doktorn pekar på britsen. Kaninen skuttar upp på pallen, sedan på britsen, och sätter sig | Upp på britsen! Hopp … och hopp! | `hopp-mjuk` ×2 |
-| 11 | Närbild, instick: handen med stetoskopet glider in och stannar i bild | Titta, ett stetoskop. Med det lyssnar doktorn. | `kanin-ny-fragande` |
+| 11 | Kritan kommer in och ritar stetoskopet i luften framför doktorn: slangen och bröstdelen streck för streck (3 s), gisspaus 3 s, det fylls i och doktorn tar det (Sanna 2026-11-20: kritan ritar något nytt ur besöket) | Titta! Kritan ritar något. *(gisspaus 3 s)* Ett stetoskop! Med det lyssnar doktorn. | krita-ritar, `glitter`, `kanin-ny-fragande` |
 | 11b | Halvbild på doktorn: stetoskopet lyfts från halsen och öronpropparna sätts i öronen, armen pekar mot britsen. Ingen ny replik (under slutet av 11) | – | – |
 | 12 | Närbild på nallens mage, stetoskopet mot den, två små ringar | Först nallen. Lyssna, lyssna … dunk, dunk! | hjärtslag ×2 (mjukt) |
 | 13 | Närbild på kaninens mage, stetoskopet mot den, två små ringar | Nu kaninen. Lyssna, lyssna … dunk, dunk! | hjärtslag ×2, `kanin-ny-fniss` |
@@ -108,7 +108,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Tack!
 [warmly] Nallen är med. Då går det bra.
 [cheerfully] Upp på britsen! Hopp … och hopp!
-[curious] Titta, ett stetoskop. Med det lyssnar doktorn.
+[excited] Titta! Kritan ritar något.   (samma som ovan, rad 10 återanvänds)
+[delighted] Ett stetoskop! Med det lyssnar doktorn.   (ny, 49)
 [happy] Först nallen. Lyssna, lyssna … dunk, dunk!
 [happy] Nu kaninen. Lyssna, lyssna … dunk, dunk!
 [cheerfully] Fint! Doktorn hörde magen.
@@ -156,7 +157,7 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 - [x] Frågor till barnet med paus: var är magen (4 s), var är öronen (4 s), kan du gapa (4 s), var är nallen (5 s)
 - [x] *"Varsågod"*, *"Ska vi säga tack?"* och *"Tack!"*, plus *"Tack, doktorn!"*
 - [x] Samma mönster tre gånger: *"Först nallen … Nu kaninen …"* med *"Lyssna, lyssna"*, *"Titta, titta"*, *"Gapa"*
-- [x] Kritan ritar två gånger: nallen och stjärnan
+- [x] Kritan ritar tre gånger: nallen, stetoskopet och stjärnan (receptets max)
 - [x] Inget läskigt: ingen spruta, ingen gråt, inga ord som ont, sjuk, farligt, rädd eller modig. Känslan *"lite osäker"* sägs högt och nallen hjälper
 - [x] Fniss: 19–20, 23, 33 (högst 3–4, aldrig två rader i följd med fniss över Malin)
 - [x] Ingen ny musik
@@ -169,5 +170,6 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 
 - ~~Hur doktorn ser ut~~ **Doktorn A**, vit rock och röda lockar (Sanna 2026-11-20). Doktorn B (ljusblå rock) sparas till BVC eller tandläkaren.
 - ~~Mottagningens vägg~~ **himmelsblå** (alternativ D, Sanna 2026-11-20).
-- **Kritan ritar något nytt ur besöket** (Sanna 2026-11-20, nu i receptet `format/besoket.md`): stetoskopet eller doktorn ska ritas av kritan. Förslag: uppslag 11 blir *"Titta! Kritan ritar något. (gisspaus 3 s) Ett stetoskop! Med det lyssnar doktorn."*, kritan ritar stetoskopet i luften framför doktorn och doktorn tar det. Ändrar repliken 16 i `rost.txt` före tagningen. Väntar på Sannas val: stetoskopet eller doktorn.
+- ~~Kritan ritar stetoskopet eller doktorn?~~ **Stetoskopet** (Sanna 2026-11-20). Rad 10 (*"Titta! Kritan ritar något."*) återanvänds, ny replik 49 *"Ett stetoskop! Med det lyssnar doktorn."* (16 används inte). Rad 35 behålls som den är ("vad"). Hjärtslagen: befintliga `dunk`. Kaninens gap: bara Malins "aaa".
+- *Tidigare:* stetoskopet eller doktorn ska ritas av kritan. Förslag: uppslag 11 blir *"Titta! Kritan ritar något. (gisspaus 3 s) Ett stetoskop! Med det lyssnar doktorn."*, kritan ritar stetoskopet i luften framför doktorn och doktorn tar det. Ändrar repliken 16 i `rost.txt` före tagningen. Väntar på Sannas val: stetoskopet eller doktorn.
 - ~~Vad doktorn heter internt~~ `doktorn-a` (filnamnet i `karaktarer/`). I det som sägs är det alltid *"doktorn"*.
