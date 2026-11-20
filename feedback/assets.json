@@ -217,6 +217,12 @@
  },
  {
   "typ": "rekvisita",
+  "name": "adventsstjarna",
+  "thumb": "assets/rekvisita/adventsstjarna.png",
+  "src": "../assets/rekvisita/adventsstjarna/adventsstjarna.jpeg"
+ },
+ {
+  "typ": "rekvisita",
   "name": "ambulans",
   "thumb": "assets/rekvisita/ambulans.png",
   "src": "../assets/rekvisita/ambulans/ambulans.jpeg"
@@ -274,6 +280,12 @@
   "name": "badring",
   "thumb": "assets/rekvisita/badring.png",
   "src": "../assets/rekvisita/badring/cut/badring.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "bakplat",
+  "thumb": "assets/rekvisita/bakplat.png",
+  "src": "../assets/rekvisita/bakplat/cut/bakplat.png"
  },
  {
   "typ": "rekvisita",
@@ -385,6 +397,18 @@
  },
  {
   "typ": "rekvisita",
+  "name": "cirkel",
+  "thumb": "assets/rekvisita/cirkel.png",
+  "src": "../assets/rekvisita/cirkel/cirkel.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "citron",
+  "thumb": "assets/rekvisita/citron.png",
+  "src": "../assets/rekvisita/citron/citron.jpeg"
+ },
+ {
+  "typ": "rekvisita",
   "name": "cut",
   "thumb": "assets/rekvisita/cut.png",
   "src": "../assets/rekvisita/cut/flagga-orange.png"
@@ -397,15 +421,69 @@
  },
  {
   "typ": "rekvisita",
+  "name": "delfin",
+  "thumb": "assets/rekvisita/delfin.png",
+  "src": "../assets/rekvisita/delfin/delfin.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "docka",
+  "thumb": "assets/rekvisita/docka.png",
+  "src": "../assets/rekvisita/docka/docka.jpeg"
+ },
+ {
+  "typ": "rekvisita",
   "name": "dorr",
   "thumb": "assets/rekvisita/dorr.png",
   "src": "../assets/rekvisita/dorr/cut/dorr.png"
  },
  {
   "typ": "rekvisita",
+  "name": "dorr-abc",
+  "thumb": "assets/rekvisita/dorr-abc.png",
+  "src": "../assets/rekvisita/dorr-abc/dorr-abc.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "druvor",
+  "thumb": "assets/rekvisita/druvor.png",
+  "src": "../assets/rekvisita/druvor/druvor.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "duva",
+  "thumb": "assets/rekvisita/duva.png",
+  "src": "../assets/rekvisita/duva/duva.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ek",
+  "thumb": "assets/rekvisita/ek.png",
+  "src": "../assets/rekvisita/ek/ek.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ekollon",
+  "thumb": "assets/rekvisita/ekollon.png",
+  "src": "../assets/rekvisita/ekollon/ekollon.jpeg"
+ },
+ {
+  "typ": "rekvisita",
   "name": "ekorre-orange",
   "thumb": "assets/rekvisita/ekorre-orange.png",
   "src": "../assets/rekvisita/ekorre-orange/ekorre-orange.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "emu",
+  "thumb": "assets/rekvisita/emu.png",
+  "src": "../assets/rekvisita/emu/emu.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "enhorning",
+  "thumb": "assets/rekvisita/enhorning.png",
+  "src": "../assets/rekvisita/enhorning/enhorning.jpeg"
  },
  {
   "typ": "rekvisita",
@@ -421,9 +499,21 @@
  },
  {
   "typ": "rekvisita",
+  "name": "flakt",
+  "thumb": "assets/rekvisita/flakt.png",
+  "src": "../assets/rekvisita/flakt/cut/flakt.png"
+ },
+ {
+  "typ": "rekvisita",
   "name": "flygplan-rod",
   "thumb": "assets/rekvisita/flygplan-rod.png",
   "src": "../assets/rekvisita/flygplan-rod/flygplan-rod.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "fropase",
+  "thumb": "assets/rekvisita/fropase.png",
+  "src": "../assets/rekvisita/fropase/cut/fropase.png"
  },
  {
   "typ": "rekvisita",
@@ -466,6 +556,12 @@
   "name": "groda-gron",
   "thumb": "assets/rekvisita/groda-gron.png",
   "src": "../assets/rekvisita/groda-gron/groda-gron.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "grytlappar",
+  "thumb": "assets/rekvisita/grytlappar.png",
+  "src": "../assets/rekvisita/grytlappar/cut/grytlapp-hoger.png"
  },
  {
   "typ": "rekvisita",
@@ -556,6 +652,12 @@
   "name": "julgransfot",
   "thumb": "assets/rekvisita/julgransfot.png",
   "src": "../assets/rekvisita/julgransfot/cut/julgransfot.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "julkarve",
+  "thumb": "assets/rekvisita/julkarve.png",
+  "src": "../assets/rekvisita/julkarve/cut/julkarve.png"
  },
  {
   "typ": "rekvisita",
@@ -670,6 +772,12 @@
   "name": "kudde",
   "thumb": "assets/rekvisita/kudde.png",
   "src": "../assets/rekvisita/kudde/kudde-v1.jpeg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "kvist",
+  "thumb": "assets/rekvisita/kvist.png",
+  "src": "../assets/rekvisita/kvist/cut/kvist.png"
  },
  {
   "typ": "rekvisita",
@@ -811,6 +919,12 @@
  },
  {
   "typ": "rekvisita",
+  "name": "pepparkaksformar",
+  "thumb": "assets/rekvisita/pepparkaksformar.png",
+  "src": "../assets/rekvisita/pepparkaksformar/cut/hjartform.png"
+ },
+ {
+  "typ": "rekvisita",
   "name": "pepparkaksgubbe",
   "thumb": "assets/rekvisita/pepparkaksgubbe.png",
   "src": "../assets/rekvisita/pepparkaksgubbe/cut/pepparkaksgubbe.png"
@@ -853,6 +967,12 @@
  },
  {
   "typ": "rekvisita",
+  "name": "pyjamasskjorta",
+  "thumb": "assets/rekvisita/pyjamasskjorta.png",
+  "src": "../assets/rekvisita/pyjamasskjorta/pyjamasskjorta.jpeg"
+ },
+ {
+  "typ": "rekvisita",
   "name": "radio",
   "thumb": "assets/rekvisita/radio.png",
   "src": "../assets/rekvisita/radio/cut/radio.png"
@@ -862,6 +982,12 @@
   "name": "refrang-v2",
   "thumb": "assets/rekvisita/refrang-v2.png",
   "src": "../assets/rekvisita/refrang-v2/kontroll-005.jpg"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "ringklocka",
+  "thumb": "assets/rekvisita/ringklocka.png",
+  "src": "../assets/rekvisita/ringklocka/cut/ringklocka.png"
  },
  {
   "typ": "rekvisita",
@@ -928,6 +1054,12 @@
   "name": "slev",
   "thumb": "assets/rekvisita/slev.png",
   "src": "../assets/rekvisita/slev/cut/slev.png"
+ },
+ {
+  "typ": "rekvisita",
+  "name": "smafaglar",
+  "thumb": "assets/rekvisita/smafaglar.png",
+  "src": "../assets/rekvisita/smafaglar/cut/fagel-kropp-bla-kod.png"
  },
  {
   "typ": "rekvisita",
@@ -1099,6 +1231,12 @@
  },
  {
   "typ": "rekvisita",
+  "name": "toarulle",
+  "thumb": "assets/rekvisita/toarulle.png",
+  "src": "../assets/rekvisita/toarulle/toarulle.jpeg"
+ },
+ {
+  "typ": "rekvisita",
   "name": "tomte",
   "thumb": "assets/rekvisita/tomte.png",
   "src": "../assets/rekvisita/tomte/tomte.jpeg"
@@ -1219,12 +1357,6 @@
  },
  {
   "typ": "bakgrunder",
-  "name": "badplatsen",
-  "thumb": "assets/bakgrunder/badplatsen.jpg",
-  "src": "../assets/bakgrunder/badplatsen/badplatsen.png"
- },
- {
-  "typ": "bakgrunder",
   "name": "badrummet",
   "thumb": "assets/bakgrunder/badrummet.jpg",
   "src": "../assets/bakgrunder/badrummet/badrummet-v1.jpeg"
@@ -1249,12 +1381,6 @@
  },
  {
   "typ": "bakgrunder",
-  "name": "bondgarden-natt",
-  "thumb": "assets/bakgrunder/bondgarden-natt.jpg",
-  "src": "../assets/bakgrunder/bondgarden-natt/bondgarden-natt.png"
- },
- {
-  "typ": "bakgrunder",
   "name": "brasrummet",
   "thumb": "assets/bakgrunder/brasrummet.jpg",
   "src": "../assets/bakgrunder/brasrummet/brasrummet-v1.jpeg"
@@ -1276,18 +1402,6 @@
   "name": "bryggan",
   "thumb": "assets/bakgrunder/bryggan.jpg",
   "src": "../assets/bakgrunder/bryggan/bryggan.png"
- },
- {
-  "typ": "bakgrunder",
-  "name": "busshallplatsen",
-  "thumb": "assets/bakgrunder/busshallplatsen.jpg",
-  "src": "../assets/bakgrunder/busshallplatsen/busshallplatsen.png"
- },
- {
-  "typ": "bakgrunder",
-  "name": "dammen",
-  "thumb": "assets/bakgrunder/dammen.jpg",
-  "src": "../assets/bakgrunder/dammen/dammen.png"
  },
  {
   "typ": "bakgrunder",
@@ -1420,12 +1534,6 @@
   "name": "julskogen-saker",
   "thumb": "assets/bakgrunder/julskogen-saker.jpg",
   "src": "../assets/bakgrunder/julskogen-saker/gran.png"
- },
- {
-  "typ": "bakgrunder",
-  "name": "julskogen-v2",
-  "thumb": "assets/bakgrunder/julskogen-v2.jpg",
-  "src": "../assets/bakgrunder/julskogen-v2/julskogen-v2.jpeg"
  },
  {
   "typ": "bakgrunder",
@@ -1678,24 +1786,6 @@
   "name": "vinterkullen-natt-v2",
   "thumb": "assets/bakgrunder/vinterkullen-natt-v2.jpg",
   "src": "../assets/bakgrunder/vinterkullen-natt-v2/vinterkullen-natt-v2.jpeg"
- },
- {
-  "typ": "bakgrunder",
-  "name": "vinterkullen-natt-v3",
-  "thumb": "assets/bakgrunder/vinterkullen-natt-v3.jpg",
-  "src": "../assets/bakgrunder/vinterkullen-natt-v3/vinterkullen-natt-v3.jpeg"
- },
- {
-  "typ": "bakgrunder",
-  "name": "vinterkullen-v2",
-  "thumb": "assets/bakgrunder/vinterkullen-v2.jpg",
-  "src": "../assets/bakgrunder/vinterkullen-v2/vinterkullen-v2.jpeg"
- },
- {
-  "typ": "bakgrunder",
-  "name": "vinterkullen-v3",
-  "thumb": "assets/bakgrunder/vinterkullen-v3.jpg",
-  "src": "../assets/bakgrunder/vinterkullen-v3/vinterkullen-v3.jpeg"
  },
  {
   "typ": "bakgrunder",

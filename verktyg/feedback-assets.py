@@ -7,6 +7,9 @@ import json, pathlib, subprocess
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "feedback" / "assets"
 IMG = {".png", ".jpg", ".jpeg", ".webp"}
+# platser Sanna rensat bort från fliken (2026-11-20); filerna ligger kvar
+DOLD = {"vinterkullen-natt-v3", "vinterkullen-v2", "vinterkullen-v3", "julskogen-v2", "dammen", "busshallplatsen",
+        "bondgarden-natt", "badplatsen"}
 SKIP = ("faceless", "back", "side", "body", "kontakt", "jamfor", "rigg", "test", "mask", "armar", "stills", "klapp", "fore")
 
 
@@ -23,7 +26,7 @@ def main_image(d):
 items = []
 for typ in ("karaktarer", "rekvisita", "bakgrunder"):
     (OUT / typ).mkdir(parents=True, exist_ok=True)
-    for d in sorted(p for p in (ROOT / "assets" / typ).iterdir() if p.is_dir() and " " not in p.name):
+    for d in sorted(p for p in (ROOT / "assets" / typ).iterdir() if p.is_dir() and " " not in p.name and p.name not in DOLD):
         src = main_image(d)
         if not src:
             continue
