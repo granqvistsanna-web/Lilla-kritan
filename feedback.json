@@ -6469,5 +6469,145 @@
   "at": 1795163618612,
   "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)",
   "fixedAt": 1795164094126
+ },
+ "g22zyriv3nmwnefimk": {
+  "ep": "J03",
+  "time": "0:34",
+  "sec": 34,
+  "tags": [],
+  "note": "lower music a bit, lower steps sound effect",
+  "fixed": false,
+  "at": 1795083605516,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "s5kvp39cimmwnefwlx": {
+  "ep": "J03",
+  "time": "0:40",
+  "sec": 40,
+  "tags": [],
+  "note": "more happy face",
+  "fixed": false,
+  "at": 1795083623637,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "if1qqxlxdcmwneg7ek": {
+  "ep": "J03",
+  "time": "0:40",
+  "sec": 40,
+  "tags": [],
+  "note": "happy jump, wiggle tail",
+  "fixed": false,
+  "at": 1795083637628,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "4oltxpwupmmwnegx9d": {
+  "ep": "J03",
+  "time": "1:09",
+  "sec": 69,
+  "tags": [],
+  "note": "giggle leo",
+  "fixed": false,
+  "at": 1795083671136,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "vj0iamut3mwnehvnb": {
+  "ep": "J03",
+  "time": "1:45",
+  "sec": 105,
+  "tags": [],
+  "note": "lower toothbrush a bit",
+  "fixed": false,
+  "at": 1795083715703,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "435de51sxsmwnemxlz": {
+  "ep": "J03",
+  "time": "1:54",
+  "sec": 114,
+  "tags": [],
+  "note": "abrubt jump of head",
+  "fixed": false,
+  "at": 1795083951527,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "64ek1kbuojmwnendj5": {
+  "ep": "J03",
+  "time": "2:01",
+  "sec": 121,
+  "tags": [],
+  "note": "match soundeffect better to animation",
+  "fixed": false,
+  "at": 1795083972161,
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+ },
+ "e1z94h7kphmwor2iep": {
+  "ep": "J16",
+  "time": "0:21",
+  "sec": 21,
+  "tags": [],
+  "note": "plish animations and make sure they dont jump",
+  "fixed": false,
+  "at": 1795165299889,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+ },
+ "veh4gdln57mwor2t0j": {
+  "ep": "J16",
+  "time": "0:27",
+  "sec": 27,
+  "tags": [],
+  "note": "add eye to bird drawing",
+  "fixed": false,
+  "at": 1795165313635,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+ },
+ "4nkd5dd6ukmwor3muv": {
+  "ep": "J16",
+  "time": "0:38",
+  "sec": 38,
+  "tags": [],
+  "note": "i want new pig sounds more cute also consider other anima sounds for like oo aa",
+  "fixed": false,
+  "at": 1795165352311,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+ },
+ "82ujrkpxdrmwor48kl": {
+  "ep": "J16",
+  "time": "0:53",
+  "sec": 53,
+  "tags": [],
+  "note": "more closeup on bird in fågeljolk.",
+  "fixed": false,
+  "at": 1795165380453,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+ },
+ "5ltn6r8ycnmwor4bga": {
+  "ep": "J16",
+  "time": "0:53",
+  "sec": 53,
+  "tags": [],
+  "note": "a bit slower pace",
+  "fixed": false,
+  "at": 1795165384186,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+ },
+ "250g676803mwor5apa": {
+  "ep": "J16",
+  "time": "1:31",
+  "sec": 91,
+  "tags": [],
+  "note": "add low xmas music soundtrack",
+  "fixed": false,
+  "at": 1795165429870,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+ },
+ "0qehfyv2nemwor5hts": {
+  "ep": "J16",
+  "time": "1:34",
+  "sec": 94,
+  "tags": [],
+  "note": "add julkal intro and outro",
+  "fixed": false,
+  "at": 1795165439104,
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
  }
 }
