@@ -116,3 +116,14 @@ Linjekoket svagare (Sanna 2026-11-21, ändrat av huvudsessionen och med i samma 
 6. **Kritgnistor** saknas när leoparden (6b) och stjärnan (31b) fylls i (kritan-ritar fas 5). Lätt att lägga till med `gnistor()`.
 7. Kvar från QA 2: 11c stetoskopet hoppar från halsen till öronen; kaninens öra i vänsterkanten i `doktorVinkar` (2, 36); lampan saknas i doktorns hand i 19, 20, 22.
 8. Ritintrots zoom (01c) går upp till ca ×2,9 med koket i papperets mått, så koket blir ca 7 px den sista sekunden innan det vita. Kort och bakom vitt, men syns om man fryser bilden.
+
+### QA 3, åtgärdat efteråt (Sanna 2026-11-21: "fix all, keep 2 as is")
+- **Rad 30:** leoparden hoppar i en båge upp över pallens kant och in i famnen på 0,65 s (var 0,3 s rakt). Lagret byts när den är ovanför pallen, och kaninens armar sluter sig när den kommer.
+- **Rad 13:** huttret skakar 5,5 gånger/s (var 9, flimrade i 15 fps).
+- **Krit-gnistor** när leoparden (6b) och stjärnan (31b) fylls i, som kritan-ritar säger.
+- **Rad 13–15:** leoparden sitter på britsen bredvid kaninen i stället för att hänga i luften, så att kaninen kan klappa magen med båda händerna.
+- **Introts zoom (01c):** line boil delas med papperets zoom (BOILZ), 2,5 px i bild hela vägen (var upp till 7 px).
+- **Rad 11c:** stetoskopet sitter redan i öronen när vi klipper in från den rosa sakbilden. Bytet från halsen sker i klippet och syns inte.
+- **Rad 19, 20, 22:** doktorn håller lampan, sänkt och släckt.
+- **Rad 2 och 36:** doktorVinkar längre åt höger, kaninens öra syns inte i vänsterkanten.
+- **Rad 12** (`nalleMage`) behålls som den är (Sanna).
