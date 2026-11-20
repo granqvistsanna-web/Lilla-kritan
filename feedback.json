@@ -6476,9 +6476,10 @@
   "sec": 34,
   "tags": [],
   "note": "lower music a bit, lower steps sound effect",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083605516,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "s5kvp39cimmwnefwlx": {
   "ep": "J03",
@@ -6486,9 +6487,10 @@
   "sec": 40,
   "tags": [],
   "note": "more happy face",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083623637,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "if1qqxlxdcmwneg7ek": {
   "ep": "J03",
@@ -6496,9 +6498,10 @@
   "sec": 40,
   "tags": [],
   "note": "happy jump, wiggle tail",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083637628,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "4oltxpwupmmwnegx9d": {
   "ep": "J03",
@@ -6506,9 +6509,10 @@
   "sec": 69,
   "tags": [],
   "note": "giggle leo",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083671136,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "vj0iamut3mwnehvnb": {
   "ep": "J03",
@@ -6516,9 +6520,10 @@
   "sec": 105,
   "tags": [],
   "note": "lower toothbrush a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083715703,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "435de51sxsmwnemxlz": {
   "ep": "J03",
@@ -6526,9 +6531,10 @@
   "sec": 114,
   "tags": [],
   "note": "abrubt jump of head",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083951527,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "64ek1kbuojmwnendj5": {
   "ep": "J03",
@@ -6536,9 +6542,10 @@
   "sec": 121,
   "tags": [],
   "note": "match soundeffect better to animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795083972161,
-  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)"
+  "render": "2026-11-19 09:30 (runda 5, förhandsvisning (--snabb): inget tickande, kritsvep från stjärnan, musiken lägre, mugg och glas stiger upp ur handfatet när de behövs, dricker med vänster tass, snarkning, inget bää)",
+  "fixedAt": 1795167449303
  },
  "e1z94h7kphmwor2iep": {
   "ep": "J16",
