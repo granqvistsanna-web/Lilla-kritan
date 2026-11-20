@@ -225,3 +225,14 @@ Hela familjen finns från 024: `ba-gullig-1` … `8` med en b-tagning per känsl
 - **3:23 klockan framför:** klockan ritas överst (`klockan`-lagret), framför tassarna, vantarna och plåten.
 - **3:31 lammet blåser:** rad 31: lammet blåser med barnet, en pust per ångstreck: andas in, rund mun, lutar mot plåten, ljusblå pustar till kakan.
 - **3:35 degen tar slut:** degen krymper för varje kaka som lyfts ur den och är slut efter hjärtat.
+
+## Rörelse-QA 2026-11-20 (Claude, efter runda 2)
+
+Bildskillnad per bildruta över hela filmen (ryck inne i en bild, inte vid klipp) och kontaktark varannan sekund. Fixat:
+- **Ritintrot:** kritans kontur, prickar och ansikte försvann på en bildruta när gubben fylldes i; nu tonas de ut. Ögonen växer fram i stället för att poppa.
+- **Rad 25:** doftstrecken gick över ögonen; nu slutar de vid kinden/nosen.
+- **Rad 27c:** lammet försvann när kameran klippte till klockan, fast det står i bild; nu står det kvar och tittar mot klockan.
+- **Rad 27d:** halva lammet var utanför bild; nu syns ansiktet, klockan och vantarna.
+- **Rad 33:** vantarna tonades över till ett stort spöke och flög tvärs över ansiktet under tuggan; nu försvinner de från tassarna med en gnista och dyker upp på kroken.
+
+Kollat utan anmärkning: gången (rad 1, 16, 29), tassen över degen (3d, 5, 6), kakorna som flyger till plåten, blåsningen, klockan framför, kritirisen.

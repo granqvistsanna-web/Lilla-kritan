@@ -236,14 +236,17 @@ const paTassar = () => TT >= at('28') && TT < at('33');
 function grytlapparNu() {
   if (paTassar()) return;   // på tassarna: ritas efter lammet (vantarPa)
   const dx = vanteDx(); snore(dx);
-  if (TT >= at('33') && TT < at('33', 0.8)) return;   // på väg tillbaka (vantarPa ritar dem)
-  [0, 1].forEach(i => vante(i, KROK_M(i, dx), 'vagg'));   // runda 2 (2:05): på väggen, bakom lammet när det går förbi
+  const tb = at('33', 0.3), o = TT >= at('33') ? del(tb, tb + 0.3, TT) : 1;   // tillbaka på kroken
+  [0, 1].forEach(i => vante(i, KROK_M(i, dx), 'vagg', o));
+  if (TT >= tb && TT < tb + 0.7) gnista([KROK[0], KROK[1] + 80], TT - tb);   // runda 2 (2:05): på väggen, bakom lammet när det går förbi
 }
 // vantarna till tassarna i rad 28 (vänster först, höger på "på!"), sitter kvar till rad 33 och flyger då tillbaka till kroken
 const PA_TID = () => at('28', ml('28') + rl(56) - 0.3);
 function vantarPa() {
-  if (TT >= at('33')) { const u = del(at('33'), at('33', 0.8), TT); if (u >= 1) return;
-    [-1, 1].forEach((sd, i) => { const byt = del(0, 0.2, u); vanteKod(sd, 1 - byt); vante(i, glidV(PA_M(sd), KROK_M(i, VFRAM), u, 60), 'saker', byt); }); return; }
+  // QA 20/11: vantarna försvinner från tassarna med en gnista och dyker upp på kroken (förut ett spöke som flög tvärs över ansiktet)
+  if (TT >= at('33')) { const a = at('33'), av = 1 - del(a, a + 0.25, TT);
+    [-1, 1].forEach(sd => { vanteKod(sd, av); const q = PA_M(sd).transformPoint(new DOMPoint(GC[0], GC[1])); gnista([q.x, q.y], TT - a - 0.05); });
+    return; }
   if (!paTassar()) return;
   const pa = PA_TID(), t0 = [at('28', 0.3), pa - 0.9];
   [-1, 1].forEach((sd, i) => { const u = kl((TT - t0[i]) / ((i ? pa : t0[0] + 0.9) - t0[i]));
@@ -380,16 +383,18 @@ function papperGubbe(k, fyll) {
   if (fyll > 0) lagg('saker', `<g transform="${gT}"><clipPath id="pg"><circle cx="512" cy="512" r="${f1(560 * fyll)}"/></clipPath><g clip-path="url(#pg)">
     <image href="${GB}" width="1024" height="1024"/>${ansikte('#fbf4e6', 10)}</g></g>`);
   if (fyll >= 1) return null;
+  const n0 = $('pilar').children.length;   // QA 20/11: teckningen tonas ut medan bilden fylls i (förut försvann den på en bildruta)
   const k1 = kl(k / 0.58), k2 = kl((k - 0.6) / 0.22), k3 = kl((k - 0.84) / 0.07), k4 = kl((k - 0.92) / 0.08), M = '#3a2c28', B = '#8a6a58';
   if (k1 > 0) { const q = kontur('gubbe', gT, ritfart(k1), 12 / 0.82, M); if (k1 < 1) sp = q; }
   let h = '';
   if (k2 > 0) { const n = Math.max(1, Math.ceil(PRICKAR.length * k2)); h += PRICKAR.slice(0, n).map(([x, y]) => `<circle cx="${f1(x)}" cy="${f1(y)}" r="9" fill="${B}"/>`).join(''); if (k2 < 1) sp = pS(...PRICKAR[n - 1]); }
   if (k3 > 0) { const n = Math.ceil(3 * k3); h += KNAPPAR.slice(0, n).map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${M}" stroke-width="10"/>`).join(''); if (k3 < 1) sp = pS(KNAPPAR[n - 1][0], KNAPPAR[n - 1][1]); }
   if (k4 > 0) { const ogon = k4 > 0.3 ? 2 : k4 > 0.1 ? 1 : 0, le = kl((k4 - 0.4) / 0.6);
-    h += OGON.slice(0, ogon).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="${M}"/>`).join('');
+    h += OGON.slice(0, ogon).map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${f1(13 * mjuk((k4 - [0.1, 0.3][i]) / 0.12))}" fill="${M}"/>`).join('');   // QA: ögonen växer fram
     if (le > 0) h += `<path d="${LE}" pathLength="1" fill="none" stroke="${M}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${le.toFixed(3)} 2"/>`;
     if (k4 < 1) sp = le > 0 ? pS(lerp(470, 554, le), 292 + 22 * Math.sin(Math.PI * le)) : pS(...OGON[Math.max(0, ogon - 1)]); }
   if (h) lagg('pilar', `<g transform="${gT}">${h}</g>`);
+  if (fyll > 0) [...$('pilar').children].slice(n0).forEach(e => e.setAttribute('opacity', (1 - del(0.45, 0.95, fyll)).toFixed(3)));
   if (sp) SISTA = sp; else if (k > 0 && k < 1) sp = SISTA;
   return sp;
 }
@@ -500,7 +505,8 @@ const S = {
   '24': tl => { kok(); KLN(); lamm(ANS('glad', { titt: [14, 8] }), { luta: 2 * Math.sin(tl * 1.1) }); },
   '25': (tl, d) => { kok(); HALV(); const b = del(0.2, 0.8, tl), dof = del(0.2, 1.4, tl);
     lamm(mellan(ANS('glad'), BLUND(), b), { upp: 0.35 * b, luta: -2 * b + 1.5 * Math.sin(tl * 1.4) * b });
-    lagg('fram', [0, 1, 2].map(i => { const x = lerp(1960, 1240, dof) + 60 * Math.sin(TT * 1.2 + i), y = 300 + i * 56;
+    // QA 20/11: doftstrecken slutar vid nosen (förut gick de över ögonen)
+    lagg('fram', [0, 1, 2].map(i => { const x = lerp(1960, 1360, dof) + 30 * Math.sin(TT * 1.2 + i), y = 430 + i * 42;
       return `<path d="M${f1(x)} ${f1(y)} q${-55} ${f1(-26 + 8 * Math.sin(TT * 2 + i))} -110 0 t-110 0 t-110 0" fill="none" stroke="#f2c14e" stroke-width="9" stroke-linecap="round" opacity="${(0.85 * dof).toFixed(2)}"/>`; }).join('')); },
   '26': tl => { kok(); KLN(); const o = del(0.2, 0.5, tl); lamm(mellan(ANS('glad', { titt: [14, 8] }), ANS('forvanad', { titt: [16, 6] }), o), { oron: [-12 * o, -12 * o] }); },
   '27': tl => { kok(); HALV(); const u = del(0.1, 0.4, tl); lamm(mellan(BLUND(), ANS('jatteglad'), u), { upp: 0.6 * u, oron: [-10 * u, -10 * u] }, { lyft: skutt(tl, 0.3, 0.9, 18) }); },
@@ -510,8 +516,10 @@ const S = {
     lamm(ANS('nyfiken', { titt: [-16 * v, 0] }), { rikt: -0.4 * v, luta: -4 * v }); },
   '27c': (tl, d) => { const klipp = mo(0) + rl(54) + 0.3; kok();
     if (tl < klipp) { HALV(); lamm(ANS('nyfiken', { titt: [0, 2] }), { luta: 4 * Math.sin(tl * 1.2) }); return; }
-    KLN(); skimmer(KROK[0], KROK[1] + 80, 0.35 * del(klipp + 3, klipp + 3.6, tl), 0.5); },
-  '27d': tl => { kok(); kamera(2.2, KL_X - 30, 470); lamm(ANS('jatteglad', { titt: [16, -6] })); skimmer(KROK[0], KROK[1] + 80, 0.9 * bump(0, 2.2, tl), 0.6); },
+    // QA 20/11: lammet står kvar i bild när kameran går till klockan (förut försvann det)
+    KLN(); lamm(ANS('nyfiken', { titt: [14, 4] }), { rikt: 0.3, luta: 2 * Math.sin(tl * 1.2) }); skimmer(KROK[0], KROK[1] + 80, 0.35 * del(klipp + 3, klipp + 3.6, tl), 0.5); },
+  // QA 20/11 (27d): hela ansiktet och klockan i bild (förut halva lammet utanför)
+  '27d': tl => { kok(); kamera(1.9, 1110, 480); lamm(ANS('jatteglad', { titt: [16, -6] })); skimmer(KROK[0], KROK[1] + 80, 0.9 * bump(0, 2.2, tl), 0.6); },
   '28': tl => { const pa = PA_TID() - CUR.s, v = del(0.1, 0.8, tl), h = del(pa - 1.4, pa - 0.6, tl), satt = bump(pa - 0.02, pa + 0.38, tl) + bump(1.18, 1.56, tl);
     kok(); kamera(1.7, 1000, 500); lamm(mellan(ANS('nyfiken', { titt: [14, -4] }), ANS('jatteglad', { titt: [0, 6] }), del(pa, pa + 0.3, tl)),
       { armar: [56 * v, 56 * h], strack: -0.03 * satt, bred: 0.02 * satt, luta: -3 * v + 3 * h }); },
