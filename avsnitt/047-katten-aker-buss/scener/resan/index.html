@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Katten åker buss</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- 047 Katten åker buss: hela kodscenen (grind 6). Tiderna, Malin och effekterna ur rader.json (skrivs av storyboard/bygg.mjs).
+     Rad 00 (logotypen) ingår inte: filmen är en julkalenderlucka (som 040), och scentid = filmtid.
+     Platserna: busshållplatsen i vinter, i bussen (bild A: ut genom fönstret med kattens huvud bakifrån; bild B: katten på sätet),
+     farmors dörr (stängd/öppen platta). Utsiktsremsorna (horisonten y 521) glider bakom fönsterhålet efter bussens fart v(t),
+     som bromsar in vid de tre stoppen och farmors hus. Katten är katten-kaj live (cut-tunn/) i skala 0,55, farmor är farmor-katt (0,66),
+     kaninen i pulkan är kaninen-kanel (039), fågeln är 043:s fagel.js. Platshållare i kod: kattens huvud bakifrån, vantehanden,
+     kortläsaren, snögubbens hatt, julgranen, imman och hjärtat, kattens tass vid knappen.
+     Rendera från repots rot: node avsnitt/047-katten-aker-buss/scener/render.mjs avsnitt/047-katten-aker-buss/scener/resan [--snabb] -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+    <radialGradient id="imma" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.72"/><stop offset="1" stop-color="#fff" stop-opacity="0.97"/>
+    </radialGradient>
+    <clipPath id="glaset"><rect x="378" y="98" width="1162" height="399" rx="40"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g filter="url(#boil)"><g id="sakerbak"></g></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/nalle-v2.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/avsnitt/043-grisen-matar-faglarna/fagel.js"></script>
+<script src="kaj34.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', R = A + 'rekvisita/', B = A + 'bakgrunder/', HAR = '/avsnitt/047-katten-aker-buss/scener/resan/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const bild = (href, w, h, t, extra = '') => `<image href="${href}" width="${w}" height="${h}" transform="${t}" ${extra}/>`;
+const f1 = x => (+x).toFixed(1);
+const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+const NALLE = R + 'nalle/cut/nalle-v2-ljus-tunn.png',   // v2-nallen som leoparden har i 040 (Sanna 2026-11-20), kanten inbakad, ansiktet i kod (nalle-v2.js)
+      GUBBE = R + 'snogubbe/cut/snogubbe.png';
+const BUSS = { fil: R + 'buss/cut/buss.png', w: 1042, h: 498 }, PLOG = { fil: R + 'snoplog/cut/snoplog.png', w: 1081, h: 579 };
+const PULKA = { fil: R + 'pulka/cut/pulka.png', w: 1024, h: 572, mitt: [479, 489] };
+const HALL = B + 'busshallplatsen/vinter/busshallplatsen-vinter-v1.jpg', INNE = B + 'i-bussen/i-bussen-v1.jpg', HAL = B + 'i-bussen/i-bussen-v1-fonsterhal.png';
+const DORR = B + 'farmors-dorr/farmors-dorr-v1.jpg', DORR_OPPEN = B + 'farmors-dorr/farmors-dorr-oppen-v1.jpg';
+const UT = n => B + `utsikt-buss/${n}.jpg`;
+let KONTUR = {};
+
+// --- Tiden ---------------------------------------------------------------------------------------------------------------------
+const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) => a + (b - a) * k;
+const mjuk = k => (k = kl(k), k * k * (3 - 2 * k)), del = (a, b, t) => mjuk((t - a) / (b - a));
+const bump = (a, b, t) => (t <= a || t >= b) ? 0 : Math.sin(Math.PI * (t - a) / (b - a));
+let TT = 0, CUR = null, RAD_L = [], RR = {}, ROSTER = [], DURATION = 0;
+const SVART = 0.6;
+const mo = (i = 0) => CUR.malin[i][1], lo = (i = 0) => CUR.ljud[i][1];
+const at = (id, o = 0) => RR[id].s + o, lj = (id, i) => RR[id].ljud[i][1], ml = (id, i = 0) => RR[id].malin[i][1];
+const L_ = n => ROSTER[n - 1][1];
+const ROST_L = k => ROSTER.find(([n]) => n.startsWith(k + '-'))[1];   // längden på en replik med bokstav (06b)
+const ljudT = (re) => (CUR.ljud || []).find(([f]) => re.test(f))?.[1];
+
+// --- Kameran (GUNG: bussen gungar lite när den åker) ------------------------------------------------------------------------------
+let GUNG = 0;
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${(ty + GUNG).toFixed(1)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+}
+
+// --- Effekter (som 044) ---------------------------------------------------------------------------------------------------------
+const glans = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${f1(r)})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+const skimmer = (x, y, k = 1, vidd = 1) => { if (k < 0.02) return; lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
+  .map(([dx, dy, s], i) => glans(x + dx * 40 * vidd, y + dy * 34 * vidd, 16 * s * k * vidd * (0.85 + 0.15 * Math.sin(TT * 5 + i * 2)), Math.min(1, 0.4 + k))).join('')); };
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
+const svajP = (x, y, tl) => [x + 14 * Math.sin(tl * 1.6), y + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3)];
+const kritaGlid = (P0, P1, k, s, bage = 40) => { const m = mjuk(k), h = Math.min(1, Math.hypot(P1[0] - P0[0], P1[1] - P0[1]) / 300) * bage * Math.sin(Math.PI * m);
+  krita(lerp(P0[0], P1[0], m), lerp(P0[1], P1[1], m) - h, lerp(P0[2] ?? 125, P1[2] ?? 125, m), s); };
+const ritfart = k => (k = kl(k), 0.6 * k + 0.4 * mjuk(k));
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
+function kritiris(r, [cx, cy]) {
+  if (r >= 1500) return;
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.06 * Math.sin(9 * a + TT * 0.8));
+    return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+  lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>
+    ${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4)}" stroke-linejoin="round" filter="url(#boil)"/>` : ''}`);
+}
+const tussar = (x, y, k, s = 1) => { if (k <= 0 || k >= 1) return; lagg('fram', [[-50, 0], [50, -6], [0, -30], [-30, -20], [34, -24]].map(([dx, dy]) =>
+  `<circle cx="${f1(x + s * dx * (0.6 + k))}" cy="${f1(y + s * (dy * (0.6 + k) + 40 * k * k))}" r="${f1(s * (12 - 5 * k))}" fill="#fff" opacity="${(0.9 * (1 - k)).toFixed(2)}"/>`).join('')); };
+const vit = v => { if (v > 0) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FBF7EE" opacity="${v.toFixed(3)}"/>`); };
+const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
+// snöfall: [x0, y0, bredd, höjd] (i kamerans rum), drift = vinden när bussen åker
+function snofall(lager = 'fram', [x0, y0, w, h] = [-40, -60, 2000, 1200], tat = 0.9, drift = 0) {
+  if (typeof lager === 'number') { tat = lager; lager = 'fram'; }
+  let s = '';
+  for (let i = 0; i < Math.round(110 * tat * w / 2000); i++) { const r = k => slump(i * 7.3 + k * 1.9), v = 22 + 18 * r(3);
+    const y = y0 + ((TT * v + r(4) * h) % h), x = x0 + (((r(1) * w + 26 * Math.sin(TT * (0.4 + 0.3 * r(5)) + r(2) * 6) - drift * (0.6 + 0.4 * r(8))) % w) + w) % w;
+    s += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(2.6 + 3.2 * r(6))}" fill="#fff" opacity="${(0.65 + 0.3 * r(7)).toFixed(2)}"/>`; }
+  lagg(lager, s);
+}
+
+// --- Katten (Kaj) med nallen -------------------------------------------------------------------------------------------------
+let L, G, BLINKA, LF, GF, BLINKA_F, LK, GK; const GS = 0.7, GSF = 0.84;   // Sanna 2026-11-20: större katt (0,55 → 0,7), farmor lika mycket större
+const P = o => ({ ...L.POSE0, ...o });
+const ANS = (n, o = {}, l = L) => { const f = { ...l.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'fnissig', 'stolt', 'flinar'].includes(n) ? { glad: [0, 0] } : {}) };
+  if (f.armar) f.armar = f.armar.map(a => a / 2); return { ...f, ...o }; };
+const mellan = (a, b, k, l = L) => l.blanda(a, b, mjuk(k));
+const skutt = (tl, a, b, h = 28) => h * bump(a + 0.15 * (b - a), b - 0.1 * (b - a), tl);
+const nick = (f, p, tl, d = 1.2) => tl > 0 && tl < d ? L.nicka(f, P(p), tl, d, 2) : [f, p];
+// Sanna 2026-11-20: "cat hold leo in one hand". Nallen i vänstra tassen (bildens vänstra, framför kroppen) hela filmen; den högra
+// tassen är fri och gör allt: blippar, sträcker sig mot knappen, knackar och vinkar (bakom kroppen, snett ut förbi kanten).
+const ENHAND = { armar: [-124, 0], fram: [1, 0] };
+// vinka med den fria armen (bildens högra), bakom kroppen, snett ut förbi kanten (som 044)
+const VINKA = (tl, a, b) => ({ upp: del(a, a + 0.6, tl) - del(b, b + 0.6, tl), tl: tl - a - 0.5 });
+const nallePos = (x, fot, s, lyft) => [x + (512 - 512) * s, fot - lyft + (690 - L.FOTTER) * s];
+const nalle = (x, y, s, v = 0) => lagg('saker', `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(-424 -430)">
+  <image href="${NALLE}" width="848" height="856"/>${nalleAnsikte(NBLINK())}</g>`);
+// nallen blinkar ibland (som 040), så att bilden aldrig står helt still
+const NBLINK = () => { const u = TT % 3.7; return u > 1.6 && u < 1.75 ? 1 : 0; };
+const skugga = (x, y, rx = 150) => lagg('bak', `<ellipse cx="${f1(x)}" cy="${f1(y - 2)}" rx="${f1(rx)}" ry="${f1(rx * 0.12)}" fill="#3a5a7a" opacity="0.08"/>`);
+const STEG = 46, ORA_MAX = 13;
+// Kajs öron och svansrot putsade i scenen (Sanna 2026-11-20: "ears need polish at the ends", "polish cats tail, looks oddly bent
+// or wall at root"). Urklippen i assets/karaktarer/katten-kaj är orörda. Örat: samma form som riggens ORA_D men med mjuka kurvor
+// och rundad spets, roten långt ner under huvudets kant (döljs bakom kroppen) och vridpunkten vid roten i stället för mitt i örat.
+// Svansen: en ren kodbit i svansens färg över urklippets knöliga fog (vinkeln och de vita stygnen vid kroppen), från inne i kroppen
+// till där svansen är ren.
+const ORA2_D = 'M305 410 C292 360 283 300 289 240 C292 214 299 199 314 197 C332 197 362 221 384 248 C401 269 411 302 416 340 C420 372 410 402 390 420 Z';
+const ORA2 = `<path d="${ORA2_D}" fill="#fff" stroke="#fff" stroke-width="30" stroke-linejoin="round"/><path d="${ORA2_D}" fill="#342d2a" stroke="#342d2a" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M322 380 C312 330 307 270 314 238 C318 220 330 219 348 233 C371 252 387 283 393 318 C397 345 392 372 376 392 Z" fill="#cf8f95"/>`;
+const SVANSROT = 'M690 750 C740 752 790 742 826 716 C850 698 866 678 876 660';
+function putsaKaj() {
+  L.RIGG['ear-l'] = [342, 302]; L.RIGG['ear-r'] = [672, 302];
+  G.querySelector('.ear-l').innerHTML = ORA2; G.querySelector('.ear-r').innerHTML = `<g transform="translate(1014 0) scale(-1 1)">${ORA2}</g>`;
+  const t = G.querySelector('image.tail'), g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('class', 'tail'); t.replaceWith(g); t.removeAttribute('class'); g.appendChild(t);
+  // ryggsäckens axelremmar framifrån (Sanna 2026-11-20: "straps go around the arms"): varje rem kommer bakifrån över axelns topp,
+  // ner framför armroten och tillbaka bakom kroppen under armen (riggens kropp: kanten x 224–795 vid y 540, armrötterna y 528–646).
+  // Remmen ligger i kroppens lager, så bakre armar syns under den och armarna vrider sig fritt; en flik av säcken sticker ut
+  // bakom kroppen vid axlarna. Spegling kring kroppens mitt (x 509,5): x → 1019 − x.
+  const REM = 'M246 448 C286 474 300 528 292 570 C286 606 264 626 232 636';
+  const rem = sx => { const t = sx < 0 ? 'translate(1019 0) scale(-1 1)' : '';
+    return `<g transform="${t}"><path d="${REM}" fill="none" stroke="#2e6239" stroke-width="26" stroke-linecap="round"/>
+      <path d="${REM}" fill="none" stroke="#4F9A5E" stroke-width="19" stroke-linecap="round"/>
+      <path d="${REM}" fill="none" stroke="#7fbf8b" stroke-width="2.5" stroke-dasharray="6 6" transform="translate(2 -3)" opacity=".75"/>
+      <g transform="translate(276 496) rotate(58)"><rect x="-14" y="-10" width="28" height="20" rx="5" fill="#f2b632" stroke="#9c6e10" stroke-width="3"/><path d="M-6 0 H6" stroke="#9c6e10" stroke-width="3"/></g></g>`; };
+  const flik = sx => `<g transform="${sx < 0 ? 'translate(1019 0) scale(-1 1)' : ''}"><path d="M252 392 C226 398 214 420 212 450 C211 478 216 500 226 516 L240 516 Z" fill="#3f8a50" stroke="#2e6239" stroke-width="5" stroke-linejoin="round"/></g>`;
+  G.querySelector('.kropp > image').insertAdjacentHTML('afterend', `<clipPath id="kajKropp"><ellipse cx="509.5" cy="545" rx="282" ry="320"/></clipPath>
+    <g class="remmar" clip-path="url(#kajKropp)">${rem(1)}${rem(-1)}</g>`);   // klippt till kroppen: remmen försvinner bakom kroppens kant i båda ändar
+  const flikStor = sx => `<g transform="${sx < 0 ? 'translate(1019 0) scale(-1 1)' : ''}"><path d="M256 372 C206 378 182 414 180 456 C178 500 192 530 216 544 L240 544 Z" fill="#3f8a50" stroke="#2e6239" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M204 430 C198 462 200 494 212 518" fill="none" stroke="#7fbf8b" stroke-width="3" stroke-dasharray="6 6" opacity=".75"/></g>`;
+  G.querySelector('.katt').insertAdjacentHTML('afterbegin', `<g class="remmar sackflik liten">${flik(1)}${flik(-1)}</g><g class="remmar sackflik stor">${flikStor(1)}${flikStor(-1)}</g>`);   // stor: rad 3b visar säcken tydligare
+  g.insertAdjacentHTML('beforeend', `<path d="${SVANSROT}" fill="none" stroke="#fff" stroke-width="70" stroke-linecap="butt"/><path d="${SVANSROT} L888 636" fill="none" stroke="#2c2622" stroke-width="48" stroke-linecap="round"/>`);
+}
+const iSatet = () => { const n = parseInt(CUR?.id); return n >= 13 && n <= 40; };   // i bussen ligger ryggsäcken på sätet bredvid katten
+function katt(f, p = {}, { x = 960, fot = 1000, s = GS, lyft = 0, vinka = null, gang = null, medNalle = true, nalleV = -6, skugg = true } = {}) {
+  if (gang) { const [, q] = L.steg(gang.vag / (2 * STEG) / 1.2, 1, gang.dir); const { x: _x, ...r } = q;
+    p = { ...p, ...r, luta: (r.luta || 0) + (p.luta || 0) + 2 * gang.dir, svans: 9 * Math.sin(gang.vag / STEG * Math.PI) }; }
+  else p = { ...p, svans: (p.svans || 0) + 8 * Math.sin(2 * Math.PI * TT / 2.2) };
+  if (vinka && vinka.upp > 0.001) { const u = mjuk(vinka.upp), a = [...(p.armar || [0, 0])]; a[1] += u * (52 + 16 * Math.sin(2 * Math.PI * 1.15 * vinka.tl)); p = { ...p, armar: a, luta: (p.luta || 0) + 1.5 * u }; }
+  { const a = (1 - Math.cos(2 * Math.PI * TT / 3.6)) / 2; p = { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a }; }
+  const n = (CUR.ljud || []).filter(([fil]) => /^mjau/.test(fil)).reduce((sm, [, o]) => sm + bump(o - 0.05, o + 0.4, TT - CUR.s), 0);
+  if (n > 0.01) p = { ...p, strack: p.strack + 0.03 * n, oron: (p.oron || [0, 0]).map(o => o - 9 * n) };
+  { const fo = f.oron || [0, 0], po = p.oron || [0, 0]; p = { ...p, oron: po.map((o, i) => kl(o + fo[i], -ORA_MAX, ORA_MAX) - fo[i]) }; }   // öronen högst ±13°
+  if (skugg) skugga(x, fot, 150 * s / 0.5);
+  $('figurer').appendChild(G); G.querySelectorAll('.remmar').forEach(e => e.style.display = iSatet() || e.classList.contains(CUR?.id === '3b' ? 'liten' : 'stor') ? 'none' : '');
+  G.setAttribute('transform', `translate(${f1(x)} ${f1(fot - lyft)}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, BLINKA(f, TT), P(p));
+  if (medNalle) {   // nallen i vänstra tassen: tassens spets (uppmätt för armar[0] −124 med fram) ligger framför nallens sida
+    const lu = ((f.luta || 0) + (p.luta || 0) + 2 * (p.rikt || 0)) * Math.PI / 180, h = 293 * s, px = x - 186 * s + Math.sin(lu) * h, py = fot - lyft - Math.cos(lu) * h;
+    nalle(px + 80 * s, py + 12 * s, 0.368 * s, nalleV + (p.luta || 0) * 0.6);
+    lagg('saker', `<ellipse cx="${f1(px + 6 * s)}" cy="${f1(py)}" rx="${f1(30 * s)}" ry="${f1(25 * s)}" transform="rotate(-20 ${f1(px)} ${f1(py)})" fill="#cdc5b0" stroke="#2d2a25" stroke-width="${f1(3 * s)}"/>`); }
+}
+// handens punkt (den högra armens tasspets) i kamerans rum
+function handen() { const e = G.querySelector('image.arm-r') || G.querySelector('.arm-r'); if (!e) return [0, 0];
+  const m = $('kamera').getCTM().inverse().multiply(e.getCTM()), q = new DOMPoint(872, 598).matrixTransform(m); return [q.x, q.y]; }
+function farmor(f, p = {}, { x = 970, fot = 900, vinka = null } = {}) {
+  p = { ...LF.POSE0, svans: 10 * Math.sin(2 * Math.PI * TT / 2.1), ...p };
+  if (vinka && vinka.upp > 0.001) { const u = mjuk(vinka.upp), a = [...(p.armar || [0, 0])]; a[1] += u * (52 + 16 * Math.sin(2 * Math.PI * 1.1 * vinka.tl + 1)); p = { ...p, armar: a }; }
+  { const a = (1 - Math.cos(2 * Math.PI * TT / 4.1)) / 2; p = { ...p, strack: (p.strack || 0) + 0.01 * a }; }
+  $('figurer').insertBefore(GF, $('figurer').firstChild);
+  GF.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${GSF}) translate(-512 ${-LF.FOTTER})`);
+  LF.rita(GF, BLINKA_F(f, TT), p);
+}
+
+// --- Hållplatsen: skylten (275, 583), vägen y 826–900, bänken x 324–583. Bussen 1,5 × urklippet, dörren vid x 1479 -------------------
+const BS = 1.5, BUSS_DX = 1479, BUSS_UNDER = 905, HGOLV = 1010;
+const BUSS_X0 = BUSS_DX - 748 * BS;                     // bussens vänsterkant när den står (357)
+function buss(x = BUSS_X0, { oppen = 0, gung = 0 } = {}) {
+  const y = BUSS_UNDER - BUSS.h * BS + gung;
+  lagg('bak', bild(BUSS.fil, BUSS.w, BUSS.h, `translate(${f1(x)} ${f1(y)}) scale(${BS})`));
+  if (oppen > 0) {   // dubbeldörren (x 684–812, y 88–424) viks åt sidorna; mörkt därinne
+    const X = u => x + u * BS, Y = u => y + u * BS, w = 62 * (1 - 0.8 * mjuk(oppen));
+    lagg('bak', `<rect x="${f1(X(684))}" y="${f1(Y(90))}" width="${f1(128 * BS)}" height="${f1(332 * BS)}" fill="#4a3c30"/>
+      <rect x="${f1(X(684))}" y="${f1(Y(395))}" width="${f1(128 * BS)}" height="${f1(28 * BS)}" fill="#9aa0a8"/>
+      ${[[684, 1], [812, -1]].map(([x0, d]) => `<rect x="${f1(d > 0 ? X(x0) : X(x0 - w))}" y="${f1(Y(90))}" width="${f1(w * BS)}" height="${f1(332 * BS)}" fill="#c84c3c" stroke="#8a2a20" stroke-width="3"/>`).join('')}`);
+  }
+  // skylten och bänken står framför vägen: plattans bit läggs över bussen igen (skylten urklippt ur plattan längs sin kant, skylt-framfor.png, inte en ruta)
+  lagg('bak', `<clipPath id="framfor"><rect x="300" y="835" width="300" height="170"/></clipPath>
+    <image href="${HALL}" width="1920" height="1080" clip-path="url(#framfor)"/><image href="${HAR}skylt-framfor.png" x="180" y="465" width="192" height="530"/>`);
+}
+const hall = () => { $('platta').innerHTML = `<image href="${HALL}" width="1920" height="1080"/>`; };
+const KH = 1050;                                         // kattens plats vid hållplatsen
+
+// --- I bussen: glaset x 378–1540, y 98–497; sitsen; stången x 1645, knappen (1653, 515), golvet y 912 ------------------------------
+const FON = { x0: 378, x1: 1540, y0: 98, y1: 497, cx: 959, cy: 298 }, KNAPP = [1653, 515], SITT = [960, 820], HORISONT = 420;
+const HIMMEL = '#168ae1', SNO = '#f4f7fd', V = 45;      // bussens fart i remsans px/s
+// Bussens fart v(TT) och vägen X(TT) (byggs i ready ur radernas tider)
+let VKEYS = [], XTAB = [], GRUPPER = [], LASARE = null;
+function fart(t) { for (let i = 1; i < VKEYS.length; i++) { const [t0, v0] = VKEYS[i - 1], [t1, v1] = VKEYS[i]; if (t < t1) return lerp(v0, v1, mjuk((t - t0) / Math.max(0.001, t1 - t0))); } return VKEYS.at(-1)[1]; }
+const vagX = t => { const i = kl(t / 0.02, 0, XTAB.length - 1), a = Math.floor(i); return lerp(XTAB[a], XTAB[Math.min(a + 1, XTAB.length - 1)], i - a); };
+const grupp = id => GRUPPER.find(g => g.rader.includes(id));
+// utsikten för raden: remsan (eller ett tomt fält) med sakerna, i remsans koordinater (horisonten y 521)
+// en remsa (eller ett tomt snöfält) som den syns nu, vid gruppens egen ankarpunkt
+function vyHtml(g) {
+  const s = g.s, cx = vagX(TT) - g.ankare;
+  let h = `<rect x="0" y="0" width="1920" height="${HORISONT}" fill="${HIMMEL}"/><rect x="0" y="${HORISONT}" width="1920" height="700" fill="${SNO}"/>`;
+  if (g.namn) { const w = 1376 * s, x0 = FON.cx - cx * s, k0 = Math.floor((FON.x0 - 20 - x0) / w), k1 = Math.floor((FON.x1 + 20 - x0) / w);
+    for (let k = k0; k <= k1; k++) h += bild(UT(g.namn), 1376, 768, `translate(${f1(x0 + k * w)} ${f1(HORISONT - 521 * s)}) scale(${s})`); }
+  return h;
+}
+// Byte av utsikt (Sanna 2026-11-20 "smoother transitions between backgrounds"): den nya utsikten tonas in över den förra på VY_FADE s,
+// och båda fortsätter glida med bussen under tiden (före första utsikten: plattans eget fönster)
+const VY_FADE = 1.4;
+function utsiktNu() {
+  const g = grupp(CUR.id); if (!g) return null;
+  const s = g.s, cx = vagX(TT) - g.ankare, P2 = (X, Y) => [FON.cx + (X - cx) * s, HORISONT + (Y - 521) * s];
+  let h = vyHtml(g);
+  const i = RAD_L.findIndex(r => r.id === g.rader[0]), u = (TT - at(g.rader[0])) / VY_FADE;
+  if (u < 1 && i > 0) { const fore = grupp(RAD_L[i - 1].id);
+    h = `${fore ? vyHtml(fore) : `<image href="${INNE}" width="1920" height="1080"/>`}<g opacity="${mjuk(kl(u)).toFixed(3)}">${h}</g>`; }
+  $('platta').innerHTML = `<g clip-path="url(#glaset)">${h}<g id="ute"></g></g>`;
+  return { g, s, cx, P2 };
+}
+function inne(ut = true) {
+  const U = ut ? utsiktNu() : null;
+  if (!U) $('platta').innerHTML = `<image href="${INNE}" width="1920" height="1080"/>`;
+  else { snofall('ute', [FON.x0 - 40, FON.y0 - 40, FON.x1 - FON.x0 + 80, FON.y1 - FON.y0 + 80], 0.5, vagX(TT) * U.s * 1.3); lagg('platta', `<image href="${HAL}" width="1920" height="1080"/>`); }
+  return U;
+}
+// Bild A: fönstret fyller bilden, kattens huvud bakifrån nere till vänster. Bild B: katten på sätet.
+// Bild A (fönsterbilden): fönstret och sitsen, katten på sätesplatsen nere till vänster. Bild B: helbilden framifrån.
+const BILD_A = () => kamera(1.38, 930, 488), BILD_B = () => kamera(1.5, 960, 560);
+// Kajs huvud bakifrån: kaj-bakifran.png (481 × 630, Sanna valde den 2026-11-20), nertill i mitten, beskuren nertill så att äggets
+// övre del med öronen syns. HUVA = [x, y, skala]: bildens punkt (240, 270) hamnar i (x, y), här bildutsnittets nederkant (y 667 i bild A).
+// Lugn andning (liten skalning), ett litet ryck ibland och vrid/luta som högst några grader. Vita kanten läggs av kant.js.
+const BAKIFRAN = A + 'karaktarer/katten-kaj/premium/cut/kaj-bakifran.png';
+const HUVA = [959, 667, 0.8];
+// ryggsäcken (Sanna 2026-11-20): rekvisita/ryggsack, mitt på ryggen under öronen, ca 47 % av kroppens bredd, följer kroppen. Egen grupp
+// så att kant.js lägger kanten runt säcken och inte bara runt hela huvudet.
+const RYGG = A + 'rekvisita/ryggsack/cut/ryggsack.png';
+let RYGG_G = null;
+
+// --- Katten i 3/4 i fönsterbilderna: bara kaj34 (vänd mot tittaren, båda ögonen, ansiktet i kod). Sanna 2026-11-20: "1.57 dont use
+// this angle ... only 1.55 this angle": ingen kaj34ut och inget byte på en blinkning. Katten tittar ut med blicken (pupillerna mot fönstret).
+// Sätesplatsen SATE (Sanna 2026-11-20 "same place in the bus"): samma x, sits och storlek i alla bilder i bussen, både fönsterbilderna
+// (kaj34) och helbilderna framifrån (v2-riggen), säcken alltid till höger om katten. Kroppens nederkant mitt (KAJ34.jamka) på sitsen och
+// benen syns (Sanna: "1:50 the cat rig is missing its legs"). Storleken som framifrånkatten (GS): kroppen med öronen ca 460 px.
+// Reaktionerna spelar i bilden: ögonen vidgas/kniper glatt/blinkar/tittar, kinderna lyser, öronen spetsas (det bakre släpar efter),
+// munnen öppnas lite, en lutning mot glaset på 2–3°. Morrhåren ligger i lagret fram.
+const SATE = { x: 700, fot: 790 }, TV = { x: SATE.x, y: SATE.fot, s: 0.745 };
+const saeck = (lager) => sakPaSatet(SATE.x + 365, SATE.fot + 8, 200, lager);   // lager 'sakerbak': bakom katten (rad 13, katten går förbi)
+const ORA_T = [-1, 1];   // [främre, bakre] örat: vridning utåt
+const UT_TITT = [5, -6];  // blicken ut genom fönstret (åt höger, lite upp)
+function reaktionNu() {   // [typ, styrka 0–1] för radens reaktion i fönsterbilden
+  const r = CUR, tl = TT - r.s; if (!r.reak) return [null, 0];
+  const m = r.malin?.[0]?.[1] ?? 1.5, r0 = r.id === '29' ? immaKlar() - r.s : m - REAK_T + 0.05;
+  return [r.reak, del(r0, r0 + 0.35, tl) * (1 - del(m + 1.6, m + 2.2, tl))];
+}
+const REAK_T = 1.3;
+// riggens punkt → scenen (lutningen bortses från, den är bara några grader); namn finns kvar för anropen, riggen är alltid kaj34
+const trekPunkt = (namn, [px, py], { lyft, tx }) => { const { anker: [ax, ay], k } = KAJ34.RIGG.oss; return [tx + (px - ax) * k * TV.s, TV.y - lyft + (py - ay) * k * TV.s]; };
+const trekLyft = sta => 45 * mjuk(sta);
+// Den korta armen (Sanna: korta armar, aldrig sträckta): en kort rak arm i kroppens färg som kommer fram bakom kroppens högra kant
+// under munnen (roten ARM_ROT i kaj34, döljs bakom kroppen), med riggens egen tass längst ut (kaj34-arm.png, tassen y 590–666).
+// Längden är riggarmens (ARM_L), högst 1,15 ×; vinkeln hålls 15–60° uppåt framåt. Resten av vägen till handen tar kroppen (trekvartFoljer).
+const ARM_ROT = [830, 562], ARM_V = [15, 60];
+const ARM_L = 142 * 1.055 * TV.s;
+const armVektor = d => { const l = kl(Math.hypot(d[0], d[1]), 0.85 * ARM_L, 1.15 * ARM_L), v = kl(Math.atan2(-d[1], d[0]) * 180 / Math.PI, ARM_V[0], ARM_V[1]) * Math.PI / 180;
+  return [l * Math.cos(v), -l * Math.sin(v)]; };
+// hur mycket kroppen flyttar sig (x, y) för att tassen ska nå handen med en kort arm
+const trekvartFoljer = (hand, sta, x0 = TV.x) => { const r = trekPunkt('oss', ARM_ROT, { lyft: trekLyft(sta), tx: x0 }), d = [hand[0] - r[0], hand[1] - r[1]], c = armVektor(d);
+  return [d[0] - c[0], kl(d[1] - c[1], -45, 40)]; };
+function ritArm(o, hand, nar) {
+  const r = trekPunkt('oss', ARM_ROT, o), d = [hand[0] - r[0], hand[1] - r[1]], c = armVektor(d), vila = [ARM_L * 0.2, ARM_L * 0.7];   // i vila: nedåt bakom kroppen
+  const v = [lerp(vila[0], c[0], nar), lerp(vila[1], c[1], nar)], l = Math.hypot(...v), ang = Math.atan2(v[1], v[0]) * 180 / Math.PI, b = 0.62 * 90 * TV.s;
+  const D = KAJ34.RIGG.oss.D, k = (1.055 * TV.s).toFixed(4);
+  // [armen (lagret saker, bakom kroppen), tassen (lagret fram, över morrhåren): bara riggens tass, klippt med en ellips runt den vita spetsen]
+  const g0 = `translate(${f1(r[0])} ${f1(r[1])}) rotate(${f1(ang)})`;
+  return [`<g transform="${g0}"><rect x="-8" y="${f1(-b / 2)}" width="${f1(l - 4)}" height="${f1(b)}" rx="${f1(b / 2)}" fill="#3d3631"/></g>`,
+    `<g transform="${g0}"><g transform="translate(${f1(l)} 0) rotate(-90) scale(${k}) translate(-638 -626)"><defs><clipPath id="ritTass"><ellipse cx="638" cy="628" rx="40" ry="34"/></clipPath></defs>
+    <image href="${D}arm.png" width="1024" height="1024" clip-path="url(#ritTass)"/></g></g>`];
+}
+// hand: en punkt i scenen som tassen ska nå (armen vrids och sträcks dit från roten), nar 0–1 hur långt dit. ans: ansiktet (glad, titt …)
+// nallen på sitsen till vänster om katten i fönsterbilderna (Sanna 2026-11-20 "teddy in the window shots"): v2-nallen som i helbilderna,
+// lite mindre, sitter still och lutar sig lätt mot katten; alltid på samma ställe (som sätesplatsen), också när katten står
+const NALLE_SATE = [SATE.x - 222, SATE.fot - 112, 0.255, 7];   // ritas efter katten: framför svansen, lutar mot kroppens kant
+function trekvart({ hoj = 0, vrid = 0, luta = 0, sta = 0, lean = 0, x = TV.x, dy = 0, hand = null, nar = 0, ans = {} } = {}) {
+  const [typ, R] = reaktionNu();
+  const glad = Math.max(ans.glad || 0, (typ === 'jatteglad' || typ === 'kanin' || typ === 'fniss') ? R : 0), forv = typ === 'forvanad' ? R : 0, nyf = Math.max(ans.nyf || 0, typ === 'nyfiken' ? R : 0);
+  const fniss = typ === 'fniss' ? R * Math.sin(TT * 18) : 0;
+  const vr = kl(vrid + 0.6 * glad + 0.3 * forv, -0.6, 1.2), le = lean + 0.5 * glad + 0.3 * forv + 0.6 * nyf;
+  const ora = kl(kl(hoj, 0, 1.4) * 0.4 + R, 0, 1.4);
+  const andas = 1 + 0.012 * Math.sin(2 * Math.PI * TT / 3.6), st = mjuk(sta);
+  const lyft = trekLyft(sta) + 14 * (1 - st) + 6 * hoj + 5 * forv - dy, v = luta + 2.5 * le + 1.5 * fniss, tx = x + 8 * le;
+  const T = `translate(${f1(tx)} ${f1(TV.y - lyft)}) rotate(${f1(v)}) scale(${(TV.s * (1 + 0.03 * vr)).toFixed(4)} ${(TV.s * andas).toFixed(4)}) ${KAJ34.jamka('oss')}`;
+  const o = { T, lyft, le, tx, namn: 'oss' };
+  const bl = (TT % 4.1) > 3.95 ? 1 : 0, titt = ans.titt || (R > 0.3 ? [0, 0] : UT_TITT);
+  const ansikte = { blink: bl, glad, forv, nyf, titt, mun: Math.max(ans.mun || 0, 0.6 * forv + 0.3 * glad), kind: 0.7 + 0.3 * Math.max(glad, forv * 0.6, R * 0.5) };
+  const oraF = 4 * ORA_T[0] * ora, oraB = 4 * ORA_T[1] * ora * (R > 0 ? del(0.2, 0.6, R) : 1), svans = 4 * Math.sin(2 * Math.PI * TT / 5.2);
+  const [armS, tassS] = hand && nar > 0 ? ritArm(o, hand, nar) : ['', ''];
+  // benen (Sanna 2026-11-20 "better legs while sitting"): sittande lyfts kroppen 14 px så att båda benen syns framme under ägget,
+  // korta (12 px upp under kroppen, rötterna dolda), fötterna ca 75 px isär, fötterna med vita tassar vilar på sitsens framkant; stående raka
+  const sitt = 1 - st;
+  lagg('saker', `${armS}<g transform="${T}">${KAJ34.svg('oss', { ...ansikte, oraF, oraB, svans, ben: true, benY: 12 * sitt, benV: [2 * sitt, -2 * sitt], benX: 30 * sitt })}</g>`);
+  nalle(...NALLE_SATE);
+  lagg('fram', `<g transform="${T}">${KAJ34.morr('oss')}</g>${tassS}`);
+  return o;
+}
+
+function bakhuvud([x, y, s] = HUVA, { vrid = 0, hoj = 0, luta = 0 } = {}) {
+  if (iSatet()) { const o = trekvart({ hoj, vrid, luta }); saeck(); return o; }
+  const andas = 1 + 0.012 * Math.sin(2 * Math.PI * TT / 3.6), ryck = bump(0, 0.3, (TT % 4.3) - 2.0);
+  const v = kl(luta + 2 * vrid + 1.2 * ryck, -4, 4), lyft = -12 * hoj * s / 0.8;
+  const T = `translate(${f1(x)} ${f1(y + lyft)}) rotate(${f1(v)}) scale(${s} ${(s * andas).toFixed(4)}) translate(-240 -270)`;
+  lagg('saker', `<g transform="${T}"><image href="${BAKIFRAN}" width="481" height="630"/></g>`);
+  if (iSatet() && s < 0.9) sakPaSatet(x - 330, y + 70, 215);   // bild A: säcken på sätet bredvid katten
+  else { RYGG_G.innerHTML = `<g transform="${T}"><image href="${RYGG}" width="513" height="604" transform="translate(240 112) scale(0.433) translate(-256 0)"/></g>`; $('saker').appendChild(RYGG_G); }
+}
+const sakPaSatet = (x, botten, w, lager = 'saker') => { const k = w / 513; RYGG_G.innerHTML = `<g transform="translate(${f1(x)} ${f1(botten)}) rotate(-4) scale(${k.toFixed(4)}) translate(-256 -600)"><image href="${RYGG}" width="513" height="604"/></g>`; $(lager).appendChild(RYGG_G); };
+const sitter = (f, p = {}, o = {}) => (saeck(), katt(f, { ...L.POSER.sitter, ...ENHAND, ...p }, { x: SATE.x, fot: SATE.fot, skugg: false, ...o }));
+
+// --- Sakerna utanför (i remsans koordinater) ------------------------------------------------------------------------------------
+const PLATS = { gubbe: [700, 548], plog: [700, 546], gran: [1373, 566] };   // granen i luckan mellan stans husrader (x 1195 … 1376 + 175)
+function snogubbe(U, pop = 0) {
+  const [x, y] = U.P2(...PLATS.gubbe), k = 0.2 * (1 + 0.08 * pop);
+  lagg('ute', `<g transform="translate(${f1(x)} ${f1(y)}) scale(${k.toFixed(4)}) translate(-512 -1300)"><image href="${GUBBE}" width="1024" height="1371"/>
+    <g transform="translate(512 190)"><rect x="-120" y="-30" width="240" height="40" rx="10" fill="#2b2626" stroke="#fff" stroke-width="10"/>
+    <rect x="-80" y="-170" width="160" height="150" rx="16" fill="#2b2626" stroke="#fff" stroke-width="10"/></g></g>`);
+  return [x, y - (1300 - 20) * k];                      // hattens topp
+}
+// snöplogen (runda 20:30): står med lampan igång vid stoppet (rad 26) och kör sedan jämnt åt vänster (rad 27, kor 0–1): bladet skjuter
+// en växande snövåg framför sig, snö sprutar i en båge från bladets ände, en ren mörk vägrand blir kvar bakom, den gula lampan på
+// hytten roterar och hjulen guppar lite. Returnerar plogens x (kattens blick följer den).
+const PLOG_DX = 520;   // plogen står till höger om katten i fönsterbilden (katten täckte den förut)
+function plog(U, { kor = 0 } = {}) {
+  const [x0, y] = U.P2(...PLATS.plog), s = 0.34, W = PLOG.w * s, H = PLOG.h * s, x = x0 + PLOG_DX - 420 * kor, rull = kor > 0 && kor < 1;
+  const gupp = rull ? 2.2 * Math.abs(Math.sin(TT * 12)) : 0.5 * Math.sin(TT * 3), L0 = x - W / 2, T0 = y - H - gupp;
+  let ut = '';
+  if (kor > 0) ut += `<rect x="${f1(L0 + 300 * s)}" y="${f1(y - 16)}" width="${f1(x0 - x + W * 0.55)}" height="18" rx="9" fill="#59626d" opacity=".9"/>
+    <rect x="${f1(L0 + 300 * s)}" y="${f1(y - 16)}" width="${f1(x0 - x + W * 0.55)}" height="5" rx="2.5" fill="#7d8792" opacity=".8"/>`;
+  ut += bild(PLOG.fil, PLOG.w, PLOG.h, `translate(${f1(L0)} ${f1(T0)}) scale(${s})`);
+  // snövågen framför bladet
+  const bx = L0 + 230 * s, vg = 18 + 70 * kor;
+  if (kor > 0) ut += [[0, 1], [-0.55, 0.75], [0.25, 0.6]].map(([dx, k]) => `<ellipse cx="${f1(bx - 12 + dx * vg)}" cy="${f1(y - 6 - 0.35 * vg * k)}" rx="${f1(vg * k)}" ry="${f1(0.5 * vg * k)}" fill="#f4f8fb" stroke="#c9d7e3" stroke-width="3"/>`).join('');
+  // snön som sprutar från bladets övre ände i en båge
+  if (rull) for (let i = 0; i < 16; i++) { const f = (TT * 1.3 + i / 16) % 1, r = slump(i * 5.1), sx = L0 + 255 * s, sy = T0 + 255 * s;
+    ut += `<circle cx="${f1(sx - (60 + 70 * r) * f)}" cy="${f1(sy - 70 * f + 150 * f * f)}" r="${f1(2.5 + 4 * r)}" fill="#fff" opacity="${((1 - f) * 0.9 * Math.min(1, kor * 6)).toFixed(2)}"/>`; }
+  // den roterande gula lampan: ett ljust sken som sveper runt
+  const v = TT * 7, lx = L0 + 630 * s, ly = T0 + 40 * s, c = Math.cos(v);
+  ut += `<circle cx="${f1(lx)}" cy="${f1(ly)}" r="${f1(30 + 8 * Math.max(0, c))}" fill="#ffb300" opacity="${(0.18 + 0.4 * Math.max(0, c)).toFixed(2)}"/>
+    <ellipse cx="${f1(lx + 9 * Math.sin(v) * s / 0.34)}" cy="${f1(ly - 2)}" rx="${f1(4 + 4 * Math.max(0, c))}" ry="7" fill="#fff6c8" opacity="${(0.4 + 0.5 * Math.max(0, c)).toFixed(2)}"/>`;
+  lagg('ute', ut);
+  return x;
+}
+// stadens julgran: stadsgran.png (Sanna 2026-11-20, ingen inbakad kant: kant.js lägger den på granens egen grupp), gula stjärnan
+// i toppen och kulorna som tindrar ritas i kod
+const GRAN = { fil: R + 'stadsgran/cut/stadsgran.png', w: 464, h: 688, fot: [233, 682], topp: [232, 6], h0: 676,
+  kulor: [[263, 161], [191, 215], [283, 240], [163, 267], [311, 342], [126, 390], [349, 397], [262, 396], [314, 499], [371, 516], [87, 519], [211, 529]] };
+let GRAN_G = null;
+const STJARNA = R + 'stjarna-gul/cut/stjarna-gul.png';
+function julgran(U, tindra = 0) {
+  // i luckan mellan husen, foten på marken strax framför husens fotlinje; lite högre än husen (ca 330 px i remsan)
+  const [x, fot] = U.P2(...PLATS.gran), k = 292 * U.s / GRAN.h0, X = u => x + (u - GRAN.fot[0]) * k, Y = v => fot + (v - GRAN.fot[1]) * k, w = GRAN.w * k;
+  lagg('ute', `<radialGradient id="granglod"><stop offset="0" stop-color="#ffd98a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>
+    <ellipse cx="${f1(x)}" cy="${f1(fot - 0.5 * GRAN.h0 * k)}" rx="${f1(w * 1.1)}" ry="${f1(GRAN.h0 * k * 0.62)}" fill="url(#granglod)" style="mix-blend-mode:screen" opacity="${(0.7 + 0.15 * Math.sin(TT * 1.3)).toFixed(2)}"/>
+    <ellipse cx="${f1(x)}" cy="${f1(fot + 4 * U.s)}" rx="${f1(w * 0.55)}" ry="${f1(12 * U.s)}" fill="#3a5a7a" opacity=".25" style="mix-blend-mode:multiply"/>`);
+  GRAN_G.innerHTML = bild(GRAN.fil, GRAN.w, GRAN.h, `translate(${f1(X(0))} ${f1(Y(0))}) scale(${k.toFixed(4)})`); $('ute').appendChild(GRAN_G);
+  let s = `<path d="M${f1(x - w * 0.42)} ${f1(fot + 6 * U.s)} Q${f1(x - w * 0.3)} ${f1(fot - 22 * U.s)} ${f1(x - w * 0.08)} ${f1(fot - 16 * U.s)} Q${f1(x + w * 0.12)} ${f1(fot - 26 * U.s)} ${f1(x + w * 0.3)} ${f1(fot - 14 * U.s)} Q${f1(x + w * 0.42)} ${f1(fot - 8 * U.s)} ${f1(x + w * 0.46)} ${f1(fot + 6 * U.s)} Z" fill="#e7eef6" stroke="#c9d6e4" stroke-width="${f1(2 * U.s)}"/>`;
+  GRAN.kulor.forEach(([u, v], i) => { const gl = (0.5 + 0.5 * Math.sin(TT * (1.3 + 0.17 * i) + i * 2.1)) * (0.45 + 0.55 * tindra);
+    if (gl > 0.08) s += `<circle cx="${f1(X(u))}" cy="${f1(Y(v))}" r="${f1(18 * k * (1 + 0.6 * gl))}" fill="#fff6c8" opacity="${(0.5 * gl).toFixed(2)}"/>`; });
+  const ss = 76 * U.s / 1.6 / 792 * (1 + 0.06 * Math.sin(TT * 3) + 0.15 * tindra);
+  s += `<g transform="translate(${f1(X(GRAN.topp[0]))} ${f1(Y(GRAN.topp[1]) - 14 * U.s / 1.6)}) scale(${ss.toFixed(4)}) translate(-512 -512)">${bild(STJARNA, 1024, 1024, '')}</g>`;
+  lagg('ute', s);
+}
+// kaninen i pulkan på backen (remsans koordinater), liten och långt bort
+const BACKE = [[520, 372], [930, 512]];
+function kaninPulka(U, u, vinka = 0) {
+  const X = lerp(BACKE[0][0], BACKE[1][0], u), Y = lerp(BACKE[0][1], BACKE[1][1], u), [x, y] = U.P2(X, Y), v = u < 1 ? 17 : 4, k = U.s / 1.6;
+  lagg('ute', `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${v}) scale(${(0.15 * k).toFixed(4)}) translate(${-PULKA.mitt[0]} ${-PULKA.mitt[1]})">${bild(PULKA.fil, PULKA.w, PULKA.h, '')}</g>`);
+  $('ute').appendChild(GK);
+  GK.setAttribute('transform', `translate(${f1(x + 8 * k)} ${f1(y - 32 * k)}) rotate(${v}) scale(${(0.1 * k).toFixed(4)}) translate(-512 ${-LK.FOTTER})`);
+  const a = vinka > 0 ? 40 + vinka * (30 + 18 * Math.sin(TT * 7)) : 0;
+  LK.rita(GK, ANS('jatteglad', {}, LK), { ...LK.POSE0, ...LK.POSER.sitter, armar: [0, a] });
+}
+// fågeln 1,6 × större (Sanna 2026-11-20 "bigger bird"): 0,096 på hatten, 0,12 vid skylten
+const FAGEL_S = 0.096;
+// fågeln (043:s fagel.js), samma röda fågel vid hållplatsskylten och på snögubbens hatt
+function fagel(x, y, { s = 0.06, flax = 0, oppen = 0, tilt = 0, lager = 'ute', vand = 1 } = {}) {
+  const blink = (TT % 3.3) < 0.12 ? 1 : 0;
+  // röd som bussen (Sanna 2026-11-20 "red bird"): 043:s röda kropp, vingen i kritrött lite mörkare än kroppen
+  const svg = fagelSvg('rod', { t: TT, flax, oppen, blink, ben: flax }).replaceAll('#a54f38', '#b23f2e').replaceAll('#7c3b2a', '#7a2618');
+  lagg(lager, `<g transform="translate(${f1(x)} ${f1(y)}) scale(${-s * vand} ${s}) rotate(${f1(tilt)}) translate(-400 -689)">${svg}</g>`);
+}
+
+// fågeln på hållplatsskylten (Sanna 2026-11-20): sitter på snön på skylten medan vi väntar (rad 4–5), vänd mot katten. Lutar huvudet,
+// piper lågt när Malin tystnat, tar ett litet skutt; lyssnar åt bussen i rad 5 och flyger lugnt iväg upp åt höger när bussen kommer (rad 6).
+// t = sekunder från rad 4:s början.
+function skyltFagel(t) {
+  const hopp = kl((t - 4.9) / 0.5), fly = kl((t - (at('6') - at('4')) - 0.4) / 1.8), f = fly * fly;
+  const x = 262 + 22 * mjuk(hopp) + 1100 * f, y = 484 - 16 * Math.sin(Math.PI * hopp) - 520 * f - 40 * Math.sin(Math.PI * fly);
+  if (fly >= 1) return;
+  fagel(x, y, { s: 0.12, vand: -1, lager: 'saker', flax: fly > 0 ? 1 : 0, oppen: bump(4.45, 4.8, t),
+    tilt: 10 * bump(1.5, 2.7, t) - 8 * bump(6.0, 7.4, t) + (fly > 0 ? -12 : 0) });
+}
+
+// --- Imman och hjärtat på glaset (i bild A och B) -----------------------------------------------------------------------------------
+const HJ = [985, 436, 30], hjarta = (x, y, r) => `M${x} ${y + r * 0.9} C${x - r * 1.6} ${y - r * 0.1} ${x - r * 0.9} ${y - r * 1.25} ${x} ${y - r * 0.45} C${x + r * 0.9} ${y - r * 1.25} ${x + r * 1.6} ${y - r * 0.1} ${x} ${y + r * 0.9}`;
+// Imman växer in från kanterna i rad 29, katten ritar en hjärtkontur med tassen i rad 30 (Sanna: "just outline heart": strecket
+// torkar bort imman längs linjen och stan syns lite genom det, i takt med tassen),
+// och i rad 32 torkar hela imman bort (Sanna 2026-11-20: "make cat draw shape", "then imma on glas goes away").
+// rad 30: katten ställer sig på sätet, tassen ritar hjärtat i ett drag efter "Titta! Katten ritar." (s in i raden)
+let HJ_RIT = [3, 5.3];
+const hjRit = () => { const r = RR['30'], a = r.malin[0][1] + L_(34) + 0.5; return [a, a + 2.3]; };
+const immaUt = () => 1 - del(at('32', 0.3), at('32', 2.6), TT);
+// imman kryper in från kanterna och hörnen på ca 2 s och är jämn på "vitt" (radens replik slutar)
+const immaKlar = () => at('29') + RR['29'].malin[0][1] + L_(33) - 0.2;
+const immaK = () => TT < at('29') || TT >= at('33') ? 0 : del(immaKlar() - 2.2, immaKlar(), TT) * immaUt();
+const hjartaLinje = () => { if (TT < at('30') || TT >= at('33')) return 0; HJ_RIT = hjRit(); return ritfart((TT - at('30') - HJ_RIT[0]) / (HJ_RIT[1] - HJ_RIT[0])); };
+const hjartaK = () => { if (TT < at('30') || TT >= at('33')) return 0; HJ_RIT = hjRit(); return del(at('30', HJ_RIT[1] - 0.2), at('30', HJ_RIT[1] + 0.5), TT); };
+function imma() {
+  const k = immaK(); if (k <= 0.002) return;
+  $('ute')?.setAttribute('filter', 'url(#uteblur)');   // utsikten blir suddig och mjölkig bakom imman
+  const lin = hjartaLinje(), rx = lerp(900, 0, k), ry = lerp(480, 0, k);   // full imma: inget hål kvar (insidan av hjärtat lika immig som resten)
+  let dr = '';                                            // små droppar i imman
+  for (let i = 0; i < 46; i++) { const r = j => slump(i * 3.7 + j * 1.3), x = FON.x0 + 30 + r(1) * (FON.x1 - FON.x0 - 60), y = FON.y0 + 20 + r(2) * (FON.y1 - FON.y0 - 40);
+    const kant = Math.min(1, Math.hypot((x - FON.cx) / rx, (y - FON.cy) / ry) - 0.6); if (kant > 0) dr += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(2 + 4 * r(3))}" fill="#fff" opacity="${(0.7 * kant * k).toFixed(2)}"/>`; }
+  // en kort droppe från hjärtats spets när det är klart
+  const dL = TT < at('30') ? 0 : 9 * del(0, 1.2, TT - at('30', hjRit()[1] + 0.3));   // en enda kort droppe under spetsen (inte en rinnande linje)
+  const rinn = dL > 0.5 ? `<path d="M${HJ[0]} ${HJ[1] + HJ[2] * 0.9 + 4} v${f1(dL)}" stroke="#000" stroke-width="7" stroke-linecap="round" filter="url(#hjmjuk)"/>` : '';
+  lagg('bak', `<filter id="immakorn" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="4"/>
+      <feColorMatrix values="0 0 0 0 0.93  0 0 0 0 0.96  0 0 0 0 0.98  0 0 0 -0.9 1.25"/></filter>
+    <filter id="mjukkant" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${f1(lerp(260, 120, k))}" xChannelSelector="R" yChannelSelector="G" result="d"/><feGaussianBlur in="d" stdDeviation="${f1(lerp(50, 26, k))}"/></filter>
+    <filter id="uteblur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="${f1(7 * k)}"/></filter>
+    <filter id="hjmjuk" x="-10%" y="-10%" width="120%" height="140%"><feGaussianBlur stdDeviation="1.2"/></filter>
+    <mask id="hm" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><rect x="0" y="0" width="1920" height="1080" fill="#fff"/>
+      ${rx > 8 ? `<ellipse cx="${FON.cx}" cy="${FON.cy}" rx="${f1(rx)}" ry="${f1(ry)}" fill="#000" filter="url(#mjukkant)"/>` : ''}
+      ${lin > 0 ? `<path d="${hjarta(...HJ)}" pathLength="1" fill="none" stroke="#000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${lin.toFixed(4)} 2" filter="url(#hjmjuk)"/>` : ''}${rinn}</mask>
+    <g clip-path="url(#glaset)" mask="url(#hm)" opacity="${(0.88 * k).toFixed(3)}">
+      <rect x="${FON.x0}" y="${FON.y0}" width="${FON.x1 - FON.x0}" height="${FON.y1 - FON.y0}" fill="#e9f0f4"/>
+      <rect x="${FON.x0}" y="${FON.y0}" width="${FON.x1 - FON.x0}" height="${FON.y1 - FON.y0}" filter="url(#immakorn)"/>${dr}</g>`);
+}
+const hjartaPunkt = k => { const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', hjarta(...HJ)); $('gomda').appendChild(p);
+  const q = p.getPointAtLength(p.getTotalLength() * kl(k, 0, 0.999)); p.remove(); return [q.x, q.y]; };
+// kattens raka arm från axeln (under bildkanten, bakom huvudet) till tassen på glaset
+function ritarm([sx, sy], [x, y]) { const v = Math.atan2(y - sy, x - sx) * 180 / Math.PI, l = Math.hypot(x - sx, y - sy);
+  lagg('saker', `<g transform="translate(${f1(sx)} ${f1(sy)}) rotate(${f1(v)})"><rect x="0" y="-40" width="${f1(l)}" height="80" rx="40" fill="#2b2626" stroke="#fff" stroke-width="5"/>
+    <ellipse cx="${f1(l)}" cy="0" rx="50" ry="46" fill="#2b2626" stroke="#fff" stroke-width="6"/><ellipse cx="${f1(l + 8)}" cy="0" rx="18" ry="15" fill="#f2c1c6"/></g>`); }
+
+// --- Knappen i närbild ---------------------------------------------------------------------------------------------------------
+const KNAPPN = () => kamera(4.2, KNAPP[0] - 40, KNAPP[1]);
+// den röda knappen glöder: en mjuk röd-orange gloria som pulserar (1,2 s per puls) när knappen syns, och lyser upp på "Pling!"
+// (extra 0–1, ca 0,5 s) innan den lägger sig igen (Sanna 2026-11-20: "make the red button glow")
+const knappGlod = (extra = 0) => { const a = (1 - Math.cos(2 * Math.PI * TT / 1.2)) / 2, k = 0.5 + 0.3 * a + 0.5 * extra;
+  lagg('bak', `<radialGradient id="kglod"><stop offset="0" stop-color="#ff7a3c" stop-opacity="1"/><stop offset="0.45" stop-color="#ff5a2e" stop-opacity="0.5"/><stop offset="1" stop-color="#ff5a2e" stop-opacity="0"/></radialGradient>
+    <circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="${f1(40 + 7 * a + 16 * extra)}" fill="url(#kglod)" opacity="${Math.min(1, k).toFixed(3)}"/>`); };
+const knappLjus = k => { if (k > 0) lagg('fram', `<circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="14" fill="#ff5252" opacity="${(0.55 * k).toFixed(2)}"/><circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="28" fill="#ffcdd2" opacity="${(0.35 * k).toFixed(2)}"/>`); };
+// knappen i mellanbild: katten står på sitsen vid stången (KX), armroten ca 110 px från knappen
+const KX = 1395, KNAPPB = () => kamera(1.7, 1460, 560);
+
+// --- Farmors dörr: öppningen x 812–1126, y 202–875, trappstenen y 876–921 ------------------------------------------------------------
+const dorr = (oppen = 0) => { $('platta').innerHTML = `<image href="${oppen ? DORR_OPPEN : DORR}" width="1920" height="1080"/>`; };
+const KD = 640, DGOLV = 1000;
+
+// --- Ritintrot: kritan ritar bussen (konturen ur urklippet, fönstren, dörren och hjulen som egna drag) --------------------------------
+const PB = [960, 560, 1.15];
+const pbT = () => { const [x, y, s] = PB; return `translate(${x} ${y}) scale(${s}) translate(-521 -249)`; };
+const rr = (x0, y0, x1, y1) => `M${x0 + 14} ${y0} H${x1 - 14} Q${x1} ${y0} ${x1} ${y0 + 14} V${y1 - 14} Q${x1} ${y1} ${x1 - 14} ${y1} H${x0 + 14} Q${x0} ${y1} ${x0} ${y1 - 14} V${y0 + 14} Q${x0} ${y0} ${x0 + 14} ${y0}`;
+const hjul = (x, y, r) => `M${x - r} ${y} A${r} ${r} 0 1 0 ${x + r} ${y} A${r} ${r} 0 1 0 ${x - r} ${y}`;
+// bussen i ritintrot utan snö: buss-utan-sno.png (buss.png med snöpixlarna överst genomskinliga), klippt till konturens mjuka tak
+// (dSlat) med takets röda under, så att taket blir helt där snön låg
+const BUSS_INTRO = HAR + 'buss-utan-sno.png';
+let SKISS = null;
+function skiss() {
+  if (SKISS) return SKISS;
+  // Taket som en jämn rundad linje (buss-kontur.json dSlat: konturens knöliga snörand ersatt med en mjuk kurva på det röda taket),
+  // utan snö på taket (Sanna 2026-11-20: "ta bort snö på bussens tak i intro ritning"), varken i konturen eller i bilden
+  const D = [[KONTUR.buss.dSlat, 0.40], [hjul(230, 440, 56), 0.06], [hjul(882, 440, 56), 0.06],
+    [rr(69, 92, 207, 236), 0.05], [rr(224, 92, 355, 236), 0.05], [rr(378, 92, 509, 236), 0.05], [rr(532, 92, 664, 236), 0.05],
+    [rr(684, 88, 812, 424), 0.07], [rr(829, 92, 894, 236), 0.04], ['M18 300 H1020', 0.06]];
+  const LYFT = 0.02, sum = D.reduce((a, [, w]) => a + w, 0) + LYFT * (D.length - 1); let t = 0;
+  SKISS = D.map(([d, w, farg, bredd]) => { const a = t / sum, b = (t + w) / sum; t += w + LYFT; return [d, a, b, farg, bredd]; });
+  return SKISS;
+}
+const skPunkt = (i, f) => { const p = $('sk' + i); if (!p) return null; const q = p.getPointAtLength(p.getTotalLength() * Math.min(0.999, f)), pt = new DOMPoint(q.x, q.y).matrixTransform($('kamera').getCTM().inverse().multiply(p.getCTM())); return [pt.x, pt.y]; };
+function papperBuss(k, fyll) { papper(); let spets = null;
+  if (fyll > 0) lagg('saker', `<g transform="${pbT()}"><clipPath id="pb"><circle cx="521" cy="249" r="${f1(620 * fyll)}"/></clipPath><clipPath id="pbform"><path d="${KONTUR.buss.dSlat}"/></clipPath>
+    <g clip-path="url(#pb)"><g clip-path="url(#pbform)"><rect x="0" y="0" width="${BUSS.w}" height="90" fill="#c84e3c"/><image href="${BUSS_INTRO}" width="${BUSS.w}" height="${BUSS.h}"/></g></g></g>`);
+  if (fyll < 1 && k > 0) skiss().forEach(([d, a, b, farg = '#3a2c28', bredd = 13], i) => { const f = kl((k - a) / (b - a));
+    lagg('pilar', `<g transform="${pbT()}"><path id="sk${i}" d="${d}" pathLength="1" fill="none" stroke="${f > 0 ? farg : 'none'}" stroke-width="${f1(bredd / PB[2])}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritfart(f).toFixed(4)} 2" opacity="${(1 - fyll).toFixed(3)}"/></g>`);
+    if (f > 0 && f < 1) spets = skPunkt(i, ritfart(f)); });
+  if (!spets && k > 0 && k < 1) { const S2 = skiss(), i = S2.findIndex(([, a]) => a > k);
+    if (i > 0) { const E = skPunkt(i - 1, 1), Bp = skPunkt(i, 0), u = mjuk((k - S2[i - 1][2]) / (S2[i][1] - S2[i - 1][2]));
+      const h = Math.min(1, Math.hypot(Bp[0] - E[0], Bp[1] - E[1]) / 200) * 30 * Math.sin(Math.PI * u); spets = [lerp(E[0], Bp[0], u), lerp(E[1], Bp[1], u) - h]; } }
+  if (k >= 1 && fyll < 1) spets = skPunkt(skiss().length - 1, 1);
+  return spets;
+}
+
+// påstigningen: halvbild mot dörren; katten går från hållplatsen (KH) mot dörren och blir mindre (in mot bussen),
+// trappsteget i dörren (grå kant y ca 750–793). DORRKLIPP: katten och nallen syns bara inne i dörröppningen (x 1383–1575, y 293–794)
+const PASTIG = () => kamera(1.3, 1250, 690);
+const DPOS = [1440, 930], DSTEG = [1468, 792], DS = 0.42;
+const DORRKLIPP = () => { lagg('bak', `<clipPath id="dorrklipp"><rect x="1385" y="200" width="188" height="596"/></clipPath>`);
+  ['figurer', 'saker'].forEach(n => $(n).setAttribute('clip-path', 'url(#dorrklipp)')); };
+// gå fram till dörren (u0→u1 av vägen), stanna, titta upp på trappsteget, ta sats (h = klivet, 99 = inget kliv i raden)
+function knappSteg(tl, u0, u1, h = 99) {
+  const T = Math.max(0.1, h - 1.3), g = tl < 0 ? 0 : kl(tl / (h < 90 ? T : 1.4)), u = lerp(u0, u1, mjuk(g)),
+    x = lerp(KH, DPOS[0], u), fot = lerp(HGOLV, DPOS[1], u), s = lerp(GS, DS, u), gar = g > 0 && g < 1;
+  const titta = h < 90 ? del(h - 1.2, h - 0.7, tl) : 0, sats = h < 90 ? del(h - 0.45, h - 0.1, tl) : 0;
+  katt(ANS(titta > 0.5 ? 'nyfiken' : 'glad', { titt: [10, -12 * titta - 4] }), { ...ENHAND, rikt: 0.35, upp: -0.3 * titta, strack: -0.05 * sats },
+    { x, fot, s, gang: gar ? { vag: 260 * u, dir: 1 } : null });
+}
+// --- Raderna --------------------------------------------------------------------------------------------------------------------
+const HEL = () => kamera(1), HALV = (x = KH, fot = HGOLV) => kamera(1.6, x - 40, fot - 280), NARA = (x = KH, fot = HGOLV) => kamera(2.0, x, fot - 300);
+const ooo = (k, o = {}) => [ANS('forvanad', o), { upp: 0.7 * k, strack: 0.03 * k, oron: [-10 * k, -10 * k] }];
+const hallKatt = (f, p = {}, o = {}) => katt(f, { ...ENHAND, ...p }, { x: KH, fot: HGOLV, ...o });
+// stopp med fråga: öronen spetsas när bussen stannat, skimmer runt saken efter 3 s av pausen
+const fragaSkimmer = (x, y, vidd = 1) => { const e = mo(0) + L_(CUR.malin[0][0]); skimmer(x, y, 0.8 * del(e + 2.6, e + 3.2, TT - CUR.s), vidd); };
+const gungBuss = () => { const v = fart(TT) / V; GUNG = 2 * v * Math.sin(TT * 7.3) + 1.2 * v * Math.sin(TT * 3.1); };
+const S = {
+  '01a': tl => { kamera(1); const k = kl((tl - 0.3) / 6.4), sp = papperBuss(k, 0); if (sp) krita(sp[0], sp[1], 125, 0.42 * (0.7 + 0.3 * del(0, 0.4, tl))); },
+  '01b': tl => { kamera(1); const E = papperBuss(1, 0); kritaGlid([...E, 125], svajP(1500, 300, tl), del(0, 1.1, tl), 0.42, 60); },
+  // fylls i inifrån, kritan far iväg; efter "Oj! En buss!" zoom in i teckningen som tonar till vitt, och hållplatsen tonar fram
+  '01c': (tl, d) => { const z0 = mo(0) + L_(3) + 0.3, klipp = z0 + 1.0;
+    if (tl < klipp) { const z = mjuk((tl - z0) / (klipp - z0)); kamera(lerp(1, 2.6, z), 960, lerp(560, 480, z));
+      papperBuss(1, del(0, 0.9, tl));
+      kritaGlid(svajP(1500, 300, RR['01b'].d + tl), [2100, 60, 140], del(0.2, 1.4, tl), 0.42, 0); skimmer(960, 560, 0.7 * bump(0.3, 2.0, tl), 2.4);
+      vit(del(klipp - 0.45, klipp, tl)); return; }
+    hall(); HEL(); hallKatt(ANS('glad'), {}); snofall(); vit(1 - del(klipp, klipp + 0.6, tl)); },
+
+  // --- Busshållplatsen ---
+  '1': (tl, d) => { hall(); HEL(); hallKatt(ANS('jatteglad'), ENHAND, { vinka: VINKA(tl, mo(0) - 0.3, d - 1.0), nalleV: 4 }); snofall(); },
+  '2': tl => { hall(); HALV(); const u = del(0.2, 1.0, tl); hallKatt(ANS('glad', { titt: [-16 * u, 2] }), { luta: -4 * u, rikt: -0.4 * u }); snofall(); },
+  '3': tl => { hall(); NARA(); const u = del(0.1, 0.7, tl); hallKatt(ANS('glad', { titt: [-6 * u, 10 * u] }), { luta: -7 * u }, { nalleV: -6 + 12 * u }); snofall(0.6); },
+  // 3b "Du har ryggsäcken på dig!": halvbild framifrån, säcken syns mer bakom kroppen; två lugna nickar strax efter "på dig!", sedan glad
+  '3b': tl => { hall(); HALV(); const n0 = 0.3 + ROST_L('06b') + 0.1;
+    const [f, p] = nick(ANS('glad'), { ...ENHAND }, tl - n0, 1.6); hallKatt(f, p); snofall(0.6); },
+  // 4 "Nu väntar vi på bussen": mellanbild där både skylten med fågeln och katten syns (Sanna 2026-11-20)
+  '4': tl => { hall(); kamera(1.3, 700, 650); skyltFagel(tl); const g = Math.sin(tl * 2.4) * del(0.2, 0.8, tl);
+    hallKatt(ANS('nyfiken', { titt: [-8, 0] }), { luta: 4 * g, benY: [-10 * Math.max(0, g), -10 * Math.max(0, -g)] }); snofall(0.6); },
+  '5': tl => { hall(); HEL(); skyltFagel(tl + at('5') - at('4')); const u = del(0.3, 0.7, tl), g = del(mo(0) + 0.3, mo(0) + 0.8, tl);
+    if (g < 0.5) { const [f, p] = ooo(u, { titt: [-16, -4] }); hallKatt(f, p); } else hallKatt(ANS('jatteglad', { titt: [-14, -4] }), { oron: [-8, -8] }); snofall(); },
+  '6': tl => { hall(); HEL(); const u = mjuk(kl(tl / 2.2) * 0.6 + 0.4 * mjuk(kl(tl / 2.2))), gung = (1 - del(1.8, 2.4, tl)) * 2 * Math.sin(tl * 9);
+    skyltFagel(tl + at('6') - at('4')); buss(lerp(-1700, BUSS_X0, kl(tl / 2.2) < 1 ? 1 - Math.pow(1 - kl(tl / 2.2), 2.2) : 1), { gung });
+    hallKatt(ANS('jatteglad', { titt: [lerp(-16, 12, del(0, 2.0, tl)), -4] }), { rikt: lerp(-0.4, 0.4, del(0, 2.0, tl)) }, { lyft: skutt(tl, mo(0) + 0.2, mo(0) + 0.8, 18) }); snofall(); },
+  // 7–8 påstigningen i halvbild (Sanna 2026-11-20 "better boarding"): dörrarna viks upp (pschhh) → katten går de få stegen fram
+  // mot dörren (blir lite mindre när den går in mot bussen) → stannar och tittar upp på trappsteget → ett stort kliv på "hopp!"
+  // (litet lyft och landning, ingen studs) → går in genom dörren, kroppen maskad av dörrkarmen → dörren stängs
+  '7': tl => { hall(); PASTIG(); const o = del(lo(0) - 0.1, lo(0) + 0.7, tl); buss(BUSS_X0, { oppen: o }); knappSteg(tl - (lo(0) + 0.8), 0, 0.45);
+    snofall(0.6); },
+  // 8: tittar ner på trappsteget, tar sats, hoppar upp (den fria tassen ut för balansen), landar och blir glad
+  '8': tl => { hall(); PASTIG(); const h = lo(0) - 0.15, inn = del(h + 0.75, h + 1.75, tl), stang = del(h + 1.85, h + 2.55, tl);
+    buss(BUSS_X0, { oppen: 1 - stang });
+    if (tl < h) { knappSteg(tl, 0.45, 1.0, h); }
+    else if (inn < 1) { const u = del(h, h + 0.55, tl), landat = del(h + 0.5, h + 0.75, tl);
+      // inne i bussen går katten bakåt i bussen (åt vänster, bort från föraren och dörren; Sanna 2026-11-20 "1:04 walks the wrong way")
+      const x = lerp(DPOS[0], DSTEG[0], u) - 290 * mjuk(inn), fot = lerp(DPOS[1], DSTEG[1], mjuk(u)) - 14 * inn, s = DS * (1 - 0.06 * inn);
+      if (u > 0.6) DORRKLIPP();
+      katt(landat > 0.5 ? ANS('jatteglad', { titt: [-10 * inn + 10 * (1 - inn), -4] }) : ANS('glad', { titt: [6, -8] }), { ...ENHAND, rikt: lerp(0.35, -0.45, mjuk(del(0, 0.25, inn))), upp: 0.2 * landat,
+        armar: [-124, 30 * bump(h - 0.1, h + 0.7, tl)], oron: [-6 * landat, -6 * landat] },
+        { x, fot, s, lyft: 46 * Math.sin(Math.PI * u), gang: inn > 0 && inn < 1 ? { vag: 290 * inn, dir: -1 } : null, skugg: u < 0.3 }); }
+    snofall(); },
+  // --- I bussen (står still) ---
+  // 9: katten blippar själv. Tittar på kortläsaren, lyfter kortet lugnt med den fria tassen, pip + grönt ljus, glad och tassen ner
+  '9': tl => { inne(false); kamera(1.7, 1380, 600); const p = lj('9', 0), X0 = 1230, F0 = 912;
+    if (!LASARE) { katt(ANS('glad'), { ...ENHAND, armar: [-124, 78] }, { x: X0, fot: F0 }); LASARE = handen(); $('saker').innerHTML = ''; $('bak').innerHTML = ''; }
+    const titta = del(0.1, 0.7, tl), upp = del(0.7, p - 0.15, tl) * (1 - del(p + 0.8, p + 1.6, tl)), ljus = del(p, p + 0.1, tl) * (1 - del(p + 1.3, p + 1.7, tl)), glad = del(p + 0.3, p + 0.6, tl);
+    const [lx, ly] = [LASARE[0] + 70, LASARE[1]];
+    const lasare = () => lagg('saker', `<rect x="${lx - 10}" y="${ly - 95}" width="100" height="190" rx="18" fill="#b9c0c8" stroke="#fff" stroke-width="5"/><rect x="${lx + 6}" y="${ly - 70}" width="68" height="92" rx="10" fill="#5d6670"/>
+      <circle cx="${lx + 40}" cy="${ly + 55}" r="13" fill="${ljus > 0.5 ? '#43d36b' : '#7a8a80'}"/><circle cx="${lx + 40}" cy="${ly + 55}" r="${f1(18 + 14 * ljus)}" fill="#43d36b" opacity="${(0.45 * ljus).toFixed(2)}"/>
+      <rect x="${lx + 25}" y="${ly + 95}" width="30" height="330" fill="#9aa3ad" stroke="#fff" stroke-width="4"/>`);
+    const f = glad > 0.5 ? ANS('jatteglad', { titt: [10, -2] }) : ANS('nyfiken', { titt: [16 * titta, -4 * titta] });
+    katt(f, { ...ENHAND, armar: [-124, 78 * mjuk(upp)], rikt: 0.25 * titta, luta: 2 * upp, oron: [-6 * glad, -6 * glad], svans: 30 }, { x: X0, fot: F0, lyft: skutt(tl, p + 0.5, p + 1.1, 14) });
+    lasare();
+    if (upp > 0.02) { const [hx, hy] = handen(); lagg('fram', `<g transform="translate(${f1(hx + 10)} ${f1(hy - 4)}) rotate(-8)"><rect x="-34" y="-24" width="68" height="46" rx="8" fill="#2f7fd8" stroke="#fff" stroke-width="5"/>
+      <rect x="-22" y="-10" width="24" height="7" rx="3" fill="#cfe4ff"/></g>`); }
+    skimmer(lx + 40, ly + 55, 0.7 * bump(p, p + 1.2, tl), 0.6); },
+  // 10 "Titta, så ser det ut i bussen": katten framifrån i gången bland sätena och stängerna (Sanna: ingen katt bakifrån här).
+  // Den sätter sig först i rad 13, så här står den kvar med ryggsäcken på; blicken mot sätena och sedan mot stången på "stänger"
+  '10': tl => { inne(false); kamera(1.25, 1080, 600); const v = del(mo(0) + 0.3, mo(0) + 1.0, tl), w = del(mo(0) + 1.6, mo(0) + 2.4, tl);
+    katt(ANS(w > 0.5 ? 'glad' : 'nyfiken', { titt: [-14 * v * (1 - w) + 14 * w, 2] }), { ...ENHAND, rikt: -0.35 * v * (1 - w) + 0.35 * w }, { x: 1180, fot: 912 }); },
+  '11': tl => { inne(false); KNAPPN(); knappGlod(); skimmer(KNAPP[0], KNAPP[1], 0.55 + 0.1 * Math.sin(tl * 4), 0.35); },
+  // 12: tittar upp mot knappen, sträcker sig med den fria tassen, "Inte än" → tassen ner, tänker en stund och nickar
+  '12': tl => { inne(false); kamera(1.6, 1400, 640); knappGlod(); const titta = del(0.3, 0.9, tl), upp = del(0.9, 1.9, tl) * (1 - del(3.0, 3.8, tl)), tank = del(3.2, 3.6, tl) * (1 - del(4.6, 5.0, tl));
+    const f = tank > 0.5 ? ANS('tanker') : tl > 4.6 ? ANS('glad', { titt: [0, -6] }) : ANS('nyfiken', { titt: [14 * titta, -14 * titta] });
+    let [f2, p2] = [f, { ...ENHAND, armar: [-124, 105 * mjuk(upp)], luta: 3 * upp, upp: 0.5 * titta * (1 - del(3.0, 3.8, tl)), strack: 0.03 * upp }];
+    [f2, p2] = nick(f2, p2, tl - 4.8, 1.2);
+    katt(f2, p2, { x: 1300, fot: 912 }); if (upp > 0.3) skimmer(KNAPP[0], KNAPP[1], 0.5 * upp, 0.35); },
+  // 13: katten går åt vänster till sätesplatsen, vänd åt det håll den går (rikt åt vänster och gångposen, ingen spegling; Sanna
+  // 2026-11-20 "the cat walks the wrong way"), stannar, ett litet skutt upp på sitsen och sätter sig; säcken ligger redan där
+  '13': tl => { inne(false); BILD_B(); saeck('sakerbak'); const X0 = 1240, X1 = SATE.x + 40, g = del(0.1, 1.0, tl), u = del(1.0, 1.4, tl), efter = del(1.45, 1.8, tl);
+    const x = g < 1 ? lerp(X0, X1, mjuk(g)) : lerp(X1, SATE.x, u), gar = g > 0 && g < 1;
+    katt(ANS(efter > 0.5 ? 'jatteglad' : 'nyfiken', { titt: [lerp(-14, 0, u), lerp(4, 0, u)] }), { ...ENHAND, rikt: -0.45 * (1 - u), ...Object.fromEntries(Object.entries(L.POSER.sitter).filter(([k]) => k !== 'namn').map(([k, v]) => [k, Array.isArray(v) ? v.map(x => x * u) : v * u])), ...ENHAND },
+      { x, fot: lerp(912, SATE.fot, u), lyft: 70 * bump(1.0, 1.4, tl), skugg: u < 0.5, gang: gar ? { vag: X0 - x, dir: -1 } : null }); },
+  // --- Resan ---
+  '14': tl => { gungBuss(); inne(); BILD_B(); imma(); sitter(ANS('glad', { titt: [0, 4] })); },
+  '15': tl => { gungBuss(); inne(); BILD_A(); bakhuvud(HUVA, { vrid: 0.2 * Math.sin(tl * 0.8) }); },
+  '16': tl => { gungBuss(); inne(); BILD_A(); bakhuvud(HUVA, { vrid: 0.4 }); },
+  '17': tl => { gungBuss(); const U = inne(); BILD_A(); bakhuvud(HUVA, { vrid: 0.3 });
+    const b = mo(0) + L_(20) - 1.2; [[860, 470], [990, 478], [1100, 466]].forEach(([x, y], i) => { const o = bump(b + i * 0.2, b + 1.4 + i * 0.2, tl); if (o > 0) lagg('ute', glans(x, y, 14 * o, o)); }); },
+  // 18: närmare bild på fönstret när katten tittar ut (Sanna 2026-11-20 "2:07"): utsikten och kattens ansikte fyller mer av bilden
+  '18': tl => { gungBuss(); const U = inne(); kamera(1.85, 900, 420); kaninPulka(U, del(0.6, CUR.d - 0.6, tl), del(CUR.d - 2.0, CUR.d - 1.2, tl)); bakhuvud(HUVA, { hoj: del(mo(0) + 1.4, mo(0) + 1.8, tl), vrid: 0.5 }); },
+  '19': tl => { gungBuss(); const U = inne(); BILD_A(); kaninPulka(U, 1, 1); bakhuvud(HUVA, { hoj: 1, vrid: 0.5 }); },
+  '20': tl => { gungBuss(); const U = inne(); BILD_A(); snogubbe(U); const [x, y] = U.P2(...PLATS.gubbe); bakhuvud(HUVA, { hoj: del(1.2, 1.6, tl), vrid: 0.3 }); fragaSkimmer(x, y - 150, 1.2); },
+  '21': tl => { GUNG = 0; const U = inne(); BILD_A(); snogubbe(U, bump(lo(0), lo(0) + 0.35, tl)); bakhuvud(HUVA, { hoj: 1, vrid: 0.3 }); },
+  // 22 "Hej, snögubben!": kvar i fönsterbilden (Sanna 2026-11-20: ingen helbild framifrån här), glad, vinkar lugnt med den korta armen
+  '22': (tl, d) => { GUNG = 0; const U = inne(); snogubbe(U); BILD_A(); const o0 = { lyft: 6, tx: TV.x }, r = trekPunkt('oss', ARM_ROT, o0), w = Math.sin(tl * 7);
+    trekvart({ hoj: 1, vrid: 0.3, hand: [r[0] + 70 + 12 * w, r[1] - 95 + 10 * w], nar: mjuk(del(0.1, 0.5, tl)) * (1 - mjuk(del(d - 0.9, d - 0.4, tl))), ans: { glad: 1, titt: [6, -4] } }); saeck(); },
+  '23': tl => { GUNG = 0; const U = inne(); BILD_A(); const top = snogubbe(U), a = 0.2, b = 1.1, u = kl((tl - a) / (b - a)), k = mjuk(u);
+    const x = lerp(1500, top[0] + 4, k), y = lerp(110, top[1] + 4, k) - 60 * Math.sin(Math.PI * u);
+    fagel(x, y, { s: FAGEL_S, flax: u < 0.9 ? 1 : (1 - u) / 0.1, oppen: bump(lo(0) - 0.05, lo(0) + 0.3, tl) });
+    if (tl > b && tl < b + 0.7) tussar(top[0], top[1] + 10, (tl - b) / 0.7, 0.5);
+    bakhuvud(HUVA, { hoj: 1, vrid: 0.3, luta: 4 * bump(lo(2) - 0.1, lo(2) + 0.8, tl) }); },
+  '24': tl => { gungBuss(); const U = inne(); BILD_A(); const top = snogubbe(U); fagel(top[0] + 4, top[1] + 4, { s: FAGEL_S }); bakhuvud(HUVA, { vrid: -0.3 }); },
+  '26': tl => { gungBuss(); const U = inne(); BILD_A(); plog(U); const [x, y] = U.P2(...PLATS.plog); bakhuvud(HUVA, { hoj: del(1.2, 1.6, tl), vrid: 0.3 }); fragaSkimmer(x + PLOG_DX, y - 110, 1.2); },
+  '27': (tl, d) => { GUNG = 0; const U = inne(); BILD_A(); const px = plog(U, { kor: del(0.3, d - 0.3, tl) }); bakhuvud(HUVA, { hoj: 0.6, vrid: kl((px - 980) / 420, -0.6, 0.8) }); },
+  '29': tl => { gungBuss(); inne(); BILD_A(); imma(); const o = bakhuvud(HUVA, { vrid: 0.2, hoj: 0.3 }), k0 = immaKlar() - CUR.s - 2.2;
+    [k0 - 1.0, k0 - 0.35].forEach(t0 => { const u = del(t0, t0 + 1.1, tl); if (u > 0 && u < 1) { const [nx, ny] = trekPunkt(o.namn, [812, 486], o);
+      lagg('saker', `<g opacity="${(0.55 * Math.sin(Math.PI * u)).toFixed(2)}"><circle cx="${f1(nx + 18 + 70 * u)}" cy="${f1(ny - 6 - 22 * u)}" r="${f1(10 + 26 * u)}" fill="#fff" filter="url(#hjmjuk)"/>
+        <circle cx="${f1(nx + 40 + 90 * u)}" cy="${f1(ny - 18 - 30 * u)}" r="${f1(6 + 16 * u)}" fill="#fff"/></g>`); } }); },
+  // 29b "Det är imma. Man kan rita i imman!": närbild på det vita glaset och katten (kaj34) som tittar nyfiket på det, andas på det en gång
+  // och rör vid imman med tassen en gång (den korta armen) när Malin sagt "rita i imman"
+  '29b': tl => { gungBuss(); inne(); imma(); const k = del(0.2, 0.8, tl), rör = mjuk(del(2.9, 3.4, tl)) * (1 - mjuk(del(4.2, 4.7, tl)));
+    const sta = mjuk(del(2.3, 2.9, tl)) * (1 - mjuk(del(4.4, 5.0, tl))), P = [955, 448];
+    const o = trekvart({ sta, vrid: 0.3, lean: 0.4 * k, hand: P, nar: rör, ans: { nyf: 0.7 * k, titt: [9 * k, -9 * k] } }); saeck();
+    kamera(1.9, 900, 430);
+    const u = del(1.0, 2.1, tl); if (u > 0 && u < 1) { const [nx, ny] = trekPunkt('oss', [812, 486], o);
+      lagg('saker', `<g opacity="${(0.55 * Math.sin(Math.PI * u)).toFixed(2)}"><circle cx="${f1(nx + 18 + 70 * u)}" cy="${f1(ny - 6 - 22 * u)}" r="${f1(10 + 26 * u)}" fill="#fff" filter="url(#hjmjuk)"/>
+        <circle cx="${f1(nx + 40 + 90 * u)}" cy="${f1(ny - 18 - 30 * u)}" r="${f1(6 + 16 * u)}" fill="#fff"/></g>`); }
+    // ett litet klart märke där tassen rörde imman
+    const m = del(3.3, 3.6, tl); if (m > 0) lagg('bak', `<ellipse cx="955" cy="444" rx="${f1(14 * m)}" ry="${f1(10 * m)}" fill="#cfe0ec" opacity=".55" filter="url(#hjmjuk)"/>`); },
+  // 30: katten ställer sig på sätet mot glaset, ritar hjärtkonturen i ett drag med den nära tassen (vanlig kort arm, kroppen följer
+  // med lite), tittar på det och sätter sig igen (Sanna: "maybe cat stands up so arm dont have to be s long")
+  '30': (tl, d) => { gungBuss(); inne(); BILD_A(); imma(); const [a, b] = hjRit(), m35 = CUR.malin[1][1] + L_(35);
+    const sta = del(a - 1.4, a - 0.6, tl) * (1 - del(m35 + 0.4, m35 + 1.2, tl));
+    let p = null, nar = 0;
+    if (tl > a - 0.6 && tl < a) { nar = mjuk(del(a - 0.6, a, tl)); p = hjartaPunkt(0); }
+    else if (tl >= a && tl < b) { nar = 1; p = hjartaPunkt(ritfart((tl - a) / (b - a))); }
+    else if (tl >= b && tl < b + 0.7) { nar = 1 - mjuk(del(b, b + 0.7, tl)); p = hjartaPunkt(0.999); }
+    // katten står vid rutan; kroppen följer tassen så att armen förblir kort (högst 1,15 × riggarmen) och pekar uppåt framåt
+    const [fx, fy] = p ? trekvartFoljer(p, sta) : [0, 0];
+    trekvart({ sta, vrid: 0.3, x: TV.x + fx * nar, dy: fy * nar, hand: p, nar, ans: { titt: [10, -8] } });   // ingen hoj/lean här: tassen ska landa exakt på linjen
+    saeck();
+    const h = ml('30', 1); skimmer(HJ[0], HJ[1], 0.7 * bump(h - 0.1, h + 1.6, tl), 1.2); },
+  '31': tl => { gungBuss(); inne(); kamera(1.5, 960, 450); imma();   // lite högre än BILD_B: hela hjärtat på glaset syns ovanför katten
+    const st = del(0.1, 0.5, tl);   // katten på sätesplatsen, hjärtat på glaset till höger om huvudet
+    sitter(ANS('glad', { titt: [12 * st, -6 * st] }), { upp: 0.4 * st });
+    fragaSkimmer(HJ[0], HJ[1] - 20, 1.2); },
+  '32': tl => { gungBuss(); inne(); BILD_A(); imma(); bakhuvud(HUVA, { vrid: 0.2 * Math.sin(tl * 0.9) }); },
+  '33': tl => { gungBuss(); const U = inne(); BILD_A(); julgran(U); imma(); bakhuvud(HUVA, { hoj: del(1.2, 1.6, tl) }); fragaSkimmer(...U.P2(PLATS.gran[0], PLATS.gran[1] - 140), 1.3); },
+  '34': tl => { GUNG = 0; const U = inne(); BILD_A(); julgran(U, 0.6 + 0.4 * bump(lo(0), lo(0) + 2.5, tl)); imma(); bakhuvud(HUVA, { hoj: 1, luta: 3 * Math.sin(tl * 1.4) }); },
+  '35': tl => { gungBuss(); const U = inne(); if (grupp('35')) julgran(U); BILD_B(); imma(); const g = Math.sin(tl * 1.6) * del(0.2, 0.8, tl);
+    sitter(ANS('glad'), { luta: 6 * g }, { nalleV: -6 + 8 * g }); },
+  '36': tl => { gungBuss(); const U = inne(); if (grupp('36')) julgran(U); BILD_B(); imma(); const k = del(0.3, 0.9, tl), u = del(mo(0) + 1.2, mo(0) + 1.7, tl);
+    sitter(u > 0.5 ? ANS('jatteglad') : ANS('nyfiken', { titt: [16 * k, -6 * k] }), { rikt: 0.4 * k * (1 - u), oron: [-10 * u, -10 * u] }, { lyft: skutt(tl, lo(0) - 0.1, lo(0) + 0.5, 16) }); },
+  // 37–38 knappen (Sanna 2026-11-20 "4.21 looks odd"): mellanbild där katten själv står på sitsen vid stången, knappen i brösthöjd.
+  // Den korta armen (högst 1,15 ×) med riggens tass når knappen: liten lutning in, tassen på knappen, knappen lyser, "Pling", glad.
+  '37': tl => { gungBuss(); inne(false); KNAPPB(); knappGlod(); saeck(); const st = del(0.2, 0.9, tl), k = del(mo(0) + 0.4, mo(0) + 1.0, tl);
+    trekvart({ sta: st, x: KX, ans: { nyf: 0.6 * k, titt: [10 * k, -10 * k] } }); },
+  '38': tl => { gungBuss(); inne(false); KNAPPB(); saeck(); const p = lo(0), e = mo(0) + L_(43), nar = mjuk(del(p - 0.7, p - 0.05, tl)) * (1 - mjuk(del(p + 0.7, p + 1.3, tl)));
+    knappGlod(bump(p, p + 0.55, tl)); const glad = del(p + 0.1, p + 0.4, tl);
+    trekvart({ sta: 1, x: KX, lean: 0.5 * nar, hand: [KNAPP[0] - 4, KNAPP[1] + 2], nar, ans: { glad, nyf: 0.6 * (1 - glad), titt: [10 * (1 - glad), -10 * (1 - glad)], mun: 0.3 * glad } });
+    knappLjus(del(p, p + 0.1, tl) * (1 - 0.6 * del(p + 0.5, p + 0.9, tl))); skimmer(KNAPP[0], KNAPP[1], 0.6 * del(e + 2.6, e + 3.2, tl) * (1 - del(p - 0.4, p, tl)), 0.3); },
+  '39': tl => { gungBuss(); const U = inne(); BILD_A(); imma(); const [x, y] = U.P2(662, 470); bakhuvud(HUVA, { hoj: del(1.4, 1.8, tl) }); fragaSkimmer(x, y, 1.4); },
+  '40': tl => { GUNG = 0; inne(); BILD_A(); imma(); bakhuvud(HUVA, { hoj: 1.4, vrid: 0.35 * Math.sin(tl * 5) * bump(0.2, 2.2, tl), luta: 3 * Math.sin(tl * 2) }); },
+
+  // --- Farmors dörr ---
+  '41': tl => { dorr(0); HEL(); const a = 1.4, b = 4.2, u = kl((tl - a) / (b - a)), x = lerp(-260, KD, mjuk(u));
+    katt(ANS('glad'), ENHAND, { x, fot: DGOLV, gang: u > 0 && u < 1 ? { vag: Math.abs(x + 260), dir: 1 } : null }); snofall(); },
+  '42': tl => { dorr(0); kamera(1.5, 820, 640); const k = lo(0), knack = bump(k - 0.05, k + 0.25, tl) + bump(k + 0.3, k + 0.6, tl), upp = del(0.2, 0.8, tl) * (1 - del(k + 1.0, k + 1.6, tl));
+    const lyss = del(k + 1.4, k + 2.0, tl);
+    katt(ANS(lyss > 0.5 ? 'nyfiken' : 'glad', { titt: [14, -4] }), { ...ENHAND, armar: [-124, lerp(0, 70, upp) + 12 * knack], luta: 3 * upp + 5 * lyss, oron: [-4 * lyss, 8 * lyss] }, { x: KD + 60, fot: DGOLV });
+    fragaSkimmer(1060, 560, 1.0); snofall(0.6); },
+  '43': tl => { const op = tl > 0.5; dorr(op ? 1 : 0); HEL(); if (op) farmor(ANS(tl > 0.9 ? 'jatteglad' : 'glad', {}, LF), {});
+    katt(ANS(tl > 0.7 ? 'jatteglad' : 'nyfiken', { titt: [14, -6] }), ENHAND, { x: KD - 40, fot: DGOLV, lyft: skutt(tl, lo(1) - 0.1, lo(1) + 0.5, 22) }); snofall(); },
+  '44': tl => { dorr(1); kamera(1.5, 820, 640); const u = del(0.2, 1.2, tl);
+    farmor(ANS('glad', {}, LF), { luta: -8 * u, armar: [-40 * u, -40 * u], fram: [u, u] }, { x: lerp(970, 920, u) });
+    katt(ANS('glad', { titt: [10, -8] }), { ...ENHAND, luta: 7 * u }, { x: lerp(KD - 40, KD + 90, u), fot: DGOLV }); snofall(0.5); },
+  '45': (tl, d) => { dorr(1); kamera(1.5, 820, 640); farmor(ANS('jatteglad', {}, LF), {}, { vinka: VINKA(tl, 0.5, 99) });
+    katt(ANS('jatteglad'), ENHAND, { x: KD, fot: DGOLV, vinka: VINKA(tl, 0.1, 99), nalleV: 4 }); snofall(0.5); },
+  '46': (tl, d) => { const c = CUR; CUR = RR['45']; TT = RR['45'].s + RR['45'].d - 0.01; S['45'](RR['45'].d - 0.01, RR['45'].d); CUR = c; TT = RR['46'].s + tl;
+    kritiris(lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))), [800, 700]); },
+};
+
+// --- Närbilder (Sanna 2026-11-20 "more close crops sometimes"): hårda klipp till en tät bild av samma scen, ingen zoom. Kattens ansikte
+// i reaktionsslaget när den får syn på kaninen, snögubben och granen (tills Malin säger vad det är), och tassen som ritar hjärtat.
+const NARA_RADER = { '19': 0.1, '21': 0.3, '34': 0.1 };   // hur länge närbilden står kvar efter Malins start (21: orden börjar 0,37 s in)
+function narbild(r, tl) {
+  if (r.id in NARA_RADER) { const m = r.malin[0][1], r0 = m - REAK_T + 0.05;
+    if (tl > r0 + 0.1 && tl < m + NARA_RADER[r.id]) { const [fx, fy] = trekPunkt('oss', [775, 450], { lyft: 6, tx: TV.x }); return [2.3, fx + 30, fy + 10]; } }
+  if (r.id === '30') { const [a, b] = hjRit(); if (tl > a - 0.2 && tl < b + 0.6) return [2.1, HJ[0] - 80, HJ[1] + 60]; }
+  return null;
+}
+
+// --- Reaktionsnärbilder: hårt klipp till kattens ansikte framifrån (huvud och axlar; i bussen ligger säcken på sätet, inga remmar) i radens sista REAKT s ---------------
+const REAKT = 1.5;
+function reaktion(typ, u) {
+  gungBuss(); const U = inne(); if (CUR.id === '34' && U) julgran(U); kamera(2.0, 960, 545); imma();
+  const in_ = del(0, 0.45, u), F = { jatteglad: ANS('jatteglad'), forvanad: ANS('forvanad'), nyfiken: ANS('nyfiken', { titt: [0, -4] }), kanin: ANS('jatteglad'),
+    fniss: u < 0.7 ? ANS('forvanad') : ANS('fnissig') }[typ];
+  const p = { ...L.POSER.sitter, ...ENHAND, luta: 4 * in_, upp: (typ === 'forvanad' || typ === 'nyfiken' ? 0.3 : 0.15) * in_, oron: [-8 * in_, -8 * in_] };
+  sitter(F, p, { vinka: typ === 'kanin' ? VINKA(u, 0.05, 99) : null });
+}
+
+// --- Ljud: Malin och radernas effekter, vinterljudet ute och brummet (slinga med 1 s övertoning) under resan -------------------------
+const E = 'assets/ljud/effekter/';
+const VOL = f => /^mjau/.test(f) ? 0.85 : /snoplog/.test(f) ? 0.45 : /^buss\/(buss-broms|buss-dorr|stoppknapp|kortlasare)/.test(f) ? 0.9 : /^buss\//.test(f) ? 0.8 : /^knack/.test(f) ? 0.9
+  : /^(glitter|tindra)/.test(f) ? 0.7 : /^(knarr-sno|hopp-mjuk)/.test(f) ? 0.6 : /^kanin/.test(f) ? 0.6 : /^fagel/.test(f) ? 0.6 : 0.75;
+// tagningar som börjar med en bit av ett annat ord eller ett klick (Sanna 2026-11-20 "2:33 the voice is cut off": 25 började med "Den."):
+// spelas från ss, på samma tid som förut, så att orden landar där de gjorde
+// [ss, var i raden: + så många s efter replikens plats]. 25 läggs 1,0 s tidigare än förut (Sanna 2026-11-20: pausen efter "Vad ser katten?"
+// som de andra frågorna, ca 5,7 s)
+const TRIM = { '25-en-snogubbe': [1.25, 0.25], '29-nu-aker-bussen-genom': [1.15, 1.15] };
+function ljud() {
+  const ut = [];
+  for (const r of RAD_L) {
+    for (const [n, o] of r.malin || []) { const namn = ROSTER[n - 1][0], [ss, dt] = TRIM[namn] || [0, 0];
+      ut.push({ t: r.s + o + dt, ss, fil: `assets/ljud/roster/katten-aker-buss/${namn}.m4a`, vol: 1.0 }); }
+    for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f) });
+  }
+  ut.push({ t: at('4') + 4.45, fil: E + 'fagel-pip/fagel-pip-1.m4a', vol: 0.3 });   // fågeln på skylten piper lågt när Malin tystnat
+  // vinden (vinterljud) ca 15 dB lägre än förut (två omgångar) (Sanna 2026-11-20: "turn down the wind sound"): svag bakgrund under Malin och bussen
+  const ute = at('01c') + RR['01c'].d - 1.0;
+  ut.push({ t: 0.2, fil: E + 'vinterljud/vinterljud-1.m4a', vol: 0.06, langd: ute - 0.2 + 0.8, fadeIn: 1.5, fade: 1.2 });       // svagt under ritintrot
+  ut.push({ t: ute, fil: E + 'vinterljud/vinterljud-2.m4a', vol: 0.14, langd: at('10') - ute + 0.3, fadeIn: 1.0, fade: 0.4 });
+  // Bussens motor (brum-slinga = buss-brum, grind 4, topp −12 dBFS): tomgång medan bussen står (rad 5–13 och stoppen),
+  // ett jämnt brum under körningen som stiger mjukt när bussen startar och sjunker vid bromsen (Sanna 2026-11-20: "add bus sound").
+  // ss olika i slingan så att bitarna inte låter likadant; ingen uttoning börjar vid st=0 (fade < langd).
+  const brum = (t0, t1, vol, fadeIn, fade) => ut.push({ t: t0, fil: HAR.slice(1) + 'brum-slinga.m4a', ss: (t0 * 7) % 200, vol, langd: t1 - t0, fadeIn, fade });
+  const TOM = 0.5, KOR = 1.1;
+  brum(at('5'), at('14') + 0.6, TOM, 3.0, 1.0);
+  [['14', '20'], ['21', '26'], ['27', '33'], ['34', '39']].forEach(([a, b]) => brum(at(a), at(b) + 1.4, KOR, 1.6, 1.4));   // kör: in 1,6 s, ut över bromsen
+  ['20', '26', '33'].forEach(r => brum(at(r) + 0.6, at(String(+r + 1)) + 0.8, TOM, 0.9, 1.0));   // står vid stoppen
+  brum(at('39') + 0.6, at('41') + 1.0, TOM, 0.9, 1.0);
+  ut.push({ t: at('41'), fil: E + 'vinterljud/vinterljud-1.m4a', ss: 20, vol: 0.14, langd: DURATION - at('41'), fadeIn: 1.0, fade: 2.0 });
+  return ut.filter(c => c.t < DURATION);
+}
+
+function rita(t) {
+  TT = t; const r = RAD_L.find(x => t < x.s + x.d) || RAD_L.at(-1); CUR = r;
+  ['bak', 'sakerbak', 'saker', 'fram', 'pilar', 'ram', 'platta', 'figurer'].forEach(n => $(n).innerHTML = '');
+  [G, GF, GK].forEach(g => $('gomda').appendChild(g)); GUNG = 0; kamera(1);
+  ['figurer', 'saker'].forEach(n => $(n).removeAttribute('clip-path'));
+  if (['9', '10', '11', '12', '13'].includes(r.id)) GUNG = 1.6 * Math.sin(TT * 11) + 0.8 * Math.sin(TT * 4.3);   // bussen står på tomgång
+  const tl = Math.min(t - r.s, r.d), R0 = Infinity;   // runda 20:30: inga närbildsinklipp, reaktionerna spelar i fönsterbilden (trekvart)
+  if (tl >= R0) reaktion(r.reak, tl - R0); else S[r.id](tl, r.d);
+  const nb = narbild(r, tl); if (nb) kamera(...nb);
+  if (t > DURATION - SVART) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>`);
+  window.kant?.uppdatera();
+}
+window.seek = t => { window.stilla = true; rita(t); };
+window.ready = (async () => {
+  const { RADER, ROST } = await (await fetch(HAR + 'rader.json')).json();
+  ROSTER = ROST; let acc = 0;
+  RAD_L = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; }); RR = Object.fromEntries(RAD_L.map(r => [r.id, r]));
+  DURATION = acc + SVART; window.DURATION = DURATION;
+  // bussens fart: står vid hållplatsen, kör från rad 14, bromsar in vid snögubben, plogen, granen och farmors hus
+  VKEYS = [[0, 0], [at('14', 1.0), 0], [at('14', 3.0), V], [at('19'), V], [at('19', 1.0), 0.5 * V], [at('20'), 0.5 * V], [at('20', 1.4), 0], [at('24'), 0], [at('24', 1.6), V],
+    [at('26'), V], [at('26', 1.4), 0], [at('29'), 0], [at('29', 1.6), V], [at('33'), V], [at('33', 1.4), 0], [at('35'), 0], [at('35', 1.6), V], [at('39'), V], [at('39', 1.6), 0], [DURATION + 1, 0]];
+  XTAB = [0]; for (let t = 0.02; t <= DURATION + 1; t += 0.02) XTAB.push(XTAB.at(-1) + fart(t - 0.01) * 0.02);
+  // remsorna: [rader, remsa (null = tomt snöfält), skala, start-x i första raden | stopp: sakens x när bussen står]
+  const g = (rader, namn, s, { start, stopp }) => { const ank = stopp ? vagX(at(stopp[0], 3)) - stopp[1] : vagX(at(rader[0])) - start; return { rader, namn, s, ankare: ank }; };
+  GRUPPER = [g(['14'], 'hus', 1.6, { start: 200 }), g(['15'], 'skog-bro', 1.6, { start: 150 }), g(['16'], 'hus', 1.6, { start: 250 }),
+    g(['17'], 'sjo', 1.6, { start: 300 }), g(['18', '19'], 'pulkabacke', 1.6, { start: 680 }),
+    g(['20', '21', '22', '23', '24'], null, 1.6, { stopp: ['20', PLATS.gubbe[0]] }),
+    g(['26', '27'], null, 1.6, { stopp: ['26', PLATS.plog[0]] }), g(['29', '29b', '30', '31', '32'], 'stan', 1.6, { start: 100 }),
+    g(['33', '34', '35', '36'], 'stan', 1.2, { stopp: ['33', PLATS.gran[0] - 230 / 1.2] }), g(['39', '40'], 'farmors-hus', 1.6, { stopp: ['39', 662] })];
+  L = await v2rigg('katten-kaj'); G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  G.querySelectorAll('image').forEach(e => { const h = e.getAttribute('href'); if (h && h.includes('/premium/cut/')) e.setAttribute('href', h.replace('/premium/cut/', '/premium/cut-tunn/')); });
+  putsaKaj();
+  LF = await v2rigg('farmor-katt'); GF = LF.figur(512, LF.FOTTER, 1, $('gomda'));
+  LK = await v2rigg('kaninen-kanel'); GK = LK.figur(512, LK.FOTTER, 1, $('gomda'));
+  BLINKA = skapaBlinka(47); BLINKA_F = skapaBlinka(11);
+  [G, GF].forEach(x => window.kant?.lagg(x));
+  RYGG_G = document.createElementNS('http://www.w3.org/2000/svg', 'g'); $('gomda').appendChild(RYGG_G); window.kant?.lagg(RYGG_G);
+  GRAN_G = document.createElementNS('http://www.w3.org/2000/svg', 'g'); $('gomda').appendChild(GRAN_G); window.kant?.lagg(GRAN_G, { andel: 0.01 }); ['sakerbak', 'saker'].forEach(n => window.kant?.lagg($(n)));
+  KONTUR.buss = await (await fetch(HAR + 'buss-kontur.json')).json();
+  const bilder = [BUSS_INTRO, HAR + 'skylt-framfor.png', RYGG, BAKIFRAN, HALL, INNE, HAL, DORR, DORR_OPPEN, KRITA, NALLE, GUBBE, BUSS.fil, PLOG.fil, PULKA.fil, GRAN.fil, STJARNA, ...KAJ34.BILDER, ...['hus', 'sjo', 'pulkabacke', 'skog-bro', 'stan', 'farmors-hus'].map(UT)];
+  await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.LJUD = ljud();
+  rita(Number(new URLSearchParams(location.search).get('t') || 0));
+  return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && window.LJUD) rita(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

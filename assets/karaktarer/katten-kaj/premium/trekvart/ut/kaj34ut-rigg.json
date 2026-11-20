@@ -1,0 +1,101 @@
+{
+ "storlek": 1024,
+ "kropp": "cut/kaj34ut-body.png",
+ "delar": {
+  "ear-l": {
+   "fil": "cut/kaj34ut-ear-l.png",
+   "vridpunkt": [
+    455,
+    330
+   ]
+  },
+  "ear-r": {
+   "fil": "cut/kaj34ut-ear-r.png",
+   "vridpunkt": [
+    748,
+    335
+   ]
+  },
+  "tail": {
+   "fil": "cut/kaj34ut-tail.png",
+   "vridpunkt": [
+    425,
+    700
+   ]
+  },
+  "arm": {
+   "fil": "cut/kaj34ut-arm.png",
+   "vridpunkt": [
+    745,
+    540
+   ]
+  },
+  "leg-l": {
+   "fil": "cut/kaj34ut-leg-l.png",
+   "vridpunkt": [
+    510,
+    775
+   ]
+  },
+  "leg-r": {
+   "fil": "cut/kaj34ut-leg-r.png",
+   "vridpunkt": [
+    690,
+    780
+   ]
+  }
+ },
+ "lager": [
+  "tail",
+  "leg-l",
+  "leg-r",
+  "ear-l",
+  "body",
+  "ear-r",
+  "arm",
+  "ansikte"
+ ],
+ "ansikte": {
+  "kalla": "original/kaj34ut-med-ansikte.png (Sannas bild, skalad 1.013 till ramen)",
+  "oga": {
+   "c": [
+    759,
+    408
+   ],
+   "rx": 24,
+   "ry": 40,
+   "pupill": "mörk, tittar höger"
+  },
+  "nos": {
+   "c": [
+    817,
+    438
+   ],
+   "rx": 12,
+   "ry": 12
+  },
+  "kind": {
+   "c": [
+    746,
+    468
+   ],
+   "rx": 25,
+   "ry": 15
+  },
+  "mun": {
+   "c": [
+    812,
+    468
+   ],
+   "bredd": 34,
+   "form": "litet leende under nosen vid kanten"
+  },
+  "morrhar": "2–3 tunna vita från ca (820–840, 455–480) ut åt höger"
+ },
+ "rorelse": {
+  "oron": "±5°",
+  "svans": "±3–5° långsamt",
+  "arm": "0 till −80°, roten tonas ut",
+  "ben": "lite, oftast dolda"
+ }
+}

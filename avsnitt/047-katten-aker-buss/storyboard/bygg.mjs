@@ -14,6 +14,9 @@ const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/s
 const HÄR = new URL('./', import.meta.url).pathname, ROT = new URL('../../../', import.meta.url).pathname;
 const EFF = ROT + 'assets/ljud/effekter/', RÖST = ROT + 'assets/ljud/roster/katten-aker-buss/';
 let t = 0; for (const r of RADER) { r.t = t; t += r.d; }
+// raderna till kodscenen (grind 6): scener/resan/index.html läser rader.json (tiderna, Malin och effekterna), som 044
+await mkdir(HÄR + '../scener/resan', { recursive: true });
+await writeFile(HÄR + '../scener/resan/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud, reak }) => ({ id, d, malin, ljud, reak })), ROST: ROST.map(r => [r[0], r[2]]) }));
 const LANGD = t, tid = s => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
 
 // --- stillbilderna ---------------------------------------------------------------------------------------------------------
@@ -84,7 +87,16 @@ if (process.argv.includes('--animatik')) {
   }
   const rd = id => RADER.find(r => r.id === id);
   const mattor = MATTOR.map(([f, a, b, v]) => { const s = rd(a).t, e = b ? rd(b).t : LANGD; return [EFF + f + '.m4a', s, e - s, v]; });
-  const inn = [...ljud.flatMap(([f]) => ['-i', f]), ...mattor.flatMap(([f]) => ['-stream_loop', '-1', '-i', f])];
+  // mattor längre än filen loopas med 1 s övertoning mellan varven (acrossfade), inte med ett hårt skarv
+  const langd = f => +execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString();
+  for (const m of mattor) {
+    const d = langd(m[0]); if (m[2] <= d - 0.5) continue;
+    const n = Math.ceil((m[2] - 1) / (d - 1)) + 1, ut = join(tmpdir(), `loop-${n}-` + m[0].split('/').pop());
+    const kedja = Array.from({ length: n - 1 }, (_, i) => `${i ? `[x${i - 1}]` : '[0:a]'}[${i + 1}:a]acrossfade=d=1:c1=tri:c2=tri[x${i}]`).join(';');
+    execFileSync('ffmpeg', ['-loglevel', 'error', '-y', ...Array.from({ length: n }, () => ['-i', m[0]]).flat(), '-filter_complex', kedja, '-map', `[x${n - 2}]`, '-c:a', 'aac', '-b:a', '160k', ut]);
+    m[0] = ut;
+  }
+  const inn = [...ljud.flatMap(([f]) => ['-i', f]), ...mattor.flatMap(([f]) => ['-i', f])];
   const fil = [...ljud.map(([, s, v], i) => `[${i + 1}:a]adelay=${Math.round(s * 1000)}:all=1,volume=${v}[a${i}]`),
     ...mattor.map(([, s, l, v], j) => `[${ljud.length + 1 + j}:a]atrim=0:${l.toFixed(2)},afade=t=in:d=0.6,afade=t=out:st=${(l - 0.8).toFixed(2)}:d=0.8,adelay=${Math.round(s * 1000)}:all=1,volume=${v}[m${j}]`)].join(';')
     + ';' + ljud.map((_, i) => `[a${i}]`).join('') + mattor.map((_, j) => `[m${j}]`).join('') + `amix=inputs=${ljud.length + mattor.length}:normalize=0,alimiter=limit=0.9,atrim=0:${LANGD.toFixed(2)}[ut]`;

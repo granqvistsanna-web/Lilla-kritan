@@ -4,10 +4,11 @@
 04-hej-katten-hej-hej  [happy] Hej, katten! Hej, hej!
 05-idag-ska-katten-aka  [cheerfully] Idag ska katten åka buss. Till farmor och farfar!
 06-och-nallen-ar-med  [happy] Och nallen är med!
+06b-du-har-ryggsacken  [happy] Du har ryggsäcken på dig!
 07-nu-vantar-vi-pa  [warmly] Nu väntar vi på bussen. Vänta, vänta …
 08-hor-du-dar-kommer  [curious] Hör du? Där kommer bussen! Brum, brum.
 09-dar-ar-bussen-den  [excited] Där är bussen! Den stannar.
-10-dorren-oppnas-pschhh  [playfully] Dörren öppnas … pschhh!
+10-dorren-oppnas-pschhh  [playfully] Dörren öppnas!
 11-ett-stort-kliv-hopp  [cheerfully] Ett stort kliv … hopp!
 12-nu-blippar-vi-kortet  [cheerfully] Nu blippar vi kortet. Pip!
 13-titta-sa-ser-det  [curious] Titta, så ser det ut i bussen. Stolar … och stänger att hålla i.
@@ -31,6 +32,7 @@
 31-en-snoplog-den-skjuter  [excited] En snöplog! Den skjuter undan snön.
 32-skrap-skrap  [playfully] Skrap, skrap!
 33-bussen-aker-igen-oj  [surprised] Bussen åker igen. Oj! Fönstret blev alldeles vitt.
+33b-det-ar-imma  [warmly] Det är imma. Man kan rita i imman!
 34-titta-katten-ritar  [excited] Titta! Katten ritar.
 35-ett-hjarta-till-farmor  [delighted] Ett hjärta! Till farmor och farfar.
 36-kan-du-ocksa-rita  [warmly] Kan du också rita ett hjärta? Med fingret.

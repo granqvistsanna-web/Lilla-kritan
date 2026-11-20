@@ -4,10 +4,12 @@
   '04-hej-katten-hej-hej': 1.87,   // -3.0 dB
   '05-idag-ska-katten-aka': 3.39,   // -3.1 dB
   '06-och-nallen-ar-med': 1.36,   // -3.0 dB
+  '06b-du-har-ryggsacken': 2.23,   // -3.0 dB, Sanna 2026-11-20
+  '33b-det-ar-imma': 3.52,   // -3.0 dB, tagning 1 (rad-imma-1.mp3), Sanna 2026-11-20
   '07-nu-vantar-vi-pa': 2.97,   // -3.0 dB
   '08-hor-du-dar-kommer': 4.55,   // -3.0 dB
   '09-dar-ar-bussen-den': 2.46,   // -3.0 dB
-  '10-dorren-oppnas-pschhh': 2.81,   // -3.0 dB
+  '10-dorren-oppnas-pschhh': 1.40,   // -3.0 dB, kortad: utan pschhh (hela i aldre/)
   '11-ett-stort-kliv-hopp': 2.86,   // -3.0 dB
   '12-nu-blippar-vi-kortet': 2.65,   // -3.0 dB
   '13-titta-sa-ser-det': 5.40,   // -3.0 dB
@@ -21,7 +23,7 @@
   '21-titta-dar-aker-nagon': 3.71,   // -3.0 dB
   '22-vinka-till-kaninen': 1.29,   // -3.0 dB
   '23-hej-kaninen': 1.07,   // -3.0 dB
-  '24-bussen-stannar-titta-vad': 5.23,   // -3.0 dB
+  '24-bussen-stannar-titta-vad': 4.03,   // -3.0 dB, samma tagning som 38 (gamla slutade på "katt?")
   '25-en-snogubbe': 2.72,   // -3.1 dB
   '26-hej-snogubben': 1.22,   // -3.0 dB
   '27-oj-en-liten-fagel': 4.57,   // -3.0 dB

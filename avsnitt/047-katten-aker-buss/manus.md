@@ -51,14 +51,13 @@ Kritan ritar **bussen** (Sanna 2026-11-20: *"intro rita en buss"*): konturen i l
 | 4 | Samma. Katten gungar lite från fot till fot | Nu väntar vi på bussen. Vänta, vänta … | `smasteg` (mjukt) |
 | 5 | Helbild. Långt borta hörs bussen. Öronen reser sig | Hör du? Där kommer bussen! Brum, brum. | buss-brum (långt bort), katt förtjust |
 | 6 | Helbild. Bussen glider in från höger och stannar mjukt | Där är bussen! Den stannar. | buss-brum, broms (mjukt) |
-| 7 | Närbild på dörren. Den öppnas | Dörren öppnas … *pschhh!* | `pschhh` |
+| 7 | Närbild på dörren. Den öppnas | Dörren öppnas! | `pschhh` |
 | 8 | Helbild. Vantehanden kommer in och håller kattens tass. Katten skuttar upp på trappsteget | Ett stort kliv … hopp! | `hopp-mjuk` |
 
 ## I BUSSEN
 
 | # | Bild (en rörelse) | Malin säger | Katten svarar, ljud |
 |---|---|---|---|
-| 9 | Närbild, instick: vantehanden håller fram busskortet mot läsaren. Grönt ljus | Nu blippar vi kortet. Pip! | `pip` |
 | 10 | **Kattens blick** i plattan *I bussen* (rak sidovy, ingen perspektivbild; Sanna 2026-11-20: gångperspektivet avvisat): kattens huvud och öron bakifrån nere till vänster, framför den långa röda bänken och den blå stången. Öronen vrids lite åt bänken och sedan åt stången | Titta, så ser det ut i bussen. Stolar … och stänger att hålla i. | katt nyfiken |
 | 11 | Närbild på den röda knappen på stången. Den skimrar | Och där! En röd knapp. | `tindra`, katt förtjust |
 | 12 | Bild B, katten vid stången sträcker tassen mot knappen. Vantehanden håller lugnt tassen | Katten vill trycka på knappen! Inte än. Vi trycker när vi är nästan framme. | katt trumpen (mjuk), sedan katt ja |
@@ -74,11 +73,10 @@ Kritan ritar **bussen** (Sanna 2026-11-20: *"intro rita en buss"*): konturen i l
 | 22 | Bild B. Katten vinkar mot fönstret | Hej, snögubben! | katt-hej |
 | 23 | Bild A. En liten **fågel** (043:s fågel) flyger in och landar på snögubbens hatt | Oj! En liten fågel. Den sätter sig på snögubbens hatt! | kvitter (mjukt), katt fniss |
 | 24 | Bild A. Landskapet börjar glida igen | Bussen åker igen. Brum, brum! | buss-brum |
-| 25 | Bild A. Höga granar tätt, sedan en bro över en isig bäck. Bussen gungar lite på bron | Nu åker bussen genom skogen … och över en bro! Dunk, dunk. | buss-brum, två mjuka dunk |
 | 26 | Bild A. Landskapet saktar in. En gul snöplog står utanför, lampan blinkar | Bussen stannar. Titta! Vad ser katten nu? *(paus 4 s)* | blinkers tick-tick, tyst |
 | 27 | Samma. Snöplogen poppar till och skjuter lite snö åt sidan | En snöplog! Den skjuter undan snön. | `pop`, snöplog-skrap (mjukt) |
-| 28 | Bild B. Katten tittar stort, glatt skutt på sätet | Skrap, skrap! | katt fniss |
 | 29 | Bild A. Landskapet glider igen. Fönstret immar sakta från kanterna | Bussen åker igen. Oj! Fönstret blev alldeles vitt. | buss-brum |
+| 29b | Närbild. Den vita rutan, katten tittar på den nyfiket | Det är imma. Man kan rita i imman! | |
 | 30 | Samma. Katten ritar ett hjärta i imman med tassen (Sanna 2026-11-20). Genom hjärtat syns det klart | Titta! Katten ritar. *(gisspaus 3 s)* Ett hjärta! Till farmor och farfar. | krita-ritar, `glitter` |
 | 31 | Bild B. Katten tittar på hjärtat, stolt | Kan du också rita ett hjärta? Med fingret. *(paus 4 s)* | katt nyfiken |
 | 32 | Bild A, genom hjärtat. Hus och affärer med ljusslingor och stjärnor i fönstren glider förbi | Nu är vi i stan. Så många ljus! | buss-brum |
@@ -118,9 +116,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Nu väntar vi på bussen. Vänta, vänta …
 [curious] Hör du? Där kommer bussen! Brum, brum.
 [excited] Där är bussen! Den stannar.
-[playfully] Dörren öppnas … pschhh!
+[playfully] Dörren öppnas!
 [cheerfully] Ett stort kliv … hopp!
-[cheerfully] Nu blippar vi kortet. Pip!
 [curious] Titta, så ser det ut i bussen. Stolar … och stänger att hålla i.
 [excited] Och där! En röd knapp.
 [warmly] Katten vill trycka på knappen! Inte än. Vi trycker när vi är nästan framme.
@@ -137,11 +134,11 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Hej, snögubben!
 [surprised] Oj! En liten fågel. Den sätter sig på snögubbens hatt!
 [cheerfully] Bussen åker igen. Brum, brum!
-[excited] Nu åker bussen genom skogen … och över en bro! Dunk, dunk.
 [curious] Bussen stannar. Titta! Vad ser katten nu?
 [excited] En snöplog! Den skjuter undan snön.
-[playfully] Skrap, skrap!
 [surprised] Bussen åker igen. Oj! Fönstret blev alldeles vitt.
+
+[warmly] Det är imma. Man kan rita i imman!
 [excited] Titta! Katten ritar.
 [delighted] Ett hjärta! Till farmor och farfar.
 [warmly] Kan du också rita ett hjärta? Med fingret.
@@ -192,3 +189,13 @@ Kattens läten från 044 och 035 återanvänds (hej, glad, nyfiken, förtjust, f
 - ~~Vem åker med?~~ **Bara vantehanden**, utan namn (godkänt med manuset 2026-11-20).
 - ~~Bussen~~ **En vanlig röd buss utan ansikte**, inte Bettan (godkänt med manuset 2026-11-20).
 - **Imman och hjärtat** är kvar. Om avsnittet blir långt stryks 24–26.
+
+## Borttaget efter förhandsvisningarna (Sanna, 2026-11-20)
+
+Raderna finns kvar i `rost.txt` och som ljudfiler, men används inte i filmen:
+- 06b *"Du har ryggsäcken på dig!"* (nicken)
+- 12 *"Nu blippar vi kortet. Pip!"* (kortläsaren)
+- 29 *"Nu åker bussen genom skogen … och över en bro!"*
+- 32 *"Skrap, skrap!"*
+
+Ändrat: 10 är *"Dörren öppnas!"* (utan pschhh, samma tagning kortad). Nytt: 33b *"Det är imma. Man kan rita i imman!"*.

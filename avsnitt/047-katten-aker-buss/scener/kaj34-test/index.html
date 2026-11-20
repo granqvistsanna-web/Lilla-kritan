@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8"><style>body{margin:0}svg{display:block}</style>
+<!-- Provark för 3/4-riggarna (kaj34ut = tittar ut, kaj34 = mot oss): vila, blink, glad, förvånad, arm upp; sist bytet
+     (båda riggarna på samma plats, den andra som kontur, så att hoppet i kroppens kant syns). -->
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg"><defs></defs>
+<rect width="1920" height="1080" fill="#9cc3e4"/><g id="g"></g></svg>
+<script src="/verktyg/kant.js"></script>
+<script src="../resan/kaj34.js"></script>
+<script>
+const POSER = [['vila', {}], ['blink', { blink: 1 }], ['glad', { glad: 1, kind: 1 }], ['förvånad', { forv: 1, mun: 0.6 }], ['arm upp', { arm: -75, armL: 1.6, glad: 0.4 }]];
+const g = document.getElementById('g'), S = 0.4;
+const lagg = (x, y, namn, o) => { const T = `translate(${x} ${y}) scale(${S}) ${KAJ34.jamka(namn)}`;
+  g.insertAdjacentHTML('beforeend', `<g transform="${T}">${KAJ34.svg(namn, o)}</g>`); window.kant.lagg(g.lastElementChild);
+  g.insertAdjacentHTML('beforeend', `<g transform="${T}">${KAJ34.morr(namn, o)}</g>`); };
+['ut', 'oss'].forEach((namn, rad) => POSER.forEach(([titel, o], i) => {
+  const x = 160 + i * 320, y = 470 + rad * 540;
+  lagg(x, y, namn, o);
+  g.insertAdjacentHTML('beforeend', `<text x="${x - 140}" y="${y - 400}" font-family="sans-serif" font-size="26" fill="#123">${namn === 'ut' ? 'kaj34ut' : 'kaj34'}: ${titel}</text>`);
+}));
+// bytet: ut och oss på samma plats; oss som röd kontur ovanpå
+const x = 1760;
+lagg(x, 470, 'ut', {}); lagg(x, 1010, 'oss', {});
+['oss', 'ut'].forEach((namn, i) => g.insertAdjacentHTML('beforeend', `<g transform="translate(${x} ${470 + i * 540}) scale(${S}) ${KAJ34.jamka(namn)}" opacity="0.9">
+  <image href="${KAJ34.RIGG[namn].D}body.png" width="1024" height="1024" filter="url(#kontur)"/></g>`));
+document.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="kontur"><feMorphology in="SourceAlpha" operator="dilate" radius="3" result="d"/><feComposite in="d" in2="SourceAlpha" operator="out" result="r"/><feFlood flood-color="#e0182d"/><feComposite in2="r" operator="in"/></filter>`);
+g.insertAdjacentHTML('beforeend', `<text x="1620" y="70" font-family="sans-serif" font-size="26" fill="#123">bytet: röd = den andra</text>`);
+window.seek = () => window.kant.uppdatera();
+window.ready = Promise.all(KAJ34.BILDER.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; }))).then(() => { window.kant.uppdatera(); return true; });
+</script>

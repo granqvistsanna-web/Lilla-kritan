@@ -58,7 +58,7 @@ let KONTUR = {}, OPPEN_FINNS = false;
 // Plattorna är 1376 × 768 och fyller 1920 × 1080 (skala 1,395). Allt nedan i 1920-rutan.
 const platta = f => { $('platta').innerHTML = `<image href="${f}" width="1920" height="1080"/>`; };
 
-let L, G, LF, GF, LK, GK; const GS = 0.40;          // katten, farmor, kaninen
+let L, G, LF, GF, LK, GK; const GS = 0.55;           // 0,40 → 0,55 (Sanna 2026-11-20: make cat bigger)          // katten, farmor, kaninen
 const P = o => ({ ...L.POSE0, ...o });
 const F = (n, o = {}, l = L) => ({ ...l.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'fnissig', 'stolt', 'flinar'].includes(n) ? { glad: [0, 0] } : {}), ...o });
 let KATT = [1050, 1010];
@@ -124,13 +124,17 @@ function vante(x, y, v = 180, s = 1, { kort = false } = {}) {
 }
 
 // --- Hållplatsen: skylten (275, 583), vägen y 826–900, bänken x 324–583. Bussen på vägen, dörren vid katten -------------------------
-const BS = 0.95, BUSS_DORR = [748, 256];               // dörrens mitt i bilden (dörren x 681–814, y 87–425)
+const BS = 1.5, BUSS_DORR = [748, 256];               // 0,95 → 1,5 (Sanna 2026-11-20: bigger bus). Dörrens mitt i bilden (dörren x 681–814, y 87–425)
 const bussX = (dorrX) => dorrX - BUSS_DORR[0] * BS, BUSS_UNDER = 905;
-function buss(dorrX = 1240, { oppen = 0 } = {}) {
+const BUSS_DX = 1479;                                  // dörrens x: bussen x 357–1920, skylten (x < 330) syns
+function buss(dorrX = BUSS_DX, { oppen = 0 } = {}) {
   const x = bussX(dorrX), y = BUSS_UNDER - BUSS.h * BS;
   lagg('bak', bild(BUSS.fil, BUSS.w, BUSS.h, `translate(${x} ${y}) scale(${BS})`));
   if (oppen) lagg('bak', `<rect x="${x + 686 * BS}" y="${y + 92 * BS}" width="${124 * BS}" height="${330 * BS}" rx="8" fill="#5b4a3a"/>
     <rect x="${x + 686 * BS}" y="${y + 392 * BS}" width="${124 * BS}" height="${30 * BS}" fill="#9aa0a8"/>`);
+  // skylten och bänken står framför vägen: lägg plattans bit över bussen igen
+  lagg('bak', `<clipPath id="framfor"><rect x="300" y="805" width="300" height="200"/><rect x="210" y="460" width="130" height="530"/></clipPath>
+    <image href="${HALL}" width="1920" height="1080" clip-path="url(#framfor)"/>`);
   return [x, y];
 }
 const hall = () => { platta(HALL); KATT = [1050, 1010]; };
@@ -149,7 +153,7 @@ const inne = (namn = 'hus', cx, s, dx) => { utsikt(namn, cx, s, dx); lagg('platt
 const tomtInne = () => { $('platta').innerHTML = `<image href="${INNE}" width="1920" height="1080"/>`; };
 // Bild A: fönstret fyller bilden, kattens huvud bakifrån nere till vänster
 const BILD_A = () => kamera(1.62, FON.cx, FON.cy);
-const bildA = (o = {}) => { BILD_A(); bakhuvud(620, 640, 1.2, o); };
+const bildA = (o = {}) => { BILD_A(); bakhuvud(600, 640, 1.6, o); };
 // Bild B: katten på sätet framifrån, fönstret bakom
 const BILD_B = () => kamera(1.5, 960, 560);
 const sitter = (f, p = {}, o = {}) => { KATT = [960, SITS + 30]; katt(f, { ...L.POSER.sitter, ...FAMN, ...p }, o); };
@@ -194,8 +198,8 @@ function kaninPulka(x, y, { vinka = 0, v = 12 } = {}) {
 }
 // imman: vit dis över glaset, hjärtat (mitt hx, hy) klart
 const HJ = [FON.cx, 270], hjarta = (x, y, r) => `M${x} ${y + r * 0.9} C${x - r * 1.6} ${y - r * 0.1} ${x - r * 0.9} ${y - r * 1.25} ${x} ${y - r * 0.45} C${x + r * 0.9} ${y - r * 1.25} ${x + r * 1.6} ${y - r * 0.1} ${x} ${y + r * 0.9}Z`;
-function imma(k = 1, hj = 0) {
-  lagg('fram', `<mask id="hm"><rect x="0" y="0" width="1920" height="1080" fill="#fff"/>${hj ? `<path d="${hjarta(...HJ, 150)}" fill="#000"/>` : ''}</mask>
+function imma(k = 1, hj = 0, lager = 'fram') {   // Bild B: lager 'bak', så att imman ligger bakom katten
+  lagg(lager, `<mask id="hm"><rect x="0" y="0" width="1920" height="1080" fill="#fff"/>${hj ? `<path d="${hjarta(...HJ, 150)}" fill="#000"/>` : ''}</mask>
     <rect x="${FON.x0}" y="${FON.y0}" width="${FON.x1 - FON.x0}" height="${FON.y1 - FON.y0}" fill="url(#imma)" opacity="${k}" mask="url(#hm)"/>
     ${hj ? `<path d="${hjarta(...HJ, 150)}" fill="none" stroke="#ffffff" stroke-width="10" opacity=".9"/>` : ''}`);
 }
@@ -216,7 +220,7 @@ function dorr(oppen = 0) {
     <path d="M${DOR.x0} ${DOR.y0} L${DOR.x0 + 70} ${DOR.y0 + 30} L${DOR.x0 + 70} ${DOR.y1 - 10} L${DOR.x0} ${DOR.y1}Z" fill="#fbfbf8" stroke="#cfcac0" stroke-width="4"/>
     <circle cx="${DOR.x0 + 54}" cy="${(DOR.y0 + DOR.y1) / 2 + 40}" r="9" fill="#c8962e"/>`);
 }
-const FARMOR = [960, 905], GSF = 0.5;
+const FARMOR = [960, 905], GSF = 0.66;               // farmor lite större än katten (0,50 → 0,66)
 function farmor(f, p = {}, [x, fot] = FARMOR) {
   $('figurer').insertBefore(GF, $('figurer').firstChild);
   GF.setAttribute('transform', `translate(${x} ${fot}) scale(${GSF}) translate(-512 ${-LF.FOTTER})`);
@@ -249,19 +253,19 @@ const RAD = {
   '4': () => { hall(); NARA(); katt(F('nyfiken'), { ...FAMN, luta: 4, svans: 0.6 }); text(...huvud(200, 160), 'vänta, vänta …', 24);
     pilar(bagpil(...huvud(-180, 700), ...huvud(0, 760), ...huvud(180, 700), 4)); },
   '5': () => { hall(); HEL(); katt(F('forvanad', { titt: [-16, -4] }), { ...FAMN, oron: [-10, -10] }); snoFall(); text(80, 700, 'brum, brum … (långt bort)', 30); },
-  '6': () => { hall(); HEL(); buss(1240); katt(F('jatteglad', { titt: [10, -4] }), FAMN); snoFall(); pilar(rakpil(100, 640, 520, 640, 9)); text(110, 600, 'glider in, saktar in mjukt', 26); },
-  '7': () => { hall(); buss(1240, { oppen: 1 }); kamera(2.4, 1240, 660); katt(F('glad'), FAMN); text(1300, 520, 'pschhh!', 34); },
-  '8': () => { hall(); HEL(); buss(1240, { oppen: 1 }); KATT = [1240, 895]; katt(F('glad', { titt: [10, -6] }), { armar: [-124, 80], fram: [1, 0] });
-    vante(...iFig([900, 420]), -55, 0.45); pilar(bagpil(1120, 1010, 1150, 860, 1225, 900, 6)); text(1360, 600, 'hopp!', 34); },
+  '6': () => { hall(); HEL(); buss(); katt(F('jatteglad', { titt: [10, -4] }), FAMN); snoFall(); pilar(rakpil(100, 640, 520, 640, 9)); text(110, 600, 'glider in, saktar in mjukt', 26); },
+  '7': () => { hall(); buss(BUSS_DX, { oppen: 1 }); kamera(1.8, BUSS_DX - 60, 600); katt(F('glad', { titt: [12, -8] }), FAMN); text(BUSS_DX + 120, 380, 'pschhh!', 40); },
+  '8': () => { hall(); HEL(); buss(BUSS_DX, { oppen: 1 }); KATT = [BUSS_DX, 860]; katt(F('glad', { titt: [10, -6] }), { armar: [-124, 80], fram: [1, 0] });
+    vante(...iFig([900, 420]), -55, 0.45); pilar(bagpil(1300, 1010, 1340, 860, 1440, 870, 6)); text(1180, 520, 'hopp!', 34); },
 
   // I bussen
   '9': () => { tomtInne(); kamera(3.0, 1520, 640); lagg('saker', `<rect x="1560" y="560" width="90" height="140" rx="16" fill="#b9c0c8" stroke="#fff" stroke-width="4"/>
       <circle cx="1605" cy="610" r="28" fill="#5d6670"/><circle cx="1605" cy="672" r="10" fill="#43d36b"/><circle cx="1605" cy="672" r="20" fill="#43d36b" opacity=".35"/>`);
     vante(1520, 620, 180, 0.32, { kort: true }); text(1440, 560, 'pip!', 18); },
-  '10': () => { tomtInne(); HEL(); bakhuvud(330, 1010, 1.5, { vrid: 0.6 }); pilar(bagpil(520, 760, 800, 640, 960, 700, 6), bagpil(980, 640, 1300, 400, 1610, 420, 6)); },
+  '10': () => { tomtInne(); HEL(); bakhuvud(330, 1010, 2.0, { vrid: 0.6 }); pilar(bagpil(520, 760, 800, 640, 960, 700, 6), bagpil(980, 640, 1300, 400, 1610, 420, 6)); },
   '11': () => { tomtInne(); KNAPPN(); skimmer(KNAPP[0], KNAPP[1], 0.5, 0.35); },
   '12': () => { tomtInne(); kamera(1.6, 1400, 640); KATT = [1450, 912]; katt(F('nyfiken', { titt: [14, -14] }), { armar: [0, 105] }, { medNalle: false });
-    nalle(1300, 870, 0.12, -10, 'sakerbak'); vante(...iFig([890, 160]), 200, 0.35); text(1180, 470, 'inte än', 26); },
+    nalle(1260, 880, 0.17, -10, 'sakerbak'); vante(...iFig([890, 160]), 200, 0.35); text(1180, 470, 'inte än', 26); },
   '13': () => { tomtInne(); BILD_B(); sitter(F('glad')); pilar(bagpil(1400, 900, 1200, 560, 1010, 700, 7)); },
   '14': () => { inne('hus', 1300); BILD_B(); sitter(F('glad', { titt: [0, 4] })); text(1120, 380, 'gungar 2 px', 24); },
   '15': () => { inne('skog-bro', 300); bildA(); glid(); },
@@ -280,24 +284,24 @@ const RAD = {
   '28': () => { inne(null); plog(1240, MARK, 0.24); BILD_B(); sitter(F('jatteglad'), { upp: 0.4, oron: [-8, -8] }); pilar(rakpil(1180, 900, 1180, 820, 5)); },
   '29': () => { inne('stan', 1250); bildA(); imma(0.85); glid(); },
   '30': () => { inne('stan', 1250); bildA(); imma(1, 1); krita(HJ[0] + 120, HJ[1] - 60, 140, 0.33); text(FON.x0 + 30, FON.y1 - 30, 'gisspaus 3 s', 26); },
-  '31': () => { inne('stan', 1250); BILD_B(); imma(1, 1); sitter(F('stolt', { titt: [0, -10] }), { upp: 0.4 }); text(1150, 640, 'paus 4 s', 24); },
+  '31': () => { inne('stan', 1250); BILD_B(); imma(1, 1, 'bak'); sitter(F('stolt', { titt: [0, -10] }), { upp: 0.4 }); text(1150, 640, 'paus 4 s', 24); },
   '32': () => { inne('stan', 700); bildA(); imma(1, 1); glid(); },
   '33': () => { inne('stan', 660, 1.2); bildA({ hoj: 1 }); julgran(); imma(1, 1); stannar(); },
   '34': () => { inne('stan', 660, 1.2); bildA({ hoj: 1 }); julgran(FON.cx, MARK - 20, 250, 1); imma(1, 1); },
-  '35': () => { inne('stan', 900); BILD_B(); imma(1, 1); sitter(F('glad'), { luta: 6 }, { nalleV: 10 }); pilar(bagpil(840, 560, 960, 520, 1080, 560, 4)); },
-  '36': () => { inne('hus', 200); BILD_B(); imma(1, 1); sitter(F('jatteglad', { titt: [0, 0] }), { oron: [-10, -10] }); text(1140, 420, 'knappen →, sedan till oss', 22); },
+  '35': () => { inne('stan', 900); BILD_B(); imma(1, 1, 'bak'); sitter(F('glad'), { luta: 6 }, { nalleV: 10 }); pilar(bagpil(840, 560, 960, 520, 1080, 560, 4)); },
+  '36': () => { inne('hus', 200); BILD_B(); imma(1, 1, 'bak'); sitter(F('jatteglad', { titt: [0, 0] }), { oron: [-10, -10] }); text(1140, 420, 'knappen →, sedan till oss', 22); },
   '37': () => { tomtInne(); KNAPPN(); tass(KNAPP[0] - 60, KNAPP[1] + 30); },
   '38': () => { tomtInne(); KNAPPN(); tass(KNAPP[0] - 8, KNAPP[1] + 4); knappLjus(); text(KNAPP[0] - 90, KNAPP[1] - 70, 'paus 4 s … pling!', 14); },
   '39': () => { inne('farmors-hus', 662); bildA({ hoj: 1 }); imma(1, 1); stannar(); text(1180, 250, '?', 60); },
   '40': () => { inne('farmors-hus', 662); bildA({ hoj: 1.4, vrid: 0.3 }); imma(1, 1); },
 
   // Farmors dörr
-  '41': () => { dorr(); HEL(); KATT = [620, 995]; katt(F('glad'), FAMN); pilar(rakpil(60, 900, 420, 900, 8)); },
-  '42': () => { dorr(); kamera(1.5, 820, 640); KATT = [720, 995]; katt(F('glad', { titt: [14, -4] }), { armar: [0, 75] }, { medNalle: false }); nalle(640, 905, 0.12, -8, 'sakerbak');
+  '41': () => { dorr(); HEL(); KATT = [600, 1000]; katt(F('glad'), FAMN); pilar(rakpil(60, 900, 420, 900, 8)); },
+  '42': () => { dorr(); kamera(1.5, 820, 640); KATT = [720, 995]; katt(F('glad', { titt: [14, -4] }), { armar: [0, 75] }, { medNalle: false }); nalle(600, 920, 0.17, -8, 'sakerbak');
     text(850, 600, 'knack, knack', 30); text(850, 660, 'paus 4 s', 22); },
-  '43': () => { dorr(1); HEL(); KATT = [640, 995]; farmor(F('jatteglad', {}, LF)); katt(F('jatteglad', { titt: [14, -6] }), FAMN); },
+  '43': () => { dorr(1); HEL(); KATT = [600, 1000]; farmor(F('jatteglad', {}, LF)); katt(F('jatteglad', { titt: [14, -6] }), FAMN); },
   '44': () => { dorr(1); kamera(1.5, 820, 640); KATT = [760, 995]; farmor(F('glad', {}, LF), { luta: -8, armar: [-60, -20] }, [930, 905]); katt(F('glad', { titt: [10, -8] }), { ...FAMN, luta: 6 }); },
-  '45': () => { dorr(1); kamera(1.5, 820, 640); KATT = [700, 995]; farmor(F('glad', {}, LF), { armar: [0, 60] }); katt(F('jatteglad'), { armar: [-124, 60], fram: [1, 0] }); },
+  '45': () => { dorr(1); kamera(1.5, 820, 640); KATT = [640, 1000]; farmor(F('glad', {}, LF), { armar: [0, 60] }); katt(F('jatteglad'), { armar: [-124, 60], fram: [1, 0] }); },
   '46': () => { RAD['45'](); $('pilar').innerHTML = ''; kamera(1);
     const cx = 820, cy = 640, r = 430, ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
       return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
