@@ -76,3 +76,7 @@ Redigering av v1 i Flow, bild 1 = `original/mottagningen-a1.jpg` (kopia i `~/Dow
 ```prompt
 Edit Image 1. Keep the room EXACTLY the same size, layout, straight-on view, colours and floor line: the same bold turquoise wall, the same light grey-blue floor, the same blue examination bench with the white paper strip in the same place and size, the same small white two-step stool in the same place, the same colourful height chart. ONLY simplify: remove ALL the light diagonal scratchy crayon streaks and zigzags from the wall, so the wall is one calm, even turquoise with only a fine soft paper grain. Remove the wash basin, the tap, the pipe and the soap dispenser, leaving plain wall there. Remove the white wall stripe. Remove the paper roll and the hanging paper at the left end of the bench. Simplify the bench frame to two straight silver legs, one at each end, with no crossbars, so the floor under the bench is open and empty. Remove the small tick marks on the height chart blocks, plain colour blocks only. Same flat crayon technique, no new objects, no shadows, no text, no characters.
 ```
+
+## Tagningarna (2026-11-20)
+
+`original/mottagningen-{a,c,d,e,f,g}1.jpg`, en per alternativ (bokstaven = promptens). `original/jamforelse.jpg` visar alla sex med doktorn A på samma plats (x 1430, fötterna y 905, SKALA 0,6). B kördes inte.
