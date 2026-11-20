@@ -58,3 +58,6 @@
 58-dar-ar-du-leoparden 1.45
 59-till-leoparden 2.15
 60-hejda-kaninen-leoparden 2.42
+61-lite-kallt 3.07
+62-det-kittlas 1.82
+63-vad-duktig 3.06

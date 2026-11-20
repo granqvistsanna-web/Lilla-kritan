@@ -1,3 +1,0 @@
-61-lite-kallt 2.3
-62-det-kittlas 2.0
-63-vad-duktig 1.9
