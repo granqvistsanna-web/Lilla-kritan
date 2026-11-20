@@ -20,12 +20,24 @@ Besöket är en **gren av bilderboken** ([bilderbok.md](bilderbok.md)): samma fo
 | Kritan ritar | djuret, som i bilderboken | 0–16 |
 | Känslan | *"Idag är kaninen hos doktorn."* Djuret är lite osäkert: öronen faller, liten fundersam min. Inget problem, ingen sjukdom: doktorn ska **titta att kaninen växer och mår bra** | 16–35 |
 | Hjälpen | kritan ritar **gosedjuret** (nallen finns redan). *"Varsågod!"* – *"Ska vi säga tack?"* – *"Tack!"*. Djuret kramar nallen, öronen reser sig | 35–75 |
+| Kritan ritar något nytt | kritan ritar **doktorn eller första instrumentet** (se egen rubrik), gisspaus, *"Ett stetoskop!"* | inom 75–110 |
 | Doktorn | doktorn står redan vid britsen och vinkar *"Hej!"*. Djuret hoppar upp på britsen med nallen | 75–100 |
 | Tre undersökningar | samma mönster tre gånger, först på nallen, sedan på djuret (se nedan) | 100–190 |
 | Sprutan *(valfri, inte i piloten)* | se egen rubrik. Utan sprutan får leken med nallen och plåstret de 30 s i stället | 190–220 |
 | Plåster och hej då | plåster med stjärna, djuret är stolt, hej då doktorn, hej då kaninen, kritirisen | 220–245 |
 
 **En plats: mottagningen** (Sanna 2026-11-20). Ritintrot zoomar in i mottagningen, djuret trippar in genom dörren, och kritan ritar nallen där inne. Inget platsbyte och inget kritsvep. Doktorn står vid britsen redan från början.
+
+## Kritan ritar något nytt ur besöket (Sanna 2026-11-20)
+
+Utöver gosedjuret ritar kritan **en sak som hör till besöket och är ny för barnet**: **doktorn** (när doktorn presenteras) eller **det första instrumentet** (stetoskopet, i tandläkarbesöket spegeln, hos frisören saxen). Som när kritan ritar i bilderboken: konturen i lugna drag, en gisspaus (3 s), *"Titta! Kritan ritar något … Hm … vad blir det?"*, sedan blir teckningen den riktiga saken och Malin säger vad den heter: *"Ett stetoskop! Med det lyssnar doktorn."* / *"Doktorn!"*
+
+Varför: barnet ser det okända byggas upp av kritan, lugnt och bit för bit, innan det används. Det som kritan ritar är snällt och bekant. Det gör doktorn och sakerna mindre främmande, och det är kanalens eget grepp.
+
+- **En sak per avsnitt** ur besöket (doktorn *eller* ett instrument), plus gosedjuret och klistermärket. Kritan ritar alltså högst tre gånger.
+- **Ritas doktorn** står doktorn inte vid britsen från början: kritan ritar doktorn där, och doktorn vinkar *"Hej!"* när den fylls i.
+- **Ritas ett instrument** ersätter det slaget 1 (*Saken visas*) i första undersökningen: kritan ritar saken i luften framför doktorn, den fylls i och doktorn tar den.
+- Sakerna är ritade i kod (`verktyg/doktor-saker.js`), så konturen är sakens egna streck som ritas fram ett i taget; ingen ny bild behövs.
 
 ## De tre undersökningarna
 

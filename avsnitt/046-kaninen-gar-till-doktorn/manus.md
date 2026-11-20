@@ -169,4 +169,5 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 
 - ~~Hur doktorn ser ut~~ **Doktorn A**, vit rock och röda lockar (Sanna 2026-11-20). Doktorn B (ljusblå rock) sparas till BVC eller tandläkaren.
 - ~~Mottagningens vägg~~ **himmelsblå** (alternativ D, Sanna 2026-11-20).
+- **Kritan ritar något nytt ur besöket** (Sanna 2026-11-20, nu i receptet `format/besoket.md`): stetoskopet eller doktorn ska ritas av kritan. Förslag: uppslag 11 blir *"Titta! Kritan ritar något. (gisspaus 3 s) Ett stetoskop! Med det lyssnar doktorn."*, kritan ritar stetoskopet i luften framför doktorn och doktorn tar det. Ändrar repliken 16 i `rost.txt` före tagningen. Väntar på Sannas val: stetoskopet eller doktorn.
 - ~~Vad doktorn heter internt~~ `doktorn-a` (filnamnet i `karaktarer/`). I det som sägs är det alltid *"doktorn"*.
