@@ -24,8 +24,8 @@ export const RADER = [
   { id: '00', d: 1.0, plats: 'Logotypen', bild: 'Lilla Kritans logotyp i 1 s, sedan papperet', ljudtext: '–', ansikte: '–' },
 
   // --- Kritan ritar (papperet): den lilla blå fågeln ---
-  { id: '01a', d: 7.0, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],
-    bild: 'Kritan ritar den lilla blå fågelns kontur i lugna drag: kroppen, huvudet, vingen, näbben, stjärten och benen', ljudtext: 'kritan ritar', ansikte: '–' },
+  { id: '01a', d: 7.6, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],
+    bild: 'Kritan ritar den lilla blå fågelns kontur i lugna drag: kroppen, huvudet, vingen, näbben, stjärten och benen, och prickar dit ögat', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
     bild: 'Konturen klar, kritan väntar bredvid och svajar: barnet gissar', ljudtext: 'tyst', ansikte: '–' },
   { id: '01c', d: 0.6 + L(3) + 1.6, plats: 'Papperet → zoom in', malin: [[3, 0.6]], ljud: [['glitter/glitter-1', 0.1], [PIP, 0.8 + L(3)], [FLAX, 1.2 + L(3)]],
@@ -34,15 +34,19 @@ export const RADER = [
   // --- Snögården ---
   { id: '1', d: 2.0 + L(4) + 1.4, plats: 'Snögården, helbild', malin: [[4, 2.0]], ljud: [[STEG(1), 0.3], [STEG(2), 1.0], [N(1), 2.3 + L(4)]],
     bild: 'Grisen med tomteluvan trippar in i snön från vänster med fröpåsen och vinkar (armen bakom kroppen). Fotspår i snön', ljudtext: '`knarr-sno`, noff hej (1)', ansikte: 'jätteglad' },
-  { id: '2', d: 0.8 + L(5) + 1.6, plats: 'Närbild, påsen', malin: [[5, 0.8]], ljud: [[PRASSEL, 0.2], [N(5), 1.0 + L(5)]],
+  // Sanna 2026-11-20: oinket efter frågan (noff 5, sedan noff-visa) avvisat två gånger; nytt ljud noff-titta ("titta!", riktiga grymt uppväxlade som noff-sot)
+  { id: '2', d: 0.8 + L(5) + 1.6, plats: 'Närbild, påsen', malin: [[5, 0.8]], ljud: [[PRASSEL, 0.2], ['noff-titta/noff-titta-1', 1.0 + L(5)]],
     bild: 'Grisen skakar påsen, det rasslar. Frågan efter skakningen', ljudtext: 'prassel, nyfiken (5)', ansikte: 'nyfiken' },
-  { id: '3', d: 0.6 + L(6) + 1.6, plats: 'Halvbild', malin: [[6, 0.6]], ljud: [[PRASSEL, 0.1], [N(2), 0.9 + L(6)]],
+  { id: '3', d: 0.6 + L(6) + 2.0, plats: 'Halvbild', malin: [[6, 0.6]], ljud: [[PRASSEL, 0.1], [N(2), 0.9 + L(6)]],
     bild: 'Påsen tippar, fröna faller i en båge och lägger sig på snön', ljudtext: 'prassel, förtjust (2)', ansikte: 'glad' },
-  { id: '4', d: 0.8 + L(7) + 1.2, plats: 'Granen → fröna', malin: [[7, 0.8]], ljud: [[PIP, 0.2], [FLAX, 0.6]],
-    bild: 'Den röda fågeln hoppar fram ur granen och flyger i en båge ner till fröna', ljudtext: 'pip, flax', ansikte: '–' },
-  { id: '5', d: 0.6 + L(8) + 1.0, plats: 'Halvbild', malin: [[8, 0.6]], ljud: [[FLAX, 0.0], [PIP, 0.8 + L(8)]],
-    bild: 'Den gula fågeln följer efter och landar bredvid', ljudtext: 'flax, pip', ansikte: 'glad' },
-  { id: '6', d: 0.4 + L(9) + 1.6, plats: 'Halvbild, fåglarna och grisen', malin: [[9, 0.4]], ljud: [[PICK, 0.4], [PICK, 0.4 + L(9) * 0.35], [PICK, 0.4 + L(9) * 0.6], [N(4), 0.6 + L(9)]],
+  // Sanna 2026-11-20 (J16 0:53): närbild på fåglarna vid holken och lugnare tempo: pip och repliken i närbild, klipp på flaxet
+  { id: '4', d: 0.9 + L(7) + 2.6, plats: 'Närbild, holkens tak → fröna', malin: [[7, 0.9]], ljud: [[PIP, 0.3], [FLAX, 0.9 + L(7) - 0.1]],
+    bild: 'Närbild: den röda fågeln på holkens tak pipar och tittar ner. Den lyfter, klipp: den flyger i en båge ner till fröna', ljudtext: 'pip, flax', ansikte: '–' },
+  { id: '5', d: 0.8 + L(8) + 2.5, plats: 'Närbild, holkens tak → halvbild', malin: [[8, 0.8]], ljud: [[PIP, 0.3], [FLAX, 0.8 + L(8) - 0.1], [PIP, 0.8 + L(8) + 1.6]],
+    bild: 'Närbild: den gula fågeln på taket pipar. Den lyfter, klipp: den landar bredvid den röda', ljudtext: 'pip, flax, pip', ansikte: 'glad' },
+  // Sanna 2026-11-20: fler pick och fröna försvinner långsammare: sex pick till efter "Mums!", ett frö per pick
+  { id: '6', d: 0.4 + L(9) + 3.8, plats: 'Halvbild, fåglarna och grisen', malin: [[9, 0.4]], ljud: [[PICK, 0.4], [PICK, 0.4 + L(9) * 0.35], [PICK, 0.4 + L(9) * 0.6],
+    ...[0.45, 0.85, 1.25, 1.65, 2.05, 2.45].map(t => [PICK, 0.4 + L(9) + t]), [N(4), 0.4 + L(9) + 2.9]],
     bild: 'Fåglarna pickar på *"pick, pick, pick"*, grisen tittar på', ljudtext: '`pick` ×3, mysig suck (4)', ansikte: 'nöjd' },
   { id: '7', d: 1.0 + L(10) + 1.2, plats: 'Närbild, påsen', malin: [[10, 1.0]], ljud: [[PRASSEL, 0.2], [N(5), 1.2 + L(10)]],
     bild: 'Grisen tippar påsen upp och ner och skakar den: inget kommer', ljudtext: 'kort prassel, nyfiken (5)', ansikte: 'förvånad' },
@@ -68,13 +72,15 @@ export const RADER = [
     bild: 'Fåglarna flyger upp till kärven, en i taget på *"en … två … tre"*', ljudtext: 'flax, pip ×3', ansikte: 'glad' },
   { id: '16', d: 0.4 + L(20) + 1.2, plats: 'Närbild, kärven', malin: [[20, 0.4]], ljud: [[PICK, 0.3], [N(2), 0.6 + L(20)]],
     bild: 'Den lilla fågeln pickar i kärven', ljudtext: '`pick`, förtjust (2)', ansikte: '–' },
-  { id: '17', d: 1.4 + L(21) + 1.8, plats: 'Halvbild', malin: [[21, 1.4]], ljud: [[N(5), 0.2], [FNISS(1), 1.6 + L(21)]],
+  // Sanna 2026-11-20: grisen går ända fram till kärven och smakar innan Malin säger nej
+  { id: '17', d: 2.8 + L(21) + 1.9, plats: 'Halvbild', malin: [[21, 2.8]], ljud: [[N(5), 1.6], [FNISS(1), 3.0 + L(21)], ['noff-mums/noff-mums-1', 1.75]],   // mums: grisen smakar på kornen
     bild: 'Grisen sniffar och sticker fram trynet mot kornen. På *"nej, nej"* backar den och fnissar, öronen fladdrar', ljudtext: 'nyfiken (5), fniss', ansikte: 'nyfiken → fnissig' },
-  { id: '18', d: 0.4 + L(22) + 2.6, plats: 'Halvbild, grisen och fåglarna', malin: [[22, 0.4]], ljud: [[N(7), 0.0], [PIP, 1.2], [PIP_GLAD, 0.6 + L(22) + 0.2]],
+  // Sanna 2026-11-20: mer luft, först pratar de (noff, pip, noff, pip), sedan repliken
+  { id: '18', d: 2.7 + L(22) + 1.6, plats: 'Halvbild, grisen och fåglarna', malin: [[22, 2.7]], ljud: [[N(7), 0.0], [PIP, 0.7], [N(7), 1.4], [PIP, 2.0], [PIP_GLAD, 2.9 + L(22)]],
     bild: 'Grisen noffar, fåglarna pipar tillbaka', ljudtext: 'pratar (7), pip – pip', ansikte: 'glad' },
   { id: '19', d: 0.3 + L(23) + 1.5, plats: 'Ansiktsbild', malin: [[23, 0.3]],
     bild: 'Grisen tittar på fåglarna och tar sats. Paus 1,5 s', ljudtext: '–', ansikte: 'nyfiken' },
-  { id: '20', d: 0.2 + 0.9 + L(24) + 1.0, plats: 'Halvbild', malin: [[24, 1.1]], ljud: [[N(1), 0.0], [PIP, 0.9 + L(24)], [PIP_GLAD, 1.3 + L(24)]],
+  { id: '20', d: 0.2 + 0.9 + L(24) + 1.0, plats: 'Halvbild', malin: [[24, 1.1]], ljud: [['noff-pip/noff-pip-1', 0.0], [PIP, 0.9 + L(24)], [PIP_GLAD, 1.3 + L(24)]],   // grisen försöker pipa, det blir ett noff (Sanna 2026-11-20)
     bild: 'Ett stort noff. Fåglarna lutar sig bakåt och blinkar', ljudtext: 'stort noff, pip pip', ansikte: 'stolt' },
   { id: '21', d: 1.2 + L(25) + 1.8, plats: 'Halvbild', malin: [[25, 1.2]], ljud: [[FLAX, 0.0], [N(5), 1.0], [FNISS(2), 1.4 + L(25)]],
     bild: 'Den lilla fågeln flyger och landar på grisens tomteluva. Grisen tittar upp med stora ögon', ljudtext: 'flax, nyfiken (5), fniss', ansikte: 'förvånad → fnissig' },

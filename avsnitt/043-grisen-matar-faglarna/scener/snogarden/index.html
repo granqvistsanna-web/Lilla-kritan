@@ -51,7 +51,7 @@ const PLATTA = A + 'bakgrunder/' + (new URLSearchParams(location.search).get('bg
 let KONTUR = {}, TOM_FINNS = false;
 
 let L, G; const GS = 0.45;
-const GRIS0 = [700, 864], GRIS1 = [890, 864];          // grisens fötter: vid stugan, sedan vid kärven (från rad 25)
+const GRIS0 = [700, 864], GRIS1 = [1010, 864], GRIS2 = [890, 864];   // GRIS1 nära kärven när den skakas (rad 25–32), GRIS2 bredvid taket (rad 33–)          // grisens fötter: vid stugan, sedan vid kärven (från rad 25)
 let GRIS = GRIS0;
 const iFig = ([px, py], [x, fot] = GRIS, s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 
@@ -75,7 +75,10 @@ const glans = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale($
 const skimmer = (x, y, k = 1, vidd = 1) => { if (k < 0.02) return; lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
   .map(([dx, dy, s], i) => glans(x + dx * 40 * vidd, y + dy * 34 * vidd, 16 * s * k * vidd * (0.85 + 0.15 * Math.sin(TT * 5 + i * 2)), Math.min(1, 0.4 + k))).join('')); };
 const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
-const kritaSvaj = (x, y, s, tl) => krita(x + 14 * Math.sin(tl * 1.6), y + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3), s);
+// kritan väntar och svajar vid (x, y). Sanna 2026-11-20 (J16 0:21 "make sure they dont jump"): svajet tonas in och ut (d = radens
+// längd), så raden börjar och slutar exakt i viloläget; fran = [x, y] där kritan slutade rita, den glider därifrån under 0,7 s
+const kritaSvaj = (x, y, s, tl, d = 1e9, fran = null) => { const a = del(0.4, 1.0, tl) * (1 - del(d - 0.7, d, tl)), g = fran ? del(0, 0.7, tl) : 1;
+  krita(lerp(fran ? fran[0] : x, x, g) + 14 * a * Math.sin(tl * 1.6), lerp(fran ? fran[1] : y, y, g) + 10 * a * Math.sin(tl * 2.3), lerp(125, 140, g) + 4 * a * Math.sin(tl * 1.3), s); };
 function kontur(namn, t, k, bredd, farg = '#9a8a7a') {
   lagg('pilar', `<g transform="${t}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${bredd}"
     stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
@@ -113,11 +116,21 @@ function gard({ spar = 0, fron = 0, sno = 0 } = {}) {
 // julkärven: foten (stångens nederkant, bildens 243, 890) i (x, y), skala 0,5
 const KARV = [1250, 884, 0.5], KTOPP = [KARV[0], KARV[1] - 870 * KARV[2]];
 const karveT = () => `translate(${KARV[0] - 243 * KARV[2]} ${KARV[1] - 890 * KARV[2]}) scale(${KARV[2]})`;
+// snön på kärven (Sanna 2026-11-20: mer snö): en tjock mössa som rinner ner över axen och klumpar på kärven, som skakas av
+function snoKarve(x, t, sp) {
+  const th = 36 + 50 * kl(sp / 1.2), y = v => (t + v).toFixed(1), X = v => (x + v).toFixed(1), kl2 = kl((sp - 0.35) * 1.6);
+  const mossa = `M${X(-122)} ${y(34)} Q${X(-112)} ${y(-18)} ${X(-48)} ${y(-14)} Q${X(-4)} ${y(-34)} ${X(44)} ${y(-16)} Q${X(110)} ${y(-14)} ${X(126)} ${y(34)}
+    Q${X(118)} ${y(th)} ${X(98)} ${y(th - 8)} Q${X(84)} ${y(th + 24)} ${X(62)} ${y(th - 4)} Q${X(22)} ${y(th + 12)} ${X(-8)} ${y(th - 6)}
+    Q${X(-38)} ${y(th + 28)} ${X(-62)} ${y(th - 6)} Q${X(-100)} ${y(th + 6)} ${X(-122)} ${y(34)}Z`;
+  const klumpar = [[-72, 112, 16], [56, 122, 14], [-24, 148, 15], [84, 96, 12], [10, 172, 12], [-56, 160, 10]]
+    .map(([dx, dy, r]) => `<ellipse cx="${X(dx)}" cy="${y(dy)}" rx="${r}" ry="${(r * 0.6).toFixed(1)}" fill="#fdfdfb" stroke="#c9d8e6" stroke-width="3"/>`).join('');
+  return `<g opacity="${kl(0.3 + sp).toFixed(2)}"><path d="${mossa}" fill="#fdfdfb" stroke="#c9d8e6" stroke-width="5"/></g>${kl2 > 0.02 ? `<g opacity="${kl2.toFixed(2)}">${klumpar}</g>` : ''}`;
+}
 function karve({ fyll = 1, snoPa = 0, tak = 0, v = 0 } = {}) {
   const [x, y] = KARV, t = KTOPP[1];
   lagg('sakerbak', `<g transform="rotate(${v.toFixed(2)} ${x} ${y})">${fyll > 0 ? `<g transform="${karveT()}"><clipPath id="kf"><circle cx="243" cy="300" r="${(700 * fyll).toFixed(1)}"/></clipPath>
     <image href="${KARVE}" width="487" height="894" clip-path="url(#kf)"/></g>` : ''}
-    ${snoPa > 0.02 ? `<path d="M${x - 108} ${t + 40} Q${x - 90} ${t - 14} ${x - 30} ${t - 8} Q${x + 10} ${t - 26} ${x + 50} ${t - 10} Q${x + 104} ${t - 6} ${x + 112} ${t + 40} Q${x} ${t + 50 + 30 * kl(snoPa, 0, 1.5)} ${x - 108} ${t + 40}Z" fill="#fdfdfb" stroke="#c9d8e6" stroke-width="5" opacity="${kl(0.3 + snoPa).toFixed(2)}"/>` : ''}</g>`);
+    ${snoPa > 0.02 ? snoKarve(x, t, snoPa) : ''}</g>`);
   if (tak) takSvg(tak);
 }
 // taket på ben över kärven (julkarve-tak.png, Flow-tagning 4, Sanna 2026-11-19): benens mitt (358, 1334) på marken under kärven, skala 0,5
@@ -156,7 +169,11 @@ const VID_FRON = { rod: [930, 888], gul: [1025, 892], bla: [1110, 888] };
 const PA_KARV = { rod: [KARV[0] - 70, KTOPP[1] + 30], gul: [KARV[0] + 5, KTOPP[1] + 12], bla: [KARV[0] + 78, KTOPP[1] + 32] };
 // på holkens snötak (rod, gul) och inne i hålet (bla)
 const I_GRAN = { rod: [1828, 452], gul: [1886, 446], bla: [HOLK[0], HOLK[1] + 30] };
+// en fågel ensam på holkens tak i närbilden HOLKN (rad 4 och 5): på snön strax vänster om nocken
+const HOLK_TAK = [1860, 445];
 const FRAMFOR = { rod: [1060, 900], gul: [1130, 904], bla: [1195, 898] };
+// hopp: tider i raden (ett hopp tar 0,32 s) med steg i x per hopp → { dx, lyft } att lägga på fågelns plats
+const hopp = (tl, steg) => steg.reduce((o, [a, dx]) => { const w = kl((tl - a) / 0.32); return { dx: o.dx + dx * mjuk(w), lyft: o.lyft + 22 * Math.sin(Math.PI * w) }; }, { dx: 0, lyft: 0 });
 const alla = (plats, o = {}) => ['rod', 'gul', 'bla'].forEach(f => fagel(f, ...plats[f], o[f] ?? {}));
 
 // --- Grisen med tomteluvan och påsen --------------------------------------------------------------------------------------------
@@ -191,24 +208,37 @@ const vink = (p, k, tl) => ({ ...p, armar: [k * (125 + 18 * Math.sin(7 * tl)), p
 const nick = (f, p, tl, d = 1.2) => tl > 0 && tl < d ? L.nicka(f, P(p), tl, d, 2) : [f, p];
 const gaPose = T => { const [f, p] = L.ROR.ga(T); const { x, ...q } = p; return [f, q]; };
 const huvud = (dx = 0, y = 250) => iFig([512 + dx, y]);
-const HEL = () => kamera(1), HALV = () => kamera(1.6, 960, 680), HALVT = () => kamera(1.4, 960, 600),   // HALVT: halvbild där kärvens tak (topp y 217) får plats
+const HEL = () => kamera(1), HALV = () => kamera(1.9, 980, 640),   // HALV 1.6 → 1.9 (Sanna 2026-11-20: "more close cuts overall")
+  HALVT = () => kamera(1.4, 960, 600),   // HALVT: halvbild där kärvens tak (topp y 217) får plats
   ANS = () => kamera(2.4, GRIS[0], iFig([512, 430])[1]),
-  KARVN = () => kamera(2.3, KARV[0], KTOPP[1] + 120), PASEN_K = () => kamera(2.4, ...iFig([780, 560])), GRANN = () => kamera(2.6, HOLK[0] - 60, HOLK[1]);
+  KARVN = () => kamera(2.3, KARV[0], KTOPP[1] + 120), PASEN_K = () => kamera(2.4, ...iFig([780, 560])), GRANN = () => kamera(2.6, HOLK[0] - 60, HOLK[1]),
+  HALVH = () => kamera(1.35, 1240, 640),   // större gris men holken kvar i bild när en fågel flyger ut (Sanna 2026-11-20: "bigger pig")
+  HOLKN = () => kamera(2.6, 1820, 500),   // närbild på fågelholkens tak med fåglarna (Sanna 2026-11-20, J16 0:53)
+  FAGLAR_N = () => kamera(2.6, 1000, 830), KARVG = () => kamera(1.9, 1120, 650);   // närbild på fåglarna vid fröna · nära grisen och kärven (Sanna 2026-11-20)
 
 // --- Ritintrot: kritan ritar den lilla blå fågeln -------------------------------------------------------------------------------
 const PF = [960, 760, 0.62];
-function papperFagel(k, fyll, { flax = 0, oppen = 0 } = {}) { papper();
+// ögat i teckningen (Sanna 2026-11-20, J16 0:27 "add eye to bird drawing"): kritan prickar dit det när konturen är klar.
+// oga 0–1 = prickens storlek; samma plats som det riktiga ögat (fagel.js: 632, 237), så teckningen blir som bilden
+const PF_OGA = [PF[0] - PF[2] * (632 - 400), PF[1] + PF[2] * (237 - 689)];
+function papperFagel(k, fyll, { flax = 0, oppen = 0, oga = 1 } = {}) { papper();
   const [x, y, s] = PF, t = `translate(${x} ${y}) scale(${-s} ${s}) translate(-400 -689)`;
   if (fyll > 0) lagg('faglar', `<g transform="${t}"><clipPath id="pf"><circle cx="420" cy="380" r="${(620 * fyll).toFixed(1)}"/></clipPath><g clip-path="url(#pf)">
     ${fagelSvg('bla', { t: TT, flax, oppen, blink: ((TT % 3.3) < 0.12) ? 1 : 0, ben: flax })}</g></g>`);
+  if (fyll < 1 && oga > 0.01) lagg('pilar', `<g opacity="${(1 - fyll).toFixed(2)}"><circle cx="${PF_OGA[0].toFixed(1)}" cy="${PF_OGA[1].toFixed(1)}" r="${(15 * oga).toFixed(1)}" fill="#6f6257"/>
+    <circle cx="${(PF_OGA[0] + 4).toFixed(1)}" cy="${(PF_OGA[1] - 5).toFixed(1)}" r="${(4 * oga).toFixed(1)}" fill="#FBF7EE"/></g>`);
   if (fyll < 1 && k > 0) return kontur('fagel', t, k, 10 / s);
   return null;
 }
 
 // --- Raderna --------------------------------------------------------------------------------------------------------------------
 const S = {
-  '01a': tl => { kamera(1); const sp = papperFagel(kl((tl - 0.3) / 6.2), 0); if (sp) krita(sp[0], sp[1], 125, 0.42 * (0.7 + 0.3 * del(0, 0.4, tl))); },
-  '01b': tl => { kamera(1); papperFagel(1, 0); kritaSvaj(1420, 320, 0.42, tl); },
+  // konturen 0,3–6,5 s, sedan glider kritan till ögat och prickar dit det (6,8–7,1 s) och stannar där
+  '01a': tl => { kamera(1); const sp = papperFagel(kl((tl - 0.3) / 6.2), 0, { oga: del(6.8, 7.1, tl) }), s = 0.42 * (0.7 + 0.3 * del(0, 0.4, tl));
+    if (tl < 6.5) { if (sp) krita(sp[0], sp[1], 125, s); return; }
+    const g = del(6.5, 6.8, tl), tryck = 8 * bump(6.8, 7.1, tl);
+    krita(lerp(sp[0], PF_OGA[0], g), lerp(sp[1], PF_OGA[1], g) + tryck, 125, s); },
+  '01b': (tl, d) => { kamera(1); papperFagel(1, 0); kritaSvaj(1420, 320, 0.42, tl, d, PF_OGA); },
   // fylls i, pipar; zoom in i teckningen, klipp till gården där den blå fågeln flyger in i granen
   '01c': (tl, d) => { const z0 = lo(1) + 0.2, klipp = z0 + 0.6;
     if (tl < klipp) { const z = del(z0, klipp, tl); kamera(lerp(1, 3, z * z), 960, 560);
@@ -217,64 +247,101 @@ const S = {
     gard(); HEL(); flyg('bla', [880, 700], I_GRAN.bla, klipp, d - 0.1, tl, { h: 160 }); },
 
   // --- Snögården: grisen kommer med påsen ---
-  '1': (tl, d) => { gard({ spar: kl(tl / 2.2) * 8 }); HEL(); PASEN = {};
-    const T = kl(tl / 2.2) * 2.2, x = lerp(-200, GRIS0[0], 1 - Math.pow(1 - kl(tl / 2.2), 1.7));
+  // Sanna 2026-11-20: "make gris bigger": kameran följer grisen in, halvbild i stället för helbild
+  '1': (tl, d) => { gard({ spar: kl(tl / 2.2) * 8 }); PASEN = {};
+    const T = kl(tl / 2.2) * 2.2, x = lerp(-200, GRIS0[0], 1 - Math.pow(1 - kl(tl / 2.2), 1.7)); kamera(2.0, x + 60, 630);
     let [f, p] = tl < 2.2 ? gaPose(T * 0.95) : [F('jatteglad'), {}]; f = F('jatteglad', { titt: f.titt });
     const vk = del(mo(0) + 0.2, mo(0) + 0.6, tl) * (1 - del(d - 1.0, d - 0.4, tl));
     gris(f, vink(p, vk, tl), { x }); },
   '2': tl => { gard({ spar: 8 }); PASEN_K(); const sk = Math.sin(tl * 22) * bump(0.15, 1.0, tl); PASEN = { v: 8 * sk };
-    gris(F('nyfiken', { titt: [12, 8 * del(0.8, 1.2, tl)] }), { armar: [0, 10 * sk], luta: 1.5 * sk }); },
-  '3': tl => { const u = del(0.05, 0.5, tl); gard({ spar: 8, fron: del(0.5, 1.6, tl) }); HALV();
-    PASEN = { v: lerp(0, 115, u) }; gris(F('glad', { titt: [14, 10 * u] }), { armar: [0, 40 * u], luta: 2 * u });
+    gris(F('nyfiken', { titt: [12, 8 * del(0.8, 1.2, tl)] }), { armar: [0, 30 + 10 * sk], luta: 1.5 * sk }); },   // påsen ut från kroppen så att den syns
+  // Sanna 2026-11-20: närbild, grisen håller fram påsen så att den syns, sedan tippar den och fröna faller (kameran följer ner)
+  '3': tl => { const fram = del(0, 0.5, tl), u = del(1.0, 1.5, tl), ner = del(1.1, 2.1, tl), F0 = 1.3; gard({ spar: 8, fron: del(F0 + 0.4, F0 + 1.7, tl) });
+    kamera(lerp(2.5, 1.9, ner), lerp(830, 900, ner), lerp(620, 720, ner));   // påsen tippar utåt (minus), inte in bakom magen
+    PASEN = { v: lerp(-6, -120, u) + 5 * Math.sin(tl * 4) * (1 - u) }; gris(F('glad', { titt: [14, lerp(-2, 10, u)] }), { armar: [0, 40 * fram + 10 * u], luta: 2 * u });
     // fröna faller i en båge ur påsen till snön
-    if (tl > 0.4 && tl < 1.7) { const [hx, hy] = hand(); lagg('fram', Array.from({ length: 9 }, (_, i) => { const w = kl((tl - 0.4 - i * 0.1) / 0.6); if (w <= 0 || w >= 1) return '';
+    if (tl > F0 && tl < F0 + 2.0) { const [hx, hy] = hand(); lagg('fram', Array.from({ length: 12 }, (_, i) => { const w = kl((tl - F0 - i * 0.1) / 0.6); if (w <= 0 || w >= 1) return '';
       const [mx, my] = FRON[i]; const x = lerp(hx + 40, mx, w), y = lerp(hy + 20, my, w) - 60 * Math.sin(Math.PI * w);
       return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7" ry="4.5" fill="#8a5a2b" stroke="#fff" stroke-width="2"/>`; }).join('')); } },
-  '4': tl => { gard({ spar: 8, fron: 1 }); HEL(); PASEN = { v: 30 };
-    gris(F('glad', { titt: [14 * del(0, 0.6, tl), -4] }), {}); flyg('rod', I_GRAN.rod, VID_FRON.rod, lo(1) - 0.1, lo(1) + 1.5, tl, { h: 180 }); },
-  '5': tl => { gard({ spar: 8, fron: 1 }); HALV(); PASEN = { v: 30 };
-    gris(F('glad', { titt: [14, 6] }), {}); fagel('rod', ...VID_FRON.rod, pick(tl, [0.6, 1.6, 2.6]));
-    flyg('gul', [1700, 520], VID_FRON.gul, 0, 1.3, tl, { h: 60 }); },
+  // Sanna 2026-11-20 (J16 0:53): närbild på fåglarna vid fågelholken och lugnare tempo. Först närbild på holkens tak: den röda
+  // fågeln pipar och tittar ner, Malin säger repliken, fågeln lyfter; klipp till grisen när den flyger (på flaxet, lo(1))
+  '4': tl => { gard({ spar: 8, fron: 1 }); const c = lo(1) - 0.1;
+    if (tl < c) { HOLKN(); const titt = del(lo(0) + 0.5, lo(0) + 1.0, tl) * (1 - del(c - 0.9, c - 0.5, tl)), lyft = bump(c - 0.45, c, tl);
+      fagel('rod', ...HOLK_TAK, { ...pip(tl, [lo(0)]), tilt: 14 * titt - 8 * lyft, flax: 0.8 * lyft, lyft: 4 * lyft }); return; }
+    HALVH(); PASEN = { v: 30 }; gris(F('glad', { titt: [14, -4] }), {});
+    flyg('rod', HOLK_TAK, VID_FRON.rod, c, c + 1.8, tl, { h: 180 }); },
+  // samma för den gula: närbild på taket (pip, repliken), klipp när den lyfter, landar bredvid den röda
+  '5': tl => { gard({ spar: 8, fron: 1 }); const c = lo(1) - 0.1;
+    if (tl < c) { HOLKN(); const titt = del(lo(0) + 0.5, lo(0) + 1.0, tl) * (1 - del(c - 0.9, c - 0.5, tl)), lyft = bump(c - 0.45, c, tl);
+      fagel('gul', ...HOLK_TAK, { ...pip(tl, [lo(0)]), tilt: 14 * titt - 8 * lyft, flax: 0.8 * lyft, lyft: 4 * lyft }); return; }
+    FAGLAR_N(); PASEN = { v: 30 }; gris(F('glad', { titt: [14, 6] }), {}); fagel('rod', ...VID_FRON.rod, pick(tl, [c + 0.6, c + 1.7, c + 2.8]));
+    flyg('gul', [1700, 520], VID_FRON.gul, c, c + 1.6, tl, { h: 60 }); },
   // pick, pick, pick: fröna försvinner ett och ett, det sista på det sista picket
-  '6': (tl, d) => { const tider = [lo(0), lo(1), lo(2)], kvar = 1 - del(lo(0), lo(2) + 0.2, tl);
-    gard({ spar: 8, fron: kvar }); HALV(); PASEN = { v: 30 }; gris(F('glad', { titt: [16, 10] }), {});
-    fagel('rod', ...VID_FRON.rod, pick(tl, tider)); fagel('gul', ...VID_FRON.gul, pick(tl, tider.map(t => t + 0.15))); },
+  // Sanna 2026-11-20: fler pick och fröna försvinner långsammare: de tre första picken tar båda, sedan turas de om; varje pick tar
+  // det närmaste fröet, som krymper bort på 0,35 s. Mellan picken hoppar fåglarna lite.
+  '6': (tl, d) => { const P6 = CUR.ljud.filter(([f]) => /^pick/.test(f)).map(([, o]) => o);
+    const vem = P6.map((_, i) => i < 3 ? 'bada' : i % 2 ? 'rod' : 'gul'), tR = P6.filter((_, i) => vem[i] !== 'gul'), tG = P6.filter((_, i) => vem[i] !== 'rod').map(t => t + 0.12);
+    gard({ spar: 8 }); kamera(2.0, 940, 760); PASEN = { v: 30 }; gris(F('glad', { titt: [16, 10] }), {});
+    const kvar = FRON.map(() => 1), tagen = [];
+    P6.forEach((a, i) => { const ff = vem[i] === 'gul' ? ['gul'] : vem[i] === 'rod' ? ['rod'] : ['rod', 'gul'];
+      ff.forEach(f => { const [bx, by] = VID_FRON[f]; let j = -1, b = 1e9; FRON.forEach(([x, y], k) => { const dd = Math.hypot(x - (bx - 40), y - by); if (!tagen.includes(k) && dd < b) { b = dd; j = k; } });
+        if (j >= 0) { tagen.push(j); kvar[j] = 1 - del(a + 0.05, a + 0.4, tl); } }); });
+    // de sista fröna (fler än picken) tas på det sista picket
+    FRON.forEach((_, k) => { if (!tagen.includes(k)) kvar[k] = 1 - del(P6.at(-1) + 0.05, P6.at(-1) + 0.4, tl); });
+    lagg('bak', FRON.map(([x, y], i) => kvar[i] < 0.02 ? '' : `<ellipse cx="${x}" cy="${y}" rx="${(7 * kvar[i]).toFixed(1)}" ry="${(4.5 * kvar[i]).toFixed(1)}" transform="rotate(${i * 37} ${x} ${y})" fill="#8a5a2b" stroke="#fff" stroke-width="2"/>`).join(''));
+    const hR = hopp(tl, [[2.45, -14], [3.65, 14]]), hG = hopp(tl, [[3.05, 12], [4.25, -12]]);
+    fagel('rod', VID_FRON.rod[0] + hR.dx, VID_FRON.rod[1], { ...pick(tl, tR), lyft: hR.lyft }); fagel('gul', VID_FRON.gul[0] + hG.dx, VID_FRON.gul[1], { ...pick(tl, tG), lyft: hG.lyft }); },
   // påsen är tom: upp och ner, skaka, ingenting kommer. Tom påse (fropase-tom).
   '7': tl => { gard({ spar: 8 }); PASEN_K(); const u = del(0.1, 0.6, tl), sk = Math.sin(tl * 18) * bump(0.7, 1.9, tl);
     PASEN = { v: lerp(30, 180, u) + 10 * sk, tom: true }; gris(F('forvanad', { titt: [12, lerp(8, -6, u)] }), { armar: [0, lerp(0, 60, u) + 6 * sk], luta: sk }); },
-  '8': tl => { gard({ spar: 8 }); HEL(); PASEN = { v: 30, tom: true }; gris(F('nyfiken', { titt: [14, 0] }), {});
+  '8': tl => { gard({ spar: 8 }); HALVH(); PASEN = { v: 30, tom: true }; gris(F('nyfiken', { titt: [14, 0] }), {});
     fagel('rod', ...VID_FRON.rod, pick(tl, [1.6])); fagel('gul', ...VID_FRON.gul);
     flyg('bla', I_GRAN.bla, VID_FRON.bla, lo(0) - 0.2, lo(0) + 1.3, tl, { h: 140, o: pip(tl, [lo(1)]) }); },
   // den lilla fågeln, inga frön kvar: lutar huvudet och tittar på den tomma snön
-  '9': tl => { gard({ spar: 8 }); kamera(3.0, VID_FRON.bla[0] - 40, VID_FRON.bla[1] - 60); fagel('rod', ...VID_FRON.rod); fagel('gul', ...VID_FRON.gul);
-    fagel('bla', ...VID_FRON.bla, { tilt: -16 * del(0.1, 0.5, tl) + 10 * bump(1.0, 1.6, tl), ...pip(tl, [lo(0)]) }); },
+  // Sanna 2026-11-20: fåglarna hoppar omkring och letar; den lilla pickar i den tomma snön, hittar inget och lutar huvudet
+  '9': tl => { gard({ spar: 8 }); kamera(2.6, VID_FRON.bla[0] - 70, VID_FRON.bla[1] - 50);
+    const hR = hopp(tl, [[0.8, -26], [2.0, 22], [3.4, -18], [4.5, 16]]), hG = hopp(tl, [[1.4, 24], [2.8, -30], [4.1, 14]]), hB = hopp(tl, [[1.1, 28], [2.6, -36], [3.9, 18]]);
+    fagel('rod', VID_FRON.rod[0] + hR.dx, VID_FRON.rod[1], { ...pick(tl, [1.3, 2.5, 4.0]), lyft: hR.lyft });
+    fagel('gul', VID_FRON.gul[0] + hG.dx, VID_FRON.gul[1], { ...pick(tl, [1.9, 3.4]), lyft: hG.lyft });
+    const pb = pick(tl, [1.7]), pp = pip(tl, [lo(0), 3.3]);
+    fagel('bla', VID_FRON.bla[0] + hB.dx, VID_FRON.bla[1], { tilt: pb.tilt - 16 * bump(0.2, 1.0, tl) - 18 * del(3.0, 3.3, tl) * (1 - del(4.6, 5.0, tl)), oppen: pb.oppen + pp.oppen, lyft: hB.lyft + pp.lyft }); },
   '10': tl => { gard({ spar: 8 }); ANS(); PASEN = { v: 30, tom: true }; const u = del(0.2, 1.4, tl); gris(F('ledsen', { le: -0.3 * u, titt: [14, 6] }), { oron: [14 * u, 14 * u] }); },
 
   // --- Kritan ritar julkärven ---
-  '11a': tl => { gard({ spar: 8 }); HEL(); PASEN = null; rPase(PASE_SNO); gris(F('nyfiken', { titt: [16, 0] }), {}); alla(VID_FRON);
+  '11a': tl => { gard({ spar: 8 }); kamera(1.5, 1000, 620); PASEN = null; rPase(PASE_SNO); gris(F('nyfiken', { titt: [16, 0] }), {}); alla(VID_FRON);
     const a = lo(0), k = kl((tl - a) / 4.2);
     if (tl < a) { krita(lerp(2100, KARV[0] + 120, del(0, a, tl)), lerp(200, KTOPP[1], del(0, a, tl)), 140, 0.33); return; }
     const sp = kontur('karve', karveT(), k, 9 / KARV[2]); krita(sp[0], sp[1], 125, 0.33); },
-  '11b': tl => { gard({ spar: 8 }); HEL(); rPase(PASE_SNO); gris(F('nyfiken', { titt: [16, -2] }), {}); alla(VID_FRON);
-    kontur('karve', karveT(), 1, 9 / KARV[2]); kritaSvaj(KARV[0] + 190, KTOPP[1] - 60, 0.33, tl); },
+  '11b': (tl, d) => { gard({ spar: 8 }); kamera(1.5, 1000, 620); rPase(PASE_SNO); gris(F('nyfiken', { titt: [16, -2] }), {}); alla(VID_FRON);
+    const sp = kontur('karve', karveT(), 1, 9 / KARV[2]); kritaSvaj(KARV[0] + 190, KTOPP[1] - 60, 0.33, tl, d, sp); },
   '11c': tl => { gard(); KARVN(); karve({ fyll: del(0, 0.9, tl) }); if (tl < 0.9) kontur('karve', karveT(), 1, 9 / KARV[2]);
     krita(lerp(KARV[0] + 190, 2100, del(0.4, 1.4, tl)), lerp(KTOPP[1] - 60, 100, del(0.4, 1.4, tl)), 140, 0.33); skimmer(KARV[0], KTOPP[1] + 180, 0.8 * bump(0.3, 2.0, tl), 2.2); },
   '12': tl => { gard(); KARVN(); karve(); [[-60, 60], [40, 30], [80, 120], [-30, 170], [20, 110]].forEach(([dx, dy], i) => {
     const o = 0.5 + 0.5 * Math.sin(tl * 4 + i * 1.7); lagg('fram', glans(KARV[0] + dx, KTOPP[1] + dy, 9 + 6 * o, o)); }); },
   '13': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); alla(VID_FRON); const u = del(0.2, 1.0, tl);
     gris(F('kawaii', { titt: [16, -6 * u] }), { oron: [-10 * u, -10 * u], upp: 0.3 * u }); },
-  '14': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); alla(VID_FRON); const [f, p] = nick(F('glad', { titt: [16, -4] }), {}, tl - mo(0) + 0.05); gris(f, p); },
+  '14': tl => { gard(); ANS(); karve(); rPase(PASE_SNO); alla(VID_FRON); const [f, p] = nick(F('glad', { titt: [16, -4] }), {}, tl - mo(0) + 0.05); gris(f, p); },
   // en … två … tre: fåglarna flyger upp till kärven en i taget
-  '15': tl => { gard(); HEL(); karve(); rPase(PASE_SNO); gris(F('glad', { titt: [16, -8] }), {});
+  '15': tl => { gard(); KARVG(); karve(); rPase(PASE_SNO); gris(F('glad', { titt: [16, -8] }), {});
     flyg('rod', VID_FRON.rod, PA_KARV.rod, lo(0), lo(0) + 0.9, tl, { h: 140 }); flyg('gul', VID_FRON.gul, PA_KARV.gul, lo(2), lo(2) + 0.9, tl, { h: 140 });
     flyg('bla', VID_FRON.bla, PA_KARV.bla, lo(4), lo(4) + 0.9, tl, { h: 120 }); },
   '16': tl => { gard(); KARVN(); karve(); fagel('rod', ...PA_KARV.rod); fagel('gul', ...PA_KARV.gul); fagel('bla', ...PA_KARV.bla, pick(tl, [lo(0), lo(0) + 0.7])); },
   // grisen smakar: sniffar fram mot kornen, på "nej, nej" backar den och fnissar
-  '17': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); alla(PA_KARV); const fram = del(0.2, 1.2, tl) * (1 - del(mo(0) + 0.3, mo(0) + 1.0, tl));
-    const fn = del(lo(1) - 0.1, lo(1) + 0.3, tl);
-    gris(fn > 0.5 ? F('fnissig') : F('nyfiken', { titt: [16, -10] }), { rikt: 0.5 * fram, luta: 5 * fram - 3 * fn, oron: [-14 * fn, -14 * fn] }, { x: GRIS0[0] + 70 * fram }); },
-  '18': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); gris(F('glad', { titt: [16, -8] }), {});
-    fagel('rod', ...PA_KARV.rod, pip(tl, [lo(1)])); fagel('gul', ...PA_KARV.gul, pip(tl, [lo(2)])); fagel('bla', ...PA_KARV.bla); },
+  // Sanna 2026-11-20: grisen går ända fram till kärven och smakar (trynet mot kornen, tuggar), fåglarna fladdrar;
+  // på "nej, nej" backar den tillbaka och fnissar
+  '17': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); const XK = 1050, m = mo(0);
+    const gaIn = kl((tl - 0.2) / 1.3), gaUt = kl((tl - m - 0.5) / 1.4), x = lerp(lerp(GRIS0[0], XK, mjuk(gaIn)), GRIS0[0], mjuk(gaUt));
+    const vid = del(1.4, 1.7, tl) * (1 - del(m + 0.2, m + 0.5, tl)), tugg = tl > 1.7 && tl < m + 0.2 ? Math.abs(Math.sin((tl - 1.7) * 2 * Math.PI / 0.55)) : 0;
+    const fn = del(lo(1) - 0.1, lo(1) + 0.3, tl), gar = (gaIn > 0 && gaIn < 1) || (gaUt > 0 && gaUt < 1);
+    let [f0, p0] = gar ? gaPose((gaIn < 1 ? gaIn : gaUt) * 2.0) : [F('nyfiken'), {}];
+    const f = fn > 0.5 ? F('fnissig') : F(vid > 0.5 ? 'mums' : 'nyfiken', { titt: [16, -10 + 6 * vid], ...(vid > 0.5 ? { mun: [12, 4 + 9 * tugg, 0, 468], streck: 0, kind: 1 } : {}) });
+    gris(f, { ...p0, rikt: 0.5 * vid, luta: 7 * vid + 1.5 * tugg - 3 * fn, strack: 0.02 * tugg, oron: [-14 * fn - 4 * tugg, -14 * fn - 4 * tugg] }, { x });
+    const fl = bump(1.6, 2.6, tl);   // fåglarna fladdrar och lutar sig bakåt när trynet kommer
+    alla(PA_KARV, { rod: { flax: 0.7 * fl, tilt: -12 * fl, lyft: 10 * fl }, gul: { flax: 0.5 * fl, tilt: -10 * fl, lyft: 6 * fl }, bla: { flax: 0.8 * fl, tilt: -14 * fl, lyft: 12 * fl } }); },
+  // Sanna 2026-11-20: mer luft: noff – pip (röda) – noff – pip (gula), grisen lutar sig mot fåglarna när den noffar; sedan repliken
+  '18': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); const n = bump(lo(0) - 0.1, lo(0) + 0.5, tl) + bump(lo(2) - 0.1, lo(2) + 0.5, tl);
+    gris(F('glad', { titt: [16, -8] }), { luta: 4 * n, rikt: 0.25 * n });
+    fagel('rod', ...PA_KARV.rod, pip(tl, [lo(1), lo(4) + 0.15])); fagel('gul', ...PA_KARV.gul, pip(tl, [lo(3), lo(4) + 0.3])); fagel('bla', ...PA_KARV.bla, pip(tl, [lo(4)])); },
   // kan du säga pip? grisen tar sats …
   '19': tl => { gard(); ANS(); const u = del(mo(0) + LN(23), CUR.d, tl); gris(F('nyfiken', { titt: [14, -8] }), { strack: -0.03 * u, lyft: -6 * u }); },
   // … och det blev ett noff: fåglarna lutar sig bakåt och blinkar
@@ -294,7 +361,7 @@ const S = {
     flyg('rod', PA_KARV.rod, I_GRAN.rod, lo(1), lo(1) + 1.1, tl, { h: 100 }); flyg('gul', PA_KARV.gul, I_GRAN.gul, lo(1) + 0.2, lo(1) + 1.3, tl, { h: 100 });
     flyg('bla', PA_KARV.bla, I_GRAN.bla, lo(1) + 0.4, lo(1) + 1.5, tl, { h: 80 }); },
   '24': tl => { gard({ sno: 0.8 }); KARVN(); karve({ snoPa: 1.2 }); },
-  '25': (tl, d) => { gard({ sno: 0.4 }); HEL(); karve({ snoPa: 1.2 }); rPase(PASE_SNO); fagel('rod', ...I_GRAN.rod); fagel('gul', ...I_GRAN.gul);
+  '25': (tl, d) => { gard({ sno: 0.4 }); kamera(1.7, 1050, 640); karve({ snoPa: 1.2 }); rPase(PASE_SNO); fagel('rod', ...I_GRAN.rod); fagel('gul', ...I_GRAN.gul);
     const a = lo(1) - 0.3, u = kl((tl - a) / 1.4), x = lerp(GRIS0[0], GRIS1[0], mjuk(u));
     if (u > 0 && u < 1) { const [f, p] = gaPose(u * 1.8); gris(F('glad', { titt: f.titt }), p, { x }); } else gris(F('glad', { titt: [14, -4] }), {}, { x }); },
 };
@@ -310,11 +377,11 @@ function skakaKarve(tl, a, { snoFore = 1.2, snoEfter = 0.6, fagelNer = null, B =
   if (fagelNer) flyg(fagelNer, I_GRAN[fagelNer], B, lo(1) - 0.1, pickAt - 0.15, tl, { h: 110, o: pick(tl, [pickAt]) });
 }
 Object.assign(S, {
-  '26': tl => { gard(); HALV(); fagel('gul', ...I_GRAN.gul); fagel('bla', ...I_GRAN.bla);
+  '26': tl => { gard(); KARVG(); fagel('gul', ...I_GRAN.gul); fagel('bla', ...I_GRAN.bla);
     skakaKarve(tl, lo(0), { fagelNer: 'rod', B: PA_KARV.rod, pickAt: lo(2) }); },
-  '27': tl => { gard(); HALV(); fagel('bla', ...I_GRAN.bla); skakaKarve(tl, lo(0), { snoFore: 0.6, snoEfter: 0.3, sittande: ['rod'], fagelNer: 'gul', B: PA_KARV.gul, pickAt: lo(2) }); },
+  '27': tl => { gard(); KARVG(); fagel('bla', ...I_GRAN.bla); skakaKarve(tl, lo(0), { snoFore: 0.6, snoEfter: 0.3, sittande: ['rod'], fagelNer: 'gul', B: PA_KARV.gul, pickAt: lo(2) }); },
   // tredje gången: ingen fågel kommer. Grisen tittar åt vänster, sedan åt höger
-  '28': tl => { gard(); HALV(); fagel('bla', ...I_GRAN.bla); const a = lo(0), u = bump(a - 0.25, a + 0.35, tl), vick = 5 * Math.sin((tl - a) * 14) * Math.exp(-3 * Math.max(0, tl - a)) * (tl > a ? 1 : 0);
+  '28': tl => { gard(); KARVG(); fagel('bla', ...I_GRAN.bla); const a = lo(0), u = bump(a - 0.25, a + 0.35, tl), vick = 5 * Math.sin((tl - a) * 14) * Math.exp(-3 * Math.max(0, tl - a)) * (tl > a ? 1 : 0);
     karve({ snoPa: 0.3 * (1 - del(a, a + 0.4, tl)), v: vick }); rPase(PASE_SNO); fagel('rod', ...PA_KARV.rod); fagel('gul', ...PA_KARV.gul);
     const m = mo(0) + 0.4, titt = tl < m ? 14 : tl < m + 1.2 ? lerp(14, -16, del(m, m + 0.4, tl)) : lerp(-16, 16, del(m + 1.2, m + 1.6, tl));
     gris(F('nyfiken', { titt: [titt, -4] }), { armar: [0, 70 * u], luta: 4 * u, rikt: 0.3 * u + 0.25 * Math.sign(titt) * del(m, m + 0.4, tl) }, { x: GRIS1[0] }); },
@@ -327,43 +394,46 @@ Object.assign(S, {
     skimmer(HOLK[0], HOLK[1], 0.35 * del(3.0, 3.4, tl), 0.45); },
   '30': tl => { gard(); GRANN(); const ut = del(0.3, 1.0, tl); lagg('faglar', `<clipPath id="hal"><ellipse cx="${HOLK[0]}" cy="${HOLK[1]}" rx="${15 + 60 * ut}" ry="${18 + 60 * ut}"/></clipPath>`);
     fagel('bla', HOLK[0] + 14 - 40 * ut, HOLK[1] + 34 + 10 * ut, { s: 0.07 + 0.035 * ut, klipp: 'clip-path="url(#hal)"', ...pip(tl, [lo(1)]) }); skimmer(HOLK[0] - 20, HOLK[1] - 10, 0.8 * bump(0, 1.6, tl), 0.9); },
-  '31': tl => { gard(); HALV(); skakaKarve(tl, lo(0), { snoFore: 0, snoEfter: 0, sittande: ['rod', 'gul'], fagelNer: 'bla', B: PA_KARV.bla, pickAt: lo(2) }); },
+  '31': tl => { gard(); KARVG(); skakaKarve(tl, lo(0), { snoFore: 0, snoEfter: 0, sittande: ['rod', 'gul'], fagelNer: 'bla', B: PA_KARV.bla, pickAt: lo(2) }); },
   '32': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); gris(F('glad', { titt: [16, -8] }), {}, { x: GRIS1[0] });
     alla(PA_KARV, { rod: pick(tl, [lo(0), 1.4]), gul: pick(tl, [lo(0) + 0.3, 1.8]), bla: pick(tl, [lo(0) + 0.6, 2.2]) }); },
 
   // --- Snön igen: kritan ritar ett tak ---
   '33': (tl, d) => { gard({ sno: del(0, 1.0, tl) }); HEL(); karve({ snoPa: del(0.5, d, tl) * 0.6 }); rPase(PASE_SNO);
-    gris(F('nyfiken', { titt: [6, -16 * del(0.4, 1.0, tl)] }), { upp: 0.5 * del(0.4, 1.0, tl) }, { x: GRIS1[0] }); alla(PA_KARV); },
-  '34a': tl => { gard({ sno: 0.6 }); kamera(1.4, KARV[0] - 100, 600); karve({ snoPa: 0.6 }); rPase(PASE_SNO); gris(F('nyfiken', { titt: [14, -12] }), {}, { x: GRIS1[0] }); alla(PA_KARV);
+    const ub = kl((tl - 0.3) / 1.2), bx = lerp(GRIS1[0], GRIS2[0], mjuk(ub));   // backar till den gamla platsen innan kritan ritar taket
+    if (ub > 0 && ub < 1) { const [, gp] = gaPose(ub * 1.6); gris(F('nyfiken', { titt: [6, -16 * del(0.4, 1.0, tl)] }), gp, { x: bx }); }
+    else gris(F('nyfiken', { titt: [6, -16 * del(0.4, 1.0, tl)] }), { upp: 0.5 * del(0.4, 1.0, tl) }, { x: bx }); alla(PA_KARV); },
+  '34a': tl => { gard({ sno: 0.6 }); kamera(1.4, KARV[0] - 100, 600); karve({ snoPa: 0.6 }); rPase(PASE_SNO); gris(F('nyfiken', { titt: [14, -12] }), {}, { x: GRIS[0] }); alla(PA_KARV);
     const a = lo(0); if (tl < a) { krita(lerp(2100, TAK.x + 200, del(0, a, tl)), lerp(200, TAK.y - 40, del(0, a, tl)), 140, 0.25); return; }
     const sp = takSvg(0, kl((tl - a) / 2.8)); krita(sp[0], sp[1], 125, 0.25); },
-  '34b': tl => { gard({ sno: 0.6 }); kamera(1.4, KARV[0] - 100, 600); karve({ snoPa: 0.6 }); rPase(PASE_SNO); gris(F('nyfiken', { titt: [14, -12] }), {}, { x: GRIS1[0] }); alla(PA_KARV);
-    takSvg(0, 1); kritaSvaj(TAK.x + 260, TAK.y - 60, 0.25, tl); },
+  '34b': (tl, d) => { gard({ sno: 0.6 }); kamera(1.4, KARV[0] - 100, 600); karve({ snoPa: 0.6 }); rPase(PASE_SNO); gris(F('nyfiken', { titt: [14, -12] }), {}, { x: GRIS[0] }); alla(PA_KARV);
+    const sp = takSvg(0, 1); kritaSvaj(TAK.x + 260, TAK.y - 60, 0.25, tl, d, sp); },
   '34c': tl => { gard({ sno: 0.6 }); kamera(1.4, KARV[0] - 100, 600); karve({ snoPa: 0.6 * (1 - del(0.3, 1.2, tl)) }); takSvg(del(0, 0.9, tl), 1, del(1.0, 2.6, tl)); rPase(PASE_SNO);
-    gris(F('kawaii', { titt: [14, -12] }), {}, { x: GRIS1[0] }); alla(PA_KARV); skimmer(TAK.x, TAK.y - 10, 0.8 * bump(0.3, 2.2, tl), 1.6);
+    gris(F('kawaii', { titt: [14, -12] }), {}, { x: GRIS[0] }); alla(PA_KARV); skimmer(TAK.x, TAK.y - 10, 0.8 * bump(0.3, 2.2, tl), 1.6);
     krita(lerp(TAK.x + 260, 2100, del(0.4, 1.4, tl)), lerp(TAK.y - 60, 100, del(0.4, 1.4, tl)), 140, 0.25); },
-  '35': tl => { gard({ sno: 0.3 }); HALVT(); karve({ tak: 1 }); rPase(PASE_SNO); alla(PA_KARV); const [f, p] = nick(F('glad', { titt: [14, -6] }), {}, tl - mo(0) + 0.05); gris(f, p, { x: GRIS1[0] }); },
+  '35': tl => { gard({ sno: 0.4 }); HALVT(); karve({ tak: 1 }); rPase(PASE_SNO); alla(PA_KARV); const [f, p] = nick(F('glad', { titt: [14, -6] }), {}, tl - mo(0) + 0.05); gris(f, p, { x: GRIS[0] }); },
   // fåglarna hoppar ner framför grisen och pipar, en i taget på "pip, pip, pip"
-  '36': tl => { gard(); HALVT(); karve({ tak: 1 }); rPase(PASE_SNO); gris(F('kawaii', { titt: [10, 10] }), {}, { x: GRIS1[0] });
+  '36': tl => { gard({ sno: 0.4 }); HALVT(); karve({ tak: 1 }); rPase(PASE_SNO); gris(F('kawaii', { titt: [10, 10] }), {}, { x: GRIS[0] });
     flyg('rod', PA_KARV.rod, FRAMFOR.rod, 0.1, 0.8, tl, { h: 50, o: pip(tl, [lo(0)]) }); flyg('gul', PA_KARV.gul, FRAMFOR.gul, 0.3, 1.0, tl, { h: 50, o: pip(tl, [lo(1)]) });
     flyg('bla', PA_KARV.bla, FRAMFOR.bla, 0.5, 1.2, tl, { h: 50, o: pip(tl, [lo(2)]) }); },
   // och sätter sig på grisen, en i taget på "en … två … tre"
-  '37': tl => { gard(); HALVT(); karve({ tak: 1 }); rPase(PASE_SNO); const g = F(tl > lo(6) - 0.2 ? 'fnissig' : 'jatteglad'); gris(g, { oron: [-8, -8] }, { x: GRIS1[0] });
+  '37': tl => { gard({ sno: 0.4 }); HALVT(); karve({ tak: 1 }); rPase(PASE_SNO); const g = F(tl > lo(6) - 0.2 ? 'fnissig' : 'jatteglad'); gris(g, { oron: [-8, -8] }, { x: GRIS[0] });
     const PA = { rod: huvud(-200, 520), gul: huvud(20, 100), bla: huvud(210, 520) };
     flyg('rod', FRAMFOR.rod, PA.rod, lo(0), lo(0) + 0.8, tl, { h: 90 }); flyg('gul', FRAMFOR.gul, PA.gul, lo(2), lo(2) + 0.9, tl, { h: 120 });
     flyg('bla', FRAMFOR.bla, PA.bla, lo(4), lo(4) + 0.8, tl, { h: 90 }); },
   // en snöflinga glider ner och lägger sig på trynet
-  '38': tl => { gard({ sno: 0.25 }); ANS(); const [nx, ny] = iFig([512, 470]), u = del(0.1, 1.3, tl);
+  '38': tl => { gard({ sno: 0.4 }); ANS(); const [nx, ny] = iFig([512, 470]), u = del(0.1, 1.3, tl);
     gris(F('forvanad', { titt: [0, 14 * u] }), {}); flinga(nx + 120 * (1 - u) + 20 * Math.sin(tl * 3) * (1 - u), lerp(ny - 330, ny - 10, u), 1.1); },
   // paus 4 s: barnet blåser, "Fff!": flingan blåses bort i en liten båge
-  '39': tl => { gard(); ANS(); const [nx, ny] = iFig([512, 470]), a = lo(0) - 0.1, w = del(a, a + 1.0, tl), fn = tl > lo(1) - 0.1;
+  '39': tl => { gard({ sno: 0.4 }); ANS(); const [nx, ny] = iFig([512, 470]), a = lo(0) - 0.1, w = del(a, a + 1.0, tl), fn = tl > lo(1) - 0.1;
     gris(fn ? F('fnissig') : F('forvanad', { titt: [0, 14] }), { oron: fn ? [-10, -10] : [0, 0] });
     if (w < 1) flinga(nx + 260 * w, ny - 10 - 220 * w + 100 * w * w, 1.1 * (1 - 0.4 * w)); },
-  '40': (tl, d) => { gard(); HEL(); karve({ tak: 1 }); rPase(PASE_SNO); const PA = { rod: huvud(-200, 520), gul: huvud(20, 100), bla: huvud(210, 520) };
+  // snön faller till slutet (Sanna 2026-11-20)
+  '40': (tl, d) => { gard({ sno: 0.4 }); HEL(); karve({ tak: 1 }); rPase(PASE_SNO); const PA = { rod: huvud(-200, 520), gul: huvud(20, 100), bla: huvud(210, 520) };
     ['rod', 'gul', 'bla'].forEach((f, i) => flyg(f, PA[f], PA_KARV[f], 0.1 + i * 0.25, 1.1 + i * 0.25, tl, { h: 150 }));
-    const vk = del(lo(1) - 0.3, lo(1) + 0.1, tl); gris(F('jatteglad'), vink({}, vk, tl), { x: GRIS1[0] }); },
-  '41': (tl, d) => { gard(); HEL(); karve({ tak: 1 }); rPase(PASE_SNO); alla(PA_KARV, { rod: pip(tl, [lo(0)]), gul: pip(tl, [lo(0) + 0.15]), bla: pip(tl, [lo(0) + 0.3]) });
-    const vk = 1 - del(d - 1.0, d - 0.3, tl); gris(F('glad'), vink({}, vk, tl), { x: GRIS1[0] }); },
+    const vk = del(lo(1) - 0.3, lo(1) + 0.1, tl); gris(F('jatteglad'), vink({}, vk, tl), { x: GRIS[0] }); },
+  '41': (tl, d) => { gard({ sno: 0.4 }); HEL(); karve({ tak: 1 }); rPase(PASE_SNO); alla(PA_KARV, { rod: pip(tl, [lo(0)]), gul: pip(tl, [lo(0) + 0.15]), bla: pip(tl, [lo(0) + 0.3]) });
+    const vk = 1 - del(d - 1.0, d - 0.3, tl); gris(F('glad'), vink({}, vk, tl), { x: GRIS[0] }); },
   '42': (tl, d) => { const c = CUR; CUR = RR['41']; S['41'](RR['41'].d, RR['41'].d); CUR = c; kritiris(lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))), [1100, 690]); },
 });
 
@@ -378,13 +448,15 @@ function ljud() {
   }
   const g0 = RR['01c'].s + RR['01c'].d - 1.2;
   ut.push({ t: g0, fil: E + 'fagelkvitter/fagelkvitter-1.m4a', vol: 0.22, langd: DURATION - g0, loop: true, fadeIn: 1.0, fade: 2.5 });
+  // låg julmusik under hela filmen (Sanna 2026-11-20, J16 1:31 "add low xmas music soundtrack"): kalenderns dagbädd 2, som 044 och 045
+  ut.push({ t: 0.2, fil: 'assets/ljud/musik/jul/jul-badd-2.m4a', vol: 0.10, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
   return ut.filter(c => c.t < DURATION);
 }
 
 function rita(t) {
   TT = t; const r = RAD_L.find(x => t < x.s + x.d) || RAD_L.at(-1); CUR = r;
   ['bak', 'sakerbak', 'saker', 'faglar', 'fram', 'pilar', 'ram', 'platta', 'figurer'].forEach(n => $(n).innerHTML = '');
-  GRIS = ['25', '26'].includes(r.id) || RAD_L.indexOf(r) > RAD_L.indexOf(RR['25']) ? GRIS1 : GRIS0; PASEN = null;
+  GRIS = RAD_L.indexOf(r) >= RAD_L.indexOf(RR['33']) ? GRIS2 : RAD_L.indexOf(r) >= RAD_L.indexOf(RR['25']) ? GRIS1 : GRIS0; PASEN = null;
   $('gomda').appendChild(G); kamera(1);
   S[r.id](Math.min(t - r.s, r.d), r.d);
   if (t > DURATION - SVART) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>`);
