@@ -17,6 +17,7 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="5"/>
     </filter>
+    <filter id="mjukStrale" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="14"/></filter>   <!-- mjuka strålar i sakbilderna -->
     <mask id="iris"><rect width="1920" height="1080" fill="#fff"/><circle id="irishal" cx="960" cy="540" r="300" fill="#000"/></mask>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -110,9 +111,9 @@ function sakbild(s, tl) {
   lagg('papper', `<rect width="1920" height="1080" fill="#F6C3D3"/><rect width="1920" height="1080" fill="#fff" opacity=".12" filter="url(#boil)"/><g id="sb" filter="url(#boil)"></g>`);
   // ljusstrålar bakom saken (Sanna 2026-11-20: "light beams for objects"): 12 mjuka kilar från mitten, roterar långsamt, tonas in
   const ink = del(0, 0.8, tl), rot = 3 * tl, N = 12;   // långsamt (Sanna: "not too fast")
-  lagg('papper', `<g opacity="${(0.38 * ink).toFixed(2)}" transform="rotate(${f1(rot)} 960 540)">${Array.from({ length: N }, (_, i) => { const a = i * 2 * Math.PI / N, b = a + Math.PI / N * 0.55, R = 1400;
+  lagg('papper', `<g opacity="${(0.24 * ink).toFixed(2)}" transform="rotate(${f1(rot)} 960 540)" filter="url(#mjukStrale)">${Array.from({ length: N }, (_, i) => { const a = i * 2 * Math.PI / N, b = a + Math.PI / N * 0.55, R = 1400;
     return `<path d="M960 540 L${f1(960 + R * Math.cos(a))} ${f1(540 + R * Math.sin(a))} L${f1(960 + R * Math.cos(b))} ${f1(540 + R * Math.sin(b))}Z" fill="#fff"/>`; }).join('')}</g>
-    <circle cx="960" cy="540" r="${f1(330 + 12 * Math.sin(tl * 2))}" fill="#fff" opacity="${(0.28 * ink).toFixed(2)}"/>`);
+    <circle cx="960" cy="540" r="${f1(330 + 12 * Math.sin(tl * 2))}" fill="#fff" opacity="${(0.2 * ink).toFixed(2)}" filter="url(#mjukStrale)"/>`);
   lagg('papper', `<g id="sb2" filter="url(#boil)"></g>`);
   const g = 1 + 0.025 * Math.sin(tl * 1.2), v = 2.5 * Math.sin(tl * 0.9);
   let h = `<g transform="translate(960 560) rotate(${f1(v)}) scale(${g.toFixed(3)}) translate(-960 -560)">`;
