@@ -254,7 +254,7 @@ ffmpeg -y -i in.wav -af "volume=$(echo "-3 - ($max)" | bc)dB,afade=t=in:d=0.02" 
 - **Väggsaken** (handduken på kroken) hänger bakom karet till höger om kranen, lite mindre än figuren, och rör sig aldrig.
 - **Lagren** i SVG:n, bakifrån: platta → `bak` (kranstrålen, fotspåren) → `kontur` (kritans linjer) → figuren → sakerna på vattnet → karet → `fram` (skum, bubblor, skumtuss, skimmer) → tvålen → kritan → `ram` (svep, iris, svart).
 - **Figuren i karet:** riggen står bakom karet med riggens y 640 vid kanten, så bara huvudet och en skymt av axlarna syns. Ben, svans, skugga och de armar som inte används döljs (`ikar`).
-- **Kokningen** (`#boil`, feTurbulence 0,025, skala 5 delat med zoomen, seed byts 10 gånger per sekund) ligger på figuren, sakerna och förgrunden, inte på plattan.
+- **Kokningen** (`#boil`, feTurbulence 0,025, skala 2,5 delat med kamerazoomen så att det blir 2,5 px i bild i alla bilder, seed byts 6 gånger per sekund; (Sanna 2026-11-21: "line boil is too strong")) ligger på figuren, sakerna och förgrunden, inte på plattan.
 
 ---
 

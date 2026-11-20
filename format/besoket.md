@@ -162,6 +162,7 @@ Det här gäller alla besök. Det mesta är gjort i `avsnitt/046-kaninen-gar-til
 - **Luft ovanför huvudet:** närbilderna läggs lite högre än huvudets mitt (`huvud[1] − 30`). Huvud och öron får aldrig klippas. Sanna har bett om det många gånger, så kontrollera varje närbild på en stillbild.
 - **Flytta doktorn i en närbild** (`dx`) när något vid djurets kant ska synas, till exempel örat som ramlar. Det är ett klipp, så hoppet märks inte.
 - **En detalj i rummet** gör det levande, till exempel en väggklocka bakom.
+- **Svag line boil:** `feDisplacementMap` 2,5 delat med kamerazoomen, satt varje bildruta, och ny brusbild 6 gånger/s. Med en fast skala växer darret med zoomen: 5 blev 14 px i en närbild, vilket var alldeles för starkt (Sanna 2026-11-21: "line boil is too strong").
 - **Mjukt, aldrig ryckigt:** uttryck och poser blandas över 0,3–0,5 s (`blanda`/`blandaPose`) och hoppar aldrig mellan två bildrutor. Samma bild över ett klipp ska ha samma pose på båda sidor. Kritan glider mellan dragen och står kvar i sista spetsen (`stetoBana`), annars fladdrar den.
 
 **Ljud**
