@@ -1,0 +1,41 @@
+p-abc  [excited] Kritans ABC!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-e  [excited] Det är ju E!
+p-bokstaven-e  [warm] Bokstaven E.
+p-e-som-i-ekorre  [warm] E som i ekorre.
+p-e-e-ekorre  [playful] E, e, ekorre!
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven E.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-elefant  [excited] Elefant!
+p-en-elefant  [excited] En elefant!
+p-elefant-e  [excited] Ja! Elefant börjar på bokstaven E.
+p-vad-blir  [curious] Vad blir det?
+p-ekorre  [excited] Ekorre!
+p-en-ekorre  [excited] En ekorre!
+p-ocksa-ekorre  [warm] Ekorre börjar också på E!
+p-ekollon  [excited] Ekollon!
+p-ett-ekollon  [excited] Ett ekollon!
+p-ocksa-ekollon  [warm] Ekollon börjar också på E!
+p-nuleker  [excited] Nu leker vi!
+p-entill  [curious] Titta! En till.
+p-vilken  [curious] Vilken ska bort?
+p-inte-e  [curious] Vilken börjar inte på E?
+p-katt  [curious] Katt.
+p-katten  [excited] Katten!
+p-katt-inte  [playful] Katt börjar inte på E.
+p-hej-da-katten  [warm] Hej då, katten!
+p-engang  [excited] En gång till!
+p-hund  [curious] Hund.
+p-hunden  [excited] Hunden!
+p-hund-inte  [playful] Hund börjar inte på E.
+p-hej-da  [warm] Hej då!
+p-enhorning  [excited] Enhörning!
+p-ek  [excited] Ek!
+p-emu  [excited] Emu!
+p-kotte  [curious] Kotte.
+p-kotten  [excited] Kotten!
+p-kotte-inte  [playful] Kotte börjar inte på E.
+p-alla-e  [warm] Alla börjar på bokstaven E.
+p-nu-dansar  [excited] Nu dansar vi!
+p-hej-da-slut  [warm] Hej då!

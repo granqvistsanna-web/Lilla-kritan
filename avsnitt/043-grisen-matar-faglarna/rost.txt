@@ -12,7 +12,7 @@
 12-fick-ingenting  [gently] Oj då. Den lilla fågeln fick ingenting.
 13-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
 14-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
-15-en-julkarve  [happy] En julkärve! Varsågod, grisen.
+15-en-julkarve  [happy] En julkärve! Varsågod, fåglarna.
 16-full-med-korn  [warmly] Full med korn till fåglarna.
 17-ska-vi-saga-tack  [warmly] Ska vi säga tack?
 18-tack  [happy] Tack!

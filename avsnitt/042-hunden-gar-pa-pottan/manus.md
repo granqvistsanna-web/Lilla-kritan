@@ -2,14 +2,14 @@
 
 **Status:** plan 2026-11-18, grind 1 (manus), version 3: längre, jultema, Malin pratar mer **med** hunden (*"Är du törstig?"*, *"Vill du ha mer vatten?"*, *"Ojdå, behöver du kissa?"*), tvätta händerna efter pottan och leka igen (Sanna 2026-11-18). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med hunden, hunden svarar med ljud, svans och öron. Inget är byggt än. Ca 4–4,5 min.
 
-Ett fristående julavsnitt, inte en lucka i julkalendern (där görs bara två åt gången, se `produktion/youtube/julkalender-parkerade.md`).
+Julkalenderns lucka 17 (Sanna 2026-11-20: "julkal intro and outro"): kalenderramen är intro och outro, så rad 00 (logotypen) är inte med i filmen. Mapp: `produktion/youtube/shorts/jul/17-hunden-gar-pa-pottan/`.
 
 | | |
 |---|---|
 | **Titel** | Hunden går på pottan (avsnitt 42) |
 | **Figurer (1)** | **Hunden Hugo** (v2, riggad, samma som 021 och 036), med **tomteluvan** (`rekvisita/tomteluva.md`) lite snett på huvudet |
 | **Platser (2)** | **Vardagsrummet v3, julpyntat** (`bakgrunder/vardagsrummet.md`: girlang, ljusslinga, julbonad, snö utanför fönstret i kod) med **julgranen** (`rekvisita/julgran.md`, pyntad) och ett **paket** (`rekvisita/paket.md`) under den → **badrummet** (`bakgrunder/badrummet.md`) med **handfatet** (`rekvisita/handfatet.md`), **pallen**, **tvålen** och **julhandduken** (`rekvisita/handduk-jul.md`) → tillbaka till vardagsrummet |
-| **Saker** | vattenglaset (mjölkglasets form, klart vatten i kod), **pottan** (finns, ritas av kritan), **toarullen** (ny, ritas av kritan, grind 2), bollen (`boll-rod`) |
+| **Saker** | vattenglaset (mjölkglasets form, klart vatten i kod), **pottan** (finns, ritas av kritan), **toarullen** (`rekvisita/toarulle.md`, ritas av kritan), bollen (`boll-rod`) |
 | **I kod** | snön utanför fönstret, ljusslingans blink, vattennivån, vattnet som kritan ritar, hundens rundare mage, pappersslingan, vattenstrålen och skummet vid handfatet, skimret, svansens vift |
 | **Musik** | ingen ny musik: julkarolen från 039 (`assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a`) lågt i början och i sista leken, tyst i badrummet |
 | **Favoriter** | 🐶 hund · 🍽️ dricka |
@@ -79,7 +79,7 @@ Kritan ritar hunden med tomteluvan: konturen i lugna drag (7 s), väntar medan b
 | 17 | Kritan kommer in och ritar en potta på golvet: konturen i ett drag (4 s), kort gisspaus, pottan fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En potta! Varsågod, hunden. | krita-ritar, `glitter` |
 | 18 | Hunden nickar direkt, fortfarande vickande | Tack, kritan! | `vov-ja` |
 | 19 | Hunden travar till pottan och sätter sig, pottan glider in framför | Snabbt, snabbt! Upp på pottan. | små snabba steg |
-| 20 | Halvbild, hunden sitter på pottan. Kort paus, sedan lättad min | *(paus 2 s)* Ahh. | ett mycket tyst, kort litet porl (ca 1,5 s, −18 dBFS) under pausen, sedan mysig suck |
+| 20 | Halvbild, hunden sitter på pottan. Kort paus, sedan lättad min | *(paus 2 s)* Ahh. | `porl` (1,6 s, −18 dBFS) under pausen, sedan `vov-suck` |
 | 21 | Hunden ser glad ut, svansen viftar | Ja! Vad bra att du går på pottan! | `vov-ja`, `svansvift` |
 | 22 | Samma | Bra, hunden! | `vov-fniss` |
 | 23 | Hunden tittar åt vänster, sedan åt höger, öronen faller lite | Nu ska du torka dig. Oj! Inget papper! | frågande `vov-pip` |
@@ -89,7 +89,7 @@ Kritan ritar hunden med tomteluvan: konturen i lugna drag (7 s), väntar medan b
 | 27 | Hunden tittar åt vänster, sedan åt höger | Var är rullen nu? | frågande `vov-pip` |
 | 28 | Klipp till helbild: pappersslingan går över golvet och försvinner bakom handfatet. Efter 3 s skimrar slingans slut svagt | Kan du hjälpa hunden? Kan du se var rullen är? *(paus 5 s)* | tyst |
 | 29 | Slingans slut och en bit av rullen skimrar tydligt bakom handfatet | Ja, där! Bakom handfatet! | `vov-ja`, `tindra` |
-| 30 | Närbild, hunden river av en lapp från slingan vid pottan | Ett papper. | litet ritsch |
+| 30 | Närbild, hunden river av en lapp från slingan vid pottan | Ett papper. | `ritsch` |
 | 31 | Hunden torkar sig, en gång, bara tassen syns röra sig bakom pottkanten | Torka, torka … klart! | `vov-ja` |
 | 32 | Hunden släpper lappen i pottan och reser sig | Och papperet i pottan. Plopp! | duns, `vov-fniss` |
 | 33 | Hunden tittar mot handfatet | Vet du vad vi gör nu? *(paus 4 s)* Vi tvättar händerna! | `vov-ja` |
@@ -180,7 +180,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 ## Hundens röst
 
-Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov-pip`, `vov-babbel`, `vov-hejda`, `flamt-valp`, `nos`, `svansvift`. Övrigt: `klunk`, `glitter`, `tindra`, `klapp`, `hopp-mjuk`, `boing`, `bjallror`, `kran`, `plask`, `duns`. Saknas: en mysig suck för hunden (20), ett mjukt rull för pappersrullen, ett litet ritsch när papperet rivs av, och kissljudet: ett mycket tyst, kort porl (Sanna 2026-11-18). Openverse först.
+Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov-pip`, `vov-babbel`, `vov-hejda`, `flamt-valp`, `nos`, `svansvift`. Övrigt: `klunk`, `glitter`, `tindra`, `klapp`, `hopp-mjuk`, `boing`, `bjallror`, `kran`, `plask`, `duns`. Klara 2026-11-19: `ritsch` och `porl` (Openverse, CC0), `rull` finns sedan 014. Och `vov-suck` (ElevenLabs SFX, 2026-11-20) till uppslag 20. Grind 4 klar.
 
 ## Regelkoll
 
@@ -197,10 +197,18 @@ Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov
 - [ ] **Avsteg:** kritan ritar fyra gånger (vatten två gånger, pottan, toarullen). Receptet säger två
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt
 
+## Grind 6 (2026-11-20)
+
+- **Kaktusrummet i stället för vardagsrummet** (Sanna: "use diffrent bg … try kaktustummet", "no rug", "no gran"): `kaktusrummet-v1`, förlängt åt höger till 2880 px (`scener/badrummet/kaktusrummet-bred.jpg`) så att kameran följer hunden. Ingen matta, ingen gran, inget fönster.
+- **Repliker ändrade** (Sanna: "we can change lines to fit"): 07 *"Ha ha! Bollen hamnade under pallen."* (ny tagning 2026-11-20, inklippt), 52 *"Nu dansar hunden!"* (klippt ur tagning 1, originalet i `produktion/ljud-original/roster/hunden-gar-pa-pottan/fore-kaktus/`). Rad 43 och replik 51 (*"Det snöar!"*) är borttagna. Rad 44 (dansen, replik 52) är borttagen efter feedback J17 2026-11-20 ("remove dans").
+- **Musiken lägre** (Sanna: "lower music"): karolen 0,3 × 0,4 i scenen mot 0,25 i animatiken.
+- Rad 6 fick 1,3 s mer före repliken, så att hunden hinner plocka upp glaset.
+- Scenen: `scener/badrummet/index.html`, ritintrots kontur spårad ur riggen (`hund-kontur.json`). Julkalenderns lucka 17 är intro och outro.
+
 ## Öppet
 
-1. **Toarullen** är en ny sak: tagningar i Flow med pottan som stilreferens (grind 2).
-2. **Vattenglaset:** mjölkglasets urklipp med vatten i kod, eller ett eget glas (grind 2).
+1. ~~**Toarullen**~~ klar 2026-11-19: tagning 2 vald, `rekvisita/toarulle.md`, `assets/rekvisita/toarulle/cut/toarulle.png`.
+2. ~~**Vattenglaset**~~ klart 2026-11-19: mjölkglasets urklipp (`rekvisita/mjolkglas.md`) med klart vatten i kod (Sanna).
 3. **Badrummet i jul?** Plattan har inget julpynt. Julhandduken räcker kanske, annars en liten ljusslinga i kod längs kakelkanten.
 4. **Tomteluvan på hunden:** luvan gjordes för grisen (lucka 23). Mät hundens huvud så att brättet sitter rätt.
 5. **Avsnittets färg** till introt: förslag julröd som tomteluvan.

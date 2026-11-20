@@ -178,6 +178,10 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Druvorna | [druvor.md](druvor.md) | Kritans ABC: D |
 | Duvan | [duva.md](duva.md) | Kritans ABC: D |
 | Dörren (ABC) | [dorr-abc.md](dorr-abc.md) | Kritans ABC: D |
+| Ekollonet | [ekollon.md](ekollon.md) | Kritans ABC: E |
+| Enhörningen | [enhorning.md](enhorning.md) | Kritans ABC: E |
+| Eken | [ek.md](ek.md) | Kritans ABC: E |
+| Emun | [emu.md](emu.md) | Kritans ABC: E |
 | Avokadon | [avokado.md](avokado.md) | Ljudjakten A |
 | Ambulansen | [ambulans.md](ambulans.md) | Ljudjakten A |
 | Klädhängaren | [kladhangare.md](kladhangare.md) | 039 |
@@ -197,3 +201,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Bakplåten | [bakplat.md](bakplat.md) | 045 |
 | Ringklockan | [ringklocka.md](ringklocka.md) | 045 |
 | Grytlapparna | [grytlappar.md](grytlappar.md) | 045 |
+| Toarullen | [toarulle.md](toarulle.md) | 042 |

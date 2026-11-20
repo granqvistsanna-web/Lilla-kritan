@@ -2,7 +2,7 @@
 
 **Status:** plan 2026-11-18, grind 1 (manus). Bilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med grisen, grisen svarar med ljud, öron och tryne. Inget är byggt än. Ca 4,5 min.
 
-Fåglarna är **saker, inte figurer** (Sanna 2026-11-18: *"fåglarna som saker är ok"*): små klistermärken med ögon i kod, ingen rigg, de säger bara *pip*, som 020:s badanka. Ett fristående julavsnitt, inte en lucka (julkalendern gör två åt gången, se `produktion/youtube/julkalender-parkerade.md`).
+Fåglarna är **saker, inte figurer** (Sanna 2026-11-18: *"fåglarna som saker är ok"*): små klistermärken med ögon i kod, ingen rigg, de säger bara *pip*, som 020:s badanka. Julkalenderns lucka 16 (Sanna 2026-11-20), se `produktion/youtube/julkalender-parkerade.md`.
 
 | | |
 |---|---|
@@ -60,7 +60,7 @@ Kritan ritar **den lilla blå fågeln**, inte grisen (Sanna 2026-11-18): konture
 | 8 | Den lilla blå fågeln från ritintrot flyger ut ur granen och landar bredvid de andra | Och där kommer den lilla blå fågeln. | litet pip |
 | 9 | Den blå fågeln lutar huvudet, inga frön kvar | Oj då. Den lilla fågeln fick ingenting. | litet tyst pip |
 | 10 | Närbild, grisen tittar på den lilla fågeln, öronen sjunker lite | Hm … vad gör vi nu? | trumpet noff |
-| 11 | Kritan kommer in och ritar julkärven på en stång i snön: konturen (4,5 s, stången, axen som egna drag, rosetten), gisspaus, kärven fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En julkärve! Varsågod, grisen. | krita-ritar, `glitter` |
+| 11 | Kritan kommer in och ritar julkärven på en stång i snön: konturen (4,5 s, stången, axen som egna drag, rosetten), gisspaus, kärven fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En julkärve! Varsågod, fåglarna. | krita-ritar, `glitter` |
 | 12 | Närbild på kärven, kornen glimmar | Full med korn till fåglarna. | `tindra` |
 | 13 | Grisen tittar på kärven, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* | nyfiket noff |
 | 14 | Grisen nickar | Tack! | förtjust noff |
@@ -114,7 +114,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [gently] Oj då. Den lilla fågeln fick ingenting.
 [curious] Hm … vad gör vi nu?
 [excited] Titta! Kritan ritar något.
-[happy] En julkärve! Varsågod, grisen.
+[happy] En julkärve! Varsågod, fåglarna.
 [warmly] Full med korn till fåglarna.
 [warmly] Ska vi säga tack?
 [happy] Tack!

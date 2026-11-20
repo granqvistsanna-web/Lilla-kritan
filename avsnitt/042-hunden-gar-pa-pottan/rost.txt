@@ -1,0 +1,54 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-hund  [excited] Oj! En hund!
+04-hej-hunden  [happy] Hej, hunden! Hej, hej!
+05-fin-tomteluva  [delighted] Oj, vilken fin tomteluva du har!
+06-vad-du-leker  [laughs] Oj, vad du leker!
+07-under-pallen  [chuckles] Ha ha! Bollen hamnade under pallen.
+08-ar-du-torstig  [warmly] Puh! Är du törstig, hunden?
+09-glas-vatten  [cheerfully] Här är ett glas vatten. Klunk, klunk … slut!
+10-mer-vatten  [warmly] Vill du ha mer vatten?
+11-vad-ritar-kritan  [curious] Vad ritar kritan nu?
+12-mer-vatten-svar  [excited] Mer vatten!
+13-klunk-2  [happy] Klunk, klunk … slut!
+14-annu-mer  [playfully] Vill du ha ännu mer?
+15-kritan-ritar-vatten  [excited] Kritan ritar mer vatten!
+16-klunk-3  [happy] Klunk, klunk … slut!
+17-sa-mycket-vatten  [laughs] Oj, så mycket vatten!
+18-vad-gor-du  [surprised] Oj! Vad gör du, hunden?
+19-behover-du-kissa  [warmly] Ojdå. Behöver du kissa?
+20-till-badrummet  [cheerfully] Kom, vi går till badrummet!
+21-var-ar-pottan  [curious] Hm … var är pottan? Ingen potta!
+22-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+23-en-potta  [happy] En potta! Varsågod, hunden.
+24-tack-kritan  [warmly] Tack, kritan!
+25-snabbt-snabbt  [cheerfully] Snabbt, snabbt! Upp på pottan.
+26-ahh  [happy sigh] Ahh.
+27-vad-bra-pottan  [delighted] Ja! Vad bra att du går på pottan!
+28-bra-hunden  [happy] Bra, hunden!
+29-inget-papper  [curious] Nu ska du torka dig. Oj! Inget papper!
+30-kritan-ritar-igen  [curious] Kritan ritar igen.
+31-en-toarulle  [happy] En toarulle! Varsågod.
+32-tack-kritan-2  [warmly] Tack, kritan!
+33-rullen-rullar  [surprised] Oj! Rullen rullar iväg!
+34-var-ar-rullen  [curious] Var är rullen nu?
+35-kan-du-hjalpa  [warmly] Kan du hjälpa hunden? Kan du se var rullen är?
+36-ja-dar  [excited] Ja, där! Bakom handfatet!
+37-ett-papper  [cheerfully] Ett papper.
+38-torka-torka  [happy] Torka, torka … klart!
+39-plopp  [playfully] Och papperet i pottan. Plopp!
+40-vet-du-vad  [warmly] Vet du vad vi gör nu?
+41-tvatta-handerna  [happy] Vi tvättar händerna!
+42-upp-pa-pallen  [cheerfully] Upp på pallen. Vatten på!
+43-gnugga-1  [happy] Gnugga, gnugga … ren!
+44-gnugga-2  [happy] Gnugga, gnugga … ren!
+45-skum-pa-nosen  [laughs] Oj! Skum på nosen! Gnugga, gnugga … ren!
+46-torka-handduken  [warmly] Och torka på handduken.
+47-klappa-handerna  [happy] Bra, hunden! Ska vi klappa händerna?
+48-leka-igen  [excited] Kom! Nu kan vi leka igen!
+49-dar-ar-bollen  [happy] Där är bollen!
+50-hopp  [playfully] Hopp!
+51-det-snoar  [excited] Titta! Det snöar!
+52-dansar  [laughs] Nu dansar hunden!
+53-hej-da-god-jul  [happy] Hej då, hunden! God jul!
+54-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

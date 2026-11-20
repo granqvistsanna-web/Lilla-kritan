@@ -12,7 +12,7 @@
 12-fick-ingenting 2.73
 13-vad-gor-vi-nu 1.61
 14-kritan-ritar-nagot 2.03
-15-en-julkarve 2.67
+15-en-julkarve 2.85
 16-full-med-korn 1.67
 17-ska-vi-saga-tack 0.98
 18-tack 0.49
