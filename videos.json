@@ -1461,7 +1461,7 @@
   "duration": 179.2,
   "rendered": "2026-11-19 09:29 (Malin 0,5 s efter rörelsen genom hela filmen, och förra förhandsvisningen hade bilden 4 s före rösten (15 fps-fel i luckbygget, fixat); större gran med toppen tydligt utanför bild; inget vindljud; 179 s)",
   "file": "produktion/youtube/shorts/jul/12-tittut-grisen/12-tittut-grisen.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Tittut grisen"
  },
  "J07": {
@@ -1485,7 +1485,7 @@
   "duration": 219.9,
   "rendered": "2026-11-19 07:02",
   "file": "produktion/youtube/shorts/jul/13-grona-sangen/13-grona-sangen.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Gröna sången"
  },
  "J10": {
@@ -1493,7 +1493,7 @@
   "duration": 131.9,
   "rendered": "2026-11-19 07:12 (Julgranen, snögubben och julklappen, samma upplägg som lucka 5)",
   "file": "produktion/youtube/shorts/jul/10-tre-pussel-till/10-tre-pussel-till.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Lucka 10: Tre pussel till"
  },
  "J18": {
@@ -1501,7 +1501,7 @@
   "duration": 235.7,
   "rendered": "2026-11-19 07:14",
   "file": "produktion/youtube/shorts/jul/14-bruna-sangen/14-bruna-sangen.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Bruna sången"
  },
  "J21": {
@@ -1509,7 +1509,7 @@
   "duration": 219.4,
   "rendered": "2026-11-19 07:27",
   "file": "produktion/youtube/shorts/jul/18-rosa-sangen/18-rosa-sangen.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Rosa sången"
  },
  "J11": {
@@ -1517,7 +1517,7 @@
   "duration": 161.0,
   "rendered": "2026-11-19 07:31 (grovklipp av 016)",
   "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Blinka lilla stjärna"
  },
  "ABC-a5": {
