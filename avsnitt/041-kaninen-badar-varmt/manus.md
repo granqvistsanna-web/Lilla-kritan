@@ -1,6 +1,6 @@
 # Avsnitt 041 – Kaninen badar varmt (plan)
 
-**Status:** 2026-11-18: grind 1 (manus v3) godkänd. Grind 2 klar: fläkten tagning 1 (`rekvisita/flakt.md`). Grind 3: tagning 1 delad (42 av 46 repliker, normaliserade till −3 dBFS i `assets/ljud/roster/kaninen-badar-varmt/`). ElevenLabs hoppade över 10, 26, 27 och 37, slog ihop 36, och lade till egna rader efter 29 (bortklippta). Rad 10, 26, 27 och 37 ströks (Sanna), rad 36 är bara "Fläkten blåser.", och tagningens extra "Tack, kritan!" efter båten blev rad 48. Rösten klar. Grind 4 klar: alla kaninljud fanns, nya `droppar-1` och `flakt-1`. Nästa: grind 5, animatiken.
+**Status:** ✅ **Klart, godkänt av Sanna 2026-11-20 ("final approved")**: `scener/badet/badet.mp4` och julkalenderns lucka 9 (`produktion/youtube/shorts/jul/09-kaninen-badar-varmt/`, 236,6 s, −16,0 LUFS). Historik: 2026-11-18: grind 1 (manus v3) godkänd. Grind 2 klar: fläkten tagning 1 (`rekvisita/flakt.md`). Grind 3: tagning 1 delad (42 av 46 repliker, normaliserade till −3 dBFS i `assets/ljud/roster/kaninen-badar-varmt/`). ElevenLabs hoppade över 10, 26, 27 och 37, slog ihop 36, och lade till egna rader efter 29 (bortklippta). Rad 10, 26, 27 och 37 ströks (Sanna), rad 36 är bara "Fläkten blåser.", och tagningens extra "Tack, kritan!" efter båten blev rad 48. Rösten klar. Grind 4 klar: alla kaninljud fanns, nya `droppar-1` och `flakt-1`. Nästa: grind 5, animatiken.
 
 **Ändrat i v3 (Kimis granskning, Sanna 2026-11-18):** fläkten står vid dörröppningen och drar in doften från köket · rad 29: skutten först, sedan repliken · luktpausen 3 s.
 
