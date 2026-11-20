@@ -6740,9 +6740,10 @@
   "sec": 42,
   "tags": [],
   "note": "add xmas music like jinglebells instrumental",
-  "fixed": false,
+  "fixed": true,
   "at": 1795181764833,
-  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)"
+  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)",
+  "fixedAt": 1795182639950
  },
  "u8a5kgf172mwp0vw79": {
   "ep": "J15",
@@ -6750,9 +6751,10 @@
   "sec": 82,
   "tags": [],
   "note": "more smooth animations",
-  "fixed": false,
+  "fixed": true,
   "at": 1795181787332,
-  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)"
+  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)",
+  "fixedAt": 1795182639950
  },
  "rshr78l9himwp0w6r8": {
   "ep": "J15",
@@ -6760,9 +6762,10 @@
   "sec": 90,
   "tags": [],
   "note": "a bit lower bää sounds",
-  "fixed": false,
+  "fixed": true,
   "at": 1795181801012,
-  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)"
+  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)",
+  "fixedAt": 1795182639950
  },
  "18eq9cad5nmwp0xe7p": {
   "ep": "J15",
@@ -6770,8 +6773,9 @@
   "sec": 198,
   "tags": [],
   "note": "make lamm walk away to send cookies to oven and get them too not just plåt flying around",
-  "fixed": false,
+  "fixed": true,
   "at": 1795181857332,
-  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)"
+  "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)",
+  "fixedAt": 1795182639950
  }
 }
