@@ -1559,5 +1559,13 @@
   "file": "produktion/youtube/shorts/jul/15-lammet-bakar-pepparkakor/15-lammet-bakar-pepparkakor-liten.mp4",
   "status": "granska",
   "name": "045 Lammet bakar pepparkakor"
+ },
+ "044": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/044-1120-0749.mp4",
+  "duration": 275.1,
+  "rendered": "2026-11-20 07:49 (Lucka 8, godkänd 19/11 (275,1 s, −16 LUFS))",
+  "file": "produktion/youtube/shorts/jul/08-katten-snogubbe/08-katten-snogubbe-liten.mp4",
+  "status": "klar",
+  "name": "044 Katten gör en snögubbe"
  }
 }
