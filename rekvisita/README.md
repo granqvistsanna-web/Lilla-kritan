@@ -202,3 +202,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Ringklockan | [ringklocka.md](ringklocka.md) | 045 |
 | Grytlapparna | [grytlappar.md](grytlappar.md) | 045 |
 | Toarullen | [toarulle.md](toarulle.md) | 042 |
+| Stetoskopet | [stetoskop.md](stetoskop.md) | 046 |
+| Öronlampan | [oronlampa.md](oronlampa.md) | 046 |
