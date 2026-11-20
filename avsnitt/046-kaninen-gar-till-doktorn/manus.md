@@ -6,7 +6,7 @@
 |---|---|
 | **Titel** | Kaninen går till doktorn (avsnitt 46) |
 | **Figurer (2)** | **Kaninen Kanel** (v2, riggad, sittposen finns) · **Doktorn** (ny, **mer mänskliga proportioner och en egen rigg**, Sanna 2026-11-20: runt huvud på kort hals, kropp i rock, raka armar och ben; görs med `lk-figur`, prompterna i [`doktorn-prompter.md`](doktorn-prompter.md)). **Sanna valde doktorn A** 2026-11-20 (vit rock, röda lockar): [`karaktarer/doktorn-a.md`](../../karaktarer/doktorn-a.md). Doktorn står still vid britsen, nickar, ler och vinkar |
-| **Platser (1)** | **Mottagningen** (ny platta 16:9): lugn mintgrön vägg, varmt ljust golv, britsen med papper mitt i bild, ett fönster, en tavla med en sol, en liten pall framför britsen. Inget platsbyte |
+| **Platser (1)** | **Mottagningen** (ny platta 16:9, [`bakgrunder/mottagningen.md`](../../bakgrunder/mottagningen.md), alternativ D vald av Sanna 2026-11-20): himmelsblå vägg, korallröd brits med papper, vit pall, undersökningslampa på väggen, ljust golv. Inget platsbyte |
 | **Saker** | **nallen** (finns, `rekvisita/nalle.md`, ritas av kritan) · **stetoskopet** (nytt) · **öronlampan** (ny) |
 | **I kod** | stetoskopets slang (mjuk kritkurva från doktorns hals till handen), lampans ljus, klistermärket med stjärnan (ritas av kritan), skimret, hjärtslagens små ringar |
 | **Musik** | ingen |
@@ -167,5 +167,5 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 ## Öppet
 
 - ~~Hur doktorn ser ut~~ **Doktorn A**, vit rock och röda lockar (Sanna 2026-11-20). Doktorn B (ljusblå rock) sparas till BVC eller tandläkaren.
-- Mottagningens vägg: mintgrön eller ljusblå?
+- ~~Mottagningens vägg~~ **himmelsblå** (alternativ D, Sanna 2026-11-20).
 - ~~Vad doktorn heter internt~~ `doktorn-a` (filnamnet i `karaktarer/`). I det som sägs är det alltid *"doktorn"*.
