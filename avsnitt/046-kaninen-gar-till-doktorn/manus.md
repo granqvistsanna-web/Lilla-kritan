@@ -11,7 +11,7 @@
 | **I kod** | stetoskopets slang (mjuk kritkurva från doktorns hals till handen), lampans ljus, klistermärket med stjärnan (ritas av kritan), skimret, hjärtslagens små ringar |
 | **Musik** | ingen |
 | **Favoriter** | 🐰 kanin · 🧸 nalle |
-| **Kärna** | Kaninen kommer till doktorn och är lite osäker. Kritan ritar en nalle: *"Varsågod!"* – *"Tack!"* Nallen är med. Upp på britsen. Doktorn gör tre saker, **först på nallen, sedan på kaninen**: lyssnar på magen (*"Lyssna, lyssna … dunk, dunk!"*), tittar i öronen (*"Titta, titta … fint!"*) och kaninen gapar (*"Gapa … aaa!"*). Nallen ramlar ner och gömmer sig under britsen, barnet hittar den. Kritan ritar ett klistermärke med en stjärna. *"Tack, doktorn!"* Hej då! |
+| **Kärna** | Kaninen kommer till doktorn och är lite osäker. Kritan ritar en nalle: *"Varsågod!"* – *"Tack!"* Nallen är med. Upp på britsen. Doktorn gör tre saker, **först på nallen, sedan på kaninen**: lyssnar på magen (*"Lyssna, lyssna … dunk, dunk!"*), tittar i öronen (*"Titta, titta … fint!"*) och kaninen gapar (*"Gapa … aaa!"*). Nallen ramlar ner och gömmer sig bakom pallen, barnet hittar den. Kritan ritar ett klistermärke med en stjärna. *"Tack, doktorn!"* Hej då! |
 | **Barnet övar på** | känna igen doktorns rum och saker · ordningen: hej, upp på britsen, lyssna, titta, gapa, klistermärke, hej då · peka på sin mage och sina öron · gapa · säga tack |
 
 ## Så rör det sig
@@ -28,7 +28,7 @@
 | Lampan | en mjuk gul cirkel tänds med `lampa-klick` och lyser på örat. Örat glöder svagt varmt. Släcks när handen går ut |
 | Örat ramlar ner | kaninens ena öra faller lugnt ner framför ögat (vridning 0 → 70° på 0,5 s) och lyfts upp igen av tassen (raka armen) |
 | Gapar | O-munnen, öppnas på 0,3 s, hålls 1,2 s, stängs |
-| Nallen ramlar | nallen glider ur famnen när kaninen klappar på magen, glider ner längs britsens kant och in under den. Bara ena örat syns under britsens kant |
+| Nallen ramlar | nallen glider ur famnen när kaninen klappar på magen, glider ner längs britsens kant och landar bakom pallen. Bara ena örat tittar fram över pallens kant (pallen ligger i plattan, så nallen läggs bakom en mask av pallen; Sanna 2026-11-20: britsens ram är öppen, så nallen gömmer sig bakom pallen) |
 | Klistermärket | kritan ritar en gul stjärna i luften (kontur 2 s), den fylls i och flyttar sig lugnt till kaninens mage (klistras, `pop`). Sedan en liten till på nallen |
 | Glatt skutt | 20 px upp med tryck ihop före och efter. Inget studs |
 
@@ -70,10 +70,10 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), de långa öronen och armarna
 | 23 | Närbild på nallen, lampan framför nallens mun. Nallen gapar inte | Först nallen. Gapa … oj! Nallen kan inte gapa! | `kanin-ny-fniss` |
 | 24 | Närbild på kaninen, lampan framför munnen. Kaninen gapar stort (O-munnen) | Nu kaninen. Gapa … aaa! | `kanin-aaa` (nytt) |
 | 25 | Halvbild, kaninen stänger munnen och ser stolt ut | Fint! Kan du också gapa? *(paus 4 s)* Aaa! | `kanin-ny-jippi` |
-| 26 | Helbild. Kaninen klappar händerna. Nallen glider ur famnen och ner under britsen | Oj! Var är nallen? | `kanin-ny-fragande` |
+| 26 | Helbild. Kaninen klappar händerna. Nallen glider ur famnen, ner längs britsen och bakom pallen | Oj! Var är nallen? | `kanin-ny-fragande` |
 | 27 | Kaninen tittar åt vänster, sedan åt höger, öronen faller lite | Kaninen vet inte var nallen är. | `kanin-gullig-7` (frågande) |
-| 28 | Helbild, efter 3 s klipp till närbild: nallens öra tittar fram under britsens kant och skimrar | Kan du hjälpa kaninen? Kan du se var nallen är? *(paus 5 s)* | tyst, sedan `tindra` |
-| 29 | Samma, örat skimrar tydligt | Ja, där! Under britsen! | `kanin-ny-jippi` |
+| 28 | Helbild, efter 3 s klipp till närbild: nallens öra tittar fram över pallens kant och skimrar | Kan du hjälpa kaninen? Kan du se var nallen är? *(paus 5 s)* | tyst, sedan `tindra` |
+| 29 | Samma, örat skimrar tydligt | Ja, där! Bakom pallen! | `kanin-ny-jippi` |
 | 30 | Helbild. Kaninen skuttar ner, tar nallen och kramar den | Där är du, nallen! | `hopp-mjuk`, `kanin-gullig-4` |
 | 31 | Kritan kommer in och ritar en stjärna i luften: konturen (2 s), gisspaus, den fylls i gul | Titta! Kritan ritar igen. *(gisspaus 3 s)* En stjärna! Ett klistermärke! | krita-ritar, `glitter` |
 | 32 | Stjärnan glider till kaninens mage och klistras fast | Till kaninen. | `pop`, `kanin-gullig-2` |
@@ -128,7 +128,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [surprised] Oj! Var är nallen?
 [curious] Kaninen vet inte var nallen är.
 [warmly] Kan du hjälpa kaninen? Kan du se var nallen är?
-[excited] Ja, där! Under britsen!
+[excited] Ja, där! Bakom pallen!
 [happy] Där är du, nallen!
 [excited] Titta! Kritan ritar igen.
 [delighted] En stjärna! Ett klistermärke!
