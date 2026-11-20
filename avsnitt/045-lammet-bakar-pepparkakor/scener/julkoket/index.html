@@ -186,8 +186,8 @@ function kaka(fil, x, y, bett = 0, bakad = true, v = 0) {
 function bettNu() { return TT >= at('33') ? 2 : 0; }   // stjärnkakan tas upp i tassen i rad 33
 // ångan: fyra streck från rad 29; i pausen i rad 31 försvinner de ett i taget (barnet blåser)
 function angaNu(x, y) {
-  const p0 = at('31', ml('31') + rl(41) + 0.6);
-  KAKOR.forEach(([dx], i) => { const o = 1 - del(p0 + i * 0.9, p0 + i * 0.9 + 0.5, TT); if (o > 0.01) lagg('fram', vag(x + dx, y - 120 - 6 * Math.sin(TT * 2 + i), 70, '#ffffff', 6, 0.85 * o, i)); });
+  const p0 = at('31', ml('31') + rl(41) + 0.6), st = TT < at('30') ? del(at('29', 7.5), at('29', 8.3), TT) : 1;   // runda 3: ingen ånga medan plåten bärs
+  KAKOR.forEach(([dx], i) => { const o = st * (1 - del(p0 + i * 0.9, p0 + i * 0.9 + 0.5, TT)); if (o > 0.01) lagg('fram', vag(x + dx, y - 120 - 6 * Math.sin(TT * 2 + i), 70, '#ffffff', 6, 0.85 * o, i)); });
 }
 
 // --- Grytlapparna och klockan --------------------------------------------------------------------------------------------------
@@ -361,7 +361,7 @@ const gang = (tl, a, b, x0, x1) => { const u = kl((tl - a) / (b - a)), e = kl(Ma
 const BAR = c => ({ fram: [c, c], hand: 1, klapp: 78, armar: [-124 * c, -124 * c], armY: -46 * c });
 // tassarnas mitt (armbildens HAND-punkt) i kamerans rum
 const tassMitt = () => { const q = [-1, 1].map(sd => rigM(ARMEL(sd)).transformPoint(new DOMPoint(...VK[sd > 0 ? 'r' : 'l'].h))); return [(q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2]; };
-const BAR_DY = 34;   // plåtens underkant under tassarnas mitt
+const BAR_DY = 34, BAR_DY29 = 62;   // plåtens underkant under tassarnas mitt (rad 29: lägre, så att kakorna syns mellan vantarna)
 // plåten i tassarna: ritas efter lammet, tassarna överst (kopior av armarna), grytvantarna överst i rad 29
 function barPlat(x, y) { platNu(x, y); armOverst(-1, [-400, -400, 2400, 1600]); armOverst(1, [-400, -400, 2400, 1600]); vantarPa(); }
 const huvud = (dx = 0, y = 250) => [LX + dx * DS, LFOT + (y - 927) * DS];
@@ -480,8 +480,13 @@ const S = {
     lamm(ut ? ANS('jatteglad', { titt: [10, 6] }) : mellan(ANS('glad', { titt: [-8, 2] }), ANS('jatteglad'), del(8.0, 8.6, tl)), BAR(c), { gang: g });
     if (ut) { const [mx, my] = tassMitt(); barPlat(lerp(PLAT_X, mx, mjuk(lyft)), lerp(TY + 6, my + BAR_DY, mjuk(lyft))); } },
   '17': tl => { kok(); HALV(); const u = del(0, 0.6, tl); lamm(ANS('nyfiken', { titt: [16 * (1 - u), 2] }), { rikt: 0.5 * (1 - u) }); },
+  // Sanna 20/11 runda 3 (2:13, "add reaction to vet inte and sound like vet inte hmm"): efter Malins fråga rycker lammet på axlarna på
+  // "meh-meh?" (armarna ut, öronen ner) och funderar sedan på "mmmeh": huvudet på sned, blicken uppåt, en liten vagga
   '18': tl => { kok(); HALV(); const k = del(mo(0) + 0.2, mo(0) + 0.6, tl), o = omkring(tl - mo(0), 1.6);
-    lamm(ANS('nyfiken', { titt: o.titt.map(v => v * k) }), { rikt: o.rikt * k, luta: o.luta * k, oron: [16 * k, 16 * k] }); },
+    const ax = bump(lj(CUR.id, 0) - 0.15, lj(CUR.id, 0) + 1.0, tl), fu = del(lj(CUR.id, 1) - 0.3, lj(CUR.id, 1) + 0.2, tl), sv = 1 - fu;
+    lamm(mellan(ANS('nyfiken', { titt: o.titt.map(v => v * k * sv) }), ANS('tanker', { armar: [8, 8] }), fu),
+      { rikt: o.rikt * k * sv, luta: o.luta * k * sv - 6 * fu + 1.5 * Math.sin((tl - lj(CUR.id, 1)) * 2.2) * fu,
+        oron: [16 * k + 8 * ax, 16 * k + 8 * ax], armar: [42 * ax, 42 * ax], strack: 0.025 * ax }); },
   '19': tl => { kok(); HALV(); const sk = Math.sin((tl - mo(0) - 0.2) * 9) * bump(mo(0) + 0.2, mo(0) + 1.6, tl);
     lamm(ANS('ledsen'), { luta: 6 * sk, oron: [20, 20] }); },
   '20': tl => { kok(); HALV(); const u = del(mo(0), mo(0) + 0.7, tl); lamm(ANS('nyfiken', { titt: [6 * u, 16 * u] }), { luta: 3 * u, oron: [12, 12] }); },
@@ -525,12 +530,19 @@ const S = {
       { armar: [56 * v, 56 * h], strack: -0.03 * satt, bred: 0.02 * satt, luta: -3 * v + 3 * h }); },
   // Sanna 20/11 (3:18): lammet går med grytvantarna ut till höger (0,6–2,5), bär tillbaka plåten (3,0–5,0) och ställer den på bordet (5,1–5,8)
   // Runda 2: lugnare gång, ut 0,6–3,6, tillbaka 4,2–7,2, plåten ner 7,3–8,0, "sådär!" 7,95
+  // Runda 3 (3:26, "improve animation holding plåt"): plåten hänger lägre i tassarna (kakorna syns mellan vantarna), lammet går fram till
+  // plåtens plats (PLAT_X), sänker tassarna med plåten tills den står på bordet (7,0–7,55), släpper (7,55–8,05) och kliver tillbaka (8,0–8,75).
+  // Ångan syns först när plåten står (angaNu), så att den inte går över ansiktet medan lammet bär.
   '29': (tl, d) => { kok({ plat: false }); kameraMix([1.7, 1000, 500], [1, 960, 540], del(0, 1.0, tl));
-    const ut = tl < 3.9, g = ut ? gang(tl, 0.6, 3.6, LX0, 2250) : gang(tl, 4.2, 7.2, 2250, LX0);
-    const c = ut ? 0.35 * (1 - del(0.2, 0.8, tl)) : 1 - del(7.5, 8.2, tl), ner = del(7.3, 8.0, tl);
-    lamm(ut ? mellan(ANS('nyfiken', { titt: [14, -4] }), ANS('jatteglad', { titt: [10, 6] }), del(0.2, 0.7, tl)) : mellan(ANS('glad', { titt: [-6, 10] }), ANS('jatteglad'), del(7.7, 8.2, tl)), BAR(c), { gang: g });
+    const ut = tl < 3.9, g = ut ? gang(tl, 0.6, 3.6, LX0, 2250) : tl < 7.9 ? gang(tl, 4.2, 7.0, 2250, PLAT_X) : gang(tl, 8.0, 8.75, PLAT_X, LX0);
+    const ner = del(7.0, 7.55, tl), slapp = del(7.55, 8.05, tl);
+    const c = ut ? 0.35 * (1 - del(0.2, 0.8, tl)) : lerp(lerp(1, 0.8, mjuk(ner)), 0, mjuk(slapp));
+    lamm(ut ? mellan(ANS('nyfiken', { titt: [14, -4] }), ANS('jatteglad', { titt: [10, 6] }), del(0.2, 0.7, tl)) : mellan(ANS('glad', { titt: [2, 12] }), ANS('jatteglad'), del(7.6, 8.1, tl)),
+      { ...BAR(c), luta: 3 * bump(6.9, 7.9, tl) }, { gang: g });
     if (ut) return;
-    const [mx, my] = tassMitt(); barPlat(lerp(mx, PLAT_X, mjuk(ner)), lerp(my + BAR_DY, TY + 6, mjuk(ner))); },
+    if (slapp >= 1) return platNu(PLAT_X, TY + 6);
+    if (slapp > 0) return barPlat(PLAT_X, TY + 6);
+    const [mx, my] = tassMitt(); barPlat(lerp(mx, PLAT_X, mjuk(ner)), Math.min(TY + 6, lerp(my + BAR_DY29, TY + 6, mjuk(ner)))); },
 
   // --- Varma, blåsa, mums ---
   '30': tl => { ARMAR_UPP = 1; kok(); PLN(); lamm(ANS('forvanad', { titt: [10, 14] })); },
@@ -570,7 +582,11 @@ function ljud() {
   // julmusiken (befintlig bädd, ingen ny musik) under hela filmen, från ritintrot (Sanna 2026-11-19: "add xmas soundtrack")
   // Sanna 20/11 (0:42, "xmas music like jingle bells instrumental"): karolen från 039/042 (Up on the Housetop, instrumental, slinga) i stället för
   // marimbabädden, lite tydligare. Ingen ny musik. Runda 2 (0:35, "lower music a bit"): 0,15 → 0,12 (−2 dB).
-  ut.push({ t: 0.2, fil: 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', vol: 0.12, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
+  // Runda 3 (2:13 "lower music a bit", 2:22 "another xmas tune"): 0,12 → 0,10 (−1,6 dB), och när kritan ritar klockan (rad 21a) tonas
+  // karolen över till en annan befintlig julslinga (Pynta salen, instrumental, från lucka 2). Ingen ny musik.
+  const byt = at('21a');
+  ut.push({ t: 0.2, fil: 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', vol: 0.10, langd: byt + 1.0 - 0.2, loop: true, fadeIn: 1.5, fade: 2.0 });
+  ut.push({ t: byt - 0.5, fil: 'assets/ljud/musik/jul/karol-pynta-salen-slinga.m4a', vol: 0.10, langd: DURATION - byt + 0.5, loop: true, fadeIn: 2.0, fade: 3.0 });
   return ut.filter(c => c.t < DURATION);
 }
 

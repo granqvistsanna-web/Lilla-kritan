@@ -95,8 +95,10 @@ export const RADER = [
     bild: 'Lammet lyfter plåten med båda tassarna och går med den ut till höger (till ugnen, som aldrig syns). Sådär! Lammet kommer tillbaka utan plåten', ljudtext: 'tassar', ansikte: 'glad' },
   { id: '17', d: 0.3 + L(23) + G, plats: 'Halvbild', malin: [[23, 0.3]],
     bild: 'Lammet tittar på oss', ljudtext: '–', ansikte: 'nyfiken' },
-  { id: '18', d: 0.6 + L(24) + G + 1.2, plats: 'Halvbild', malin: [[24, 0.6]], ljud: [[B('7b'), 0.8 + L(24)]],
-    bild: 'Lammet tittar åt vänster och höger, öronen faller', ljudtext: 'frågande (7b)', ansikte: 'nyfiken → osäker' },
+  // Sanna 20/11 runda 3 (2:13, "add reaction to vet inte and sound like vet inte hmm"): lammet rycker på axlarna på "meh-meh?" och
+  // funderar "mmmeh" med huvudet på sned och blicken uppåt; raden 1,0 s längre
+  { id: '18', d: 0.6 + L(24) + G + 2.2, plats: 'Halvbild', malin: [[24, 0.6]], ljud: [[B('7b'), 0.8 + L(24)], [B('4b'), 2.05 + L(24)]],
+    bild: 'Lammet rycker på axlarna (vet inte), lägger huvudet på sned och funderar med blicken uppåt, öronen faller', ljudtext: 'frågande (7b), funderande mmmeh (4b)', ansikte: 'nyfiken → osäker → funderar' },
   { id: '19', d: 0.3 + L(25) + G + 1.2, plats: 'Halvbild', malin: [[25, 0.3]], ljud: [[B('6b'), 0.5 + L(25)]],
     bild: 'Lammet skakar lite på huvudet (lutar ±6° två gånger)', ljudtext: 'trumpen (6b)', ansikte: 'trumpen' },
   { id: '20', d: 0.3 + L(26) + G, plats: 'Halvbild', malin: [[26, 0.3]],
@@ -134,7 +136,7 @@ export const RADER = [
   // Sanna 20/11 (3:18): lammet går med grytvantarna till ugnen och bär tillbaka plåten. "Ta ut kakorna …" när lammet går, "sådär!" när plåten står på bordet.
   // Runda 2: samma lugnare gång, 3,0 s åt varje håll, raden 6,6 → 8,8 s
   { id: '29', d: 8.8, plats: 'Helbild', malin: [[39, 0.4, 0, 1.05], [39, 7.95, 1.1]],
-    ljud: [...stegLjud(0.6, 3.6, 900, 2250), ...stegLjud(4.2, 7.2, 2250, 900), [TASS(5), 7.8]],
+    ljud: [...stegLjud(0.6, 3.6, 900, 2250), ...stegLjud(4.2, 7.0, 2250, 1062), [TASS(5), 7.55], ...stegLjud(8.0, 8.75, 1062, 900)],   // runda 3: går fram till plåtens plats, ställer ner den, kliver tillbaka
     bild: 'Lammet går med grytvantarna ut till höger och kommer tillbaka med den varma plåten: bruna glansiga kakor och tre ångstreck. Plåten ställs på bordet', ljudtext: 'tassar', ansikte: 'glad' },
 
   // --- Varma, blåsa, mums ---

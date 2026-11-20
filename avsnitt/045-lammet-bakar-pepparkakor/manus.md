@@ -236,3 +236,11 @@ Bildskillnad per bildruta över hela filmen (ryck inne i en bild, inte vid klipp
 - **Rad 33:** vantarna tonades över till ett stort spöke och flög tvärs över ansiktet under tuggan; nu försvinner de från tassarna med en gnista och dyker upp på kroken.
 
 Kollat utan anmärkning: gången (rad 1, 16, 29), tassen över degen (3d, 5, 6), kakorna som flyger till plåten, blåsningen, klockan framför, kritirisen.
+
+## Feedback 2026-11-20 (lucka 15, runda 3)
+
+- **2:13 reaktion på "Vet du inte?":** rad 18 är 1,0 s längre. Lammet rycker på axlarna på *"meh-meh?"* (`ba-gullig-7b`, armarna ut, öronen ner) och funderar sedan på ett långt *"mmmeh"* (`ba-gullig-4b`) med ansiktet `tanker`, huvudet på sned och en liten vagga.
+- **2:13 lägre musik:** 0,12 → 0,10 (−1,6 dB).
+- **2:22 en annan julmelodi:** när kritan ritar klockan (rad 21a) tonas *Up on the Housetop* över till *Pynta salen* (`karol-pynta-salen-slinga`, instrumental, från lucka 2). Ingen ny musik.
+- **3:07 lammet saknades:** fixat i rörelse-QA:n (rad 27c, lammet står kvar när kameran går till klockan).
+- **3:26 plåten i tassarna:** rad 29: plåten hänger lägre i tassarna så att kakorna syns mellan vantarna, lammet går fram till plåtens plats, sänker tassarna med plåten tills den står på bordet (7,0–7,55, tass-ljud när den landar), släpper (7,55–8,05) och kliver tillbaka (8,0–8,75). Ångan syns först när plåten står, inte över ansiktet medan lammet bär.
