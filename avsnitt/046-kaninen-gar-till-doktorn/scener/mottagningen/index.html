@@ -116,10 +116,12 @@ function sakbild(s, tl) {
     <circle cx="960" cy="540" r="${f1(330 + 12 * Math.sin(tl * 2))}" fill="#fff" opacity="${(0.2 * ink).toFixed(2)}" filter="url(#mjukStrale)"/>`);
   lagg('papper', `<g id="sb2" filter="url(#boil)"></g>`);
   const g = 1 + 0.025 * Math.sin(tl * 1.2), v = 2.5 * Math.sin(tl * 0.9);
-  let h = `<g transform="translate(960 560) rotate(${f1(v)}) scale(${g.toFixed(3)}) translate(-960 -560)">`;
+  let h = `<g filter="url(#sakKantStor)"><g transform="translate(960 560) rotate(${f1(v)}) scale(${g.toFixed(3)}) translate(-960 -560)">`;
   if (s.sak === 'steto') h += stetoFylld([1060, 440], 2.0);
-  if (s.sak === 'lampa') { const lj = s.ljus ?? 1; h += `<ellipse cx="470" cy="560" rx="${f1(170 * lj)}" ry="${f1(130 * lj)}" fill="#fff3b0" opacity="${f1(0.3 * lj)}"/>` + oronlampa(1120, 560, -6, 5.2, lj); }
-  $('sb2').innerHTML = h + '</g>' + gnistor(960, 540, 420, tl - (s.gnista ?? 0.4));
+  let sken = '';   // lampans sken ritas utanför den vita kanten (annars får skenet en ring)
+  if (s.sak === 'lampa') { const lj = s.ljus ?? 1; h += oronlampa(1120, 560, -6, 5.2, 0);
+    sken = `<g opacity="${lj.toFixed(2)}" filter="url(#mjukStrale)"><ellipse cx="500" cy="590" rx="170" ry="130" fill="#fff3b0" opacity=".35"/><circle cx="560" cy="585" r="60" fill="#fff6c8" opacity=".6"/></g>`; }
+  $('sb2').innerHTML = sken + h + '</g></g>' + gnistor(960, 540, 420, tl - (s.gnista ?? 0.4));
 }
 
 // --- Tid ------------------------------------------------------------------------------------------------------------------------
@@ -377,7 +379,7 @@ function papper(s, tl, d) {
   D.forEach((dd, i) => { const u = kl((k - del4[i]) / (del4[i + 1] - del4[i]));
     if (u > 0) h += `<path class="ik" d="${dd}" pathLength="1" fill="none" stroke="#3a2c28" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 1" stroke-dashoffset="${(1 - u).toFixed(4)}" opacity="${linje.toFixed(2)}"/>`; });
   const f = s.fyll ?? 0;
-  if (f > 0) h = `<clipPath id="ifyll"><circle cx="${IC[0] - 40}" cy="${IC[1] + 60}" r="${f1(460 * Math.pow(mjuk(f), 1.2))}"/></clipPath><g clip-path="url(#ifyll)">${stetoFylld(IC, IK)}</g>` + h;
+  if (f > 0) h = `<clipPath id="ifyll"><circle cx="${IC[0] - 40}" cy="${IC[1] + 60}" r="${f1(460 * Math.pow(mjuk(f), 1.2))}"/></clipPath><g clip-path="url(#ifyll)"><g filter="url(#sakKantStor)">${stetoFylld(IC, IK)}</g></g>` + h;
   $('pk').innerHTML = h;
   if ((s.k ?? 1) < 1 && (s.k ?? 0) > 0) { const els = [...document.querySelectorAll('#pk .ik')], el = els.at(-1); if (el) { const i = els.length - 1, u = kl((k - del4[i]) / (del4[i + 1] - del4[i])), q = el.getPointAtLength(el.getTotalLength() * u); sp = [q.x, q.y]; } }
   KZ = 1;
@@ -422,7 +424,7 @@ window.ready = (async () => {
       e.querySelectorAll('image').forEach(i => i.setAttribute('href', bas + i.getAttribute('href')));
       $('defs').appendChild(document.importNode(e, true)); });
   }
-  $('defs').insertAdjacentHTML('beforeend', saksKant(4));
+  $('defs').insertAdjacentHTML('beforeend', saksKant(4) + saksKant(11).replace('id="saksKant"', 'id="sakKantStor"'));   // vit kant runt sakerna i sakbilderna och introt
   $('rummet').innerHTML = `<image href="${RUM.fil}" width="${f1(RUM.w * RS)}" height="${f1(RUM.h * RS)}"/>
     <ellipse cx="${f1(BRITS.x + BRITS.w * BRITS.s / 2)}" cy="${f1(BRITS.fot - 6)}" rx="${f1(BRITS.w * BRITS.s * 0.5)}" ry="22" fill="#3a5068" opacity="0.10"/>`;
   const b = $('brits'); b.setAttribute('x', BRITS.x); b.setAttribute('y', f1(BRITS_TOPP)); b.setAttribute('width', f1(BRITS.w * BRITS.s)); b.setAttribute('height', f1(BRITS.h * BRITS.s));
