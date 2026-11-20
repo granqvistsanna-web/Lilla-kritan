@@ -106,3 +106,11 @@ A warm, friendly adult woman doctor makes a delighted, impressed "Ooo!" with a s
 ```prompt
 A warm, friendly adult woman doctor opens her mouth wide and says a short, clear, gentle "Aaa" to show a child how to open wide, playful and calm, for a toddler cartoon, close and clean, no words, no music.
 ```
+
+## Byrån vid britsen (Sanna 2026-11-20: "en liten byrå or table stand under brits next to doctor which leo falls behind")
+
+En liten låg byrå mellan britsens högra ände och doktorn. Leoparden rullar in bakom den i stället för bakom pallen (rad 26–30). Google Flow, Nano Banana Pro, 1:1, 4 tagningar, bild 1 = `assets/bakgrunder/mottagningen/mottagningen-v2.jpg` (stil, färger och perspektiv). Lägg tagningarna i `assets/rekvisita/byra-mottagning/original/`.
+
+```prompt
+Image 1 is the STYLE reference: copy its drawing technique exactly (clean flat colour with a very subtle fine crayon grain, soft premium toddler picture-book look, no dark outline, straight-on flat view, no perspective), its colours and its furniture style, not its layout. Draw ONE small, low, friendly doctor's office cabinet seen exactly straight from the front: a chunky white cabinet with softly rounded corners, two drawers stacked with small round light mint handles (#9ED9C7), a light mint top surface, on four tiny round grey wheels. It is about as tall as the examination bed's mattress is high, a little wider than it is tall. Nothing on top, no text, no symbols, no cross, no face, no shading, no 3D. A thick, clean, even white sticker border all around. Centered with space around, plain pure solid white background, no shadow, no ground.
+```

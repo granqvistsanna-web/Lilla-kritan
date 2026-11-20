@@ -20,6 +20,8 @@ const HEJ = 'kanin-gullig/kanin-hej-1', HEJDA = 'kanin-gullig/kanin-hejda-1';
 const RITA = n => `krita-ritar/krita-ritar-${n}`, GLITTER = 'glitter/glitter-1', TINDRA = 'tindra/tindra-3', POP = n => `pop/pop-${n}`;
 const STEG = 'smasteg/smasteg-1', HOPP = n => `hopp-mjuk/hopp-mjuk-${n}`, KLAPP = 'klapp/klapp-1', KLICK = 'lampa-klick/lampa-klick-1';
 const HJARTA = n => `hjartslag/hjartslag-${n}`;   // hjärtslagen (ElevenLabs SFX, Sanna 2026-11-20): två mjuka slag, 1,5 s
+// Doktorns små ljud (ElevenLabs SFX 2026-11-20, normaliserade −20 LUFS), valda tagningar; doktorn säger inga meningar
+const DV = { hej: 2, hmm: 2, ooo: 2, aaa: 4, mhm: 1, fniss: 1, oj: 2, bra: 1, hejda: 1 }, DOK = n => `doktor-${n}/doktor-${n}-${DV[n]}`;
 const G = 1.6;   // glest tempo: extra luft på varje rad med en replik (receptets GLES; 0,9 → 1,3 → 1,6, Sanna 2026-11-20: "a bit slower pace overall", två gånger)
 // "dunk, dunk" i repliken: slagen på de två sista ordens plats (ca 72 % och 90 % in i repliken)
 const dunkar = (o, n, t = 2) => [[HJARTA(t), o + L(n) * 0.62]];   // ett hjärtslag (två slag) som börjar strax före "dunk, dunk"
@@ -37,13 +39,13 @@ export const RADER = [
   // --- Mottagningen: hej, osäker ---
   { id: '1', d: 3.4 + L(4) + G + 1.0, plats: 'Mottagningen, helbild', malin: [[4, 3.4]], ljud: [[STEG, 0.5], [HEJ, 3.7 + L(4)]],
     bild: 'Kaninen trippar in från vänster, stannar framför pallen och vinkar (armen bakom kroppen). Doktorn står vid britsens högra ände', ljudtext: 'småsteg, hej', ansikte: 'jätteglad' },
-  { id: '2', d: 0.8 + L(5) + G, plats: 'Halvbild: doktorn', malin: [[5, 0.8]],
+  { id: '2', d: 0.8 + L(5) + G, plats: 'Halvbild: doktorn', malin: [[5, 0.8]], ljud: [[DOK('hej'), 0.9 + L(5)]],
     bild: 'Doktorn vinkar och ler (stetoskopet runt halsen)', ljudtext: '–', ansikte: 'doktorn glad' },
   { id: '3', d: 0.4 + L(6) + G + 1.0, plats: 'Närbild: kaninen', malin: [[6, 0.4]], ljud: [[KN('fragande'), 0.6 + L(6)]],
     bild: 'Öronen faller lite, blicken ner', ljudtext: 'frågande', ansikte: 'nyfiken → lite osäker' },
-  { id: '4', d: 1.2 + L(7) + G + 1.0, plats: 'Närbild: kaninen', malin: [[7, 1.2]], ljud: [[KN('trumpen'), 1.4 + L(7)]],
+  { id: '4', d: 1.2 + L(7) + G + 1.0, plats: 'Närbild: kaninen', malin: [[7, 1.2]], ljud: [[DOK('mhm'), 0.1], [KN('trumpen'), 1.4 + L(7)]],
     bild: 'Kaninen tittar upp mot doktorn och ner igen. Malin efter blicken', ljudtext: 'trumpen (mjuk)', ansikte: 'lite osäker' },
-  { id: '5', d: 0.6 + L(8) + 3.0 + L(9) + G, plats: 'Mottagningen, helbild', malin: [[8, 0.6], [9, 3.6 + L(8)]], ljud: [[KN('trumpen', 2), 1.1 + L(8)]],
+  { id: '5', d: 0.6 + L(8) + 3.0 + L(9) + G, plats: 'Mottagningen, helbild', malin: [[8, 0.6], [9, 3.6 + L(8)]], ljud: [[KN('trumpen', 2), 1.1 + L(8)], [DOK('hmm'), 2.0 + L(8)]],
     bild: 'Doktorn pekar mot britsen. Kaninen vill inte: backar ett litet steg, skakar på huvudet, öronen faller (Sanna 2026-11-20). Sedan *"Hm … vad gör vi nu?"*', ljudtext: 'trumpen', ansikte: 'lite osäker → nej' },
 
   // --- Kritan ritar nallen ---
@@ -57,18 +59,18 @@ export const RADER = [
     bild: 'Kaninen nickar direkt och kramar nallen', ljudtext: 'förtjust', ansikte: 'glad' },
   { id: '9', d: 0.4 + L(51) + G + 1.2, plats: 'Närbild: kaninen med nallen', malin: [[51, 0.4]], ljud: [[K(4), 0.6 + L(51)]],
     bild: 'Nallen i famnen, huvudet lutar mot nallen', ljudtext: 'mysig suck (4)', ansikte: 'blundar nöjt' },
-  { id: '10', d: 0.3 + L(15) + G + 1.0, plats: 'Mottagningen, helbild', malin: [[15, 0.3]], ljud: [[HOPP(1), 0.3 + L(15) * 0.55], [HOPP(2), 0.3 + L(15) * 0.95]],
+  { id: '10', d: 0.3 + L(15) + G + 1.6, plats: 'Mottagningen, helbild', malin: [[15, 0.3]], ljud: [[HOPP(1), 0.3 + L(15) * 0.55], [HOPP(2), 0.3 + L(15) * 0.95], [DOK('bra'), 0.7 + L(15)]],
     bild: 'Kaninen skuttar upp på pallen (*"hopp"*), sedan på britsen (*"och hopp!"*), och sätter sig med nallen i famnen', ljudtext: 'hopp × 2', ansikte: 'glad' },
 
   // --- Kritan ritar stetoskopet (Sanna 2026-11-20), lyssna på magen ---
-  { id: '11', d: 0.4 + L(16) + G + 0.4, plats: 'Halvbild: doktorn', malin: [[16, 0.4]], ljud: [[KN('fragande'), 0.6 + L(16)]],
-    bild: 'Doktorn håller upp bröstdelen (stetoskopet är doktorns sedan introt)', ljudtext: 'frågande', ansikte: 'doktorn glad' },
+  { id: '11', d: 0.4 + L(16) + G + 0.4, plats: 'Sakbild: stetoskopet på rosa', malin: [[16, 0.4]], ljud: [[KN('fragande'), 0.6 + L(16)]],
+    bild: 'Stetoskopet ensamt mitt i bild mot rosa bakgrund, gungar lite, gnistor när det nämns (Sanna 2026-11-20)', ljudtext: 'frågande', ansikte: 'doktorn glad' },
   { id: '11c', d: 1.6, plats: 'Halvbild: doktorn', bild: 'Doktorn sätter propparna i öronen och sträcker bröstdelen mot britsen', ljudtext: '–', ansikte: 'doktorn glad' },
-  { id: '12', d: 0.4 + L(52) + G, plats: 'Närbild: nallens mage', malin: [[52, 0.4]], ljud: dunkar(0.4, 52, 2),
+  { id: '12', d: 0.4 + L(52) + G, plats: 'Närbild: nallens mage', malin: [[52, 0.4]], ljud: [...dunkar(0.4, 52, 2), [DOK('hmm'), 0.5 + L(52)]],
     bild: 'Bröstdelen mot nallens mage, två små ringar på *"dunk, dunk"*. Doktorn i bild', ljudtext: '`dunk` × 2 (lågt)', ansikte: '–' },
-  { id: '13', d: 0.4 + L(18) + G + 0.8, plats: 'Närbild: kaninens mage', malin: [[18, 0.4]], ljud: [...dunkar(0.4, 18, 3), [KN('fniss'), 0.6 + L(18)]],
+  { id: '13', d: 0.4 + L(18) + G + 1.4, plats: 'Närbild: kaninens mage', malin: [[18, 0.4]], ljud: [...dunkar(0.4, 18, 3), [DOK('ooo'), 0.5 + L(18)], [KN('fniss'), 1.6 + L(18)]],
     bild: 'Bröstdelen mot kaninens mage, två små ringar. Doktorn i bild (Sanna: "place dr in frame")', ljudtext: '`dunk` × 2, fniss', ansikte: 'fnissig' },
-  { id: '14', d: 0.4 + L(19) + G + 0.8, plats: 'Halvbild: doktorn', malin: [[19, 0.4]], ljud: [[KN('ja'), 0.6 + L(19)]],
+  { id: '14', d: 0.4 + L(19) + G + 1.4, plats: 'Halvbild: doktorn', malin: [[19, 0.4]], ljud: [[DOK('mhm'), 0.5 + L(19)], [KN('ja'), 1.6 + L(19)]],
     bild: 'Doktorn med stetoskopet i öronen nickar och ler', ljudtext: 'ja', ansikte: 'doktorn glad' },
   { id: '15', d: 0.3 + L(20) + 4.0 + L(21) + G, plats: 'Halvbild: kaninen', malin: [[20, 0.3], [21, 4.3 + L(20)]], ljud: [[KLAPP, 4.1 + L(20)]],
     bild: 'Paus 4 s: barnet visar magen. Kaninen klappar sig på magen, *"Där!"*', ljudtext: '`klapp`', ansikte: 'glad' },
@@ -78,27 +80,27 @@ export const RADER = [
     bild: 'Paus 4 s: barnet visar öronen. Kaninen vickar på öronen', ljudtext: 'fniss (3)', ansikte: 'fnissig' },
 
   // --- Gapa ---
-  { id: '16', d: 0.4 + L(22) + G, plats: 'Halvbild: doktorn', malin: [[22, 0.4]], ljud: [[KLICK, 0.4 + L(22) * 0.4]],
+  { id: '16', d: 0.4 + L(22) + G, plats: 'Sakbild: öronlampan på rosa', malin: [[22, 0.4]], ljud: [[KLICK, 0.4 + L(22) * 0.4]],
     bild: 'Doktorn håller upp öronlampan, ljuset tänds', ljudtext: '`lampa-klick`', ansikte: 'doktorn nyfiken' },
-  { id: '17', d: 0.4 + L(53) + G, plats: 'Närbild: nallens öra', malin: [[53, 0.4]], ljud: [[TINDRA, 0.4 + L(53) * 0.8]],
+  { id: '17', d: 0.4 + L(53) + G, plats: 'Närbild: nallens öra', malin: [[53, 0.4]], ljud: [[TINDRA, 0.4 + L(53) * 0.8], [DOK('hmm'), 0.5 + L(53)]],
     bild: 'Lampan lyser på nallens öra. Doktorn i bild', ljudtext: '`tindra`', ansikte: '–' },
-  { id: '18', d: 0.4 + L(24) + G + 0.8, plats: 'Närbild: kaninens öra', malin: [[24, 0.4]], ljud: [[K(2), 0.6 + L(24)]],
+  { id: '18', d: 0.4 + L(24) + G + 1.4, plats: 'Närbild: kaninens öra', malin: [[24, 0.4]], ljud: [[DOK('ooo'), 0.5 + L(24)], [K(2), 1.6 + L(24)]],
     bild: 'Lampan lyser på kaninens långa öra, örat glöder. Doktorn i bild', ljudtext: 'förtjust (2)', ansikte: 'glad' },
   { id: '19', d: 0.8 + L(25) + G + 0.6, plats: 'Närbild: kaninens öra', malin: [[25, 0.8]], ljud: [[KN('fniss', 2), 1.0 + L(25)]],
     bild: 'Kaninens öra ramlar ner framför ögat (0,5 s). Malin efter', ljudtext: 'fniss', ansikte: 'fnissig' },
-  { id: '20', d: 0.8 + L(26) + G + 0.6, plats: 'Närbild: kaninen', malin: [[26, 0.8]], ljud: [[KN('ja', 2), 1.0 + L(26)]],
+  { id: '20', d: 0.8 + L(26) + G + 1.4, plats: 'Närbild: kaninen', malin: [[26, 0.8]], ljud: [[DOK('fniss'), 0.9 + L(26)], [KN('ja', 2), 2.1 + L(26)]],
     bild: 'Kaninen lyfter upp örat med tassen', ljudtext: 'ja', ansikte: 'glad' },
   { id: '22', d: 0.4 + L(29) + G, plats: 'Mottagningen, helbild', malin: [[29, 0.4]],
     bild: 'Doktorn nickar', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '23', d: 0.4 + L(54) + G + 0.6, plats: 'Närbild: nallen', malin: [[54, 0.4]], ljud: [[KN('fniss', 3), 0.6 + L(54)]],
     bild: 'Lampan framför leopardens mun. Kaninen gapar och visar på *"Gapa"*, leoparden gapar inte', ljudtext: 'fniss', ansikte: 'gapar → fnissig' },
-  { id: '24', d: 0.4 + L(31) + G, plats: 'Närbild: kaninen', malin: [[31, 0.4]],
+  { id: '24', d: 1.5 + L(31) + G, plats: 'Närbild: kaninen', malin: [[31, 1.5]], ljud: [[DOK('aaa'), 0.1]],
     bild: 'Lampan framför kaninens mun, kaninen gapar stort (O-munnen) på *"aaa"* (bara Malins aaa)', ljudtext: '–', ansikte: 'gapar' },
-  { id: '25', d: 0.4 + L(32) + 4.0 + L(33) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[32, 0.4], [33, 4.4 + L(32)]], ljud: [[KN('jippi'), 0.6 + L(32) + 4.0 + L(33)]],
+  { id: '25', d: 0.4 + L(32) + 4.0 + L(33) + G + 1.6, plats: 'Halvbild: kaninen', malin: [[32, 0.4], [33, 4.4 + L(32)]], ljud: [[DOK('bra'), 0.6 + L(32) + 4.0 + L(33)], [KN('jippi'), 1.6 + L(32) + 4.0 + L(33)]],
     bild: 'Kaninen stänger munnen och ser stolt ut. Paus 4 s: barnet gapar', ljudtext: 'jippi', ansikte: 'stolt' },
 
   // --- Var är nallen? ---
-  { id: '26', d: 2.3 + L(55) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[55, 2.3]], ljud: [[KN('jippi', 2), 0.15], ['duns/duns-1', 1.4], [KN('fragande', 2), 2.5 + L(55)]],
+  { id: '26', d: 2.3 + L(55) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[55, 2.3]], ljud: [[KN('jippi', 2), 0.15], ['duns/duns-1', 1.4], [DOK('oj'), 1.5], [KN('fragande', 2), 2.5 + L(55)]],
     bild: 'Kaninen blir glad, ropar jippi och kastar armarna i luften (Sanna 2026-11-20): leoparden glider ur knät, ramlar ner från britsen, studsar mjukt (duns) och rullar in bakom pallen', ljudtext: 'jippi, `duns`, frågande', ansikte: 'förvånad' },
   { id: '27', d: 0.3 + L(56) + G + 1.0, plats: 'Halvbild: kaninen', malin: [[56, 0.3]], ljud: [[K(7), 0.5 + L(56)]],
     bild: 'Kaninen tittar åt vänster, sedan åt höger, öronen faller lite', ljudtext: 'frågande (7)', ansikte: 'nyfiken → osäker' },
@@ -114,7 +116,7 @@ export const RADER = [
     bild: 'Kritan ritar en stjärna i luften (konturen 2 s). Gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '31b', d: 0.6 + L(40) + G, plats: 'Halvbild: kaninen', malin: [[40, 0.6]], ljud: [[GLITTER, 0.1]],
     bild: 'Stjärnan fylls i gul', ljudtext: '`glitter`', ansikte: 'glittriga ögon' },
-  { id: '32', d: 1.0 + L(41) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[41, 1.0]], ljud: [[POP(1), 0.9], [K(2), 1.2 + L(41)]],
+  { id: '32', d: 1.0 + L(41) + G + 1.6, plats: 'Halvbild: kaninen', malin: [[41, 1.0]], ljud: [[POP(1), 0.9], [DOK('bra'), 1.1 + L(41)], [K(2), 2.2 + L(41)]],
     bild: 'Stjärnan glider till kaninens mage och klistras fast (`pop`). Malin efter', ljudtext: '`pop`, förtjust (2)', ansikte: 'glad' },
   { id: '33', d: 1.0 + L(59) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[59, 1.0]], ljud: [[POP(2), 0.9], [KN('fniss', 4), 1.2 + L(59)]],
     bild: 'En liten stjärna glider till nallen', ljudtext: '`pop`, fniss', ansikte: 'fnissig' },
@@ -124,7 +126,7 @@ export const RADER = [
   // --- Tack och hej då ---
   { id: '35', d: 0.6 + L(44) + 2.5 + L(45) + G, plats: 'Mottagningen, helbild', malin: [[44, 0.6], [45, 3.1 + L(44)]], ljud: [[KN('ja', 3), 0.3]],
     bild: 'Kaninen vänder sig mot doktorn och nickar, doktorn nickar tillbaka. Paus 2,5 s', ljudtext: 'ja', ansikte: 'glad' },
-  { id: '36', d: 0.6 + L(46) + G, plats: 'Halvbild: doktorn', malin: [[46, 0.6]],
+  { id: '36', d: 0.6 + L(46) + G, plats: 'Halvbild: doktorn', malin: [[46, 0.6]], ljud: [[DOK('hejda'), 0.7 + L(46)]],
     bild: 'Doktorn vinkar', ljudtext: '–', ansikte: 'doktorn glad' },
   { id: '37', d: 0.6 + L(60) + G + 1.4, plats: 'Halvbild: kaninen', malin: [[60, 0.6]], ljud: [[HEJDA, 0.8 + L(60)]],
     bild: 'Kaninen vinkar med nallen i andra tassen (armen bakom kroppen)', ljudtext: 'hej då', ansikte: 'jätteglad' },

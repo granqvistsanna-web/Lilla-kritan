@@ -100,6 +100,21 @@ const hjartan = (x, y, tl, t0 = 0) => [0, 0.5, 1.0].map((a, i) => { const u = (t
   const hx = x + [-34, 30, -6][i] + 10 * Math.sin(u * 6 + i), hy = y - 120 * u, r = 13 + 4 * Math.sin(Math.PI * u);
   return `<path d="${hjartaD(hx, hy, r)}" fill="#E5302A" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke" opacity="${f1(Math.min(1, 4 * (1 - u)) * Math.min(1, 6 * u))}"/>`; }).join('');
 
+// Krit-gnistor (som ritintrot): fyruddiga gula klistermärken med vit kant som poppar fram en i taget runt saken och krymper bort.
+const gnistaD = (x, y, r) => `M${f1(x)} ${f1(y - r)} Q${f1(x + r * 0.18)} ${f1(y - r * 0.18)} ${f1(x + r)} ${f1(y)} Q${f1(x + r * 0.18)} ${f1(y + r * 0.18)} ${f1(x)} ${f1(y + r)} Q${f1(x - r * 0.18)} ${f1(y + r * 0.18)} ${f1(x - r)} ${f1(y)} Q${f1(x - r * 0.18)} ${f1(y - r * 0.18)} ${f1(x)} ${f1(y - r)}Z`;
+function gnistor(cx, cy, R, t, n = 5) { return Array.from({ length: n }, (_, i) => { const t0 = 0.25 * i, u = (t - t0) / 1.4; if (u < 0 || u > 1) return '';
+  const a = -Math.PI / 2 + i * 2 * Math.PI / n + 0.4, x = cx + R * Math.cos(a), y = cy + R * 0.8 * Math.sin(a), r = 44 * Math.sin(Math.PI * Math.min(1, u * 1.6)) * (1 - 0.3 * u);
+  return r > 0.5 ? `<path d="${gnistaD(x, y, r)}" fill="#ffd23f" stroke="#fff" stroke-width="6" stroke-linejoin="round" paint-order="stroke" transform="rotate(${f1(20 * u)} ${f1(x)} ${f1(y)})"/>` : ''; }).join(''); }
+// Sakbilden: saken ensam mitt i bild mot en rosa kritbakgrund, lite gungning, gnistor när den nämns
+function sakbild(s, tl) {
+  lagg('papper', `<rect width="1920" height="1080" fill="#F6C3D3"/><rect width="1920" height="1080" fill="#fff" opacity=".12" filter="url(#boil)"/><g id="sb" filter="url(#boil)"></g>`);
+  const g = 1 + 0.03 * Math.sin(tl * 1.8), v = 3 * Math.sin(tl * 1.3);
+  let h = `<g transform="translate(960 560) rotate(${f1(v)}) scale(${g.toFixed(3)}) translate(-960 -560)">`;
+  if (s.sak === 'steto') h += stetoFylld([1060, 440], 2.0);
+  if (s.sak === 'lampa') { const lj = s.ljus ?? 1; h += `<ellipse cx="470" cy="560" rx="${f1(170 * lj)}" ry="${f1(130 * lj)}" fill="#fff3b0" opacity="${f1(0.3 * lj)}"/>` + oronlampa(1120, 560, -6, 5.2, lj); }
+  $('sb').innerHTML = h + '</g>' + gnistor(960, 540, 420, tl - (s.gnista ?? 0.4));
+}
+
 // --- Tid ------------------------------------------------------------------------------------------------------------------------
 const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) => a + (b - a) * k;
 const mjuk = k => (k = kl(k), k * k * (3 - 2 * k)), del = (a, b, t) => mjuk((t - a) / (b - a));
@@ -176,7 +191,8 @@ function S(id, tl, d) {
       if (tl < a + 0.25) { const s = skuttPos(PA_GOLV, PALL_FOT, tl, a - 0.25, a + 0.25, 90); return { kam: 'hel', k: { ...golv, pa: s.pa, p: KP('magen') }, n: 'famn' }; }
       const s = skuttPos(PALL_FOT, PA_BRITS, tl, b - 0.3, b + 0.3, 110), sitt = del(b + 0.2, b + 0.6, tl);
       return { kam: 'hel', k: { ...brits, pa: s.pa, p: { ...KL.blandaPose('magen', 'sitter', sitt), armar: KL.blandaPose('magen', 'sitter', sitt).armar.map(x => x + NER) } }, n: 'famn' }; }
-    case '11': return { kam: 'stetoNar', k: brits, n: 'famn', d: { p: DP('neutral', { armar: [40 * del(0, 0.6, tl), 0], armbage: [-40 * del(0, 0.6, tl), 0] }) } };
+    case '11': return { sak: 'steto', gnista: MT() + 0.5 };
+    case '11x': return { kam: 'stetoNar', k: brits, n: 'famn', d: { p: DP('neutral', { armar: [40 * del(0, 0.6, tl), 0], armbage: [-40 * del(0, 0.6, tl), 0] }) } };
     case '11a': return { kam: 'steto', k: { ...brits, f: KF('nyfiken', 1, { titt: [12, -4] }) }, n: 'famn', steto: 'kontur', sk: kl((tl - 0.4) / 3.0), krita: 'steto', tl };
     case '11b': return { kam: 'steto', k: { ...brits, f: KF('nyfiken', 1, { titt: [12, -4] }) }, n: 'famn', steto: 'fylld', sfyll: del(0, 0.5, tl), stIn: del(d - 1.0, d - 0.2, tl), kritaUt: del(0, 0.8, tl), krita: 'steto', tl };
     case '11c': { const k = del(0.3, 1.1, tl); return { kam: 'doktorNar', k: brits, n: 'famn', d: { p: { ...DP('stetoskop', {}, k), steto: tl > 0.6 ? 1 : 0 } } }; }
@@ -184,7 +200,8 @@ function S(id, tl, d) {
     case '13': return { kam: 'mage', k: { ...brits, f: tl > MT() + ML(18) ? KF('fnissig') : KF('glad') }, n: 'famn', d: { p: DP('stetoskop') }, ringar: LT('dunk') };
     case '14': return { kam: 'doktorNar', k: brits, n: 'famn', d: { p: DP('stetoskop', { nick: DNICK(tl) }) } };
     case '15': { const kl_ = LT('klapp')[0], k = bump(kl_ - 0.35, kl_ + 0.5, tl); return { kam: 'kanin', k: { ...brits, f: KF(tl > kl_ ? 'jatteglad' : 'nyfiken'), p: { ...SITT(), fram: [k > 0.3 ? 1 : 0, k > 0.3 ? 1 : 0], armar: SITT().armar.map(a => a - 90 * k) } }, n: 'famn' }; }
-    case '16': return { kam: 'lampaNar', k: brits, n: 'famn', d: { p: { ...DP('lampa', {}, del(0, 0.5, tl)), lampa: 1, ljus: tl > LT('lampa-klick')[0] ? 1 : 0 }, f: 'nyfiken' } };
+    case '16': return { sak: 'lampa', ljus: tl > LT('lampa-klick')[0] ? del(LT('lampa-klick')[0], LT('lampa-klick')[0] + 0.25, tl) : 0, gnista: MT() + 0.5 };
+    case '16x': return { kam: 'lampaNar', k: brits, n: 'famn', d: { p: { ...DP('lampa', {}, del(0, 0.5, tl)), lampa: 1, ljus: tl > LT('lampa-klick')[0] ? 1 : 0 }, f: 'nyfiken' } };
     case '17': return { kam: 'nalleOra', k: brits, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
     case '18': return { kam: 'ora', k: { ...brits, f: tl > MT() + ML(24) ? KF('jatteglad') : glad }, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
     case '19': return { kam: 'kaninNar', k: { ...brits, f: KF(tl > 0.5 ? 'fnissig' : 'forvanad'), p: SITT({ oron: [0, 75 * del(0, 0.5, tl)] }) }, n: 'famn' };
@@ -220,16 +237,30 @@ function S(id, tl, d) {
 
 function ritaRad(id, tl, d) {
   const s = S(id, tl, d); ['bak', 'mellan', 'saker', 'fram', 'papper'].forEach(n => $(n).innerHTML = '');
+  $('ram').innerHTML = '';
   KZ = { hel: 1, kanin: 2.2, kaninNar: 2.8, kaninLeo: 2.2, stetoNar: 3.0, lampaNar: 3.0, doktor: 2.5, doktorNar: 3.0, dokKanin: 1.35, steto: 1.8, pall: 2.4 }[s.kam] ?? 1.8;
   $('ram').innerHTML = '';
   $('kamera').setAttribute('opacity', 1);
+  if (s.sak) return sakbild(s, tl);
   if (s.papper) return papper(s, tl, d);
   const k = s.k || {}, dd = s.d || {};
   kaninPa(k.pa || PA_GOLV); KL.rita(GK, BL(k.f || KF('glad'), TT), liv(k.p || KP(), TT));
   doktorPa(DOKTOR[0], DOKTOR[1]);
   // Inget stetoskop förrän kritan har ritat det (Sanna 2026-11-20): före 11b, och i 11b tills teckningen har glidit till doktorns hals.
-  const dp = dd.p || DP();   // stetoskopet är doktorns sedan ritintrot
-  DL.rita(GD, BL(DL.blanda('neutral', dd.f || 'glad', 1), TT + 1.7), dp);
+  let dp = dd.p || DP();   // stetoskopet är doktorns sedan ritintrot
+  // Doktorns personlighet (Sanna 2026-11-20: "more personality from doctor"): lite liv hela tiden (gungar, lutar huvudet),
+  // och de små ljuden syns: munnen öppnas på hej/bra/ooo/aaa/hej då, fniss = skrattar, oj = förvånad, mm-hm = nickar, bra = klappar.
+  dp = { ...dp, luta: (dp.luta || 0) + 1.3 * Math.sin(TT * 0.9), upp: (dp.upp || 0) + 0.12 * Math.sin(TT * 0.6 + 1) };
+  let dfn = dd.f || 'glad';
+  for (const [f, o] of CUR?.ljud || []) { const m = /^doktor-(\w+)\//.exec(f); if (!m) continue; const u = tl - o;
+    if (u < -0.05 || u > (m[1] === 'bra' ? 2.6 : 1.3)) continue;
+    if (['hej', 'bra', 'ooo', 'hejda'].includes(m[1])) dfn = 'jatteglad';
+    if (m[1] === 'aaa') dfn = 'forvanad';
+    if (m[1] === 'fniss') dfn = 'skrattar';
+    if (m[1] === 'oj') dfn = 'forvanad';
+    if (m[1] === 'mhm' || m[1] === 'hmm') dp = { ...dp, nick: DNICK(u + 0.3, 0) };
+    if (m[1] === 'bra' && !dp.steto && !dp.lampa) { const [, pk] = DL.ROR.klappa(Math.min(u, 2.4) + 0.2); dp = { ...pk, luta: dp.luta, steto: dp.steto }; } }
+  DL.rita(GD, BL(DL.blanda('neutral', dfn, 1), TT + 1.7), dp);
   kamera(1, 960, 540);
   const mage = punkt(GK.querySelector('.mage'), MAGE[0], MAGE[1]), NH = 175;   // leoparden (Sanna: "a bit smaller", var 210)
   const famn = [mage[0], mage[1] + 10], golvN = [PA_GOLV[0] + 230, PA_GOLV[1] - NH * 0.48];
@@ -349,12 +380,13 @@ function papper(s, tl, d) {
   else if (s.ut != null && s.ut > 0) { if (s.ut < 1) kr(lerp(SVAJ[0], 2100, mjuk(s.ut)), lerp(SVAJ[1], 60, mjuk(s.ut)), 140); }
   else { const m = mjuk(s.svaj ?? 1), a = [IC[0] - 120 * IK, IC[1] + 170 * IK + 38 * IK], w = [SVAJ[0] + 14 * Math.sin(s.tl * 1.6), SVAJ[1] + 10 * Math.sin(s.tl * 2.3)];
     kr(lerp(a[0], w[0], m), lerp(a[1], w[1], m) - 60 * Math.sin(Math.PI * m), lerp(125, 140 + 4 * Math.sin(s.tl * 1.3), m)); }
+  if ((s.fyll ?? 0) > 0 && z < 0.3) lagg('papper', gnistor(IC[0] - 30, IC[1] + 60, 330, (s.tl - 14) - MT()));
   if (z > 0.6) lagg('papper', `<rect width="1920" height="1080" fill="#fff" opacity="${(del(0.6, 1, z)).toFixed(2)}"/>`);
 }
 
 // --- Ljud: Malin och effekterna ur raderna (ingen musik i bilderboken) ------------------------------------------------------------
 const E = 'assets/ljud/effekter/';
-const VOL = f => /^kanin-/.test(f) ? 0.85 : /^(glitter|tindra)/.test(f) ? 0.7 : /^(dunk|hjartslag)/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : /^(smasteg|hopp)/.test(f) ? 0.6 : 0.75;
+const VOL = f => /^doktor-/.test(f) ? 0.8 : /^kanin-/.test(f) ? 0.85 : /^(glitter|tindra)/.test(f) ? 0.7 : /^(dunk|hjartslag)/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : /^(smasteg|hopp)/.test(f) ? 0.6 : 0.75;
 const RITLANGD = { '01a': 7.9, '6a': 4.0, '31a': 2.0 };
 function ljud() {
   const ut = [];
@@ -363,6 +395,9 @@ function ljud() {
     for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f),
       ...(/^krita-ritar/.test(f) ? { loop: true, langd: RITLANGD[r.id] ?? 3, fade: 0.4 } : /^smasteg/.test(f) ? { loop: true, langd: 2.8, fade: 0.4 } : {}) });
   }
+  // mottagningens rumsljud (ElevenLabs 2026-11-20, −33 LUFS, lågpass 1,8 kHz) från rad 1 till kritirisens slut, som i receptet
+  const r1 = RR['1'], r39 = RR['39'];
+  if (r1 && r39) ut.push({ t: r1.s, fil: E + 'mottagningsljud/mottagningsljud-1.m4a', vol: 1.0, loop: true, langd: r39.s + r39.d - r1.s, fadeIn: 1.0, fade: 1.5 });
   return ut.filter(c => c.t < DURATION);
 }
 
