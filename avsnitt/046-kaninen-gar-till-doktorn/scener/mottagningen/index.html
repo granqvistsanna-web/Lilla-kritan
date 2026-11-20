@@ -225,7 +225,8 @@ function ritaRad(id, tl, d) {
   if (s.n === 'pall') lagg('bak', nalle(...NALLE_BAK, NH));
   if (s.n === 'tillFamnPall') lagg(s.nu < 0.3 ? 'bak' : 'saker', nalle(...lerp2(NALLE_BAK, famn, s.nu), NH));
   // stjärnorna
-  const LUFT = [mage[0] + 170, mage[1] - 260], MAGS = [mage[0] + 60, mage[1] - 70], NALS = [mage[0] - 20, mage[1] + 10];
+  // stjärnan ritas på väggen till höger om kaninens öra (inte mot ansiktet)
+  const LUFT = [mage[0] + 270, mage[1] - 290], MAGS = [mage[0] + 60, mage[1] - 70], NALS = [mage[0] - 20, mage[1] + 10];
   if (s.stj === 'kontur' && s.jk > 0) lagg('saker', avslojad(stjarna(...LUFT, 46, true), LUFT[0] - 50, LUFT[0] + 50, LUFT[1] - 50, LUFT[1] + 50, s.jk));
   if (s.stj === 'luft') lagg('saker', `<g opacity="${s.jfyll.toFixed(2)}">${stjarna(...LUFT, 46)}</g><g opacity="${(1 - s.jfyll).toFixed(2)}">${stjarna(...LUFT, 46, true)}</g>`);
   if (s.stj === 'tillMage') lagg('saker', stjarna(...lerp2(LUFT, MAGS, s.ju), lerp(46, 24, s.ju)));
@@ -252,7 +253,7 @@ function ritaRad(id, tl, d) {
     else if (spets) lagg('fram', krita(...spets));
     else if (kk < 1 && kk > 0) lagg('fram', kritaVid(x0, x1, y0, y1, kk, s.tl));
     else if (kk >= 1) lagg('fram', svajar(x1 + 60, y0 - 40, s.tl));
-    else lagg('fram', krita(lerp(x1 + 900, x0, del(0, 0.4, s.tl)), lerp(y0 - 300, y0, del(0, 0.4, s.tl)))); }
+    else lagg('fram', krita(lerp(x1 + 450, x0, del(0, 0.4, s.tl)), lerp(y0 - 450, y0, del(0, 0.4, s.tl)))); }   // in uppifrån till höger, aldrig över ansiktet
   // kameran (bara klipp)
   const huvud = punkt(GK.querySelector('.drag'), 512, 470), dhuvud = () => punkt(GD.querySelector('.drag'), 512, 420);
   const naraSak = (mal, sak) => { const [x, y] = sak(); doktorPa(DPOS[0] + mal[0] - x, DPOS[1] + mal[1] - y); };
