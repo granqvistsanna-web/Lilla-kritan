@@ -251,7 +251,7 @@ function rita(fig, f, p = POSE0) {
   q('.armar-bak').innerHTML = bak.join(''); q('.armar-fram').innerHTML = fram.join('');
   // Stetoskopet och öronlampan (verktyg/doktor-saker.js). Y-knuten följer huvudet (.drag och nicken) och kroppens sträckning.
   const iOron = p.steto >= 0.5, [n0] = p.nick || [0, 0], [s0] = p.skak || [0, 0];
-  q('.steto-hals').innerHTML = iOron ? '' : stetoHals();
+  q('.steto-hals').innerHTML = iOron || p.steto < -0.5 ? '' : stetoHals();   // steto −1: inget stetoskop (046: innan kritan har ritat det)
   q('.steto-oron').innerHTML = iOron ? stetoOron() : '';
   const jx = 512 + 20 * r + 24 * s0, jy = FOTTER + sy * (STETO.Y[1] - FOTTER) + sank + 2 * a - 10 * u + 20 * n0;
   q('.steto-fram').innerHTML = iOron ? stetoSlang([jx, jy], hander.l, -1) : '';

@@ -76,7 +76,11 @@ export const RADER = [
   { id: '15', d: 0.3 + L(20) + 4.0 + L(21) + G, plats: 'Halvbild: kaninen', malin: [[20, 0.3], [21, 4.3 + L(20)]], ljud: [[KLAPP, 4.1 + L(20)]],
     bild: 'Paus 4 s: barnet visar magen. Kaninen klappar sig på magen, *"Där!"*', ljudtext: '`klapp`', ansikte: 'glad' },
 
-  // --- Öronen ---
+  // --- Öronen: först barnets öron (Sanna 2026-11-20: "Var är dina öron?" före undersökningen), sedan lampan ---
+  { id: '21', d: 0.3 + L(27) + 4.0 + L(28) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[27, 0.3], [28, 4.3 + L(27)]], ljud: [[K(3), 4.5 + L(27) + L(28)]],
+    bild: 'Paus 4 s: barnet visar öronen. Kaninen vickar på öronen', ljudtext: 'fniss (3)', ansikte: 'fnissig' },
+
+  // --- Gapa ---
   { id: '16', d: 0.4 + L(22) + G, plats: 'Halvbild: doktorn', malin: [[22, 0.4]], ljud: [[KLICK, 0.4 + L(22) * 0.4]],
     bild: 'Doktorn håller upp öronlampan, ljuset tänds', ljudtext: '`lampa-klick`', ansikte: 'doktorn nyfiken' },
   { id: '17', d: 0.4 + L(53) + G, plats: 'Närbild: nallens öra', malin: [[53, 0.4]], ljud: [[TINDRA, 0.4 + L(53) * 0.8]],
@@ -87,10 +91,6 @@ export const RADER = [
     bild: 'Kaninens öra ramlar ner framför ögat (0,5 s). Malin efter', ljudtext: 'fniss', ansikte: 'fnissig' },
   { id: '20', d: 0.8 + L(26) + G + 0.6, plats: 'Närbild: kaninen', malin: [[26, 0.8]], ljud: [[KN('ja', 2), 1.0 + L(26)]],
     bild: 'Kaninen lyfter upp örat med tassen', ljudtext: 'ja', ansikte: 'glad' },
-  { id: '21', d: 0.3 + L(27) + 4.0 + L(28) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[27, 0.3], [28, 4.3 + L(27)]], ljud: [[K(3), 4.5 + L(27) + L(28)]],
-    bild: 'Paus 4 s: barnet visar öronen. Kaninen vickar på öronen', ljudtext: 'fniss (3)', ansikte: 'fnissig' },
-
-  // --- Gapa ---
   { id: '22', d: 0.4 + L(29) + G, plats: 'Mottagningen, helbild', malin: [[29, 0.4]],
     bild: 'Doktorn nickar', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '23', d: 0.4 + L(54) + G + 0.6, plats: 'Närbild: nallen', malin: [[54, 0.4]], ljud: [[KN('fniss', 3), 0.6 + L(54)]],
@@ -101,8 +101,8 @@ export const RADER = [
     bild: 'Kaninen stänger munnen och ser stolt ut. Paus 4 s: barnet gapar', ljudtext: 'jippi', ansikte: 'stolt' },
 
   // --- Var är nallen? ---
-  { id: '26', d: 1.6 + L(55) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[55, 1.6]], ljud: [[KLAPP, 0.3], [KN('fragande', 2), 1.8 + L(55)]],
-    bild: 'Kaninen klappar händerna. Nallen glider ur famnen, ner längs britsen och bakom pallen', ljudtext: '`klapp`, frågande', ansikte: 'förvånad' },
+  { id: '26', d: 2.3 + L(55) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[55, 2.3]], ljud: [[KLAPP, 0.3], ['duns/duns-1', 1.5], [KN('fragande', 2), 2.5 + L(55)]],
+    bild: 'Kaninen klappar händerna och släpper taget: leoparden glider ur knät, ramlar ner från britsen, studsar mjukt (duns) och rullar in bakom pallen', ljudtext: '`klapp`, `duns`, frågande', ansikte: 'förvånad' },
   { id: '27', d: 0.3 + L(56) + G + 1.0, plats: 'Halvbild: kaninen', malin: [[56, 0.3]], ljud: [[K(7), 0.5 + L(56)]],
     bild: 'Kaninen tittar åt vänster, sedan åt höger, öronen faller lite', ljudtext: 'frågande (7)', ansikte: 'nyfiken → osäker' },
   { id: '28', d: 0.3 + L(57) + 5.0, plats: 'Helbild → närbild på pallen', malin: [[57, 0.3]], ljud: [[TINDRA, 0.3 + L(57) + 3.0]],

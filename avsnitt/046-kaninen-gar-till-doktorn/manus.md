@@ -144,6 +144,15 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hej då! Vi ses snart! [giggles]
 ```
 
+## Ändringar efter förhandsvisningen (Sanna 2026-11-20)
+
+- **Doktorn har inget stetoskop** förrän kritan har ritat det (11a–11b); i 11b glider teckningen till doktorns hals.
+- **Kritan ritar stetoskopet streck för streck** i en egen bild på väggen bredvid doktorn (öronslangarna, slangen, bröstdelen), kritan lika liten i bild som alltid.
+- **Fler och tätare närbilder på ansiktena** (7, 11c, 14, 22, 25, 27, 34 är närbilder), kameran stannar inne i rummet.
+- **"Var är dina öron?"** (rad 21) kommer före öronundersökningen, direkt efter magen.
+- **Leoparden ramlar logiskt:** kaninen klappar och släpper taget, leoparden glider ur knät, faller från britsen, studsar (`duns`) och rullar in bakom pallen; Malins *"Oj! Var är leoparden?"* när den har landat.
+- **Leoparden lite mindre** (175 i stället för 210 px).
+
 ## Leoparden i stället för nallen (Sanna 2026-11-20)
 
 Gosedjuret är en liten leopard. De 11 replikerna som sa *"nallen"* spelas in igen med nya nummer (50–60, i `rost.txt`); 11, 14, 17, 23, 30, 34, 35, 36, 38, 42 och 47 används inte längre. Tabellen ovan läses med *leoparden* där det står *nallen*. Samma röst och inställningar som tagning 1, ett block:
