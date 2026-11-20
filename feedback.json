@@ -6377,9 +6377,10 @@
   "sec": -1,
   "tags": [],
   "note": "add julkal intro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163727047,
-  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)"
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)",
+  "fixedAt": 1795164242493
  },
  "xic1a30em0mwoq4zws": {
   "ep": "J16",
@@ -6387,9 +6388,10 @@
   "sec": 19,
   "tags": [],
   "note": "make gris bigger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163736268,
-  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)"
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)",
+  "fixedAt": 1795164242493
  },
  "pg4rtet765mwoq58sp": {
   "ep": "J16",
@@ -6397,9 +6399,10 @@
   "sec": 24,
   "tags": [],
   "note": "still bad sound effects for pig",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163747785,
-  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)"
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)",
+  "fixedAt": 1795164242493
  },
  "icvq82wzpsmwoq5gu1": {
   "ep": "J16",
@@ -6407,9 +6410,10 @@
   "sec": 27,
   "tags": [],
   "note": "more close cuts overall",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163758201,
-  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, større gris, QA)"
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, større gris, QA)",
+  "fixedAt": 1795164242493
  },
  "bc3je3k0limwoq10ix": {
   "ep": "J17",
