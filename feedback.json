@@ -6370,5 +6370,45 @@
   "at": 1795159781622,
   "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
   "fixedAt": 1795160468524
+ },
+ "bsic2owg5tmwoq4ssn": {
+  "ep": "J16",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "add julkal intro",
+  "fixed": false,
+  "at": 1795163727047,
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)"
+ },
+ "xic1a30em0mwoq4zws": {
+  "ep": "J16",
+  "time": "0:19",
+  "sec": 19,
+  "tags": [],
+  "note": "make gris bigger",
+  "fixed": false,
+  "at": 1795163736268,
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)"
+ },
+ "pg4rtet765mwoq58sp": {
+  "ep": "J16",
+  "time": "0:24",
+  "sec": 24,
+  "tags": [],
+  "note": "still bad sound effects for pig",
+  "fixed": false,
+  "at": 1795163747785,
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, större gris, QA)"
+ },
+ "icvq82wzpsmwoq5gu1": {
+  "ep": "J16",
+  "time": "0:27",
+  "sec": 27,
+  "tags": [],
+  "note": "more close cuts overall",
+  "fixed": false,
+  "at": 1795163758201,
+  "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, større gris, QA)"
  }
 }
