@@ -143,7 +143,10 @@ Det här gäller alla besök. Det mesta är gjort i `avsnitt/046-kaninen-gar-til
 - **Djuret visar barnet:** på *"Gapa"* gapar djuret själv innan gosedjuret får försöka.
 - **Små hjärtan** stiger upp bredvid ansiktet när djuret kramar gosedjuret, aldrig över ansiktet.
 - **Frågan till barnet kommer före undersökningen:** *"Var är dina öron?"* ställs innan doktorn tittar i öronen.
-- **Doktorn gör små ljud men säger inga meningar:** *Hej*, *Hmm*, *Ooo* och *Aaa*.
+- **Doktorn gör små ljud men säger inga meningar:** *Hej*, *Hmm*, *Ooo*, *Aaa*, *Mhm*, *Oj*, *Bra*, *Hej då* och ett mjukt, långt fniss (ElevenLabs, `assets/ljud/effekter/doktor-*`). Ljuden ger doktorn personlighet.
+- **Doktorn reagerar på sina ljud:** ansiktet glider mot ett uttryck medan ljudet hörs (förvånad på *Ooo* och *Oj*, med stora ögon och en liten rund mun), doktorn nickar på *Mhm* och *Hmm* och klappar händerna på *Bra*. När doktorn står still svajar den lite och lutar huvudet.
+- **Djurets känslor syns tydligt:** oroligt ansikte (bryn snett uppåt, blicken ner, mungiporna ner) när djuret inte vill. När något är borta ser djuret sig förvirrat omkring: blicken och huvudet glider vänster, höger och vänster igen och sedan mot tittaren, med sneda bryn och en liten rund mun. Gosedjuret kikar fram bakom pallen innan barnet hittar det.
+- **Gosedjuret flyttas med en hand** när magen ska visas, så att magen syns direkt.
 
 **Bild och kamera**
 - **Många närbilder på ansiktena**, ungefär ×2,8 för djuret och ×3 för doktorn med huvudet i mitten, och närbild på saken (stetoskopet, lampan). Kameran stannar alltid inne i rummet.
@@ -154,8 +157,24 @@ Det här gäller alla besök. Det mesta är gjort i `avsnitt/046-kaninen-gar-til
 - **Gången** använder riggens stegcykel (`L.steg`) med en klocka som följer sträckan, som i 037.
 - **Slutet** är kritirisen från 045: en svart ram med en vågig krämvit vaxkant runt djurets ansikte, och sedan 0,6 s svart.
 
+- **Sakbilder:** när saken nämns (*"Ett stetoskop!"*, *"en lampa"*) klipper vi till saken ensam på rosa botten (`#F6C3D3`). Den har mjuka, långsamma strålar bakom (12 kilar, opacitet ca 0,24, 3°/s, suddiga), kritgnistor och en vit klistermärkeskant. Ljussken ritas utanför kanten, annars får skenet en vit ring.
+- **Vita kanter på alla saker**, också i närbilderna (`saksKant`/`sakKantStor`).
+- **Luft ovanför huvudet:** närbilderna läggs lite högre än huvudets mitt (`huvud[1] − 30`). Huvud och öron får aldrig klippas. Sanna har bett om det många gånger, så kontrollera varje närbild på en stillbild.
+- **Flytta doktorn i en närbild** (`dx`) när något vid djurets kant ska synas, till exempel örat som ramlar. Det är ett klipp, så hoppet märks inte.
+- **En detalj i rummet** gör det levande, till exempel en väggklocka bakom.
+- **Mjukt, aldrig ryckigt:** uttryck och poser blandas över 0,3–0,5 s (`blanda`/`blandaPose`) och hoppar aldrig mellan två bildrutor. Samma bild över ett klipp ska ha samma pose på båda sidor. Kritan glider mellan dragen och står kvar i sista spetsen (`stetoBana`), annars fladdrar den.
+
+**Ljud**
+- **Inga ljud ovanpå varandra:** Malin, djuret och doktorn turas om. Kontrollera med ffprobe-längder innan rendering.
+- **Musik:** en befintlig loop under hela filmen, svag (`gissa-bad.m4a` på 0,075), med fade in och ut. Inget rumsljud.
+
 **Tempo**
-- **Lugnt:** 1,6 s extra luft efter varje replik (`G` i `rader.mjs`), och ungefär 4:15 långt.
+- **Lugnt:** 1,6 s extra luft efter varje replik (`G` i `rader.mjs`), och ungefär 4:30 långt.
+
+**Arbetet**
+- **Malins tagning delas i molnet** med faster-whisper (`dela-tagning.py`, `HF_HUB_DISABLE_XET=1`). Kolla korta ord som *aaa*, som whisper missar, och klipp dem för hand.
+- **Djupgranskning (QA) före slutrenderingen** i en subagent: varje klipp och varje pose ska flyta, och filerna, längderna och ljudöverlappen ska kontrolleras. Notera resultatet i `qa.md`.
+- **Sanna ger tidskoder** (*"2.29 …"*). Räkna om dem till en rad med `rader.json`, ändra raden, rendera stillbilder och skicka en snabb förhandsvisning.
 
 ## Öppet
 
