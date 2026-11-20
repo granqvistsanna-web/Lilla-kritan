@@ -392,6 +392,11 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   render = t => { const [f, p] = lage(t); fig.ansikte = f; fig.pose = p; rita(fig, f, p);
     filmKamera(t, lage, p, SK, MARK, Z);
     document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
+} else if (sok.get('scen')) {
+  // ?scen=<bild i repot>&x=&y=&s=&pose=: doktorn i en plattas 1920×1080 (för att pröva storlek och plats), glad, blinkar.
+  document.getElementById('scen').innerHTML = `<image href="../../../../${sok.get('scen')}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  const fig = figur(+sok.get('x') || 1450, +sok.get('y') || 900, +sok.get('s') || 0.6), po = POSER[sok.get('pose')] ? sok.get('pose') : 'neutral';
+  render = t => { ansikte(blinka(blanda('neutral', 'glad', 1), t), 1, fig); pose(po, 1, fig); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
 } else if (sok.get('ark') === 'kawaii') {
   // ?ark=kawaii: neutral → kawaii (k 0, 0,5, 1).
   [0, 0.5, 1].forEach((k, i) => { const x = 400 + 560 * i, fig = figur(x, 900, 0.62); ansikte('kawaii', k, fig);
