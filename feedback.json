@@ -6139,5 +6139,125 @@
   "at": 1795075581327,
   "render": "2026-11-19 07:01 (Förhandsvisning (snabb), som J06 björnen: mindre mössa, utan \"Var gömmer du dig nu?\", tittut 0,3 s senare, tätare närbilder, reaktionsansikten, samtal (vinka, \"Var är grisen? Ser du?\", \"Säg tittut med mig! Titt…\", \"Du såg grisen!\") och nytt slut: granen? pepparkakshuset? mössan sticker upp ur säcken, vi ropar tittut, \"Du hittade grisen!\")",
   "fixedAt": 1795076992538
+ },
+ "rufy7fgnffmwomknsx": {
+  "ep": "J16",
+  "time": "0:24",
+  "sec": 24,
+  "tags": [],
+  "note": "new gris ljud here, remove this ioink",
+  "fixed": false,
+  "at": 1795157748608,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "i2h4ppvo2pmwomlifd": {
+  "ep": "J16",
+  "time": "0:29",
+  "sec": 29,
+  "tags": [],
+  "note": "better animation of påse, holding so viewer sees and close crop\n\nuse new bg",
+  "fixed": false,
+  "at": 1795157788297,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "6uh7ggcratmwomlu9m": {
+  "ep": "J16",
+  "time": "0:39",
+  "sec": 39,
+  "tags": [],
+  "note": "close up on birds",
+  "fixed": false,
+  "at": 1795157803642,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "34kx5akq9cmwomm80n": {
+  "ep": "J16",
+  "time": "0:46",
+  "sec": 46,
+  "tags": [],
+  "note": "more pick and slower dsaapear of seeds",
+  "fixed": false,
+  "at": 1795157821463,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "allf169rekmwommvoi": {
+  "ep": "J16",
+  "time": "1:02",
+  "sec": 62,
+  "tags": [],
+  "note": "make birds animation better, jump around",
+  "fixed": false,
+  "at": 1795157852130,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "4mcvj93n83mwomnk21": {
+  "ep": "J16",
+  "time": "1:21",
+  "sec": 81,
+  "tags": [],
+  "note": "add varsågod fåglarna instead of grisne",
+  "fixed": false,
+  "at": 1795157883721,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "v9x33tezwxmwomog7e": {
+  "ep": "J16",
+  "time": "1:48",
+  "sec": 108,
+  "tags": [],
+  "note": "more animation of grisen closer to kärve eating",
+  "fixed": false,
+  "at": 1795157925386,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "fjcqwd0fjpmwomovf7": {
+  "ep": "J16",
+  "time": "1:51",
+  "sec": 111,
+  "tags": [],
+  "note": "more space between ni pratar visst med bvarandra",
+  "fixed": false,
+  "at": 1795157945107,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "yfgpoe8pnomwomp9gr": {
+  "ep": "J16",
+  "time": "2:00",
+  "sec": 120,
+  "tags": [],
+  "note": "giv eme prompts for new pg soud effects",
+  "fixed": false,
+  "at": 1795157963307,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "5el5pgqizqmwomq3ag": {
+  "ep": "J16",
+  "time": "2:22",
+  "sec": 142,
+  "tags": [],
+  "note": "more snow on the kärve",
+  "fixed": false,
+  "at": 1795158001960,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "o81wmxmxh1mwomqi5q": {
+  "ep": "J16",
+  "time": "2:31",
+  "sec": 151,
+  "tags": [],
+  "note": "closer to kärve",
+  "fixed": false,
+  "at": 1795158021230,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+ },
+ "dhsjrpg85nmwomrzf3": {
+  "ep": "J16",
+  "time": "3:52",
+  "sec": 232,
+  "tags": [],
+  "note": "keep snow faling",
+  "fixed": false,
+  "at": 1795158090255,
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
  }
 }
