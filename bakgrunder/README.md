@@ -28,6 +28,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Hallen | korall `#F07A5F`, dörr och krokrad i plattan, vitt golv, v2, 16:9 (024) | [hallen.md](hallen.md) |
 | Sovrummet | väggfärg väljs (förslag blå `#3F6EA6`), runt tomt fönster och lampa i plattan, vitt golv, v2, 16:9 (026, 027) | [sovrummet.md](sovrummet.md) |
 | Vardagsrummet | kvällsblå `#2F4F7F`, stort fönster med tom vit insida (snön i kod), gardiner, fåtölj och matta i plattan, varmt trägolv, v2, 16:9 (034) | [vardagsrummet.md](vardagsrummet.md) |
+| Mottagningen | lugn mintgrön `#9ED9C3` (eller ljusblå), britsen med papper, pall, fönster med tom vit insida, tavla med en sol, varmt trägolv, höger tredjedel tom för doktorn, v2, 16:9 (046, Besöket), bild inte gjord än | [mottagningen.md](mottagningen.md) |
 | Julrummet | granggrön vägg, fönster med tom vit insida (snön i kod), röda gardiner, gran och julstrumpor i plattan, gräddvitt golv, 16:9 (julkalendern lucka 6) | [julrummet.md](julrummet.md) |
 | Stranden | ljusblå himmel `#89CFF3`, havet, ljust grå-beige sand (inte gul), v2, tom platta (011) | [stranden.md](stranden.md) |
 | Ängen på natten | djup nattblå `#283C78`, mörkt gräs, blomtuvor nere till vänster och höger, 9:16 (Godnattsagan: Fjärilen Fia) | [angen-natt.md](angen-natt.md) |

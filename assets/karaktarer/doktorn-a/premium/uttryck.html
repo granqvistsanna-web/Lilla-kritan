@@ -209,7 +209,7 @@ function rita(fig, f, p = POSE0) {
   const del = (n, grader, dx, dy, skala = [1, 1]) => { const [x, y] = RIGG[n.replace('2', '')];
     const t = `translate(${(sx - 1) * (x - 512) + dx} ${dy}) rotate(${grader} ${x} ${y}) translate(${x} ${y}) scale(${skala[0]} ${skala[1]}) translate(${-x} ${-y})`;
     alla('.' + n).forEach(e => e.setAttribute('transform', t)); };
-  q('.figuren').setAttribute('transform', `translate(${p.x} ${p.lyft}) rotate(${f.luta + p.luta + 2 * r} 512 ${FOTTER})`);
+  q('.figuren').setAttribute('transform', `translate(${p.x} ${p.lyft}) rotate(${f.luta + p.luta + 0.5 * r} 512 ${FOTTER})`);
   const hojd = Math.min(1, -p.lyft / 220);
   q('.skugga').setAttribute('rx', 300 * (1 - 0.4 * hojd)); q('.skugga').setAttribute('cx', 512 + p.x); q('.skugga').setAttribute('opacity', 0.1 * (1 - 0.3 * hojd));
   q('.kropp').setAttribute('transform', `translate(0 ${sank}) translate(512 ${FOTTER}) scale(${sx} ${sy}) translate(-512 ${-FOTTER})`);
@@ -245,8 +245,8 @@ function rita(fig, f, p = POSE0) {
   del('leg-r', -p.ben[1], 0, sank + p.benY[1], [1, 1 + p.benS[1]]);
 
   // Hela ansiktet (näsa, kinder, ögon, mun) glider med riktningen och blicken. Håret sitter kvar på kroppen.
-  const fx = 36 * r, fy = 4 * a - 10 * u;
-  q('.drag').setAttribute('transform', `translate(${fx} ${fy}) rotate(${5 * r} ${HALS[0]} ${HALS[1]}) translate(${HALS[0]} ${HALS[1]}) scale(${1 - 0.08 * a} 1) translate(${-HALS[0]} ${-HALS[1]})`);
+  const fx = 20 * r, fy = 2 * a - 10 * u;   // doktorn: huvudet glider och lutar mindre åt riktningen än barnens (lugnare gång)
+  q('.drag').setAttribute('transform', `translate(${fx} ${fy}) rotate(${2 * r} ${HALS[0]} ${HALS[1]}) translate(${HALS[0]} ${HALS[1]}) scale(${1 - 0.08 * a} 1) translate(${-HALS[0]} ${-HALS[1]})`);
   const K = Math.max(0, Math.min(1, f.kawaii)), OG = mix(OGON, KAWAII.ogon, K), OS = mix([1, 1], KAWAII.skala, K);
   const ogon = alla('.oga'), lock = alla('.lock'), klipp = alla('.lockklipp'), glad = alla('.glad'), sov = alla('.sov'), bryn = alla('.bryn'), frans = alla('.frans');
   alla('.glans').forEach(e => e.setAttribute('opacity', 1 - K)); alla('.glans-k').forEach(e => e.setAttribute('opacity', K));
@@ -303,7 +303,7 @@ const KLAPP = { v: -40, dv: 15, in: 0, din: 0, ner: 0 };   // kantklappen: händ
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-64, 0], oppen: [-50, 0], y: 0, spets: -200, gnista: [38, 16] };   // långa armar: vrids in till mitten, ingen glidning (grovt uppmätt, inte finputsat)
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svans: null, oron: false, hopp: { h: 160, sy: 0.075, sx: -0.0625, fot: -24, tryck: [0.1, 0.08], vy: false }, boj: true, blick: 27 };
+const RORELSE = { svans: null, oron: false, hopp: { h: 160, sy: 0.075, sx: -0.0625, fot: -24, tryck: [0.1, 0.08], vy: false }, boj: false, stegLuta: 1.2, blick: 27 };   // lugn gång (Sanna 2026-11-20): ingen böj framåt, lite gungning
 const ROR = {
   ...kanslorRorelser(),
   ...rorelser(),
