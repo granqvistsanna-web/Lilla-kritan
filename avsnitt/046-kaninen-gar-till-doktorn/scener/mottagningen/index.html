@@ -135,13 +135,18 @@ function S(id, tl, d) {
     case '01a': return { papper: 1, k: kl((tl - 0.3) / (d - 0.6)), tl };
     case '01b': return { papper: 1, k: 1, svaj: del(0, 1.1, tl), tl: tl + 8 };
     case '01c': { const svar = MT(); return { papper: 1, k: 1, svaj: 1, fyll: del(svar, svar + 0.9, tl), ut: del(svar + 0.2, svar + 1.4, tl), zoom: del(d - 1.2, d, tl), tl: tl + 14 }; }
-    case '1': { const u = del(0.3, 3.2, tl), x = lerp(-260, PA_GOLV[0], 1 - (1 - kl((tl - 0.3) / 2.9)) ** 2), gar = tl > 0.3 && tl < 3.2;
-      let p = KP('neutral', { lyft: gar ? -16 * Math.abs(Math.sin(2 * Math.PI * 1.8 * tl)) : 0, luta: gar ? 2 * Math.sin(2 * Math.PI * 1.8 * tl) : 0 });
-      if (tl > 3.3) p = vinka(p, tl - 3.3);
-      return { kam: 'hel', k: { pa: [x, PA_GOLV[1]], p, f: KF(tl > 3.3 ? 'jatteglad' : 'glad') }, u }; }
+    case '1': {   // gången (Sanna 2026-11-20: "improve bunny rig on walking"): riggens stegcykel L.steg som i 037, klockan följer
+      // sträckan (STEG px per steg, så att fötterna inte glider), farten saktar in mot slutet och stegen tonar ut innan vinkningen
+      const X0 = -260, STEG = 210, u = kl((tl - 0.3) / 3.0), x = lerp(X0, PA_GOLV[0], 1 - (1 - u) ** 1.6);
+      const a = (1 - del(2.9, 3.4, tl)) * del(0.2, 0.45, tl), c = (x - X0) / STEG;
+      const [fw, pw] = KL.steg(c, a, Math.min(1, a * 1.6), Math.sin(tl * 1.5 * Math.PI));
+      let p = { ...pw, armar: (pw.armar || [0, 0]).map(v => v + NER) };
+      if (tl > 3.4) p = vinka({ ...KP(), rikt: 0 }, tl - 3.4);
+      return { kam: 'hel', k: { pa: [x, PA_GOLV[1]], p, f: tl > 3.4 ? KF('jatteglad') : KL.blanda(fw, KF('glad'), 0.5) } }; }
     case '2': return { kam: 'doktor', k: golv, d: { p: DP('neutral', DVINKA(tl)) } };
     case '3': return { kam: 'kaninNar', k: { ...golv, f: KF('ledsen', 0.4 * del(0, 0.6, tl), { titt: [0, 6 * del(0, 0.6, tl)] }), p: KP('neutral', { oron: [12, 12].map(o => o * del(0, 0.6, tl)), sank: 6 * del(0, 0.6, tl) }) } };
-    case '4': { const upp = tl < 1.1; return { kam: 'kaninNar', k: { ...golv, f: KF('ledsen', 0.5, { titt: upp ? [10, -8] : [0, 6] }), p: KP('neutral', { oron: [14, 14], sank: 6 }) } }; }
+    case '4': { const upp = tl < 1.1; if (upp) return { kam: 'doktorNar', k: { ...golv, f: KF('ledsen', 0.5, { titt: [10, -8] }), p: KP('neutral', { oron: [14, 14], sank: 6 }) }, d: { f: 'glad' } };
+      return { kam: 'kaninNar', k: { ...golv, f: KF('ledsen', 0.5, { titt: upp ? [10, -8] : [0, 6] }), p: KP('neutral', { oron: [14, 14], sank: 6 }) } }; }
     case '5': return { kam: 'hel', k: { ...golv, f: KF('ledsen', 0.4), p: KP('neutral', { oron: [12, 12], sank: 6 }) }, d: { p: DP('neutral', { nick: DNICK(tl) }) } };
     case '6a': { const rit = Math.min(4.0, d - 3.0 + 0.4); return { kam: 'kanin', k: { ...golv, f: KF('nyfiken', 1, { titt: [12, 6] }), p: KP('neutral', { oron: [12, 12] }) }, n: 'golv-kontur', nk: kl((tl - 0.4) / rit), krita: 'nalle', tl }; }
     case '6b': return { kam: 'kaninLeo', k: { ...golv, f: KF('kawaii') }, n: 'golv', nfyll: del(0, 0.5, tl), kritaUt: del(0, 0.8, tl), krita: 'nalle', tl };

@@ -79,3 +79,30 @@ Image 1 is the STYLE and SHAPE reference: copy its drawing technique exactly (so
 Two soft, gentle, slow heartbeats heard through a doctor's stethoscope, warm and muffled lub-dub, lub-dub, calm and cozy, low volume, for a toddler cartoon, not scary, no music, no voice.
 ```
 Längd 2 s, prompt influence ca 0,4. 4 tagningar, filerna i `assets/ljud/effekter/hjartslag/hjartslag-1…4.m4a`.
+
+## Doktorns ljud (Sanna 2026-11-20: "make sound effects for the doctor such as aaa ooo hmm hej")
+
+Doktorn säger fortfarande inga meningar (Malin berättar), men gör små vänliga ljud. ElevenLabs **Sound Effects**, 4 tagningar per ljud, prompt influence ca 0,5. Filerna i `assets/ljud/effekter/doktor-<ljud>/doktor-<ljud>-1…4.m4a`. Samma röst i alla: en varm, vänlig, lugn kvinnlig vuxen.
+
+| Ljud | Längd | Var i 046 |
+|---|---|---|
+| `doktor-hej` | 1 s | rad 2 (doktorn vinkar), rad 36 (hej då, samma ljud) |
+| `doktor-hmm` | 1,5 s | rad 12–13 (lyssnar), rad 17 (tittar i örat) |
+| `doktor-ooo` | 1 s | rad 18 (*"Vilka långa öron!"*), rad 13 (efter hjärtslagen) |
+| `doktor-aaa` | 1,2 s | rad 24 (visar hur man gapar, före kaninen) |
+
+```prompt
+A warm, friendly adult woman doctor says a short cheerful "Hej!" (Swedish for hi), soft and kind, smiling voice, for a toddler cartoon, close and clean, no music, no background.
+```
+
+```prompt
+A warm, friendly adult woman doctor makes a soft, calm, thoughtful "Hmm…" while listening carefully, gentle and reassuring, smiling, for a toddler cartoon, close and clean, no words, no music.
+```
+
+```prompt
+A warm, friendly adult woman doctor makes a delighted, impressed "Ooo!" with a smile, soft and playful, for a toddler cartoon, close and clean, no words, no music.
+```
+
+```prompt
+A warm, friendly adult woman doctor opens her mouth wide and says a short, clear, gentle "Aaa" to show a child how to open wide, playful and calm, for a toddler cartoon, close and clean, no words, no music.
+```

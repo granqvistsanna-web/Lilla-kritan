@@ -126,7 +126,7 @@ Tandläkarstolen är en egen platta eller samma mottagning med stolen i stället
 
 Som i bilderboken (korta, vardagliga, upprepning, frågor med paus 4–5 s, Malin efter handlingen, inga djurnamn, *"Ska vi säga tack?"*). Dessutom:
 
-- **Doktorn säger inget** (bestämt av Sanna 2026-11-20). Malin berättar vad doktorn gör (*"Doktorn lyssnar på magen."*). Doktorn nickar, ler och vinkar. Det sparar en röst och en tagning.
+- **Doktorn säger inga meningar** (bestämt av Sanna 2026-11-20). Malin berättar vad doktorn gör (*"Doktorn lyssnar på magen."*). Doktorn nickar, ler och vinkar, och gör **små vänliga ljud** (Sanna 2026-11-20): *"Hej!"*, *"Hmm …"* när doktorn lyssnar, *"Ooo!"* och *"Aaa"* när doktorn visar hur man gapar (ElevenLabs SFX, `doktor-hej/-hmm/-ooo/-aaa`, prompter i `avsnitt/046-kaninen-gar-till-doktorn/saker-prompter.md`).
 - Säg **doktorn**, inte läkaren. På BVC: **sköterskan**.
 - Namnge sakerna en gång, tydligt: *"ett stetoskop"*, *"en lampa"*, *"ett plåster"*.
 - Lugnande ord som återkommer: *"Doktorn är snäll."*, *"Nallen är med."*, *"Nu är det klart."*
