@@ -21,6 +21,17 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="5"/>
     </filter>
+    <!-- Doktorns vita kant (Sanna 2026-11-20: "polish dr white rim"): EN jämn kant runt hela figuren i stället för delarnas inbakade
+         kanter (de var olika tjocka och gav vita bulor vid rockens fåll). Delarna är kantlösa kopior (cut/*-nk.png). Alfan suddas och
+         skärs av vid ca 5 %, så kanten blir rund och ca 12 enheter bred (≈ 10 px i bild på SKALA 0,8), med lite kritkorn som kant.js. -->
+    <filter id="dkant" x="-0.15" y="-0.1" width="1.3" height="1.2" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="b"/>
+      <feComponentTransfer in="b" result="d"><feFuncA type="linear" slope="30" intercept="-1.5"/></feComponentTransfer>
+      <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="1" seed="2" result="k"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -0.25 1.2" result="kk"/>
+      <feComposite in="kk" in2="d" operator="in" result="vit"/>
+      <feMerge><feMergeNode in="vit"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
     <pattern id="rock" patternUnits="userSpaceOnUse" width="128" height="128"><image href="cut/doktorn-a-rock-tile.png" width="128" height="128"/></pattern>
   </defs>
   <defs>
@@ -148,14 +159,14 @@ const blanda = blandare(NEUTRAL, UTTRYCK), blandaPose = blandare(POSE0, POSER), 
 
 function figur(x, y, skala) {                 // Mor med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
-  const del = (n, fil = n) => `<image class="${n}" href="cut/doktorn-a-${fil}.png" width="1024" height="1024"/>`;
+  const del = (n, fil = n) => `<image class="${n}" href="cut/doktorn-a-${fil}-nk.png" width="1024" height="1024"/>`;   // kantlösa delar, kanten är #dkant
   g.setAttribute('transform', `translate(${x} ${y}) scale(${skala}) translate(-512 ${-FOTTER})`);
   // arm-l2/arm-r2: kopior av armarna för riktningsposen (båda armarna ut på samma sida, den ena under den andra).
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 14}" rx="300" ry="34" fill="#000" opacity="0.1"/>
-    <g class="figuren">${['leg-l', 'leg-r'].map(n => del(n)).join('')}
+    <g class="figuren" filter="url(#dkant)">${['leg-l', 'leg-r'].map(n => del(n)).join('')}
     <g class="armar-bak"></g>
-    <g class="kropp"><image href="cut/doktorn-a-body.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/doktorn-a-head.png" width="1024" height="1024"/><g class="ansiktet" transform="${ANSIKTE}">
+    <g class="kropp"><image href="cut/doktorn-a-body-nk.png" width="1024" height="1024"/>
+    <g class="drag"><image href="cut/doktorn-a-head-nk.png" width="1024" height="1024"/><g class="ansiktet" transform="${ANSIKTE}">
     <path class="nasa" transform="translate(0 ${NOSY})" d="M498 420 Q510.5 404 523 420" fill="none" stroke="${NASA}" stroke-width="6" stroke-linecap="round"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="34" ry="20" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => { const o = i ? 1 : -1; return `<g class="oga">
@@ -183,7 +194,7 @@ function figur(x, y, skala) {                 // Mor med fötterna i (x, y)
 
 // Armen med armbåge (prov i armar-test.html): s −1 vänster, 1 höger; v1, v2 över- och underarmens vinkel i grader från rakt ner,
 // + utåt från kroppen. S axellederna, L1/L2 längderna, W ärmens bredd, fram [v1, v2] vinklarna framför rocken (händerna på magen).
-const ARM = { S: { l: [398, 462], r: [626, 462] }, L1: 118, L2: 104, W: 66, HAND: 35, RING: 9, fram: [14, -64],
+const ARM = { S: { l: [398, 462], r: [626, 462] }, L1: 118, L2: 104, W: 66, HAND: 35, RING: 5, fram: [14, -64],   // RING: bara armar framför rocken (skiljelinjen mot rocken); ytterkanten är figurens #dkant
   KANT: '#cfc8bc', HUD: '#f7ba99', HUDKANT: '#e3a07f' };
 function armRita(s, sx, sy, v1, v2, fram) {
   const r = g => g * Math.PI / 180, { L1, L2, W, HAND, RING, KANT, HUD, HUDKANT } = ARM;
@@ -194,7 +205,7 @@ function armRita(s, sx, sy, v1, v2, fram) {
   const rd = `M${sx + (ex - sx) * k} ${sy + (ey - sy) * k} L${ex} ${ey} L${hx} ${hy}`;
   const mx = 26 * Math.cos(r(v2)), my = s * 26 * Math.sin(r(v2));
   return { hand: [cx, cy], svg: `<g stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <path d="${rd}" stroke="#fff" stroke-width="${W + 2 * RING + 6}"/><circle cx="${cx}" cy="${cy}" r="${HAND + RING}" fill="#fff"/>
+    ${fram ? `<path d="${rd}" stroke="#fff" stroke-width="${W + 2 * RING + 6}"/><circle cx="${cx}" cy="${cy}" r="${HAND + RING}" fill="#fff"/>` : ''}
     <circle cx="${cx}" cy="${cy}" r="${HAND}" fill="${HUD}" stroke="${HUDKANT}" stroke-width="3"/>
     <path d="${d}" stroke="${KANT}" stroke-width="${W + 6}"/><path d="${d}" stroke="url(#rock)" stroke-width="${W}"/>
     <path d="M${hx - mx} ${hy + my} L${hx + mx} ${hy - my}" stroke="${KANT}" stroke-width="4"/></g>` };
