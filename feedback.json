@@ -6156,9 +6156,10 @@
   "sec": 29,
   "tags": [],
   "note": "better animation of påse, holding so viewer sees and close crop\n\nuse new bg",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157788297,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "6uh7ggcratmwomlu9m": {
   "ep": "J16",
@@ -6166,9 +6167,10 @@
   "sec": 39,
   "tags": [],
   "note": "close up on birds",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157803642,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "34kx5akq9cmwomm80n": {
   "ep": "J16",
@@ -6176,9 +6178,10 @@
   "sec": 46,
   "tags": [],
   "note": "more pick and slower dsaapear of seeds",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157821463,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "allf169rekmwommvoi": {
   "ep": "J16",
@@ -6186,9 +6189,10 @@
   "sec": 62,
   "tags": [],
   "note": "make birds animation better, jump around",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157852130,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "4mcvj93n83mwomnk21": {
   "ep": "J16",
@@ -6196,9 +6200,10 @@
   "sec": 81,
   "tags": [],
   "note": "add varsågod fåglarna instead of grisne",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157883721,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "v9x33tezwxmwomog7e": {
   "ep": "J16",
@@ -6206,9 +6211,10 @@
   "sec": 108,
   "tags": [],
   "note": "more animation of grisen closer to kärve eating",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157925386,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "fjcqwd0fjpmwomovf7": {
   "ep": "J16",
@@ -6216,9 +6222,10 @@
   "sec": 111,
   "tags": [],
   "note": "more space between ni pratar visst med bvarandra",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157945107,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "yfgpoe8pnomwomp9gr": {
   "ep": "J16",
@@ -6226,9 +6233,10 @@
   "sec": 120,
   "tags": [],
   "note": "giv eme prompts for new pg soud effects",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157963307,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "5el5pgqizqmwomq3ag": {
   "ep": "J16",
@@ -6236,9 +6244,10 @@
   "sec": 142,
   "tags": [],
   "note": "more snow on the kärve",
-  "fixed": false,
+  "fixed": true,
   "at": 1795158001960,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "o81wmxmxh1mwomqi5q": {
   "ep": "J16",
@@ -6246,9 +6255,10 @@
   "sec": 151,
   "tags": [],
   "note": "closer to kärve",
-  "fixed": false,
+  "fixed": true,
   "at": 1795158021230,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  },
  "dhsjrpg85nmwomrzf3": {
   "ep": "J16",
@@ -6256,8 +6266,9 @@
   "sec": 232,
   "tags": [],
   "note": "keep snow faling",
-  "fixed": false,
+  "fixed": true,
   "at": 1795158090255,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795158680203
  }
 }
