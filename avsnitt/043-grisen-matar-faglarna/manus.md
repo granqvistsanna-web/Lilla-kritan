@@ -60,8 +60,8 @@ Kritan ritar **den lilla blå fågeln**, inte grisen (Sanna 2026-11-18): konture
 | 8 | Den lilla blå fågeln från ritintrot flyger ut ur granen och landar bredvid de andra | Och där kommer den lilla blå fågeln. | litet pip |
 | 9 | Den blå fågeln lutar huvudet, inga frön kvar | Oj då. Den lilla fågeln fick ingenting. | litet tyst pip |
 | 10 | Närbild, grisen tittar på den lilla fågeln, öronen sjunker lite | Hm … vad gör vi nu? | trumpet noff |
-| 11 | Kritan kommer in och ritar julkärven på en stång i snön: konturen (4,5 s, stången, axen som egna drag, rosetten), gisspaus, kärven fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En julkärve! Varsågod, fåglarna. | krita-ritar, `glitter` |
-| 12 | Närbild på kärven, kornen glimmar | Full med korn till fåglarna. | `tindra` |
+| 11 | Kritan kommer in och ritar julkärven på en stång i snön: konturen (4,5 s, stången, axen som egna drag, rosetten), gisspaus, kärven fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En julkärve! Varsågod! | krita-ritar, `glitter` |
+| 12 | Närbild på kärven, kornen glimmar | Full med korn. Den kan fåglarna äta på hela vintern. | `tindra` |
 | 13 | Grisen tittar på kärven, öronen reser sig | Ska vi säga tack? *(paus 2,5 s)* | nyfiket noff |
 | 14 | Grisen nickar | Tack! | förtjust noff |
 | 15 | Fåglarna flyger upp till kärven, en i taget | En fågel … två fåglar … tre fåglar! | pip ×3, flax |
@@ -79,7 +79,7 @@ Kritan ritar **den lilla blå fågeln**, inte grisen (Sanna 2026-11-18): konture
 | 27 | Samma igen. Den gula fågeln flyger ner och pickar | Skaka, skaka … pick! | `sno-duns`, `pick` |
 | 28 | Grisen skakar en tredje gång. Ingen fågel kommer. Grisen tittar åt vänster, sedan åt höger | Oj, den lilla fågeln kommer inte. Grisen vet inte var den är. | frågande noff |
 | 29 | Helbild för frågan, sedan klipp till närbild på granen: en blå stjärt sticker ut mellan grenarna. Efter 3 s skimrar den svagt | Kan du hjälpa grisen? Kan du se var den lilla fågeln är? *(paus 5 s)* | tyst |
-| 30 | Stjärten skimrar tydligt, fågeln tittar fram | Ja, där! I granen! | förtjust noff, `tindra` |
+| 30 | Den lilla blå fågeln tittar ut ur fågelholken | Ja! Där är den lilla blå fågeln! I fågelholken. Där bor fåglarna. | förtjust noff, `tindra` |
 | 31 | Den lilla fågeln flyger ner till kärven och pickar på ordet | Skaka, skaka … pick! | flax, `pick` |
 | 32 | Halvbild, alla tre pickar i kärven. Grisen ser glad ut | Nu äter alla fåglarna. Mums! | mysig suck |
 | 33 | Snön faller igen och lägger sig på kärven. Grisen tittar upp | Oj, mer snö! | nyfiket noff |
@@ -114,8 +114,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [gently] Oj då. Den lilla fågeln fick ingenting.
 [curious] Hm … vad gör vi nu?
 [excited] Titta! Kritan ritar något.
-[happy] En julkärve! Varsågod, fåglarna.
-[warmly] Full med korn till fåglarna.
+[happy] En julkärve! Varsågod!
+[warmly] Full med korn. Den kan fåglarna äta på hela vintern.
 [warmly] Ska vi säga tack?
 [happy] Tack!
 [cheerfully] En fågel … två fåglar … tre fåglar!
@@ -133,7 +133,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Skaka, skaka … pick!
 [curious] Oj, den lilla fågeln kommer inte. Grisen vet inte var den är.
 [warmly] Kan du hjälpa grisen? Kan du se var den lilla fågeln är?
-[excited] Ja, där! I granen!
+[excited] Ja! Där är den lilla blå fågeln! [warmly] I fågelholken. Där bor fåglarna.
 [happy] Skaka, skaka … pick!
 [warmly] Nu äter alla fåglarna. Mums!
 [surprised] Oj, mer snö!

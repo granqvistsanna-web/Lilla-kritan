@@ -213,14 +213,15 @@ const HEL = () => kamera(1), HALV = () => kamera(1.9, 980, 640),   // HALV 1.6 �
   ANS = () => kamera(2.4, GRIS[0], iFig([512, 430])[1]),
   KARVN = () => kamera(2.3, KARV[0], KTOPP[1] + 120), PASEN_K = () => kamera(2.4, ...iFig([780, 560])), GRANN = () => kamera(2.6, HOLK[0] - 60, HOLK[1]),
   HALVH = () => kamera(1.35, 1240, 640),   // större gris men holken kvar i bild när en fågel flyger ut (Sanna 2026-11-20: "bigger pig")
+  LUVAN = () => kamera(2.4, GRIS[0] + 20, iFig([512, 330])[1]),   // närbild: ansiktet och luvan med fågeln (J16 2:30)
   HOLKN = () => kamera(2.6, 1820, 500),   // närbild på fågelholkens tak med fåglarna (Sanna 2026-11-20, J16 0:53)
   FAGLAR_N = () => kamera(2.6, 1000, 830), KARVG = () => kamera(1.9, 1120, 650);   // närbild på fåglarna vid fröna · nära grisen och kärven (Sanna 2026-11-20)
 
 // --- Ritintrot: kritan ritar den lilla blå fågeln -------------------------------------------------------------------------------
 const PF = [960, 760, 0.62];
 // ögat i teckningen (Sanna 2026-11-20, J16 0:27 "add eye to bird drawing"): kritan prickar dit det när konturen är klar.
-// oga 0–1 = prickens storlek; samma plats som det riktiga ögat (fagel.js: 632, 237), så teckningen blir som bilden
-const PF_OGA = [PF[0] - PF[2] * (632 - 400), PF[1] + PF[2] * (237 - 689)];
+// oga 0–1 = prickens storlek; samma plats som det riktiga ögat (fagel.js: FAGEL_OGA), så teckningen blir som bilden
+const PF_OGA = [PF[0] - PF[2] * (FAGEL_OGA[0] - 400), PF[1] + PF[2] * (FAGEL_OGA[1] - 689)];
 function papperFagel(k, fyll, { flax = 0, oppen = 0, oga = 1 } = {}) { papper();
   const [x, y, s] = PF, t = `translate(${x} ${y}) scale(${-s} ${s}) translate(-400 -689)`;
   if (fyll > 0) lagg('faglar', `<g transform="${t}"><clipPath id="pf"><circle cx="420" cy="380" r="${(620 * fyll).toFixed(1)}"/></clipPath><g clip-path="url(#pf)">
@@ -269,13 +270,13 @@ const S = {
     if (tl < c) { HOLKN(); const titt = del(lo(0) + 0.5, lo(0) + 1.0, tl) * (1 - del(c - 0.9, c - 0.5, tl)), lyft = bump(c - 0.45, c, tl);
       fagel('rod', ...HOLK_TAK, { ...pip(tl, [lo(0)]), tilt: 14 * titt - 8 * lyft, flax: 0.8 * lyft, lyft: 4 * lyft }); return; }
     HALVH(); PASEN = { v: 30 }; gris(F('glad', { titt: [14, -4] }), {});
-    flyg('rod', HOLK_TAK, VID_FRON.rod, c, c + 1.8, tl, { h: 180 }); },
+    flyg('rod', HOLK_TAK, VID_FRON.rod, c, c + 2.4, tl, { h: 180 }); },
   // samma för den gula: närbild på taket (pip, repliken), klipp när den lyfter, landar bredvid den röda
   '5': tl => { gard({ spar: 8, fron: 1 }); const c = lo(1) - 0.1;
     if (tl < c) { HOLKN(); const titt = del(lo(0) + 0.5, lo(0) + 1.0, tl) * (1 - del(c - 0.9, c - 0.5, tl)), lyft = bump(c - 0.45, c, tl);
       fagel('gul', ...HOLK_TAK, { ...pip(tl, [lo(0)]), tilt: 14 * titt - 8 * lyft, flax: 0.8 * lyft, lyft: 4 * lyft }); return; }
-    FAGLAR_N(); PASEN = { v: 30 }; gris(F('glad', { titt: [14, 6] }), {}); fagel('rod', ...VID_FRON.rod, pick(tl, [c + 0.6, c + 1.7, c + 2.8]));
-    flyg('gul', [1700, 520], VID_FRON.gul, c, c + 1.6, tl, { h: 60 }); },
+    FAGLAR_N(); PASEN = { v: 30 }; gris(F('glad', { titt: [14, 6] }), {}); fagel('rod', ...VID_FRON.rod, pick(tl, [c + 0.8, c + 2.0, c + 3.2]));
+    flyg('gul', [1700, 520], VID_FRON.gul, c, c + 2.2, tl, { h: 60 }); },
   // pick, pick, pick: fröna försvinner ett och ett, det sista på det sista picket
   // Sanna 2026-11-20: fler pick och fröna försvinner långsammare: de tre första picken tar båda, sedan turas de om; varje pick tar
   // det närmaste fröet, som krymper bort på 0,35 s. Mellan picken hoppar fåglarna lite.
@@ -345,11 +346,13 @@ const S = {
   // kan du säga pip? grisen tar sats …
   '19': tl => { gard(); ANS(); const u = del(mo(0) + LN(23), CUR.d, tl); gris(F('nyfiken', { titt: [14, -8] }), { strack: -0.03 * u, lyft: -6 * u }); },
   // … och det blev ett noff: fåglarna lutar sig bakåt och blinkar
-  '20': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); const b = bump(0.05, 0.9, tl);
+  // Sanna 2026-11-20 (J16 2:30 "more closeup on faces and highlights"): noffet i närbild på ansiktet, sedan fåglarnas reaktion
+  '20': tl => { gard(); if (tl < 0.9) { ANS(); gris(F('stolt'), { strack: 0.05 * bump(0, 0.5, tl) }); return; }
+    HALV(); karve(); rPase(PASE_SNO); const b = bump(0.95, 1.8, tl);
     gris(F('stolt'), { strack: 0.05 * bump(0, 0.5, tl) });
     alla(PA_KARV, { rod: { tilt: -14 * b, ...pip(tl, [lo(1)]) }, gul: { tilt: -16 * b, ...pip(tl, [lo(2)]) }, bla: { tilt: -12 * b } }); },
   // den lilla fågeln landar på tomteluvan
-  '21': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); const upp = del(0.6, 1.2, tl), fn = del(lo(2) - 0.1, lo(2) + 0.3, tl);
+  '21': tl => { gard(); LUVAN(); karve(); rPase(PASE_SNO); const upp = del(0.6, 1.2, tl), fn = del(lo(2) - 0.1, lo(2) + 0.3, tl);
     gris(fn > 0.5 ? F('fnissig', { titt: [0, -12] }) : F('forvanad', { titt: [0, -14 * upp] }), { upp: 0.4 * upp });
     fagel('rod', ...PA_KARV.rod); fagel('gul', ...PA_KARV.gul); flyg('bla', PA_KARV.bla, huvud(30, 90), 0, 1.0, tl, { h: 160 }); },
   '22': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); gris(F('glad', { titt: [16, -8] }), {}); fagel('rod', ...PA_KARV.rod); fagel('gul', ...PA_KARV.gul);
@@ -450,6 +453,9 @@ function ljud() {
   ut.push({ t: g0, fil: E + 'fagelkvitter/fagelkvitter-1.m4a', vol: 0.22, langd: DURATION - g0, loop: true, fadeIn: 1.0, fade: 2.5 });
   // låg julmusik under hela filmen (Sanna 2026-11-20, J16 1:31 "add low xmas music soundtrack"): kalenderns dagbädd 2, som 044 och 045
   ut.push({ t: 0.2, fil: 'assets/ljud/musik/jul/jul-badd-2.m4a', vol: 0.10, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
+  // Sanna 2026-11-20 (J16 2:11 "no overlapping speak"): grisens ljud kortas och tonas ut före nästa replik
+  const mal = ut.filter(c => c.fil.includes('/roster/')).map(c => c.t);
+  for (const c of ut) if (/effekter\/noff/.test(c.fil)) { const n = Math.min(mal.find(m => m > c.t + 0.05) ?? 1e9, ...ut.filter(d => d !== c && /effekter\/noff/.test(d.fil) && d.t > c.t + 0.05).map(d => d.t)); if (n < 1e9) { c.langd = Math.max(0.4, n - c.t - 0.1); c.fade = 0.25; } }
   return ut.filter(c => c.t < DURATION);
 }
 

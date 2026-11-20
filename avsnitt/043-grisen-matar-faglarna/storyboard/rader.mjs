@@ -43,9 +43,10 @@ export const RADER = [
   { id: '3', d: 0.6 + L(6) + 2.0, plats: 'Halvbild', malin: [[6, 0.6]], ljud: [[PRASSEL, 0.1], [AAH(1), 0.9 + L(6)]],
     bild: 'Påsen tippar, fröna faller i en båge och lägger sig på snön', ljudtext: 'prassel, förtjust (2)', ansikte: 'glad' },
   // Sanna 2026-11-20 (J16 0:53): närbild på fåglarna vid holken och lugnare tempo: pip och repliken i närbild, klipp på flaxet
-  { id: '4', d: 0.9 + L(7) + 2.6, plats: 'Närbild, holkens tak → fröna', malin: [[7, 0.9]], ljud: [[PIP, 0.3], [FLAX, 0.9 + L(7) - 0.1]],
+  // Sanna 2026-11-20 (J16 0:49 "a bit slower pace"): repliken senare, fågeln sitter kvar 1 s efter den och flyger långsammare
+  { id: '4', d: 1.3 + L(7) + 1.0 + 3.0, plats: 'Närbild, holkens tak → fröna', malin: [[7, 1.3]], ljud: [[PIP, 0.4], [FLAX, 1.3 + L(7) + 1.0 - 0.1]],
     bild: 'Närbild: den röda fågeln på holkens tak pipar och tittar ner. Den lyfter, klipp: den flyger i en båge ner till fröna', ljudtext: 'pip, flax', ansikte: '–' },
-  { id: '5', d: 0.8 + L(8) + 2.5, plats: 'Närbild, holkens tak → halvbild', malin: [[8, 0.8]], ljud: [[PIP, 0.3], [FLAX, 0.8 + L(8) - 0.1], [PIP, 0.8 + L(8) + 1.6]],
+  { id: '5', d: 1.3 + L(8) + 1.0 + 3.0, plats: 'Närbild, holkens tak → halvbild', malin: [[8, 1.3]], ljud: [[PIP, 0.4], [FLAX, 1.3 + L(8) + 1.0 - 0.1], [PIP, 1.3 + L(8) + 1.0 + 2.2]],
     bild: 'Närbild: den gula fågeln på taket pipar. Den lyfter, klipp: den landar bredvid den röda', ljudtext: 'pip, flax, pip', ansikte: 'glad' },
   // Sanna 2026-11-20: fler pick och fröna försvinner långsammare: sex pick till efter "Mums!", ett frö per pick
   { id: '6', d: 0.4 + L(9) + 3.8, plats: 'Halvbild, fåglarna och grisen', malin: [[9, 0.4]], ljud: [[PICK, 0.4], [PICK, 0.4 + L(9) * 0.35], [PICK, 0.4 + L(9) * 0.6],
@@ -85,7 +86,7 @@ export const RADER = [
     bild: 'Grisen tittar på fåglarna och tar sats. Paus 1,5 s', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '20', d: 0.2 + 0.9 + L(24) + 1.0, plats: 'Halvbild', malin: [[24, 1.1]], ljud: [['noff-pip/noff-pip-1', 0.0], [PIP, 0.9 + L(24)], [PIP_GLAD, 1.3 + L(24)]],   // grisen försöker pipa, det blir ett noff (Sanna 2026-11-20)
     bild: 'Ett stort noff. Fåglarna lutar sig bakåt och blinkar', ljudtext: 'stort noff, pip pip', ansikte: 'stolt' },
-  { id: '21', d: 2.0 + L(25) + 1.8, plats: 'Halvbild', malin: [[25, 2.0]], ljud: [[FLAX, 0.0], [OOO(2), 1.0], [FNISS(2), 2.2 + L(25)]],
+  { id: '21', d: 2.4 + L(25) + 1.8, plats: 'Närbild, grisens ansikte och luvan', malin: [[25, 2.4]], ljud: [[FLAX, 0.0], [OOO(2), 1.0], [FNISS(2), 2.2 + L(25)]],
     bild: 'Den lilla fågeln flyger och landar på grisens tomteluva. Grisen tittar upp med stora ögon', ljudtext: 'flax, nyfiken (5), fniss', ansikte: 'förvånad → fnissig' },
   { id: '22', d: 0.4 + L(26) + 0.8, plats: 'Halvbild', malin: [[26, 0.4]], ljud: [[PIP, 0.3], [FLAX, 0.5]],
     bild: 'Fågeln hoppar tillbaka till kärven på *"Hopp!"*', ljudtext: 'pip, flax', ansikte: 'glad' },
@@ -126,7 +127,7 @@ export const RADER = [
     bild: 'Fåglarna hoppar fram till grisen och pipar, en i taget på *"pip, pip, pip"*', ljudtext: 'pip ×3, förtjust (2)', ansikte: 'kawaii' },
   { id: '37', d: 0.4 + L(42) + 1.6, plats: 'Halvbild', malin: [[42, 0.4]], ljud: [[FLAX, 0.4], [PIP, 0.7], [FLAX, 0.4 + L(42) * 0.25], [PIP, 0.7 + L(42) * 0.25], [FLAX, 0.4 + L(42) * 0.45], [PIP, 0.7 + L(42) * 0.45], [FNISS(3), 0.6 + L(42)]],
     bild: 'Fåglarna flyger upp och sätter sig på grisens rygg, en i taget på *"en … två … tre"*', ljudtext: 'flax, pip ×3, fniss', ansikte: 'jätteglad' },
-  { id: '38', d: 2.0 + L(43) + 1.0, plats: 'Ansiktsbild', malin: [[43, 2.0]], ljud: [[OOO(1), 1.1]],
+  { id: '38', d: 2.4 + L(43) + 1.0, plats: 'Ansiktsbild', malin: [[43, 2.4]], ljud: [[OOO(1), 1.1]],
     bild: 'En snöflinga glider ner och lägger sig på trynet. Grisen tittar på den', ljudtext: 'förvånad (5)', ansikte: 'förvånad' },
   { id: '39', d: 0.3 + L(44) + 4.0 + L(45) + 1.2, plats: 'Ansiktsbild', malin: [[44, 0.3], [45, 0.3 + L(44) + 4.0]], ljud: [['swoosh/swoosh-1', 0.3 + L(44) + 4.0 + 0.1], [FNISS(1), 0.5 + L(44) + 4.0 + L(45)]],
     bild: 'Paus 4 s: barnet blåser. Flingan blåses bort i en liten båge på *"Fff!"*', ljudtext: 'mjukt sus, fniss', ansikte: 'fnissig' },
