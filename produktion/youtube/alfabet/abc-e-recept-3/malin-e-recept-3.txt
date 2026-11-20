@@ -1,43 +1,61 @@
-p-abc  [warm] Kritans ABC!
+p-hej-hej  [warm] Hej hej!
 p-kritan-ritar  [warm] Kritan ritar.
 p-det-ar-e  [excited] Det är ju E!
 p-bokstaven-e  [warm] Bokstaven E.
-p-e-som-i-elefant  [warm] E som i elefant.
-p-e-e-elefant  [playful] E, e, elefant!
 p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven E.
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-elefant  [excited] Elefant!
-p-en-elefant  [excited] En elefant!
+p-e-e-elefant  [playful] E, e, elefant!
 p-elefant-e  [excited] Ja! Elefant börjar på bokstaven E.
+n-hej-elefanten  [warm] Hej, elefanten!
 n-vill-leka  [warm] Elefanten vill leka.
-n-vem-vill  [curious] Vem vill leka med elefanten?
+n-ingen-kompis  [warm] Men elefanten har ingen kompis.
+n-rita-kompis  [excited] Kritan! Kan du rita en kompis?
+n-vad-sa-du  [curious] Vad sa du, elefanten?
+n-maste-e  [curious] Måste kompisen börja på bokstaven E?
+n-kan-du-kritan  [playful] Kan du det, kritan?
+n-nu-ritar  [warm] Nu ritar kritan.
 p-katt  [curious] Katt?
+p-en-katt  [surprised] En katt!
 n-busiga  [laughs] Ha ha! Busiga kritan!
 p-katt-inte  [playful] Katt börjar inte på E.
 p-hej-da-katten  [warm] Hej då, katten!
 p-engang  [excited] En gång till!
+n-kompis-pa-e  [playful] En kompis på bokstaven E, tack!
 p-ekorre  [excited] Ekorre!
-p-en-ekorre  [excited] En ekorre!
+p-e-e-ekorre  [playful] E, e, ekorre!
 p-ocksa-ekorre  [warm] Ekorre börjar också på E!
+n-hej-ekorren  [warm] Hej, ekorren!
+n-vill-du-leka  [curious] Vill du leka med elefanten?
 n-ekorren-hoppar  [playful] Ekorren hoppar!
 n-elefanten-hoppar  [excited] Elefanten hoppar!
-n-kan-du-hoppa  [curious] Kan du också hoppa?
+n-hopp-hopp  [excited] Hopp, hopp, hopp!
 n-hungrig  [warm] Oj. Ekorren är hungrig.
+n-rita-nagot-gott  [playful] Kritan, rita något gott!
 p-vad-blir  [curious] Vad blir det?
 p-ekollon  [excited] Ekollon!
 p-ett-ekollon  [excited] Ett ekollon!
 p-ocksa-ekollon  [warm] Ekollon börjar också på E!
 n-varsagod  [warm] Varsågod, ekorren!
 n-mums  [playful] Mums!
+n-matt  [warm] Nu är ekorren mätt och glad.
 p-nuleker  [excited] Nu leker vi!
+n-titta-noga  [curious] Titta noga. Var är elefanten?
+n-dar-ar-den  [excited] Där är den!
 p-entill  [curious] Titta! En till.
 p-hund  [curious] Hund.
 p-vilken  [curious] Vilken ska bort?
 p-inte-e  [curious] Vilken börjar inte på E?
 p-hunden  [excited] Hunden!
 p-hund-inte  [playful] Hund börjar inte på E.
-p-hej-da  [warm] Hej då!
+n-hej-da-hunden  [warm] Hej då, hunden!
+n-tre-pa-e  [warm] Elefant, ekorre, ekollon.
 p-alla-e  [warm] Alla börjar på bokstaven E.
 p-nu-dansar  [excited] Nu dansar vi!
+n-elefanten-dansar  [excited] Elefanten dansar!
+n-ekorren-snurrar  [playful] Ekorren snurrar!
+n-ekollonet-snurrar  [playful] Ekollonet snurrar!
+n-allt-for-idag  [warm] Det var allt för i dag.
+n-vad-kul  [warm] Vad kul det var att leka!
 p-hej-da-slut  [warm] Hej då!

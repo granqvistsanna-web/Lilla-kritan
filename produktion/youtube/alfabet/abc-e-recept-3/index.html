@@ -10,7 +10,7 @@
 // FÖRLAGAN FÖR RECEPT 3 (2026-11-20, Sanna gillar formen), byggd ur abc-e/: kompisen vill något. Elefanten står kvar stor på golvet i stället för att bli en
 // kloss, den vill leka, kritan ritar fel (katten, "Busiga kritan!"), sedan ekorren (de hoppar) och ekollonet (ekorren är hungrig).
 // "Vilken ska bort?" spelas en gång (hunden), sedan discot. Kritan ritar bara konturen (kontur-bild.py) och bilden fylls i inifrån.
-// Alla repliker är Malins tagning (assets/ljud/roster/alfabet/abc-e-recept-3/). Katten och ekorren är nya bilder ur Flow.
+// Alla repliker är Malins tagning 3 (assets/ljud/roster/alfabet/abc-e-recept-3-v2/, malin-e-recept-3.txt). Katten och ekorren är nya bilder ur Flow.
 // klossar.js läses ur abc-e/. Manus: manus.md. Receptet: format/abc-recept-3-kompisen-vill.md.
 // Förhandsvisning som film: node avsnitt/020-grisen-badar/scener/render.mjs produktion/youtube/alfabet/abc-e-recept-3 --snabb
 // Kritans ABC: E (16:9), byggd ur abc-d/ (recept 1 med lärdomarna från B), 2026-11-19.
@@ -32,7 +32,7 @@ const bage = k => k <= 0 || k >= 1 ? 0 : Math.sin(Math.PI * k);
 const ell = (cx, cy, rx, ry) => `M${cx} ${cy - ry} C${cx + rx * .55} ${cy - ry} ${cx + rx} ${cy - ry * .55} ${cx + rx} ${cy} C${cx + rx} ${cy + ry * .55} ${cx + rx * .55} ${cy + ry} ${cx} ${cy + ry} C${cx - rx * .55} ${cy + ry} ${cx - rx} ${cy + ry * .55} ${cx - rx} ${cy} C${cx - rx} ${cy - ry * .55} ${cx - rx * .55} ${cy - ry} ${cx + 4} ${cy - ry - 2}`;
 const render = navigator.webdriver;
 // Alla repliker är Malins B-tagning (ElevenLabs v3, en tagning), delad med verktyg/dela-tagning.py till assets/ljud/roster/alfabet/abc-b/.
-const ROST = 'assets/ljud/roster/alfabet/abc-e-recept-3';   // Malins tagning för provet (ElevenLabs v3, 2026-11-20, produktion/ljud-original/roster/abc-e-recept-3/tagning-2.mp3), delad med verktyg/dela-tagning.py; fem repliker klippta om för hand
+const ROST = 'assets/ljud/roster/alfabet/abc-e-recept-3-v2';   // Malins tagning 3 (ElevenLabs v3, 2026-11-20, produktion/ljud-original/roster/abc-e-recept-3/tagning-3.mp3, Sannas utvecklade repliker), delad med verktyg/dela-tagning.py
 const fil = n => `${ROST}/${n}.m4a`;
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 const langd = async (f, reserv) => {   // m4a-längden ur mvhd, som i gissa.js
@@ -71,9 +71,9 @@ const kontur = async (f, ...matt) => iTeckning((await (await fetch(`/assets/${f}
 const EKORRE = ['ekorre-abc/cut/ekorre-abc', 857, 879, 500, 250], KATT = ['katt-abc/cut/katt-abc', 860, 722, 420, 250];
 const SAKER = {
   // elefanten är riggen elefanten-elsa (konturen ur elsa-faceless.png i riggens 1024-ruta: x' = (x − 512) · 0,66, y' = y · 0,66 − 347)
-  elefant: { platta: ['#F2A541', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-elefant', kort: 'p-en-elefant', berom: 'p-elefant-e',
+  elefant: { platta: ['#F2A541', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-elefant', kort: 'p-e-e-elefant', berom: 'p-elefant-e',
     streck: [['kontur', await kontur('karaktarer/elefanten-elsa/premium/elsa-faceless', 1024, 1024, 675.84, 328.84), '#6B7490', 15, 7.5]] },
-  ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-en-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, ogon: [[-170, -79, 10]],
+  ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-e-e-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, ogon: [[-170, -79, 10]],
     streck: [['kontur', await kontur('rekvisita/' + EKORRE[0], ...EKORRE.slice(1)), '#A9561C', 15, 7.5]] },
   ekollon: { platta: ['#59B36A', 0, 520, 0.06], fraga: 'p-vad-blir', lang: 'p-ekollon', kort: 'p-ett-ekollon', berom: 'p-ocksa-ekollon', bild: EKOLLON,
     streck: [['kontur', await kontur('rekvisita/' + EKOLLON[0], ...EKOLLON.slice(1)), BRUN_M, 15, 6]] },
@@ -102,7 +102,7 @@ document.body.innerHTML = `<div id="scen"><svg id="botten" viewBox="0 0 1920 108
   <path d="M-20 ${GOLV + 120} Q960 ${GOLV + 104} 1940 ${GOLV + 122} M-20 ${GOLV + 250} Q960 ${GOLV + 236} 1940 ${GOLV + 254}" stroke="#C9A06E" stroke-opacity=".16" stroke-width="5" fill="none" filter="url(#boil)"/>
   <g id="bak"></g><rect width="1920" height="1080" filter="url(#korn)"/><g id="klosskuggor"></g></svg>
   <canvas id="klossar" width="1920" height="1080"></canvas>
-  <svg id="topp" viewBox="0 0 1920 1080" xmlns="${NS}"><defs></defs><g id="saker"></g><g id="gnistor"></g><g filter="url(#boil)" id="krita"></g>
+  <svg id="topp" viewBox="0 0 1920 1080" xmlns="${NS}"><defs></defs><g id="saker"></g><g id="gnistor"></g><g id="smulor"></g><g filter="url(#boil)" id="krita"></g>
   <rect width="1920" height="1080" fill="#FFB36B" opacity=".05" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett-g)"/></svg>
   <canvas id="bokstav" width="1920" height="1080"></canvas></div>`;
 const defs = document.querySelector('defs'), sakerG = document.getElementById('saker'), kritaG = document.getElementById('krita');
@@ -177,48 +177,66 @@ const KB = await bokstavsklossar(document.getElementById('bokstav'), [{ fram: 'E
 
 // ---------- tidslinjen: repliker efter sina riktiga längder ----------
 const TAL = {
-  'p-abc': 'Kritans ABC!',
+  'p-hej-hej': 'Hej hej!',
   'p-kritan-ritar': 'Kritan ritar.',
   'p-det-ar-e': 'Det är ju E!',
   'p-bokstaven-e': 'Bokstaven E.',
-  'p-e-som-i-elefant': 'E som i elefant.',
-  'p-e-e-elefant': 'E, e, elefant!',
   'p-kritan-ritar-nagot': 'Kritan ritar något på bokstaven E.',
   'p-hmm': 'Hmm …',
   'p-vem': 'Vem är det?',
   'p-elefant': 'Elefant!',
-  'p-en-elefant': 'En elefant!',
+  'p-e-e-elefant': 'E, e, elefant!',
   'p-elefant-e': 'Ja! Elefant börjar på bokstaven E.',
+  'n-hej-elefanten': 'Hej, elefanten!',
   'n-vill-leka': 'Elefanten vill leka.',
-  'n-vem-vill': 'Vem vill leka med elefanten?',
+  'n-ingen-kompis': 'Men elefanten har ingen kompis.',
+  'n-rita-kompis': 'Kritan! Kan du rita en kompis?',
+  'n-vad-sa-du': 'Vad sa du, elefanten?',
+  'n-maste-e': 'Måste kompisen börja på bokstaven E?',
+  'n-kan-du-kritan': 'Kan du det, kritan?',
+  'n-nu-ritar': 'Nu ritar kritan.',
   'p-katt': 'Katt?',
+  'p-en-katt': 'En katt!',
   'n-busiga': 'Ha ha! Busiga kritan!',
   'p-katt-inte': 'Katt börjar inte på E.',
   'p-hej-da-katten': 'Hej då, katten!',
   'p-engang': 'En gång till!',
+  'n-kompis-pa-e': 'En kompis på bokstaven E, tack!',
   'p-ekorre': 'Ekorre!',
-  'p-en-ekorre': 'En ekorre!',
+  'p-e-e-ekorre': 'E, e, ekorre!',
   'p-ocksa-ekorre': 'Ekorre börjar också på E!',
+  'n-hej-ekorren': 'Hej, ekorren!',
+  'n-vill-du-leka': 'Vill du leka med elefanten?',
   'n-ekorren-hoppar': 'Ekorren hoppar!',
   'n-elefanten-hoppar': 'Elefanten hoppar!',
-  'n-kan-du-hoppa': 'Kan du också hoppa?',
+  'n-hopp-hopp': 'Hopp, hopp, hopp!',
   'n-hungrig': 'Oj. Ekorren är hungrig.',
+  'n-rita-nagot-gott': 'Kritan, rita något gott!',
   'p-vad-blir': 'Vad blir det?',
   'p-ekollon': 'Ekollon!',
   'p-ett-ekollon': 'Ett ekollon!',
   'p-ocksa-ekollon': 'Ekollon börjar också på E!',
   'n-varsagod': 'Varsågod, ekorren!',
   'n-mums': 'Mums!',
+  'n-matt': 'Nu är ekorren mätt och glad.',
   'p-nuleker': 'Nu leker vi!',
+  'n-titta-noga': 'Titta noga. Var är elefanten?',
+  'n-dar-ar-den': 'Där är den!',
   'p-entill': 'Titta! En till.',
   'p-hund': 'Hund.',
   'p-vilken': 'Vilken ska bort?',
   'p-inte-e': 'Vilken börjar inte på E?',
   'p-hunden': 'Hunden!',
   'p-hund-inte': 'Hund börjar inte på E.',
-  'p-hej-da': 'Hej då!',
+  'n-hej-da-hunden': 'Hej då, hunden!',
+  'n-tre-pa-e': 'Elefant, ekorre, ekollon.',
   'p-alla-e': 'Alla börjar på bokstaven E.',
   'p-nu-dansar': 'Nu dansar vi!',
+  'n-elefanten-dansar': 'Elefanten dansar!',
+  'n-ekorren-snurrar': 'Ekorren snurrar!',
+  'n-ekollonet-snurrar': 'Ekollonet snurrar!',
+  'n-allt-for-idag': 'Det var allt för i dag.',
+  'n-vad-kul': 'Vad kul det var att leka!',
   'p-hej-da-slut': 'Hej då!',
 };
 const D = Object.fromEntries(await Promise.all(Object.keys(TAL).map(async n => [n, await langd(fil(n), 1.5)])));
@@ -273,7 +291,7 @@ const ritaSak = (s, t, lage = MITT) => {   // strecken i följd från t; returne
 // märket på framsidan, sidorna och ådringen syns. Den står lite snett medan A:et ritas och blir det platta märket på väg till hörnet.
 const FALL = 0.3, SNURR = [FALL, FALL + 1.15];
 A.kk.push([0, ...AV, AS]); A.kpop = A.ksyns = FALL; fx(FALL, 'swoosh', 0.5); fx(SNURR[1] - 0.12, 'pop', 0.9);
-let t = sag(1.3, 'p-abc'); A.hopp.push(1.4);   // introt är kortat ca 4 s (Sanna 2026-11-20): tätare mellan replikerna, ingen säg-paus, och nästa replik börjar medan märket flyger
+let t = sag(1.3, 'p-hej-hej'); A.hopp.push(1.4);   // introt är kortat ca 4 s (Sanna 2026-11-20): tätare mellan replikerna, ingen säg-paus, och nästa replik börjar medan märket flyger
 t = sag(t + 0.4, 'p-kritan-ritar') - 0.3;   // "Kritan ritar." (Malin, röstbanken), och kritan börjar rita på slutet av repliken
 A.rita = [t + 0.2, t + 3.0];
 for (const [a, b] of [[0, 0.3], [0.33, 1]]) fx(lerp(...A.rita, a), 'skrrrrt-lang', 3, { loop: true, langd: (b - a) * (A.rita[1] - A.rita[0]), fade: 0.1 });   // ryggen och bågen
@@ -281,9 +299,7 @@ A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); G
 // Introt (Sanna 2026-11-18): "Det är ju A! Bokstaven A. A säger ah. Kan du säga ah?" och en paus för barnet.
 // d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
 t = sag(A.svar + 0.2, 'p-det-ar-e');
-t = sag(t + 0.3, 'p-bokstaven-e'); A.hopp.push(t - 0.5);
-t = sag(t + 0.4, 'p-e-som-i-elefant'); A.hopp.push(t - 0.4);
-t = sag(t + 0.4, 'p-e-e-elefant') + 0.9; A.hopp.push(t - 0.3);   // paus för barnet, sedan hoppar märket
+t = sag(t + 0.3, 'p-bokstaven-e') + 0.6; A.hopp.push(t - 1.1, t - 0.3);   // "E, e, elefant!" sägs nu på svaret (tagning 3)
 A.vrid = t + 0.3; kamTill(t - 0.4, 960, 540, 1, 1.2);   // ut igen innan plattan flyttar; den vickar lite i vinjetten och hänger still i hörnet
 t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 
@@ -326,19 +342,27 @@ function narbild(t0, { ansikte, pose = 'neutral', ljud, sek = 1.9, zoom = 1.7 })
 t = sag(t - 0.6, 'p-kritan-ritar-nagot') - 0.5;
 gissning(elefant, 'hoppa', 'vinka', 1.7, MITT, NARA); hoppLjud(elefant.svar + 0.4);
 t = flytta(elefant, t + 0.3, ...KOMPIS, 1.3); elefant.hopp.push(t - 1.2, t - 0.6); fx(t - 1.2, 'dunk', 0.35); fx(t - 0.6, 'dunk', 0.35);
+elefant.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-elefanten'] + 0.4]); t = sag(t + 0.5, 'n-hej-elefanten');   // elefanten vinkar, Malin hälsar
 
 // 3. Viljan: elefanten vill leka. Närbild, uttrycket först och sedan Malin. Sedan frågan som kritan svarar på.
 { const t0 = t + 0.3; kamTill(t0, KOMPIS[0] + 60, KOMPIS[1] - 40, 1.7, 0.8);
   kanner(t0 + 0.3, t0 + 1.0 + D['n-vill-leka'] + 0.6, 'ledsen', 'blyg');
-  t = sag(t0 + 1.0, 'n-vill-leka') + 0.7;
+  t = sag(t0 + 1.0, 'n-vill-leka') + 0.4;
+  t = sag(t, 'n-ingen-kompis') + 0.6;   // samma närbild, elefanten är fortfarande blyg
   kamTill(t, 960, 540, 1, 1.0);
-  kanner(t + 0.2, t + 0.9 + D['n-vem-vill'] + 1.5, 'nyfiken', 'lutaH');
-  t = sag(t + 0.9, 'n-vem-vill'); }
+  t = sag(t + 0.6, 'n-rita-kompis') + 0.5;   // Malin ber kritan
+  // Elefanten lutar sig fram och "viskar" (Malin lyssnar): hon upprepar vad den vill, och elefanten hoppar till: ja!
+  kanner(t, t + 0.6 + D['n-vad-sa-du'] + 0.5, 'nyfiken', 'lutaH');
+  t = sag(t + 0.6, 'n-vad-sa-du') + 0.4;
+  t = sag(t, 'n-maste-e'); elefant.hopp.push(t + 0.1); fxf(t + 0.15, BRUM(4), 0.8, { langd: 1.2, fade: 0.3 });
+  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3;
+  t = sag(t, 'n-nu-ritar') - 1.0; }   // kritan börjar rita (t + 0.6) när repliken tar slut
 
 // 4. Kritan ritar fel: en katt. Elefanten blir förvånad i närbild, Malin skrattar ("Busiga kritan!"), katten går ut åt höger
 //    och elefanten vinkar. Det är kritan som har gjort fel, inte katten.
 { let u = ritaOchGissa(katt, RITA);   // "Hmm …", "Vem är det?", pausen, "Katt."
   katt.levande.push([katt.svar + 0.4, 'hoppa']); fx(katt.svar + 0.5, 'mjau', 0.9, { langd: 1.4, fade: 0.3 });
+  u = sag(Math.max(u + 0.3, katt.svar + 1.6), 'p-en-katt');
   u = narbild(Math.max(u, katt.svar + 1.5) + 0.2, { ansikte: 'forvanad', ljud: 5 });
   kanner(u, u + D['n-busiga'] + 0.4, 'skrattar');
   u = sag(u, 'n-busiga') + 0.3;
@@ -352,25 +376,28 @@ t = flytta(elefant, t + 0.3, ...KOMPIS, 1.3); elefant.hopp.push(t - 1.2, t - 0.6
 
 // 5. Ord 2: ekorren. Elefanten tittar nyfiket medan kritan ritar och blir jätteglad på svaret.
 t = sag(t + 0.2, 'p-engang');
+t = sag(t + 0.3, 'n-kompis-pa-e') - 0.2;
 kanner(t + 0.8, t + 6, 'nyfiken', 'lutaH');
 gissning(ekorre, 'hoppa', 'gunga', 1.8); fx(ekorre.svar + 0.4, 'prassel-buske', 0.6);
 kanner(ekorre.svar + 0.3, ekorre.svar + 2.4, 'jatteglad', 'hurra'); fxf(ekorre.svar + 0.6, BRUM(2), 0.8, { langd: 1.6, fade: 0.3 });
 // Leken: ekorren hoppar, elefanten hoppar likadant, och sedan hoppar de tillsammans medan barnet får hoppa (Malin efter handlingen).
 const EKORRE_STAR = [1300, 740, 0.8];   // en liten ekorre bredvid kompisen (y + 250 · skalan = 940), vänd mot den
 t = flytta(ekorre, t + 0.3, ...EKORRE_STAR, 0.8);
-ekorre.levande.push([t + 0.2, 'hoppa']); fx(t + 0.3, 'hopp-mjuk', 0.6); fx(t + 0.75, 'prassel-buske', 0.4);
-t = sag(t + 1.3, 'n-ekorren-hoppar');
+elefant.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-ekorren'] + 0.3]); t = sag(t + 0.5, 'n-hej-ekorren') + 0.3;
+kanner(t, t + D['n-vill-du-leka'] + 0.6, 'nyfiken', 'lutaH'); t = sag(t, 'n-vill-du-leka');
+ekorre.levande.push([t + 0.3, 'hoppa']); fx(t + 0.4, 'hopp-mjuk', 0.6); fx(t + 0.85, 'prassel-buske', 0.4);   // ekorren svarar ja: hoppar
+t = sag(t + 1.4, 'n-ekorren-hoppar');
 elefant.levande.push([t + 0.3, 'hoppa']); hoppLjud(t + 0.3);
 t = sag(t + 1.6, 'n-elefanten-hoppar');
-t = sag(t + 0.5, 'n-kan-du-hoppa');
 ekorre.levande.push([t + 0.4, 'hoppa']); elefant.levande.push([t + 0.4, 'hoppa']); hoppLjud(t + 0.4); fx(t + 0.6, 'jippi', 0.4);
-t += 0.4 + 2.0;
+t = sag(t + 0.6, 'n-hopp-hopp') + 1.0;   // båda hoppar tillsammans
 
 // 6. Ord 3: ekorren är hungrig (magen kurrar), och kritan ritar ett ekollon mitt emellan dem. Ekollonet krymper och glider
 //    till ekorrens tassar: "Varsågod, ekorren!" De hoppar till tillsammans, "Mums!", och elefanten jublar i närbild.
 ekorre.levande.push([t + 0.3, 'vicka']); fx(t + 0.3, 'kurr', 0.9);
 kanner(t + 0.5, t + 1.2 + D['n-hungrig'] + 0.5, 'nyfiken');
 t = sag(t + 1.2, 'n-hungrig');
+t = sag(t + 0.4, 'n-rita-nagot-gott') - 0.3;
 gissning(ekollon, 'vicka', 'gunga', 1.8, [900, 610, 0.9], [900, 650, 1.05]); fx(ekollon.svar + 0.4, 'plopp', 0.8);
 kanner(ekollon.svar + 0.3, ekollon.svar + 2.4, 'jatteglad', 'hurra');
 t = flytta(ekollon, t + 0.4, 1128, 790, 0.24, 0.9);   // framför ekorrens tassar fx(t - 0.9, 'swoosh', 0.4); fx(t, 'plopp', 0.6);
@@ -378,6 +405,7 @@ t = sag(t + 0.3, 'n-varsagod');
 for (const h of [t + 0.2, t + 0.8]) { ekorre.hopp.push(h); ekollon.hopp.push(h); }
 fxf(t + 0.3, 'mums/mums-1', 0.9, { langd: 1.6, fade: 0.3 });
 t = sag(t + 1.3, 'n-mums');
+ekorre.levande.push([t + 0.2, 'gunga', t + 0.6 + D['n-matt'] + 0.4]); t = sag(t + 0.6, 'n-matt');
 t = narbild(t + 0.3, { ansikte: 'jatteglad', pose: 'hurra', ljud: 2 });
 
 // 7. "Nu leker vi!" Tre bildklossar poppar fram mitt på golvet, och var och en hoppar in på sin platta. Sedan som förut:
@@ -389,6 +417,7 @@ let u = sag(NULEKER, 'p-nuleker');
   s.pa = [t0 + 0.3, t0 + 1.1]; fx(t0 + 1.0, 'klistra', 0.8); });
 u += 0.2 + 2 * 0.8 + 1.5;
 kamTill(u - 1.0, 960, 700, 1.5, 1.0);   // nära klossarna medan de blandas
+elefant.hopp.push(u - 0.4); u = sag(u - 0.3, 'n-titta-noga') - 0.4;   // följ elefantens kloss
 { const at = { elefant: 0, ekorre: 1, ekollon: 2 }, vem = p => [elefant, ekorre, ekollon].find(s => at[s.namn] === p);
   let ts = u;
   for (const [p, q] of [[0, 1], [1, 2], [1, 2]]) {
@@ -398,6 +427,7 @@ kamTill(u - 1.0, 960, 700, 1.5, 1.0);   // nära klossarna medan de blandas
     fx(ts, 'swoosh', 0.45); fx(ts + 0.58, 'duns', 0.3); A.hopp.push(ts + 0.6); ts += 0.75;
   }
   u = ts + 0.1; }
+elefant.hopp.push(u); fx(u, 'pling', 0.4); u = sag(u + 0.1, 'n-dar-ar-den') + 0.2;   // elefantens kloss hoppar: där!
 kamTill(u - 0.2, MURX, 600, 1.3, 1.2);   // till muren
 let klar = u + 1.4;
 const MURTID = [u, 0];   // i muren nickar klossarna fram mot kameran i stället för att hoppa (de har klossar ovanpå sig)
@@ -421,6 +451,11 @@ function reaktion(t0, { ansikte, pose = 'neutral', ljud, mot, tillbaka, sek = 1.
   kamTill(t0 + sek, ...tillbaka, 0.8);
   return t0 + sek + 0.8;
 }
+// Kompisen tittar mot en annan kloss (liv i muren, Sanna 2026-11-20): åt det håll klossen står, uppe, nere eller åt sidan.
+function tittaMot(a, t0, t1, ansikte = 'nyfiken') {
+  const [ex, ey] = klossLage(elefant.kk, t0), [ax, ay] = klossLage(a.kk, t0), dx = ax - ex, dy = ay - ey;
+  elefant.levande.push([t0, 'titta', t1, ansikte, { ...(Math.abs(dx) > 60 && { rikt: Math.sign(dx), bada: 1 }), upp: dy > 60 ? -1 : dy < -60 ? 1 : 0 }]);
+}
 function runda(s, { lat, ord, svar, inte, forst, ut, ordning = [elefant, ekorre, ekollon, s], redan = false, vag }) {
   const [x3, y3, z3] = MUR[3];
   s.svar = 0; s.pa = [-2, -1];
@@ -434,8 +469,14 @@ function runda(s, { lat, ord, svar, inte, forst, ut, ordning = [elefant, ekorre,
   // alla ord sägs först i varje runda, så att barnet hör hur de låter innan det gissar (Sanna 2026-11-18); efter ordet låter saken och hoppar till
   for (const a of ordning) { const n = a === s ? ord : a.lang;
     a.fram.push([u - 0.2, u + D[n] + (a === s ? 0.5 : 0.3)]); a.hopp.push(u); if (a !== s) A.hopp.push(u + 0.15);
+    a === elefant ? elefant.levande.push([u - 0.1, 'reagera', u + D[n] + 0.4, 'jatteglad', 'hurra']) : tittaMot(a, u - 0.2, u + D[n] + 0.6, a === s ? 'forvanad' : 'nyfiken');
     u = sag(u, n); latFx(a, u + 0.05); a.hopp.push(u + 0.1); u += 0.9; }
-  u = sag(sag(u, 'p-vilken') + 0.3, 'p-inte-e') + PAUS;   // gissningspausen
+  { const t0 = u; u = sag(sag(u, 'p-vilken') + 0.3, 'p-inte-e') + PAUS;   // gissningspausen
+    // medan Malin frågar och barnet tänker ser kompisen sig om, en kloss i taget, och kameran kryper sakta närmare
+    const andra = ordning.filter(a => a !== elefant), steg = (u - 0.5 - t0) / (2 * andra.length);
+    for (let i = 0; i < 2 * andra.length; i++) { const a = andra[i % andra.length], ta = t0 + i * steg;   // klossen den tittar på nickar fram: är det du?
+      tittaMot(a, ta, ta + steg - 0.45, 'tanker'); a.fram.push([ta + 0.25, ta + steg - 0.35]); }
+    kamTill(u - PAUS, MURX, 590, 1.42, PAUS - 0.3); }
   fx(u, 'pling', 0.6); s.fram.push([u - 0.1, u + 2.0]); s.hopp.push(u + 0.05);
   u = sag(u, svar) + 0.4;
   u = sag(u, inte) + 0.3;
@@ -455,7 +496,7 @@ function runda(s, { lat, ord, svar, inte, forst, ut, ordning = [elefant, ekorre,
 }
 // Hunden går ut, och elefanten (överst i muren) vinkar: "Hej då!"
 runda(hund, { lat: 'vov', ord: 'p-hund', svar: 'p-hunden', inte: 'p-hund-inte', forst: true,
-  ut: (a, b) => (hund.levande.push([a + 1.0, 'ga', b]), fx(a + 1.0, 'tass', 0.8, { loop: true, langd: b - a - 1.0, fade: 0.5 }), elefant.levande.push([a + 0.9, 'vinka', b + 0.3]), elefant.fram.push([a + 0.8, b + 0.3]), sag(a + 1.5, 'p-hej-da')) });
+  ut: (a, b) => (hund.levande.push([a + 1.0, 'ga', b]), fx(a + 1.0, 'tass', 0.8, { loop: true, langd: b - a - 1.0, fade: 0.5 }), elefant.levande.push([a + 0.9, 'vinka', b + 0.3]), elefant.fram.push([a + 0.8, b + 0.3]), sag(a + 1.5, 'n-hej-da-hunden')) });
 t = u;
 
 // 6. Alla tillsammans: alla sex bildklossarna i en rad på golvet, A-märket i hörnet.
@@ -469,7 +510,9 @@ fx(t + 0.5, 'swoosh', 0.5); fx(t + 1.45, 'duns', 0.4); t += 1.9;
 // Inte alla orden i slutet (Sanna 2026-11-18 kväll: "just a tune and a dance like nu dansar vi and short disco"):
 // "Alla börjar på bokstaven A.", sedan "Nu dansar vi!" och ett kort disco med 005:s discokula, mjuka ljusfläckar och klossar
 // som hoppar i takt, varannan på varannat slag. Inget blinkar, ingen kloss snurrar.
-A.hopp.push(t + 0.2, t + D['p-alla-e'] - 1.0); kamTill(t, 960, 600, 1.12, 1.6);   // lite närmare
+kamTill(t, 960, 600, 1.12, 1.6);   // lite närmare
+RADEN.forEach((s, i) => s.hopp.push(t + 0.1 + i * 0.75)); t = sag(t, 'n-tre-pa-e') + 0.3;   // varje kloss hoppar på sitt ord
+A.hopp.push(t + 0.2, t + D['p-alla-e'] - 1.0);
 t = sag(t, 'p-alla-e') + 0.4;
 for (const s of RADEN) s.hopp.push(t);
 kamTill(t, 960, 540, 1, 1.2);   // hela bilden, så att kulan och ljusen syns
@@ -497,8 +540,9 @@ const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_
   elefant.av = [...UR, ...IN]; elefant.kf.push([UR[0] - 0.01, ...KOMPIS], [UR[0], 960, 694, 1.15]);   // står kvar på sin plats tills leken (annars glider den dit hela filmen)   // stor mitt på golvet framför klossarna, fötterna ca 985
   fx(UR[0] - 0.1, 'nalle-hopp', 0.7, { langd: 1.6, fade: 0.4 }); fxf(UR[1] + 0.2, BRUM(2), 0.9, { langd: 1.8, fade: 0.3 });
   elefant.levande.push([UR[1], 'dansa', IN[0] - 0.2]);
+  sag(UR[1] - 0.1, 'n-elefanten-dansar'); sag(slag(7) + 0.5, 'n-ekorren-snurrar'); sag(slag(11) + 0.5, 'n-ekollonet-snurrar');   // efter varje snurr
   // tornen: en i taget, vartannat slag; basen hoppar på stället, de andra hoppar upp på den. Ett varv i luften, sitt eget ljud.
-  [[lb, torn(LX, 0)], [c1, torn(RX0, 1)], [lb, torn(LX, 0)], [c1, torn(RX0, 1)], [lb, torn(LX, 0)]].forEach(([s, mal], j) => {
+  [[lb, torn(LX, 0)], [c1, torn(RX0, 1)], [lb, torn(LX, 0)], [lb, torn(LX, 0)], [c1, torn(RX0, 1)]].forEach(([s, mal], j) => {
     const t0 = slag(3 + 2 * j) - 0.45;
     flyttaK(s, t0, mal, PS, 0.9, 130); s.spinn.push([t0, t0 + 0.9]); s.landa.push(t0 + 0.9);
     latFx(s, t0 + 0.15); fx(t0 + 0.9, 'duns', 0.35); });
@@ -521,6 +565,8 @@ for (const s of [ekorre, ekollon]) s.levande.push([DISCO[0], 'gunga', DISCO[1]])
 KULA.upp = DISCO[1] - 0.2;
 t = DISCO[1] + 0.3; GN.push([t, 960, 560, 640, 300]);
 for (const s of [A, ...RADEN]) s.hopp.push(t + 0.1);
+t = sag(t + 0.2, 'n-allt-for-idag') + 0.3;
+t = sag(t, 'n-vad-kul') + 0.2;
 elefant.levande.push([t, 'vinka', t + D['p-hej-da-slut'] + 1.6]);
 t = sag(t + 0.2, 'p-hej-da-slut');
 // Utrullningen (Sanna 2026-11-18): klossarna rullar åt höger, kant över kant (vrids bara i bildplanet, så bilderna följer med),
@@ -636,6 +682,14 @@ const lage = (s, t) => {   // [x, y, skala] ur nyckelrutorna, lugnt in och ut me
   return [lerp(a[1], b[1], k), lerp(a[2], b[2], k), lerp(a[3], b[3], k)];
 };
 const VILA = [2060, 420];   // utanför bild: kritan är borta när saken lever (en sak i taget)
+// Kritsmulor (Sanna 2026-11-20, som i 019 och ritintro.md): spetsen tappar några smulor i taget medan konturen ritas,
+// de faller lite och bleknar. Samma smulor varje gång för samma tid (ingen slump mellan renderingarna).
+const smulG = document.getElementById('smulor'), slump = x => { const v = Math.sin(x * 127.1) * 43758.5453; return v - Math.floor(v); };
+function smulor(t, x, y, farg) {
+  // större och fler än i 019, där kameran är nära spetsen: här syns hela bilden
+  smulG.innerHTML = !farg ? '' : Array.from({ length: 12 }, (_, j) => { const b = Math.floor(t * 14) - j, age = t - b / 14, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7);
+    const op = Math.max(0, 0.85 - age * 1.0); return op > 0 ? `<circle cx="${(x + (r - 0.5) * 54 + (r - 0.5) * age * 40).toFixed(1)}" cy="${(y + 8 + age * age * 150 + r2 * 12).toFixed(1)}" r="${(3.5 + 4.5 * r2).toFixed(1)}" fill="${farg}" opacity="${op.toFixed(2)}"/>` : ''; }).join('');
+}
 function kritan(t) {
   const nu = STRECK.find(([, , a, b]) => t >= a && t < b);
   const pa = ([s, id], k) => { const [x, y, sk] = lage(s, t), [lx, ly] = s.drag[id].spets(k), [rx, ry, rs] = s.ram ?? [0, 0, 1];
@@ -668,6 +722,10 @@ function levande(s, t) {
       if (typ === 'reagera' && t >= t0 && t < t1 + 0.35) {   // närbilden: ett uttryck och en pose en stund
         const k = inUt(clamp((t - t0) / 0.3)) * inUt(clamp((t1 + 0.35 - t) / 0.35));
         p = RA.blandaPose(p, P(pose), k); f = RA.blanda(f, RA.param(ansikte), k);
+      }
+      if (typ === 'titta' && t >= t0 && t < t1 + 0.3) {   // vänder sig och tittar mot en annan kloss: ansikte = uttrycket, pose = { rikt, bada, upp }
+        const k = inUt(clamp((t - t0) / 0.3)) * inUt(clamp((t1 + 0.3 - t) / 0.3));
+        p = RA.blandaPose(p, P('neutral', pose), k); f = RA.blanda(f, RA.param(ansikte), k);
       }
       if (typ === 'dansa' && t >= t0 && t < t1 + 0.4) {   // riggens dans, ett gung på två slag; 0,5 … 3,5 i slingan, så att den aldrig stannar
         const k = inUt(clamp((t - t0) / 0.4)) * inUt(clamp((t1 + 0.4 - t) / 0.4)), [fd, pd] = RA.ROR.dansa(0.5 + ((t - t0) / (2 * SLAG)) % 3);
@@ -802,6 +860,7 @@ function rita(t) {
   const [kx, ky, kf] = kritan(t), syns = t > A.rita[1] + 0.6 && t < STRECK.at(-1)[3] + 1.2;   // kritan går när allt är ritat
   kritaG.style.display = syns ? '' : 'none';
   kritaG.querySelector('.farg').setAttribute('fill', kf === F.svart ? '#3B3431' : kf);
+  smulor(t, kx, ky, syns && STRECK.some(([, , a, b]) => t >= a && t < b) && (kf === F.svart ? '#3B3431' : kf));
   kritaG.firstChild.setAttribute('transform', `translate(${kx.toFixed(1)} ${ky.toFixed(1)}) rotate(38) scale(${(0.8 * clamp((t - A.rita[1] - 0.6) / 0.4)).toFixed(3)})`);
   for (const f of document.querySelectorAll('[id=boil-brus]')) f.setAttribute('seed', 1 + Math.floor(t * 8) % 4);
   kant.uppdatera();

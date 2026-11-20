@@ -32,14 +32,14 @@ Varje bokstav fylls i med en mening:
 
 | # | Del | Vad händer |
 |---|---|---|
-| 1 | Vinjetten | Som i recept 1, men kortare (ca 17 s i stället för 21): klossen snurrar in, kritan ritar bokstaven, *"Det är ju E! Bokstaven E. E som i elefant. E, e, elefant!"* tätt efter varandra, ingen säg-paus, och *"Kritan ritar något på bokstaven E."* börjar medan märket flyger till hörnet. Ordet i introt är kompisen. Klossen har rundade kanter som bildklossarna (`rund: 0.12`). |
-| 2 | Kompisen (ord 1) | Kritan ritar konturen i ett drag, *"Hmm …"*, *"Vem är det?"*, paus 4 s, svaret, närbilden, *"… börjar på bokstaven E."* Sedan går kompisen åt sidan med två små skutt och står kvar där (`KOMPIS`, x 400, skala 0,95). Ingen kloss. |
-| 3 | Viljan | Närbild på kompisen: ett uttryck och en pose, sedan Malin: *"Elefanten vill leka."* Kameran ut, och frågan som kritan svarar på: *"Vem vill leka med elefanten?"* |
-| 4 | Kritan ritar fel | Kritan ritar den udda saken med samma slag (hmm, frågan, pausen, svaret). Kompisen blir förvånad i närbild. *"Ha ha! Busiga kritan! Katt börjar inte på E."* Den udda går ut, kompisen vinkar: *"Hej då, katten!"* |
-| 5 | Ord 2 | *"En gång till!"* Kritan ritar ord 2 till höger om kompisen (`RITA`). Kompisen tittar nyfiket medan kritan ritar och jublar på svaret. Sedan gör de **en sak tillsammans** (se menyn). Här får barnet göra samma sak: *"Kan du också hoppa?"* och en paus. |
-| 6 | Ord 3 | En liten ny vilja (*"Oj. Ekorren är hungrig."*), kritan ritar ord 3 mitt emellan dem, och saken går dit den behövs (*"Varsågod, ekorren!"*, *"Mums!"*). Kompisen jublar i närbild. |
-| 7 | Vilken ska bort? | *"Nu leker vi!"* Tre bildklossar poppar fram mitt på golvet och var och en hoppar in på sin platta. Blandningen, muren och **en** runda, som i recept 1. |
-| 8 | Disco och hej då | Som i recept 1, med tre klossar: kompisen hoppar ur sin kloss och dansar stor, de två andra snurrar en i taget, pyramid med kompisen överst, utrullning och bokstaven sist. |
+| 1 | Vinjetten | Som i recept 1, men kortare (ca 17 s i stället för 21): klossen snurrar in, kritan ritar bokstaven, *"Hej hej!"* (Sannas manus 2026-11-20, i stället för *"Kritans ABC!"*), *"Kritan ritar. Det är ju E! Bokstaven E."* tätt efter varandra, ingen säg-paus, och *"Kritan ritar något på bokstaven E."* börjar medan märket flyger till hörnet. Ordet i introt är kompisen. Klossen har rundade kanter som bildklossarna (`rund: 0.12`). |
+| 2 | Kompisen (ord 1) | Kritan ritar konturen i ett drag, *"Hmm …"*, *"Vem är det?"*, paus 4 s, svaret, närbilden med *"E, e, elefant!"* (ordet med bokstaven sägs på svaret, inte i introt), *"… börjar på bokstaven E."* Sedan går kompisen åt sidan med två små skutt, vinkar och står kvar där: *"Hej, elefanten!"* (`KOMPIS`, x 400, skala 0,95). Ingen kloss. |
+| 3 | Viljan | Närbild på kompisen: ett uttryck och en pose, sedan Malin: *"Elefanten vill leka. Men elefanten har ingen kompis."* Kameran ut, och Malin ber kritan: *"Kritan! Kan du rita en kompis?"* Kompisen lutar sig fram och "viskar": *"Vad sa du, elefanten? Måste kompisen börja på bokstaven E?"* Kompisen hoppar till (ja!), *"Kan du det, kritan? Nu ritar kritan."* |
+| 4 | Kritan ritar fel | Kritan ritar den udda saken med samma slag (hmm, frågan, pausen, svaret, *"Katt? En katt!"*). Kompisen blir förvånad i närbild. *"Ha ha! Busiga kritan! Katt börjar inte på E."* Den udda går ut, kompisen vinkar: *"Hej då, katten!"* |
+| 5 | Ord 2 | *"En gång till!"* *"En kompis på bokstaven E, tack!"* Kritan ritar ord 2 till höger om kompisen (`RITA`). Kompisen tittar nyfiket medan kritan ritar och jublar på svaret (*"E, e, ekorre!"*). Kompisen vinkar, *"Hej, ekorren! Vill du leka med elefanten?"*, och ord 2 svarar genom att hoppa. Sedan gör de **en sak tillsammans** (se menyn), en i taget och sedan båda: *"Hopp, hopp, hopp!"* |
+| 6 | Ord 3 | En liten ny vilja (*"Oj. Ekorren är hungrig."*), Malin ber kritan igen (*"Kritan, rita något gott!"*), kritan ritar ord 3 mitt emellan dem, och saken går dit den behövs (*"Varsågod, ekorren!"*, *"Mums!"*, *"Nu är ekorren mätt och glad."*). Kompisen jublar i närbild. |
+| 7 | Vilken ska bort? | *"Nu leker vi!"* Tre bildklossar poppar fram mitt på golvet och var och en hoppar in på sin platta. Blandningen följs som en lek (*"Titta noga. Var är elefanten?"* och *"Där är den!"* när kompisens kloss hoppar), sedan muren och **en** runda, som i recept 1. **Liv i muren** (Sanna 2026-11-20): kompisen på sin kloss vänder sig mot klossen Malin säger (`tittaMot()`: åt sidan, neråt eller snett) och jublar på sitt eget ord. Medan Malin frågar och barnet tänker ser kompisen sig om, en kloss i taget, klossen den tittar på nickar fram, och kameran kryper sakta närmare (1,3 till 1,42). |
+| 8 | Disco och hej då | Som i recept 1, med tre klossar: kompisen hoppar ur sin kloss och dansar stor, de två andra snurrar en i taget, och Malin säger vem som dansar och snurrar efter varje snurr. Före *"Alla börjar på bokstaven E."* hoppar klossarna på sina ord: *"Elefant, ekorre, ekollon."* Pyramid med kompisen överst, sedan *"Det var allt för i dag. Vad kul det var att leka! Hej då!"*, utrullning och bokstaven sist. |
 
 Slagen per ord är desamma som i recept 1. Skillnaden är vad som händer mellan dem.
 
@@ -50,6 +50,7 @@ Sanna 2026-11-20: *"outline, then picture"*. Det är ritintrots sätt (`ritintro
 | Slag | Så görs det |
 |---|---|
 | Konturen | Ett enda lugnt drag runt sakens ytterform, ca 5–6 s, medurs från toppen. Linjen är en mörkare ton av sakens färg, 15 bred, med vaxkorn. Kritan har linjens färg. |
+| Smulorna | Spetsen tappar kritsmulor i linjens färg medan den ritar. De faller en bit och bleknar (`smulor()`, som i 019, men större och fler eftersom hela bilden syns). |
 | Ljudet | `krita-ritar` (två tagningar med övertoning), inte `skrrrrt`. |
 | Frågan | *"Hmm …"* strax efter början, *"Vem är det?"* när drygt halva konturen är ritad. Sedan pausen, 4 s. |
 | Svaret | Den riktiga bilden fylls i inifrån på 0,7 s (en rund mask som växer, med lite ojämn kant), och linjen tonar bort. Pop, pling och gnistor som förut. |
@@ -92,13 +93,13 @@ En sak som "hålls" läggs bara framför tassen och hoppar samtidigt som figuren
 
 ## Replikerna
 
-Fasta i varje film (byt bara bokstaven och orden): introt, *"Hmm …"*, *"Vem är det?"* / *"Vad blir det?"*, *"… börjar (också) på E"*, *"Ha ha! Busiga kritan!"*, *"En gång till!"*, *"Nu leker vi!"*, rundans repliker, *"Alla börjar på bokstaven E."*, *"Nu dansar vi!"*, *"Hej då!"*
+Fasta i varje film (byt bara bokstaven och orden): introt (*"Hej hej!"*), *"Hmm …"*, *"Vem är det?"* / *"Vad blir det?"*, *"… börjar (också) på E"*, *"Ha ha! Busiga kritan!"*, *"Kritan! Kan du rita en kompis?"*, *"Kan du det, kritan? Nu ritar kritan."*, *"En gång till!"*, *"En kompis på bokstaven E, tack!"*, *"Nu leker vi!"*, *"Titta noga. Var är …?"*, *"Där är den!"*, rundans repliker, *"Alla börjar på bokstaven E."*, *"Nu dansar vi!"*, *"Det var allt för i dag."*, *"Vad kul det var att leka!"*, *"Hej då!"*
 
-Nya per bokstav, ca nio korta: viljan, frågan, leken (tre repliker), den lilla viljan, *"Varsågod"* och *"Mums!"* eller motsvarande.
+Nya per bokstav, ca 20 korta: *"E, e, [ord]!"* för ord 1 och 2, viljan och *"har ingen kompis"*, viskningen, hälsningarna (*"Hej, …!"*), frågan till ord 2, leken (tre repliker), den lilla viljan och *"rita något gott"*, *"Varsågod"*, *"Mums!"*, *"… mätt och glad"*, de tre orden på rad och de tre dansreplikerna.
 
 Reglerna från recept 1 gäller: inga utdragna ord, ingen *"Lyssna!"*, inget *"Säg du"*, *"Vem är det?"* för djur och *"Vad blir det?"* för saker, aldrig *"Vad kan det vara?"*, inga djurnamn, en v3-tagg per rad, *"Kritans ABC!"* är `[warm]`, och hela filmen ur **en** tagning.
 
-*"Kan du också hoppa?"* är en rörelse för barnet, inte ett ljud. Sanna tog bort *"Kan du gapa stort?"* 2026-11-18, så den här är hennes att godkänna eller stryka.
+Sanna strök *"Kan du också hoppa?"*, *"Bra hoppat!"* och *"Dansar du också?"* ur manuset 2026-11-20: barnet får ingen egen rörelsefråga i recept 3.
 
 ## Vad en bokstav behöver
 
@@ -106,7 +107,7 @@ Reglerna från recept 1 gäller: inga utdragna ord, ingen *"Lyssna!"*, inget *"S
 |---|---|---|
 | Saker | 9 (3 ritas, 3 udda, 3 nya bilder) | 5 (3 ritas, 1 ritas fel, 1 udda i leken) |
 | Nya bilder ur Flow (E) | 4 | 3 (ekollonet, ekorren, katten) |
-| Malins repliker | 41 | 43, varav 9 skrivs nya per bokstav |
+| Malins repliker | 41 | 61, varav ca 20 skrivs nya per bokstav (E: tagning 3, 2026-11-20) |
 | Blandningar av klossar | 3 | 1 |
 
 De udda sakerna kan vara desamma i många bokstäver. Den som ritas fel behöver bara en bild; konturen spåras ur den.
@@ -137,5 +138,4 @@ De udda sakerna kan vara desamma i många bokstäver. Den som ritas fel behöver
 - Tredje rundan (Sanna 2026-11-18, *"lite svårare"*) och andra rundan är borta ur den långa filmen. De kan bli Shorts, ca 25 s var.
 - Elefanten låter fortfarande som björnen (`brum-glad`). Sök ett mjukt trumpetande på Openverse.
 - Hunden i leken är kvar i den gamla, ritade stilen. Den bör få en ny bild som katten och ekorren.
-- *"Kan du också hoppa?"* är med. Sanna har inte sagt något om den.
 - Flow-verktyget (`mcp__flow__flow_generate`) fastnade 2026-11-20 på en knapp det inte hittade. Bilderna gjordes för hand i Flow i webbläsaren, med projektets egna bilder som referenser.
