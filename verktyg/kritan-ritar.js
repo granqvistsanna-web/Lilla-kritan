@@ -22,7 +22,7 @@ const KRITAN = {
   VINKEL_RITAR: 125, VINKEL_VANTAR: 140,
   SKALA_PAPPER: 0.42,        // på ritpapperet (ritintrot)
   SKALA_SCEN: 0.33,          // i en scen, delas med √zoom
-  SVAJ: { ax: 14, ay: 10, fx: 1.6, fy: 2.3, av: 4, fv: 1.3 },
+  SVAJ: { ax: 5, ay: 4, fx: 1.2, fy: 1.7, av: 1.5, fv: 1.0 },   // lugnt (Sanna 2026-11-21: "a bit less wobbly crayon")
   RESA: { bas: 0.25, perPx: 1 / 900, bage: 40 },   // glidningen mellan två streck: vikt och båge
 };
 

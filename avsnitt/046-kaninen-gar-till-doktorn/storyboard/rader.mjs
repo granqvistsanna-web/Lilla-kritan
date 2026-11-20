@@ -24,6 +24,14 @@ const HJARTA = n => `hjartslag/hjartslag-${n}`;   // hjärtslagen (ElevenLabs SF
 const DV = { hej: 2, hmm: 2, ooo: 2, aaa: 4, mhm: 1, fniss: 5, oj: 2, bra: 1, hejda: 1 }, DOK = n => `doktor-${n}/doktor-${n}-${DV[n]}`;
 const G = 1.6;   // glest tempo: extra luft på varje rad med en replik (receptets GLES; 0,9 → 1,3 → 1,6, Sanna 2026-11-20: "a bit slower pace overall", två gånger)
 // "dunk, dunk" i repliken: slagen på de två sista ordens plats (ca 72 % och 90 % in i repliken)
+// Nya repliker 61–63 (Sanna 2026-11-21: kallt, kittlas, duktig) kommer med först när Malins inspelning finns.
+const HAR_R = n => existsSync(HAR + `../../../assets/ljud/roster/kaninen-gar-till-doktorn/${ROST[n - 1][0]}.m4a`);
+const R13 = (() => { const a = 0.5 + L(18), b = a + 1.2;   // doktorns ooo, sedan kaninens brr (kallt) och fniss (det kittlas)
+  if (!HAR_R(61)) return { d: b + 1.6 + 0.3 + 1.6 + G, malin: [[18, 0.4]], brr: b, fniss: b + 1.9 };
+  const m61 = b + 1.7, m62 = m61 + L(61) + 0.3, f = m62 + L(62) + 0.2;
+  return { d: f + 1.6 + G, malin: [[18, 0.4], [61, m61], ...(HAR_R(62) ? [[62, m62]] : [])], brr: b, fniss: HAR_R(62) ? f : m62 }; })();
+const R14 = (() => { const e = HAR_R(63) ? 0.6 + L(19) + L(63) : 0.4 + L(19);
+  return { d: e + G + 1.4, malin: [[19, 0.4], ...(HAR_R(63) ? [[63, 0.6 + L(19)]] : [])], mhm: e + 0.1, ja: e + 1.2 }; })();
 const dunkar = (o, n, t = 2) => [[HJARTA(t), o + L(n) * 0.62]];   // ett hjärtslag (två slag) som börjar strax före "dunk, dunk"
 
 export const RADER = [
@@ -68,9 +76,9 @@ export const RADER = [
   { id: '11c', d: 1.6, plats: 'Halvbild: doktorn', bild: 'Doktorn sätter propparna i öronen och sträcker bröstdelen mot britsen', ljudtext: '–', ansikte: 'doktorn glad' },
   { id: '12', d: 0.4 + L(52) + G, plats: 'Närbild: nallens mage', malin: [[52, 0.4]], ljud: [...dunkar(0.4, 52, 2), [DOK('hmm'), 0.5 + L(52)]],
     bild: 'Bröstdelen mot nallens mage, två små ringar på *"dunk, dunk"*. Doktorn i bild', ljudtext: '`dunk` × 2 (lågt)', ansikte: '–' },
-  { id: '13', d: 0.4 + L(18) + G + 1.4, plats: 'Närbild: kaninens mage', malin: [[18, 0.4]], ljud: [...dunkar(0.4, 18, 3), [DOK('ooo'), 0.5 + L(18)], [KN('fniss'), 1.6 + L(18)]],
-    bild: 'Bröstdelen mot kaninens mage, två små ringar. Doktorn i bild (Sanna: "place dr in frame")', ljudtext: '`dunk` × 2, fniss', ansikte: 'fnissig' },
-  { id: '14', d: 0.4 + L(19) + G + 1.4, plats: 'Halvbild: doktorn', malin: [[19, 0.4]], ljud: [[DOK('mhm'), 0.5 + L(19)], [KN('ja'), 1.6 + L(19)]],
+  { id: '13', d: R13.d, plats: 'Närbild: kaninens mage', malin: R13.malin, ljud: [...dunkar(0.4, 18, 3), [DOK('ooo'), 0.5 + L(18)], [KN('brr'), R13.brr], [KN('fniss'), R13.fniss]],
+    bild: 'Bröstdelen mot kaninens mage, två små ringar. Doktorn i bild (Sanna: "place dr in frame"). Brr, kallt: kaninen huttrar. Det kittlas: kaninen fnissar och gungar (Sanna 2026-11-21)', ljudtext: '`dunk` × 2, brr, fniss', ansikte: 'fnissig' },
+  { id: '14', d: R14.d, plats: 'Halvbild: doktorn', malin: R14.malin, ljud: [[DOK('mhm'), R14.mhm], [KN('ja'), R14.ja]],
     bild: 'Doktorn med stetoskopet i öronen nickar och ler', ljudtext: 'ja', ansikte: 'doktorn glad' },
   { id: '15', d: 0.3 + L(20) + 4.0 + L(21) + G, plats: 'Halvbild: kaninen', malin: [[20, 0.3], [21, 4.3 + L(20)]], ljud: [[KLAPP, 4.1 + L(20)]],
     bild: 'Paus 4 s: barnet visar magen. Kaninen klappar sig på magen, *"Där!"*', ljudtext: '`klapp`', ansikte: 'glad' },

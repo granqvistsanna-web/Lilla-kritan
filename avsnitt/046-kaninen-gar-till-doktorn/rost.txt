@@ -58,3 +58,6 @@
 58-dar-ar-du-leoparden  [happy] Där är du, leoparden!
 59-till-leoparden  [giggles] Och en till leoparden!
 60-hejda-kaninen-leoparden  [happy] Hej då, kaninen! Hej då, leoparden!
+61-lite-kallt  [surprised] Oj! Stetoskopet är lite kallt.
+62-det-kittlas  [giggles] Och det kittlas! Hi hi.
+63-vad-duktig  [warmly] Vad duktig du är, kaninen!

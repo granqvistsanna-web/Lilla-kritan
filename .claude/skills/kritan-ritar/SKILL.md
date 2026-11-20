@@ -16,7 +16,7 @@ Kritan är **en sak, inte en figur**: en röd vaxkrita utan ansikte som aldrig v
 | 1. In | Kritan kommer in uppifrån höger till första streckets början och sänker spetsen | 0,4 s, mjuk |
 | 2. Ritar | **Bara konturen**, i en mörk kritlinje. Linjen växer fram och **kritans spets sitter alltid i linjens ände**. Flera streck: kritan **glider i en liten båge** (40 px) från ett strecks slut till nästas början, och den hoppar aldrig. | ca 3–7 s; `ritfart` (jämn fart med mjuk start); vinkel **125°** |
 | 3. Står kvar | När konturen är klar står kritan kvar i sista spetsen tills nästa fas. Den får inte försvinna och komma tillbaka (det ger flimmer). | |
-| 4. Väntar | Kritan glider i en båge till en **väntplats på fri yta** och svajar lugnt medan barnet gissar | 0,8 s; svaj ±14/±10 px, vinkel **140° ± 4°** |
+| 4. Väntar | Kritan glider i en båge till en **väntplats på fri yta** och svajar lugnt medan barnet gissar | 0,8 s; svaj ±5/±4 px, vinkel **140° ± 1,5°** (lugnt, Sanna 2026-11-21) |
 | 5. Svaret | Den riktiga bilden **fylls i inifrån** med en cirkel som växer från sakens mitt (`r ∝ mjuk(f)^1.2`, 0,5–0,8 s). Linjen tonas bort under tiden (från 15 % till 90 % av fyllningen). Fem **krit-gnistor** poppar fram runt saken. | `pling` eller `tindra` |
 | 6. Ut | Kritan flyger ut uppe till höger, ut ur bild | 0,8 s, mjuk |
 
