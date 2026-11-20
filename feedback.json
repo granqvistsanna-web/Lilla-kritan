@@ -6271,5 +6271,15 @@
   "at": 1795158090255,
   "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
   "fixedAt": 1795158680203
+ },
+ "poakr6yt72mwonsrmj": {
+  "ep": "J16",
+  "time": "0:54",
+  "sec": 54,
+  "tags": [],
+  "note": "bigger pig",
+  "fixed": false,
+  "at": 1795159806427,
+  "render": "2026-11-20 08:11 (förhandsvisning (--snabb): feedback 20/11 åtgärdad, nytt grisljud på 0:24 saknas än)"
  }
 }
