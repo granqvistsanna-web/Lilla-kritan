@@ -1569,10 +1569,10 @@
   "name": "Lucka 15: Lammet bakar pepparkakor"
  },
  "J16": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J16-1120-0802.mp4",
-  "duration": 255.9,
-  "rendered": "2026-11-20 08:02 (Slutrendering: hela 043 bakom luckan, kalenderintro och -outro, 255,9 s, −16,2 LUFS)",
-  "file": "produktion/youtube/shorts/jul/16-grisen-matar-faglarna/16-grisen-matar-faglarna-liten.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J16-1120-0811.mp4",
+  "duration": 247.7,
+  "rendered": "2026-11-20 08:11 (förhandsvisning (--snabb): feedback 20/11 åtgärdad, nytt grisljud på 0:24 saknas än)",
+  "file": "avsnitt/043-grisen-matar-faglarna/scener/snogarden/snogarden.mp4",
   "status": "granska",
   "name": "Lucka 16: Grisen matar fåglarna"
  }
