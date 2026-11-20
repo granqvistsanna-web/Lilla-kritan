@@ -166,7 +166,7 @@ function lova([x, fot], f, p, { skjorta = 1, bakom = false, s = GS } = {}) {
   if (bakom) G.querySelectorAll('.leg-l,.leg-r,.skugga').forEach(e => e.setAttribute('opacity', 0));
   if (bakom && I_BADRUM) { $('utanSvansP').setAttribute('d', (y => `M-600 -600H1700V${y}H790L782 ${y + 60}L752 ${y + 130}L705 ${y + 190}V1700H-600Z`)(640 + (p.lyft || 0))); G.setAttribute('clip-path', 'url(#utanSvans)'); }   // klippet följer hoppet (lyft)
 }
-const HUG = { a: -60, k: 260, s: 0.38, gy: 600, upp: 125 };   // kramen (rad 28): armarnas vinkel, inskjutning över magen, nallens skala och greppets höjd
+const HUG = { a: -60, aL: -48, k: 215, s: 0.38, gx: 135, gy: 600, upp: 125 };   // gx: greppet på nallens högra sida, så att nallen hamnar mellan tassarna   // aL: vänster arm lite högre, så att tassarna ligger på var sin sida om nallen (runda 8: "show both paws")   // kramen (rad 28): armarnas vinkel, inskjutning över magen, nallens skala och greppets höjd
 const VINKA = { armar: [0, 150] }, VINK_BAS = 40;    // J03 runda 7: vinkarmens grundvinkel (snett upp förbi kroppens kant)
 // Saker i tassen (riggens sakIn/sakRita, verktyg/rigg-motor.js; runda 2 2026-11-18: "much better" borstning och drickande, som 038):
 // borsten och muggen sitter i högra tassen framför magen och förs till munnen (sakMun). SAK = sakens namn i den här bildrutan.
@@ -178,7 +178,7 @@ const SAKER = {
   // Runda 5 "drink water left hand": glaset i vänster tass i bild (arm-l, hand 0), greppen och mun-punkten spegelvända mot höger tass
   mugg: () => ({ ...L.sakBild(GLAS, 665, 901, { grepp: [55, 470], greppFram: [605, 470], fot: [332, 895], skala: 0.2, folj: 0, kant: 8, mun: [475, 30] }), svg: glasSvg() }),
   // J03 runda 7 (2:41) "improve hug": nallen i famnen, framför magen under tassarna (bilden har redan sin vita kant)
-  nalle: () => L.sakKod(nalleSvg(0), { grepp: [424, HUG.gy], greppFram: [424, HUG.gy], fot: [424, 831], skala: HUG.s, folj: 0, kant: 60 }) };
+  nalle: () => L.sakKod(nalleSvg(0), { grepp: [424 + HUG.gx, HUG.gy], greppFram: [424 + HUG.gx, HUG.gy], fot: [424, 831], skala: HUG.s, folj: 0, kant: 60 }) };
 const DRICK = { hand: 0, vinkel: 25 };
 const PASTA_D = ['#fff', '#fbfffd', '#8fe3d2'];   // vit kant, tandkrämen, en mintrand
 const pasta = k => G.querySelectorAll('.pasta').forEach(e => e.setAttribute('stroke-dasharray', `${kl(k).toFixed(3)} 2`));
@@ -574,7 +574,7 @@ const S = {
     const vagg = Math.sin((tl - IN1) * 2.4) * del(IN1 + 0.3, IN1 + 0.9, tl) * (1 - del(UT0 - 0.5, UT0, tl));
     SAK = hall ? 'nalle' : null;
     S_(F('glad', { glad: [sl, sl], titt: [-10 * (1 - sl) * ta, 6 * ta] }), { hall: [0, hall ? 1 : 0], fram: [+(ta > 0.5), +(ta > 0.5)], hand: 1, sakGrepp: 1,
-      armar: [lerp(0, HUG.a, ta), lerp(0, HUG.a, ta)], klapp: HUG.k * ta + 25 * kram, luta: 5 * vagg - 3 * ta, rikt: -0.3 * ta * (1 - sl),
+      armar: [lerp(0, HUG.aL, ta), lerp(0, HUG.a, ta)], klapp: HUG.k * ta + 25 * kram, luta: 5 * vagg - 3 * ta, rikt: -0.3 * ta * (1 - sl),
       strack: -0.03 * kram, bred: 0.04 * kram, oron: [6 * sl, 6 * sl], lyft: -HUG.upp * ta });   // sätter sig upp lite, så att famnen syns över täcket
     if (hall && fri) { const u = tl < IN1 ? uIn : 1 - uUt, [nx, ny] = NALLE_SANG, ns = NALLE_SANG[2];
       flyg('nalle', u, [nx, ny - 428 * ns], (x, y, u) => lagg(u < 0.6 ? 'saker' : 'figurer', `<g transform="translate(${x} ${y}) rotate(${lerp(-14, 0, u)}) scale(${lerp(ns, HUG.s * SS, u)}) translate(-424 -428)">${nalleSvg(0)}</g>`)); }
