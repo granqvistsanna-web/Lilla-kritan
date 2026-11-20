@@ -90,7 +90,7 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), de långa öronen och armarna
 
 ## Malins repliker att klistra in (ElevenLabs)
 
-Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Ett block, en tagning. Filerna hamnar i `assets/ljud/roster/kaninen-gar-till-doktorn/` (`01-kritan-ritar` …).
+Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Ett block, en tagning. **Tagning 1 gjord 2026-11-20** (`malin-tagning.mp3`, 111,6 s, alla 48 repliker i ett block). Delas på Sannas dator (whisper finns bara där): `python3 verktyg/dela-tagning.py avsnitt/046-kaninen-gar-till-doktorn/malin-tagning.mp3 avsnitt/046-kaninen-gar-till-doktorn/rost.txt assets/ljud/roster/kaninen-gar-till-doktorn`. Filerna hamnar i `assets/ljud/roster/kaninen-gar-till-doktorn/` (`01-kritan-ritar` …).
 
 ```
 [warmly] Kritan ritar …
