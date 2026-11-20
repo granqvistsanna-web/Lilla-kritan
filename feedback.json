@@ -6146,9 +6146,10 @@
   "sec": 24,
   "tags": [],
   "note": "new gris ljud here, remove this ioink",
-  "fixed": false,
+  "fixed": true,
   "at": 1795157748608,
-  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))"
+  "render": "2026-11-20 07:50 (Förhandsvisning (--snabb) från 19/11 05:53, hela avsnittet i Snögården (242 s))",
+  "fixedAt": 1795159609240
  },
  "i2h4ppvo2pmwomlifd": {
   "ep": "J16",
