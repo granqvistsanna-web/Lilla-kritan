@@ -21,7 +21,7 @@ await p.evaluate(([z, x, y]) => {
   // lammet jätteglatt med öppna ögon, tittar på oss, öronen upp, stjärnkakan (med tuggan) i tassen framför sig
   S['35'] = tl => { kok(); kamera(z, x, y); lamm(ANS('jatteglad', { titt: [0, 2] }), { ...HALL(), oron: [-10, -10] }); };
 }, [zoom, cx, cy]);
-await p.evaluate(() => window.seek(RR['35'].s + 0.1));
+await p.evaluate(() => window.seek(RR['35'].s + 1.0));
 await p.screenshot({ path: join(HAR, 'hjalte.png') });
 await b.close(); server.close();
 execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', join(HAR, 'hjalte.png'), '-vf', 'scale=1280:720', join(HAR, 'miniatyr-utan-text.png')]);
