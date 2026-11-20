@@ -46,3 +46,4 @@
 46-hejda-doktorn 1.03
 47-hejda-kaninen 2.22
 48-vi-ses-snart 2.33
+49-ett-stetoskop 3.03
