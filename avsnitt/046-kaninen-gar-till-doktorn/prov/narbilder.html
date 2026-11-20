@@ -69,15 +69,23 @@ const slang = (x, y, x1, y1) => `<path d="M${f1(x)} ${f1(y)} C${f1(x + 50)} ${f1
 const ringar = (x, y, t) => [0, 0.6].map(a => { const u = (((t - a) % 1.4) + 1.4) % 1.4 / 0.5; return t < a || u > 1 ? '' :
   `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(22 + 30 * u)}" fill="none" stroke="#fff" stroke-width="${f1(6 * (1 - u) + 1)}" opacity="${f1(1 - u)}"/>`; }).join('');
 
+// Doktorn med fötterna i (x, y); i närbilderna flyttas doktorn (klipp, ingen kontinuitet i golvet) så att saken i handen
+// hamnar där den ska: bröstdelen på magen, lampans spets vid örat.
+let DPOS = [0, 0];
+function doktorPa(x, y) { DPOS = [x, y]; GD.setAttribute('transform', `translate(${f1(x)} ${f1(y)}) scale(${DOKTOR[2]}) translate(-512 ${-DL.FOTTER})`); }
+const flytta = (dx, dy) => doktorPa(DPOS[0] + dx, DPOS[1] + dy);
 function rita(t) {
   const bl = window.BL;
   let dp = 'neutral', kp = KL.blandaPose('neutral', 'sitter', 1), kf = KL.blanda('neutral', 'glad', 1);
   if (BILD === 2) dp = 'stetoskop';
   if (BILD === 3) kf = KL.blanda('neutral', 'fnissig', 0.6);
   if (BILD === 5) kp = { ...kp, fram: [1, 1], klapp: 30 };
-  DL.rita(GD, bl(DL.blanda('neutral', 'glad', 1), t), DL.blandaPose('neutral', dp, 1));
+  let dpose = DL.blandaPose('neutral', dp, 1);
+  if (BILD === 3) dpose = DL.blandaPose('neutral', 'stetoskop', 1);
+  if (BILD === 4) dpose = { ...DL.blandaPose('neutral', 'lampa', 1), ljus: kl((t - 0.8) / 0.25), armar: [100, 0], armbage: [-70, 0] };
+  doktorPa(DOKTOR[0], DOKTOR[1]);
+  DL.rita(GD, bl(DL.blanda('neutral', BILD === 4 ? 'nyfiken' : 'glad', 1), t), dpose);
   KL.rita(GK, bl(kf, t + 1.3), kp);
-  GD.setAttribute('display', BILD === 3 || BILD === 4 ? 'none' : 'inline');   // närbild med instick: bara doktorns hand syns (receptet)
   $('hand').innerHTML = '';
   const etikett = s => $('text').innerHTML = `<text x="960" y="1050" font-size="34">${s}</text>`;
   if (BILD === 1) { kamera(1, 960, 540); etikett('1 · helbild: kaninen på britsen, doktorn vid britsen (stetoskopet runt halsen)'); }
@@ -86,19 +94,18 @@ function rita(t) {
   if (BILD === 3) {
     const [mx, my] = punkt(GK.querySelector('.mage'), MAGE[0], MAGE[1]);
     kamera(1.9, mx + 40, my - 90);
-    const inn = mjuk(t / 0.6), bx = mx + 260 * (1 - inn), by = my;
-    $('hand').innerHTML = instick([bx + 34, by + 4], [mx + 640, my - 90], () => '', inn)
-      + `<g filter="url(#saksKant)">${slang(bx + 14, by - 4, mx + 520, my - 640)}${brostdel(bx, by, 17)}</g>`
-      + (inn >= 1 ? ringar(bx, by, t - 0.6) : '');
-    etikett('13 · närbild: kaninens mage, doktorns hand med bröstdelen, dunk dunk'); }
+    const b = GD.querySelectorAll('.steto-fram circle'), c = b[b.length - 2];   // bröstdelens yttre ring
+    const [bx, by] = punkt(c, +c.getAttribute('cx'), +c.getAttribute('cy'));
+    flytta(mx - bx, my - by);
+    $('hand').innerHTML = ringar(mx, my, t - 0.3);
+    etikett('13 · närbild: kaninens mage, doktorn lyssnar (i bild), dunk dunk'); }
   if (BILD === 4) {
     const [ox, oy] = punkt(GK.querySelector('image.ear-r'), ORA[0], ORA[1]);
-    kamera(1.8, ox - 40, oy + 160);
-    const inn = mjuk(t / 0.6), ljus = kl((t - 0.8) / 0.25);
-    $('hand').innerHTML = `<ellipse cx="${f1(ox - 12)}" cy="${f1(oy)}" rx="22" ry="40" fill="#ffe680" opacity="${f1(0.4 * ljus)}"/>`
-      + instick([ox + 120, oy + 4], [ox + 760, oy + 110], (x, y) => oronlampa(x, y, 0, 0.95, ljus)
-        + `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(HAND.R * 0.8)}" fill="${HAND.HUD}" stroke="${HAND.HUDKANT}" stroke-width="2.5"/>`, inn);
-    etikett('18 · närbild: kaninens öra, doktorns hand med öronlampan, ljuset tänds'); }
+    kamera(1.45, ox + 120, oy + 230);
+    const ljus = kl((t - 0.8) / 0.25), la = GD.querySelector('.lampa'), [lx, ly] = punkt(la, -96, 0);   // lampans spets
+    flytta(ox + 18 - lx, oy - ly);
+    $('hand').innerHTML = `<ellipse cx="${f1(ox - 12)}" cy="${f1(oy)}" rx="22" ry="40" fill="#ffe680" opacity="${f1(0.4 * ljus)}"/>`;
+    etikett('18 · närbild: kaninens öra, doktorn med öronlampan (i bild), ljuset tänds'); }
   if (BILD === 5) { const [x, y] = punkt(GK.querySelector('.drag'), 512, 560); kamera(1.6, x, y - 30);
     etikett('15 · halvbild: kaninen klappar sig på magen'); }
   $('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1);

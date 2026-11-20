@@ -1,0 +1,48 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-kanin  [excited] Oj! En kanin!
+04-hej-kaninen  [happy] Hej, kaninen! Hej, hej!
+05-dar-ar-doktorn  [cheerfully] Titta, där är doktorn. Hej, doktorn!
+06-hos-doktorn  [warmly] Idag är kaninen hos doktorn.
+07-lite-osaker  [softly] Oj. Kaninen är visst lite osäker.
+08-vaxer-och-mar-bra  [warmly] Doktorn ska bara titta att du växer och mår bra.
+09-vad-gor-vi  [curious] Hm … vad gör vi nu?
+10-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+11-en-nalle  [happy] En nalle! Varsågod, kaninen.
+12-saga-tack  [warmly] Ska vi säga tack?
+13-tack  [happy] Tack!
+14-nallen-ar-med  [warmly] Nallen är med. Då går det bra.
+15-upp-pa-britsen  [cheerfully] Upp på britsen! Hopp … och hopp!
+16-ett-stetoskop  [curious] Titta, ett stetoskop. Med det lyssnar doktorn.
+17-forst-nallen-lyssna  [happy] Först nallen. Lyssna, lyssna … dunk, dunk!
+18-nu-kaninen-lyssna  [happy] Nu kaninen. Lyssna, lyssna … dunk, dunk!
+19-horde-magen  [cheerfully] Fint! Doktorn hörde magen.
+20-var-ar-magen  [warmly] Kan du visa var din mage är?
+21-dar-magen  [excited] Där!
+22-en-lampa  [curious] Och här är en lampa. Doktorn tittar i öronen.
+23-forst-nallen-titta  [happy] Först nallen. Titta, titta … fint!
+24-nu-kaninen-titta  [delighted] Nu kaninen. Vilka långa öron! Titta, titta … fint!
+25-oret-ramlade  [surprised] Oj! Örat ramlade ner!
+26-upp-igen  [laughs] Ha ha! Upp igen.
+27-var-ar-oronen  [warmly] Var är dina öron?
+28-dar-oronen  [excited] Där!
+29-titta-i-munnen  [cheerfully] Nu ska doktorn titta i munnen.
+30-nallen-kan-inte-gapa  [chuckles] Först nallen. Gapa … oj! Nallen kan inte gapa!
+31-nu-kaninen-gapa  [happy] Nu kaninen. Gapa … aaa!
+32-kan-du-gapa  [cheerfully] Fint! Kan du också gapa?
+33-aaa  [playfully] Aaa!
+34-var-ar-nallen  [surprised] Oj! Var är nallen?
+35-vet-inte  [curious] Kaninen vet inte var nallen är.
+36-kan-du-hjalpa  [warmly] Kan du hjälpa kaninen? Kan du se var nallen är?
+37-bakom-pallen  [excited] Ja, där! Bakom pallen!
+38-dar-ar-du-nallen  [happy] Där är du, nallen!
+39-kritan-ritar-igen  [excited] Titta! Kritan ritar igen.
+40-en-stjarna  [delighted] En stjärna! Ett klistermärke!
+41-till-kaninen  [happy] Till kaninen.
+42-till-nallen  [giggles] Och en till nallen!
+43-nu-ar-det-klart  [happy] Bra, kaninen! Nu är det klart.
+44-tack-till-doktorn  [warmly] Ska vi säga tack till doktorn?
+45-tack-doktorn  [happy] Tack, doktorn!
+46-hejda-doktorn  [happy] Hej då, doktorn!
+47-hejda-kaninen  [happy] Hej då, kaninen! Hej då, nallen!
+48-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

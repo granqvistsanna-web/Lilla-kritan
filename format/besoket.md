@@ -72,7 +72,7 @@ Det här är det viktigaste: besöken ska gå att göra i bilderbokens takt.
 
 1. **Doktorn står still.** Doktorn står på ett fast ställe vid britsen och rör nästan bara ena armen, huvudet (nickar, lutar) och ansiktet. Doktorn går aldrig och sätter sig aldrig.
 2. **Doktorn har en egen rigg** (Sanna 2026-11-20: *"more human proportions"*). Ett runt huvud på kort hals, skilt från kroppen, så att doktorn kan nicka och luta huvudet. Kropp i rock, raka armar och ben med glipa, gjord med skillen `lk-figur`. Samma API som Mors `uttryck.html`. Tandläkaren blir samma doktor i en annan rock (eller en mössa), inte en ny rigg.
-3. **Närbilder med instick i stället för riggarmar.** I närbilderna syns inte doktorn, bara **handen med saken** som glider in från bildkanten (ett urklipp: rockärm, hand, sak). Inga vinklar att räkna ut, ingen arm som ska nå rätt. I den breda bilden lyfter doktorn bara armen lite mot djuret.
+3. **Närbilder:** i 046 är doktorn med i bild (Sanna 2026-11-20) och doktorns egen kodarm håller saken; doktorn flyttas i klippet så att saken hamnar på magen eller örat. Instick (bara hand och ärm) finns kvar i provet som alternativ. Tidigare plan: **närbilder med instick i stället för riggarmar.** I närbilderna syns inte doktorn, bara **handen med saken** som glider in från bildkanten (ett urklipp: rockärm, hand, sak). Inga vinklar att räkna ut, ingen arm som ska nå rätt. I den breda bilden lyfter doktorn bara armen lite mot djuret.
 4. **Djuret sitter på britsen hela tiden.** Ett hopp upp (`hopp()` som pallen i 020), sedan sittposen. Inget mer gående. Nallen sitter i djurets famn, fäst vid tasspetsen som tvålen.
 5. **Britsen, lampan och vågen ligger i plattan.** Bara det som rör sig är egna urklipp.
 6. **Sakerna är enkla och syns från sidan:**
