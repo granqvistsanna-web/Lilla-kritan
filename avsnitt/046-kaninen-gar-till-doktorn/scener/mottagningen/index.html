@@ -108,11 +108,17 @@ function gnistor(cx, cy, R, t, n = 5) { return Array.from({ length: n }, (_, i) 
 // Sakbilden: saken ensam mitt i bild mot en rosa kritbakgrund, lite gungning, gnistor när den nämns
 function sakbild(s, tl) {
   lagg('papper', `<rect width="1920" height="1080" fill="#F6C3D3"/><rect width="1920" height="1080" fill="#fff" opacity=".12" filter="url(#boil)"/><g id="sb" filter="url(#boil)"></g>`);
-  const g = 1 + 0.03 * Math.sin(tl * 1.8), v = 3 * Math.sin(tl * 1.3);
+  // ljusstrålar bakom saken (Sanna 2026-11-20: "light beams for objects"): 12 mjuka kilar från mitten, roterar långsamt, tonas in
+  const ink = del(0, 0.8, tl), rot = 3 * tl, N = 12;   // långsamt (Sanna: "not too fast")
+  lagg('papper', `<g opacity="${(0.38 * ink).toFixed(2)}" transform="rotate(${f1(rot)} 960 540)">${Array.from({ length: N }, (_, i) => { const a = i * 2 * Math.PI / N, b = a + Math.PI / N * 0.55, R = 1400;
+    return `<path d="M960 540 L${f1(960 + R * Math.cos(a))} ${f1(540 + R * Math.sin(a))} L${f1(960 + R * Math.cos(b))} ${f1(540 + R * Math.sin(b))}Z" fill="#fff"/>`; }).join('')}</g>
+    <circle cx="960" cy="540" r="${f1(330 + 12 * Math.sin(tl * 2))}" fill="#fff" opacity="${(0.28 * ink).toFixed(2)}"/>`);
+  lagg('papper', `<g id="sb2" filter="url(#boil)"></g>`);
+  const g = 1 + 0.025 * Math.sin(tl * 1.2), v = 2.5 * Math.sin(tl * 0.9);
   let h = `<g transform="translate(960 560) rotate(${f1(v)}) scale(${g.toFixed(3)}) translate(-960 -560)">`;
   if (s.sak === 'steto') h += stetoFylld([1060, 440], 2.0);
   if (s.sak === 'lampa') { const lj = s.ljus ?? 1; h += `<ellipse cx="470" cy="560" rx="${f1(170 * lj)}" ry="${f1(130 * lj)}" fill="#fff3b0" opacity="${f1(0.3 * lj)}"/>` + oronlampa(1120, 560, -6, 5.2, lj); }
-  $('sb').innerHTML = h + '</g>' + gnistor(960, 540, 420, tl - (s.gnista ?? 0.4));
+  $('sb2').innerHTML = h + '</g>' + gnistor(960, 540, 420, tl - (s.gnista ?? 0.4));
 }
 
 // --- Tid ------------------------------------------------------------------------------------------------------------------------
