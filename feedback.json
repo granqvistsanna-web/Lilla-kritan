@@ -6410,5 +6410,55 @@
   "fixed": false,
   "at": 1795163758201,
   "render": "2026-11-20 08:35 (förhandsvisning (--snabb): nya grisljud, større gris, QA)"
+ },
+ "bc3je3k0limwoq10ix": {
+  "ep": "J17",
+  "time": "0:47",
+  "sec": 47,
+  "tags": [],
+  "note": "bigger dog, improve animation for drinking water, hand flying in air",
+  "fixed": false,
+  "at": 1795163550441,
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+ },
+ "kbrti5adntmwoq1c0k": {
+  "ep": "J17",
+  "time": "1:04",
+  "sec": 64,
+  "tags": [],
+  "note": "maybe straw for water to drink more easy",
+  "fixed": false,
+  "at": 1795163565332,
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+ },
+ "2869p1xgj3mwoq1old": {
+  "ep": "J17",
+  "time": "1:32",
+  "sec": 92,
+  "tags": [],
+  "note": "drwing scene potta",
+  "fixed": false,
+  "at": 1795163581633,
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+ },
+ "8t2uwpcjm1mwoq25kd": {
+  "ep": "J17",
+  "time": "3:03",
+  "sec": 183,
+  "tags": [],
+  "note": "place handdu more to the left closer to potty",
+  "fixed": false,
+  "at": 1795163603629,
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+ },
+ "p5a7fqw0klmwoq2h4k": {
+  "ep": "J17",
+  "time": "3:51",
+  "sec": 231,
+  "tags": [],
+  "note": "no hat for dog",
+  "fixed": false,
+  "at": 1795163618612,
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
  }
 }
