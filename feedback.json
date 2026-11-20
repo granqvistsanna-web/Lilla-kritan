@@ -6289,9 +6289,10 @@
   "sec": 52,
   "tags": [],
   "note": "bigger dog",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159530690,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "u7kjkde58qmwono3si": {
   "ep": "J17",
@@ -6299,9 +6300,10 @@
   "sec": 102,
   "tags": [],
   "note": "imprive walking animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159588914,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "53nbqzwy3wmwonof2j": {
   "ep": "J17",
@@ -6309,9 +6311,10 @@
   "sec": 106,
   "tags": [],
   "note": "set towel more to right",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159603531,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "3lxaisaaqemwonoxke": {
   "ep": "J17",
@@ -6319,9 +6322,10 @@
   "sec": 116,
   "tags": [],
   "note": "better potta more clear",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159627502,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "hjdq3x3qdjmwonpcxi": {
   "ep": "J17",
@@ -6329,9 +6333,10 @@
   "sec": 121,
   "tags": [],
   "note": "improve animation sitting on potty.",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159647414,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "cxq7hnobgdmwonqjst": {
   "ep": "J17",
@@ -6339,9 +6344,10 @@
   "sec": 155,
   "tags": [],
   "note": "white paper against white floor bad contrast",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159702972,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "v7xiuf2bhgmwonrvzv": {
   "ep": "J17",
@@ -6349,9 +6355,10 @@
   "sec": 227,
   "tags": [],
   "note": "add some more to room maybe clock on wall",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159765435,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  },
  "n7gnkiw89smwons8hi": {
   "ep": "J17",
@@ -6359,8 +6366,9 @@
   "sec": 235,
   "tags": [],
   "note": "remove dans",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159781622,
-  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))"
+  "render": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "fixedAt": 1795160468524
  }
 }
