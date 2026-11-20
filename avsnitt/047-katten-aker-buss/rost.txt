@@ -31,7 +31,7 @@
 31-en-snoplog-den-skjuter  [excited] En snöplog! Den skjuter undan snön.
 32-skrap-skrap  [playfully] Skrap, skrap!
 33-bussen-aker-igen-oj  [surprised] Bussen åker igen. Oj! Fönstret blev alldeles vitt.
-34-titta-kritan-ritar  [excited] Titta! Kritan ritar.
+34-titta-katten-ritar  [excited] Titta! Katten ritar.
 35-ett-hjarta-till-farmor  [delighted] Ett hjärta! Till farmor och farfar.
 36-kan-du-ocksa-rita  [warmly] Kan du också rita ett hjärta? Med fingret.
 37-nu-ar-vi-i  [delighted] Nu är vi i stan. Så många ljus!

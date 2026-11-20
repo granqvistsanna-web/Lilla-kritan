@@ -103,6 +103,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Pallen | [pall.md](pall.md) | 020, 022 |
 | Bussen | [buss.md](buss.md) | 047 |
 | Snöplogen | [snoplog.md](snoplog.md) | 047 |
+| Stadsgranen | [stadsgran.md](stadsgran.md) | 047 |
+| Ryggsäcken | [ryggsack.md](ryggsack.md) | 047 |
 | Badbåten | [badbat.md](badbat.md) | 020 |
 | Bordet | [bordet.md](bordet.md) | 022 |
 | Sängen | [sangen.md](sangen.md) | 026, 027 |

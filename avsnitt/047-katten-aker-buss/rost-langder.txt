@@ -31,7 +31,7 @@
   '31-en-snoplog-den-skjuter': 3.69,   // -3.0 dB
   '32-skrap-skrap': 2.03,   // -3.0 dB
   '33-bussen-aker-igen-oj': 5.10,   // -3.0 dB
-  '34-titta-kritan-ritar': 2.34,   // -3.0 dB
+  '34-titta-katten-ritar': 2.03,   // -3.0 dB
   '35-ett-hjarta-till-farmor': 3.07,   // -3.0 dB
   '36-kan-du-ocksa-rita': 2.84,   // -3.0 dB
   '37-nu-ar-vi-i': 3.13,   // -3.0 dB

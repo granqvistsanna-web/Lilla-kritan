@@ -79,7 +79,7 @@ Kritan ritar **bussen** (Sanna 2026-11-20: *"intro rita en buss"*): konturen i l
 | 27 | Samma. Snöplogen poppar till och skjuter lite snö åt sidan | En snöplog! Den skjuter undan snön. | `pop`, snöplog-skrap (mjukt) |
 | 28 | Bild B. Katten tittar stort, glatt skutt på sätet | Skrap, skrap! | katt fniss |
 | 29 | Bild A. Landskapet glider igen. Fönstret immar sakta från kanterna | Bussen åker igen. Oj! Fönstret blev alldeles vitt. | buss-brum |
-| 30 | Samma. Kritan kommer in och ritar ett hjärta i imman. Genom hjärtat syns det klart | Titta! Kritan ritar. *(gisspaus 3 s)* Ett hjärta! Till farmor och farfar. | krita-ritar, `glitter` |
+| 30 | Samma. Katten ritar ett hjärta i imman med tassen (Sanna 2026-11-20). Genom hjärtat syns det klart | Titta! Katten ritar. *(gisspaus 3 s)* Ett hjärta! Till farmor och farfar. | krita-ritar, `glitter` |
 | 31 | Bild B. Katten tittar på hjärtat, stolt | Kan du också rita ett hjärta? Med fingret. *(paus 4 s)* | katt nyfiken |
 | 32 | Bild A, genom hjärtat. Hus och affärer med ljusslingor och stjärnor i fönstren glider förbi | Nu är vi i stan. Så många ljus! | buss-brum |
 | 33 | Bild A, genom hjärtat. Landskapet saktar in. En stor julgran med ljus på ett torg | Bussen stannar. Titta! Vad ser katten? *(paus 4 s)* | broms (mjukt), tyst |
@@ -142,7 +142,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [excited] En snöplog! Den skjuter undan snön.
 [playfully] Skrap, skrap!
 [surprised] Bussen åker igen. Oj! Fönstret blev alldeles vitt.
-[excited] Titta! Kritan ritar.
+[excited] Titta! Katten ritar.
 [delighted] Ett hjärta! Till farmor och farfar.
 [warmly] Kan du också rita ett hjärta? Med fingret.
 [delighted] Nu är vi i stan. Så många ljus!
