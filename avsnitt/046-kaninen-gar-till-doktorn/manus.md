@@ -1,6 +1,6 @@
 # Avsnitt 046 – Kaninen går till doktorn (plan)
 
-**Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, version 1. Nästa: grind 2 (doktorn, mottagningen, stetoskopet, öronlampan). Piloten för **Besöket** ([`format/besoket.md`](../../format/besoket.md)), en gren av bilderboken ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Avsnittet förbereder små barn för ett besök hos doktorn. Malin berättar och kaninen svarar med ljud, öron och ansikte. **Doktorn säger inget**, **ingen spruta**, **bara mottagningen** (Sanna 2026-11-20). Inget är byggt än. Ca 4 min.
+**Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, version 1. Grind 2: doktorn A och mottagningen v2 klara; **nästa: stetoskopet och öronlampan**, prompterna i [`saker-prompter.md`](saker-prompter.md) (förslag: doktorns hand i närbilderna ritas i kod med `armRita()`, inga hand-urklipp). Piloten för **Besöket** ([`format/besoket.md`](../../format/besoket.md)), en gren av bilderboken ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Avsnittet förbereder små barn för ett besök hos doktorn. Malin berättar och kaninen svarar med ljud, öron och ansikte. **Doktorn säger inget**, **ingen spruta**, **bara mottagningen** (Sanna 2026-11-20). Inget är byggt än. Ca 4 min.
 
 | | |
 |---|---|
