@@ -1434,7 +1434,7 @@
   "file": "produktion/youtube/shorts/jul/06-tittut-bjornen/06-tittut-bjornen-liten.mp4"
  },
  "J03": {
-  "status": "granska",
+  "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1120-1417.mp4",
   "duration": 234.2,
   "rendered": "2026-11-20 14:17 (runda 8: båda tassarna på nallen i kramen (2:29); förhandsvisning (--snabb))",
@@ -1573,7 +1573,7 @@
   "duration": 272.8,
   "rendered": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))",
   "file": "produktion/youtube/shorts/jul/16-grisen-matar-faglarna/16-grisen-matar-faglarna.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Lucka 16: Grisen matar fåglarna"
  },
  "J17": {
@@ -1581,7 +1581,7 @@
   "duration": 226.9,
   "rendered": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)",
   "file": "avsnitt/042-hunden-gar-pa-pottan/scener/badrummet/badrummet.mp4",
-  "status": "granska",
+  "status": "klar",
   "name": "Lucka 17: Hunden går på pottan"
  }
 }
