@@ -1,0 +1,39 @@
+1
+00:00:00,400 --> 00:00:03,900
+En och två och en och två och hopp!
+
+2
+00:00:04,300 --> 00:00:07,100
+Du och jag, du och jag
+
+3
+00:00:07,200 --> 00:00:09,400
+Vi städar, vi städar
+
+4
+00:00:09,500 --> 00:00:13,200
+Hjälps vi åt och hjälps vi åt och hopp!
+
+5
+00:00:13,500 --> 00:00:16,400
+Snart är det klart, snart är det klart
+
+6
+00:00:16,500 --> 00:00:20,000
+Lite till, en sak till
+
+7
+00:00:20,100 --> 00:00:23,600
+Och en sak till och hopp!
+
+8
+00:00:39,300 --> 00:00:42,300
+Nu är det alldeles städat!
+
+9
+00:00:42,800 --> 00:00:44,500
+Hurra, bra jobbat!
+
+10
+00:00:45,300 --> 00:00:46,800
+Hejdå!
