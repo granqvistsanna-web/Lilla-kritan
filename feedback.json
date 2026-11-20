@@ -6872,9 +6872,10 @@
   "sec": 133,
   "tags": [],
   "note": "2.09 add reaction to vet inte and sound like vet inte hmm. and lower music a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795185991479,
-  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)"
+  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)",
+  "fixedAt": 1795187103681
  },
  "p4xea1tyq7mwp3evtu": {
   "ep": "J15",
@@ -6882,9 +6883,10 @@
   "sec": 142,
   "tags": [],
   "note": "another xmas tune",
-  "fixed": false,
+  "fixed": true,
   "at": 1795186032546,
-  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)"
+  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)",
+  "fixedAt": 1795187103681
  },
  "0o8yvf1ixumwp3fcj8": {
   "ep": "J15",
@@ -6892,9 +6894,10 @@
   "sec": 187,
   "tags": [],
   "note": "lamm missing from this scene",
-  "fixed": false,
+  "fixed": true,
   "at": 1795186054196,
-  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)"
+  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)",
+  "fixedAt": 1795187103681
  },
  "otqqldl1aymwp3fqcg": {
   "ep": "J15",
@@ -6902,8 +6905,9 @@
   "sec": 206,
   "tags": [],
   "note": "improve animation holding plåt",
-  "fixed": false,
+  "fixed": true,
   "at": 1795186072096,
-  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)"
+  "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)",
+  "fixedAt": 1795187103681
  }
 }
