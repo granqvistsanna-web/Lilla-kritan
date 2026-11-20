@@ -102,6 +102,10 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Badankan | [badanka.md](badanka.md) | 020 |
 | Tvålen | [tval.md](tval.md) | 020 |
 | Pallen | [pall.md](pall.md) | 020, 022 |
+| Bussen | [buss.md](buss.md) | 047 |
+| Snöplogen | [snoplog.md](snoplog.md) | 047 |
+| Stadsgranen | [stadsgran.md](stadsgran.md) | 047 |
+| Ryggsäcken | [ryggsack.md](ryggsack.md) | 047 |
 | Badbåten | [badbat.md](badbat.md) | 020 |
 | Bordet | [bordet.md](bordet.md) | 022 |
 | Sängen | [sangen.md](sangen.md) | 026, 027 |
@@ -180,6 +184,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Duvan | [duva.md](duva.md) | Kritans ABC: D |
 | Dörren (ABC) | [dorr-abc.md](dorr-abc.md) | Kritans ABC: D |
 | Ekollonet | [ekollon.md](ekollon.md) | Kritans ABC: E |
+| Ekorren (ABC) | [ekorre-abc.md](ekorre-abc.md) | Kritans ABC: E (provet av recept 3) |
+| Katten (ABC) | [katt-abc.md](katt-abc.md) | Kritans ABC: E (provet av recept 3) |
 | Enhörningen | [enhorning.md](enhorning.md) | Kritans ABC: E |
 | Eken | [ek.md](ek.md) | Kritans ABC: E |
 | Emun | [emu.md](emu.md) | Kritans ABC: E |
@@ -203,3 +209,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Ringklockan | [ringklocka.md](ringklocka.md) | 045 |
 | Grytlapparna | [grytlappar.md](grytlappar.md) | 045 |
 | Toarullen | [toarulle.md](toarulle.md) | 042 |
+| Stetoskopet | [stetoskop.md](stetoskop.md) | 046 |
+| Öronlampan | [oronlampa.md](oronlampa.md) | 046 |

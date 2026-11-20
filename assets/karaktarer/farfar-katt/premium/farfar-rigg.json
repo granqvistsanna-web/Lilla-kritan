@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/farfar-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/farfar-arm-l.png",
+      "vridpunkt": [
+        206,
+        572
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/farfar-ear-l.png",
+      "vridpunkt": [
+        335,
+        260
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/farfar-leg-l.png",
+      "vridpunkt": [
+        433,
+        838
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/farfar-leg-r.png",
+      "vridpunkt": [
+        602,
+        834
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/farfar-ear-r.png",
+      "vridpunkt": [
+        679,
+        261
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/farfar-arm-r.png",
+      "vridpunkt": [
+        813,
+        575
+      ]
+    },
+    "tail": {
+      "fil": "cut/farfar-tail.png",
+      "vridpunkt": [
+        758,
+        730
+      ]
+    }
+  }
+}

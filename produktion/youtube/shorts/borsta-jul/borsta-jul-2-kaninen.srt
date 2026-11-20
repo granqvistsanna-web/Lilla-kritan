@@ -1,0 +1,43 @@
+1
+00:00:00,200 --> 00:00:03,250
+Här kommer kaninen! (Hej, kaninen!)
+
+2
+00:00:03,300 --> 00:00:05,550
+Gapa stort! (Gapa stort!)
+
+3
+00:00:09,100 --> 00:00:12,450
+Borsta, borsta tänderna! (Borsta, borsta!)
+
+4
+00:00:13,500 --> 00:00:15,250
+Borsta uppe! (Borsta uppe!)
+
+5
+00:00:15,300 --> 00:00:17,050
+Borsta nere! (Borsta nere!)
+
+6
+00:00:17,100 --> 00:00:19,450
+Rena tänder! (Hurra!)
+
+7
+00:00:19,500 --> 00:00:21,500
+En gång till! (En gång till!)
+
+8
+00:00:21,900 --> 00:00:25,250
+Borsta, borsta tänderna! (Borsta, borsta!)
+
+9
+00:00:25,500 --> 00:00:27,350
+Borsta uppe! (Borsta uppe!)
+
+10
+00:00:27,400 --> 00:00:29,150
+Borsta nere! (Borsta nere!)
+
+11
+00:00:29,200 --> 00:00:31,300
+Rena tänder! (Hurra!)

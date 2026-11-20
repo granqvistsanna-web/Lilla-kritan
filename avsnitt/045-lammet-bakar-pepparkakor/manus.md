@@ -208,3 +208,39 @@ Hela familjen finns från 024: `ba-gullig-1` … `8` med en b-tagning per känsl
 3. **"Först stjärnan."** och den gamla andra halvan (kritan ritar plåten, väntar, pling) är borttagna: de dubblerade din nya väntan med klockan.
 4. **Lammkakan och bunken** behövs inte längre, så de görs inte i grind 2.
 5. **Lammets storlek** bakom bordet: prov innan animatiken med samma skala som 024, så att degen, formarna och plåten får plats bredvid.
+
+## Feedback 2026-11-20 (lucka 15, runda 1)
+
+- **0:42 julmusik som bjällror:** marimbabädden byttes mot karolen *Up on the Housetop* (instrumental, slingan från 039/042), 0,15 i stället för 0,11. Ingen ny musik.
+- **1:22 mjukare:** rad 6 börjar där rad 5 slutar (samma kamera, tassen lyfts mjukt från degen), tassen sänks och ansiktet glider till nyfiken före rad 7.
+- **1:30 lägre bää:** alla bää 0,85 → 0,6 (−3 dB).
+- **3:18 lammet går till ugnen:** rad 16 (6,8 s): lammet lyfter plåten med båda tassarna, går ut till höger och kommer tillbaka utan den, *"Sådär!"* när det är borta vid ugnen. Rad 29 (6,6 s): lammet går med grytvantarna, bär tillbaka den varma plåten och ställer den på bordet på *"sådär!"*. Replik 22 och 39 delas i två (`[n, tid, ss, längd]` i rader.mjs). Filmen blev 5,8 s längre.
+
+## Feedback 2026-11-20 (lucka 15, runda 2)
+
+- **0:35 lägre musik:** karolen 0,15 → 0,12 (−2 dB).
+- **2:03 lugnare gång, 2:05 bättre gång:** gångcykeln följer tiden i stället för sträckan (ett steg var 0,46 s; förut 3–7 steg/s), med ett tass-ljud per steg medan lammet syns (`stegLjud` i rader.mjs, `STEGF` i index.html, samma i rad 1). Rad 16 går 3,3 s åt varje håll (6,8 → 9,2 s, *"Sådär!"* vid 4,7), rad 29 går 3,0 s (6,6 → 8,8 s, *"sådär!"* vid 7,95).
+- **2:05 ingen överlapp med grytvantarna:** vantarna och snöret på väggen ritas i ett eget lager bakom lammet (`vagg`), så lammet går framför dem.
+- **2:19 mjukare klipp:** varje rad börjar i den pose och det ansikte lammet hade när förra raden slutade och glider över till radens egen på 0,45 s (`BLEND` i rita/lamm).
+- **3:23 klockan framför:** klockan ritas överst (`klockan`-lagret), framför tassarna, vantarna och plåten.
+- **3:31 lammet blåser:** rad 31: lammet blåser med barnet, en pust per ångstreck: andas in, rund mun, lutar mot plåten, ljusblå pustar till kakan.
+- **3:35 degen tar slut:** degen krymper för varje kaka som lyfts ur den och är slut efter hjärtat.
+
+## Rörelse-QA 2026-11-20 (Claude, efter runda 2)
+
+Bildskillnad per bildruta över hela filmen (ryck inne i en bild, inte vid klipp) och kontaktark varannan sekund. Fixat:
+- **Ritintrot:** kritans kontur, prickar och ansikte försvann på en bildruta när gubben fylldes i; nu tonas de ut. Ögonen växer fram i stället för att poppa.
+- **Rad 25:** doftstrecken gick över ögonen; nu slutar de vid kinden/nosen.
+- **Rad 27c:** lammet försvann när kameran klippte till klockan, fast det står i bild; nu står det kvar och tittar mot klockan.
+- **Rad 27d:** halva lammet var utanför bild; nu syns ansiktet, klockan och vantarna.
+- **Rad 33:** vantarna tonades över till ett stort spöke och flög tvärs över ansiktet under tuggan; nu försvinner de från tassarna med en gnista och dyker upp på kroken.
+
+Kollat utan anmärkning: gången (rad 1, 16, 29), tassen över degen (3d, 5, 6), kakorna som flyger till plåten, blåsningen, klockan framför, kritirisen.
+
+## Feedback 2026-11-20 (lucka 15, runda 3)
+
+- **2:13 reaktion på "Vet du inte?":** rad 18 är 1,0 s längre. Lammet rycker på axlarna på *"meh-meh?"* (`ba-gullig-7b`, armarna ut, öronen ner) och funderar sedan på ett långt *"mmmeh"* (`ba-gullig-4b`) med ansiktet `tanker`, huvudet på sned och en liten vagga.
+- **2:13 lägre musik:** 0,12 → 0,10 (−1,6 dB).
+- **2:22 en annan julmelodi:** när kritan ritar klockan (rad 21a) tonas *Up on the Housetop* över till *Pynta salen* (`karol-pynta-salen-slinga`, instrumental, från lucka 2). Ingen ny musik.
+- **3:07 lammet saknades:** fixat i rörelse-QA:n (rad 27c, lammet står kvar när kameran går till klockan).
+- **3:26 plåten i tassarna:** rad 29: plåten hänger lägre i tassarna så att kakorna syns mellan vantarna, lammet går fram till plåtens plats, sänker tassarna med plåten tills den står på bordet (7,0–7,55, tass-ljud när den landar), släpper (7,55–8,05) och kliver tillbaka (8,0–8,75). Ångan syns först när plåten står, inte över ansiktet medan lammet bär.

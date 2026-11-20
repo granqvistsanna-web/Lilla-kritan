@@ -12,8 +12,8 @@
 12-fick-ingenting  [gently] Oj då. Den lilla fågeln fick ingenting.
 13-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
 14-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
-15-en-julkarve  [happy] En julkärve! Varsågod, fåglarna.
-16-full-med-korn  [warmly] Full med korn till fåglarna.
+15-en-julkarve  [happy] En julkärve! Varsågod!
+16-hela-vintern  [warmly] Full med korn. Den kan fåglarna äta på hela vintern.
 17-ska-vi-saga-tack  [warmly] Ska vi säga tack?
 18-tack  [happy] Tack!
 19-en-tva-tre-faglar  [cheerfully] En fågel … två fåglar … tre fåglar!
@@ -31,7 +31,7 @@
 31-skaka-pick-2  [happy] Skaka, skaka … pick!
 32-kommer-inte  [curious] Oj, den lilla fågeln kommer inte. Grisen vet inte var den är.
 33-kan-du-hjalpa  [warmly] Kan du hjälpa grisen? Kan du se var den lilla fågeln är?
-34-ja-dar  [excited] Ja, där! I granen!
+34-i-fagelholken  [excited] Ja! Där är den lilla blå fågeln! [warmly] I fågelholken. Där bor fåglarna.
 35-skaka-pick-3  [happy] Skaka, skaka … pick!
 36-alla-ater  [warmly] Nu äter alla fåglarna. Mums!
 37-mer-sno  [surprised] Oj, mer snö!

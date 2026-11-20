@@ -16,6 +16,8 @@
   const AXEL = [360, 190], VILA = 130;           // vingens rot på ryggen och vinkeln i vila (bakåt ner mot stjärten)
   const ease = u => u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u);
   const HINGE = [700, 182];                        // näbbens fäste
+  // ögat: i höjd med näbbens överkant (Sanna 2026-11-20, J16 0:49 "birds eyes have too low position": förut 632, 237, under näbben)
+  const OGA = window.FAGEL_OGA = [624, 168];
   const rot = ([x, y], v, [cx, cy] = HINGE) => { const a = v * Math.PI / 180, dx = x - cx, dy = y - cy;
     return [cx + dx * Math.cos(a) - dy * Math.sin(a), cy + dx * Math.sin(a) + dy * Math.cos(a)]; };
   const pts = p => p.map(q => q.map(n => n.toFixed(1)).join(' ')).join(' L');
@@ -61,5 +63,5 @@
   // kroppen utan näbb och ben (fagel-kropp-*-kod.png, gjord ur urklippet: bara de färgade pixlarna, ny vit kant); näbben och benen i kod
   window.fagelSvg = (f, { t = 0, flax = 0, oppen = 0, blink = 0, ben = flax, href = `/assets/rekvisita/smafaglar/cut/fagel-kropp-${f}-kod.png` } = {}) =>
     `<g>${benen(ben)}<image href="${href}" width="800" height="689"/>${vinge(f, t, flax)}${nabb(oppen)}
-      <ellipse cx="632" cy="237" rx="22" ry="${(22 * (1 - 0.88 * blink)).toFixed(1)}" fill="#2B2321"/>${blink < 0.5 ? '<circle cx="626" cy="230" r="6.5" fill="#fff"/>' : ''}</g>`;
+      <ellipse cx="${OGA[0]}" cy="${OGA[1]}" rx="24" ry="${(24 * (1 - 0.88 * blink)).toFixed(1)}" fill="#2B2321"/>${blink < 0.5 ? `<circle cx="${OGA[0] - 7}" cy="${OGA[1] - 8}" r="7" fill="#fff"/>` : ''}</g>`;
 })();

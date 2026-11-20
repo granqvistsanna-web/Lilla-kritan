@@ -48,6 +48,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `tuff-tuff` | 4 | 10 s | traktorn långt bort |
 | `propeller` | 4 | 5 s | flygplanet |
 | `mistlur` | 5 | 1–3 s (filen 4 s) | båtens tut i 006: `tuta-tut` en kvart lägre och mjukare (lowpass 3 kHz) |
+| `buss/` (047) | 3 + 3 + 3 + 3 + 3 + 3 + 3 + 2 | 0,4–41 s | bussens brum (loopbart), broms, dörr-pschhh, kortläsarpip, blinkers-tick, snöplogens skrap, brodunk och stoppknappens pling i `buss/<ljud>-1..3.m4a`, rekommenderad utan siffra. Provlyssna, källor och licenser i [`buss/README.md`](buss/README.md). Openverse 2026-11-20, CC0 utom blinkers-tick-3 (CC BY). Ännu ej lyssnade och valda |
 
 ## Natur och väder
 

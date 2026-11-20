@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Doktorns saker (046)</title>
+<!-- Provark: stetoskopet och öronlampan ritade i kod (doktorssaker.js), mot mottagningens väggfärg, med kant.js-kanten.
+     Överst sakerna själva, ?narbild=stetoskop / ?narbild=lampa = närbilden med handen (rad 11 och 16 i 046): ärm, hand och sak glider in från höger. -->
+<style>html,body{margin:0;background:#1da6e6}svg{display:block;width:100vw;height:56.25vw}</style>
+<svg id="s" viewBox="0 0 1920 1080">
+  <defs><pattern id="rock" patternUnits="userSpaceOnUse" width="128" height="128"><image href="../../karaktarer/doktorn-a/premium/cut/doktorn-a-rock-tile.png" width="128" height="128"/></pattern></defs>
+  <rect width="1920" height="1080" fill="#1da6e6"/>
+  <rect y="800" width="1920" height="280" fill="#dfe3e8"/><rect y="790" width="1920" height="16" fill="#f7f7f5"/>
+  <g id="saker"></g>
+</svg>
+<script src="doktorssaker.js"></script>
+<script src="../../../verktyg/kant.js"></script>
+<script>
+document.querySelector('defs').insertAdjacentHTML('beforeend', DS.defs);
+const g = document.getElementById('saker');
+const ROCKKANT = '#cfc8bc', HUD = '#f7ba99', HUDKANT = '#e3a07f';
+// Närbildens hand: en rak underarm i rockens egen kritstruktur från bildkanten och en rund hand (som riggens armRita, större).
+const hand = (x, y, v, L = 700) => `<g transform="translate(${x} ${y}) rotate(${v})">
+  <path d="M60 0 L${L} 0" stroke="${ROCKKANT}" stroke-width="128" stroke-linecap="round"/>
+  <path d="M60 0 L${L} 0" stroke="url(#rock)" stroke-width="120" stroke-linecap="round"/>
+  <path d="M88 -57 L88 57" stroke="${ROCKKANT}" stroke-width="6"/>
+  <circle cx="0" cy="0" r="66" fill="${HUD}" stroke="${HUDKANT}" stroke-width="5"/></g>`;
+const narbild = q => new URLSearchParams(location.search).get('narbild') === q;
+window.render = t => {
+  const ljus = Math.max(0, Math.min(1, (t - 1) / 0.4));
+  if (narbild('stetoskop')) {   // rad 11: handen med bröststycket glider in från höger
+    g.innerHTML = `<g class="sak"><g transform="translate(1010 800) scale(1.6)">${hand(0, 0, -24)}</g>
+      <g transform="translate(900 520) scale(1.7)">${DS.stetoskop({ led: [0, -120], bit: [40, 150], slak: -80 })}</g></g>`;
+  } else if (narbild('lampa')) {  // rad 16: handen med öronlampan, ljuset tänds
+    g.innerHTML = `<g class="sak"><g transform="translate(860 560) scale(2.2)">${DS.oronlampa({ ljus })}</g>
+      <g transform="translate(862 630) scale(1.6)">${hand(0, 0, -20)}</g></g>`;
+  } else {
+    g.innerHTML = `
+    <g class="sak">${DS.stetoskop({ led: [360, 360], bit: [440, 640], slak: -70 })}</g>
+    <g class="sak">${DS.oronlampa({ x: 860, y: 520, ljus: 0 })}</g>
+    <g class="sak">${DS.oronlampa({ x: 1180, y: 520, ljus: 1 })}</g>
+    <g class="sak">${DS.brostbit(1560, 420, 0)}</g>`;
+  }
+  g.querySelectorAll('.sak').forEach(s => kant.lagg(s, { andel: 0.01 }));
+};
+render(2);
+</script>

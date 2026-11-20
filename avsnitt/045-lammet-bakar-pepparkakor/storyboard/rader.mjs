@@ -18,6 +18,12 @@ const RITA = n => `krita-ritar/krita-ritar-${n}`, GLITTER = 'glitter/glitter-1',
 const TRYCK = 'sno-duns/sno-duns-1', KLADD = 'deg-kladd/deg-kladd-1', TICK = 'tick/tick-1', RING = 'ringklocka/ringklocka-1';
 const TASS = n => `tass/tass-${n}`, KNASTER = 'knaster/knaster-1', MUMS = 'mums/mums-5';
 const G = 0.9;   // glest tempo: extra luft på varje rad med en replik (receptets GLES, 044 hade 1,1)
+// Sanna 20/11 runda 2 (2:05, "better rig walk"): gångcykeln följer tiden, inte sträckan (0,9 × riggens 1,2 Hz = ett steg var 0,46 s).
+// Ett tass-ljud på varje steg medan lammet syns. Samma STEGF som i scener/julkoket/index.html.
+const STEGF = 0.9, mj = k => (k = Math.max(0, Math.min(1, k)), k * k * (3 - 2 * k));
+const stegLjud = (a, b, x0, x1) => { const ut = [];
+  for (let k = 0, t; (t = a + (0.5 + k) / (2.4 * STEGF)) < b - 0.1; k++) { const x = x0 + (x1 - x0) * mj((t - a) / (b - a)); if (x > -150 && x < 2000) ut.push([TASS(k % 4 + 1), +t.toFixed(2)]); }
+  return ut; };
 const ticka = (fran, till, steg = 1.0) => Array.from({ length: Math.max(0, Math.floor((till - fran) / steg)) }, (_, i) => [TICK, fran + i * steg]);
 
 export const RADER = [
@@ -32,7 +38,7 @@ export const RADER = [
     bild: 'Pepparkaksgubben fylls i inifrån. Zoom in i papperet, in i julköket: bordet med degen, formarna, plåten och grytlapparna', ljudtext: '`glitter`', ansikte: '–' },
 
   // --- Julköket: vad ska du göra? ---
-  { id: '1', d: 4.0 + L(4) + G + 1.0, plats: 'Julköket, helbild', malin: [[4, 4.0]], ljud: [[TASS(1), 0.6], [TASS(2), 1.4], [TASS(3), 2.2], [TASS(4), 3.0], [B(1), 4.3 + L(4)]],
+  { id: '1', d: 4.0 + L(4) + G + 1.0, plats: 'Julköket, helbild', malin: [[4, 4.0]], ljud: [...stegLjud(0.3, 3.6, -260, 900), [B(1), 4.3 + L(4)]],
     bild: 'Snön faller i fönstret. Lammet trippar in från vänster, ställer sig bakom bordet och vinkar (armen bakom kroppen)', ljudtext: 'tassar, bä hej (1)', ansikte: 'jätteglad' },
   { id: '2', d: 0.3 + L(5) + G + 1.4, plats: 'Halvbild', malin: [[5, 0.3]], ljud: [[B(7), 0.6 + L(5)]],
     bild: 'Lammet tittar ner på degen och upp igen och svarar med ett pratande bä', ljudtext: 'bä pratar (7)', ansikte: 'nyfiken → glad' },
@@ -81,12 +87,18 @@ export const RADER = [
     bild: 'Plåten med fyra råa kakor (tre stjärnor, ett hjärta) som står upp som små klistermärken', ljudtext: 'bä ja (1)', ansikte: '–' },
   { id: '15', d: 0.7 + L(21) + G, plats: 'Halvbild', malin: [[21, 0.7]],
     bild: 'Glatt skutt. Malin efter skuttet', ljudtext: '–', ansikte: 'jätteglad' },
-  { id: '16', d: 1.2 + L(22) + G, plats: 'Halvbild', malin: [[22, 1.2]],
-    bild: 'Plåten glider lugnt ut till höger, ur bild (in i ugnen, som aldrig syns). Lammet tittar efter den', ljudtext: '–', ansikte: 'nyfiken' },
+  // Sanna 20/11 (3:18): lammet går själv bort med plåten till ugnen och hämtar den, plåten flyger inte. Repliken delas i två:
+  // [n, tid, ss, längd]: "Ska de in i ugnen?" före, "Sådär!" när lammet är borta vid ugnen (utanför bild).
+  // Runda 2 (2:03, "slower walk"): gången 2,0 → 3,3 s åt varje håll, raden 6,8 → 9,2 s
+  { id: '16', d: 9.2, plats: 'Halvbild → helbild → halvbild', malin: [[22, 0.3, 0, 1.1], [22, 4.7, 1.2]],
+    ljud: [...stegLjud(1.1, 4.4, 900, 2250), ...stegLjud(5.4, 8.7, 2250, 900)],
+    bild: 'Lammet lyfter plåten med båda tassarna och går med den ut till höger (till ugnen, som aldrig syns). Sådär! Lammet kommer tillbaka utan plåten', ljudtext: 'tassar', ansikte: 'glad' },
   { id: '17', d: 0.3 + L(23) + G, plats: 'Halvbild', malin: [[23, 0.3]],
     bild: 'Lammet tittar på oss', ljudtext: '–', ansikte: 'nyfiken' },
-  { id: '18', d: 0.6 + L(24) + G + 1.2, plats: 'Halvbild', malin: [[24, 0.6]], ljud: [[B('7b'), 0.8 + L(24)]],
-    bild: 'Lammet tittar åt vänster och höger, öronen faller', ljudtext: 'frågande (7b)', ansikte: 'nyfiken → osäker' },
+  // Sanna 20/11 runda 3 (2:13, "add reaction to vet inte and sound like vet inte hmm"): lammet rycker på axlarna på "meh-meh?" och
+  // funderar "mmmeh" med huvudet på sned och blicken uppåt; raden 1,0 s längre
+  { id: '18', d: 0.6 + L(24) + G + 2.2, plats: 'Halvbild', malin: [[24, 0.6]], ljud: [[B('7b'), 0.8 + L(24)], [B('4b'), 2.05 + L(24)]],
+    bild: 'Lammet rycker på axlarna (vet inte), lägger huvudet på sned och funderar med blicken uppåt, öronen faller', ljudtext: 'frågande (7b), funderande mmmeh (4b)', ansikte: 'nyfiken → osäker → funderar' },
   { id: '19', d: 0.3 + L(25) + G + 1.2, plats: 'Halvbild', malin: [[25, 0.3]], ljud: [[B('6b'), 0.5 + L(25)]],
     bild: 'Lammet skakar lite på huvudet (lutar ±6° två gånger)', ljudtext: 'trumpen (6b)', ansikte: 'trumpen' },
   { id: '20', d: 0.3 + L(26) + G, plats: 'Halvbild', malin: [[26, 0.3]],
@@ -121,8 +133,11 @@ export const RADER = [
     bild: 'Kanten skimrar tydligt, grytlapparna glider fram bakom klockan', ljudtext: '`tindra`, förtjust (2)', ansikte: 'jätteglad' },
   { id: '28', d: 0.8 + L(56) + G, plats: 'Närbild: tassarna', malin: [[56, 0.8]], ljud: [[TASS(6), 0.7]],
     bild: 'Grytlapparna glider upp från bordet och sätter sig på tasspetsarna på *"på!"*', ljudtext: '`tass` lågt', ansikte: '–' },
-  { id: '29', d: 0.9 + L(39) + G, plats: 'Närbild: bordets högra kant → halvbild', malin: [[39, 0.9]],
-    bild: 'Plåten glider in från höger med en grytlapp i varje hörn. Klipp: plåten på bordet med bruna glansiga kakor och tre ångstreck, grytlapparna på lammets tassar', ljudtext: '–', ansikte: 'glad' },
+  // Sanna 20/11 (3:18): lammet går med grytvantarna till ugnen och bär tillbaka plåten. "Ta ut kakorna …" när lammet går, "sådär!" när plåten står på bordet.
+  // Runda 2: samma lugnare gång, 3,0 s åt varje håll, raden 6,6 → 8,8 s
+  { id: '29', d: 8.8, plats: 'Helbild', malin: [[39, 0.4, 0, 1.05], [39, 7.95, 1.1]],
+    ljud: [...stegLjud(0.6, 3.6, 900, 2250), ...stegLjud(4.2, 7.0, 2250, 1062), [TASS(5), 7.55], ...stegLjud(8.0, 8.75, 1062, 900)],   // runda 3: går fram till plåtens plats, ställer ner den, kliver tillbaka
+    bild: 'Lammet går med grytvantarna ut till höger och kommer tillbaka med den varma plåten: bruna glansiga kakor och tre ångstreck. Plåten ställs på bordet', ljudtext: 'tassar', ansikte: 'glad' },
 
   // --- Varma, blåsa, mums ---
   { id: '30', d: 0.4 + L(40) + G, plats: 'Närbild: kakorna', malin: [[40, 0.4]],
