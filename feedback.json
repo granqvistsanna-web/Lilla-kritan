@@ -6553,9 +6553,10 @@
   "sec": 21,
   "tags": [],
   "note": "plish animations and make sure they dont jump",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165299889,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795167705447
  },
  "veh4gdln57mwor2t0j": {
   "ep": "J16",
@@ -6563,9 +6564,10 @@
   "sec": 27,
   "tags": [],
   "note": "add eye to bird drawing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165313635,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795167705447
  },
  "4nkd5dd6ukmwor3muv": {
   "ep": "J16",
@@ -6583,9 +6585,10 @@
   "sec": 53,
   "tags": [],
   "note": "more closeup on bird in fågeljolk.",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165380453,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795167705447
  },
  "5ltn6r8ycnmwor4bga": {
   "ep": "J16",
@@ -6593,9 +6596,10 @@
   "sec": 53,
   "tags": [],
   "note": "a bit slower pace",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165384186,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795167705447
  },
  "250g676803mwor5apa": {
   "ep": "J16",
@@ -6603,9 +6607,10 @@
   "sec": 91,
   "tags": [],
   "note": "add low xmas music soundtrack",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165429870,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795167705447
  },
  "0qehfyv2nemwor5hts": {
   "ep": "J16",
@@ -6613,8 +6618,9 @@
   "sec": 94,
   "tags": [],
   "note": "add julkal intro and outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165439104,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795167705447
  }
 }
