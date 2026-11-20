@@ -154,20 +154,18 @@ Ljud: slide_whistle_down_slow_01 by joedeshon (freesound.org), CC BY 4.0
 
 ## Lucka 8 – 8 dec 05:00
 
-Fil: `08-hunden-snogubbe/08-hunden-snogubbe.mp4` (3:17)
+Fil: `08-katten-snogubbe/08-katten-snogubbe.mp4` (4:35), 044 Katten gör en snögubbe (bilderbok). Miniatyr: `08-katten-snogubbe/thumbnail/miniatyr-strimma.png`. Ersätter den gamla `08-hunden-snogubbe` (Sanna 2026-11-19).
 
 ```
-Lucka 8 ⛄ Hunden bygger en snögubbe | Lilla Kritans julkalender
+Lucka 8 ⛄ Katten gör en snögubbe | Lilla Kritans julkalender
 ```
 
 ```
-Hunden bygger i snön: en boll, en boll till och en till. En snögubbe! Hunden nosar på moroten – aaa … atjo! – och nosen flyger iväg. Var är nosen? Leoparden kommer och klättrar. Kan du peka på moroten? Nu är snögubben glad igen.
+Katten vill bygga en snögubbe! Först en stor snöboll, sedan en boll till och en liten boll överst. Stenar i snön blir två ögon, en glad mun och knappar. Kritan ritar en morot, men oj, den hamnar på magen! Upp på näsan med den. Nu fattas bara armarna: kan du hjälpa katten att hitta kvistarna i snön? Till sist kommer en liten fågel, och kritan ritar en påse frön. Kan du säga pip?
 
-Leta efter moroten och vinka till snögubben.
+Rulla, leta och vinka hej då till snögubben.
 
 [SLUT]
-
-Ljud: Cotton Thud by rainial.co (freesound.org), CC BY 4.0
 
 #julkalender #snögubbe #lillakritan
 ```
