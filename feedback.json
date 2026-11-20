@@ -6575,9 +6575,10 @@
   "sec": 38,
   "tags": [],
   "note": "i want new pig sounds more cute also consider other anima sounds for like oo aa",
-  "fixed": false,
+  "fixed": true,
   "at": 1795165352311,
-  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)"
+  "render": "2026-11-20 09:51 (nytt grisljud vid påsen (0:35 i luckan): noff-titta, riktiga grymt uppväxlade)",
+  "fixedAt": 1795168625631
  },
  "82ujrkpxdrmwor48kl": {
   "ep": "J16",
