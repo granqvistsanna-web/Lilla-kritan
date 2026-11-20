@@ -48,3 +48,34 @@ Edit Image 1. Keep the doctor EXACTLY the same: same blank face, hair, ears, nec
 2. Stetoskopets bröstdel klipps loss med en kort slangstump (`cut/stetoskop-brostdel.png`), och slangens färg mäts för kodkurvan.
 3. `rekvisita/stetoskop.md` och `rekvisita/oronlampa.md` i samma form som `rekvisita/handfatet.md`, och raderna i `rekvisita/README.md`. `python3 verktyg/prompt.py --lista` ska gå igenom.
 4. Ett instick-prov: kodhanden med bröstdelen och med lampan, mot kaninens mage och öra, så att Sanna kan se storleken innan grind 3.
+
+## Nytt gosedjur (Sanna 2026-11-20: "a new teddy animal that's yellow or pink, maybe a leo small")
+
+Bild 1 = `assets/rekvisita/nalle/cut/nalle-v2-ljus-tunn.png` (stil, form och storlek, inte färgen). Inget ansikte i bilden: ansiktet ritas i kod som nallen v2. Google Flow, Nano Banana Pro, 1:1, 4 tagningar per alternativ, i `assets/rekvisita/<sak>/original/`.
+
+**Obs:** blir det en leopard säger Malin *"nallen"* i ca 16 repliker. Då måste de spelas in igen (*"leoparden"*, eller *"gosedjuret"*). En rosa eller gul **nalle** behåller alla repliker.
+
+**A – rosa nalle**
+
+```prompt
+Image 1 is the STYLE and SHAPE reference: copy its drawing technique exactly (soft wax crayon with fine visible strokes, flat colour, a thick clean even white sticker border, no dark outline, no 3D shading), its sitting pose seen from the front, its proportions and its size in the frame. Draw the SAME soft toy teddy bear, ONLY change its colours: the body, head, arms and legs in a soft warm candy pink (#F29BB5) with slightly darker pink crayon strokes, the round tummy patch, the inner ears and the foot pads in light cream (#FBEBD8). No face at all: no eyes, no nose, no mouth, no snout patch. Plain pure white background, no shadow, no text.
+```
+
+**B – gul nalle**
+
+```prompt
+Image 1 is the STYLE and SHAPE reference: copy its drawing technique exactly (soft wax crayon with fine visible strokes, flat colour, a thick clean even white sticker border, no dark outline, no 3D shading), its sitting pose seen from the front, its proportions and its size in the frame. Draw the SAME soft toy teddy bear, ONLY change its colours: the body, head, arms and legs in a warm sunny butter yellow (#F6C945) with slightly darker golden crayon strokes, the round tummy patch, the inner ears and the foot pads in light cream (#FBEBD8). No face at all: no eyes, no nose, no mouth, no snout patch. Plain pure white background, no shadow, no text.
+```
+
+**C – liten gosedjursleopard**
+
+```prompt
+Image 1 is the STYLE and SHAPE reference: copy its drawing technique exactly (soft wax crayon with fine visible strokes, flat colour, a thick clean even white sticker border, no dark outline, no 3D shading), its chunky sitting pose seen from the front, its soft rounded toy proportions and its size in the frame. Draw a small soft toy LEOPARD instead of a bear, sitting the same way: a round head with two small round ears, a chunky body, short stubby arms and legs, a short thick tail curling around one foot. Warm golden yellow (#F2C14E) with a few simple, widely spaced, soft brown spots (#8A5A2B) drawn as small open rings, the tummy patch, inner ears and foot pads light cream (#FBEBD8). Cute, plush and soft, not realistic, no claws, no teeth. No face at all: no eyes, no nose, no mouth, no snout patch. Plain pure white background, no shadow, no text.
+```
+
+## Hjärtslag (ElevenLabs Sound Effects)
+
+```prompt
+Two soft, gentle, slow heartbeats heard through a doctor's stethoscope, warm and muffled lub-dub, lub-dub, calm and cozy, low volume, for a toddler cartoon, not scary, no music, no voice.
+```
+Längd 2 s, prompt influence ca 0,4. 4 tagningar, filerna i `assets/ljud/effekter/hjartslag/hjartslag-1…4.m4a`.
