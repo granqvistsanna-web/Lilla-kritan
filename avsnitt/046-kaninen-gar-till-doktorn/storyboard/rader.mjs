@@ -4,7 +4,7 @@
 // .m4a, sekunder in i raden]]. Längderna ur ../rost-langder.txt (tagning 1 delad 2026-11-20, replik 49 egen tagning).
 // Sannas val 2026-11-20: kritan ritar stetoskopet (rad 11a–11b, replik 10 återanvänds + 49), rad 35 behålls, hjärtslagen = `dunk`,
 // kaninens gap = bara Malins "aaa". Replik 16 används inte. Gosedjuret är en liten leopard (Sanna 2026-11-20): repliker
-// 50–60 ersätter 11, 14, 17, 23, 30, 34, 35, 36, 38, 42 och 47 ("nallen" → "leoparden"); tills de är inspelade är längderna uppskattade.
+// 50–60 ersätter 11, 14, 17, 23, 30, 34, 35, 36, 38, 42 och 47 ("nallen" → "leoparden"); inspelade 2026-11-20 (malin-tagning-leoparden.mp3).
 import { readFileSync, existsSync } from 'node:fs';
 
 const HAR = new URL('./', import.meta.url).pathname;
