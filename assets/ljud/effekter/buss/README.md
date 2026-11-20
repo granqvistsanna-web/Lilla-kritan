@@ -2,7 +2,7 @@
 
 Hämtade från Openverse 2026-11-20 (Freesound-förhandsvisningar i mp3, så originalen är redan förlustkomprimerade). Originalen ligger i `produktion/ljud-original/047-buss/` (filnamn `<ljud>-<freesound-id>.mp3`). Alla källor är **CC0**, utom blinkers-3 (CC BY). Inget ElevenLabs, ingen ny musik.
 
-Klippen är valda och klippta utifrån ljudkurvor. **Ingen har lyssnat än**: lyssna på `provlyssna.m4a` och välj. Toppnivåer: mjuka effekter −9 dBFS, bäddar (brum) −12 dBFS. Lågpass mot skärpa; alla toningar börjar vid st>0.
+Klippen är valda och klippta utifrån ljudkurvor. **Grind 4 godkänd av Sanna 2026-11-20** (*"Use the picks"*): rekommendationerna gäller, alltså `<ljud>.m4a` utan siffra. Toppnivåer: mjuka effekter −9 dBFS, bäddar (brum) −12 dBFS. Lågpass mot skärpa; alla toningar börjar vid st>0.
 
 Filerna heter `<ljud>-1..3.m4a` (kandidaterna). `<ljud>.m4a` utan siffra är min rekommendation (en kopia av kandidaten). Ändra kopian när du valt.
 
