@@ -41,10 +41,10 @@ function stetoOron() {
     <circle cx="${jx}" cy="${jy}" r="8" fill="${STETO.SLANG}"/></g>`;
 }
 
-// Från Y-knuten till handen: slangen hänger i en mjuk båge, bröstdelen ligger i handen (lite ut mot fingrarna).
+// Från Y-knuten till handen: slangen i en kort, nästan sträckt båge (Sanna 2026-11-20: "slang too long"), bröstdelen ligger i handen (lite ut mot fingrarna).
 function stetoSlang([jx, jy], [hx, hy], s = -1) {
   const bx = hx + s * 16, by = hy + 4;
-  return `<g class="steto">${stetoStreck(`M${jx} ${jy} C${jx} ${jy + 110} ${bx - s * 70} ${by + 90} ${bx} ${by}`)}
+  return `<g class="steto">${stetoStreck(`M${jx} ${jy} C${jx} ${jy + 45} ${bx - s * 40} ${by + 22} ${bx} ${by}`)}
     <circle cx="${jx}" cy="${jy}" r="8" fill="${STETO.SLANG}"/>${brostdel(bx, by, 21)}</g>`;
 }
 
