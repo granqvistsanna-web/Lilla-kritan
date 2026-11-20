@@ -1575,5 +1575,13 @@
   "file": "avsnitt/043-grisen-matar-faglarna/scener/snogarden/snogarden.mp4",
   "status": "granska",
   "name": "Lucka 16: Grisen matar fåglarna"
+ },
+ "J17": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J17-1120-0822.mp4",
+  "duration": 246.7,
+  "rendered": "2026-11-20 08:22 (042 grind 6, förhandsvisning (--snabb). Kaktusrummet förlängt, musiken lägre, replik 07 är gamla tagningen (säger granen))",
+  "file": "produktion/youtube/shorts/jul/17-hunden-gar-pa-pottan/17-hunden-gar-pa-pottan.mp4",
+  "status": "granska",
+  "name": "Lucka 17: Hunden går på pottan"
  }
 }
