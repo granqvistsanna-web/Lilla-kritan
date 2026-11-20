@@ -8,7 +8,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { join, dirname, extname } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
+const { chromium } = await import(process.env.PLAYWRIGHT_MJS ?? join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));   // PLAYWRIGHT_MJS: i molnsessionen
 
 const ROT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const TYP = { '.html': 'text/html', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg' };

@@ -1,0 +1,13 @@
+const { chromium } = await import(process.env.PLAYWRIGHT_MJS);
+import http from 'http'; import fs from 'fs'; import path from 'path';
+const rot = '/home/user/Lilla-kritan', typ = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.m4a': 'audio/mp4' };
+const srv = http.createServer((q, r) => { const f = path.join(rot, decodeURIComponent(new URL(q.url, 'http://x').pathname)); fs.readFile(f, (e, d) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'content-type': typ[path.extname(f)] ?? 'application/octet-stream' }); r.end(d); } }); }).listen(8732);
+const [t, z, dx, dy, ut] = process.argv.slice(2);
+const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
+p.on('pageerror', e => console.log('FEL', e.message));
+await p.goto('http://localhost:8732/avsnitt/046-kaninen-gar-till-doktorn/scener/mottagningen/index.html', { waitUntil: 'networkidle' });
+await p.waitForFunction(() => window.ready); await p.evaluate(() => window.ready);
+await p.evaluate(([z, dx, dy]) => { window.kamera = (z0, cx, cy) => { document.getElementById('kamera').setAttribute('transform', `translate(${960 - (cx + dx) * z} ${540 - (cy + dy) * z}) scale(${z})`); }; }, [+z, +dx, +dy]);
+await p.evaluate(t => window.seek(t), +t); await p.waitForTimeout(400);
+await p.screenshot({ path: ut });
+await b.close(); srv.close();
