@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 031 Borsta, borsta (bondgården)
 
-**Inte uppladdad än.** Kanal: **lilla kritan**. Fil: `film/avsnitt-031.mp4` (ca 2:47 med den sjungna tagningen: sången 2:38,2 + 8,6 s intro). Miniatyr: **saknas än**, görs med skillen `miniatyrer` (färgstrimman, "3 min"). Ställ in **Ja, det är gjort för barn**.
+**Inte uppladdad än.** Kanal: **lilla kritan**. Fil: `film/avsnitt-031.mp4` (ca 2:47 med den sjungna tagningen: sången 2:38,2 + 8,6 s intro). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, "3 min": kon borstar, scenen vid 2:12). Ställ in **Ja, det är gjort för barn**.
 
 Andra temat i borstasången (förlagan är 030). En sång, så titeln och beskrivningen kallar det en barnsång. Inga djurnamn: grisen, kon och lammet.
 
