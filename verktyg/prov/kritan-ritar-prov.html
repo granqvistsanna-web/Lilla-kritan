@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#FBF7EE">
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script>
+// Prov för verktyg/kritan-ritar.js: kritan ritar leopardens kontur och en stjärna (två drag), väntar, flyger ut.
+(async () => {
+  const K = await (await fetch('/assets/rekvisita/gosedjur-leopard/cut/gosedjur-leopard-kontur.json')).json();
+  const sk = 0.6, ox = 960 - 338 * sk, oy = 540 - 434 * sk;
+  window.seek = t => {
+    const T = { in: [0, 0.4], rit: [0.6, 8], vanta: [8, 8.8], ut: [10.1, 10.9] }, k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
+    const f = _kl((t - 10.1) / 0.7);
+    const drag = [K.d];
+    const R = ritBana(drag, k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED / sk}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f)}"` });
+    const g = (x, y) => [ox + x * sk, oy + y * sk];
+    let h = `<g transform="translate(${ox} ${oy}) scale(${sk})">${fyllMask('fy', K.mitt[0], K.mitt[1], 620, f)}<image href="/assets/rekvisita/gosedjur-leopard/cut/gosedjur-leopard.png" width="676" height="867" clip-path="url(#fy)"/>${R.html}</g>`;
+    const kr = kritaFas(t, T, { start: g(...R.start), spets: g(...R.spets), slut: g(...R.slut), vanta: [1430, 300] });
+    if (kr) h += kritaBild(kr.x, kr.y, kr);
+    h += gnistor(960, 560, 330, t - 10.1);
+    document.getElementById('s').innerHTML = h;
+  };
+  window.ready = true;
+})();
+</script>

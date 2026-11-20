@@ -45,6 +45,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Vattenrutschbanan | [rutschkana.md](rutschkana.md) | 007 |
 | Gosekaninen (ersatt av nallen) | [gosekanin.md](gosekanin.md) | 007 |
 | Nallen | [nalle.md](nalle.md) | 007 |
+| Gosedjursleoparden | [gosedjur-leopard.md](gosedjur-leopard.md) | 046 |
 | Kanelbullen | [kanelbulle.md](kanelbulle.md) | 007 |
 | Kotten | [kotte.md](kotte.md) | 007 |
 | Röda äpplet | [applet-rott.md](applet-rott.md) | 007, 013 (v3) |

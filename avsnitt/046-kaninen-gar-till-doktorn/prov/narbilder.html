@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>046 närbildsprov</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }
+  text { font-family: Fredoka, system-ui, sans-serif; fill:#fff; text-anchor:middle; paint-order:stroke; stroke:#0008; stroke-width:6px; }</style>
+</head>
+<body>
+<!-- 046 närbildsprov (grind 2): kaninen på britsen och doktorn i mottagningen v2, och doktorns hand i kod i närbilderna
+     (Sanna 2026-11-20: stetoskopet och öronlampan i kod, stetoskopet i doktorns öron när doktorn lyssnar).
+     Serveras från repots rot (absoluta sökvägar), t.ex. node avsnitt/046-kaninen-gar-till-doktorn/prov/prov.mjs.
+     ?bild=1 helbild · 2 halvbild doktorn lyssnar (11b) · 3 närbild kaninens mage med bröstdelen (13) · 4 närbild örat med
+     lampan (18) · 5 halvbild kaninen klappar på magen (15). ?t= sekunder. -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs id="defs">
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="5"/>
+    </filter>
+  </defs>
+  <g id="kamera">
+    <g id="rummet"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="hand"></g></g>
+  </g>
+  <g id="text"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/doktor-saker.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id), f1 = v => v.toFixed(1);
+const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), mjuk = k => (k = kl(k), k * k * (3 - 2 * k));
+const sok = new URLSearchParams(location.search), BILD = +(sok.get('bild') || 1);
+
+// Komposition v2 (Sanna 2026-11-20: "make bunny larger and room bigger bench lower"): det tomma, större rummet
+// (mottagningen-tom.png, verktyg/mottagning_delar.py) fyller bilden, britsen med pallen och lampan är ett eget urklipp
+// som står lägre, och kaninen är större. Golvlisten hamnar kring y 690.
+const RUM = { fil: '/assets/bakgrunder/mottagningen/mottagningen-tom.png', w: 1876, h: 1058 }, RS = 1920 / RUM.w;
+const BRITS = { fil: '/assets/bakgrunder/mottagningen/cut/brits.png', w: 725, h: 536, x: 170, fot: 950, s: 1.25, dyna: 235 };   // fot: benens nederkant, dyna: dynans överkant i urklippet
+const DYNA_Y = BRITS.fot - (BRITS.h - BRITS.dyna) * BRITS.s;
+const DOKTOR = [1250, 985, 0.85];   // tätt intill britsens högra ände (Sanna 2026-11-20: "dr needs to be closer")
+const KANIN = [900, DYNA_Y + 105, 0.55];     // sitter på britsen: riggens fötter ca 190 enheter under dynan
+// Kaninens mage och högra öra i riggens 1024-ruta (Kanel: magens fläck, örats insida)
+const MAGE = [540, 700], ORA = [672, 190];
+const DS = DOKTOR[2], HAND = { W: 66 * DS, R: 35 * DS, KANT: '#cfc8bc', HUD: '#f7ba99', HUDKANT: '#e3a07f' };
+
+let DL, KL, GD, GK;
+function kamera(z, cx, cy) { $('kamera').setAttribute('transform', `translate(${f1(960 - cx * z)} ${f1(540 - cy * z)}) scale(${z})`); }
+// en punkt i en figurdel → kamerans (scenens) koordinater
+const punkt = (el, x, y) => { const m = DOMMatrix.fromMatrix($('kamera').getCTM()).inverse().multiply(el.getCTM()); const q = m.transformPoint(new DOMPoint(x, y)); return [q.x, q.y]; };
+
+// Doktorns hand i närbilden (instick): rockärmen glider in från bildkanten ut → (hx, hy), i rockens krita som armRita(), med
+// en vit klistermärkeskant runt ärm, hand och sak (saksKant). inn 0–1 = hur långt in. sak(x, y) ritar saken i handen.
+function instick([hx, hy], [x0, y0], sak, inn = 1) {
+  const x = x0 + (hx - x0) * inn, y = y0 + (hy - y0) * inn, dx = x - x0, dy = y - y0, L = Math.hypot(dx, dy) || 1;
+  const mx = -dy / L * HAND.W * 0.42, my = dx / L * HAND.W * 0.42, ex = x - dx / L * 18, ey = y - dy / L * 18;
+  return `<g filter="url(#saksKant)"><g stroke-linecap="round" fill="none">
+    <path d="M${f1(x0)} ${f1(y0)} L${f1(ex)} ${f1(ey)}" stroke="${HAND.KANT}" stroke-width="${f1(HAND.W + 5)}"/>
+    <path d="M${f1(x0)} ${f1(y0)} L${f1(ex)} ${f1(ey)}" stroke="url(#rock)" stroke-width="${f1(HAND.W)}"/>
+    <path d="M${f1(ex - mx)} ${f1(ey - my)} L${f1(ex + mx)} ${f1(ey + my)}" stroke="${HAND.KANT}" stroke-width="3.5"/></g>
+    <circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(HAND.R)}" fill="${HAND.HUD}" stroke="${HAND.HUDKANT}" stroke-width="2.5"/>${sak(x, y)}</g>`;
+}
+// Slangen i närbilden: från bröstdelen ut ur bild uppåt höger, mot doktorns hals.
+const slang = (x, y, x1, y1) => `<path d="M${f1(x)} ${f1(y)} C${f1(x + 50)} ${f1(y)} ${f1(x1 - 30)} ${f1(y1 + 90)} ${f1(x1)} ${f1(y1)}"
+  fill="none" stroke="${STETO.SLANG}" stroke-width="7" stroke-linecap="round"/>`;
+// Hjärtslagens två små ringar runt bröstdelen (dunk, dunk): 0,6 s isär, var och en växer och tonar ut på 0,5 s.
+const ringar = (x, y, t) => [0, 0.6].map(a => { const u = (((t - a) % 1.4) + 1.4) % 1.4 / 0.5; return t < a || u > 1 ? '' :
+  `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(22 + 30 * u)}" fill="none" stroke="#fff" stroke-width="${f1(6 * (1 - u) + 1)}" opacity="${f1(1 - u)}"/>`; }).join('');
+
+// Doktorn med fötterna i (x, y); i närbilderna flyttas doktorn (klipp, ingen kontinuitet i golvet) så att saken i handen
+// hamnar där den ska: bröstdelen på magen, lampans spets vid örat.
+let DPOS = [0, 0];
+function doktorPa(x, y) { DPOS = [x, y]; GD.setAttribute('transform', `translate(${f1(x)} ${f1(y)}) scale(${DOKTOR[2]}) translate(-512 ${-DL.FOTTER})`); }
+const flytta = (dx, dy) => doktorPa(DPOS[0] + dx, DPOS[1] + dy);
+function rita(t) {
+  const bl = window.BL;
+  let dp = 'neutral', kp = KL.blandaPose('neutral', 'sitter', 1), kf = KL.blanda('neutral', 'glad', 1);
+  if (BILD === 2) dp = 'stetoskop';
+  if (BILD === 3) kf = KL.blanda('neutral', 'fnissig', 0.6);
+  if (BILD === 5) kp = { ...kp, fram: [1, 1], klapp: 30 };
+  let dpose = DL.blandaPose('neutral', dp, 1);
+  if (BILD === 3) dpose = DL.blandaPose('neutral', 'stetoskop', 1);
+  if (BILD === 4) dpose = { ...DL.blandaPose('neutral', 'lampa', 1), ljus: kl((t - 0.8) / 0.25), armar: [100, 0], armbage: [-70, 0] };
+  doktorPa(DOKTOR[0], DOKTOR[1]);
+  DL.rita(GD, bl(DL.blanda('neutral', BILD === 4 ? 'nyfiken' : 'glad', 1), t), dpose);
+  KL.rita(GK, bl(kf, t + 1.3), kp);
+  $('hand').innerHTML = '';
+  const etikett = s => $('text').innerHTML = `<text x="960" y="1050" font-size="34">${s}</text>`;
+  if (BILD === 1) { kamera(1, 960, 540); etikett('1 · helbild: kaninen på britsen, doktorn vid britsen (stetoskopet runt halsen)'); }
+  if (BILD === 2) { const [x, y] = punkt(GD.querySelector('.drag'), 512, 420); kamera(1.9, x - 160, y + 60);
+    etikett('11b · halvbild: doktorn lyssnar, stetoskopet i öronen'); }
+  if (BILD === 3) {
+    const [mx, my] = punkt(GK.querySelector('.mage'), MAGE[0], MAGE[1]);
+    kamera(1.9, mx + 40, my - 90);
+    const b = GD.querySelectorAll('.steto-fram circle'), c = b[b.length - 2];   // bröstdelens yttre ring
+    const [bx, by] = punkt(c, +c.getAttribute('cx'), +c.getAttribute('cy'));
+    flytta(mx - bx, my - by);
+    $('hand').innerHTML = ringar(mx, my, t - 0.3);
+    etikett('13 · närbild: kaninens mage, doktorn lyssnar (i bild), dunk dunk'); }
+  if (BILD === 4) {
+    const [ox, oy] = punkt(GK.querySelector('image.ear-r'), ORA[0], ORA[1]);
+    kamera(1.45, ox + 120, oy + 230);
+    const ljus = kl((t - 0.8) / 0.25), la = GD.querySelector('.lampa'), [lx, ly] = punkt(la, -96, 0);   // lampans spets
+    flytta(ox + 18 - lx, oy - ly);
+    $('hand').innerHTML = `<ellipse cx="${f1(ox - 12)}" cy="${f1(oy)}" rx="22" ry="40" fill="#ffe680" opacity="${f1(0.4 * ljus)}"/>`;
+    etikett('18 · närbild: kaninens öra, doktorn med öronlampan (i bild), ljuset tänds'); }
+  if (BILD === 5) { const [x, y] = punkt(GK.querySelector('.drag'), 512, 560); kamera(1.6, x, y - 30);
+    etikett('15 · halvbild: kaninen klappar sig på magen'); }
+  $('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1);
+}
+
+function rummet() {
+  const bw = BRITS.w * BRITS.s, bh = BRITS.h * BRITS.s;
+  $('rummet').innerHTML = `<image href="${RUM.fil}" width="${f1(RUM.w * RS)}" height="${f1(RUM.h * RS)}"/>
+    <ellipse cx="${f1(BRITS.x + bw / 2)}" cy="${f1(BRITS.fot - 6)}" rx="${f1(bw * 0.5)}" ry="22" fill="#3a5068" opacity="0.10"/>
+    <image href="${BRITS.fil}" x="${BRITS.x}" y="${f1(BRITS.fot - bh)}" width="${f1(bw)}" height="${f1(bh)}"/>`;
+}
+window.seek = t => { window.stilla = true; rita(t); };
+window.ready = (async () => {
+  // Figurernas egna <defs> (doktorns #dkant och #rock, kaninens #orrot …) hämtas ur deras rigg-sidor.
+  for (const m of ['doktorn-a', 'kaninen-kanel']) {
+    const bas = `/assets/karaktarer/${m}/premium/`, doc = new DOMParser().parseFromString(await (await fetch(bas + 'uttryck.html')).text(), 'text/html');
+    doc.querySelectorAll('svg defs > *').forEach(e => { if (e.id === 'boil') return;
+      e.querySelectorAll('image').forEach(i => i.setAttribute('href', bas + i.getAttribute('href')));
+      $('defs').appendChild(document.importNode(e, true)); });
+  }
+  $('defs').insertAdjacentHTML('beforeend', saksKant(4));
+  rummet();
+  DL = await v2rigg('doktorn-a'); KL = await v2rigg('kaninen-kanel');
+  GK = KL.figur(KANIN[0], KANIN[1], KANIN[2], $('figurer'));
+  GD = DL.figur(DOKTOR[0], DOKTOR[1], DOKTOR[2], $('figurer'));   // doktorn framför: handen med bröstdelen ligger på kaninens mage
+  GK.querySelector('.skugga')?.setAttribute('display', 'none');
+  window.BL = skapaBlinka(46);
+  rita(+(sok.get('t') || 1.2));
+  return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && window.BL) rita(((performance.now() - start) / 1000) % 4); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

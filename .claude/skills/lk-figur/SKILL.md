@@ -100,7 +100,7 @@ Kanel's numbers (`rigg-test.html`, 9 s loop: 0–3 wave, 3–7 walk, 7–9 hop):
 | Hop | crouch 0.35 s `sy 1−0.12·sin`, `sx 1+0.1·sin`; air 1.0 s, height 260 px parabola; in air `sy 1.08 sx 0.94`, arms ±40°, feet −30 px, happy; landing squash 0.3 s; shadow `rx 170·(1−0.4·h)` |
 | Wave | arm-r −8° → −38° over 0.4 s (`mjuk`) + `sin(T·14)·14`; body tilt `sin(T·7)·2`; happy eyes; "hej!" mouth 0.5–1.1 s. Keep the arm above about −55° |
 | Camera | close-up zoom 2.0 (1920×1080 plate), figure ~78 % of height; x follows the mean of 12 samples 0.05 s apart (0.6 s lag), `tx = clamp(1000 − fx·Z, 1920−1920Z, 0)`; y `ty = clamp(1030 − (MARK + y·0.7)·Z, 1080−1080Z, 0)` (70 % of a hop). `?vy=hela` = zoom 1. Car: fixed zoom 1.2 |
-| Boil | `feTurbulence fractalNoise baseFrequency 0.025 numOctaves 2` + `feDisplacementMap scale 5`; seed `floor(t·10) % 50 + 1` (re-seeded every 3 frames at 30 fps). Filter region `filterUnits="userSpaceOnUse" x=-100 y=-100 width=2120 height=1280` |
+| Boil | `feTurbulence fractalNoise baseFrequency 0.025 numOctaves 2` + `feDisplacementMap scale 2.5 / camera zoom`, set every frame, so the jiggle is 2.5 px on screen in every shot. Seed `floor(t·6) % 50 + 1` (6 times per second). A fixed scale inside a zoomed camera group grows with the zoom (scale 5 became 14 px in a ×2.8 close-up), and Sanna found it far too strong (Sanna 2026-11-21: "line boil is too strong"). Filter region `filterUnits="userSpaceOnUse" x=-100 y=-100 width=2120 height=1280` |
 
 **Vehicle** (`bil-test.html`, 12 s loop: idle, start, drive, brake, stop and wave):
 - speed `fart(T)` = 260 px/s × eased ramps (`mjuk`) up 1.5–2.5 s, down 9–10.2 s; distance `s` integrated numerically from t, so it stays deterministic

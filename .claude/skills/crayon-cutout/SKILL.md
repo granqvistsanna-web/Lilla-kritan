@@ -97,7 +97,7 @@ Anything darker than near-white becomes the character. The script grows it by 8p
 - **Beak open (Kvack):** the beak is cut from the original art and split at its seam (y 408). The lower half drops `open × 26` px over a `mouth-dark` ellipse (rx 62, ry `open × 22`).
 - **Bear mouth (Nalle):** a smile `M492 418 Q515 438 538 418`, stroke 5, hidden once the mouth opens. The mouth is a `#5a2418` ellipse (rx 24, ry `open × 20`).
 - **Boil**, on the actors group only (not the plate):
-  `<filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">` → `feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2"`, then `feDisplacementMap scale="6"`. Re-seed every 3 frames (`seed = floor(frame/3) % 50 + 1`).
+  `<filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">` → `feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2"`, then `feDisplacementMap scale="6"`. Re-seed every 3 frames (`seed = floor(frame/3) % 50 + 1`). In Lilla Kritan v2 use the weaker values in the lk-figur skill (2.5 px on screen, divided by the camera zoom, 6 seeds per second).
 - **Size:** at 1920×1080, Kvack is about 400 px tall, Nalle 470 and a ball 140 across.
 
 Full working example: `~/Documents/Lilla Kvack/templates/code-shot-two-actors.html` (two actors, one config each, paths already pointing at `cast/`; copy it to `episodes/NN-slug/code-shot/<shot>/index.html`). New stories follow the vault Job "New Kvack Story".

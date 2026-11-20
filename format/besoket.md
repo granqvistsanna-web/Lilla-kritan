@@ -20,12 +20,24 @@ Besöket är en **gren av bilderboken** ([bilderbok.md](bilderbok.md)): samma fo
 | Kritan ritar | djuret, som i bilderboken | 0–16 |
 | Känslan | *"Idag är kaninen hos doktorn."* Djuret är lite osäkert: öronen faller, liten fundersam min. Inget problem, ingen sjukdom: doktorn ska **titta att kaninen växer och mår bra** | 16–35 |
 | Hjälpen | kritan ritar **gosedjuret** (nallen finns redan). *"Varsågod!"* – *"Ska vi säga tack?"* – *"Tack!"*. Djuret kramar nallen, öronen reser sig | 35–75 |
+| Kritan ritar något nytt | kritan ritar **doktorn eller första instrumentet** (se egen rubrik), gisspaus, *"Ett stetoskop!"* | inom 75–110 |
 | Doktorn | doktorn står redan vid britsen och vinkar *"Hej!"*. Djuret hoppar upp på britsen med nallen | 75–100 |
 | Tre undersökningar | samma mönster tre gånger, först på nallen, sedan på djuret (se nedan) | 100–190 |
 | Sprutan *(valfri, inte i piloten)* | se egen rubrik. Utan sprutan får leken med nallen och plåstret de 30 s i stället | 190–220 |
 | Plåster och hej då | plåster med stjärna, djuret är stolt, hej då doktorn, hej då kaninen, kritirisen | 220–245 |
 
 **En plats: mottagningen** (Sanna 2026-11-20). Ritintrot zoomar in i mottagningen, djuret trippar in genom dörren, och kritan ritar nallen där inne. Inget platsbyte och inget kritsvep. Doktorn står vid britsen redan från början.
+
+## Kritan ritar något nytt ur besöket (Sanna 2026-11-20)
+
+Utöver gosedjuret ritar kritan **en sak som hör till besöket och är ny för barnet**: **doktorn** (när doktorn presenteras) eller **det första instrumentet** (stetoskopet, i tandläkarbesöket spegeln, hos frisören saxen). Som när kritan ritar i bilderboken: konturen i lugna drag, en gisspaus (3 s), *"Titta! Kritan ritar något … Hm … vad blir det?"*, sedan blir teckningen den riktiga saken och Malin säger vad den heter: *"Ett stetoskop! Med det lyssnar doktorn."* / *"Doktorn!"*
+
+Varför: barnet ser det okända byggas upp av kritan, lugnt och bit för bit, innan det används. Det som kritan ritar är snällt och bekant. Det gör doktorn och sakerna mindre främmande, och det är kanalens eget grepp.
+
+- **En sak per avsnitt** ur besöket (doktorn *eller* ett instrument), plus gosedjuret och klistermärket. Kritan ritar alltså högst tre gånger.
+- **Ritas doktorn** står doktorn inte vid britsen från början: kritan ritar doktorn där, och doktorn vinkar *"Hej!"* när den fylls i.
+- **Ritas ett instrument** ersätter det slaget 1 (*Saken visas*) i första undersökningen: kritan ritar saken i luften framför doktorn, den fylls i och doktorn tar den.
+- Sakerna är ritade i kod (`verktyg/doktor-saker.js`), så konturen är sakens egna streck som ritas fram ett i taget; ingen ny bild behövs.
 
 ## De tre undersökningarna
 
@@ -72,11 +84,11 @@ Det här är det viktigaste: besöken ska gå att göra i bilderbokens takt.
 
 1. **Doktorn står still.** Doktorn står på ett fast ställe vid britsen och rör nästan bara ena armen, huvudet (nickar, lutar) och ansiktet. Doktorn går aldrig och sätter sig aldrig.
 2. **Doktorn har en egen rigg** (Sanna 2026-11-20: *"more human proportions"*). Ett runt huvud på kort hals, skilt från kroppen, så att doktorn kan nicka och luta huvudet. Kropp i rock, raka armar och ben med glipa, gjord med skillen `lk-figur`. Samma API som Mors `uttryck.html`. Tandläkaren blir samma doktor i en annan rock (eller en mössa), inte en ny rigg.
-3. **Närbilder med instick i stället för riggarmar.** I närbilderna syns inte doktorn, bara **handen med saken** som glider in från bildkanten (ett urklipp: rockärm, hand, sak). Inga vinklar att räkna ut, ingen arm som ska nå rätt. I den breda bilden lyfter doktorn bara armen lite mot djuret.
+3. **Närbilder:** i 046 är doktorn med i bild (Sanna 2026-11-20) och doktorns egen kodarm håller saken; doktorn flyttas i klippet så att saken hamnar på magen eller örat. Instick (bara hand och ärm) finns kvar i provet som alternativ. Tidigare plan: **närbilder med instick i stället för riggarmar.** I närbilderna syns inte doktorn, bara **handen med saken** som glider in från bildkanten (ett urklipp: rockärm, hand, sak). Inga vinklar att räkna ut, ingen arm som ska nå rätt. I den breda bilden lyfter doktorn bara armen lite mot djuret.
 4. **Djuret sitter på britsen hela tiden.** Ett hopp upp (`hopp()` som pallen i 020), sedan sittposen. Inget mer gående. Nallen sitter i djurets famn, fäst vid tasspetsen som tvålen.
 5. **Britsen, lampan och vågen ligger i plattan.** Bara det som rör sig är egna urklipp.
 6. **Sakerna är enkla och syns från sidan:**
-   - **Stetoskopet:** bröstdelen (en rund skiva) är ett urklipp vid handen. Slangen ritas i kod som en mjuk kritkurva från doktorns hals till handen, så den följer med av sig själv.
+   - **Stetoskopet:** bröstdelen (en rund skiva) är ett urklipp vid handen. Slangen ritas i kod som en mjuk kritkurva, så den följer med av sig själv. **När doktorn lyssnar sitter öronpropparna i doktorns öron** (Sanna 2026-11-20): visa det i en halvbild på doktorn, med slangen från öronen ner till handen. Därför ritas hela stetoskopet i kod på doktorn (runt halsen eller i öronen), och doktorns kropp görs utan stetoskop.
    - **Öronlampan:** ett urklipp. Ljuset är en mjuk gul cirkel i kod.
    - **Sprutan:** ett litet urklipp utan synlig nål.
    - **Plåstret:** ritas i kod (rundad rektangel, hudrosa, gul stjärna), som tvålen. Det poppar fram, det sätts inte på.
@@ -89,7 +101,7 @@ Det här är det viktigaste: besöken ska gå att göra i bilderbokens takt.
 |---|---|---|
 | Doktorn | egen rigg (`verktyg/doktor_delar.py`), `karaktarer/doktorn-a.md` och `doktorn-b.md` | en gång för hela serien |
 | Mottagningen | ny platta 16:9: lugn vägg (mint eller ljusblå), vitt golv, britsen med papper, ett fönster, en tavla med ett djur, en våg | en gång |
-| Stetoskop, öronlampa | två urklipp i Flow, stilreferens = avsnittets saker (sprutan görs först till BVC-avsnittet) | en gång |
+| Stetoskop, öronlampa | **i kod** (`verktyg/doktor-saker.js`, Sanna 2026-11-20), stetoskopet runt halsen eller i doktorns öron; doktorns kropp är utan inbakat stetoskop (sprutan görs först till BVC-avsnittet) | en gång |
 | Doktorns hand-instick | ett urklipp per sak (ärm + hand + sak) | en gång per sak |
 | Ljud | hjärtslag, lampklick, plåsterpop, djurets *"aaa"* och *"aj"* (Openverse först) | en gång |
 
@@ -114,11 +126,56 @@ Tandläkarstolen är en egen platta eller samma mottagning med stolen i stället
 
 Som i bilderboken (korta, vardagliga, upprepning, frågor med paus 4–5 s, Malin efter handlingen, inga djurnamn, *"Ska vi säga tack?"*). Dessutom:
 
-- **Doktorn säger inget** (bestämt av Sanna 2026-11-20). Malin berättar vad doktorn gör (*"Doktorn lyssnar på magen."*). Doktorn nickar, ler och vinkar. Det sparar en röst och en tagning.
+- **Doktorn säger inga meningar** (bestämt av Sanna 2026-11-20). Malin berättar vad doktorn gör (*"Doktorn lyssnar på magen."*). Doktorn nickar, ler och vinkar, och gör **små vänliga ljud** (Sanna 2026-11-20): *"Hej!"*, *"Hmm …"* när doktorn lyssnar, *"Ooo!"* och *"Aaa"* när doktorn visar hur man gapar (ElevenLabs SFX, `doktor-hej/-hmm/-ooo/-aaa`, prompter i `avsnitt/046-kaninen-gar-till-doktorn/saker-prompter.md`).
 - Säg **doktorn**, inte läkaren. På BVC: **sköterskan**.
 - Namnge sakerna en gång, tydligt: *"ett stetoskop"*, *"en lampa"*, *"ett plåster"*.
 - Lugnande ord som återkommer: *"Doktorn är snäll."*, *"Nallen är med."*, *"Nu är det klart."*
 - Aldrig: sjuk, ont, farligt, rädd, modig, *"det gör inte ont"*.
+
+## Lärdomar från piloten 046 (Sanna 2026-11-20)
+
+Det här gäller alla besök. Det mesta är gjort i `avsnitt/046-kaninen-gar-till-doktorn/` och kan kopieras därifrån.
+
+**Berättelsen**
+- **Ritintrot ritar besökets sak, inte djuret:** i 046 ritar kritan stetoskopet, och svaret blir *"Ett stetoskop! Med det lyssnar doktorn."* Djuret kommer in i första bilden. Saken är sedan doktorns från början.
+- **Gör problemet synligt:** doktorn pekar mot britsen och djuret vill inte. Det backar ett litet steg, skakar på huvudet och sänker öronen. Det sker utan ny replik, före *"Hm … vad gör vi nu?"*. Då förstår barnet varför gosedjuret behövs.
+- **Gosedjuret får ett nytt utseende per avsnitt** (i 046 en liten gul leopard, `rekvisita/gosedjur-leopard.md`). I det som sägs heter det vad det är: *"leoparden"*. Det tappas av en glad anledning (*jippi*, armarna i luften), glider ur knät, faller, studsar med ett `duns` och rullar in bakom pallen. Malins *"Oj! Var är …?"* kommer när det har landat.
+- **Djuret visar barnet:** på *"Gapa"* gapar djuret själv innan gosedjuret får försöka.
+- **Små hjärtan** stiger upp bredvid ansiktet när djuret kramar gosedjuret, aldrig över ansiktet.
+- **Frågan till barnet kommer före undersökningen:** *"Var är dina öron?"* ställs innan doktorn tittar i öronen.
+- **Doktorn gör små ljud men säger inga meningar:** *Hej*, *Hmm*, *Ooo*, *Aaa*, *Mhm*, *Oj*, *Bra*, *Hej då* och ett mjukt, långt fniss (ElevenLabs, `assets/ljud/effekter/doktor-*`). Ljuden ger doktorn personlighet.
+- **Doktorn reagerar på sina ljud:** ansiktet glider mot ett uttryck medan ljudet hörs (förvånad på *Ooo* och *Oj*, med stora ögon och en liten rund mun), doktorn nickar på *Mhm* och *Hmm* och klappar händerna på *Bra*. När doktorn står still svajar den lite och lutar huvudet.
+- **Djurets känslor syns tydligt:** oroligt ansikte (bryn snett uppåt, blicken ner, mungiporna ner) när djuret inte vill. När något är borta ser djuret sig förvirrat omkring: blicken och huvudet glider vänster, höger och vänster igen och sedan mot tittaren, med sneda bryn och en liten rund mun. Gosedjuret kikar fram bakom pallen innan barnet hittar det.
+- **Gosedjuret flyttas med en hand** när magen ska visas, så att magen syns direkt.
+
+**Bild och kamera**
+- **Många närbilder på ansiktena**, ungefär ×2,8 för djuret och ×3 för doktorn med huvudet i mitten, och närbild på saken (stetoskopet, lampan). Kameran stannar alltid inne i rummet.
+- **Doktorn är med i bild** i undersökningarna och håller saken med sin egen kodarm. I närbilden flyttas doktorn så att saken hamnar rätt, vilket är tillåtet eftersom det är klipp. Gosedjuret i famnen ligger mellan djuret och doktorn, så att doktorns hand syns framför det.
+- **Rummet i delar:** ett tomt, större rum och britsen med pallen som ett eget urklipp (`verktyg/mottagning_delar.py`). Då kan britsen stå lägre och figurerna bli större.
+- **Doktorns saker i kod** (`verktyg/doktor-saker.js`): stetoskopet, i öronen när doktorn lyssnar, och öronlampan med ett svagt sken. Hjärtslagen är en ElevenLabs-effekt (`hjartslag/`).
+- **Kritan ritar som i alla andra filmer** (`format/ritintro.md`): konturen i en mörk kritlinje i ett drag ur `verktyg/kontur.py`, kritans spets i linjens ände, lutad 125° och svajande på 140° när den väntar. Bilden fylls i inifrån med en växande cirkel, och kritan flyger ut uppe till höger. Kritan går aldrig över ett ansikte.
+- **Gången** använder riggens stegcykel (`L.steg`) med en klocka som följer sträckan, som i 037.
+- **Slutet** är kritirisen från 045: en svart ram med en vågig krämvit vaxkant runt djurets ansikte, och sedan 0,6 s svart.
+
+- **Sakbilder:** när saken nämns (*"Ett stetoskop!"*, *"en lampa"*) klipper vi till saken ensam på rosa botten (`#F6C3D3`). Den har mjuka, långsamma strålar bakom (12 kilar, opacitet ca 0,24, 3°/s, suddiga), kritgnistor och en vit klistermärkeskant. Ljussken ritas utanför kanten, annars får skenet en vit ring.
+- **Vita kanter på alla saker**, också i närbilderna (`saksKant`/`sakKantStor`).
+- **Luft ovanför huvudet:** närbilderna läggs lite högre än huvudets mitt (`huvud[1] − 30`). Huvud och öron får aldrig klippas. Sanna har bett om det många gånger, så kontrollera varje närbild på en stillbild.
+- **Flytta doktorn i en närbild** (`dx`) när något vid djurets kant ska synas, till exempel örat som ramlar. Det är ett klipp, så hoppet märks inte.
+- **En detalj i rummet** gör det levande, till exempel en väggklocka bakom.
+- **Svag line boil:** `feDisplacementMap` 2,5 delat med kamerazoomen, satt varje bildruta, och ny brusbild 6 gånger/s. Med en fast skala växer darret med zoomen: 5 blev 14 px i en närbild, vilket var alldeles för starkt (Sanna 2026-11-21: "line boil is too strong").
+- **Mjukt, aldrig ryckigt:** uttryck och poser blandas över 0,3–0,5 s (`blanda`/`blandaPose`) och hoppar aldrig mellan två bildrutor. Samma bild över ett klipp ska ha samma pose på båda sidor. Kritan glider mellan dragen och står kvar i sista spetsen (`stetoBana`), annars fladdrar den.
+
+**Ljud**
+- **Inga ljud ovanpå varandra:** Malin, djuret och doktorn turas om. Kontrollera med ffprobe-längder innan rendering.
+- **Musik:** en befintlig loop under hela filmen, svag (`gissa-bad.m4a` på 0,075), med fade in och ut. Inget rumsljud.
+
+**Tempo**
+- **Lugnt:** 1,6 s extra luft efter varje replik (`G` i `rader.mjs`), och ungefär 4:30 långt.
+
+**Arbetet**
+- **Malins tagning delas i molnet** med faster-whisper (`dela-tagning.py`, `HF_HUB_DISABLE_XET=1`). Kolla korta ord som *aaa*, som whisper missar, och klipp dem för hand.
+- **Djupgranskning (QA) före slutrenderingen** i en subagent: varje klipp och varje pose ska flyta, och filerna, längderna och ljudöverlappen ska kontrolleras. Notera resultatet i `qa.md`.
+- **Sanna ger tidskoder** (*"2.29 …"*). Räkna om dem till en rad med `rader.json`, ändra raden, rendera stillbilder och skicka en snabb förhandsvisning.
 
 ## Öppet
 

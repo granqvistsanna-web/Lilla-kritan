@@ -1,13 +1,13 @@
 # Avsnitt 046 – Kaninen går till doktorn (plan)
 
-**Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, version 1. Nästa: grind 2 (doktorn, mottagningen, stetoskopet, öronlampan). Piloten för **Besöket** ([`format/besoket.md`](../../format/besoket.md)), en gren av bilderboken ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Avsnittet förbereder små barn för ett besök hos doktorn. Malin berättar och kaninen svarar med ljud, öron och ansikte. **Doktorn säger inget**, **ingen spruta**, **bara mottagningen** (Sanna 2026-11-20). Inget är byggt än. Ca 4 min.
+**Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, version 1. **Grind 3 (röst) klar** 2026-11-20. **Grind 5 (animatik):** [`storyboard/`](storyboard/) (`rader.mjs`, `scen.html`, `bygg.mjs --animatik`), 47 bilder, 3:52, kontaktark `storyboard/kontaktark.jpg`, `animatik.mp4` (inte i git). Väntar på Sannas ok. Grind 2: doktorn A (nu utan inbakat stetoskop), mottagningen v2, stetoskopet och öronlampan i kod (`uttryck.html?ark=saker`). Närbildsprovet: [`prov/narbilder.html`](prov/narbilder.html) (`node avsnitt/046-kaninen-gar-till-doktorn/prov/prov.mjs`), kontaktark `prov/narbilder-kontakt.jpg`: helbild, doktorn lyssnar med stetoskopet i öronen (11b), magen med bröstdelen (13), örat med lampan (18), klapp på magen (15). Doktorns hand i närbilderna är rockärm + hand i kod med vit kant. **Komposition v2** (Sanna 2026-11-20): större rum, britsen lägre som eget urklipp, kaninen större (0,55), **doktorn är med i bild i närbilderna 13 och 18** (Sanna 2026-11-20: "place dr in frame on 13 + 18 too"): doktorns egen hand håller bröstdelen mot magen och lampan vid örat, doktorn flyttas i klippet så att saken hamnar rätt (inget instick). Replikfilen för grind 3: [`rost.txt`](rost.txt). Nästa: Sannas ok på provet, sedan grind 3 (Malins röst). Piloten för **Besöket** ([`format/besoket.md`](../../format/besoket.md)), en gren av bilderboken ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Avsnittet förbereder små barn för ett besök hos doktorn. Malin berättar och kaninen svarar med ljud, öron och ansikte. **Doktorn säger inget**, **ingen spruta**, **bara mottagningen** (Sanna 2026-11-20). Inget är byggt än. Ca 4 min.
 
 | | |
 |---|---|
 | **Titel** | Kaninen går till doktorn (avsnitt 46) |
 | **Figurer (2)** | **Kaninen Kanel** (v2, riggad, sittposen finns) · **Doktorn** (ny, **mer mänskliga proportioner och en egen rigg**, Sanna 2026-11-20: runt huvud på kort hals, kropp i rock, raka armar och ben; görs med `lk-figur`, prompterna i [`doktorn-prompter.md`](doktorn-prompter.md)). **Sanna valde doktorn A** 2026-11-20 (vit rock, röda lockar): [`karaktarer/doktorn-a.md`](../../karaktarer/doktorn-a.md). Doktorn står still vid britsen, nickar, ler och vinkar |
 | **Platser (1)** | **Mottagningen** (ny platta 16:9, [`bakgrunder/mottagningen.md`](../../bakgrunder/mottagningen.md), alternativ D vald av Sanna 2026-11-20): himmelsblå vägg, korallröd brits med papper, vit pall, undersökningslampa på väggen, ljust golv. Inget platsbyte |
-| **Saker** | **nallen** (finns, `rekvisita/nalle.md`, ritas av kritan) · **stetoskopet** och **öronlampan**, ritade i kod (`assets/rekvisita/doktorssaker/doktorssaker.js`) |
+| **Saker** | **gosedjursleoparden** ([`rekvisita/gosedjur-leopard.md`](../../rekvisita/gosedjur-leopard.md), Sanna 2026-11-20, ersätter nallen; nallens kodansikte; heter *"leoparden"* i det som sägs; ritas av kritan) · **stetoskopet** och **öronlampan** ritas i kod (Sanna 2026-11-20, [`verktyg/doktor-saker.js`](../../verktyg/doktor-saker.js)), inga bilder |
 | **I kod** | stetoskopets slang (mjuk kritkurva från doktorns hals till handen), lampans ljus, klistermärket med stjärnan (ritas av kritan), skimret, hjärtslagens små ringar |
 | **Musik** | ingen |
 | **Favoriter** | 🐰 kanin · 🧸 nalle |
@@ -24,7 +24,7 @@
 | Upp på britsen | två lugna skutt: upp på pallen, upp på britsen (`hopp()` som pallen i 020). Sedan **sittposen**, nallen i famnen, och kaninen sitter kvar till uppslag 30 |
 | Doktorn | står still till höger om britsen. Rör bara: nick (huvudet ner och upp), litet leende, ena armen lite upp mot kaninen i den breda bilden, vinkning (armen bakom kroppen, ut förbi kanten). Går aldrig, sätter sig aldrig |
 | Doktorns hand i närbild | **instick:** ett urklipp (rockärm, hand, saken) glider in från högra bildkanten på 0,6 s, stannar på magen, örat eller framför munnen, glider ut. Ingen riggarm i närbilderna |
-| Lyssnar | bröstdelen stilla mot magen. Två små mjuka ringar växer ut från den i takt med *"dunk, dunk"* |
+| Lyssnar | **Stetoskopet sitter i doktorns öron när doktorn lyssnar** (Sanna 2026-11-20). Halvbilden på doktorn (11b, 14) visar öronpropparna i öronen och slangen ner till handen; stetoskopet ritas i kod på doktorn (runt halsen eller i öronen), så doktorns kropp behöver en version utan stetoskop. I närbilden: bröstdelen stilla mot magen. Två små mjuka ringar växer ut från den i takt med *"dunk, dunk"* |
 | Lampan | en mjuk gul cirkel tänds med `lampa-klick` och lyser på örat. Örat glöder svagt varmt. Släcks när handen går ut |
 | Örat ramlar ner | kaninens ena öra faller lugnt ner framför ögat (vridning 0 → 70° på 0,5 s) och lyfts upp igen av tassen (raka armen) |
 | Gapar | O-munnen, öppnas på 0,3 s, hålls 1,2 s, stängs |
@@ -55,10 +55,11 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), de långa öronen och armarna
 | 8 | Kaninen nickar direkt och kramar nallen | Tack! | `kanin-ny-fortjust` |
 | 9 | Närbild, kaninen med nallen i famnen, huvudet lutar mot nallen | Nallen är med. Då går det bra. | `kanin-gullig-4` (mysig suck) |
 | 10 | Helbild. Doktorn pekar på britsen. Kaninen skuttar upp på pallen, sedan på britsen, och sätter sig | Upp på britsen! Hopp … och hopp! | `hopp-mjuk` ×2 |
-| 11 | Närbild, instick: handen med stetoskopet glider in och stannar i bild | Titta, ett stetoskop. Med det lyssnar doktorn. | `kanin-ny-fragande` |
+| 11 | Kritan kommer in och ritar stetoskopet i luften framför doktorn: slangen och bröstdelen streck för streck (3 s), gisspaus 3 s, det fylls i och doktorn tar det (Sanna 2026-11-20: kritan ritar något nytt ur besöket) | Titta! Kritan ritar något. *(gisspaus 3 s)* Ett stetoskop! Med det lyssnar doktorn. | krita-ritar, `glitter`, `kanin-ny-fragande` |
+| 11b | Halvbild på doktorn: stetoskopet lyfts från halsen och öronpropparna sätts i öronen, armen pekar mot britsen. Ingen ny replik (under slutet av 11) | – | – |
 | 12 | Närbild på nallens mage, stetoskopet mot den, två små ringar | Först nallen. Lyssna, lyssna … dunk, dunk! | hjärtslag ×2 (mjukt) |
 | 13 | Närbild på kaninens mage, stetoskopet mot den, två små ringar | Nu kaninen. Lyssna, lyssna … dunk, dunk! | hjärtslag ×2, `kanin-ny-fniss` |
-| 14 | Helbild, doktorn nickar och ler | Fint! Doktorn hörde magen. | `kanin-ny-ja` |
+| 14 | Halvbild på doktorn med stetoskopet i öronen: doktorn nickar och ler, sedan tillbaka runt halsen | Fint! Doktorn hörde magen. | `kanin-ny-ja` |
 | 15 | Halvbild, kaninen klappar sig på magen med ena tassen | Kan du visa var din mage är? *(paus 4 s)* Där! | `klapp` |
 | 16 | Närbild, instick: handen med öronlampan glider in, ljuset tänds | Och här är en lampa. Doktorn tittar i öronen. | `lampa-klick` |
 | 17 | Närbild på nallens öra, ljuset lyser på det | Först nallen. Titta, titta … fint! | `tindra` |
@@ -89,7 +90,7 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), de långa öronen och armarna
 
 ## Malins repliker att klistra in (ElevenLabs)
 
-Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Ett block, en tagning. Filerna hamnar i `assets/ljud/roster/kaninen-gar-till-doktorn/` (`01-kritan-ritar` …).
+Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Ett block, en tagning. **Tagning 1 gjord 2026-11-20** (`malin-tagning.mp3`, 111,6 s, alla 48 repliker i ett block). **Delad 2026-11-20** i `assets/ljud/roster/kaninen-gar-till-doktorn/` (48 filer, längder i `rost-langder.txt`), kontrollerad med whisper (large-v3-turbo): alla repliker rätt. Snitten 31/32 och 33/34 flyttade för hand ("aaa" hör till 31, "Oj!" till 34). Lyssna på 35: whisper hör "vad nallen är" i stället för "var". Delas på Sannas dator (whisper finns bara där): `python3 verktyg/dela-tagning.py avsnitt/046-kaninen-gar-till-doktorn/malin-tagning.mp3 avsnitt/046-kaninen-gar-till-doktorn/rost.txt assets/ljud/roster/kaninen-gar-till-doktorn`. Filerna hamnar i `assets/ljud/roster/kaninen-gar-till-doktorn/` (`01-kritan-ritar` …).
 
 ```
 [warmly] Kritan ritar …
@@ -107,7 +108,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Tack!
 [warmly] Nallen är med. Då går det bra.
 [cheerfully] Upp på britsen! Hopp … och hopp!
-[curious] Titta, ett stetoskop. Med det lyssnar doktorn.
+[excited] Titta! Kritan ritar något.   (samma som ovan, rad 10 återanvänds)
+[delighted] Ett stetoskop! Med det lyssnar doktorn.   (ny, 49)
 [happy] Först nallen. Lyssna, lyssna … dunk, dunk!
 [happy] Nu kaninen. Lyssna, lyssna … dunk, dunk!
 [cheerfully] Fint! Doktorn hörde magen.
@@ -142,6 +144,35 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hej då! Vi ses snart! [giggles]
 ```
 
+## Ändringar efter förhandsvisningen (Sanna 2026-11-20)
+
+- **Doktorn har inget stetoskop** förrän kritan har ritat det (11a–11b); i 11b glider teckningen till doktorns hals.
+- **Kritan ritar stetoskopet streck för streck** i en egen bild på väggen bredvid doktorn (öronslangarna, slangen, bröstdelen), kritan lika liten i bild som alltid.
+- **Fler och tätare närbilder på ansiktena** (7, 11c, 14, 22, 25, 27, 34 är närbilder), kameran stannar inne i rummet.
+- **"Var är dina öron?"** (rad 21) kommer före öronundersökningen, direkt efter magen.
+- **Leoparden ramlar logiskt:** kaninen klappar och släpper taget, leoparden glider ur knät, faller från britsen, studsar (`duns`) och rullar in bakom pallen; Malins *"Oj! Var är leoparden?"* när den har landat.
+- **Leoparden lite mindre** (175 i stället för 210 px).
+
+## Leoparden i stället för nallen (Sanna 2026-11-20)
+
+Gosedjuret är en liten leopard. De 11 replikerna som sa *"nallen"* spelas in igen med nya nummer (50–60, i `rost.txt`); 11, 14, 17, 23, 30, 34, 35, 36, 38, 42 och 47 används inte längre. Tabellen ovan läses med *leoparden* där det står *nallen*. Samma röst och inställningar som tagning 1, ett block:
+
+```
+[happy] En leopard! Varsågod, kaninen.
+[warmly] Leoparden är med. Då går det bra.
+[happy] Först leoparden. Lyssna, lyssna … dunk, dunk!
+[happy] Först leoparden. Titta, titta … fint!
+[chuckles] Först leoparden. Gapa … oj! Leoparden kan inte gapa!
+[surprised] Oj! Var är leoparden?
+[curious] Kaninen vet inte var leoparden är.
+[warmly] Kan du hjälpa kaninen? Kan du se var leoparden är?
+[happy] Där är du, leoparden!
+[giggles] Och en till leoparden!
+[happy] Hej då, kaninen! Hej då, leoparden!
+```
+
+Tills tagningen finns används uppskattade längder (`rost-langder-uppskattade.txt`).
+
 ## Kaninens röst och ljuden
 
 Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`) och `kanin-ny` (`hej`, `fortjust`, `fniss`, `trumpen`, `fragande`, `ja`, `jippi`, `mmm`). Övrigt som finns: `smasteg`, `hopp-mjuk`, `klapp`, `glitter`, `tindra`, `krita-ritar`, `lampa-klick`, `pop`.
@@ -155,11 +186,11 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 - [x] Frågor till barnet med paus: var är magen (4 s), var är öronen (4 s), kan du gapa (4 s), var är nallen (5 s)
 - [x] *"Varsågod"*, *"Ska vi säga tack?"* och *"Tack!"*, plus *"Tack, doktorn!"*
 - [x] Samma mönster tre gånger: *"Först nallen … Nu kaninen …"* med *"Lyssna, lyssna"*, *"Titta, titta"*, *"Gapa"*
-- [x] Kritan ritar två gånger: nallen och stjärnan
+- [x] Kritan ritar tre gånger: nallen, stetoskopet och stjärnan (receptets max)
 - [x] Inget läskigt: ingen spruta, ingen gråt, inga ord som ont, sjuk, farligt, rädd eller modig. Känslan *"lite osäker"* sägs högt och nallen hjälper
 - [x] Fniss: 19–20, 23, 33 (högst 3–4, aldrig två rader i följd med fniss över Malin)
 - [x] Ingen ny musik
-- [x] 2 nya saker (stetoskopet, öronlampan), inom `format/regler.md`
+- [x] Inga nya saker som bilder: stetoskopet och öronlampan ritas i kod, som plåstret
 - [ ] **Avsteg:** 2 figurer. Bilderboken har 1, men doktorn behövs. Doktorn är tyst och står still, så det är en lätt figur
 - [ ] **Avsteg:** ny figur (doktorn) och ny platta (mottagningen). Båda görs en gång och återanvänds i hela Besöket
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt
@@ -168,4 +199,6 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 
 - ~~Hur doktorn ser ut~~ **Doktorn A**, vit rock och röda lockar (Sanna 2026-11-20). Doktorn B (ljusblå rock) sparas till BVC eller tandläkaren.
 - ~~Mottagningens vägg~~ **himmelsblå** (alternativ D, Sanna 2026-11-20).
+- ~~Kritan ritar stetoskopet eller doktorn?~~ **Stetoskopet** (Sanna 2026-11-20). Rad 10 (*"Titta! Kritan ritar något."*) återanvänds, ny replik 49 *"Ett stetoskop! Med det lyssnar doktorn."* (16 används inte). Rad 35 behålls som den är ("vad"). Hjärtslagen: befintliga `dunk`. Kaninens gap: bara Malins "aaa".
+- *Tidigare:* stetoskopet eller doktorn ska ritas av kritan. Förslag: uppslag 11 blir *"Titta! Kritan ritar något. (gisspaus 3 s) Ett stetoskop! Med det lyssnar doktorn."*, kritan ritar stetoskopet i luften framför doktorn och doktorn tar det. Ändrar repliken 16 i `rost.txt` före tagningen. Väntar på Sannas val: stetoskopet eller doktorn.
 - ~~Vad doktorn heter internt~~ `doktorn-a` (filnamnet i `karaktarer/`). I det som sägs är det alltid *"doktorn"*.
