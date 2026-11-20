@@ -6674,9 +6674,10 @@
   "sec": 49,
   "tags": [],
   "note": "birds eyes have too low position",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179117734,
-  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))"
+  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))",
+  "fixedAt": 1795180992853
  },
  "aa6wor0b1jmwozas5p": {
   "ep": "J16",
@@ -6684,9 +6685,10 @@
   "sec": 49,
   "tags": [],
   "note": "a bit slower pace",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179122701,
-  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))"
+  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))",
+  "fixedAt": 1795180992853
  },
  "wupfclrwfzmwozbxyx": {
   "ep": "J16",
@@ -6694,9 +6696,10 @@
   "sec": 106,
   "tags": [],
   "note": "just varsågod no fåglarna",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179176889,
-  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))"
+  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))",
+  "fixedAt": 1795180992853
  },
  "pqsx46c2aqmwozclfh": {
   "ep": "J16",
@@ -6704,9 +6707,10 @@
   "sec": 131,
   "tags": [],
   "note": "no overlapping speak",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179207293,
-  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))"
+  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))",
+  "fixedAt": 1795180992853
  },
  "ghwhasgklgmwozd6qy": {
   "ep": "J16",
@@ -6714,9 +6718,10 @@
   "sec": 150,
   "tags": [],
   "note": "more closeup on faces and highlights",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179234922,
-  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))"
+  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))",
+  "fixedAt": 1795180992853
  },
  "rvl47jt6wfmwozetvj": {
   "ep": "J16",
@@ -6724,8 +6729,9 @@
   "sec": 194,
   "tags": [],
   "note": "make manus a bit more clear. lilla blå fågel ja i fågelholken där bor fåglarna. also about kärve den kan fåglarna äta på hela vintern",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179311551,
-  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))"
+  "render": "2026-11-20 10:57 (nya gulliga grisljud (Sannas ElevenLabs): ooo vid förundran, aah när den blir glad, hm-hm vid påsen; plus runda 3 (öga, kritan utan hopp, närbild på holken, julbädd))",
+  "fixedAt": 1795180992853
  }
 }
