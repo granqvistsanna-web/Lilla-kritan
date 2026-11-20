@@ -15,7 +15,7 @@
   <defs id="defs">
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap id="boilStyrka" in="SourceGraphic" scale="2.5"/>
     </filter>
     <filter id="mjukStrale" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="14"/></filter>   <!-- mjuka strålar i sakbilderna -->
     <mask id="iris"><rect width="1920" height="1080" fill="#fff"/><circle id="irishal" cx="960" cy="540" r="300" fill="#000"/></mask>
@@ -488,7 +488,10 @@ function ljud() {
 function rita(t) {
   TT = t; const r = RAD_L.find(x => t < x.s + x.d) || RAD_L.at(-1); CUR = r;
   ritaRad(r.id, Math.min(t - r.s, r.d), r.d);
-  $('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1);
+  // Line boil svagare (Sanna 2026-11-21: "line boil is too strong"): 2,5 px i bild i stället för 5 px gånger kamerazoomen
+  // (i en närbild ×2,8 blev det 14 px), och ny brusbild 6 gånger/s i stället för 10 (format/ritintro.md).
+  $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);
+  $('boilStyrka').setAttribute('scale', (2.5 / KZ).toFixed(2));
   if (t > DURATION - SVART) $('ram').innerHTML = '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>';
 }
 window.seek = t => { window.stilla = true; rita(t); };
