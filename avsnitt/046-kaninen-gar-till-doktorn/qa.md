@@ -78,3 +78,41 @@ Doktorns ljud: nicken på *mm-hm*/*hmm* började med ett ryck (startade mitt i n
 - **6a–8** är nu en lång bild (ca 17 s) utan klipp. Vill Sanna ha fler närbilder där kan rad 7 eller 9 få en egen vinkel.
 - **33 → 34** (`kanin` ×2,2 → `kaninNar` ×2,8) är ett litet zoomhopp. Rätta om det stör.
 - Lampan: doktorn håller den inte i rad 19, 20 och 22 (mellan undersökningarna). Det syns knappt, men lampan finns inte i handen där.
+
+## QA 3: klipp, luft ovanför huvudet, kritan och ljudet (2026-11-20)
+
+Bild precis före och efter alla 44 klipp (t − 0,05 / t + 0,05), en bild mitt i varje närbild, 2–3 bildrutor i rad (1/15 s) runt rad 13, 15, 26, 27, 29–30 och kritans fasbyten i 6a och 31a. Ljudet kontrollerat i kod med ffprobe-längder mot `rader.json`. Tiderna är scenens tid (utan logotypen). `rader.mjs` och `rader.json` är orörda; allt rättat i `scener/mottagningen/index.html` (märkt `// QA 3:`).
+
+### Ljud (kontroll i kod)
+
+- Alla röst- och effektfiler finns, `rader.json` stämmer med `rader.mjs`, längd 4:37,0 + 0,6 s svart.
+- Inga repliker eller kaninens och doktorns ljud ovanpå varandra; ingen replik går ut över sin rad. Minsta mellanrum 0,05 s (rad 26: kaninens *jippi* → doktorns *oj*), annars 0,10 s.
+- Effekter under röster (avsiktligt): `glitter` under svaren (01c, 6b, 31b), `pop` under 32/33, hjärtslagen under *"dunk, dunk"*, `duns` mellan *jippi* och *oj* (26), `tindra` slutar 0,2 s in i doktorns *hmm* (17).
+- Inga djurnamn i det som sägs (raderna 1–63 som används).
+
+### Rättat
+
+| Rad | Tid | Fel | Rättning |
+|---|---|---|---|
+| Alla närbilder på kaninen (3, 4, 6a–9, 13, 15, 17, 19, 20, 23–25, 27, 31a–34, 37, 38) | – | **Öronspetsarna skars av i överkanten**, i 6a–8 (`kaninLeo`) och 17/23 (`nalleOra`/`nalleMun`) nästan halva örat. Mätt: spetsarna ligger 230–250 px (scenens mått) ovanför `huvud` | `kaninNar`/`kaninOraNer` − 68 (var − 30); `kanin` ×2,0 och + 5 (var ×2,2, + 60, fötterna är kvar i bild); `kaninLeo` ×2,0, huvud + 20; `nalleOra`/`nalleMun` ×2,2, huvud − 15; `mun` − 52 (var − 20); `mage` (rad 13) högre, nu syns kaninens öron och doktorns hår |
+| 6a | 0:54,1 | Kritan gled in till en punkt bredvid konturen och hoppade sedan till linjens början | Glider in till konturens början |
+| 6a | 0:58,1 | När konturen var klar hoppade kritan från linjens slut till väntplatsen | Glider i en båge (0,8 s) till väntplatsen och svajar |
+| 6a → 6b, 31a → 31b | 0:59,1, 3:53,1 | Kritan vreds från 140° till 125° på klippet (samma bild) | Ut-flygningen börjar med samma svaj och vinkel |
+| 31a–31b | 3:47,7–3:53,6 | Stjärnan ritades som en streckad kontur som avslöjades från vänster, kritan bredvid (inte på linjen), väntplatsen låg i överkanten (kritan halvt utanför bild) och hoppade dit | Som kritan-ritar: mörk kritlinje med kritans spets i linjens ände, in uppifrån höger, båge till en väntplats nedanför till höger om stjärnan, fylls i inifrån med en växande cirkel och linjen tonas bort |
+| 13 | 1:40–1:42 | Kaninen fnissade redan efter *"dunk, dunk"*, före *brr* och före *"det kittlas"* | Glad fram till *brr*, kall, sedan fnissig på *"Och det kittlas!"* |
+| 26 | 3:19,5 | Halva leoparden försvann bakom pallen på en bildruta (lagret byttes när den redan låg över pallen) | Lagret byts innan leoparden når pallen (0,8 i stället för 0,9) |
+| 26–29 | 3:20–3:42 | Leoparden "bakom pallen" syntes tydligt med halva huvudet över pallen redan när Malin frågar var den är | Ligger 26 px lägre: bara öronspetsarna syns (en liten ledtråd), och kiket i 28–29 blir tydligare |
+| Sakbilderna 11, 16 | – | Linjekoket (Sannas svagare boil) blev 1,4 px där, 2,5 px i alla andra bilder; i 12 och 24 blev det 3,6 px (zoomen saknades i `KZ`) | `KZ` = 1 i sakbilderna; `mun`, `mage`, `nalleMage` i tabellen; `kanin`, `kaninLeo`, `nalleOra`, `nalleMun` följer de nya zoomerna |
+
+Linjekoket svagare (Sanna 2026-11-21, ändrat av huvudsessionen och med i samma commit): `feDisplacementMap` 2,5 i stället för 5, delat med kamerazoomen (`2.5 / KZ`) så att koket är 2,5 px i bild i varje kamera, och ny brusbild 6 gånger/s i stället för 10.
+
+### Kvar (efter hur mycket det syns)
+
+1. **Rad 30 (3:43,5):** leoparden flyger från pallen till famnen på 0,3 s, och byter lager (bakom pallen → framför kaninen) mitt i flygningen. Det är snabbt och lite ryckigt. Förslag: kaninen böjer sig ner och tar den, eller leoparden skuttar upp över pallens kant på 0,5–0,6 s.
+2. **Rad 12 (1:30–1:36, `nalleMage`):** närbilden på leopardens mage skär av kaninens och doktorns huvuden vid ögonen. Det är en detaljbild, men Sanna vill aldrig klippa huvuden. Att gå ut till ×1,9 ger nästan samma bild som rad 13 (hoppklipp); bättre att låta 12 vara en ren detaljbild eller ta samma bild som 13 och flytta stetoskopet.
+3. **Rad 9 och 34 (`kaninNar`):** med luften ovanför öronen syns leopardens ansikte bara upptill i nederkanten. Rad 9 (*"Leoparden är med"*) kan få ×2,4 om leoparden ska synas mer.
+4. **Rad 13 (1:41–1:43):** huttrandet är 9 skakningar/s; i förhandsvisningen (15 fps) blir det ett flimmer på ca 6 Hz. Ser bättre ut i 30 fps, men 5–6/s vore lugnare.
+5. **Rad 15 (2:06,7):** under klappen byter armarna lager (`fram`) på en bildruta; armen rör sig fort så det syns knappt. Leoparden står kvar i luften vid sidan utan hand under klappen.
+6. **Kritgnistor** saknas när leoparden (6b) och stjärnan (31b) fylls i (kritan-ritar fas 5). Lätt att lägga till med `gnistor()`.
+7. Kvar från QA 2: 11c stetoskopet hoppar från halsen till öronen; kaninens öra i vänsterkanten i `doktorVinkar` (2, 36); lampan saknas i doktorns hand i 19, 20, 22.
+8. Ritintrots zoom (01c) går upp till ca ×2,9 med koket i papperets mått, så koket blir ca 7 px den sista sekunden innan det vita. Kort och bakom vitt, men syns om man fryser bilden.
