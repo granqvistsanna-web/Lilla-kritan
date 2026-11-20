@@ -2,8 +2,8 @@
 // ritar stillbilderna ur scen.html, skriver tabellen i storyboard.md, index.html och animatiken. (Förlaga: 045 storyboard/rader.mjs.)
 // d = radens längd i s. malin = [[replikens nr i ../rost.txt, sekunder in i raden]]. ljud = [[fil under assets/ljud/effekter/ utan
 // .m4a, sekunder in i raden]]. Längderna ur ../rost-langder.txt (tagning 1 delad 2026-11-20, replik 49 egen tagning).
-// Sannas val 2026-11-20: kritan ritar stetoskopet (rad 11a–11b, replik 10 återanvänds + 49), rad 35 behålls, hjärtslagen = `dunk`,
-// kaninens gap = bara Malins "aaa". Replik 16 används inte. Gosedjuret är en liten leopard (Sanna 2026-11-20): repliker
+// Sannas val 2026-11-20: kritan ritar stetoskopet i ritintrot (01a–01c, svaret replik 49), rad 11 = replik 16, rad 35 behålls, hjärtslagen = `dunk`,
+// kaninens gap = bara Malins "aaa". Replik 3 ("Oj! En kanin!") används inte. Gosedjuret är en liten leopard (Sanna 2026-11-20): repliker
 // 50–60 ersätter 11, 14, 17, 23, 30, 34, 35, 36, 38, 42 och 47 ("nallen" → "leoparden"); inspelade 2026-11-20 (malin-tagning-leoparden.mp3).
 import { readFileSync, existsSync } from 'node:fs';
 
@@ -19,22 +19,21 @@ const K = n => `kanin-gullig/kanin-gullig-${n}`, KN = (n, i = 1) => `kanin-ny/ka
 const HEJ = 'kanin-gullig/kanin-hej-1', HEJDA = 'kanin-gullig/kanin-hejda-1';
 const RITA = n => `krita-ritar/krita-ritar-${n}`, GLITTER = 'glitter/glitter-1', TINDRA = 'tindra/tindra-3', POP = n => `pop/pop-${n}`;
 const STEG = 'smasteg/smasteg-1', HOPP = n => `hopp-mjuk/hopp-mjuk-${n}`, KLAPP = 'klapp/klapp-1', KLICK = 'lampa-klick/lampa-klick-1';
-const DUNK = n => `dunk/dunk-${n}`;   // hjärtslagen (Sanna 2026-11-20: befintliga dunk), lågt
-const G = 0.9;   // glest tempo: extra luft på varje rad med en replik (receptets GLES)
+const HJARTA = n => `hjartslag/hjartslag-${n}`;   // hjärtslagen (ElevenLabs SFX, Sanna 2026-11-20): två mjuka slag, 1,5 s
+const G = 1.3;   // glest tempo: extra luft på varje rad med en replik (receptets GLES; 0,9 → 1,3, Sanna 2026-11-20: "a bit slower pace")
 // "dunk, dunk" i repliken: slagen på de två sista ordens plats (ca 72 % och 90 % in i repliken)
-const dunkar = (o, n) => [[DUNK(1), o + L(n) * 0.72], [DUNK(2), o + L(n) * 0.9]];
+const dunkar = (o, n, t = 2) => [[HJARTA(t), o + L(n) * 0.62]];   // ett hjärtslag (två slag) som börjar strax före "dunk, dunk"
 
 export const RADER = [
   { id: '00', d: 1.0, plats: 'Logotypen', bild: 'Lilla Kritans logotyp i 1 s, sedan papperet', ljudtext: '–', ansikte: '–' },
 
   // --- Kritan ritar kaninen (papperet) ---
   { id: '01a', d: 8.5, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [[RITA(1), 0.3]],
-    bild: 'Kritan ritar kaninens kontur i lugna drag (7 s): kroppen, de långa öronen och armarna som egna drag', ljudtext: 'kritan ritar', ansikte: '–' },
+    bild: 'Kritan ritar stetoskopets kontur i ett lugnt drag (Sanna 2026-11-20: kritan ritar stetoskopet i introt, inte kaninen): öronslangarna, slangen, bröstdelen', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
     bild: 'Konturen klar, kritan väntar bredvid och svajar: barnet gissar', ljudtext: 'tyst', ansikte: '–' },
-  { id: '01c', d: 0.6 + L(3) + 1.6, plats: 'Papperet → zoom in', malin: [[3, 0.6]], ljud: [[GLITTER, 0.1]],
-    bild: 'Kaninen fylls i inifrån. Zoom in i teckningen, in i mottagningen', ljudtext: '`glitter`', ansikte: '–' },
-
+  { id: '01c', d: 0.6 + L(49) + 1.6, plats: 'Papperet → zoom in', malin: [[49, 0.6]], ljud: [[GLITTER, 0.6]],
+    bild: 'Stetoskopet fylls i inifrån, kritan flyger ut. Zoom in i teckningen, in i mottagningen', ljudtext: '`glitter`', ansikte: '–' },
   // --- Mottagningen: hej, osäker ---
   { id: '1', d: 3.4 + L(4) + G + 1.0, plats: 'Mottagningen, helbild', malin: [[4, 3.4]], ljud: [[STEG, 0.5], [HEJ, 3.7 + L(4)]],
     bild: 'Kaninen trippar in från vänster, stannar framför pallen och vinkar (armen bakom kroppen). Doktorn står vid britsens högra ände', ljudtext: 'småsteg, hej', ansikte: 'jätteglad' },
@@ -62,14 +61,12 @@ export const RADER = [
     bild: 'Kaninen skuttar upp på pallen (*"hopp"*), sedan på britsen (*"och hopp!"*), och sätter sig med nallen i famnen', ljudtext: 'hopp × 2', ansikte: 'glad' },
 
   // --- Kritan ritar stetoskopet (Sanna 2026-11-20), lyssna på magen ---
-  { id: '11a', d: 0.3 + L(10) + 3.0, plats: 'Halvbild: doktorn och kaninen', malin: [[10, 0.3]], ljud: [[RITA(3), 0.4]],
-    bild: 'Kritan ritar stetoskopet i luften framför doktorn: slangen och bröstdelen streck för streck (3 s). Gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '11b', d: 0.6 + L(49) + G + 0.8, plats: 'Halvbild: doktorn och kaninen', malin: [[49, 0.6]], ljud: [[GLITTER, 0.1], [KN('fragande'), 0.8 + L(49)]],
-    bild: 'Stetoskopet fylls i, doktorn tar det', ljudtext: '`glitter`, frågande', ansikte: 'nyfiken' },
+  { id: '11', d: 0.4 + L(16) + G + 0.4, plats: 'Halvbild: doktorn', malin: [[16, 0.4]], ljud: [[KN('fragande'), 0.6 + L(16)]],
+    bild: 'Doktorn håller upp bröstdelen (stetoskopet är doktorns sedan introt)', ljudtext: 'frågande', ansikte: 'doktorn glad' },
   { id: '11c', d: 1.6, plats: 'Halvbild: doktorn', bild: 'Doktorn sätter propparna i öronen och sträcker bröstdelen mot britsen', ljudtext: '–', ansikte: 'doktorn glad' },
-  { id: '12', d: 0.4 + L(52) + G, plats: 'Närbild: nallens mage', malin: [[52, 0.4]], ljud: dunkar(0.4, 17),
+  { id: '12', d: 0.4 + L(52) + G, plats: 'Närbild: nallens mage', malin: [[52, 0.4]], ljud: dunkar(0.4, 52, 2),
     bild: 'Bröstdelen mot nallens mage, två små ringar på *"dunk, dunk"*. Doktorn i bild', ljudtext: '`dunk` × 2 (lågt)', ansikte: '–' },
-  { id: '13', d: 0.4 + L(18) + G + 0.8, plats: 'Närbild: kaninens mage', malin: [[18, 0.4]], ljud: [...dunkar(0.4, 18), [KN('fniss'), 0.6 + L(18)]],
+  { id: '13', d: 0.4 + L(18) + G + 0.8, plats: 'Närbild: kaninens mage', malin: [[18, 0.4]], ljud: [...dunkar(0.4, 18, 3), [KN('fniss'), 0.6 + L(18)]],
     bild: 'Bröstdelen mot kaninens mage, två små ringar. Doktorn i bild (Sanna: "place dr in frame")', ljudtext: '`dunk` × 2, fniss', ansikte: 'fnissig' },
   { id: '14', d: 0.4 + L(19) + G + 0.8, plats: 'Halvbild: doktorn', malin: [[19, 0.4]], ljud: [[KN('ja'), 0.6 + L(19)]],
     bild: 'Doktorn med stetoskopet i öronen nickar och ler', ljudtext: 'ja', ansikte: 'doktorn glad' },
