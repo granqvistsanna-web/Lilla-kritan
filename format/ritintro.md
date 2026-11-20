@@ -2,6 +2,8 @@
 
 Så görs scenen där kritan ritar dagens sak, likadant i varje färgsång. Receptet bygger på Bruna sången (007), Röda sången (013), Rosa sången (019) och Gula sången (011, 2026-11-10), och samlar det Sanna har godkänt och det hon har avvisat i dem. När avsnitten skiljer sig åt gäller det som står här.
 
+**Kritans ritande** (vinklar, fart, glidning, väntplats, fyllning, gnistor) finns samlat i skillen `kritan-ritar` och i `verktyg/kritan-ritar.js`. Använd dem i nya scener.
+
 **Mall att kopiera:** `avsnitt/011-gula-helikoptern/scener/kritan-ritar/` (`scen.js` + `index.html`). Lägg till kritans skugga och smulorna från 019 (steg 5).
 
 ## Grundidén
