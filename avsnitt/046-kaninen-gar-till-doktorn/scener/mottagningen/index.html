@@ -268,8 +268,8 @@ function S(id, tl, d) {
     case '16x': return { kam: 'lampaNar', k: brits, n: 'famn', d: { p: { ...DP('lampa', {}, del(0, 0.5, tl)), lampa: 1, ljus: tl > LT('lampa-klick')[0] ? 1 : 0 }, f: 'nyfiken' } };
     case '17': return { kam: 'nalleOra', k: brits, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
     case '18': return { kam: 'ora', k: { ...brits, f: KL.blanda(glad, KF('jatteglad'), del(MT() + ML(24) - 0.1, MT() + ML(24) + 0.25, tl)) }, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
-    case '19': return { kam: 'kaninNar', k: { ...brits, f: KL.blanda(KF('forvanad'), KF('fnissig'), del(0.4, 0.7, tl)), p: SITT({ oron: [0, 75 * del(0, 0.5, tl)] }) }, n: 'famn' };
-    case '20': { const u = del(0.1, 0.7, tl); return { kam: 'kaninNar', k: { ...brits, f: KL.blanda(KF('fnissig'), glad, del(0, 0.5, tl)), p: SITT({ oron: [0, 75 * (1 - u)], armar: [6, 6 + 70 * bump(0, 0.9, tl)] }) }, n: 'famn' }; }
+    case '19': return { dx: 130, kam: 'kaninOraNer', k: { ...brits, f: KL.blanda(KF('forvanad'), KF('fnissig'), del(0.4, 0.7, tl)), p: SITT({ oron: [0, 75 * del(0, 0.5, tl)] }) }, n: 'famn' };
+    case '20': { const u = del(0.1, 0.7, tl); return { dx: 130, kam: 'kaninOraNer', k: { ...brits, f: KL.blanda(KF('fnissig'), glad, del(0, 0.5, tl)), p: SITT({ oron: [0, 75 * (1 - u)], armar: [6, 6 + 70 * bump(0, 0.9, tl)] }) }, n: 'famn' }; }
     case '21': { const v = 10 * Math.sin(2 * Math.PI * 2.2 * tl) * del(MT(1), MT(1) + 0.3, tl);
       return { kam: 'kaninOron', k: { ...brits, f: KL.blanda(KL.blanda(KF('jatteglad'), KF('nyfiken'), del(0, 0.5, tl)), KF('fnissig'), del(MT(1) - 0.1, MT(1) + 0.25, tl)), p: SITT({ oron: [-v, v] }) }, n: 'famn' }; }
     case '22': return { kam: 'doktorNar', k: brits, n: 'famn', d: { p: DP('neutral', { nick: DNICK(tl) }), f: 'nyfiken' } };
@@ -304,14 +304,14 @@ function S(id, tl, d) {
 function ritaRad(id, tl, d) {
   const s = S(id, tl, d); ['bak', 'mellan', 'saker', 'fram', 'papper'].forEach(n => $(n).innerHTML = '');
   $('ram').innerHTML = '';
-  KZ = { ora: 2.3, nalleOra: 2.6, nalleMun: 2.4, kaninOron: 2.4, hel: 1, kanin: 2.2, kaninNar: 2.8, kaninLeo: 2.2, stetoNar: 3.0, doktorVinkar: 2.0, lampaNar: 3.0, doktor: 2.5, doktorNar: 3.0, dokKanin: 1.35, steto: 1.8, pall: 2.4 }[s.kam] ?? 1.8;
+  KZ = { ora: 2.3, nalleOra: 2.6, nalleMun: 2.4, kaninOron: 2.4, hel: 1, kanin: 2.2, kaninNar: 2.8, kaninOraNer: 2.8, kaninLeo: 2.2, stetoNar: 3.0, doktorVinkar: 2.0, lampaNar: 3.0, doktor: 2.5, doktorNar: 3.0, dokKanin: 1.35, steto: 1.8, pall: 2.4 }[s.kam] ?? 1.8;
   $('ram').innerHTML = '';
   $('kamera').setAttribute('opacity', 1);
   if (s.sak) return sakbild(s, tl);
   if (s.papper) return papper(s, tl, d);
   const k = s.k || {}, dd = s.d || {};
   kaninPa(k.pa || PA_GOLV); KL.rita(GK, BL(k.f || KF('glad'), TT), liv(k.p || KP(), TT));
-  doktorPa(DOKTOR[0], DOKTOR[1]);
+  doktorPa(DOKTOR[0] + (s.dx ?? 0), DOKTOR[1]);   // dx: doktorn flyttas i en närbild (klipp), t.ex. så att örat som ramlar syns
   // Inget stetoskop förrän kritan har ritat det (Sanna 2026-11-20): före 11b, och i 11b tills teckningen har glidit till doktorns hals.
   let dp = dd.p || DP();   // stetoskopet är doktorns sedan ritintrot
   // Doktorns personlighet (Sanna 2026-11-20: "more personality from doctor"): lite liv hela tiden (gungar, lutar huvudet),
@@ -402,6 +402,7 @@ function ritaRad(id, tl, d) {
     case 'hel': kamera(1, 960, 540); break;
     case 'kanin': kamera(2.2, huvud[0], huvud[1] + 60); break;
     case 'kaninNar': kamera(2.8, huvud[0], huvud[1] - 30); break;   // QA 2: öronen i bild (var + 10)
+    case 'kaninOraNer': kamera(2.8, huvud[0] + 90, huvud[1] - 30); break;   // rad 19–20: mer åt höger, örat som ramlar (Sanna 2026-11-20: "2.29 move camera more to the right")
     case 'kaninOron': kamera(2.4, huvud[0] - 25, huvud[1] - 45); break;   // rad 21 (Sanna: lite upp och till vänster), hela öronen i bild
     case 'kaninLeo': kamera(2.2, (huvud[0] + golvN[0]) / 2, (huvud[1] + golvN[1]) / 2 - 20); break;   // kaninens ansikte och leoparden på golvet
     case 'doktor': { const [x, y] = dhuvud(); kamera(2.5, x - 120, y + 60); break; }
