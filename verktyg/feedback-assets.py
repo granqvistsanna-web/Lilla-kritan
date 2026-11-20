@@ -9,7 +9,9 @@ OUT = ROOT / "feedback" / "assets"
 IMG = {".png", ".jpg", ".jpeg", ".webp"}
 # platser Sanna rensat bort från fliken (2026-11-20); filerna ligger kvar
 DOLD = {"vinterkullen-natt-v3", "vinterkullen-v2", "vinterkullen-v3", "julskogen-v2", "dammen", "busshallplatsen",
-        "bondgarden-natt", "badplatsen"}
+        "bondgarden-natt", "badplatsen", "bjornen-bulle"}
+# huvudbild när mappens egen är en gammal version (Kanel: v1 överst, v2 i premium/)
+HUVUD = {"kaninen-kanel": "premium/original/kanel-platt.png", "katten-kaj": "premium/original/kaj-djup.jpg"}
 SKIP = ("faceless", "back", "side", "body", "kontakt", "jamfor", "rigg", "test", "mask", "armar", "stills", "klapp", "fore")
 
 
@@ -27,7 +29,7 @@ items = []
 for typ in ("karaktarer", "rekvisita", "bakgrunder"):
     (OUT / typ).mkdir(parents=True, exist_ok=True)
     for d in sorted(p for p in (ROOT / "assets" / typ).iterdir() if p.is_dir() and " " not in p.name and p.name not in DOLD):
-        src = main_image(d)
+        src = d / HUVUD[d.name] if d.name in HUVUD else main_image(d)
         if not src:
             continue
         fmt = "jpeg" if typ == "bakgrunder" else "png"   # figurer och saker behöver genomskinlighet

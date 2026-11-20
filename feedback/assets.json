@@ -25,12 +25,6 @@
  },
  {
   "typ": "karaktarer",
-  "name": "bjornen-bulle",
-  "thumb": "assets/karaktarer/bjornen-bulle.png",
-  "src": "../assets/karaktarer/bjornen-bulle/bjornen-bulle.png"
- },
- {
-  "typ": "karaktarer",
   "name": "bussen-bettan",
   "thumb": "assets/karaktarer/bussen-bettan.png",
   "src": "../assets/karaktarer/bussen-bettan/bussen-bettan.png"
@@ -117,13 +111,13 @@
   "typ": "karaktarer",
   "name": "kaninen-kanel",
   "thumb": "assets/karaktarer/kaninen-kanel.png",
-  "src": "../assets/karaktarer/kaninen-kanel/kanel.png"
+  "src": "../assets/karaktarer/kaninen-kanel/premium/original/kanel-platt.png"
  },
  {
   "typ": "karaktarer",
   "name": "katten-kaj",
   "thumb": "assets/karaktarer/katten-kaj.png",
-  "src": "../assets/karaktarer/katten-kaj/katten-kaj.png"
+  "src": "../assets/karaktarer/katten-kaj/premium/original/kaj-djup.jpg"
  },
  {
   "typ": "karaktarer",
