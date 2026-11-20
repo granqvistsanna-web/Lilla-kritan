@@ -6777,5 +6777,85 @@
   "at": 1795181857332,
   "render": "2026-11-20 07:49 (Lucka 15: hela 045 bakom luckan, slutrendering efter grind 6)",
   "fixedAt": 1795182639950
+ },
+ "yxg1vjg9esmwp27zs1": {
+  "ep": "J15",
+  "time": "0:35",
+  "sec": 35,
+  "tags": [],
+  "note": "lower music a bit",
+  "fixed": false,
+  "at": 1795184031457,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "mf2wkquedtmwp2a8y3": {
+  "ep": "J15",
+  "time": "2:03",
+  "sec": 123,
+  "tags": [],
+  "note": "slower walk from lamm",
+  "fixed": false,
+  "at": 1795184136651,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "93fekiww41mwp2afjg": {
+  "ep": "J15",
+  "time": "2:05",
+  "sec": 125,
+  "tags": [],
+  "note": "better rig walk",
+  "fixed": false,
+  "at": 1795184145196,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "wra07mbew3mwp2andr": {
+  "ep": "J15",
+  "time": "2:05",
+  "sec": 125,
+  "tags": [],
+  "note": "no overalp lamma and grytwantar on walk",
+  "fixed": false,
+  "at": 1795184155358,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "3zrqgnu4q0mwp2bd73": {
+  "ep": "J15",
+  "time": "2:19",
+  "sec": 139,
+  "tags": [],
+  "note": "some cuts of expressions and positions looks jagged aim for smooth aniamtion",
+  "fixed": false,
+  "at": 1795184188815,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "3savydwq1imwp2c8ky": {
+  "ep": "J15",
+  "time": "3:23",
+  "sec": 203,
+  "tags": [],
+  "note": "klocka  is behind lamm on walk should be infront of",
+  "fixed": false,
+  "at": 1795184229490,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "kidic7z8emwp2cizr": {
+  "ep": "J15",
+  "time": "3:31",
+  "sec": 211,
+  "tags": [],
+  "note": "lamm blås animarion",
+  "fixed": false,
+  "at": 1795184242983,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
+ },
+ "vea9moic8amwp2csln": {
+  "ep": "J15",
+  "time": "3:35",
+  "sec": 215,
+  "tags": [],
+  "note": "degen tar slut när lammet är klar",
+  "fixed": false,
+  "at": 1795184255435,
+  "render": "2026-11-20 14:50 (Runda 1 20/11 (förhandsvisning --snabb): Up on the Housetop som julmusik, mjukare rad 6, bää −3 dB, lammet bär plåten till ugnen och hämtar den)"
  }
 }
