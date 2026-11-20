@@ -6630,9 +6630,10 @@
   "sec": 32,
   "tags": [],
   "note": "improve wacing, leo wave arm behind body",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179530574,
-  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))"
+  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))",
+  "fixedAt": 1795180292296
  },
  "oxb2427x0qmwozjty7": {
   "ep": "J03",
@@ -6640,9 +6641,10 @@
   "sec": 40,
   "tags": [],
   "note": "more closeups on faces",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179544927,
-  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))"
+  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))",
+  "fixedAt": 1795180292296
  },
  "qn0nn9y4scmwozm1vr": {
   "ep": "J03",
@@ -6650,9 +6652,10 @@
   "sec": 154,
   "tags": [],
   "note": "make leo a bit larger in bedroom",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179648519,
-  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))"
+  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))",
+  "fixedAt": 1795180292296
  },
  "kr8bqdo92pmwozmr6z": {
   "ep": "J03",
@@ -6660,8 +6663,9 @@
   "sec": 161,
   "tags": [],
   "note": "improve animation leo hug nalle",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179681323,
-  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))"
+  "render": "2026-11-20 10:37 (runda 6: musiken och stegen lägre, jätteglad med glädjehopp och viftande svans (0:40), fniss under skjortan (1:09), borsten lägre (1:45), huvudet sänks mjukt (1:54), vaggar och vickar öronen till spinnet (2:01); förhandsvisning (--snabb))",
+  "fixedAt": 1795180292296
  }
 }
