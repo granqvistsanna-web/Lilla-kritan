@@ -9,7 +9,7 @@
   "typ": "karaktarer",
   "name": "ankan-agda",
   "thumb": "assets/karaktarer/ankan-agda.png",
-  "src": "../assets/karaktarer/ankan-agda/ankan-agda.png"
+  "src": "../assets/karaktarer/ankan-agda/premium/original/agda-platt.png"
  },
  {
   "typ": "karaktarer",
@@ -39,7 +39,7 @@
   "typ": "karaktarer",
   "name": "dinon-disa",
   "thumb": "assets/karaktarer/dinon-disa.png",
-  "src": "../assets/karaktarer/dinon-disa/dinon-disa.png"
+  "src": "../assets/karaktarer/dinon-disa/premium/original/disa-djup.jpg"
  },
  {
   "typ": "karaktarer",
@@ -63,7 +63,7 @@
   "typ": "karaktarer",
   "name": "fjarilen-fia",
   "thumb": "assets/karaktarer/fjarilen-fia.png",
-  "src": "../assets/karaktarer/fjarilen-fia/fia.png"
+  "src": "../assets/karaktarer/fjarilen-fia/premium/original/fia-platt.png"
  },
  {
   "typ": "karaktarer",
@@ -81,31 +81,31 @@
   "typ": "karaktarer",
   "name": "grodan-gurra",
   "thumb": "assets/karaktarer/grodan-gurra.png",
-  "src": "../assets/karaktarer/grodan-gurra/grodan-gurra.png"
+  "src": "../assets/karaktarer/grodan-gurra/premium/original/gurra-platt.png"
  },
  {
   "typ": "karaktarer",
   "name": "hasten-hulda",
   "thumb": "assets/karaktarer/hasten-hulda.png",
-  "src": "../assets/karaktarer/hasten-hulda/hasten-hulda.png"
+  "src": "../assets/karaktarer/hasten-hulda/premium/original/hulda-forsta-a.jpg"
  },
  {
   "typ": "karaktarer",
   "name": "humlan-humle",
   "thumb": "assets/karaktarer/humlan-humle.png",
-  "src": "../assets/karaktarer/humlan-humle/humlan-humle.png"
+  "src": "../assets/karaktarer/humlan-humle/premium/original/humle-platt.png"
  },
  {
   "typ": "karaktarer",
   "name": "hunden-hugo",
   "thumb": "assets/karaktarer/hunden-hugo.png",
-  "src": "../assets/karaktarer/hunden-hugo/hunden-hugo.png"
+  "src": "../assets/karaktarer/hunden-hugo/premium/original/hugo-forsta-a.jpg"
  },
  {
   "typ": "karaktarer",
   "name": "igelkotten-igge",
   "thumb": "assets/karaktarer/igelkotten-igge.png",
-  "src": "../assets/karaktarer/igelkotten-igge/igelkotten-igge.png"
+  "src": "../assets/karaktarer/igelkotten-igge/premium/original/igge-forsta-b.png"
  },
  {
   "typ": "karaktarer",
@@ -123,49 +123,49 @@
   "typ": "karaktarer",
   "name": "kon-kajsa",
   "thumb": "assets/karaktarer/kon-kajsa.png",
-  "src": "../assets/karaktarer/kon-kajsa/kon-kajsa.png"
+  "src": "../assets/karaktarer/kon-kajsa/premium/original/kajsa-platt.jpg"
  },
  {
   "typ": "karaktarer",
   "name": "kycklingen-pip",
   "thumb": "assets/karaktarer/kycklingen-pip.png",
-  "src": "../assets/karaktarer/kycklingen-pip/kycklingen-pip.png"
+  "src": "../assets/karaktarer/kycklingen-pip/premium/original/pip-platt.png"
  },
  {
   "typ": "karaktarer",
   "name": "lammet-ludde",
   "thumb": "assets/karaktarer/lammet-ludde.png",
-  "src": "../assets/karaktarer/lammet-ludde/ludde.png"
+  "src": "../assets/karaktarer/lammet-ludde/premium/original/ludde-platt.png"
  },
  {
   "typ": "karaktarer",
   "name": "lejonet-lage",
   "thumb": "assets/karaktarer/lejonet-lage.png",
-  "src": "../assets/karaktarer/lejonet-lage/lejonet-lage.png"
+  "src": "../assets/karaktarer/lejonet-lage/premium-v3/original/lage-slat-a.png"
  },
  {
   "typ": "karaktarer",
   "name": "leoparden-lova",
   "thumb": "assets/karaktarer/leoparden-lova.png",
-  "src": "../assets/karaktarer/leoparden-lova/leoparden-lova.png"
+  "src": "../assets/karaktarer/leoparden-lova/premium/original/lova-forsta.jpg"
  },
  {
   "typ": "karaktarer",
   "name": "mamma-mor",
   "thumb": "assets/karaktarer/mamma-mor.png",
-  "src": "../assets/karaktarer/mamma-mor/mor.png"
+  "src": "../assets/karaktarer/mamma-mor/premium/original/mor-platt.jpg"
  },
  {
   "typ": "karaktarer",
   "name": "musen-mille",
   "thumb": "assets/karaktarer/musen-mille.png",
-  "src": "../assets/karaktarer/musen-mille/musen-mille.png"
+  "src": "../assets/karaktarer/musen-mille/premium/original/mille-platt.png"
  },
  {
   "typ": "karaktarer",
   "name": "nyckelpigan-nicke",
   "thumb": "assets/karaktarer/nyckelpigan-nicke.png",
-  "src": "../assets/karaktarer/nyckelpigan-nicke/nyckelpigan-nicke.png"
+  "src": "../assets/karaktarer/nyckelpigan-nicke/premium/original/nicke-forsta-c2.jpg"
  },
  {
   "typ": "karaktarer",
@@ -177,7 +177,7 @@
   "typ": "karaktarer",
   "name": "pojken-olle",
   "thumb": "assets/karaktarer/pojken-olle.png",
-  "src": "../assets/karaktarer/pojken-olle/olle.png"
+  "src": "../assets/karaktarer/pojken-olle/premium/original/olle-forsta-b.jpg"
  },
  {
   "typ": "karaktarer",
@@ -201,7 +201,7 @@
   "typ": "karaktarer",
   "name": "zebran-zebbe",
   "thumb": "assets/karaktarer/zebran-zebbe.png",
-  "src": "../assets/karaktarer/zebran-zebbe/zebran-zebbe.png"
+  "src": "../assets/karaktarer/zebran-zebbe/premium/original/zebbe-platt.jpg"
  },
  {
   "typ": "rekvisita",

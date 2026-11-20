@@ -10,8 +10,17 @@ IMG = {".png", ".jpg", ".jpeg", ".webp"}
 # platser Sanna rensat bort från fliken (2026-11-20); filerna ligger kvar
 DOLD = {"vinterkullen-natt-v3", "vinterkullen-v2", "vinterkullen-v3", "julskogen-v2", "dammen", "busshallplatsen",
         "bondgarden-natt", "badplatsen", "bjornen-bulle"}
-# huvudbild när mappens egen är en gammal version (Kanel: v1 överst, v2 i premium/)
-HUVUD = {"kaninen-kanel": "premium/original/kanel-platt.png", "katten-kaj": "premium/original/kaj-djup.jpg"}
+HUVUD = {  # v2-bilden (godkänd konst i karaktarer/<namn>.md); mappens egen huvudbild är v1
+    "ankan-agda": "premium/original/agda-platt.png", "dinon-disa": "premium/original/disa-djup.jpg",
+    "fjarilen-fia": "premium/original/fia-platt.png", "grodan-gurra": "premium/original/gurra-platt.png",
+    "hasten-hulda": "premium/original/hulda-forsta-a.jpg", "humlan-humle": "premium/original/humle-platt.png",
+    "hunden-hugo": "premium/original/hugo-forsta-a.jpg", "igelkotten-igge": "premium/original/igge-forsta-b.png",
+    "kaninen-kanel": "premium/original/kanel-platt.png", "katten-kaj": "premium/original/kaj-djup.jpg",
+    "kon-kajsa": "premium/original/kajsa-platt.jpg", "kycklingen-pip": "premium/original/pip-platt.png",
+    "lammet-ludde": "premium/original/ludde-platt.png", "lejonet-lage": "premium-v3/original/lage-slat-a.png",
+    "leoparden-lova": "premium/original/lova-forsta.jpg", "mamma-mor": "premium/original/mor-platt.jpg",
+    "musen-mille": "premium/original/mille-platt.png", "nyckelpigan-nicke": "premium/original/nicke-forsta-c2.jpg",
+    "pojken-olle": "premium/original/olle-forsta-b.jpg", "zebran-zebbe": "premium/original/zebbe-platt.jpg"}
 SKIP = ("faceless", "back", "side", "body", "kontakt", "jamfor", "rigg", "test", "mask", "armar", "stills", "klapp", "fore")
 
 
