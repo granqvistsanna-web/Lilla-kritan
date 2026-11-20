@@ -1,6 +1,6 @@
 # 046 – stetoskopet och öronlampan: Flow-prompter (grind 2, utkast)
 
-Grind 2 för sakerna. Doktorn A och mottagningen v2 är klara, så de två nya sakerna görs nu. Google Flow, Nano Banana Pro, 1:1, 0 krediter, **4 tagningar per sak**. Lägg tagningarna i `assets/rekvisita/<sak>/original/<sak>-1…4.jpg`, sedan gör Claude `original/jamforelse.jpg`, och Sanna väljer. Först efter valet skrivs `rekvisita/stetoskop.md` och `rekvisita/oronlampa.md` och raderna i `rekvisita/README.md`.
+Grind 2 för sakerna. Doktorn A och mottagningen v2 är klara. Nu görs de två nya sakerna och doktorn utan stetoskop (se nedan). Google Flow, Nano Banana Pro, 1:1, 0 krediter, **4 tagningar per sak**. Lägg tagningarna i `assets/rekvisita/<sak>/original/<sak>-1…4.jpg`, sedan gör Claude `original/jamforelse.jpg`, och Sanna väljer. Först efter valet skrivs `rekvisita/stetoskop.md` och `rekvisita/oronlampa.md` och raderna i `rekvisita/README.md`.
 
 **Stilreferenser (samma för båda):**
 
@@ -28,6 +28,16 @@ En liten handlampa för öronen: kraftigt handtag, rundat huvud, kort trubbig sp
 
 ```prompt
 Images 1 and 2 are STYLE references only: copy their drawing technique exactly (clean, smooth, even colour fill with only a very subtle fine crayon grain, soft premium toddler picture-book look, no dark outline, clean white sticker border), not their subjects. Draw ONE simple toy-like doctor's ear light, lying sideways and seen exactly from the side, very simple and childish: a short chunky rounded handle in soft turquoise (#3BB4A8) on the RIGHT, with one small round light grey button on top, joined to a rounded white head (#F4F4F2) with a soft light grey rim, and from the head a short, wide, BLUNT, rounded light grey cone tip (#C9D2DA) pointing to the LEFT. The tip is soft and round at the end, never sharp. The whole light is about three times as long as it is tall. Big simple shapes, few parts, no light beam, no glow, no metal shine, no reflections, no text, no face, no shading, no 3D, no outline. A thick, clean, even white sticker border all around the whole light as one piece. Centered with space around, plain pure solid white background, no shadow, no ground, no hand.
+```
+
+## Doktorn A utan stetoskop (redigering)
+
+Sanna 2026-11-20: **när doktorn lyssnar ska stetoskopet sitta i doktorns öron.** Stetoskopet är inbakat i doktorns kropp (runt halsen), så det kan inte flyttas. Därför görs kroppen om utan stetoskop, och hela stetoskopet ritas i kod: runt halsen som nu, eller med öronpropparna i öronen (öronen syns under håret vid ca x 385 och 640, y 265 i 1024-rutan) och slangen ner till bröstdelen i handen. Det här är en redigering av en låst figur, gjord på Sannas begäran.
+
+Bild 1 = `assets/karaktarer/doktorn-a/premium/original/doktorn-a-utan-lemmar.jpg`. 2 tagningar räcker. Bara kroppen klipps om (`cut/doktorn-a-body-nk.png`); huvud, armar och ben är oförändrade.
+
+```prompt
+Edit Image 1. Keep the doctor EXACTLY the same: same blank face, hair, ears, neck, white coat with its lapels, pocket and shoulder seams, turquoise top, colours, position and size in the frame, same flat crayon texture, same thick clean white sticker border, same pure white background. ONLY change: remove the stethoscope completely, both the dark grey tube around the neck and the round silver chest piece. Fill those areas with the same white coat, lapels and turquoise top that would be underneath, continuing the existing shapes and texture seamlessly. Nothing else changes.
 ```
 
 ## Efter valet

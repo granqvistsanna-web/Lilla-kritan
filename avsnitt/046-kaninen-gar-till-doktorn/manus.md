@@ -24,7 +24,7 @@
 | Upp på britsen | två lugna skutt: upp på pallen, upp på britsen (`hopp()` som pallen i 020). Sedan **sittposen**, nallen i famnen, och kaninen sitter kvar till uppslag 30 |
 | Doktorn | står still till höger om britsen. Rör bara: nick (huvudet ner och upp), litet leende, ena armen lite upp mot kaninen i den breda bilden, vinkning (armen bakom kroppen, ut förbi kanten). Går aldrig, sätter sig aldrig |
 | Doktorns hand i närbild | **instick:** ett urklipp (rockärm, hand, saken) glider in från högra bildkanten på 0,6 s, stannar på magen, örat eller framför munnen, glider ut. Ingen riggarm i närbilderna |
-| Lyssnar | bröstdelen stilla mot magen. Två små mjuka ringar växer ut från den i takt med *"dunk, dunk"* |
+| Lyssnar | **Stetoskopet sitter i doktorns öron när doktorn lyssnar** (Sanna 2026-11-20). Halvbilden på doktorn (11b, 14) visar öronpropparna i öronen och slangen ner till handen; stetoskopet ritas i kod på doktorn (runt halsen eller i öronen), så doktorns kropp behöver en version utan stetoskop. I närbilden: bröstdelen stilla mot magen. Två små mjuka ringar växer ut från den i takt med *"dunk, dunk"* |
 | Lampan | en mjuk gul cirkel tänds med `lampa-klick` och lyser på örat. Örat glöder svagt varmt. Släcks när handen går ut |
 | Örat ramlar ner | kaninens ena öra faller lugnt ner framför ögat (vridning 0 → 70° på 0,5 s) och lyfts upp igen av tassen (raka armen) |
 | Gapar | O-munnen, öppnas på 0,3 s, hålls 1,2 s, stängs |
@@ -56,9 +56,10 @@ Kritan ritar kaninen: konturen i lugna drag (7 s), de långa öronen och armarna
 | 9 | Närbild, kaninen med nallen i famnen, huvudet lutar mot nallen | Nallen är med. Då går det bra. | `kanin-gullig-4` (mysig suck) |
 | 10 | Helbild. Doktorn pekar på britsen. Kaninen skuttar upp på pallen, sedan på britsen, och sätter sig | Upp på britsen! Hopp … och hopp! | `hopp-mjuk` ×2 |
 | 11 | Närbild, instick: handen med stetoskopet glider in och stannar i bild | Titta, ett stetoskop. Med det lyssnar doktorn. | `kanin-ny-fragande` |
+| 11b | Halvbild på doktorn: stetoskopet lyfts från halsen och öronpropparna sätts i öronen, armen pekar mot britsen. Ingen ny replik (under slutet av 11) | – | – |
 | 12 | Närbild på nallens mage, stetoskopet mot den, två små ringar | Först nallen. Lyssna, lyssna … dunk, dunk! | hjärtslag ×2 (mjukt) |
 | 13 | Närbild på kaninens mage, stetoskopet mot den, två små ringar | Nu kaninen. Lyssna, lyssna … dunk, dunk! | hjärtslag ×2, `kanin-ny-fniss` |
-| 14 | Helbild, doktorn nickar och ler | Fint! Doktorn hörde magen. | `kanin-ny-ja` |
+| 14 | Halvbild på doktorn med stetoskopet i öronen: doktorn nickar och ler, sedan tillbaka runt halsen | Fint! Doktorn hörde magen. | `kanin-ny-ja` |
 | 15 | Halvbild, kaninen klappar sig på magen med ena tassen | Kan du visa var din mage är? *(paus 4 s)* Där! | `klapp` |
 | 16 | Närbild, instick: handen med öronlampan glider in, ljuset tänds | Och här är en lampa. Doktorn tittar i öronen. | `lampa-klick` |
 | 17 | Närbild på nallens öra, ljuset lyser på det | Först nallen. Titta, titta … fint! | `tindra` |

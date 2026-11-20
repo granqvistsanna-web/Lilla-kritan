@@ -76,7 +76,7 @@ Det här är det viktigaste: besöken ska gå att göra i bilderbokens takt.
 4. **Djuret sitter på britsen hela tiden.** Ett hopp upp (`hopp()` som pallen i 020), sedan sittposen. Inget mer gående. Nallen sitter i djurets famn, fäst vid tasspetsen som tvålen.
 5. **Britsen, lampan och vågen ligger i plattan.** Bara det som rör sig är egna urklipp.
 6. **Sakerna är enkla och syns från sidan:**
-   - **Stetoskopet:** bröstdelen (en rund skiva) är ett urklipp vid handen. Slangen ritas i kod som en mjuk kritkurva från doktorns hals till handen, så den följer med av sig själv.
+   - **Stetoskopet:** bröstdelen (en rund skiva) är ett urklipp vid handen. Slangen ritas i kod som en mjuk kritkurva, så den följer med av sig själv. **När doktorn lyssnar sitter öronpropparna i doktorns öron** (Sanna 2026-11-20): visa det i en halvbild på doktorn, med slangen från öronen ner till handen. Därför ritas hela stetoskopet i kod på doktorn (runt halsen eller i öronen), och doktorns kropp görs utan stetoskop.
    - **Öronlampan:** ett urklipp. Ljuset är en mjuk gul cirkel i kod.
    - **Sprutan:** ett litet urklipp utan synlig nål.
    - **Plåstret:** ritas i kod (rundad rektangel, hudrosa, gul stjärna), som tvålen. Det poppar fram, det sätts inte på.
