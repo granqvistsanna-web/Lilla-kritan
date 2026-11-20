@@ -1,5 +1,7 @@
 # 046 – stetoskopet och öronlampan: Flow-prompter (grind 2, utkast)
 
+> **Används inte** (Sanna 2026-11-20: *"stetoskop kod"*, *"öronlampa kod"*). Båda ritas i kod i [`verktyg/doktor-saker.js`](../../verktyg/doktor-saker.js). Bara redigeringen *Doktorn A utan stetoskop* nedan är gjord (`doktorn-a-utan-stetoskop.jpg`). Prompterna sparas om en bild behövs senare.
+
 Grind 2 för sakerna. Doktorn A och mottagningen v2 är klara. Nu görs de två nya sakerna och doktorn utan stetoskop (se nedan). Google Flow, Nano Banana Pro, 1:1, 0 krediter, **4 tagningar per sak**. Lägg tagningarna i `assets/rekvisita/<sak>/original/<sak>-1…4.jpg`, sedan gör Claude `original/jamforelse.jpg`, och Sanna väljer. Först efter valet skrivs `rekvisita/stetoskop.md` och `rekvisita/oronlampa.md` och raderna i `rekvisita/README.md`.
 
 **Stilreferenser (samma för båda):**

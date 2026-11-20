@@ -1,13 +1,13 @@
 # Avsnitt 046 – Kaninen går till doktorn (plan)
 
-**Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, version 1. Grind 2: doktorn A och mottagningen v2 klara; **nästa: stetoskopet och öronlampan**, prompterna i [`saker-prompter.md`](saker-prompter.md) (förslag: doktorns hand i närbilderna ritas i kod med `armRita()`, inga hand-urklipp). Piloten för **Besöket** ([`format/besoket.md`](../../format/besoket.md)), en gren av bilderboken ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Avsnittet förbereder små barn för ett besök hos doktorn. Malin berättar och kaninen svarar med ljud, öron och ansikte. **Doktorn säger inget**, **ingen spruta**, **bara mottagningen** (Sanna 2026-11-20). Inget är byggt än. Ca 4 min.
+**Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, version 1. Grind 2: doktorn A (nu utan inbakat stetoskop), mottagningen v2, stetoskopet och öronlampan i kod (`uttryck.html?ark=saker`). Nästa: närbildsprovet med kodhanden mot kaninens mage och öra, sedan grind 3 (Malins röst). Piloten för **Besöket** ([`format/besoket.md`](../../format/besoket.md)), en gren av bilderboken ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Avsnittet förbereder små barn för ett besök hos doktorn. Malin berättar och kaninen svarar med ljud, öron och ansikte. **Doktorn säger inget**, **ingen spruta**, **bara mottagningen** (Sanna 2026-11-20). Inget är byggt än. Ca 4 min.
 
 | | |
 |---|---|
 | **Titel** | Kaninen går till doktorn (avsnitt 46) |
 | **Figurer (2)** | **Kaninen Kanel** (v2, riggad, sittposen finns) · **Doktorn** (ny, **mer mänskliga proportioner och en egen rigg**, Sanna 2026-11-20: runt huvud på kort hals, kropp i rock, raka armar och ben; görs med `lk-figur`, prompterna i [`doktorn-prompter.md`](doktorn-prompter.md)). **Sanna valde doktorn A** 2026-11-20 (vit rock, röda lockar): [`karaktarer/doktorn-a.md`](../../karaktarer/doktorn-a.md). Doktorn står still vid britsen, nickar, ler och vinkar |
 | **Platser (1)** | **Mottagningen** (ny platta 16:9, [`bakgrunder/mottagningen.md`](../../bakgrunder/mottagningen.md), alternativ D vald av Sanna 2026-11-20): himmelsblå vägg, korallröd brits med papper, vit pall, undersökningslampa på väggen, ljust golv. Inget platsbyte |
-| **Saker** | **nallen** (finns, `rekvisita/nalle.md`, ritas av kritan) · **stetoskopet** (nytt) · **öronlampan** (ny) |
+| **Saker** | **nallen** (finns, `rekvisita/nalle.md`, ritas av kritan) · **stetoskopet** och **öronlampan** ritas i kod (Sanna 2026-11-20, [`verktyg/doktor-saker.js`](../../verktyg/doktor-saker.js)), inga bilder |
 | **I kod** | stetoskopets slang (mjuk kritkurva från doktorns hals till handen), lampans ljus, klistermärket med stjärnan (ritas av kritan), skimret, hjärtslagens små ringar |
 | **Musik** | ingen |
 | **Favoriter** | 🐰 kanin · 🧸 nalle |
@@ -160,7 +160,7 @@ Familjerna finns: `kanin-gullig` (8 känslor, plus `kanin-hej` och `kanin-hejda`
 - [x] Inget läskigt: ingen spruta, ingen gråt, inga ord som ont, sjuk, farligt, rädd eller modig. Känslan *"lite osäker"* sägs högt och nallen hjälper
 - [x] Fniss: 19–20, 23, 33 (högst 3–4, aldrig två rader i följd med fniss över Malin)
 - [x] Ingen ny musik
-- [x] 2 nya saker (stetoskopet, öronlampan), inom `format/regler.md`
+- [x] Inga nya saker som bilder: stetoskopet och öronlampan ritas i kod, som plåstret
 - [ ] **Avsteg:** 2 figurer. Bilderboken har 1, men doktorn behövs. Doktorn är tyst och står still, så det är en lätt figur
 - [ ] **Avsteg:** ny figur (doktorn) och ny platta (mottagningen). Båda görs en gång och återanvänds i hela Besöket
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt

@@ -89,7 +89,7 @@ Det här är det viktigaste: besöken ska gå att göra i bilderbokens takt.
 |---|---|---|
 | Doktorn | egen rigg (`verktyg/doktor_delar.py`), `karaktarer/doktorn-a.md` och `doktorn-b.md` | en gång för hela serien |
 | Mottagningen | ny platta 16:9: lugn vägg (mint eller ljusblå), vitt golv, britsen med papper, ett fönster, en tavla med ett djur, en våg | en gång |
-| Stetoskop, öronlampa | två urklipp i Flow, stilreferens = avsnittets saker (sprutan görs först till BVC-avsnittet) | en gång |
+| Stetoskop, öronlampa | **i kod** (`verktyg/doktor-saker.js`, Sanna 2026-11-20), stetoskopet runt halsen eller i doktorns öron; doktorns kropp är utan inbakat stetoskop (sprutan görs först till BVC-avsnittet) | en gång |
 | Doktorns hand-instick | ett urklipp per sak (ärm + hand + sak) | en gång per sak |
 | Ljud | hjärtslag, lampklick, plåsterpop, djurets *"aaa"* och *"aj"* (Openverse först) | en gång |
 

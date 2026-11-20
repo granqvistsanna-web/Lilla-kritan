@@ -43,6 +43,7 @@
 <script src="../../../../verktyg/blinka.js"></script>
 <script src="../../../../verktyg/rigg-motor.js"></script>
 <script src="../../../../verktyg/rigg-three.js"></script>
+<script src="../../../../verktyg/doktor-saker.js"></script>
 <script>
 // Vridpunkter ur mor-rigg.json. Armarna och benen är ritade (premium/skript/mor_lemmar.py): armen EN rund stump i ett stycke
 // (smal underarm, rund hand) med vridpunkten där den kommer ut under ärmen, benen persika med brun sko och lång rot 80 px upp
@@ -123,7 +124,7 @@ const UTTRYCK = {
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0, armbage: [0, 0] };
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0, armbage: [0, 0], steto: 0, lampa: 0, ljus: 0 };
 const POSER = {
   neutral:   { namn: 'neutral' },
   lutaV:     { namn: 'lutar vänster', luta: -1.5, boj: -4.5 },
@@ -143,6 +144,10 @@ const POSER = {
   huka:      { namn: 'hukar (före hopp)', strack: -0.08, bred: 0.05, ben: [6, 6], armar: [-10, -10] },
   stampar:   { namn: 'stampar', ben: [0, 8], benY: [0, -16], luta: -2 },
   lyssnar:   { namn: 'lyssnar', luta: 2, boj: 5.5 },
+  // Stetoskopet i öronen (Sanna 2026-11-20: "när läkaren lyssnar måste stetoskopet vara i öronen"): vänster hand håller bröstdelen
+  // ut mot britsen. steto ≥ 0,5: i öronen, annars runt halsen (klipp, ingen övergång). lampa ≥ 0,5: öronlampan i vänster hand, ljus 0–1.
+  stetoskop: { namn: 'lyssnar med stetoskopet', steto: 1, armar: [40, 0], armbage: [-50, 0], luta: -1, boj: -2.5 },
+  lampa:     { namn: 'öronlampan', lampa: 1, ljus: 1, armar: [40, 0], armbage: [-50, 0], luta: -1, boj: -2.5 },
   // stolt: bröstet ut och hakan upp (ansiktet och blicken lite uppåt), armarna lite ut
   stolt:     { namn: 'stolt', strack: 0.05, bred: 0.02, upp: 0.55, sank: -4, armar: [8, 8], oron: [-4, -4] },
   // sover sittande: ihopsjunken, huvudet lite nerböjt, händerna vilar på magen (som 'magen')
@@ -165,8 +170,8 @@ function figur(x, y, skala) {                 // Mor med fötterna i (x, y)
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 14}" rx="300" ry="34" fill="#000" opacity="0.1"/>
     <g class="figuren" filter="url(#dkant)">${['leg-l', 'leg-r'].map(n => del(n)).join('')}
     <g class="armar-bak"></g>
-    <g class="kropp"><image href="cut/doktorn-a-body-nk.png" width="1024" height="1024"/>
-    <g class="drag"><image href="cut/doktorn-a-head-nk.png" width="1024" height="1024"/><g class="ansiktet" transform="${ANSIKTE}">
+    <g class="kropp"><image href="cut/doktorn-a-body-nk.png" width="1024" height="1024"/><g class="steto-hals"></g>
+    <g class="drag"><image href="cut/doktorn-a-head-nk.png" width="1024" height="1024"/><g class="steto-oron"></g><g class="ansiktet" transform="${ANSIKTE}">
     <path class="nasa" transform="translate(0 ${NOSY})" d="M498 420 Q510.5 404 523 420" fill="none" stroke="${NASA}" stroke-width="6" stroke-linecap="round"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="34" ry="20" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => { const o = i ? 1 : -1; return `<g class="oga">
@@ -180,7 +185,7 @@ function figur(x, y, skala) {                 // Mor med fötterna i (x, y)
       <path class="bryn" d="M-16 3 Q0 -6 16 3" fill="none" stroke="${LINJE}" stroke-width="6" stroke-linecap="round"/>`; }).join('')}
     <g class="munnen"><path class="mun" fill="${MUNFARG}"/>
     <g fill="none" stroke="${MUNLINJE}" stroke-width="5.5" stroke-linecap="round"><path class="le"/></g></g>
-    </g></g></g>${del('leg-l')}${del('leg-r')}<g class="armar-fram"></g>
+    </g></g></g>${del('leg-l')}${del('leg-r')}<g class="armar-fram"></g><g class="steto-fram"></g><g class="saken"></g>
     <g class="gnista">${[0, 1, 2, 3].map(() => `<path fill="none" stroke="#fff" stroke-width="15" stroke-linecap="round"/><path fill="none"
       stroke="#7a4a32" stroke-width="7" stroke-linecap="round"/>`).join('')}</g></g>`;
   // Den riktiga klappen (?klapp=kant ger den gamla) använder -klapp-kopian (verktyg/klapparm.py): som -fram men med HELA
@@ -244,6 +249,14 @@ function rita(fig, f, p = POSE0) {
     const { svg, hand } = armRita(s, x, y, v1, v2, k > 0.5);
     hander[n] = hand; (k > 0.5 ? fram : bak).push(svg); });
   q('.armar-bak').innerHTML = bak.join(''); q('.armar-fram').innerHTML = fram.join('');
+  // Stetoskopet och öronlampan (verktyg/doktor-saker.js). Y-knuten följer huvudet (.drag och nicken) och kroppens sträckning.
+  const iOron = p.steto >= 0.5, [n0] = p.nick || [0, 0], [s0] = p.skak || [0, 0];
+  q('.steto-hals').innerHTML = iOron ? '' : stetoHals();
+  q('.steto-oron').innerHTML = iOron ? stetoOron() : '';
+  const jx = 512 + 20 * r + 24 * s0, jy = FOTTER + sy * (STETO.Y[1] - FOTTER) + sank + 2 * a - 10 * u + 20 * n0;
+  q('.steto-fram').innerHTML = iOron ? stetoSlang([jx, jy], hander.l, -1) : '';
+  q('.saken').innerHTML = p.lampa >= 0.5 ? oronlampa(hander.l[0], hander.l[1], -8, 1.25, p.ljus)
+    + `<circle cx="${hander.l[0]}" cy="${hander.l[1]}" r="${ARM.HAND * 0.8}" fill="${ARM.HUD}" stroke="${ARM.HUDKANT}" stroke-width="3"/>` : '';
   // Klappgnistan: fyra korta kritstreck ut från händerna där de möts, i 0,25 s efter varje klapp (p.gnista 0–1, 0 = ingen).
   const g = p.gnista, gx = (hander.l[0] + hander.r[0]) / 2, gy = (hander.l[1] + hander.r[1]) / 2 - 10;
   alla('.gnista path').forEach((e, j) => { const v = [-172, -142, -38, -8][Math.floor(j / 2)] * Math.PI / 180;   // åt sidorna och uppåt, inte rakt upp i ansiktet
@@ -334,7 +347,7 @@ Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansi
 // Arket med poser visar varje pose med ett uttryck som passar.
 const PAR = { neutral: 'neutral', lutaV: 'glad', lutaH: 'nyfiken', vanster: 'glad', hoger: 'nyfiken', haller: 'glad', nar: 'nyfiken', upp: 'forvanad', ner: 'ledsen',
   pekar: 'nyfiken', hurra: 'jatteglad', magen: 'glad', blyg: 'fnissig', sitter: 'glad', strack: 'somnig', huka: 'glad',
-  stampar: 'arg', lyssnar: 'nyfiken', stolt: 'stolt', sover: 'sover', liggMage: 'sover' };
+  stampar: 'arg', lyssnar: 'nyfiken', stetoskop: 'glad', lampa: 'nyfiken', stolt: 'stolt', sover: 'sover', liggMage: 'sover' };
 
 const sok = new URLSearchParams(location.search), bara = sok.get('bara'), enPose = sok.get('pose');
 const etikett = (x, y, s, storlek) => document.getElementById('etiketter').insertAdjacentHTML('beforeend',
@@ -408,6 +421,14 @@ if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   document.getElementById('scen').innerHTML = `<image href="../../../../${sok.get('scen')}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   const fig = figur(+sok.get('x') || 1450, +sok.get('y') || 900, +sok.get('s') || 0.6), po = POSER[sok.get('pose')] ? sok.get('pose') : 'neutral';
   render = t => { ansikte(blinka(blanda('neutral', 'glad', 1), t), 1, fig); pose(po, 1, fig); document.getElementById('brus').setAttribute('seed', Math.floor(t * 10) % 50 + 1); };
+} else if (sok.get('ark') === 'saker') {
+  // ?ark=saker: stetoskopet runt halsen, i öronen och öronlampan (verktyg/doktor-saker.js), och sakerna stora som i närbilderna.
+  [['neutral', 'glad', 'runt halsen'], ['stetoskop', 'glad', 'lyssnar: i öronen'], ['lampa', 'nyfiken', 'öronlampan']].forEach(([po, u, t], i) => {
+    const x = 330 + 520 * i, fig = figur(x, 900, 0.62); ansikte(u, 1, fig); pose(po, 1, fig); etikett(x, 960, t, 34); });
+  document.getElementById('forgrund').innerHTML = `<defs>${saksKant(9)}</defs><g filter="url(#saksKant)">${brostdel(1720, 380, 60)}</g>
+    <g filter="url(#saksKant)">${oronlampa(1760, 640, 0, 1.4, 1)}</g>`;
+  etikett(1720, 500, 'bröstdelen', 28); etikett(1700, 740, 'lampan med ljus', 28);
+  render = () => {};
 } else if (sok.get('ark') === 'kawaii') {
   // ?ark=kawaii: neutral → kawaii (k 0, 0,5, 1).
   [0, 0.5, 1].forEach((k, i) => { const x = 400 + 560 * i, fig = figur(x, 900, 0.62); ansikte('kawaii', k, fig);
