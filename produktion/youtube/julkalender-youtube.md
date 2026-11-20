@@ -172,20 +172,20 @@ Rulla, leta och vinka hej då till snögubben.
 
 ## Lucka 9 – 9 dec 05:00
 
-Fil: `09-paketet/09-paketet.mp4` (3:06)
+Fil: `09-kaninen-badar-varmt/09-kaninen-badar-varmt.mp4` (3:57), 041 Kaninen badar varmt (bilderbok). Miniatyr: `09-kaninen-badar-varmt/thumbnail/miniatyr-strimma.png`. Ersätter den gamla `09-paketet` (Sanna 2026-11-19).
 
 ```
-Lucka 9 🎁 Paketet under granen | Lilla Kritans julkalender
+Lucka 9 🛁 Kaninen badar varmt | Lilla Kritans julkalender
 ```
 
 ```
-Kritan ritar en julgran och ett paket under granen. Men oj, vilket trassligt band! Paketet blir arg. Suddgummit hjälper till, och paketet får en fin rosett. Sedan ritar busiga kritan snö på paketet. Kan du blåsa bort molnet? Fff! Nu är paketet torrt och glatt. Vi öppnar det på julafton!
+Kaninen kommer in från snön, alldeles kall, med snö på öronen! Nu sätter vi på vattnet. Är det fullt nu? Nej, inte än. Ett skutt, två skutt … plask! I det varma badet smälter snön, först på öronen och sedan på nosen. Men lite snö är kvar: kan du se var? Kritan ritar en båt, tut tut! Sedan vill kaninen inte gå upp. Då ritar kritan en fläkt, och vad är det som luktar? Pepparkakor från köket!
 
-Gissa vad kritan ritar, blås bort molnet och vänta med paketet till julafton.
+Räkna skutten, hitta snön och säg tut tut med båten.
 
 [SLUT]
 
-#julkalender #julklapp #lillakritan
+#julkalender #bad #lillakritan
 ```
 
 ## Lucka 10 – 10 dec 05:00
