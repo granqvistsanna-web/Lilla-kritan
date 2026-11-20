@@ -66,21 +66,40 @@ const GRA = '#A9B2C7', GRA_M = '#7E879E', ROSA = '#FABBC3', ORANGE = '#F08A32', 
 // teckningens mått med samma tal som bilden. Ingen sak behöver alltså egna streck: en ny bild får sin teckning av sig själv.
 // streck: [['kontur', banan, linjens färg (en mörkare ton av saken), bredd, sekunder / TEMPO]]
 const kontur = async (f, ...matt) => iTeckning((await (await fetch(`/assets/${f}-kontur.json`)).json()).d, ...matt);
-// Nya bilder ur Flow 2026-11-20 (Sanna: en vanlig liten ekorre och en vanlig katt, inte figurer på två ben; stilreferenser emun,
-// enhörningen och duvan). Ekorren är spegelvänd så att den tittar mot elefanten. Ögonen ritas i kod och blinkar.
-const EKORRE = ['ekorre-abc/cut/ekorre-abc', 857, 879, 500, 250], KATT = ['katt-abc/cut/katt-abc', 860, 722, 420, 250];
+// Ekorren (Sanna 2026-11-20: "en enklare ekorre som mer vanlig ekorre men som går att animera lite med ben ansikte svans"):
+// en vanlig ekorre från sidan ur Flow (karaktarer/ekorren/premium/original/ekorre-sida-1.jpg), kroppen utan svans, tassar och fötter
+// (ekorre-kropp-2.jpg), delarna klippta med verktyg/delar.py. Svansen, framtassarna och fötterna sitter bakom kroppen och vrids
+// kring sina leder (ekorre-rigg.json). Samma storlek som förra ekorren: figuren är 879 px hög (y 79–958) och 500 i teckningens mått.
+const EKORRE = ['../karaktarer/ekorren/premium/cut/ekorre-body', 1024, 1024, 1024 * 500 / 879, 250 + 1024 * 500 / 879 - 958 * 500 / 879];
+const EKORRE_DELAR = [['tail', 690, 740, 'svans'], ['leg-r', 440, 880, 'fot'], ['arm-r', 235, 600, 'tass']];   // bakifrån och fram: del, led i 1024-rutan, rörelse
+// Katten likadant (Sanna 2026-11-20: "and the cat"): katt-abc (den vanliga svarta katten från sidan) utan svans och ben ur Flow
+// (katt-abc/original/katt-kropp-1.jpg). Benen är två par, bakbenen och frambenen, som går i otakt. Figuren är 722 px hög (y 144–866).
+const KATT = ['katt-abc/cut/katt-body', 1024, 1024, 1024 * 420 / 722, 250 + 1024 * 420 / 722 - 866 * 420 / 722];
+const KATT_DELAR = [['tail', 221, 476, 'svans'], ['leg-l', 354, 786, 'benA'], ['leg-r', 653, 774, 'benB']];
+const ELSA = [1024, 1024, 675.84, 328.84];   // elefantens 1024-ruta i teckningens mått
 const SAKER = {
   // elefanten är riggen elefanten-elsa (konturen ur elsa-faceless.png i riggens 1024-ruta: x' = (x − 512) · 0,66, y' = y · 0,66 − 347)
-  elefant: { platta: ['#F2A541', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-elefant', kort: 'p-e-e-elefant', berom: 'p-elefant-e',
-    streck: [['kontur', await kontur('karaktarer/elefanten-elsa/premium/elsa-faceless', 1024, 1024, 675.84, 328.84), '#6B7490', 15, 7.5]] },
-  ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-e-e-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, ogon: [[-170, -79, 10]],
-    streck: [['kontur', await kontur('rekvisita/' + EKORRE[0], ...EKORRE.slice(1)), '#A9561C', 15, 7.5]] },
+  elefant: { rigg: 'elefanten-elsa', platta: ['#F2A541', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-elefant', kort: 'p-e-e-elefant', berom: 'p-elefant-e',
+    // Sanna 2026-11-20 ("more details when kritan ritar elefant, easier to guess"): efter konturen ritar kritan öronens rosa insidor,
+    // snabeln och ögonen (spårade ur riggens delar: elsa-ora-l/-r ur elsa-faceless.png, elsa-snabel ur elsa-nos.png; ögonen ur elefanten-elsa.md)
+    streck: [['kontur', await kontur('karaktarer/elefanten-elsa/premium/elsa-faceless', ...ELSA), '#6B7490', 15, 6.5],
+      ['ora-l', await kontur('karaktarer/elefanten-elsa/premium/elsa-ora-l', ...ELSA), '#D9798C', 13, 1.8],
+      ['ora-r', await kontur('karaktarer/elefanten-elsa/premium/elsa-ora-r', ...ELSA), '#D9798C', 13, 1.8],
+      ['snabel', await kontur('karaktarer/elefanten-elsa/premium/elsa-snabel', ...ELSA), '#6B7490', 13, 2.2],
+      ['oga-l', iTeckning(ell(420, 402, 14, 21), ...ELSA), '#3B3431', 12, 0.6],
+      ['oga-r', iTeckning(ell(601, 401, 14, 21), ...ELSA), '#3B3431', 12, 0.6]] },
+  ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-e-e-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, delar: EKORRE_DELAR, ogon: [[-155, -77, 10]],
+    streck: [['kontur', await kontur('karaktarer/ekorren/premium/ekorre-faceless', ...EKORRE.slice(1)), '#A9561C', 15, 7.5],
+      ['oga', iTeckning(ell(239, 384, 13, 15), ...EKORRE.slice(1)), '#3B3431', 12, 0.6]] },
   ekollon: { platta: ['#59B36A', 0, 520, 0.06], fraga: 'p-vad-blir', lang: 'p-ekollon', kort: 'p-ett-ekollon', berom: 'p-ocksa-ekollon', bild: EKOLLON,
     streck: [['kontur', await kontur('rekvisita/' + EKOLLON[0], ...EKOLLON.slice(1)), BRUN_M, 15, 6]] },
   // katten är den som kritan ritar fel; hunden är den udda i leken (färdigt urklipp, ritas inte)
-  katt: { platta: ['#F2C53D', 35, 380, 0.09], fraga: 'p-vem', lang: 'p-katt', bild: KATT, ogon: [[167, -26, 9]], ogonKant: true,
-    streck: [['kontur', await kontur('rekvisita/' + KATT[0], ...KATT.slice(1)), '#3B3431', 15, 6.5]] },
-  hund: { platta: ['#5BB8C9', 45, 380, -0.07], bild: ['hund-brun/cut/hund-brun-hel', 1024, 1024, 440, 265], ogon: [[138, -70, 10]], streck: [] },
+  // Hunden är riggen Hugo (Sanna 2026-11-20: det som ritas ska kunna röra sig lite, med ansikte, ben, armar och svans). Samma 1024-ruta
+  // och skala som elefanten; fötterna (FOTTER 923) står lika på golvet, därför 7 · 0,66 lägre nederkant. Katten är en vanlig katt med delar.
+  katt: { platta: ['#F2C53D', 35, 380, 0.09], fraga: 'p-vem', lang: 'p-katt', bild: KATT, delar: KATT_DELAR, ogon: [[167, -26, 9]], ogonKant: true,
+    streck: [['kontur', await kontur('rekvisita/katt-abc/katt-faceless', ...KATT.slice(1)), '#3B3431', 15, 6.5],
+      ['oga', iTeckning(ell(800, 392, 14, 16), ...KATT.slice(1)), '#3B3431', 12, 0.6]] },
+  hund: { platta: ['#5BB8C9', 20, 440, -0.07], rigg: 'hunden-hugo', streck: [] },
 };
 const RIGG_SKALA = 0.66;   // elefanten-elsa i teckningens mått: samma 0,66 som teckningen är mätt i (stillbild 2026-11-19)
 
@@ -131,6 +150,9 @@ for (const [namn, s] of Object.entries(SAKER)) {
   s.liv = el('g', {}, s.b);
   if (s.bild) { const [f, w, h, H, botten] = s.bild, q = H / h; const tr = `translate(${-w * q / 2} ${botten - H}) scale(${q})`;
     if (s.krona) s.kronaEl = await bildEl(s.krona[0], w, h, '', el('g', { transform: tr }, s.liv));
+    s.delEl = [];   // ekorrens delar bakom kroppen, var och en vriden kring sin led i levande()
+    for (const [d, px, py, typ] of s.delar ?? []) { const g = el('g', { transform: tr }, s.liv);
+      s.delEl.push([typ, await bildEl(f.replace(/body$/, d), w, h, '', g), px, py]); }
     await bildEl(f, w, h, tr, s.liv);
     for (const [x, y, r] of s.prickar ?? []) el('circle', { cx: x, cy: y, r, fill: '#3B3431', transform: tr }, s.liv);
     for (const [x, y] of s.kinder ?? []) el('ellipse', { cx: x, cy: y, rx: 24, ry: 14, fill: '#F29C94', opacity: 0.55 }, s.liv);
@@ -148,8 +170,11 @@ for (const [namn, s] of Object.entries(SAKER)) {
   s.kf = []; s.hopp = []; s.T = {}; s.levande = []; s.fram = []; s.kk = []; s.toppT = []; s.landa = []; s.spinn = [];
 }
 // apan blir riggen: fötterna på teckningens mark
-const RA = await v2rigg('elefanten-elsa'), apaFig = RA.figur(0, 0, 1, el('g', { transform: `translate(0 252) scale(${RIGG_SKALA})` }, SAKER.elefant.liv));
-const P = (bas = 'neutral', extra = {}) => ({ ...RA.blandaPose('neutral', bas, 1), ...extra });
+for (const s of Object.values(SAKER)) if (s.rigg) {   // riggarna (elefanten, katten, hunden): fötterna på teckningens mark
+  s.R = await v2rigg(s.rigg); s.fig = s.R.figur(0, 0, 1, el('g', { transform: `translate(0 252) scale(${RIGG_SKALA})` }, s.liv));
+  s.P = (bas = 'neutral', extra = {}) => ({ ...s.R.blandaPose('neutral', bas, 1), ...extra });
+}
+const RA = SAKER.elefant.R, P = SAKER.elefant.P;
 kritaG.innerHTML = `<g><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
   <g filter="url(#vax)"><use class="farg" href="#krita-form"/>
   <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#fff" opacity=".35"/></g></g>`;
@@ -310,7 +335,8 @@ const KOMPIS = [400, 700, 0.95];   // här står kompisen kvar, stor, med fötte
 const hoppLjud = t0 => { fx(t0 + 0.1, 'hopp-mjuk', 0.8); fx(t0 + 0.5, 'dunk', 0.5); fx(t0 + 1.0, 'dunk', 0.5); };   // elefantens två hopp
 function ritaOchGissa(s, rit) {   // kritan ritar, "Hmm …", frågan, pausen och svaret: teckningen blir bilden
   const start = t + 0.6, klar = ritaSak(s, start, rit), hmm = sag(start + 0.8, 'p-hmm');
-  const fraga = Math.max(lerp(...s.T.kontur, 0.62), hmm + 0.4), tyst = Math.max(klar, sag(fraga, s.fraga)) + 0.3;
+  // med detaljer (elefanten): frågan kommer när snabeln ritas, då är den lätt att gissa
+  const fraga = Math.max(s.T.snabel ? lerp(...s.T.snabel, 0.3) : lerp(...s.T.kontur, 0.62), hmm + 0.4), tyst = Math.max(klar, sag(fraga, s.fraga)) + 0.3;
   s.svar = tyst + PAUS;
   fx(s.svar, 'pop', 0.7); fx(s.svar + 0.1, 'pling', 0.5); GN.push([s.svar + 0.15, rit[0], rit[1], 400, 300]);
   return sag(s.svar, s.lang);
@@ -324,7 +350,7 @@ function gissning(s, levande, vanta, livSek, rit = RITA, nara = [rit[0], 640, 1.
   s === elefant ? fxf(u + 0.4, BRUM(1), 0.9, { langd: 1.4, fade: 0.3 }) : latFx(s, u + 0.4, 1.1);   // och låter
   u += 1.9;
   fx(u + 0.1, 'jippi', 0.5); A.hopp.push(u + 0.9);
-  s === elefant ? s.levande.push([u + 0.1, 'hoppa']) : s.hopp.push(u + 0.1);
+  s.R ? s.levande.push([u + 0.1, 'hoppa']) : s.hopp.push(u + 0.1);
   t = sag(u, s.berom);
 }
 // Kompisens uttryck en stund, och kompisen i närbild där den står: varje händelse får sitt reaktionsslag.
@@ -354,7 +380,8 @@ elefant.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-elefanten'] + 0.4]); 
   // Elefanten lutar sig fram och "viskar" (Malin lyssnar): hon upprepar vad den vill, och elefanten hoppar till: ja!
   kanner(t, t + 0.6 + D['n-vad-sa-du'] + 0.5, 'nyfiken', 'lutaH');
   t = sag(t + 0.6, 'n-vad-sa-du') + 0.4;
-  t = sag(t, 'n-maste-e'); elefant.hopp.push(t + 0.1); fxf(t + 0.15, BRUM(4), 0.8, { langd: 1.2, fade: 0.3 });
+  t = sag(t, 'n-maste-e'); elefant.levande.push([t, 'nicka']); fxf(t + 0.15, BRUM(4), 0.8, { langd: 1.2, fade: 0.3 });   // elefanten nickar: ja (Sanna 2026-11-20)
+  t += 0.9;
   t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3;
   t = sag(t, 'n-nu-ritar') - 1.0; }   // kritan börjar rita (t + 0.6) när repliken tar slut
 
@@ -686,9 +713,9 @@ const VILA = [2060, 420];   // utanför bild: kritan är borta när saken lever 
 // de faller lite och bleknar. Samma smulor varje gång för samma tid (ingen slump mellan renderingarna).
 const smulG = document.getElementById('smulor'), slump = x => { const v = Math.sin(x * 127.1) * 43758.5453; return v - Math.floor(v); };
 function smulor(t, x, y, farg) {
-  // större och fler än i 019, där kameran är nära spetsen: här syns hela bilden
-  smulG.innerHTML = !farg ? '' : Array.from({ length: 12 }, (_, j) => { const b = Math.floor(t * 14) - j, age = t - b / 14, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7);
-    const op = Math.max(0, 0.85 - age * 1.0); return op > 0 ? `<circle cx="${(x + (r - 0.5) * 54 + (r - 0.5) * age * 40).toFixed(1)}" cy="${(y + 8 + age * age * 150 + r2 * 12).toFixed(1)}" r="${(3.5 + 4.5 * r2).toFixed(1)}" fill="${farg}" opacity="${op.toFixed(2)}"/>` : ''; }).join('');
+  // diskreta (Sanna 2026-11-20: "more subtle kritsudd"): färre, mindre och svagare än första försöket
+  smulG.innerHTML = !farg ? '' : Array.from({ length: 6 }, (_, j) => { const b = Math.floor(t * 8) - j, age = t - b / 8, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7);
+    const op = Math.max(0, 0.5 - age * 0.7); return op > 0 ? `<circle cx="${(x + (r - 0.5) * 30 + (r - 0.5) * age * 24).toFixed(1)}" cy="${(y + 6 + age * age * 110 + r2 * 8).toFixed(1)}" r="${(2 + 2.5 * r2).toFixed(1)}" fill="${farg}" opacity="${op.toFixed(2)}"/>` : ''; }).join('');
 }
 function kritan(t) {
   const nu = STRECK.find(([, , a, b]) => t >= a && t < b);
@@ -714,31 +741,35 @@ const klossKrita = t => skarm => {
 };
 // livet: apan (riggen) hoppar och vinkar; apelsinen rullar en bit och tillbaka; ananasen hoppar två gånger och kronan svajar efter
 function levande(s, t) {
-  if (s === elefant) {
-    let f = RA.param('glad'), p = P();
-    [f, p] = RA.vila(f, p, t);
+  if (s.R) {   // en rigg: elefanten, katten eller hunden
+    const R = s.R, P = s.P;
+    let f = R.param('glad'), p = P();
+    [f, p] = R.vila(f, p, t);
     for (const [t0, typ, t1, ansikte, pose] of s.levande) {
-      if (typ === 'hoppa' && t >= t0 && t < t0 + 1.68) [f, p] = RA.ROR.hoppa(t - t0);
+      if (typ === 'hoppa' && t >= t0 && t < t0 + 1.68) [f, p] = R.ROR.hoppa(t - t0);
+      if (typ === 'ga' && t >= t0 && t < t1 + 0.3) {   // går på stället åt höger (scenen flyttar den): riggens gång, utan egen sträcka
+        const [fg, pg] = R.ROR.ga((7 + (t - t0) * 0.7) % 8); p = { ...pg, x: 0 }; f = fg; }
+      if (typ === 'nicka' && t >= t0 && t < t0 + 2.4) [f, p] = R.nicka(R.param('glad'), p, t - t0);   // två dippar: ja
       if (typ === 'reagera' && t >= t0 && t < t1 + 0.35) {   // närbilden: ett uttryck och en pose en stund
         const k = inUt(clamp((t - t0) / 0.3)) * inUt(clamp((t1 + 0.35 - t) / 0.35));
-        p = RA.blandaPose(p, P(pose), k); f = RA.blanda(f, RA.param(ansikte), k);
+        p = R.blandaPose(p, P(pose), k); f = R.blanda(f, R.param(ansikte), k);
       }
       if (typ === 'titta' && t >= t0 && t < t1 + 0.3) {   // vänder sig och tittar mot en annan kloss: ansikte = uttrycket, pose = { rikt, bada, upp }
         const k = inUt(clamp((t - t0) / 0.3)) * inUt(clamp((t1 + 0.3 - t) / 0.3));
-        p = RA.blandaPose(p, P('neutral', pose), k); f = RA.blanda(f, RA.param(ansikte), k);
+        p = R.blandaPose(p, P('neutral', pose), k); f = R.blanda(f, R.param(ansikte), k);
       }
       if (typ === 'dansa' && t >= t0 && t < t1 + 0.4) {   // riggens dans, ett gung på två slag; 0,5 … 3,5 i slingan, så att den aldrig stannar
-        const k = inUt(clamp((t - t0) / 0.4)) * inUt(clamp((t1 + 0.4 - t) / 0.4)), [fd, pd] = RA.ROR.dansa(0.5 + ((t - t0) / (2 * SLAG)) % 3);
-        p = RA.blandaPose(p, pd, k); f = RA.blanda(f, fd, k);
+        const k = inUt(clamp((t - t0) / 0.4)) * inUt(clamp((t1 + 0.4 - t) / 0.4)), [fd, pd] = R.ROR.dansa(0.5 + ((t - t0) / (2 * SLAG)) % 3);
+        p = R.blandaPose(p, pd, k); f = R.blanda(f, fd, k);
       }
       if (typ === 'vinka' && t >= t0 && t < t1 + 0.35) {
         const k = inUt(clamp((t - t0) / 0.35)) * inUt(clamp((t1 + 0.35 - t) / 0.35));
-        p = RA.blandaPose(p, P('hurra', { armar: [0, 104 + 12 * Math.sin((t - t0) * 2 * Math.PI / 0.7)] }), k);
-        f = RA.blanda(f, RA.param('jatteglad'), k);
+        p = R.blandaPose(p, P('hurra', { armar: [0, 104 + 12 * Math.sin((t - t0) * 2 * Math.PI / 0.7)] }), k);
+        f = R.blanda(f, R.param('jatteglad'), k);
       }
     }
-    if (typeof f === 'string') f = RA.param(f);
-    RA.rita(apaFig, RA.blinka(f, t), p);
+    if (typeof f === 'string') f = R.param(f);
+    R.rita(s.fig, R.blinka(f, t), p);
     return;
   }
   if (s.hjulEl) {   // bilen: hjulen rullar med sträckan när den kör
@@ -751,6 +782,7 @@ function levande(s, t) {
     s.kronaEl.setAttribute('transform', `rotate(${v.toFixed(2)} ${s.krona[1]} ${s.krona[2]})`);
   }
   const bit = s.levande.filter(([t0]) => t0 <= t).at(-1);
+  if (s.delEl?.length) ledder(s, t, bit);
   if (!bit) return s.liv.setAttribute('transform', '');
   const [t0, typ, t1] = bit, d = t - t0, inom = t1 === undefined ? 1 : inUt(clamp(d / 0.4)) * inUt(clamp((t1 - t) / 0.4));
   if (typ === 'studsa') {   // två studsar, tryck ihop vid landningen
@@ -772,6 +804,18 @@ function levande(s, t) {
     const v = (typ === 'ga' ? 3 : 2.5) * Math.sin(d * 2 * Math.PI / (typ === 'ga' ? 0.6 : 1.4)) * inom;
     s.liv.setAttribute('transform', `rotate(${v.toFixed(2)} 0 250)`);
   }
+}
+// ekorrens leder: svansen svajar lugnt hela tiden och släpar efter i hoppen, framtassarna dras upp och fötterna pekar ner i luften,
+// och när den är hungrig (vicka) eller väntar (gunga) rör tassarna sig lite. Små vinklar (svans ±4°, tassar ±8°): lugnt, inte studsigt.
+function ledder(s, t, bit) {
+  const [t0, typ, t1] = bit ?? [], d = t - t0;
+  let h = s.hopp.reduce((v, h0) => v + bage((t - h0) / 0.45), 0);   // 0 … 1 i luften
+  if (typ === 'hoppa') h += bage(d / 0.5) + 0.7 * bage((d - 0.55) / 0.45);
+  const vila = typ === 'vicka' || typ === 'gunga' ? (t1 === undefined ? 1 - clamp(d / 1.8) : inUt(clamp(d / 0.4)) * inUt(clamp((t1 - t) / 0.4))) : 0;
+  const ga = typ === 'ga' ? (t1 === undefined ? 1 : inUt(clamp(d / 0.4)) * inUt(clamp((t1 - t) / 0.4))) * Math.sin(d * 2 * Math.PI / 0.6) : 0;   // benen i takt med gungningen
+  const v = { svans: 3 * Math.sin(t * 2 * Math.PI / 2.4) + 9 * h, tass: -14 * h + 7 * vila * Math.sin(d * 2 * Math.PI / 0.7), fot: -12 * h,
+    benA: 7 * ga - 6 * h, benB: -7 * ga + 6 * h };   // katten: bakbenen och frambenen i otakt, och isär i luften
+  for (const [n, im, px, py] of s.delEl) im.setAttribute('transform', `rotate(${v[n].toFixed(2)} ${px} ${py})`);
 }
 const aGung = t => A.hopp.reduce((s, h) => { const d = t - h; return d < 0 || d > 1.2 ? s : s + 0.16 * Math.sin(d * 2 * Math.PI / 0.45) * (1 - d / 1.2); }, 0);
 // en kloss i bilden: läget ur kk, poppar fram (nederkanten kvar på golvet), hoppar på golvet men nickar fram mot kameran i muren

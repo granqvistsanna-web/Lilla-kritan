@@ -59,7 +59,7 @@ Sanna 2026-11-20: *"outline, then picture"*. Det är ritintrots sätt (`ritintro
 
 ## Djurbilderna
 
-Djur som inte är kompisen (ekorren, katten) är **vanliga små djur från sidan**, i samma stil som emun, enhörningen och duvan: knubbiga, platt kritfyllning, vit klistermärkskant, inget öga i bilden. Inte figurer på två ben (Sanna 2026-11-20: *"en liten ekorre som vanligt"*, *"samma sak med katt"*). Ögat ritas i kod och blinkar. Använd de andra ABC-djuren som stilreferenser i Flow (Nano Banana, 0 krediter). Den som ska titta mot kompisen spegelvänds innan den klipps ut.
+Djur som inte är kompisen (ekorren, katten) är **vanliga små djur från sidan**, i samma stil som emun, enhörningen och duvan: knubbiga, platt kritfyllning, vit klistermärkskant, inget öga i bilden. Inte figurer på två ben (Sanna 2026-11-20: *"en liten ekorre som vanligt"*, *"samma sak med katt"*). Ögat ritas i kod och blinkar, och kritan ritar det efter konturen. **Djuren ska kunna röra sig lite** (Sanna 2026-11-20): be Flow om en version av samma bild utan svans och ben ("ONLY REMOVE the tail and the legs, close the body with its own outline"), klipp delarna med `verktyg/delar.py <mapp> <namn> --egen-kant --oron-svans`, byt namn på delarna (svansen kan bli `ear-*`), ge svansen lång rot (`verktyg/langre_rot.py`, leden uppe på ryggen, inte där kroppen svänger bort) och lägg in dem som `delar: [[del, ledx, ledy, 'svans' | 'tass' | 'fot' | 'benA' | 'benB']]` (se `ledder()` i E). Små vinklar: svans ±3°, tassar och ben ±7°. Använd de andra ABC-djuren som stilreferenser i Flow (Nano Banana, 0 krediter). Den som ska titta mot kompisen spegelvänds innan den klipps ut.
 
 ## Fem små handlingar som går att animera
 

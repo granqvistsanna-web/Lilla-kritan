@@ -4,7 +4,8 @@ Gjord 2026-11-20 efter `format/abc-recept-3-kompisen-vill.md`, byggd ur `../abc-
 
 - Scenen: `index.html`. Filmen: `abc-e-recept-3.mp4` (snabb förhandsvisning, 960 × 540, 3:46). Förra versionen (43 rader, 3:30) ligger i `aldre/`.
 - Rösten: Malin, tagning 3 (ElevenLabs v3, 61 rader ur `malin-e-recept-3.txt`), delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-e-recept-3-v2/`. Originalet: `produktion/ljud-original/roster/abc-e-recept-3/tagning-3.mp3`. Ingen replik är klippt om för hand.
-- Bilderna: elefanten är riggen `elefanten-elsa`, ekorren `rekvisita/ekorre-abc.md`, katten `rekvisita/katt-abc.md` (nya ur Flow, vanliga små djur från sidan), ekollonet som förut, hunden är kvar i den gamla stilen.
+- Bilderna: elefanten är riggen `elefanten-elsa`, hunden riggen `hunden-hugo`. Ekorren (`karaktarer/ekorren/premium/`, `ekorre-sida-1` ur Flow) och katten (`rekvisita/katt-abc/`) är vanliga små djur från sidan, delade i kropp, svans och ben (`verktyg/delar.py`) så att svansen svajar, tassarna och benen rör sig och ögat blinkar (Sanna 2026-11-20). Ekollonet som förut.
+- Kritan ritar fler detaljer i elefanten (öronens insidor, snabeln, ögonen) och ögat i katten och ekorren. Elefanten nickar som svar på *"Måste den börja på E?"*. Kritsmulorna är svagare. Filmen är 3:54.
 
 **Meningen:** Elefanten vill leka men har ingen kompis. Malin ber kritan rita en, och den måste börja på E. Kritan ritar fel (katten, hej då!). Kritan ritar ekorren, och de hoppar. Ekorren är hungrig, och kritan ritar ett ekollon.
 

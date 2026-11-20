@@ -1,0 +1,27 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/ekorre-body.png",
+  "delar": {
+    "tail": {
+      "fil": "cut/ekorre-tail.png",
+      "vridpunkt": [
+        690,
+        740
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/ekorre-arm-r.png",
+      "vridpunkt": [
+        235,
+        600
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/ekorre-leg-r.png",
+      "vridpunkt": [
+        440,
+        880
+      ]
+    }
+  }
+}
