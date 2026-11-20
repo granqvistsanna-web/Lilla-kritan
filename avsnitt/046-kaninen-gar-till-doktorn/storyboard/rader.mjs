@@ -20,7 +20,7 @@ const HEJ = 'kanin-gullig/kanin-hej-1', HEJDA = 'kanin-gullig/kanin-hejda-1';
 const RITA = n => `krita-ritar/krita-ritar-${n}`, GLITTER = 'glitter/glitter-1', TINDRA = 'tindra/tindra-3', POP = n => `pop/pop-${n}`;
 const STEG = 'smasteg/smasteg-1', HOPP = n => `hopp-mjuk/hopp-mjuk-${n}`, KLAPP = 'klapp/klapp-1', KLICK = 'lampa-klick/lampa-klick-1';
 const HJARTA = n => `hjartslag/hjartslag-${n}`;   // hjärtslagen (ElevenLabs SFX, Sanna 2026-11-20): två mjuka slag, 1,5 s
-const G = 1.3;   // glest tempo: extra luft på varje rad med en replik (receptets GLES; 0,9 → 1,3, Sanna 2026-11-20: "a bit slower pace")
+const G = 1.6;   // glest tempo: extra luft på varje rad med en replik (receptets GLES; 0,9 → 1,3 → 1,6, Sanna 2026-11-20: "a bit slower pace overall", två gånger)
 // "dunk, dunk" i repliken: slagen på de två sista ordens plats (ca 72 % och 90 % in i repliken)
 const dunkar = (o, n, t = 2) => [[HJARTA(t), o + L(n) * 0.62]];   // ett hjärtslag (två slag) som börjar strax före "dunk, dunk"
 
@@ -43,8 +43,8 @@ export const RADER = [
     bild: 'Öronen faller lite, blicken ner', ljudtext: 'frågande', ansikte: 'nyfiken → lite osäker' },
   { id: '4', d: 1.2 + L(7) + G + 1.0, plats: 'Närbild: kaninen', malin: [[7, 1.2]], ljud: [[KN('trumpen'), 1.4 + L(7)]],
     bild: 'Kaninen tittar upp mot doktorn och ner igen. Malin efter blicken', ljudtext: 'trumpen (mjuk)', ansikte: 'lite osäker' },
-  { id: '5', d: 0.6 + L(8) + 1.0 + L(9) + G, plats: 'Mottagningen, helbild', malin: [[8, 0.6], [9, 1.6 + L(8)]],
-    bild: 'Doktorn nickar lugnt. Paus 1 s, sedan *"Hm … vad gör vi nu?"*', ljudtext: '–', ansikte: 'lite osäker' },
+  { id: '5', d: 0.6 + L(8) + 3.0 + L(9) + G, plats: 'Mottagningen, helbild', malin: [[8, 0.6], [9, 3.6 + L(8)]], ljud: [[KN('trumpen', 2), 1.1 + L(8)]],
+    bild: 'Doktorn pekar mot britsen. Kaninen vill inte: backar ett litet steg, skakar på huvudet, öronen faller (Sanna 2026-11-20). Sedan *"Hm … vad gör vi nu?"*', ljudtext: 'trumpen', ansikte: 'lite osäker → nej' },
 
   // --- Kritan ritar nallen ---
   { id: '6a', d: 0.3 + L(10) + 3.0, plats: 'Halvbild: kaninen', malin: [[10, 0.3]], ljud: [[RITA(2), 0.4]],
@@ -91,15 +91,15 @@ export const RADER = [
   { id: '22', d: 0.4 + L(29) + G, plats: 'Mottagningen, helbild', malin: [[29, 0.4]],
     bild: 'Doktorn nickar', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '23', d: 0.4 + L(54) + G + 0.6, plats: 'Närbild: nallen', malin: [[54, 0.4]], ljud: [[KN('fniss', 3), 0.6 + L(54)]],
-    bild: 'Lampan framför nallens mun. Nallen gapar inte', ljudtext: 'fniss', ansikte: 'fnissig' },
+    bild: 'Lampan framför leopardens mun. Kaninen gapar och visar på *"Gapa"*, leoparden gapar inte', ljudtext: 'fniss', ansikte: 'gapar → fnissig' },
   { id: '24', d: 0.4 + L(31) + G, plats: 'Närbild: kaninen', malin: [[31, 0.4]],
     bild: 'Lampan framför kaninens mun, kaninen gapar stort (O-munnen) på *"aaa"* (bara Malins aaa)', ljudtext: '–', ansikte: 'gapar' },
   { id: '25', d: 0.4 + L(32) + 4.0 + L(33) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[32, 0.4], [33, 4.4 + L(32)]], ljud: [[KN('jippi'), 0.6 + L(32) + 4.0 + L(33)]],
     bild: 'Kaninen stänger munnen och ser stolt ut. Paus 4 s: barnet gapar', ljudtext: 'jippi', ansikte: 'stolt' },
 
   // --- Var är nallen? ---
-  { id: '26', d: 2.3 + L(55) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[55, 2.3]], ljud: [[KLAPP, 0.3], ['duns/duns-1', 1.5], [KN('fragande', 2), 2.5 + L(55)]],
-    bild: 'Kaninen klappar händerna och släpper taget: leoparden glider ur knät, ramlar ner från britsen, studsar mjukt (duns) och rullar in bakom pallen', ljudtext: '`klapp`, `duns`, frågande', ansikte: 'förvånad' },
+  { id: '26', d: 2.3 + L(55) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[55, 2.3]], ljud: [[KN('jippi', 2), 0.15], ['duns/duns-1', 1.4], [KN('fragande', 2), 2.5 + L(55)]],
+    bild: 'Kaninen blir glad, ropar jippi och kastar armarna i luften (Sanna 2026-11-20): leoparden glider ur knät, ramlar ner från britsen, studsar mjukt (duns) och rullar in bakom pallen', ljudtext: 'jippi, `duns`, frågande', ansikte: 'förvånad' },
   { id: '27', d: 0.3 + L(56) + G + 1.0, plats: 'Halvbild: kaninen', malin: [[56, 0.3]], ljud: [[K(7), 0.5 + L(56)]],
     bild: 'Kaninen tittar åt vänster, sedan åt höger, öronen faller lite', ljudtext: 'frågande (7)', ansikte: 'nyfiken → osäker' },
   { id: '28', d: 0.3 + L(57) + 5.0, plats: 'Helbild → närbild på pallen', malin: [[57, 0.3]], ljud: [[TINDRA, 0.3 + L(57) + 3.0]],

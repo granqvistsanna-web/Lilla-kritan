@@ -51,11 +51,11 @@ function stetoSlang([jx, jy], [hx, hy], s = -1) {
 // Öronlampan: turkost handtag (greppet, handtagets mitt, i x, y), ett runt vitt huvud och en kort trubbig spets som pekar åt vänster.
 // Ljuset är en mjuk gul fläck framför spetsen (ljus 0–1), ingen stråle.
 function oronlampa(x, y, v = 0, sk = 1, ljus = 0) {
-  const sken = ljus > 0 ? [[46, 0.18], [32, 0.28], [18, 0.45]].map(([r, o]) =>
+  const sken = ljus > 0 ? [[40, 0.08], [28, 0.14], [16, 0.24]].map(([r, o]) =>   // svagare (Sanna 2026-11-20: "less bright light")
     `<circle cx="-104" cy="0" r="${r}" fill="#ffe680" opacity="${o * ljus}"/>`).join('') : '';
   return `<g class="lampa" transform="translate(${x} ${y}) rotate(${v}) scale(${sk}) translate(-32 0)">${sken}
     <path d="M-40 -14 L-78 -8 Q-88 0 -78 8 L-40 14 Z" fill="#c9d2da" stroke="#a6b0ba" stroke-width="3" stroke-linejoin="round"/>
-    <circle cx="-78" cy="0" r="${4 + 4 * ljus}" fill="#fff4b8" opacity="${ljus}"/>
+    <circle cx="-78" cy="0" r="${3 + 3 * ljus}" fill="#fff4b8" opacity="${0.7 * ljus}"/>
     <rect x="-14" y="-17" width="92" height="34" rx="17" fill="#3BB4A8" stroke="#2f958b" stroke-width="3"/>
     <circle cx="40" cy="-17" r="6.5" fill="#e6eaee" stroke="#b9c1c8" stroke-width="2"/>
     <circle cx="-24" cy="0" r="26" fill="#f4f4f2" stroke="#cfd5da" stroke-width="3"/></g>`;

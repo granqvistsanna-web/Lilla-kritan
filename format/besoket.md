@@ -132,6 +132,31 @@ Som i bilderboken (korta, vardagliga, upprepning, frågor med paus 4–5 s, Mali
 - Lugnande ord som återkommer: *"Doktorn är snäll."*, *"Nallen är med."*, *"Nu är det klart."*
 - Aldrig: sjuk, ont, farligt, rädd, modig, *"det gör inte ont"*.
 
+## Lärdomar från piloten 046 (Sanna 2026-11-20)
+
+Det här gäller alla besök. Det mesta är gjort i `avsnitt/046-kaninen-gar-till-doktorn/` och kan kopieras därifrån.
+
+**Berättelsen**
+- **Ritintrot ritar besökets sak, inte djuret:** i 046 ritar kritan stetoskopet, och svaret blir *"Ett stetoskop! Med det lyssnar doktorn."* Djuret kommer in i första bilden. Saken är sedan doktorns från början.
+- **Gör problemet synligt:** doktorn pekar mot britsen och djuret vill inte. Det backar ett litet steg, skakar på huvudet och sänker öronen. Det sker utan ny replik, före *"Hm … vad gör vi nu?"*. Då förstår barnet varför gosedjuret behövs.
+- **Gosedjuret får ett nytt utseende per avsnitt** (i 046 en liten gul leopard, `rekvisita/gosedjur-leopard.md`). I det som sägs heter det vad det är: *"leoparden"*. Det tappas av en glad anledning (*jippi*, armarna i luften), glider ur knät, faller, studsar med ett `duns` och rullar in bakom pallen. Malins *"Oj! Var är …?"* kommer när det har landat.
+- **Djuret visar barnet:** på *"Gapa"* gapar djuret själv innan gosedjuret får försöka.
+- **Små hjärtan** stiger upp bredvid ansiktet när djuret kramar gosedjuret, aldrig över ansiktet.
+- **Frågan till barnet kommer före undersökningen:** *"Var är dina öron?"* ställs innan doktorn tittar i öronen.
+- **Doktorn gör små ljud men säger inga meningar:** *Hej*, *Hmm*, *Ooo* och *Aaa*.
+
+**Bild och kamera**
+- **Många närbilder på ansiktena**, ungefär ×2,8 för djuret och ×3 för doktorn med huvudet i mitten, och närbild på saken (stetoskopet, lampan). Kameran stannar alltid inne i rummet.
+- **Doktorn är med i bild** i undersökningarna och håller saken med sin egen kodarm. I närbilden flyttas doktorn så att saken hamnar rätt, vilket är tillåtet eftersom det är klipp. Gosedjuret i famnen ligger mellan djuret och doktorn, så att doktorns hand syns framför det.
+- **Rummet i delar:** ett tomt, större rum och britsen med pallen som ett eget urklipp (`verktyg/mottagning_delar.py`). Då kan britsen stå lägre och figurerna bli större.
+- **Doktorns saker i kod** (`verktyg/doktor-saker.js`): stetoskopet, i öronen när doktorn lyssnar, och öronlampan med ett svagt sken. Hjärtslagen är en ElevenLabs-effekt (`hjartslag/`).
+- **Kritan ritar som i alla andra filmer** (`format/ritintro.md`): konturen i en mörk kritlinje i ett drag ur `verktyg/kontur.py`, kritans spets i linjens ände, lutad 125° och svajande på 140° när den väntar. Bilden fylls i inifrån med en växande cirkel, och kritan flyger ut uppe till höger. Kritan går aldrig över ett ansikte.
+- **Gången** använder riggens stegcykel (`L.steg`) med en klocka som följer sträckan, som i 037.
+- **Slutet** är kritirisen från 045: en svart ram med en vågig krämvit vaxkant runt djurets ansikte, och sedan 0,6 s svart.
+
+**Tempo**
+- **Lugnt:** 1,6 s extra luft efter varje replik (`G` i `rader.mjs`), och ungefär 4:15 långt.
+
 ## Öppet
 
 - ~~Ska doktorn ha en egen röst?~~ **Nej, doktorn är tyst** och Malin berättar (Sanna 2026-11-20).
