@@ -6278,8 +6278,9 @@
   "sec": 54,
   "tags": [],
   "note": "bigger pig",
-  "fixed": false,
+  "fixed": true,
   "at": 1795159806427,
-  "render": "2026-11-20 08:11 (förhandsvisning (--snabb): feedback 20/11 åtgärdad, nytt grisljud på 0:24 saknas än)"
+  "render": "2026-11-20 08:11 (förhandsvisning (--snabb): feedback 20/11 åtgärdad, nytt grisljud på 0:24 saknas än)",
+  "fixedAt": 1795160111071
  }
 }
