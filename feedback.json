@@ -6417,9 +6417,10 @@
   "sec": 47,
   "tags": [],
   "note": "bigger dog, improve animation for drinking water, hand flying in air",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163550441,
-  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)",
+  "fixedAt": 1795164094126
  },
  "kbrti5adntmwoq1c0k": {
   "ep": "J17",
@@ -6427,9 +6428,10 @@
   "sec": 64,
   "tags": [],
   "note": "maybe straw for water to drink more easy",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163565332,
-  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)",
+  "fixedAt": 1795164094126
  },
  "2869p1xgj3mwoq1old": {
   "ep": "J17",
@@ -6437,9 +6439,10 @@
   "sec": 92,
   "tags": [],
   "note": "drwing scene potta",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163581633,
-  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)",
+  "fixedAt": 1795164094126
  },
  "8t2uwpcjm1mwoq25kd": {
   "ep": "J17",
@@ -6447,9 +6450,10 @@
   "sec": 183,
   "tags": [],
   "note": "place handdu more to the left closer to potty",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163603629,
-  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)",
+  "fixedAt": 1795164094126
  },
  "p5a7fqw0klmwoq2h4k": {
   "ep": "J17",
@@ -6457,8 +6461,9 @@
   "sec": 231,
   "tags": [],
   "note": "no hat for dog",
-  "fixed": false,
+  "fixed": true,
   "at": 1795163618612,
-  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)"
+  "render": "2026-11-20 09:13 (042 grind 6, förhandsvisning (--snabb). Ny röd potta (v2) med stänkskydd, hunden sitter uppe i pottan, större hund, lugnare gång, handduken åt höger, papperet syns, klocka och fönster med snö, dansen borttagen)",
+  "fixedAt": 1795164094126
  }
 }
