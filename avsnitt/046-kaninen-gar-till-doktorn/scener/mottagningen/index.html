@@ -149,7 +149,7 @@ const liv = (p, t) => { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2;
   return { ...p, strack: p.strack + 0.014 * a, bred: p.bred + 0.007 * a, oron: p.oron.map((o, i) => o - 2 * a + (i ? -1 : 1) * 1.5 * Math.sin(t * 1.3 + 2 * i)) }; };
 // skutt från A till B (fötterna), höjd h, under [a, b] sekunder in i raden
 const skuttPos = (A, B, tl, a, b, h = 120) => { const u = kl((tl - a) / (b - a)); return { pa: [lerp(A[0], B[0], mjuk(u)), lerp(A[1], B[1], u) - h * Math.sin(Math.PI * u)], u }; };
-const vinka = (p, tl, i = 1, f = 1.15) => { const a = [...p.armar]; a[i] = a[i] + 150 + 12 * Math.sin(2 * Math.PI * f * tl); return { ...p, armar: a }; };
+const vinka = (p, tl, i = 1, f = 1.15, k = 1) => { const a = [...p.armar]; a[i] = a[i] + k * (150 + 12 * Math.sin(2 * Math.PI * f * tl)); return { ...p, armar: a }; };   // k: armen lyfts och sänks mjukt (QA 2)
 // klippningen: en mask som visar teckningen fram till kritans spets (vänster → höger), kritan vid kanten
 const avslojad = (inner, x0, x1, y0, y1, k) => `<clipPath id="rev"><rect x="${f1(x0 - 20)}" y="${f1(y0 - 40)}" width="${f1(Math.max(0, (x1 - x0 + 40) * k))}" height="${f1(y1 - y0 + 80)}"/></clipPath><g clip-path="url(#rev)">${inner}</g>`;
 const kritaVid = (x0, x1, y0, y1, k, tl) => krita(lerp(x0, x1, k), (y0 + y1) / 2 + (y1 - y0) * 0.4 * Math.sin(k * 9));
@@ -215,7 +215,7 @@ const DP = (n = 'neutral', o = {}, k = 1) => ({ ...DL.blandaPose('neutral', n, k
 const SITT = (o = {}) => KP('sitter', o);
 // orolig (Sanna 2026-11-20: "make kanin face more worried"): brynen upp i mitten, blicken ner, en liten mun neråt (utan tårar)
 const OROLIG = (k = 1, o = {}) => KF('ledsen', k, { brynV: 34 * k, brynY: [-6 * k, -6 * k], titt: [0, 8 * k], ogonS: [0.95, 0.92], le: -0.8 * k, leBred: 0.55, ...o });
-const DVINKA = tl => ({ armar: [100 + 12 * Math.sin(2 * Math.PI * 1.1 * tl), 0], armbage: [-30, 0] });
+const DVINKA = (tl, k = 1) => ({ armar: [k * (100 + 12 * Math.sin(2 * Math.PI * 1.1 * tl)), 0], armbage: [-30 * k, 0] });   // k: armen upp och ner mjukt (QA 2)
 const DNICK = (tl, a = 0.3) => { const [, p] = DL.nicka(DL.param('glad'), DP(), Math.max(0, tl - a)); return p.nick; };
 const KNICK = (tl, a = 0.2) => { const [, p] = KL.nicka(KL.param('glad'), KL.blandaPose('neutral', 'neutral', 1), Math.max(0, tl - a)); return p.nick; };
 const PALL_FOT = [PALL[0] + 10, PALL[1] + 130];   // fötterna på pallens övre steg (riggens fötter ligger under kroppen)
@@ -233,22 +233,22 @@ function S(id, tl, d) {
       const a = (1 - del(2.9, 3.4, tl)) * del(0.2, 0.45, tl), c = (x - X0) / STEG;
       const [fw, pw] = KL.steg(c, a, Math.min(1, a * 1.6), Math.sin(tl * 1.5 * Math.PI));
       let p = { ...pw, armar: (pw.armar || [0, 0]).map(v => v + NER) };
-      if (tl > 3.4) p = vinka({ ...KP(), rikt: 0 }, tl - 3.4);
-      return { kam: 'hel', k: { pa: [x, PA_GOLV[1]], p, f: tl > 3.4 ? KF('jatteglad') : KL.blanda(fw, KF('glad'), 0.5) } }; }
-    case '2': return { kam: 'doktorVinkar', k: golv, d: { p: DP('neutral', DVINKA(tl)) } };
+      if (tl > 3.4) p = vinka({ ...KP(), rikt: 0 }, tl - 3.4, 1, 1.15, del(3.4, 3.9, tl));   // armen lyfts mjukt (QA 2: hoppade upp)
+      return { kam: 'hel', k: { pa: [x, PA_GOLV[1]], p, f: KL.blanda(KL.blanda(fw, KF('glad'), 0.5), KF('jatteglad'), del(3.25, 3.65, tl)) } }; }
+    case '2': return { kam: 'doktorVinkar', k: golv, d: { p: DP('neutral', DVINKA(tl, del(0, 0.5, tl) * (1 - del(d - 0.6, d - 0.1, tl)))) } };
     case '3': return { kam: 'kaninNar', k: { ...golv, f: OROLIG(0.85 * del(0, 0.6, tl)), p: KP('neutral', { oron: [12, 12].map(o => o * del(0, 0.6, tl)), sank: 6 * del(0, 0.6, tl) }) } };
-    case '4': { const upp = tl < 1.1;
-      return { kam: 'kaninNar', k: { ...golv, f: OROLIG(1, { titt: upp ? [10, -8] : [0, 9] }), p: KP('neutral', { oron: [22, 22], sank: 8 }) } }; }
+    case '4': { const in_ = del(0, 0.5, tl), titt = lerp2(lerp2([0, 6.8], [10, -8], del(0, 0.35, tl)), [0, 9], del(1.0, 1.35, tl));   // QA 2: fortsätter mjukt från rad 3 (samma bild)
+      return { kam: 'kaninNar', k: { ...golv, f: OROLIG(lerp(0.85, 1, in_), { titt }), p: KP('neutral', { oron: [1, 1].map(() => lerp(12, 22, in_)), sank: lerp(6, 8, in_) }) } }; }
     case '5': {   // Sanna 2026-11-20: kaninen är nervös och vill inte upp på britsen, därför behövs leoparden. Doktorn pekar mot britsen
       // medan Malin säger repliken, kaninen backar ett litet steg, skakar på huvudet och öronen faller; sedan "Hm … vad gör vi nu?"
       const pek = del(0.4, 1.0, tl) * (1 - del(MT(1) - 0.6, MT(1), tl)), nej = MT() + ML(8) + 0.3, back = del(nej - 0.2, nej + 0.5, tl);
       const [fs, ps] = KL.skakaHuvud(OROLIG(1), KP('neutral', { oron: [12 + 10 * back, 12 + 10 * back], sank: 6 + 6 * back, luta: -3 * back }), Math.max(0, tl - nej), 2.2);
       return { kam: 'hel', k: { ...golv, pa: [PA_GOLV[0] - 50 * back, PA_GOLV[1]], f: fs, p: ps }, d: { p: DP('neutral', { armar: [60 * pek, 0], armbage: [-30 * pek, 0], nick: tl > MT(1) ? DNICK(tl, MT(1)) : [0, 0] }) } }; }
-    case '6a': { const rit = 4.0; return { kam: 'kanin', k: { ...golv, f: KF('nyfiken', 1, { titt: [12, 6] }), p: KP('neutral', { oron: [12, 12] }) }, n: 'golv-kontur', nk: kl((tl - 0.4) / rit), krita: 'nalle', tl }; }
-    case '6b': return { kam: 'kaninLeo', k: { ...golv, f: KF('kawaii') }, n: 'golv', nfyll: del(0.05, 0.85, tl), kritaUt: del(0.1, 1.0, tl), krita: 'nalle', tl };
-    case '7': return { kam: 'kaninLeo', k: { ...golv, f: KF('nyfiken', 1, { titt: [12, 6] }), p: KP('neutral', { oron: [12, 12].map(o => lerp(o, -6, del(0.2, 1.0, tl))) }) }, n: 'golv' };
-    case '8': { const kram = del(0.9, 1.4, tl); return { kam: 'kanin', k: { ...golv, f: KF('glad'), p: { ...KP('magen'), nick: KNICK(tl, 0.1) } }, n: 'tillFamn', nu: kram, hjartan: 1.4 }; }
-    case '9': return { kam: 'kaninNar', k: { ...golv, f: KF('sover', 0.8), p: KP('magen', { luta: 4 * del(0, 0.8, tl) }) }, n: 'famn', hjartan: 0.6 };
+    case '6a': { const rit = 4.0; return { kam: 'kaninLeo', k: { ...golv, f: KF('nyfiken', 1, { titt: [12, 6] }), p: KP('neutral', { oron: [12, 12] }) }, n: 'golv-kontur', nk: kl((tl - 0.4) / rit), krita: 'nalle', tl }; }
+    case '6b': return { kam: 'kaninLeo', k: { ...golv, f: KL.blanda(KF('nyfiken', 1, { titt: [12, 6] }), KF('kawaii'), del(0, 0.5, tl)), p: KP('neutral', { oron: [12, 12] }) }, n: 'golv', nfyll: del(0.05, 0.85, tl), kritaUt: del(0.1, 1.0, tl), krita: 'nalle', tl };
+    case '7': return { kam: 'kaninLeo', k: { ...golv, f: KL.blanda(KF('kawaii'), KF('nyfiken', 1, { titt: [12, 6] }), del(0, 0.5, tl)), p: KP('neutral', { oron: [12, 12].map(o => lerp(o, -6, del(0.2, 1.0, tl))) }) }, n: 'golv' };
+    case '8': { const kram = del(0.9, 1.4, tl); return { kam: 'kaninLeo', k: { ...golv, f: KL.blanda(KF('nyfiken', 1, { titt: [12, 6] }), KF('glad'), del(0, 0.4, tl)), p: { ...KL.blandaPose(KP('neutral', { oron: [-6, -6] }), KP('magen'), kram), nick: KNICK(tl, 0.1) } }, n: 'tillFamn', nu: kram, hjartan: 1.4 }; }   // QA 2: armarna sluter sig när leoparden kommer
+    case '9': return { kam: 'kaninNar', k: { ...golv, f: KF('sover', 0.8 * del(0, 0.5, tl)), p: KP('magen', { luta: 4 * del(0, 0.8, tl) }) }, n: 'famn', hjartan: 0.6 };
     case '10': { const a = MT() + ML(15) * 0.55, b = MT() + ML(15) * 0.95;
       if (tl < a + 0.25) { const s = skuttPos(PA_GOLV, PALL_FOT, tl, a - 0.25, a + 0.25, 90); return { kam: 'hel', k: { ...golv, pa: s.pa, p: KP('magen') }, n: 'famn' }; }
       const s = skuttPos(PALL_FOT, PA_BRITS, tl, b - 0.3, b + 0.3, 110), sitt = del(b + 0.2, b + 0.6, tl);
@@ -260,40 +260,42 @@ function S(id, tl, d) {
     case '11c': { const k = del(0.3, 1.1, tl); return { kam: 'doktorNar', k: brits, n: 'famn', d: { p: { ...DP('stetoskop', {}, k), steto: tl > 0.6 ? 1 : 0 } } }; }
     case '12': return { kam: 'nalleMage', k: brits, n: 'famn', d: { p: DP('stetoskop') }, ringar: LT('hjartslag').flatMap(t => [t + 0.05, t + 0.6]) };
     case '13': { const u = del(0, 0.45, tl);   // Sanna: "show tummy faster, move leo with one hand"
-      return { kam: 'mage', k: { ...brits, f: tl > MT() + ML(18) ? KF('fnissig') : KF('glad'), p: SITT({ armar: [6 + 55 * u, 6] }) }, n: 'sidan', nu: u, d: { p: DP('stetoskop') }, ringar: LT('hjartslag').flatMap(t => [t + 0.05, t + 0.6]) }; }
-    case '14': return { kam: 'doktorNar', k: brits, n: 'famn', d: { p: DP('stetoskop', { nick: DNICK(tl) }) } };
-    case '15': { const kl_ = LT('klapp')[0], k = bump(kl_ - 0.35, kl_ + 0.5, tl); return { kam: 'kanin', k: { ...brits, f: KF(tl > kl_ ? 'jatteglad' : 'nyfiken'), p: { ...SITT(), fram: [k > 0.3 ? 1 : 0, k > 0.3 ? 1 : 0], armar: SITT().armar.map(a => a - 90 * k) } }, n: 'famn' }; }
+      return { kam: 'mage', k: { ...brits, f: KL.blanda(KF('glad'), KF('fnissig'), del(MT() + ML(18) - 0.1, MT() + ML(18) + 0.25, tl)), p: SITT({ armar: [6 + 55 * u, 6] }) }, n: 'sidan', nu: u, d: { p: DP('stetoskop') }, ringar: LT('hjartslag').flatMap(t => [t + 0.05, t + 0.6]) }; }
+    case '14': { const nu = 1 - del(d - 1.6, d - 0.6, tl);   // QA 2: leoparden låg i knät igen direkt efter rad 13; nu ligger den kvar vid sidan och kaninen tar tillbaka den
+      return { kam: 'doktorNar', k: { ...brits, p: SITT({ armar: [6 + 55 * nu, 6] }) }, n: 'sidan', nu, d: { p: DP('stetoskop', { nick: DNICK(tl) }) } }; }
+    case '15': { const kl_ = LT('klapp')[0], k = bump(kl_ - 0.35, kl_ + 0.5, tl); return { kam: 'kanin', k: { ...brits, f: KL.blanda(KF('nyfiken'), KF('jatteglad'), del(kl_ - 0.1, kl_ + 0.25, tl)), p: { ...SITT(), fram: [k > 0.3 ? 1 : 0, k > 0.3 ? 1 : 0], armar: SITT().armar.map(a => a - 90 * k) } }, n: 'famn' }; }
     case '16': return { sak: 'lampa', ljus: tl > LT('lampa-klick')[0] ? del(LT('lampa-klick')[0], LT('lampa-klick')[0] + 0.25, tl) : 0, gnista: MT() + 0.5 };
     case '16x': return { kam: 'lampaNar', k: brits, n: 'famn', d: { p: { ...DP('lampa', {}, del(0, 0.5, tl)), lampa: 1, ljus: tl > LT('lampa-klick')[0] ? 1 : 0 }, f: 'nyfiken' } };
     case '17': return { kam: 'nalleOra', k: brits, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
-    case '18': return { kam: 'ora', k: { ...brits, f: tl > MT() + ML(24) ? KF('jatteglad') : glad }, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
-    case '19': return { kam: 'kaninNar', k: { ...brits, f: KF(tl > 0.5 ? 'fnissig' : 'forvanad'), p: SITT({ oron: [0, 75 * del(0, 0.5, tl)] }) }, n: 'famn' };
-    case '20': { const u = del(0.1, 0.7, tl); return { kam: 'kaninNar', k: { ...brits, p: SITT({ oron: [0, 75 * (1 - u)], armar: [6, 6 + 70 * bump(0, 0.9, tl)] }) }, n: 'famn' }; }
-    case '21': { const v = tl > MT(1) ? 10 * Math.sin(2 * Math.PI * 2.2 * tl) : 0; return { kam: 'kanin', k: { ...brits, f: KF(tl > MT(1) ? 'fnissig' : 'nyfiken'), p: SITT({ oron: [-v, v] }) }, n: 'famn' }; }
+    case '18': return { kam: 'ora', k: { ...brits, f: KL.blanda(glad, KF('jatteglad'), del(MT() + ML(24) - 0.1, MT() + ML(24) + 0.25, tl)) }, n: 'famn', d: { p: { ...DP('lampa', { armar: [100, 0], armbage: [-70, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) };
+    case '19': return { kam: 'kaninNar', k: { ...brits, f: KL.blanda(KF('forvanad'), KF('fnissig'), del(0.4, 0.7, tl)), p: SITT({ oron: [0, 75 * del(0, 0.5, tl)] }) }, n: 'famn' };
+    case '20': { const u = del(0.1, 0.7, tl); return { kam: 'kaninNar', k: { ...brits, f: KL.blanda(KF('fnissig'), glad, del(0, 0.5, tl)), p: SITT({ oron: [0, 75 * (1 - u)], armar: [6, 6 + 70 * bump(0, 0.9, tl)] }) }, n: 'famn' }; }
+    case '21': { const v = 10 * Math.sin(2 * Math.PI * 2.2 * tl) * del(MT(1), MT(1) + 0.3, tl);
+      return { kam: 'kaninOron', k: { ...brits, f: KL.blanda(KL.blanda(KF('jatteglad'), KF('nyfiken'), del(0, 0.5, tl)), KF('fnissig'), del(MT(1) - 0.1, MT(1) + 0.25, tl)), p: SITT({ oron: [-v, v] }) }, n: 'famn' }; }
     case '22': return { kam: 'doktorNar', k: brits, n: 'famn', d: { p: DP('neutral', { nick: DNICK(tl) }), f: 'nyfiken' } };
     case '23': { const a = MT() + ML(54) * 0.22, g = del(a - 0.15, a + 0.25, tl) * (1 - del(a + 1.1, a + 1.5, tl));   // kaninen gapar och visar
-      return { kam: 'nalleMun', k: { ...brits, f: g > 0.01 ? { ...KL.blanda('glad', 'gapar', g) } : tl > MT() + ML(54) * 0.5 ? KF('fnissig') : glad }, n: 'famn', d: { p: { ...DP('lampa', { armar: [70, 0], armbage: [-55, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) }; }
+      return { kam: 'nalleMun', k: { ...brits, f: KL.blanda(KL.blanda(glad, KF('fnissig'), del(MT() + ML(54) * 0.5 - 0.1, MT() + ML(54) * 0.5 + 0.25, tl)), KF('gapar'), g) }, n: 'famn', d: { p: { ...DP('lampa', { armar: [70, 0], armbage: [-55, 0] }), ljus: del(0.2, 0.4, tl) }, f: 'nyfiken' }, sken: del(0.2, 0.4, tl) }; }
     case '24': { const a = MT() + ML(31) * 0.55, g = del(a - 0.15, a + 0.25, tl);   // öppen till radens slut   // mjukt upp och ner (Sanna: "more smooth")
       return { kam: 'mun', k: { ...brits, f: { ...KL.blanda('glad', 'gapar', g), titt: [0, -4 * g] }, p: SITT({ upp: 0.25 * g, strack: 0.02 * g }) }, n: 'famn',
         d: { p: { ...DP('lampa', { armar: [70, 0], armbage: [-55, 0] }), ljus: 0.45 * del(0.2, 0.5, tl) }, f: 'nyfiken' }, sken: 0.6 * del(0.2, 0.5, tl) }; }
     case '25': { const b = MT(1), g = Math.max(1 - del(0.6, 1.1, tl), del(b - 0.1, b + 0.25, tl) * (1 - del(b + 1.6, b + 2.0, tl)));
       return { kam: 'kaninNar', k: { ...brits, f: g > 0.01 ? KL.blanda(KF('stolt'), KF('gapar'), g) : KF('stolt'), p: SITT({ strack: 0.03 * del(0, 0.5, tl), upp: 0.2 * g }) }, n: 'famn' }; }
     case '26': { const h = del(0.1, 0.45, tl) * (1 - del(1.3, 1.8, tl)), fall = kl((tl - 0.45) / 1.7);   // linjärt: fasernas egen takt i ritaRad
-      return { kam: 'hel', k: { ...brits, f: KF(tl > 1.4 ? 'forvanad' : 'jatteglad'), p: { ...SITT(), armar: SITT().armar.map(a => a + 130 * h), lyft: -14 * bump(0.1, 0.6, tl) } }, n: 'faller', nu: fall }; }
-    case '27': { const t = tl < 1.2 ? [-14, 0] : tl < 2.4 ? [14, 0] : [0, 4]; return { kam: 'kaninNar', k: { ...brits, f: KF('nyfiken', 1, { titt: t }), p: SITT({ oron: [10, 10].map(o => o * del(1.5, 2.3, tl)) }) }, n: 'pall' }; }
+      return { kam: 'hel', k: { ...brits, f: KL.blanda(KF('jatteglad'), KF('forvanad'), del(1.3, 1.6, tl)), p: { ...SITT(), armar: SITT().armar.map(a => a + 130 * h), lyft: -14 * bump(0.1, 0.6, tl) } }, n: 'faller', nu: fall }; }
+    case '27': { const t = lerp2(lerp2([-14, 0], [14, 0], del(1.1, 1.4, tl)), [0, 4], del(2.3, 2.6, tl));   /* blicken glider (QA 2) */ return { kam: 'kaninNar', k: { ...brits, f: KF('nyfiken', 1, { titt: t }), p: SITT({ oron: [10, 10].map(o => o * del(1.5, 2.3, tl)) }) }, n: 'pall' }; }
     case '28': { const klipp = MT() + ML(36) + 1.0; return { kam: tl < klipp ? 'hel' : 'pall', k: { ...brits, f: KF('nyfiken') }, n: 'pall', skimmer: tl > (LT('tindra')[0] ?? 99) ? del(LT('tindra')[0], LT('tindra')[0] + 0.4, tl) : 0, tl }; }
     case '29': return { kam: 'pall', k: brits, n: 'pall', kika: del(0.3, 1.0, tl) * (1 - del(MT() + ML(57) + 0.8, MT() + ML(57) + 1.4, tl)), skimmer: 1, tl };
     case '30': { const s = skuttPos(PA_BRITS, PA_GOLV, tl, 0.2, 0.8, 100), st = del(0.2, 0.6, tl);
-      return { kam: 'hel', k: { pa: s.pa, f: tl > 0.9 ? KF('sover', 0.8) : glad, p: tl > 0.9 ? KP('magen') : { ...KL.blandaPose('sitter', 'neutral', st), armar: KL.blandaPose('sitter', 'neutral', st).armar.map(a => a + NER) } }, n: tl < 0.85 ? 'pall' : 'tillFamnPall', nu: del(0.85, 1.15, tl), hjartan: 1.3 }; }
+      return { kam: 'hel', k: { pa: s.pa, f: KL.blanda(glad, KF('sover', 0.8), del(0.85, 1.2, tl)), p: KL.blandaPose({ ...KL.blandaPose('sitter', 'neutral', st), armar: KL.blandaPose('sitter', 'neutral', st).armar.map(a => a + NER) }, KP('magen'), del(0.85, 1.15, tl)) }, n: tl < 0.85 ? 'pall' : 'tillFamnPall', nu: del(0.85, 1.15, tl), hjartan: 1.3 }; }
     case '31a': return { kam: 'kanin', k: { ...golv, f: KF('nyfiken', 1, { titt: [8, -10] }), p: KP('magen') }, n: 'famn', stj: 'kontur', jk: kl((tl - 0.4) / 2.0), krita: 'stjarna', tl };
-    case '31b': return { kam: 'kanin', k: { ...golv, f: KF('kawaii'), p: KP('magen') }, n: 'famn', stj: 'luft', jfyll: del(0, 0.5, tl), kritaUt: del(0, 0.8, tl), krita: 'stjarna', tl };
-    case '32': return { kam: 'kanin', k: { ...golv, f: tl > 0.9 ? KF('jatteglad') : KF('nyfiken', 1, { titt: [8, -6] }), p: KP('magen') }, n: 'famn', stj: 'tillMage', ju: del(0, 0.9, tl) };
-    case '33': return { kam: 'kanin', k: { ...golv, f: tl > 0.9 ? KF('fnissig') : glad, p: KP('magen') }, n: 'famn', stj: 'tillNalle', ju: del(0, 0.9, tl) };
-    case '34': return { kam: 'kaninNar', k: { ...golv, f: KF('stolt', 1, { titt: [0, tl < 0.6 ? 10 : 0] }), p: KP('magen', { lyft: -20 * bump(0.6, 1.1, tl) }) }, n: 'famn', stj: 'mage+nalle' };
+    case '31b': return { kam: 'kanin', k: { ...golv, f: KL.blanda(KF('nyfiken', 1, { titt: [8, -10] }), KF('kawaii'), del(0, 0.5, tl)), p: KP('magen') }, n: 'famn', stj: 'luft', jfyll: del(0, 0.5, tl), kritaUt: del(0, 0.8, tl), krita: 'stjarna', tl };
+    case '32': return { kam: 'kanin', k: { ...golv, f: KL.blanda(KF('kawaii'), KF('jatteglad'), del(0.8, 1.1, tl)), p: KP('magen') }, n: 'famn', stj: 'tillMage', ju: del(0, 0.9, tl) };
+    case '33': return { kam: 'kanin', k: { ...golv, f: KL.blanda(KF('jatteglad'), KF('fnissig'), del(0.8, 1.1, tl)), p: KP('magen') }, n: 'famn', stj: 'tillNalle', jin: del(0, 0.3, tl), ju: del(0.3, 0.9, tl) };   // QA 2: andra stjärnan växer fram i stället för att poppa upp
+    case '34': return { kam: 'kaninNar', k: { ...golv, f: KF('stolt', 1, { titt: [0, 10 * (1 - del(0.45, 0.75, tl))] }), p: KP('magen', { lyft: -20 * bump(0.6, 1.1, tl) }) }, n: 'famn', stj: 'mage+nalle' };
     case '35': return { kam: 'hel', k: { ...golv, p: { ...KP('magen', { rikt: 0.6 * del(0, 0.4, tl) }), nick: KNICK(tl, 0.5) } }, n: 'famn', stj: 'mage+nalle', d: { p: DP('neutral', { nick: DNICK(tl, 0.9) }) } };
-    case '36': return { kam: 'doktorVinkar', k: golv, n: 'famn', stj: 'mage+nalle', d: { p: DP('neutral', DVINKA(tl)) } };
-    case '37': return { kam: 'kanin', k: { ...golv, f: KF('jatteglad'), p: vinka(KP('magen', { fram: [1, 0] }), tl) }, n: 'famn', stj: 'mage+nalle' };
-    case '38': return { kam: 'kanin', k: { ...golv, p: vinka(KP('magen', { fram: [1, 0] }), tl + 3) }, n: 'famn', stj: 'mage+nalle' };
+    case '36': return { kam: 'doktorVinkar', k: golv, n: 'famn', stj: 'mage+nalle', d: { p: DP('neutral', DVINKA(tl, del(0, 0.5, tl) * (1 - del(d - 0.6, d - 0.1, tl)))) } };
+    case '37': return { kam: 'kanin', k: { ...golv, f: KF('jatteglad'), p: vinka(KP('magen', { fram: [1, 1 - del(0, 0.5, tl)] }), tl, 1, 1.15, del(0, 0.5, tl)) }, n: 'famn', stj: 'mage+nalle' };
+    case '38': return { kam: 'kanin', k: { ...golv, f: KL.blanda(KF('jatteglad'), glad, del(d - 1.0, d - 0.3, tl)), p: vinka(KP('magen', { fram: [1, del(d - 1.0, d - 0.2, tl)] }), tl + RR['37'].d, 1, 1.15, 1 - del(d - 1.0, d - 0.2, tl)) }, n: 'famn', stj: 'mage+nalle' };   // QA 2: samma bild som 37, vinkningen fortsätter i takt och armen sänks före kritirisen
     case '39': return { kam: 'hel', k: { ...golv, p: KP('magen') }, n: 'famn', stj: 'mage+nalle', iris: lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))) };
   }
   return { kam: 'hel', k: golv };
@@ -302,7 +304,7 @@ function S(id, tl, d) {
 function ritaRad(id, tl, d) {
   const s = S(id, tl, d); ['bak', 'mellan', 'saker', 'fram', 'papper'].forEach(n => $(n).innerHTML = '');
   $('ram').innerHTML = '';
-  KZ = { ora: 2.3, nalleOra: 3.0, hel: 1, kanin: 2.2, kaninNar: 2.8, kaninLeo: 2.2, stetoNar: 3.0, doktorVinkar: 2.0, lampaNar: 3.0, doktor: 2.5, doktorNar: 3.0, dokKanin: 1.35, steto: 1.8, pall: 2.4 }[s.kam] ?? 1.8;
+  KZ = { ora: 2.3, nalleOra: 2.6, nalleMun: 2.4, kaninOron: 2.4, hel: 1, kanin: 2.2, kaninNar: 2.8, kaninLeo: 2.2, stetoNar: 3.0, doktorVinkar: 2.0, lampaNar: 3.0, doktor: 2.5, doktorNar: 3.0, dokKanin: 1.35, steto: 1.8, pall: 2.4 }[s.kam] ?? 1.8;
   $('ram').innerHTML = '';
   $('kamera').setAttribute('opacity', 1);
   if (s.sak) return sakbild(s, tl);
@@ -317,14 +319,14 @@ function ritaRad(id, tl, d) {
   dp = { ...dp, luta: (dp.luta || 0) + 1.3 * Math.sin(TT * 0.9), upp: (dp.upp || 0) + 0.12 * Math.sin(TT * 0.6 + 1) };
   let dfn = dd.f || 'glad', dw = 0;   // dw: hur mycket ljudets uttryck syns (tonas in 0,15 s och ut 0,3 s)
   for (const [f, o] of CUR?.ljud || []) { const m = /^doktor-(\w+)\//.exec(f); if (!m) continue; const u = tl - o;
-    const dur = m[1] === 'bra' ? 2.6 : m[1] === 'fniss' ? 2.3 : 1.3; if (u < -0.15 || u > dur) continue;
+    const dur = m[1] === 'bra' ? 2.85 : m[1] === 'fniss' ? 2.3 : m[1] === 'mhm' || m[1] === 'hmm' ? 1.45 : 1.3; if (u < -0.15 || u > dur) continue;
     dw = Math.max(dw, del(-0.15, 0.1, u) * (1 - del(dur - 0.35, dur, u)));
     if (['hej', 'bra', 'ooo', 'hejda'].includes(m[1])) dfn = 'jatteglad';
     if (m[1] === 'aaa') dfn = 'forvanad';
     if (m[1] === 'fniss') dfn = 'skrattar';
     if (m[1] === 'oj') dfn = 'forvanad';
-    if (m[1] === 'mhm' || m[1] === 'hmm') dp = { ...dp, nick: DNICK(u + 0.3, 0) };
-    if (m[1] === 'bra' && !dp.steto && !dp.lampa) { const [, pk] = DL.ROR.klappa(Math.min(u, 2.4) + 0.2); dp = { ...pk, luta: dp.luta, steto: dp.steto }; } }
+    if (m[1] === 'mhm' || m[1] === 'hmm') dp = { ...dp, nick: DNICK(u + 0.15, 0) };   // QA 2: nicken (1,6 s) börjar och slutar i vila, ingen ryckning
+    if (m[1] === 'bra' && !dp.steto && !dp.lampa) { const [, pk] = DL.ROR.klappa(kl(u + 0.15, 0, 2.999));   /* QA 2: hela klappen, armarna tillbaka i vila */ dp = { ...pk, luta: dp.luta, steto: dp.steto }; } }
   // doktorn förvånad (Sanna: "add surprised face to doctor"): stora runda ögon och en O-mun
   const bas = DL.blanda('neutral', dd.f || 'glad', 1), mal = dfn === 'forvanad' ? { ...DL.blanda('neutral', 'forvanad', 1), ogonS: [1.3, 1.3], mun: [12, 15, 0, 466], kind: 0.9 } : DL.blanda('neutral', dfn, 1);
   const dfAns = dfn === (dd.f || 'glad') ? bas : DL.blanda(bas, mal, dw);
@@ -365,7 +367,7 @@ function ritaRad(id, tl, d) {
   if (s.stj === 'kontur' && s.jk > 0) lagg('saker', avslojad(stjarna(...LUFT, 46, true), LUFT[0] - 50, LUFT[0] + 50, LUFT[1] - 50, LUFT[1] + 50, s.jk));
   if (s.stj === 'luft') lagg('saker', `<g opacity="${s.jfyll.toFixed(2)}">${stjarna(...LUFT, 46)}</g><g opacity="${(1 - s.jfyll).toFixed(2)}">${stjarna(...LUFT, 46, true)}</g>`);
   if (s.stj === 'tillMage') lagg('saker', stjarna(...lerp2(LUFT, MAGS, s.ju), lerp(46, 24, s.ju)));
-  if (s.stj === 'tillNalle') lagg('saker', stjarna(...MAGS, 24) + stjarna(...lerp2(LUFT, NALS, s.ju), lerp(30, 14, s.ju)));
+  if (s.stj === 'tillNalle' && (s.jin ?? 1) > 0) lagg('saker', stjarna(...MAGS, 24) + stjarna(...lerp2(LUFT, NALS, s.ju), lerp(30, 14, s.ju) * (s.jin ?? 1)));
   if (s.stj?.startsWith('mage')) lagg('saker', stjarna(...MAGS, 24));
   if (s.stj === 'mage+nalle') lagg('saker', stjarna(...NALS, 14));
   // stetoskopet som kritan ritar, framför doktorn; i 11b krymper det in mot doktorns hals (doktorn tar det)
@@ -399,7 +401,8 @@ function ritaRad(id, tl, d) {
   switch (s.kam) {
     case 'hel': kamera(1, 960, 540); break;
     case 'kanin': kamera(2.2, huvud[0], huvud[1] + 60); break;
-    case 'kaninNar': kamera(2.8, huvud[0], huvud[1] + 10); break;
+    case 'kaninNar': kamera(2.8, huvud[0], huvud[1] - 30); break;   // QA 2: öronen i bild (var + 10)
+    case 'kaninOron': kamera(2.4, huvud[0] - 25, huvud[1] - 45); break;   // rad 21 (Sanna: lite upp och till vänster), hela öronen i bild
     case 'kaninLeo': kamera(2.2, (huvud[0] + golvN[0]) / 2, (huvud[1] + golvN[1]) / 2 - 20); break;   // kaninens ansikte och leoparden på golvet
     case 'doktor': { const [x, y] = dhuvud(); kamera(2.5, x - 120, y + 60); break; }
     case 'lampaNar': { const [x, y] = punkt(GD.querySelector('.lampa'), -20, 0); kamera(3.0, x - 20, y); break; }   // öronlampan i doktorns hand
@@ -411,10 +414,10 @@ function ritaRad(id, tl, d) {
     case 'mage': { const m = s.n === 'sidan' ? [mage[0] + 10, mage[1] - 10] : [mage[0] + 95, mage[1] - 35]; naraSak(m, brostdelPos); puls(...m); kamera(1.9, m[0] + 40, m[1] - 40); break; }
     case 'nalleMage': naraSak(nalleMage, brostdelPos); puls(...nalleMage); kamera(2.6, nalleMage[0] + 50, nalleMage[1] - 60); break;
     case 'ora': { const o = punkt(GK.querySelector('image.ear-r'), ORA[0], ORA[1]); naraSak([o[0] + 18, o[1]], lampSpets); skn(o[0] - 12, o[1]); kamera(2.3, o[0] + 80, o[1] + 110); break; }
-    case 'nalleOra': naraSak([nalleOra[0] + 18, nalleOra[1]], lampSpets); skn(nalleOra[0] - 6, nalleOra[1], 18, 18); kamera(3.0, nalleOra[0] + 80, nalleOra[1] + 40); break;
+    case 'nalleOra': naraSak([nalleOra[0] + 18, nalleOra[1]], lampSpets); skn(nalleOra[0] - 6, nalleOra[1], 18, 18); kamera(2.6, nalleOra[0] + 60, nalleOra[1] - 30); break;   // QA 2: kaninens ansikte helt i bild (skars vid ögonen)
     // mun: lampan bredvid munnen, skenet skymmer inte gapet
     case 'mun': { const m = punkt(GK.querySelector('.drag'), MUN[0], MUN[1]); naraSak([m[0] + 110, m[1] - 10], lampSpets); skn(m[0] + 60, m[1] - 8, 20, 16); kamera(2.6, m[0] + 80, m[1] - 20); break; }
-    case 'nalleMun': naraSak([nalleMun[0] + 60, nalleMun[1]], lampSpets); skn(nalleMun[0] + 24, nalleMun[1], 22, 18); kamera(2.7, nalleMun[0] + 80, nalleMun[1] + 10); break;
+    case 'nalleMun': naraSak([nalleMun[0] + 60, nalleMun[1]], lampSpets); skn(nalleMun[0] + 24, nalleMun[1], 22, 18); kamera(2.4, nalleMun[0] + 70, nalleMun[1] - 55); break;   // QA 2: kaninens ansikte helt i bild
     case 'pall': kamera(2.4, PALL[0], PALL[1] - 20); break;
   }
   if (s.skimmer) lagg('fram', [0, 1, 2, 3].map(i => { const a = i * Math.PI / 2 + 0.4 + s.tl * 1.2, x = PALL[0] - 60 + 70 * Math.cos(a), y = PALL[1] - 30 + 50 * Math.sin(a), r = 10 * (0.6 + 0.4 * Math.sin(s.tl * 6 + i));
