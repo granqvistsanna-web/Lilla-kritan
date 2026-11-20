@@ -1,0 +1,11 @@
+50-en-leopard 2.63
+51-leoparden-ar-med 1.93
+52-forst-leoparden-lyssna 4.56
+53-forst-leoparden-titta 3.79
+54-leoparden-kan-inte-gapa 5.48
+55-var-ar-leoparden 1.81
+56-vet-inte-leoparden 2.13
+57-kan-du-hjalpa-leoparden 3.29
+58-dar-ar-du-leoparden 1.61
+59-till-leoparden 2.13
+60-hejda-kaninen-leoparden 2.47

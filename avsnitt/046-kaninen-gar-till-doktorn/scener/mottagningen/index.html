@@ -40,8 +40,9 @@ const $ = id => document.getElementById(id), f1 = v => v.toFixed(1);
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const A = '/assets/', R = A + 'rekvisita/';
 const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
-// Nallen v2 (Sanna 2026-11-20: "nallen v2", "ta bort den gamla nallen"): nalle-v2-ljus-tunn.png 848 × 856 som 016/026/037, ansiktet i kod (nalle-v2.js)
-const NALLE = R + 'nalle/cut/nalle-v2-ljus-tunn.png', NALLE_C = [424, 429], NALLE_H = 776, NALLE_WH = [848, 856];
+// Gosedjuret: en liten leopard (Sanna 2026-11-20: "a new teddy animal … maybe a leo small", rekvisita/gosedjur-leopard.md), 676 × 867,
+// utan ansikte; ansiktet är nallen v2:s kodansikte (nalle-v2.js) flyttat till leopardens huvud. (Variablerna heter fortfarande nalle.)
+const NALLE = R + 'gosedjur-leopard/cut/gosedjur-leopard.png', NALLE_C = [338, 433], NALLE_H = 865, NALLE_WH = [676, 867], NALLE_ANS = 'translate(-75 40)';
 
 // Mått (bakgrunder/mottagningen.md, komposition v2)
 const RUM = { fil: A + 'bakgrunder/mottagningen/mottagningen-tom.png', w: 1876, h: 1058 }, RS = 1920 / RUM.w;
@@ -64,7 +65,7 @@ function kaninPa([x, y]) { GK.setAttribute('transform', `translate(${f1(x)} ${f1
 // Saker: nallen (bild), kritan (bild), stetoskopet och stjärnan (kod). kontur: streckad grå, som konturen kritan ritar.
 const nalle = (x, y, h = 210, kontur = false, mun = 0) => { const s = h / NALLE_H;
   return `<g transform="translate(${f1(x - NALLE_C[0] * s)} ${f1(y - NALLE_C[1] * s)}) scale(${s.toFixed(4)})" ${kontur ? 'style="filter:grayscale(1) brightness(1.6) contrast(.6)" opacity=".45"' : ''}>
-    <image href="${NALLE}" width="${NALLE_WH[0]}" height="${NALLE_WH[1]}"/>${kontur ? '' : nalleAnsikte(0, mun)}</g>`; };
+    <image href="${NALLE}" width="${NALLE_WH[0]}" height="${NALLE_WH[1]}"/>${kontur ? '' : `<g transform="${NALLE_ANS}">${nalleAnsikte(0, mun)}</g>`}</g>`; };
 const krita = (x, y, s = 0.33, v = -35) => `<image href="${KRITA}" width="755" height="265" transform="translate(${f1(x)} ${f1(y)}) scale(${s}) rotate(${v}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`;
 const stjarnaD = (x, y, r) => Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.48 : r;
   return `${i ? 'L' : 'M'}${f1(x + rr * Math.cos(a))} ${f1(y + rr * Math.sin(a))}`; }).join(' ') + 'Z';
@@ -113,7 +114,7 @@ const DVINKA = tl => ({ armar: [100 + 12 * Math.sin(2 * Math.PI * 1.1 * tl), 0],
 const DNICK = (tl, a = 0.3) => { const [, p] = DL.nicka(DL.param('glad'), DP(), Math.max(0, tl - a)); return p.nick; };
 const KNICK = (tl, a = 0.2) => { const [, p] = KL.nicka(KL.param('glad'), KL.blandaPose('neutral', 'neutral', 1), Math.max(0, tl - a)); return p.nick; };
 const PALL_FOT = [PALL[0] + 10, PALL[1] + 130];   // fötterna på pallens övre steg (riggens fötter ligger under kroppen)
-const NALLE_BAK = [PALL[0] - 30, PALL[1] + 70];
+const NALLE_BAK = [PALL[0] - 30, PALL[1] + 45];
 
 function S(id, tl, d) {
   const glad = KF('glad'), golv = { pa: PA_GOLV, p: KP(), f: glad }, brits = { pa: PA_BRITS, p: SITT(), f: glad };
@@ -227,7 +228,7 @@ function ritaRad(id, tl, d) {
   const brostdelPos = () => { const b = GD.querySelectorAll('.steto-fram circle'), c = b[b.length - 2]; return punkt(c, +c.getAttribute('cx'), +c.getAttribute('cy')); };
   const lampSpets = () => punkt(GD.querySelector('.lampa'), -96, 0);
   const NS = NH / NALLE_H, np = ([x, y]) => [famn[0] + (x - NALLE_C[0]) * NS, famn[1] + (y - NALLE_C[1]) * NS];
-  const nalleMage = np([424, 600]), nalleOra = np([600, 120]), nalleMun = np([425, 338]);
+  const nalleMage = np([396, 592]), nalleOra = np([554, 110]), nalleMun = np([350, 378]);   // leopardens mage, högra öra, mun
   const puls = (x, y) => { for (const t0 of s.ringar || []) { const u = (tl - t0) / 0.5; if (u >= 0 && u <= 1)
       lagg('fram', `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(24 + 34 * u)}" fill="none" stroke="#fff" stroke-width="${f1(7 * (1 - u) + 1)}" opacity="${f1(1 - u)}"/>`); } };
   const skn = (x, y, rx, ry) => { if (s.sken) lagg('fram', `<g opacity="${(s.sken).toFixed(2)}">${sken(x, y, rx, ry)}</g>`); };

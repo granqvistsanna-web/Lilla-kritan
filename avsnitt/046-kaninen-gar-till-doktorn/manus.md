@@ -7,7 +7,7 @@
 | **Titel** | Kaninen går till doktorn (avsnitt 46) |
 | **Figurer (2)** | **Kaninen Kanel** (v2, riggad, sittposen finns) · **Doktorn** (ny, **mer mänskliga proportioner och en egen rigg**, Sanna 2026-11-20: runt huvud på kort hals, kropp i rock, raka armar och ben; görs med `lk-figur`, prompterna i [`doktorn-prompter.md`](doktorn-prompter.md)). **Sanna valde doktorn A** 2026-11-20 (vit rock, röda lockar): [`karaktarer/doktorn-a.md`](../../karaktarer/doktorn-a.md). Doktorn står still vid britsen, nickar, ler och vinkar |
 | **Platser (1)** | **Mottagningen** (ny platta 16:9, [`bakgrunder/mottagningen.md`](../../bakgrunder/mottagningen.md), alternativ D vald av Sanna 2026-11-20): himmelsblå vägg, korallröd brits med papper, vit pall, undersökningslampa på väggen, ljust golv. Inget platsbyte |
-| **Saker** | **nallen v2** (`nalle-v2-ljus-tunn.png` med ansiktet i kod, `nalle-v2.js`, som 016/026/037; Sanna 2026-11-20: "ta bort den gamla nallen", ritas av kritan) · **stetoskopet** och **öronlampan** ritas i kod (Sanna 2026-11-20, [`verktyg/doktor-saker.js`](../../verktyg/doktor-saker.js)), inga bilder |
+| **Saker** | **gosedjursleoparden** ([`rekvisita/gosedjur-leopard.md`](../../rekvisita/gosedjur-leopard.md), Sanna 2026-11-20, ersätter nallen; nallens kodansikte; heter *"leoparden"* i det som sägs; ritas av kritan) · **stetoskopet** och **öronlampan** ritas i kod (Sanna 2026-11-20, [`verktyg/doktor-saker.js`](../../verktyg/doktor-saker.js)), inga bilder |
 | **I kod** | stetoskopets slang (mjuk kritkurva från doktorns hals till handen), lampans ljus, klistermärket med stjärnan (ritas av kritan), skimret, hjärtslagens små ringar |
 | **Musik** | ingen |
 | **Favoriter** | 🐰 kanin · 🧸 nalle |
@@ -143,6 +143,26 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Hej då, kaninen! Hej då, nallen!
 [warmly] Hej då! Vi ses snart! [giggles]
 ```
+
+## Leoparden i stället för nallen (Sanna 2026-11-20)
+
+Gosedjuret är en liten leopard. De 11 replikerna som sa *"nallen"* spelas in igen med nya nummer (50–60, i `rost.txt`); 11, 14, 17, 23, 30, 34, 35, 36, 38, 42 och 47 används inte längre. Tabellen ovan läses med *leoparden* där det står *nallen*. Samma röst och inställningar som tagning 1, ett block:
+
+```
+[happy] En leopard! Varsågod, kaninen.
+[warmly] Leoparden är med. Då går det bra.
+[happy] Först leoparden. Lyssna, lyssna … dunk, dunk!
+[happy] Först leoparden. Titta, titta … fint!
+[chuckles] Först leoparden. Gapa … oj! Leoparden kan inte gapa!
+[surprised] Oj! Var är leoparden?
+[curious] Kaninen vet inte var leoparden är.
+[warmly] Kan du hjälpa kaninen? Kan du se var leoparden är?
+[happy] Där är du, leoparden!
+[giggles] Och en till leoparden!
+[happy] Hej då, kaninen! Hej då, leoparden!
+```
+
+Tills tagningen finns används uppskattade längder (`rost-langder-uppskattade.txt`).
 
 ## Kaninens röst och ljuden
 

@@ -47,3 +47,14 @@
 47-hejda-kaninen  [happy] Hej då, kaninen! Hej då, nallen!
 48-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
 49-ett-stetoskop  [delighted] Ett stetoskop! Med det lyssnar doktorn.
+50-en-leopard  [happy] En leopard! Varsågod, kaninen.
+51-leoparden-ar-med  [warmly] Leoparden är med. Då går det bra.
+52-forst-leoparden-lyssna  [happy] Först leoparden. Lyssna, lyssna … dunk, dunk!
+53-forst-leoparden-titta  [happy] Först leoparden. Titta, titta … fint!
+54-leoparden-kan-inte-gapa  [chuckles] Först leoparden. Gapa … oj! Leoparden kan inte gapa!
+55-var-ar-leoparden  [surprised] Oj! Var är leoparden?
+56-vet-inte-leoparden  [curious] Kaninen vet inte var leoparden är.
+57-kan-du-hjalpa-leoparden  [warmly] Kan du hjälpa kaninen? Kan du se var leoparden är?
+58-dar-ar-du-leoparden  [happy] Där är du, leoparden!
+59-till-leoparden  [giggles] Och en till leoparden!
+60-hejda-kaninen-leoparden  [happy] Hej då, kaninen! Hej då, leoparden!

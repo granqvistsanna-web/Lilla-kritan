@@ -39,8 +39,9 @@ const $ = id => document.getElementById(id), f1 = v => v.toFixed(1);
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const A = '/assets/', R = A + 'rekvisita/';
 const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
-// Nallen v2 (Sanna 2026-11-20: "nallen v2", "ta bort den gamla nallen"): nalle-v2-ljus-tunn.png 848 × 856 som 016/026/037, ansiktet i kod (nalle-v2.js)
-const NALLE = R + 'nalle/cut/nalle-v2-ljus-tunn.png', NALLE_C = [424, 429], NALLE_H = 776, NALLE_WH = [848, 856];
+// Gosedjuret: en liten leopard (Sanna 2026-11-20: "a new teddy animal … maybe a leo small", rekvisita/gosedjur-leopard.md), 676 × 867,
+// utan ansikte; ansiktet är nallen v2:s kodansikte (nalle-v2.js) flyttat till leopardens huvud. (Variablerna heter fortfarande nalle.)
+const NALLE = R + 'gosedjur-leopard/cut/gosedjur-leopard.png', NALLE_C = [338, 433], NALLE_H = 865, NALLE_WH = [676, 867], NALLE_ANS = 'translate(-75 40)';
 
 // Mått (bakgrunder/mottagningen.md, komposition v2)
 const RUM = { fil: A + 'bakgrunder/mottagningen/mottagningen-tom.png', w: 1876, h: 1058 }, RS = 1920 / RUM.w;
@@ -63,7 +64,7 @@ function kaninPa([x, y]) { GK.setAttribute('transform', `translate(${f1(x)} ${f1
 // Saker: nallen (bild), kritan (bild), stetoskopet och stjärnan (kod). kontur: streckad grå, som konturen kritan ritar.
 const nalle = (x, y, h = 210, kontur = false, mun = 0) => { const s = h / NALLE_H;
   return `<g transform="translate(${f1(x - NALLE_C[0] * s)} ${f1(y - NALLE_C[1] * s)}) scale(${s.toFixed(4)})" ${kontur ? 'style="filter:grayscale(1) brightness(1.6) contrast(.6)" opacity=".45"' : ''}>
-    <image href="${NALLE}" width="${NALLE_WH[0]}" height="${NALLE_WH[1]}"/>${kontur ? '' : nalleAnsikte(0, mun)}</g>`; };
+    <image href="${NALLE}" width="${NALLE_WH[0]}" height="${NALLE_WH[1]}"/>${kontur ? '' : `<g transform="${NALLE_ANS}">${nalleAnsikte(0, mun)}</g>`}</g>`; };
 const krita = (x, y, s = 0.33, v = -35) => `<image href="${KRITA}" width="755" height="265" transform="translate(${f1(x)} ${f1(y)}) scale(${s}) rotate(${v}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`;
 const stjarnaD = (x, y, r) => Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.48 : r;
   return `${i ? 'L' : 'M'}${f1(x + rr * Math.cos(a))} ${f1(y + rr * Math.sin(a))}`; }).join(' ') + 'Z';
@@ -153,7 +154,7 @@ function ritaRad(id) {
   if (s.n === 'famn') lagg('saker', nalle(mage[0], mage[1] + 10, NH));
   if (s.n === 'golv' || s.n === 'golv-kontur') lagg('saker', nalle(PA_GOLV[0] + 230, PA_GOLV[1] - NH * 0.48, NH, s.n === 'golv-kontur'));
   if (s.n === 'faller') lagg('saker', nalle(PALL[0] + 140, PALL[1] - 40, NH * 0.9) + `<path d="M${f1(mage[0])} ${f1(mage[1])} Q${f1(PALL[0] + 260)} ${f1(PALL[1] - 200)} ${f1(PALL[0] + 150)} ${f1(PALL[1] - 60)}" fill="none" stroke="#9b6bd6" stroke-width="5" stroke-dasharray="14 10"/>`);
-  if (s.n === 'pall') lagg('bak', nalle(PALL[0] - 30, PALL[1] + 70, NH));   // bakom pallen: bara örat ovanför pallens kant
+  if (s.n === 'pall') lagg('bak', nalle(PALL[0] - 30, PALL[1] + 45, NH));   // bakom pallen: bara örat ovanför pallens kant
   // stjärnorna
   if (s.stj === 'kontur') lagg('saker', stjarna(mage[0] + 160, mage[1] - 260, 46, true));
   if (s.stj === 'luft') lagg('saker', stjarna(mage[0] + 160, mage[1] - 260, 46));
@@ -171,7 +172,7 @@ function ritaRad(id) {
   const brostdelPos = () => { const b = GD.querySelectorAll('.steto-fram circle'), c = b[b.length - 2]; return punkt(c, +c.getAttribute('cx'), +c.getAttribute('cy')); };
   const lampSpets = () => punkt(GD.querySelector('.lampa'), -96, 0);
   const NS = 210 / NALLE_H, np = ([x, y]) => [mage[0] + (x - NALLE_C[0]) * NS, mage[1] + 10 + (y - NALLE_C[1]) * NS];
-  const nalleMage = np([424, 600]), nalleOra = np([600, 120]), nalleMun = np([425, 338]);
+  const nalleMage = np([396, 592]), nalleOra = np([554, 110]), nalleMun = np([350, 378]);   // leopardens mage, högra öra, mun
   switch (s.kam) {
     case 'hel': kamera(1, 960, 540); break;
     case 'kanin': kamera(1.6, huvud[0], huvud[1] + 60); break;
