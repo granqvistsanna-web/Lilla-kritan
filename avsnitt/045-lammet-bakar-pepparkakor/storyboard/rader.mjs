@@ -18,6 +18,12 @@ const RITA = n => `krita-ritar/krita-ritar-${n}`, GLITTER = 'glitter/glitter-1',
 const TRYCK = 'sno-duns/sno-duns-1', KLADD = 'deg-kladd/deg-kladd-1', TICK = 'tick/tick-1', RING = 'ringklocka/ringklocka-1';
 const TASS = n => `tass/tass-${n}`, KNASTER = 'knaster/knaster-1', MUMS = 'mums/mums-5';
 const G = 0.9;   // glest tempo: extra luft på varje rad med en replik (receptets GLES, 044 hade 1,1)
+// Sanna 20/11 runda 2 (2:05, "better rig walk"): gångcykeln följer tiden, inte sträckan (0,9 × riggens 1,2 Hz = ett steg var 0,46 s).
+// Ett tass-ljud på varje steg medan lammet syns. Samma STEGF som i scener/julkoket/index.html.
+const STEGF = 0.9, mj = k => (k = Math.max(0, Math.min(1, k)), k * k * (3 - 2 * k));
+const stegLjud = (a, b, x0, x1) => { const ut = [];
+  for (let k = 0, t; (t = a + (0.5 + k) / (2.4 * STEGF)) < b - 0.1; k++) { const x = x0 + (x1 - x0) * mj((t - a) / (b - a)); if (x > -150 && x < 2000) ut.push([TASS(k % 4 + 1), +t.toFixed(2)]); }
+  return ut; };
 const ticka = (fran, till, steg = 1.0) => Array.from({ length: Math.max(0, Math.floor((till - fran) / steg)) }, (_, i) => [TICK, fran + i * steg]);
 
 export const RADER = [
@@ -32,7 +38,7 @@ export const RADER = [
     bild: 'Pepparkaksgubben fylls i inifrån. Zoom in i papperet, in i julköket: bordet med degen, formarna, plåten och grytlapparna', ljudtext: '`glitter`', ansikte: '–' },
 
   // --- Julköket: vad ska du göra? ---
-  { id: '1', d: 4.0 + L(4) + G + 1.0, plats: 'Julköket, helbild', malin: [[4, 4.0]], ljud: [[TASS(1), 0.6], [TASS(2), 1.4], [TASS(3), 2.2], [TASS(4), 3.0], [B(1), 4.3 + L(4)]],
+  { id: '1', d: 4.0 + L(4) + G + 1.0, plats: 'Julköket, helbild', malin: [[4, 4.0]], ljud: [...stegLjud(0.3, 3.6, -260, 900), [B(1), 4.3 + L(4)]],
     bild: 'Snön faller i fönstret. Lammet trippar in från vänster, ställer sig bakom bordet och vinkar (armen bakom kroppen)', ljudtext: 'tassar, bä hej (1)', ansikte: 'jätteglad' },
   { id: '2', d: 0.3 + L(5) + G + 1.4, plats: 'Halvbild', malin: [[5, 0.3]], ljud: [[B(7), 0.6 + L(5)]],
     bild: 'Lammet tittar ner på degen och upp igen och svarar med ett pratande bä', ljudtext: 'bä pratar (7)', ansikte: 'nyfiken → glad' },
@@ -83,8 +89,9 @@ export const RADER = [
     bild: 'Glatt skutt. Malin efter skuttet', ljudtext: '–', ansikte: 'jätteglad' },
   // Sanna 20/11 (3:18): lammet går själv bort med plåten till ugnen och hämtar den, plåten flyger inte. Repliken delas i två:
   // [n, tid, ss, längd]: "Ska de in i ugnen?" före, "Sådär!" när lammet är borta vid ugnen (utanför bild).
-  { id: '16', d: 6.8, plats: 'Halvbild → helbild → halvbild', malin: [[22, 0.3, 0, 1.1], [22, 3.4, 1.2]],
-    ljud: [[TASS(1), 1.3], [TASS(2), 1.9], [TASS(3), 2.5], [TASS(4), 4.3], [TASS(1), 4.9], [TASS(2), 5.5]],
+  // Runda 2 (2:03, "slower walk"): gången 2,0 → 3,3 s åt varje håll, raden 6,8 → 9,2 s
+  { id: '16', d: 9.2, plats: 'Halvbild → helbild → halvbild', malin: [[22, 0.3, 0, 1.1], [22, 4.7, 1.2]],
+    ljud: [...stegLjud(1.1, 4.4, 900, 2250), ...stegLjud(5.4, 8.7, 2250, 900)],
     bild: 'Lammet lyfter plåten med båda tassarna och går med den ut till höger (till ugnen, som aldrig syns). Sådär! Lammet kommer tillbaka utan plåten', ljudtext: 'tassar', ansikte: 'glad' },
   { id: '17', d: 0.3 + L(23) + G, plats: 'Halvbild', malin: [[23, 0.3]],
     bild: 'Lammet tittar på oss', ljudtext: '–', ansikte: 'nyfiken' },
@@ -125,8 +132,9 @@ export const RADER = [
   { id: '28', d: 0.8 + L(56) + G, plats: 'Närbild: tassarna', malin: [[56, 0.8]], ljud: [[TASS(6), 0.7]],
     bild: 'Grytlapparna glider upp från bordet och sätter sig på tasspetsarna på *"på!"*', ljudtext: '`tass` lågt', ansikte: '–' },
   // Sanna 20/11 (3:18): lammet går med grytvantarna till ugnen och bär tillbaka plåten. "Ta ut kakorna …" när lammet går, "sådär!" när plåten står på bordet.
-  { id: '29', d: 6.6, plats: 'Helbild', malin: [[39, 0.4, 0, 1.05], [39, 5.75, 1.1]],
-    ljud: [[TASS(3), 0.9], [TASS(4), 1.5], [TASS(1), 2.1], [TASS(2), 3.5], [TASS(3), 4.1], [TASS(4), 4.7], [TASS(5), 5.6]],
+  // Runda 2: samma lugnare gång, 3,0 s åt varje håll, raden 6,6 → 8,8 s
+  { id: '29', d: 8.8, plats: 'Helbild', malin: [[39, 0.4, 0, 1.05], [39, 7.95, 1.1]],
+    ljud: [...stegLjud(0.6, 3.6, 900, 2250), ...stegLjud(4.2, 7.2, 2250, 900), [TASS(5), 7.8]],
     bild: 'Lammet går med grytvantarna ut till höger och kommer tillbaka med den varma plåten: bruna glansiga kakor och tre ångstreck. Plåten ställs på bordet', ljudtext: 'tassar', ansikte: 'glad' },
 
   // --- Varma, blåsa, mums ---

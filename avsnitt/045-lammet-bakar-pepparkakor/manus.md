@@ -215,3 +215,13 @@ Hela familjen finns från 024: `ba-gullig-1` … `8` med en b-tagning per känsl
 - **1:22 mjukare:** rad 6 börjar där rad 5 slutar (samma kamera, tassen lyfts mjukt från degen), tassen sänks och ansiktet glider till nyfiken före rad 7.
 - **1:30 lägre bää:** alla bää 0,85 → 0,6 (−3 dB).
 - **3:18 lammet går till ugnen:** rad 16 (6,8 s): lammet lyfter plåten med båda tassarna, går ut till höger och kommer tillbaka utan den, *"Sådär!"* när det är borta vid ugnen. Rad 29 (6,6 s): lammet går med grytvantarna, bär tillbaka den varma plåten och ställer den på bordet på *"sådär!"*. Replik 22 och 39 delas i två (`[n, tid, ss, längd]` i rader.mjs). Filmen blev 5,8 s längre.
+
+## Feedback 2026-11-20 (lucka 15, runda 2)
+
+- **0:35 lägre musik:** karolen 0,15 → 0,12 (−2 dB).
+- **2:03 lugnare gång, 2:05 bättre gång:** gångcykeln följer tiden i stället för sträckan (ett steg var 0,46 s; förut 3–7 steg/s), med ett tass-ljud per steg medan lammet syns (`stegLjud` i rader.mjs, `STEGF` i index.html, samma i rad 1). Rad 16 går 3,3 s åt varje håll (6,8 → 9,2 s, *"Sådär!"* vid 4,7), rad 29 går 3,0 s (6,6 → 8,8 s, *"sådär!"* vid 7,95).
+- **2:05 ingen överlapp med grytvantarna:** vantarna och snöret på väggen ritas i ett eget lager bakom lammet (`vagg`), så lammet går framför dem.
+- **2:19 mjukare klipp:** varje rad börjar i den pose och det ansikte lammet hade när förra raden slutade och glider över till radens egen på 0,45 s (`BLEND` i rita/lamm).
+- **3:23 klockan framför:** klockan ritas överst (`klockan`-lagret), framför tassarna, vantarna och plåten.
+- **3:31 lammet blåser:** rad 31: lammet blåser med barnet, en pust per ångstreck: andas in, rund mun, lutar mot plåten, ljusblå pustar till kakan.
+- **3:35 degen tar slut:** degen krymper för varje kaka som lyfts ur den och är slut efter hjärtat.
