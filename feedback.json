@@ -7440,9 +7440,10 @@
   "sec": 46,
   "tags": [],
   "note": "lower cameraa",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291825929,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292696635
  },
  "zin3m6uxiymwqufx3u": {
   "ep": "049",
