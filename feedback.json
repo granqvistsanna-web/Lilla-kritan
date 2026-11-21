@@ -7169,9 +7169,10 @@
   "sec": 49,
   "tags": [],
   "note": "show kritan",
-  "fixed": false,
+  "fixed": true,
   "at": 1795259942125,
-  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)",
+  "fixedAt": 1795282394860
  },
  "jwc3w8qermwqbg0sx": {
   "ep": "ABC-b3",
