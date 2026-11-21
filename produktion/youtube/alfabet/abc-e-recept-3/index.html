@@ -77,7 +77,7 @@ const EKORRE_DELAR = [['tail', 690, 740, 'svans'], ['fot-bak', 302, 879, 'fot'],
 // Katten likadant (Sanna 2026-11-20: "and the cat"): katt-abc (den vanliga svarta katten från sidan) utan svans och ben ur Flow
 // (katt-abc/original/katt-kropp-1.jpg). Benen är två par, bakbenen och frambenen, som går i otakt. Figuren är 722 px hög (y 144–866).
 const KATT = ['katt-abc/cut/katt-body', 1024, 1024, 1024 * 420 / 722, 250 + 1024 * 420 / 722 - 866 * 420 / 722];
-const KATT_DELAR = [['tail', 228, 440, 'svans'], ['bak-r', 411, 785, 'benB'], ['fram-r', 696, 740, 'benA'],   // de bortre benen först
+const KATT_DELAR = [['tail', 240, 492, 'svans'], ['bak-r', 411, 785, 'benB'], ['fram-r', 696, 740, 'benA'],   // de bortre benen först
   ['bak-l', 316, 757, 'benA'], ['fram-l', 618, 769, 'benB']];   // diagonalt par i takt, som en katt går
 const ELSA = [1024, 1024, 675.84, 328.84];   // elefantens 1024-ruta i teckningens mått
 const SAKER = {
@@ -91,7 +91,7 @@ const SAKER = {
       ['snabel', await kontur('karaktarer/elefanten-elsa/premium/elsa-snabel', ...ELSA), '#6B7490', 13, 2.2],
       ['oga-l', iTeckning(ell(420, 402, 14, 21), ...ELSA), '#3B3431', 12, 0.6],
       ['oga-r', iTeckning(ell(601, 401, 14, 21), ...ELSA), '#3B3431', 12, 0.6]] },
-  ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-e-e-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, delar: EKORRE_DELAR, ogon: [[-155, -77, 10]],
+  ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-e-e-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, delar: EKORRE_DELAR, ogon: [[-155, -77, 10]], smil: ['M106 447 Q110 458 119 461 Q135 466 151 455', '#5A2E14', 6],
     streck: [['kontur', await kontur('karaktarer/ekorren/premium/ekorre-faceless', ...EKORRE.slice(1)), '#A9561C', 15, 7.5],
       ['oga', iTeckning(ell(239, 384, 13, 15), ...EKORRE.slice(1)), '#3B3431', 12, 0.6]] },
   ekollon: { platta: ['#59B36A', 0, 520, 0.06], fraga: 'p-vad-blir', lang: 'p-ekollon', kort: 'p-ett-ekollon', berom: 'p-ocksa-ekollon', bild: EKOLLON,
@@ -99,7 +99,7 @@ const SAKER = {
   // katten är den som kritan ritar fel; hunden är den udda i leken (färdigt urklipp, ritas inte)
   // Hunden är riggen Hugo (Sanna 2026-11-20: det som ritas ska kunna röra sig lite, med ansikte, ben, armar och svans). Samma 1024-ruta
   // och skala som elefanten; fötterna (FOTTER 923) står lika på golvet, därför 7 · 0,66 lägre nederkant. Katten är en vanlig katt med delar.
-  katt: { platta: ['#F2C53D', 35, 380, 0.09], fraga: 'p-vem', lang: 'p-katt', bild: KATT, delar: KATT_DELAR, ogon: [[167, -26, 9]], ogonKant: true,
+  katt: { platta: ['#F2C53D', 35, 380, 0.09], fraga: 'p-vem', lang: 'p-katt', bild: KATT, delar: KATT_DELAR, ogon: [[167, -26, 9]], ogonKant: true, smil: ['M875 444 L873 457 Q866 469 850 465', '#EDE3D0', 6],
     streck: [['kontur', await kontur('rekvisita/katt-abc/katt-faceless', ...KATT.slice(1)), '#3B3431', 15, 6.5],
       ['oga', iTeckning(ell(800, 392, 14, 16), ...KATT.slice(1)), '#3B3431', 12, 0.6]] },
   hund: { platta: ['#5BB8C9', 20, 440, -0.07], rigg: 'hunden-hugo', streck: [] },
@@ -160,6 +160,7 @@ for (const [namn, s] of Object.entries(SAKER)) {
     for (const x of (s.delar ?? []).filter(x => x[4])) await delEl(x);
     for (const [x, y, r] of s.prickar ?? []) el('circle', { cx: x, cy: y, r, fill: '#3B3431', transform: tr }, s.liv);
     for (const [x, y] of s.kinder ?? []) el('ellipse', { cx: x, cy: y, rx: 24, ry: 14, fill: '#F29C94', opacity: 0.55 }, s.liv);
+    if (s.smil) el('path', { d: s.smil[0], fill: 'none', stroke: s.smil[1], 'stroke-width': s.smil[2], 'stroke-linecap': 'round', 'stroke-linejoin': 'round', transform: tr }, s.liv);   // liten glad mun från sidan, i bildens pixlar (Sanna 2026-11-21)
     if (s.mun) { const [x, y, w] = s.mun;   // glad, öppen mun som apans (Sanna 2026-11-18: "add happy mouth to frutis")
       el('path', { d: `M${x - w} ${y} Q${x} ${y + w * 0.18} ${x + w} ${y} Q${x + w * 0.85} ${y + w * 1.15} ${x} ${y + w * 1.2} Q${x - w * 0.85} ${y + w * 1.15} ${x - w} ${y}Z`,
         fill: '#8E2F26', stroke: '#2B2523', 'stroke-width': Math.max(2.5, w * 0.16), 'stroke-linejoin': 'round' }, s.liv); }
@@ -328,7 +329,7 @@ A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); G
 // Introt (Sanna 2026-11-18): "Det är ju A! Bokstaven A. A säger ah. Kan du säga ah?" och en paus för barnet.
 // d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
 t = sag(A.svar + 0.2, 'p-det-ar-e');
-t = sag(t + 0.3, 'p-bokstaven-e') + 0.6; A.hopp.push(t - 1.1, t - 0.3);   // "E, e, elefant!" sägs nu på svaret (tagning 3)
+t = sag(t + 0.3, 'p-bokstaven-e') + 0.6; A.spinn = [[t - 1.3, t - 0.3]]; fx(t - 1.3, 'swoosh', 0.4);   // ett varv på "Bokstaven E" i stället för två vickande hopp (Sanna 2026-11-21: "jiggle a bit too repetitive, perhaps it could spin")   // "E, e, elefant!" sägs nu på svaret (tagning 3)
 A.vrid = t + 0.3; kamTill(t - 0.4, 960, 540, 1, 1.2);   // ut igen innan plattan flyttar; den vickar lite i vinjetten och hänger still i hörnet
 t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 
@@ -651,7 +652,7 @@ const FLACK = [[330, 320, 160, 115, 220, 11, 0], [1580, 300, 150, 110, 200, 13, 
 // Mer dansgolv och mer sken (feedback 2026-11-19 3:27), som 006:s discoljus.js: golvet blir ett dansgolv av rutor i perspektiv
 // som alla lyser svagt i pastell, och några i taget lyser upp mjukt i en båge över takten (nya varje takt, inget blinkar).
 // Fem mjuka ljuskäglor från kulan svajar sakta över väggen och golvet, bakom klossarna.
-document.querySelector('#botten defs').insertAdjacentHTML('beforeend', `<filter id="rutsken" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="4"/></filter>
+document.querySelector('#botten defs').insertAdjacentHTML('beforeend', `<filter id="rutsken" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="1.2"/></filter>
   <filter id="kaglasken" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="10"/></filter>
   ${['#FFB3CF', '#FFE08A', '#A9D2FF'].map((c, i) => `<linearGradient id="kagla-g${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".8"/><stop offset=".6" stop-color="${c}" stop-opacity=".35"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></linearGradient>`).join('')}`);
 const GOLVF = ['#F7A6C4', '#FFD36E', '#9CC8F5', '#C3A8F2', '#9EDDB3', '#FFB98F'];   // dansgolvets rutor: lite mer färg än fläckarna, golvet är beige
@@ -662,6 +663,8 @@ const RUTOR = (() => { const VP = [960, GOLV - 1500], rader = Array.from({ lengt
     u.push({ i, j, d: `M${at(xa, y0) + 3} ${y0 + 2}L${at(xb, y0) - 3} ${y0 + 2}L${at(xb, y1) - 4} ${y1 - 3}L${at(xa, y1) + 4} ${y1 - 3}Z` }); }
   return u; })();
 const rutG = el('g', { filter: 'url(#rutsken)', style: 'display:none' }, document.getElementById('bak'));
+// Ett riktigt dansgolv (Sanna 2026-11-21: "make disco floor"): mörka fogar under rutorna, rutorna nästan täta, och de tända lyser upp mot vitt.
+const fogEl = el('rect', { y: GOLV + 2, width: 1920, height: 1080 - GOLV, fill: '#4A3F4F' }, rutG);
 const rutor = RUTOR.map(r => ({ ...r, e: el('path', { d: r.d }, rutG) }));
 const KAGLA = [-50, -25, 0, 25, 50];
 const kaglaG = el('g', { filter: 'url(#kaglasken)', style: 'display:none' }, document.getElementById('bak'));
@@ -673,15 +676,18 @@ const KULA_F = 'assets/bakgrunder/danspaus/cut/discokula.png', KS = 0.44;   // k
 await ladda(KULA_F);
 const kulaG = el('g', { style: 'display:none' }); document.getElementById('topp').insertBefore(kulaG, sakerG);
 el('line', { x1: 0, y1: -800, x2: 0, y2: ((88 - 583) * KS).toFixed(1), stroke: '#A6A6A6', 'stroke-width': 4, 'stroke-linecap': 'round' }, kulaG);
-el('image', { href: '/' + KULA_F, width: 1024, height: 1024, transform: `scale(${KS}) translate(-513 -583)` }, kulaG);
+document.querySelector('#botten defs').insertAdjacentHTML('beforeend', '<filter id="silver" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".38 .75 .12 0 .02  .38 .75 .12 0 .04  .4 .78 .13 0 .08  0 0 0 1 0"/></filter>');   // Sanna 2026-11-21: "make discoball silver" (005:s rosa kula i gråskala, lite kall)
+el('image', { href: '/' + KULA_F, width: 1024, height: 1024, transform: `scale(${KS}) translate(-513 -583)`, filter: 'url(#silver)' }, kulaG);
 function disco(t, ut) {
   const inn = inUt(del([DISCO[0] - 0.3, DISCO[0] + 0.9], t)) * (1 - inUt(del([DISCO[1] - 0.4, DISCO[1] + 0.8], t)));
   const d = t - DISCO[0] - 0.1, takt = Math.floor(d / (4 * SLAG)), kb = clamp((d - takt * 4 * SLAG) / 0.6);
   rutG.style.display = kaglaG.style.display = inn > 0 ? '' : 'none';
   const tk = d / (4 * SLAG) - takt, bg = Math.sin(Math.PI * clamp(tk)) ** 2;   // tändningen: en mjuk båge över takten
   if (inn > 0) rutor.forEach(({ i, j, e }, n) => { const tand = ((i + 6) * 3 + j * 5 + takt * 4) % 5 === 0;
-    e.setAttribute('fill', blanda(GOLVF[(n + takt + 60) % 6], GOLVF[(n + takt + 61) % 6], kb));
-    e.setAttribute('opacity', ((0.38 + (tand ? 0.45 * bg : 0)) * inn * ut).toFixed(3)); });
+    const f = blanda(GOLVF[(n + takt + 60) % 6], GOLVF[(n + takt + 61) % 6], kb);
+    e.setAttribute('fill', tand ? blanda('#' + f.slice(4, -1).split(',').map(v => (+v).toString(16).padStart(2, '0')).join(''), '#FFFFFF', 0.45 * bg) : f);
+    e.setAttribute('opacity', ((0.72 + (tand ? 0.28 * bg : 0)) * inn * ut).toFixed(3)); });
+  fogEl.setAttribute('opacity', (0.55 * inn * ut).toFixed(3));
   const ky = lerp(-320, 90, inUt(del([KULA.ner, KULA.ner + 1.1], t)) - inUt(del([KULA.upp, KULA.upp + 1.2], t)));
   if (inn > 0) kaglor.forEach((e, i) => e.setAttribute('transform', `translate(960 ${ky.toFixed(1)}) rotate(${(KAGLA[i] + 9 * Math.sin(2 * Math.PI * t / 12 + i * 1.7)).toFixed(2)})`));
   kaglaG.setAttribute('opacity', (0.6 * inn * ut).toFixed(3));
@@ -821,7 +827,7 @@ function ledder(s, t, bit) {
     benA: 7 * ga - 6 * h, benB: -7 * ga + 6 * h };   // katten: bakbenen och frambenen i otakt, och isär i luften
   for (const [n, im, px, py] of s.delEl) im.setAttribute('transform', `rotate(${v[n].toFixed(2)} ${px} ${py})`);
 }
-const aGung = t => A.hopp.reduce((s, h) => { const d = t - h; return d < 0 || d > 1.2 ? s : s + 0.16 * Math.sin(d * 2 * Math.PI / 0.45) * (1 - d / 1.2); }, 0);
+const aGung = t => A.hopp.reduce((s, h) => { const d = t - h; return d < 0 || d > 1.2 ? s : s + 0.1 * Math.sin(d * 2 * Math.PI / 0.45) * (1 - d / 1.2) ** 2; }, 0);   // mindre vick, dör ut snabbare (2026-11-21)
 // en kloss i bilden: läget ur kk, poppar fram (nederkanten kvar på golvet), hoppar på golvet men nickar fram mot kameran i muren
 const KLOSSAR = [A, ...BILDKLOSS.map(n => SAKER[n])];
 const vaggskugga = el('rect', { fill: '#3b3431', filter: 'url(#mjuk)', opacity: 0 }, document.getElementById('klosskuggor'));
