@@ -353,7 +353,7 @@ function ritaRad(id, tl, d) {
   if (s.tander > 0) lagg('fram', `<g opacity="${kl(s.tander).toFixed(2)}">${tander([mun[0], mun[1] - 6], 1.4, s.lys || [0, 0])}</g>`);
   if (s.glitter != null) lagg('fram', gn(mun[0], mun[1] - 10, 70, tl - s.glitter, 0.4));
   // klistermärket: kritan ritar tanden i luften till höger om kaninen, sedan till magen och elefanten
-  const LUFT = [mage[0] + 230, mage[1] - 250], MAGS = [mage[0] + 75, mage[1] - 60], ELES = [famn[0] - 25, famn[1] + 25];
+  const LUFT = [mage[0] - 230, mage[1] - 250], MAGS = [mage[0] + 75, mage[1] - 60], ELES = [famn[0] - 25, famn[1] + 25];
   if (s.tand === 'kontur' && s.jk > 0) { const kk = ritfart(s.jk);
     lagg('saker', `<path id="tandLinje" d="${tandD(...LUFT, 42)}" pathLength="1" ${LINJE(8)} stroke-dasharray="${kk.toFixed(4)} 2"/>`);
     if (kk < 1) { const el = $('tandLinje'), q = el.getPointAtLength(el.getTotalLength() * Math.min(0.999, kk)); spets = [q.x, q.y]; } }
@@ -363,8 +363,8 @@ function ritaRad(id, tl, d) {
   if (s.tand === 'tillEle' && (s.jin ?? 1) > 0) lagg('fram', tand(...MAGS, 22) + tand(...lerp2(LUFT, ELES, s.ju), lerp(26, 13, s.ju) * s.jin));
   if (s.tand?.startsWith('mage')) lagg('fram', tand(...MAGS, 22));
   if (s.tand === 'mage+ele') lagg('fram', tand(...ELES, 13));
-  // spegeln som kritan ritar i luften mellan kaninen och tandläkaren
-  const SP = [930, 400], SPS = 1.5, SPV = -20;
+  // spegeln som kritan ritar i luften till höger om tandläkaren (på den tomma väggen, så att kritan inte skymmer ansiktet)
+  const SP = [1310, 400], SPS = 1.5, SPV = -20;
   if (s.spegel === 'kontur' && s.sk > 0) { const B = bana(SP_DRAG(SP, SPS, SPV), SP_VIKT, ritfart(s.sk), LINJE(8)); lagg('saker', B.html); if (s.sk < 1) spets = B.pos; }
   // tandborsten i bröstfickan hela tiden (utom 24–25 då den används): handtaget nere i fickan, huvudet upp, lite snett.
   // I 23d lyfts den rakt upp ur fickan och sedan till tandläkarens högra hand (handen runt skaftets nedre ände)
@@ -387,15 +387,15 @@ function ritaRad(id, tl, d) {
   if (s.bubbla === 'godis') lagg('fram', bubbla(...bub, godis(...bub), fran, s.bk));
   if (s.bubbla === 'borste') lagg('fram', bubbla(...bub, tandborste(bub[0], bub[1] + 30, 0.42) + solMane(bub[0], bub[1] + 10), fran, s.bk));
   // kritan: vid linjens spets medan den ritar, sedan till en väntplats och svajar; kritaUt: glider ut uppåt till höger
-  const W = { ele: [golvE[0] + 170, golvE[1] - 150], spegel: [SP[0] + 130, SP[1] - 40], tand: [LUFT[0] + 95, LUFT[1] + 85] }[s.krita];
+  const W = { ele: [golvE[0] + 170, golvE[1] - 150], spegel: [SP[0] + 130, SP[1] - 40], tand: [LUFT[0] - 195, LUFT[1] + 150] }[s.krita], SIDA = s.krita === 'tand' ? -1 : 1;   // tanden: kritan till vänster om kaninen
   if (W) { const svP = t => [W[0] + 5 / KZ * Math.sin(t * 1.2), W[1] + 4 / KZ * Math.sin(t * 1.7)], svV = t => 140 + 1.5 * Math.sin(t * 1.0);
     const start = s.krita === 'ele' ? elePunkt(golvE, ELEK.start) : s.krita === 'tand' ? [LUFT[0] - 42, LUFT[1] - 23] : bana(SP_DRAG(SP, SPS, SPV), SP_VIKT, 0, '').start;
     const kk = s.ek ?? s.sk ?? s.jk ?? 1;
-    if (s.kritaUt != null) { const u = s.kritaUt, [wx, wy] = svP(s.svajT ?? s.tl); if (u < 1) lagg('fram', krita(wx + 840 * u, wy - 260 * u, undefined, svV(s.svajT ?? s.tl))); }
+    if (s.kritaUt != null) { const u = s.kritaUt, [wx, wy] = svP(s.svajT ?? s.tl); if (u < 1) lagg('fram', krita(wx + SIDA * 840 * u, wy - 260 * u, undefined, svV(s.svajT ?? s.tl))); }
     else if (spets) lagg('fram', krita(...spets));
     else if (kk >= 1) { const m = s.ritSlut != null ? del(s.ritSlut, s.ritSlut + 0.8, s.tl) : 1, [wx, wy] = svP(s.tl);
       lagg('fram', krita(lerp(start[0], wx, m), lerp(start[1], wy, m) - 40 / KZ * Math.sin(Math.PI * m), undefined, lerp(125, svV(s.tl), m))); }
-    else { const in0 = [W[0] + 500, W[1] - 300]; lagg('fram', krita(lerp(in0[0], start[0], del(0, 0.4, s.tl)), lerp(in0[1], start[1], del(0, 0.4, s.tl)))); } }
+    else { const in0 = [W[0] + SIDA * 500, W[1] - 300]; lagg('fram', krita(lerp(in0[0], start[0], del(0, 0.4, s.tl)), lerp(in0[1], start[1], del(0, 0.4, s.tl)))); } }
   // kameran (bara klipp)
   const z = ZOOM[s.kam] ?? 1;
   switch (s.kam) {

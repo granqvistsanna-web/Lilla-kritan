@@ -249,8 +249,10 @@ function rita(fig, f, p = POSE0) {
   del('leg-l', p.ben[0], 0, sank + p.benY[0], [1, 1 + p.benS[0]]);
   del('leg-r', -p.ben[1], 0, sank + p.benY[1], [1, 1 + p.benS[1]]);
 
-  // Hela ansiktet (näsa, kinder, ögon, mun) glider med riktningen och blicken. Håret sitter kvar på kroppen.
-  const fx = 36 * r, fy = 4 * a - 10 * u;
+  // Huvudet (hår + ansikte) vrids kring halsen med riktningen och blicken; ansiktet glider lite till inuti håret (parallax),
+  // så att vridningen läses som en vändning i stället för att hela huvudet förskjuts (Sanna 2026-11-21: polera huvudet).
+  const fx = 24 * r, fy = 4 * a - 10 * u;
+  q('.ansiktet').setAttribute('transform', `translate(${12 * r} ${-3 * u}) ${ANSIKTE}`);
   q('.drag').setAttribute('transform', `translate(${fx} ${fy}) rotate(${5 * r} ${HALS[0]} ${HALS[1]}) translate(${HALS[0]} ${HALS[1]}) scale(${1 - 0.08 * a} 1) translate(${-HALS[0]} ${-HALS[1]})`);
   const K = Math.max(0, Math.min(1, f.kawaii)), OG = mix(OGON, KAWAII.ogon, K), OS = mix([1, 1], KAWAII.skala, K);
   const ogon = alla('.oga'), lock = alla('.lock'), klipp = alla('.lockklipp'), glad = alla('.glad'), sov = alla('.sov'), bryn = alla('.bryn'), frans = alla('.frans');
