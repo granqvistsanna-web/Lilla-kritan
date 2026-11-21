@@ -22,3 +22,9 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 
 - Huvudets nya vändning (23b, 25b) i full fart.
 - Tanden som flyger från luften till magen (31b → 32) går nu från vänster.
+
+## Feedback 2 (2026-11-21)
+
+- 1:31 Stolen är 88 % stor, så sätet sitter ca 50 px lägre från början och kaninen hamnar inte så högt när stolen åker upp. Kolven skalas med.
+- Tandläkarens tandborste är röd (`RODBORSTE`) och sitter djupt i fickan, bara huvudet och en bit skaft syns. Kaninens egen tandborste i tankebubblan är mint.
+- 3:17 Bubblorna: först tandläkarens pratbubbla med frågan (godis ?, tandborste sol måne ?) i 25b och 25d, sedan kaninens tankebubbla med svaret i 25c och 25e (halvbild så att molnet får plats över stolsryggen). Vit kant, mörk kritlinje, poppar fram med liten översväng, tankeprickarna en i taget, gungar lugnt och krymper bort.
