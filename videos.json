@@ -1516,5 +1516,13 @@
   "file": "produktion/youtube/alfabet/abc-b-recept-3/abc-b-recept-3.mp4",
   "status": "granska",
   "name": "Kritans ABC: B recept 3 (björnen vill leka)"
+ },
+ "ABC-a3": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-a3-1121-0420.mp4",
+  "duration": 244.5,
+  "rendered": "2026-11-21 04:20 (snabb förhandsvisning, datorrösten (Alva) som platshållare för Malin)",
+  "file": "produktion/youtube/alfabet/abc-a-recept-3/abc-a-recept-3.mp4",
+  "status": "granska",
+  "name": "Kritans ABC: A recept 3 (apan är hungrig)"
  }
 }
