@@ -7484,9 +7484,10 @@
   "sec": 119,
   "tags": [],
   "note": "use dentist rigs",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291953312,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292704861
  },
  "3vf9ymsdtmmwquhfxt": {
   "ep": "049",
