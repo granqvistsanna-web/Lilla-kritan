@@ -2,11 +2,11 @@
 
 Gjord 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur förlagan `../abc-e-recept-3/`. Den gamla B-filmen (recept 1) står kvar orörd i `../abc-b/` tills den här är godkänd.
 
-**Läge (2026-11-21):** Sanna godkände replikerna (61 rader, `malin-b-recept-3.txt`). Scenen `index.html` är byggd och `abc-b-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **datorrösten** (Alva) som platshållare (`platshallare/`). Malins tagning är inte gjord: fråga Sanna före krediterna. Stillbilder i `stills/`. Feedbacksidan: `ABC-b3`.
+**Läge (2026-11-21):** Sanna godkände replikerna (61 rader, `malin-b-recept-3.txt`). Scenen `index.html` är byggd och `abc-b-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **Malins tagning 2** (ElevenLabs v4, 2026-11-21, `produktion/ljud-original/roster/abc-b-recept-3/tagning-2.mp3`), delad till `assets/ljud/roster/alfabet/abc-b-recept-3/`. Åtta rader varierades lite så att B inte låter som E (rad 2, 3, 17, 43, 45, 59, 60, 61). Platshållarversionen ligger i `aldre/`. Stillbilder i `stills/`. Feedbacksidan: `ABC-b3`.
 
 - Konturerna (nya, spårade med `kontur-bild.py`): `bulle-faceless-kontur.json`, `cut/bulle-mage-kontur.json`, `cut/bulle-nos-kontur.json` (björnen), `ko/cut/ko-hel-kontur.json`, `ballong-rod/cut/ballong-rod-kontur.json`. Bollens fanns redan.
 - Vita kanter i scenen (regeln 3 px + 1 % av höjden): kon ca 4 px (regeln ca 7), bollen ca 5 (ca 7,5), ballongen ca 10 med `ballong-rod-tunn` (ca 10). Katten i E har ca 14. Kon och bollen har alltså tunnare kant än regeln; ändras inte här eftersom bilderna är delade.
-- Tiderna i tabellen nedan blir rätt först med Malins tagning (datorrösten är långsammare: filmen är 4:05).
+- Tiderna i tabellen nedan är från datorrösten; scenen mäter replikernas längd själv, så filmen följer Malins tagning.
 
 **Meningen:** Björnen vill leka men har inget att leka med. Malin ber kritan rita något, och det måste börja på B. Kritan ritar fel (kon, hej då!). Kritan ritar bollen: bollen studsar och björnen hoppar med. Björnen vill leka mer, och kritan ritar något som flyger: ballongen flyger upp och sjunker ner igen. Den udda i leken är hunden, som i E.
 

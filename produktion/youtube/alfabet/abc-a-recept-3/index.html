@@ -28,7 +28,7 @@ const bage = k => k <= 0 || k >= 1 ? 0 : Math.sin(Math.PI * k);
 const ell = (cx, cy, rx, ry) => `M${cx} ${cy - ry} C${cx + rx * .55} ${cy - ry} ${cx + rx} ${cy - ry * .55} ${cx + rx} ${cy} C${cx + rx} ${cy + ry * .55} ${cx + rx * .55} ${cy + ry} ${cx} ${cy + ry} C${cx - rx * .55} ${cy + ry} ${cx - rx} ${cy + ry * .55} ${cx - rx} ${cy} C${cx - rx} ${cy - ry * .55} ${cx - rx * .55} ${cy - ry} ${cx + 4} ${cy - ry - 2}`;
 const render = navigator.webdriver;
 // Alla repliker är Malins B-tagning (ElevenLabs v3, en tagning), delad med verktyg/dela-tagning.py till assets/ljud/roster/alfabet/abc-b/.
-const ROST = 'produktion/youtube/alfabet/abc-a-recept-3/platshallare';   // datorrösten (Alva) tills Malins tagning finns; sedan assets/ljud/roster/alfabet/abc-a-recept-3/
+const ROST = 'assets/ljud/roster/alfabet/abc-a-recept-3';   // Malins tagning 1 (ElevenLabs v4, 2026-11-21, produktion/ljud-original/roster/abc-a-recept-3/tagning-1.mp3), delad med verktyg/dela-tagning.py
 const fil = n => `${ROST}/${n}.m4a`;
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 const langd = async (f, reserv) => {   // m4a-längden ur mvhd, som i gissa.js
@@ -212,7 +212,7 @@ const TAL = {
   'n-vad-sa-du': 'Vad sa du, apan?',
   'n-maste-a': 'Måste det börja på bokstaven A?',
   'n-kan-du-kritan': 'Kan du det, kritan?',
-  'n-nu-ritar': 'Nu ritar kritan.',
+  'n-nu-ritar': 'Titta, nu ritar kritan.',
   'p-vad-blir': 'Vad blir det?',
   'p-bil': 'Bil?',
   'p-en-bil': 'En bil!',
@@ -220,7 +220,7 @@ const TAL = {
   'n-inte-ata-bil': 'En bil kan man inte äta!',
   'p-bil-inte': 'Bil börjar inte på A.',
   'p-hej-da-bilen': 'Hej då, bilen!',
-  'p-engang': 'En gång till!',
+  'p-engang': 'Vi provar en gång till!',
   'n-gott-pa-a': 'Något gott på bokstaven A, tack!',
   'p-apelsin': 'Apelsin!',
   'p-a-a-apelsin': 'A, a, apelsin!',
@@ -240,7 +240,7 @@ const TAL = {
   'p-nuleker': 'Nu leker vi!',
   'n-titta-noga': 'Titta noga. Var är apan?',
   'n-dar-ar-den': 'Där är den!',
-  'p-entill': 'Titta! En till.',
+  'p-entill': 'Oj! Där kom en till.',
   'p-hund': 'Hund.',
   'p-vilken': 'Vilken ska bort?',
   'p-inte-a': 'Vilken börjar inte på A?',
@@ -249,13 +249,13 @@ const TAL = {
   'n-hej-da-hunden': 'Hej då, hunden!',
   'n-tre-pa-a': 'Apa, apelsin, ananas.',
   'p-alla-a': 'Alla börjar på bokstaven A.',
-  'p-nu-dansar': 'Nu dansar vi!',
+  'p-nu-dansar': 'Och nu dansar vi!',
   'n-apan-dansar': 'Apan dansar!',
   'n-apelsinen-snurrar': 'Apelsinen snurrar!',
   'n-ananasen-snurrar': 'Ananasen snurrar!',
   'n-allt-for-idag': 'Det var allt för i dag.',
-  'n-vad-kul': 'Vad kul det var att leka!',
-  'p-hej-da-slut': 'Hej då!',
+  'n-vad-kul': 'Vad kul det var att leka med A!',
+  'p-hej-da-slut': 'Hej då! Vi ses snart!',
 };
 const D = Object.fromEntries(await Promise.all(Object.keys(TAL).map(async n => [n, await langd(fil(n), 1.5)])));
 const LJUD = [], sag = (t, n) => (LJUD.push({ t, fil: fil(n), vol: 2.5, tal: TAL[n] }), t + D[n]);

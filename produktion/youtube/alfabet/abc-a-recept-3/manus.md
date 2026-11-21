@@ -2,7 +2,7 @@
 
 Görs 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur förlagan `../abc-e-recept-3/`. Den gamla A-filmen (recept 1) ligger orörd i `../abc-a/` tills den här är godkänd.
 
-**Läge (2026-11-21):** Sanna har godkänt replikerna (61 rader i `malin-a-recept-3.txt`). Scenen `index.html` är byggd med delarna 3–6 för A. Rösten är **platshållare** (datorrösten Alva, `platshallare/`) tills Malins tagning finns: ingen ElevenLabs-kredit har använts. Förhandsvisningen `abc-a-recept-3.mp4` är `--snabb` (960 × 540, 4:04), uppladdad på feedbacksidan som `ABC-a3` (status granska). Stillbilder i `stills/`.
+**Läge (2026-11-21):** Sanna har godkänt replikerna (61 rader i `malin-a-recept-3.txt`). Scenen `index.html` är byggd med delarna 3–6 för A. Rösten är **Malins tagning 1** (ElevenLabs v4, 2026-11-21, `produktion/ljud-original/roster/abc-a-recept-3/tagning-1.mp3`), delad till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Sex rader varierades lite så att A inte låter som E (rad 18, 26, 46, 55, 60, 61). Förhandsvisningen `abc-a-recept-3.mp4` är `--snabb` (960 × 540); platshållarversionen ligger i `aldre/`, uppladdad på feedbacksidan som `ABC-a3` (status granska). Stillbilder i `stills/`.
 
 - Konturerna är spårade med `kontur-bild.py`: `alfons-faceless-kontur.json` (apan), `alfons-ansikte-kontur.json` (det ljusa ansiktet, ur färgen), `bil-rod/cut/bil-rod-kontur.json` (hjulen ritas som två cirklar efteråt), `ananas/cut/ananas-kontur.json`. Apelsinens fanns redan.
 - Ögon: apans ritas där riggens `OGON` sitter (418, 401 och 601, 400). Apelsinen och ananasen har ögon, kinder och mun i kod som i recept 1.
@@ -58,7 +58,7 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 
 ## Öppet
 
-- **Malins tagning:** en tagning med alla 61 rader ur `malin-a-recept-3.txt`, delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Sedan byts `ROST` i `index.html`. Väntar på Sannas ja till krediterna.
+- **Malins tagning:** en tagning med alla 61 rader ur `malin-a-recept-3.txt`, delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Gjort 2026-11-21: tagning 1 av 2 valdes (tagning 2 sa "Deal" på "Bil?").
 - **Förlagan E (rör inte härifrån):** E:s `ELSA`-mått (nederkant 328,84) lägger elefantens kontur ca 15 enheter för lågt. Riggen ritas med fötterna (`FOTTER` 930) i y 252, så det borde vara 675,84 + 252 − 0,66 · 930 = 314,04. A räknar så (`ALFONS`). Samma rättelse behövs i E och i B om B kopierade E:s tal.
 - Apan äter genom att maten glider in i munnen och krymper bort (riggen håller aldrig något). Apelsinen och ananasen växer sedan fram på sina klossar på *"Nu leker vi!"*.
 

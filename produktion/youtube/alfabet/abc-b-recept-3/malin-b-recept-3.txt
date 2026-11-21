@@ -1,6 +1,6 @@
 p-hej-hej  [warm] Hej hej!
-p-kritan-ritar  [warm] Kritan ritar.
-p-det-ar-b  [excited] Det är ju B!
+p-kritan-ritar  [warm] Kritan ritar en bokstav.
+p-det-ar-b  [excited] Det blev ett B!
 p-bokstaven-b  [warm] Bokstaven B.
 p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven B.
 p-hmm  [curious] Hmm …
@@ -14,7 +14,7 @@ n-inget-att-leka  [warm] Men björnen har inget att leka med.
 n-rita-nagot  [excited] Kritan! Kan du rita något att leka med?
 n-vad-sa-du  [curious] Vad sa du, björnen?
 n-maste-b  [curious] Måste det börja på bokstaven B?
-n-kan-du-kritan  [playful] Kan du det, kritan?
+n-kan-du-kritan  [playful] Klarar du det, kritan?
 n-nu-ritar  [warm] Nu ritar kritan.
 p-ko  [curious] Ko?
 p-en-ko  [surprised] En ko!
@@ -40,9 +40,9 @@ p-ocksa-ballong  [warm] Ballong börjar också på B!
 n-ballongen-flyger  [excited] Titta! Ballongen flyger!
 n-upp-upp  [playful] Upp, upp, upp!
 n-ner-igen  [warm] Och ner igen. Vad roligt!
-p-nuleker  [excited] Nu leker vi!
+p-nuleker  [excited] Kom, nu leker vi!
 n-titta-noga  [curious] Titta noga. Var är björnen?
-n-dar-ar-den  [excited] Där är den!
+n-dar-ar-den  [excited] Där är den ju!
 p-entill  [curious] Titta! En till.
 p-hund  [curious] Hund.
 p-vilken  [curious] Vilken ska bort?
@@ -56,6 +56,6 @@ p-nu-dansar  [excited] Nu dansar vi!
 n-bjornen-dansar  [excited] Björnen dansar!
 n-bollen-snurrar  [playful] Bollen snurrar!
 n-ballongen-snurrar  [playful] Ballongen snurrar!
-n-allt-for-idag  [warm] Det var allt för i dag.
-n-vad-kul  [warm] Vad kul det var att leka!
-p-hej-da-slut  [warm] Hej då!
+n-allt-for-idag  [warm] Nu är vi klara för i dag.
+n-vad-kul  [warm] Tack för att du lekte med B!
+p-hej-da-slut  [warm] Hej då! Vi ses!
