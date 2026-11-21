@@ -6909,5 +6909,165 @@
   "at": 1795186072096,
   "render": "2026-11-20 15:32 (Runda 2 20/11 (förhandsvisning --snabb): musiken lägre, lugnare gång med steg, vantarna bakom lammet, mjuka övergångar mellan raderna, klockan framför, lammet blåser, degen tar slut)",
   "fixedAt": 1795187103681
+ },
+ "ct0cmnojgkmwqawey7": {
+  "ep": "J19",
+  "time": "0:26",
+  "sec": 26,
+  "tags": [],
+  "note": "polish sparkles",
+  "fixed": false,
+  "at": 1795259073967,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "8hpe2nplwbmwqax7ac": {
+  "ep": "J19",
+  "time": "0:53",
+  "sec": 53,
+  "tags": [],
+  "note": "more clear bus sounds getting closer",
+  "fixed": false,
+  "at": 1795259110691,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "k3crk70vzjmwqaykp6": {
+  "ep": "J19",
+  "time": "1:44",
+  "sec": 104,
+  "tags": [],
+  "note": "longer scene genom fönster",
+  "fixed": false,
+  "at": 1795259174730,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "efkas6tf5jmwqayv3g": {
+  "ep": "J19",
+  "time": "1:53",
+  "sec": 113,
+  "tags": [],
+  "note": "polish tail",
+  "fixed": false,
+  "at": 1795259188204,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "rzxokcnz1cmwqazejk": {
+  "ep": "J19",
+  "time": "2:07",
+  "sec": 127,
+  "tags": [],
+  "note": "bunny appear abruptly, fix",
+  "fixed": false,
+  "at": 1795259213408,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "9n79jqy0lmmwqb4nbm": {
+  "ep": "J19",
+  "time": "2:19",
+  "sec": 139,
+  "tags": [],
+  "note": "have cat wave to bunny",
+  "fixed": false,
+  "at": 1795259458066,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "st9rx8jxszmwqb5187": {
+  "ep": "J19",
+  "time": "2:32",
+  "sec": 152,
+  "tags": [],
+  "note": "polish sparkles",
+  "fixed": false,
+  "at": 1795259476087,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "q9gffnm7dwmwqb6o02": {
+  "ep": "J19",
+  "time": "3:37",
+  "sec": 217,
+  "tags": [],
+  "note": "set heart a bit higher so its more clear",
+  "fixed": false,
+  "at": 1795259552258,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "ux9cbfcs0smwqb6zvd": {
+  "ep": "J19",
+  "time": "3:41",
+  "sec": 221,
+  "tags": [],
+  "note": "rmeove kan du också rita ett hjärta",
+  "fixed": false,
+  "at": 1795259567641,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "fdavdpkc5bmwqb7aq0": {
+  "ep": "J19",
+  "time": "3:47",
+  "sec": 227,
+  "tags": [],
+  "note": "tone down imma slower",
+  "fixed": false,
+  "at": 1795259581704,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "qmsgsuarzamwqb8alk": {
+  "ep": "J19",
+  "time": "4:26",
+  "sec": 266,
+  "tags": [],
+  "note": "remove kan du också trycka?",
+  "fixed": false,
+  "at": 1795259628200,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "9suryhpqimmwqb8ihc": {
+  "ep": "J19",
+  "time": "4:26",
+  "sec": 266,
+  "tags": [],
+  "note": "add earlier dags att trycka på knappen nu? nej inte än",
+  "fixed": false,
+  "at": 1795259638416,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "2wuh0q18vnmwqb8sev": {
+  "ep": "J19",
+  "time": "5:00",
+  "sec": 300,
+  "tags": [],
+  "note": "add knocking sound",
+  "fixed": false,
+  "at": 1795259651287,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "kgnidcdrsdmwqb96px": {
+  "ep": "J19",
+  "time": "5:06",
+  "sec": 306,
+  "tags": [],
+  "note": "polish farmor tail add stars in windows",
+  "fixed": false,
+  "at": 1795259669829,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "6ccka4q241mwqb9hs6": {
+  "ep": "J19",
+  "time": "5:13",
+  "sec": 313,
+  "tags": [],
+  "note": "hearts pink on hug",
+  "fixed": false,
+  "at": 1795259684166,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
+ },
+ "6lmjo465ihmwqb9nz3": {
+  "ep": "J19",
+  "time": "5:16",
+  "sec": 316,
+  "tags": [],
+  "note": "abrupt clip",
+  "fixed": false,
+  "at": 1795259692191,
+  "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)"
  }
 }
