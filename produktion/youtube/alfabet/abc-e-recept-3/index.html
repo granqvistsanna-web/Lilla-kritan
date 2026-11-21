@@ -71,11 +71,14 @@ const kontur = async (f, ...matt) => iTeckning((await (await fetch(`/assets/${f}
 // (ekorre-kropp-2.jpg), delarna klippta med verktyg/delar.py. Svansen, framtassarna och fötterna sitter bakom kroppen och vrids
 // kring sina leder (ekorre-rigg.json). Samma storlek som förra ekorren: figuren är 879 px hög (y 79–958) och 500 i teckningens mått.
 const EKORRE = ['../karaktarer/ekorren/premium/cut/ekorre-body', 1024, 1024, 1024 * 500 / 879, 250 + 1024 * 500 / 879 - 958 * 500 / 879];
-const EKORRE_DELAR = [['tail', 690, 740, 'svans'], ['leg-r', 440, 880, 'fot'], ['arm-r', 235, 600, 'tass']];   // bakifrån och fram: del, led i 1024-rutan, rörelse
+// Delarna är klippta med verktyg/delar_diff.py (en del per ben och tass, jämn vit kant, lång rot; armen och den närmaste foten framför kroppen).
+const EKORRE_DELAR = [['tail', 690, 740, 'svans'], ['fot-bak', 302, 879, 'fot'], ['tass-bak', 210, 588, 'tass'],
+  ['fot', 470, 880, 'fot', 'fram'], ['arm', 380, 600, 'tass', 'fram']];   // del, led i 1024-rutan, rörelse, framför kroppen
 // Katten likadant (Sanna 2026-11-20: "and the cat"): katt-abc (den vanliga svarta katten från sidan) utan svans och ben ur Flow
 // (katt-abc/original/katt-kropp-1.jpg). Benen är två par, bakbenen och frambenen, som går i otakt. Figuren är 722 px hög (y 144–866).
 const KATT = ['katt-abc/cut/katt-body', 1024, 1024, 1024 * 420 / 722, 250 + 1024 * 420 / 722 - 866 * 420 / 722];
-const KATT_DELAR = [['tail', 221, 476, 'svans'], ['leg-l', 354, 786, 'benA'], ['leg-r', 653, 774, 'benB']];
+const KATT_DELAR = [['tail', 228, 440, 'svans'], ['bak-r', 411, 785, 'benB'], ['fram-r', 696, 740, 'benA'],   // de bortre benen först
+  ['bak-l', 316, 757, 'benA'], ['fram-l', 618, 769, 'benB']];   // diagonalt par i takt, som en katt går
 const ELSA = [1024, 1024, 675.84, 328.84];   // elefantens 1024-ruta i teckningens mått
 const SAKER = {
   // elefanten är riggen elefanten-elsa (konturen ur elsa-faceless.png i riggens 1024-ruta: x' = (x − 512) · 0,66, y' = y · 0,66 − 347)
@@ -151,9 +154,10 @@ for (const [namn, s] of Object.entries(SAKER)) {
   if (s.bild) { const [f, w, h, H, botten] = s.bild, q = H / h; const tr = `translate(${-w * q / 2} ${botten - H}) scale(${q})`;
     if (s.krona) s.kronaEl = await bildEl(s.krona[0], w, h, '', el('g', { transform: tr }, s.liv));
     s.delEl = [];   // ekorrens delar bakom kroppen, var och en vriden kring sin led i levande()
-    for (const [d, px, py, typ] of s.delar ?? []) { const g = el('g', { transform: tr }, s.liv);
-      s.delEl.push([typ, await bildEl(f.replace(/body$/, d), w, h, '', g), px, py]); }
+    const delEl = async ([d, px, py, typ]) => s.delEl.push([typ, await bildEl(f.replace(/body$/, d), w, h, '', el('g', { transform: tr }, s.liv)), px, py]);
+    for (const x of (s.delar ?? []).filter(x => !x[4])) await delEl(x);
     await bildEl(f, w, h, tr, s.liv);
+    for (const x of (s.delar ?? []).filter(x => x[4])) await delEl(x);
     for (const [x, y, r] of s.prickar ?? []) el('circle', { cx: x, cy: y, r, fill: '#3B3431', transform: tr }, s.liv);
     for (const [x, y] of s.kinder ?? []) el('ellipse', { cx: x, cy: y, rx: 24, ry: 14, fill: '#F29C94', opacity: 0.55 }, s.liv);
     if (s.mun) { const [x, y, w] = s.mun;   // glad, öppen mun som apans (Sanna 2026-11-18: "add happy mouth to frutis")
@@ -280,9 +284,9 @@ const GB = 875, golvY = sd => GB - sd / 2;   // klossarnas nederkant på golvet
 const RX = 0.2, RY = -0.22;   // alla klossar lutar lika, så att toppen och högra sidan syns och muren går ihop
 const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0 };   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
 const AV = [960, 420, 0], AS = 400, AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
-const RS = 180, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
-const RC = [[740, golvY(RS)], [960, golvY(RS)], [1180, golvY(RS)]];   // samma rad mitt i bild, där de blandas
-const MS = 270, MB = [960 - MS * 1.14 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
+const RS = 240, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // Sanna 2026-11-20: "bigger blocks" (alla klossar ca 30 % större)   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
+const RC = [[670, golvY(RS)], [960, golvY(RS)], [1250, golvY(RS)]];   // samma rad mitt i bild, där de blandas
+const MS = 300, MB = [960 - MS * 1.14 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
 const MUR = (() => { const g = MS * 1.14, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)],   // lite glipa: klossarna är vridna åt olika håll
   o = [0, -MS * 1.0 * Math.cos(RX), MS * Math.sin(RX)], p = (a, b) => [MB[0] + a * h[0] + b * o[0], MB[1] + a * h[1] + b * o[1], a * h[2] + b * o[2]];
   return [p(0, 0), p(1, 0), p(0, 1), p(1, 1)]; })();   // nere till vänster, nere till höger, uppe till vänster, uppe till höger (den udda)
@@ -530,7 +534,7 @@ t = u;
 MURTID[1] = t;
 // i slutraden vrids klossarna mer, varannan åt andra hållet (så att vänstra sidan syns)
 elefant.slutVrid = 0.3; ekorre.slutVrid = -0.16; ekollon.slutVrid = 0.38;
-const SS = 220, SX = [700, 960, 1220], RADEN = [ekorre, elefant, ekollon];
+const SS = 290, SX = [620, 960, 1300], RADEN = [ekorre, elefant, ekollon];
 flyttaK(ekorre, t, [SX[0], golvY(SS), 0], SS, 0.8); flyttaK(ekollon, t, [SX[2], golvY(SS), 0], SS, 0.8); fx(t, 'swoosh', 0.6);
 flyttaK(elefant, t + 0.5, [SX[1], golvY(SS), 0], SS, 1.0, 160); avTopp(elefant, t + 0.5); elefant.landa.push(t + 1.5);
 fx(t + 0.5, 'swoosh', 0.5); fx(t + 1.45, 'duns', 0.4); t += 1.9;
@@ -557,11 +561,11 @@ const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_
 // Feedback 2026-11-19 (3:26 "bigger bear", 3:35 "more stacking of blocks", "improved disco scene"): björnen dansar stor mitt i
 // bild, klossarna bygger två torn bredvid den, en i taget (varje sak med sitt ljud), och när björnen har hoppat tillbaka bygger
 // alla en pyramid mitt i bild med björnens kloss överst. Inga klistermärken vid kulan (feedback 2026-11-19 3:27).
-{ const PS = 180, g = PS * 1.14, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)], o = [0, -PS * Math.cos(RX), PS * Math.sin(RX)];
+{ const PS = 230, g = PS * 1.14, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)], o = [0, -PS * Math.cos(RX), PS * Math.sin(RX)];
   const torn = (x, k) => [x + k * o[0], golvY(PS) + k * o[1], k * o[2]];   // k klossar upp
   const B = [960 - h[0], golvY(PS), 0], pp = (a, b) => [0, 1, 2].map(j => B[j] + a * h[j] + b * o[j]);   // pyramiden: a åt höger, b upp
-  const lb = ekorre, c1 = ekollon, LX = 360, RX0 = 1560;
-  const START = new Map([[lb, LX], [elefant, RX0], [c1, 1340]]);
+  const lb = ekorre, c1 = ekollon, LX = 330, RX0 = 1600;
+  const START = new Map([[lb, LX], [elefant, RX0], [c1, 1320]]);
   RADEN.forEach(s => flyttaK(s, slag(0) - 0.3, torn(START.get(s), 0), PS, 0.9)); fx(slag(0) - 0.3, 'swoosh', 0.5);
   const UR = [slag(1) + 0.1, slag(2) + 0.1], IN = [slag(19) - 0.2, slag(20) - 0.2];   // hoppet ut och in, ca 0,6 s
   elefant.av = [...UR, ...IN]; elefant.kf.push([UR[0] - 0.01, ...KOMPIS], [UR[0], 960, 694, 1.15]);   // står kvar på sin plats tills leken (annars glider den dit hela filmen)   // stor mitt på golvet framför klossarna, fötterna ca 985
@@ -813,7 +817,7 @@ function ledder(s, t, bit) {
   if (typ === 'hoppa') h += bage(d / 0.5) + 0.7 * bage((d - 0.55) / 0.45);
   const vila = typ === 'vicka' || typ === 'gunga' ? (t1 === undefined ? 1 - clamp(d / 1.8) : inUt(clamp(d / 0.4)) * inUt(clamp((t1 - t) / 0.4))) : 0;
   const ga = typ === 'ga' ? (t1 === undefined ? 1 : inUt(clamp(d / 0.4)) * inUt(clamp((t1 - t) / 0.4))) * Math.sin(d * 2 * Math.PI / 0.6) : 0;   // benen i takt med gungningen
-  const v = { svans: 3 * Math.sin(t * 2 * Math.PI / 2.4) + 9 * h, tass: -14 * h + 7 * vila * Math.sin(d * 2 * Math.PI / 0.7), fot: -12 * h,
+  const v = { svans: 3 * Math.sin(t * 2 * Math.PI / 2.4) + 9 * h + 2.5 * ga, tass: -14 * h + 7 * vila * Math.sin(d * 2 * Math.PI / 0.7), fot: -12 * h,
     benA: 7 * ga - 6 * h, benB: -7 * ga + 6 * h };   // katten: bakbenen och frambenen i otakt, och isär i luften
   for (const [n, im, px, py] of s.delEl) im.setAttribute('transform', `rotate(${v[n].toFixed(2)} ${px} ${py})`);
 }

@@ -2,25 +2,39 @@
   "storlek": 1024,
   "kropp": "cut/katt-body.png",
   "delar": {
-    "leg-l": {
-      "fil": "cut/katt-leg-l.png",
-      "vridpunkt": [
-        354,
-        786
-      ]
-    },
-    "leg-r": {
-      "fil": "cut/katt-leg-r.png",
-      "vridpunkt": [
-        653,
-        774
-      ]
-    },
     "tail": {
       "fil": "cut/katt-tail.png",
       "vridpunkt": [
-        221,
-        476
+        228,
+        440
+      ]
+    },
+    "bak-r": {
+      "fil": "cut/katt-bak-r.png",
+      "vridpunkt": [
+        411,
+        785
+      ]
+    },
+    "fram-r": {
+      "fil": "cut/katt-fram-r.png",
+      "vridpunkt": [
+        696,
+        740
+      ]
+    },
+    "bak-l": {
+      "fil": "cut/katt-bak-l.png",
+      "vridpunkt": [
+        316,
+        757
+      ]
+    },
+    "fram-l": {
+      "fil": "cut/katt-fram-l.png",
+      "vridpunkt": [
+        618,
+        769
       ]
     }
   }

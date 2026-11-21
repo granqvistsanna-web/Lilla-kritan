@@ -9,19 +9,35 @@
         740
       ]
     },
-    "arm-r": {
-      "fil": "cut/ekorre-arm-r.png",
+    "fot-bak": {
+      "fil": "cut/ekorre-fot-bak.png",
       "vridpunkt": [
-        235,
-        600
+        302,
+        879
       ]
     },
-    "leg-r": {
-      "fil": "cut/ekorre-leg-r.png",
+    "tass-bak": {
+      "fil": "cut/ekorre-tass-bak.png",
       "vridpunkt": [
-        440,
-        880
+        210,
+        588
       ]
+    },
+    "fot": {
+      "fil": "cut/ekorre-fot.png",
+      "vridpunkt": [
+        470,
+        880
+      ],
+      "fram": true
+    },
+    "arm": {
+      "fil": "cut/ekorre-arm.png",
+      "vridpunkt": [
+        380,
+        600
+      ],
+      "fram": true
     }
   }
 }
