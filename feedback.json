@@ -7412,5 +7412,95 @@
   "fixed": false,
   "at": 1795292178676,
   "render": "2026-11-21 19:11 (slutrendering)"
+ },
+ "u876150wfemwquddu4": {
+  "ep": "049",
+  "time": "0:26",
+  "sec": 26,
+  "tags": [],
+  "note": "center tandläkare face, move camera up",
+  "fixed": false,
+  "at": 1795291778380,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "endmnw6bjemwque75b": {
+  "ep": "049",
+  "time": "0:42",
+  "sec": 42,
+  "tags": [],
+  "note": "add clifying då ska du får sitta i den här tandläkare stolen så kan tandläkaren undersöka tänderna",
+  "fixed": false,
+  "at": 1795291816367,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "h9pfbsbhdrmwqueeix": {
+  "ep": "049",
+  "time": "0:46",
+  "sec": 46,
+  "tags": [],
+  "note": "lower cameraa",
+  "fixed": false,
+  "at": 1795291825929,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "zin3m6uxiymwqufx3u": {
+  "ep": "049",
+  "time": "1:19",
+  "sec": 79,
+  "tags": [],
+  "note": "improge animation of chair raising, not whole chair just the seat, need to be cut apart, or recreate bottom part in code",
+  "fixed": false,
+  "at": 1795291896666,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "bdprfqt8f5mwqugk05": {
+  "ep": "049",
+  "time": "1:51",
+  "sec": 111,
+  "tags": [],
+  "note": "center spgel, add shine to spegel",
+  "fixed": false,
+  "at": 1795291926341,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "iud0kyh1d1mwqugzer": {
+  "ep": "049",
+  "time": "1:56",
+  "sec": 116,
+  "tags": [],
+  "note": "this scene needs work. arm animation looks odd",
+  "fixed": false,
+  "at": 1795291946307,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "o7uuuyg8cgmwquh4tc": {
+  "ep": "049",
+  "time": "1:59",
+  "sec": 119,
+  "tags": [],
+  "note": "use dentist rigs",
+  "fixed": false,
+  "at": 1795291953312,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "3vf9ymsdtmmwquhfxt": {
+  "ep": "049",
+  "time": "2:38",
+  "sec": 158,
+  "tags": [],
+  "note": "chair is too high",
+  "fixed": false,
+  "at": 1795291967729,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+ },
+ "7c4ope628cmwqui8ri": {
+  "ep": "049",
+  "time": "2:45",
+  "sec": 165,
+  "tags": [],
+  "note": "improve tandborste in pocket. improve confused look. have tandborste in pocket there for the start",
+  "fixed": false,
+  "at": 1795292005086,
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
  }
 }
