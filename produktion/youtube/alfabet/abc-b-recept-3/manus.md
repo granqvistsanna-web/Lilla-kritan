@@ -11,7 +11,7 @@ Gjord 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur förl
 **Meningen:** Björnen vill leka men har inget att leka med. Malin ber kritan rita något, och det måste börja på B. Kritan ritar fel (kon, hej då!). Kritan ritar bollen: bollen studsar och björnen hoppar med. Björnen vill leka mer, och kritan ritar något som flyger: ballongen flyger upp och sjunker ner igen. Den udda i leken är hunden, som i E.
 
 - Björnen är riggen `bjornen-bulle` (v2, ✅). Hunden riggen `hunden-hugo`, som i E.
-- Kon är Gissa teckningens kritko (`assets/rekvisita/ko/`, `rekvisita/ko.md`): en vanlig ko från sidan, utan öga i bilden, med fyra lösa ben (`ko-ben1`–`4`) som går i diagonala par. Svansen sitter fast i kroppen. Ingen ny bild behövs.
+- Kon är `rekvisita/ko-abc` (ny 2026-11-21 efter Sannas feedback, Flow): en vanlig ko från sidan, ljust beige med stora svarta fläckar så att den syns mot väggen, benen fast i bilden (den vaggar ut). Kritan ritar konturen, två fläckar, mulen och ögonen. Gissa teckningens vita kritko (`rekvisita/ko`) används inte längre här.
 - Bollen `boll-rod`, ballongen `ballong-rod` (med ansiktet från recept 1).
 
 ## Uppslagen
@@ -70,10 +70,16 @@ Den lilla viljan i del 6 är *"Björnen vill leka mer."* / *"Kritan, rita något
 - *"Hej hej!"* i introt, en v3-tagg per rad, 61 rader.
 - Björnen håller aldrig i ballongen (receptets *"aldrig hålla i något"*): den hoppar efter den.
 
+## Feedback 2026-11-21 (ABC-b3, render 12:11)
+
+- 0:04: B-klossen i introt är större (400 → 560) och står mitt i bild (y 420 → 500).
+- 0:28: björnskissen får den mörka nosen, munnen, fyllda ögon och öronens ljusa insida, mätta i riggens delar.
+- 0:49: kritan kommer in i bild när Malin pratar med den (*"Kritan! Kan du rita …"*, och *"Kritan, rita något som flyger!"*), nickar efter *"Klarar du det, kritan?"* och går därifrån direkt till att rita (`KVISA`, `KNICK`, `KFRAM`).
+- 1:11: ny ko (se ovan), med fläckar och mule i skissen.
+
 ## Öppet
 
 - Bollen och ballongen är båda röda. Plattorna har olika färg, men en blå boll skulle skilja dem bättre (det finns ingen `boll-bla` i dag).
-- Kons svans sitter fast i kroppen och rör sig inte; bara benen går.
 - Ingen tagning än: scenen använder datorrösten tills Sanna sagt ja till krediterna. Byt sedan `ROST` i `index.html` till `assets/ljud/roster/alfabet/abc-b-recept-3` (dela med `verktyg/dela-tagning.py`).
 - Ballongen svävar bara upp till ca y 20 (överkanten); den kan få flyga högre, ut ur bild, om Sanna vill.
 - `delEl` i scenen tar nu också delar med hela filnamnet (kons `ko-ben1`–`4`); förlagan klarar bara `…-body`. Kan föras in i E om fler bokstäver använder Gissa teckningens djur.

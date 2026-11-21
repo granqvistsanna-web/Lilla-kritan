@@ -1,0 +1,15 @@
+# Kon (ABC)
+
+En vanlig liten gårdsko från sidan, vänd åt höger, på fyra korta ben: knubbig ljust beige kropp (inte vit, så att den syns mot den vita väggen) med stora kolsvarta fläckar, en svart fläck runt ena örat, stor rosa mule med två näsborrar, små öron, korta gräddgula horn, tunn svans med mörk tofs, litet rosa juver och mörkbruna klövar. Ett vanligt djur på fyra ben, inte en figur på två (som katten i ABC). Bilden har två små prickögon; munnen ritas i kod (`smil`). Ren fyllning med kritkorn och vit klistermärkeskant. Inte kon i Gissa teckningen (`ko.md`), som är vit och används där.
+
+**I Kritans ABC: B (recept 3):** den som kritan ritar fel (*"Busiga kritan!"*) ([`produktion/youtube/alfabet/abc-b-recept-3/`](../produktion/youtube/alfabet/abc-b-recept-3/)). Sanna 2026-11-21: *"better ko drawing and image … consider the contrast as cow is white and bg is white"*.
+
+**Mått i urklippet `assets/rekvisita/ko-abc/cut/ko-abc.png` (938 × 759 px):** figuren x 8–929, y 8–750; ögonen (770, 187) och (838, 177); mulen x 713–880, y 236–351; stora fläcken mitt på kroppen x 338–583, y 308–484. Kanten är tunnad till 12 px (`verktyg/tunn_kant.py 12`), ca 7 px i scenen. Konturer som kritan ritar: `cut/ko-abc-kontur.json` (`kontur-bild.py`), fläckarna `cut/ko-abc-flack1-kontur.json` och `cut/ko-abc-flack2-kontur.json` (`verktyg/kontur.py` på fläckarnas mask).
+
+**Bild (2026-11-21, Google Flow, Nano Banana 2.1, 0 krediter, tagning 2 av 4):** stilreferenser emun och katten (ABC), den gamla kon som motiv. Alla fyra i `assets/rekvisita/ko-abc/original/`. Gjord för hand i Flow i Chrome (Flow-verktyget hittade inte knappen "Agent" när gränssnittet var på svenska) och urklippt med `python3 verktyg/egen_kant.py assets/rekvisita/ko-abc/ko-abc.jpeg assets/rekvisita/ko-abc/cut/ko-abc.png`.
+
+```prompt
+Images 1 and 2 are STYLE references only: copy their drawing technique exactly (simple plump toddler picture-book animal seen from the side, flat even wax-crayon and oil-pastel fill with fine speckled paper grain and soft mottled crayon strokes, only a faint slightly darker crayon edge, no dark outline, no smooth digital shading, a thin clean even white sticker border all around), not their subjects. Image 3 shows the subject: a farm cow. Draw ONE ordinary little farm cow, a real cow standing on four legs and not a cartoon character on two legs: seen straight from the side, facing right, a plump rounded body, four short sturdy legs with dark brown hooves, a thin tail hanging down with a dark tuft, a rounded head at the front right with a big soft pink muzzle with two small nostrils, two small ears sticking out sideways and two short cream-yellow horns, a small pink udder. The body is a warm light oatmeal-beige crayon colour, clearly darker than white paper, with several big soft charcoal-black patches covering almost half of the body, one black patch around one ear. NO eye and no mouth (the face is added later), no props, no grass, no text, no 3D, no shine, no highlights. Centered, the cow fills about 75 percent of the frame width, plain pure solid white background, no shadow.
+```
+
+Används i: Kritans ABC: B (recept 3).
