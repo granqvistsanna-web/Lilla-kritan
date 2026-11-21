@@ -233,41 +233,6 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/038-1118-0945.mp4",
   "videoId": "7468fae7ad62b2785333fdf1fc8c8dd0"
  },
- "ABC-a": {
-  "duration": 35.5,
-  "file": "produktion/youtube/alfabet/alfabet-prov-1.mp4",
-  "name": "Ljudjakten A (prov 1)",
-  "rendered": "2026-11-16 11:16",
-  "status": "arkiv",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4ba6f7cc0c92c7e71a1a608dff414aa9.mp4"
- },
- "ABC-a2": {
-  "duration": 167.6,
-  "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
-  "name": "Ljudjakten A – Apans fruktfest (prov 2, three.js)",
-  "rendered": "2026-11-16 12:16",
-  "status": "arkiv",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f806fe2ef921d66c82e0c988323b649e.mp4",
-  "videoId": "f806fe2ef921d66c82e0c988323b649e"
- },
- "ABC-a3": {
-  "duration": 168.8,
-  "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
-  "name": "ABC A prov 3: klossar, teal, lika stora djur",
-  "rendered": "2026-11-16",
-  "status": "arkiv",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/265f83f943b441dc302bd816971963a2.mp4",
-  "videoId": "265f83f943b441dc302bd816971963a2"
- },
- "ABC-a4": {
-  "duration": 173.8,
-  "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
-  "name": "ABC A prov 4: teal tapet, stor apa i mitten, magen kurrar",
-  "rendered": "2026-11-16",
-  "status": "arkiv",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3b8e5c6f270776b0ec81233ee252c6ff.mp4",
-  "videoId": "3b8e5c6f270776b0ec81233ee252c6ff"
- },
  "B-bjorkdungen": {
   "file": "produktion/rum/bjorkdungen/bjorkdungen.mp4",
   "name": "Ute · Björkdungen",
@@ -1362,38 +1327,6 @@
   "status": "klar",
   "name": "Kaninen ska åka pulka"
  },
- "ABC-r1": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-r1-1118-2132.mp4",
-  "duration": 215.5,
-  "rendered": "2026-11-18 21:32 (Malin säger Kritan ritar något på bokstaven A och Nu dansar vi · torndans: klossarna snurrar upp en i taget till en pyramid)",
-  "file": "produktion/youtube/alfabet/abc-prov/recept-1/recept-1.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC recept 1: Klossbygget"
- },
- "ABC-p4": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-p4-1118-1034.mp4",
-  "duration": 166.8,
-  "rendered": "2026-11-18 10:34 (omgjord efter granskningen)",
-  "file": "produktion/youtube/alfabet/abc-prov/abc-prov.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC prov 4: klossen (riktning 1)"
- },
- "ABC-tvatt": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-tvatt-1118-1034.mp4",
-  "duration": 166.7,
-  "rendered": "2026-11-18 10:34",
-  "file": "produktion/youtube/alfabet/abc-tvattlinan/abc-tvattlinan.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC riktning 2: Tvättlinan"
- },
- "ABC-bokst": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-bokst-1118-1034.mp4",
-  "duration": 165.1,
-  "rendered": "2026-11-18 10:34",
-  "file": "produktion/youtube/alfabet/abc-bokstaven/abc-bokstaven.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC riktning 3: Stora bokstaven"
- },
  "JP-hunden-snogubbe-bg": {
   "stills": [
    {
@@ -1439,14 +1372,6 @@
   "duration": 234.2,
   "rendered": "2026-11-20 14:17 (runda 8: båda tassarna på nallen i kramen (2:29); förhandsvisning (--snabb))",
   "file": "avsnitt/040-leoparden-gar-och-lagger-sig/film/avsnitt-040.mp4"
- },
- "ABC-b": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-b-1120-2042.mp4",
-  "duration": 231.9,
-  "rendered": "2026-11-20 20:42 (Kritans ABC! sägs nu varmt (samma tagning som D).)",
-  "file": "produktion/youtube/alfabet/abc-b/abc-b.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC: B (recept 1)"
  },
  "J12": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1119-0929.mp4",
@@ -1503,38 +1428,6 @@
   "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
   "status": "klar",
   "name": "Blinka lilla stjärna"
- },
- "ABC-a5": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-a5-1119-1913.mp4",
-  "duration": 232.7,
-  "rendered": "2026-11-19 19:13 (Förhandsvisning (--snabb). A byggd om efter B: A-märket överst, apans närbilder, sakernas ljud, nytt disco och outro.)",
-  "file": "produktion/youtube/alfabet/abc-a/abc-a.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC: A omgjord (lärdomar från B)"
- },
- "ABC-c": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-c-1120-2046.mp4",
-  "duration": 221.2,
-  "rendered": "2026-11-20 20:46 (Kritans ABC! sägs nu varmt (samma tagning som D).)",
-  "file": "produktion/youtube/alfabet/abc-c/abc-c.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC: C"
- },
- "ABC-d": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-d-1120-2031.mp4",
-  "duration": 236.4,
-  "rendered": "2026-11-20 20:32 (Förhandsvisning (--snabb) med Malins röst (ElevenLabs v3). Kritans ABC! sägs nu varmt i stället för upphetsat.)",
-  "file": "produktion/youtube/alfabet/abc-d/abc-d.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC: D"
- },
- "ABC-e": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-e-1120-2050.mp4",
-  "duration": 236.2,
-  "rendered": "2026-11-20 20:51 (Kritans ABC! sägs nu varmt (samma tagning som D).)",
-  "file": "produktion/youtube/alfabet/abc-e/abc-e.mp4",
-  "status": "arkiv",
-  "name": "Kritans ABC: E"
  },
  "J14": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1119-0652.mp4",
