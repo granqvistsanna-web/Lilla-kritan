@@ -7462,9 +7462,10 @@
   "sec": 111,
   "tags": [],
   "note": "center spgel, add shine to spegel",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291926341,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292700557
  },
  "iud0kyh1d1mwqugzer": {
   "ep": "049",
