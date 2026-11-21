@@ -7284,9 +7284,10 @@
   "sec": 153,
   "tags": [],
   "note": "make bird smaller",
-  "fixed": false,
+  "fixed": true,
   "at": 1795261954786,
-  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)",
+  "fixedAt": 1795282042587
  },
  "ls7bd5rj2mmwqcmt6c": {
   "ep": "J19",
