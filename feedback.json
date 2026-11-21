@@ -7599,5 +7599,35 @@
   "fixed": false,
   "at": 1795295913073,
   "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))"
+ },
+ "nk5sikm3vkmwqvofv4": {
+  "ep": "049",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "en liten pall så musen kan hänga kulor högre i granen",
+  "fixed": false,
+  "at": 1795293973840,
+  "render": "2026-11-21 21:42 (Djup QA: ingen prick vid hakan, huvudet vänder sig, spegeln (16a) och tanden (31a) ritas inte över tandläkaren. Snabb förhandsvisning.)"
+ },
+ "y22g8qcvkmmwqwv9g3": {
+  "ep": "049",
+  "time": "1:31",
+  "sec": 91,
+  "tags": [],
+  "note": "lower chair from the start, so it doesnt get so high. stick toothbrush more down in pocket and make it red",
+  "fixed": false,
+  "at": 1795295971731,
+  "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))"
+ },
+ "v9rbot8qrtmwqwvzvd": {
+  "ep": "049",
+  "time": "3:17",
+  "sec": 197,
+  "tags": [],
+  "note": "polish tanke bubblor så de syns bättre. först aksnke en pratbubbla och sedan tanke bubbla? bättre animation",
+  "fixed": false,
+  "at": 1795296005977,
+  "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))"
  }
 }
