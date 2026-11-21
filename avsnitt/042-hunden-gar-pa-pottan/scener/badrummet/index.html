@@ -23,6 +23,11 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="5"/>
     </filter>
+    <filter id="rullkant" x="-0.3" y="-0.3" width="1.6" height="1.6">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="34" result="d"/>
+      <feFlood flood-color="#7d8a99" flood-opacity=".85"/><feComposite in2="d" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
     <filter id="kritkorn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/>
       <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.2  0 0 0 0 0.08  0 0 0 0.55 -0.12" result="k"/>
@@ -88,7 +93,7 @@ function kamera(zoom = 1, cx = 960, cy = 540) {
   zoom *= 1 + 0.008 * (0.5 - 0.5 * Math.cos(2 * Math.PI * TT / 6.5)); cx += 5 * Math.sin(TT * 0.55); cy += 3 * Math.sin(TT * 0.41);   // andas lugnt (045)
   const tx = Math.max(1920 - PW * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2)); $('brus').setAttribute('seed', 1 + Math.floor(TT * 6) % 50);   // line boil 2,5 px i bild, ny brusbild 6 gånger/s (CLAUDE.md)
 }
 const kameraMix = (A, B, k) => kamera(lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k));
 
@@ -148,8 +153,8 @@ const K_GOLV = 905, STA = [1250, K_GOLV], PALLK = [1762, 845];
 const BOLL_FRAM = [1400, K_GOLV - BD / 2], BOLL_MITT = [1560, K_GOLV - BD / 2], BOLL_PALL = [1762, 845 - BD / 2 + 6];
 const GLAS = [1405, K_GOLV + 6, 105];
 function kaktus() { PW = 2880; $('platta').innerHTML = `<image href="${KAKTUS}" width="2880" height="1080"/>`; lagg('bak', `<g filter="url(#boil)">${fonster(790, 230)}${klocka(1420, 300)}</g>`); }
-// väggklockan (Sanna 2026-11-20: "add some more to room maybe clock on wall"): gul ram, vit urtavla, visarna går lugnt
-function klocka(x, y) { const m = TT * 6, h = 300 + TT * 0.5, vis = (v, l, w) => `<line x1="0" y1="0" x2="${f1(l * Math.sin(v * Math.PI / 180))}" y2="${f1(-l * Math.cos(v * Math.PI / 180))}" stroke="#4a3428" stroke-width="${w}" stroke-linecap="round"/>`;
+// väggklockan (Sanna 2026-11-20: "add some more to room maybe clock on wall"): gul ram, vit urtavla, visarna står stilla på tio (Sanna 2026-11-21: "make clock not move, be still")
+function klocka(x, y) { const m = 0, h = 300, vis = (v, l, w) => `<line x1="0" y1="0" x2="${f1(l * Math.sin(v * Math.PI / 180))}" y2="${f1(-l * Math.cos(v * Math.PI / 180))}" stroke="#4a3428" stroke-width="${w}" stroke-linecap="round"/>`;
   return `<g transform="translate(${x} ${y})"><circle r="84" fill="#fff"/><circle r="77" fill="#F2C75C" filter="url(#kritkorn)"/><circle r="60" fill="#FFF8EC"/>
     ${Array.from({ length: 12 }, (_, i) => `<circle cx="${f1(48 * Math.sin(i * Math.PI / 6))}" cy="${f1(-48 * Math.cos(i * Math.PI / 6))}" r="${i % 3 ? 3 : 5.5}" fill="#B93564"/>`).join('')}
     ${vis(h, 28, 9)}${vis(m, 42, 6)}<circle r="7" fill="#4a3428"/></g>`; }
@@ -180,8 +185,10 @@ const KRAN = [HX + (598 - 401) * HK, RIM - (177 - 84) * HK];
 const POTTA = [620, B_GOLV + 4, 175], RULLE_VID = [830, B_GOLV + 2, 90], SITS = 112, B_POTTA = [620, B_GOLV - SITS],   // Sanna 2026-11-20: "make dog sit ON potty not behind": hunden sitter uppe på kanten, pottan bakom
   B_BREDVID = [470, B_GOLV];
 const HANDDUK_POS = [BX - 330, 190, 290];   // Sanna 2026-11-20 (feedback 3:03): "place handduk more to the left closer to potty"
-const RULLE_SLUT = [975, B_GOLV + 2];   // där rullen stannar: till hälften bakom pallen vid handfatets skåp, så att den syns i rad 29
-let VID, PALL_KS, PALL_X0, PALL_Y0;
+const RULLE_SLUT = [860, B_GOLV + 2];   // där rullen stannar: på fria golvet före pallen (Sanna 2026-11-21: "rullen sticker fram under stolen, det ser udda ut")
+const RULLE_KANT = 'filter="url(#rullkant)"';   // grå kontur runt rullens vita kant: syns mot det vita golvet (J17 2:42)
+let VID, VIDF, PALL_KS, PALL_X0, PALL_Y0;
+const DSF = 0.62;   // hunden vid handfatet är större (Sanna 2026-11-21, J17 3:09: "make dog bigger"); VIDF = fötterna så att magen fortfarande möter kanten
 function badrum() {
   PW = 1920; $('platta').innerHTML = `<image href="${BADRUM}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   const [hx, hy, hh] = HANDDUK_POS, hw = hh * HANDDUK[1] / HANDDUK[2];
@@ -212,7 +219,7 @@ function slingaNu() {
   const [a, b] = RULL_T(), u = mjuk(kl((TT - a) / (b - a)));
   const x = lerp(RULLE_START[0], RULLE_SLUT[0], u), y = lerp(RULLE_START[1], RULLE_SLUT[1], kl(u * 4));
   slinga(x);
-  if (TT >= a) { skugga(x, RULLE_SLUT[1] + 2, 38, 'bak', 0.07); sak('rulle', x, y, 72, { lager: 'bak', rot: 360 * (x - RULLE_START[0]) / (Math.PI * 70) }); }
+  if (TT >= a) { skugga(x, RULLE_SLUT[1] + 2, 44, 'bak', 0.16); sak('rulle', x, y, 72, { lager: 'bak', rot: 360 * (x - RULLE_START[0]) / (Math.PI * 70), extra: RULLE_KANT }); }
 }
 let RULLE_START = [700, B_GOLV + 2];
 // vattnet ur kranen (rad 34–37), en lugn stråle som slingrar sig lite
@@ -257,8 +264,19 @@ const SAKER = {
   lapp: () => L.sakKod(`<rect x="-46" y="-34" width="92" height="68" rx="8" fill="#F3EAD6" stroke="#8FA3BA" stroke-width="8"/>`, { grepp: [0, 0], fot: [0, 34], skala: 1, folj: 1, kant: 0 }),
 };
 // vattnet ritas ovanpå glasbilden (den är ogenomskinlig): glasets insida är en trapets, 60–606 upptill (y 60) och 132–530 nertill (y 856)
-function vatten(k) { if (k < 0.02) return ''; const y = 856 - 790 * k, b = u => [lerp(132, 60, u), lerp(530, 606, u)], [a0, a1] = b((856 - y) / 796);
-  return `<path d="M132 856 L530 856 L${f1(a1)} ${f1(y)} L${f1(a0)} ${f1(y)}Z" fill="#7cc4e8" opacity=".7"/><path d="M${f1(a0 + 14)} ${f1(y + 4)} H${f1(a1 - 14)}" stroke="#fff" stroke-width="14" stroke-linecap="round" opacity=".85"/>`; }
+// Sanna 2026-11-21 (J17 1:07): "improve water animation" – ytan gungar när glaset fylls och när hunden dricker, bubblor stiger, ljusare band överst
+function vatten(k) { if (k < 0.02) return ''; const v = vag(), y = 856 - 790 * k, b = u => [lerp(132, 60, u), lerp(530, 606, u)], [a0, a1] = b((856 - y) / 796);
+  const lut = 34 * v * Math.sin(TT * 7.5), krus = 12 * v * Math.sin(TT * 13), m = (a0 + a1) / 2;
+  const yta = `L${f1(a1)} ${f1(y - lut)} C${f1(m + (a1 - m) * 0.5)} ${f1(y - lut / 2 + krus)} ${f1(m - (m - a0) * 0.5)} ${f1(y + lut / 2 - krus)} ${f1(a0)} ${f1(y + lut)}`;
+  const bubblor = v < 0.05 ? '' : [0, 1, 2, 3, 4].map(i => { const f = (TT * (0.55 + 0.12 * i) + i * 0.37) % 1, by = lerp(830, y + 40, f);
+    return by > y + 30 ? `<circle cx="${f1(lerp(190, 480, (i * 0.29 + 0.1) % 1) + 10 * Math.sin(TT * 4 + i))}" cy="${f1(by)}" r="${f1(9 + 5 * (i % 2))}" fill="#fff" opacity="${(0.75 * v).toFixed(2)}"/>` : ''; }).join('');
+  return `<path d="M132 856 L530 856 ${yta}Z" fill="#7cc4e8" opacity=".72"/><path d="M${f1(a0 + 6)} ${f1(y + lut + 26)} L${f1(a0)} ${f1(y + lut)} C${f1(m - (m - a0) * 0.5)} ${f1(y + lut / 2 - krus)} ${f1(m + (a1 - m) * 0.5)} ${f1(y - lut / 2 + krus)} ${f1(a1)} ${f1(y - lut)} L${f1(a1 - 6)} ${f1(y - lut + 26)}Z" fill="#bfe6f5" opacity=".8"/>${bubblor}
+    <path d="M${f1(a0 + 18)} ${f1(y + lut * 0.8 + 4)} C${f1(m - 40)} ${f1(y + lut / 2 - krus + 4)} ${f1(m + 40)} ${f1(y - lut / 2 + krus + 4)} ${f1(a1 - 18)} ${f1(y - lut * 0.8 + 4)}" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity=".85"/>`; }
+// hur mycket vattnet rör sig (0–1): när kritan fyller på (8b, 11) och vid varje klunk, ebbar ut efteråt
+function vag() { if (TT < at('6') || TT > at('13')) return 0; const ut = (a, b) => del(a - 0.15, a + 0.1, TT) * (1 - del(b, b + 1.4, TT));
+  let v = Math.max(ut(at('8b', 0.05), at('8b', 0.95)), ut(at('11', 0.3), at('11', 0.3 + rl(15))));
+  for (const id of ['6', '9', '12']) for (const i of [0, 1]) v = Math.max(v, 0.5 * ut(at(id, lj(id, i)), at(id, lj(id, i) + 0.2)));
+  return v; }
 // glaset: hur fullt det är just nu (klunkarna i rad 6, 9 och 12, kritan fyller på i 8b och 11)
 function glasK() {
   const kl2 = id => [at(id, lj(id, 0)), at(id, lj(id, 1))], [a6, b6] = kl2('6'), [a9, b9] = kl2('9'), [a12, b12] = kl2('12');
@@ -266,7 +284,7 @@ function glasK() {
   return kl(1 - dr(a6, b6, 1) + 0.8 * del(at('8b', 0.05), at('8b', 0.95), TT) - dr(a9, b9, 0.8) + 0.8 * del(at('11', 0.3), at('11', 0.3 + rl(15)), TT) - dr(a12, b12, 0.8));
 }
 function hund([x, fot], f, p = {}, { lyft = 0, dold = false, s = DS, sak = null, skugga = true } = {}) {
-  const nyckel = sak ? sak + (sak === 'glas' ? Math.round(glasK() * 40) : '') : null;
+  const nyckel = sak ? sak + (sak === 'glas' ? Math.round(glasK() * 40) + (vag() > 0.01 ? '-' + Math.round(TT * 30) : '') : '') : null;
   if (G.sakNamn !== nyckel) { L.sakIn(G, sak ? SAKER[sak](glasK()) : null); G.sakNamn = nyckel; }
   p = { ...P(p) };
   const a = (1 - Math.cos(2 * Math.PI * TT / 3.6)) / 2; p.strack = (p.strack || 0) + 0.012 * a; p.bred = (p.bred || 0) + 0.006 * a + MAGE();
@@ -391,7 +409,7 @@ const S = {
   '14': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); NARA(STA, -30); const v = Math.sin((tl + 0.6) * 3.4);
     const [f, p] = nick(mellan(ANS('nyfiken', { titt: [0, -8], oron: [-10, -10] }), ANS('glad', { titt: [0, -4] }), del(lo(0) - 0.3, lo(0), tl)), { luta: 4 * v }, tl - lo(0) + 0.05, 0.8);
     hund([STA[0] + 6 * v, K_GOLV], f, p, { lyft: 5 * Math.abs(v) }); },
-  '15': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); const g = gang(tl, 0.5, d - 0.2, STA[0], 2950);
+  '15': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); const g = gang(tl, 0.5, d + 1.0, STA[0], 1570);   // Sanna 2026-11-21 (J17 1:39): "no overlap ball dog" – svepet tar hunden innan den når bollen
     kamera(HZ, kl(g.x, STA[0], 2140), 580); hund([g.x, K_GOLV], ANS('glad', { titt: [14, 0] }), g.p); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = BAD_FARG; },
 
   // --- Badrummet: pottan ---
@@ -438,7 +456,7 @@ const S = {
     const g = del(0.6, 1.0, tl); hund(B_POTTA, mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [14, 8] }), g), { ...SITTER, rikt: 0.4 }); },
   '25': (tl, d) => { badrum(); pottaKam(); const fri = [512 + (RULLE_VID[0] - B_POTTA[0]) / DS, L.FOTTER + (RULLE_VID[1] - B_POTTA[1]) / DS, 0];
     const t0 = lo(0) + 0.1, dp = 1.8;
-    if (tl < t0) { sak('rulle', ...RULLE_VID); const [f, p] = nick(ANS('glad', { titt: [12, 8] }), { ...SITTER, rikt: 0.3 }, tl - lo(0) + 0.05, 0.8); return hund(B_POTTA, f, p); }
+    if (tl < t0) { sak('rulle', ...RULLE_VID, { extra: RULLE_KANT }); const [f, p] = nick(ANS('glad', { titt: [12, 8] }), { ...SITTER, rikt: 0.3 }, tl - lo(0) + 0.05, 0.8); return hund(B_POTTA, f, p); }
     const [f, p] = L.plockaDel('upp', tl - t0, dp, { fri, hand: 1, boj: { luta: 6, boj: 0, strack: -0.03, bred: 0.02, armar: -10 } });
     hund(B_POTTA, f, { ...p, ...{ ben: SITTER.ben, benY: SITTER.benY, sank: SITTER.sank } }, { sak: 'rulle' }); },
   '26': (tl, d) => { badrum(); HEL(960); const [a] = RULL_T(), slapp = del(a - 0.3, a, tl + RR['26'].s);
@@ -466,22 +484,22 @@ const S = {
   '33': (tl, d) => { badrum(); HEL(960); const sv = del(mo(1) - 0.4, mo(1) + 0.4, tl);
     hund(B_BREDVID, mellan(ANS('nyfiken', { titt: [16, -2] }), ANS('glad', { titt: [10, 0] }), sv), { rikt: 0.5, luta: 2 * Math.sin(tl * 1.2) }, { lyft: skutt(tl, lo(0) - 0.1, lo(0) + 0.5, 10) }); },
   '34': (tl, d) => { badrum(); kamera(1.5, HX - 60, RIM - 40); const u = kl((tl - 0.15) / 0.75), m = mjuk(u);
-    const x = lerp(B_BREDVID[0], VID[0], m), y = lerp(B_GOLV, VID[1], m) - 150 * Math.sin(Math.PI * u);
-    hund([x, y], ANS('glad', { titt: [10, 6] }), { rikt: 0.4 * (1 - m), strack: 0.05 * bump(0.1, 0.4, tl) - 0.04 * bump(0.85, 1.1, tl) }, { dold: tl > 0.85 }); },
-  '35': (tl, d) => { badrum(); hund(VID, ANS('glad', { titt: [10, 14] }), { armar: [6, 50 * del(0, 0.3, tl)] }, { dold: true }); kamera(2.4, BX + 70, RIM - 60);
+    const x = lerp(B_BREDVID[0], VIDF[0], m), y = lerp(B_GOLV, VIDF[1], m) - 150 * Math.sin(Math.PI * u);
+    hund([x, y], ANS('glad', { titt: [10, 6] }), { rikt: 0.4 * (1 - m), strack: 0.05 * bump(0.1, 0.4, tl) - 0.04 * bump(0.85, 1.1, tl) }, { dold: tl > 0.85, s: lerp(DS, DSF, m) }); },
+  '35': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [10, 14] }), { armar: [6, 50 * del(0, 0.3, tl)] }, { dold: true, s: DSF }); kamera(2.4, BX + 70, RIM - 60);
     const [x, y] = tass(1); lagg('fram', tuss(x, y - 6, 14 + 10 * del(lo(0), lo(0) + 1.5, tl))); },
-  '36': (tl, d) => { badrum(); hund(VID, ANS('glad', { titt: [-10, 14] }), { armar: [50 * del(0, 0.3, tl), 50] }, { dold: true }); kamera(2.4, BX + 20, RIM - 60);
+  '36': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [-10, 14] }), { armar: [50 * del(0, 0.3, tl), 50] }, { dold: true, s: DSF }); kamera(2.4, BX + 20, RIM - 60);
     const [x, y] = tass(-1), [x2, y2] = tass(1); lagg('fram', tuss(x, y - 6, 12 + 10 * del(lo(0), lo(0) + 1.5, tl)) + tuss(x2, y2 - 6, 24)); },
   '37': (tl, d) => { badrum(); const gn = lo(1), bort = del(gn, gn + 0.4, tl), arm = bump(gn - 0.5, gn + 0.6, tl);
-    hund(VID, mellan(ANS('fnissig'), ANS('glad'), bort), { armar: [6, 6 + 110 * arm], luta: -3 * arm }, { dold: true }); const [x, y] = iG(512, 450); kamera(2.8, x, y + 40);
+    hund(VIDF, mellan(ANS('fnissig'), ANS('glad'), bort), { armar: [6, 6 + 110 * arm], luta: -3 * arm }, { dold: true, s: DSF }); const [x, y] = iG(512, 450); kamera(2.8, x, y + 40);
     if (bort < 1) lagg('fram', `<g opacity="${(1 - bort).toFixed(2)}">${tuss(x, y - 4, 11)}</g>`); },
   '38': (tl, d) => { badrum(); kamera(1.6, BX - 170, RIM - 120); const t1 = bump(0.3, 0.9, tl), t2 = bump(1.0, 1.6, tl);
-    hund(VID, ANS('glad', { titt: [-16, -6] }), { rikt: -0.6, armar: [6 + 120 * t1, 6 + 40 * t2], luta: -4 * (t1 - t2) }, { dold: true }); },
+    hund(VIDF, ANS('glad', { titt: [-16, -6] }), { rikt: -0.6, armar: [6 + 120 * t1, 6 + 40 * t2], luta: -4 * (t1 - t2) }, { dold: true, s: DSF }); },
   '39': (tl, d) => { badrum(); HEL(960); const k = (CUR.ljud || []).filter(([f]) => /^klapp/.test(f)).reduce((s, [, o]) => s + bump(o - 0.25, o + 0.1, tl), 0);
-    hund(VID, ANS('jatteglad'), { armar: [40 + 30 * k, 40 + 30 * k] }, { dold: true, lyft: 5 * k }); },
+    hund(VIDF, ANS('jatteglad'), { armar: [40 + 30 * k, 40 + 30 * k] }, { dold: true, lyft: 5 * k, s: DSF }); },
   '40': (tl, d) => { badrum(); HEL(960); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = KAKTUS_FARG;
     const u = kl((tl - 0.15) / 0.6), m = mjuk(u), land = [BX - 330, B_GOLV];
-    if (u < 1) return hund([lerp(VID[0], land[0], m), lerp(VID[1], land[1], m) - 120 * Math.sin(Math.PI * u)], ANS('glad', { titt: [-14, 0] }), { rikt: -0.5 * m }, { dold: u < 0.3 });
+    if (u < 1) return hund([lerp(VIDF[0], land[0], m), lerp(VIDF[1], land[1], m) - 120 * Math.sin(Math.PI * u)], ANS('glad', { titt: [-14, 0] }), { rikt: -0.5 * m }, { dold: u < 0.3, s: lerp(DSF, DS, m) });
     const g = gang(tl, 0.8, d - 0.1, land[0], -250); hund([g.x, B_GOLV], ANS('glad', { titt: [-14, 0] }), g.p); },
 
   // --- Kaktusrummet igen: bollen under pallen, hopp, dansa, hej då ---
@@ -505,13 +523,16 @@ let FYLL_R = 0; const fyllR = k => FYLL_R = k;
 
 // --- Ljud: Malin och effekterna ur raderna, julkarolen lågt under raderna med musik ------------------------------------------------
 const E = 'assets/ljud/effekter/';
-const VOL = f => /^(glitter|tindra)/.test(f) ? 0.7 : /^tass/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : /^porl/.test(f) ? 1.0 : 0.75;
+// Sanna 2026-11-21 (J17): "polish soundtrack", "less bjällror". Nivå per fil, uppmätt (ffmpeg ebur128, högsta M; korta ljud efter topp):
+// vov-ljuden 3 dB under Malin, kroppsljuden 6 dB under, glitter/tindra och kritan 11 dB under. Bjällrorna i rad 2 är borttagna.
+const NIVA = {"boing/boing-1":1.15,"boing/boing-2":1.29,"boing/boing-3":1.29,"duns/duns-1":1.51,"flamt-valp/flamt-valp-1":1.41,"glitter/glitter-1":0.23,"hopp-mjuk/hopp-mjuk-1":0.5,"hopp-mjuk/hopp-mjuk-2":0.5,"klapp/klapp-1":0.54,"klapp/klapp-2":0.55,"klunk/klunk-1":0.65,"klunk/klunk-2":0.65,"kran/kran-1":1.48,"krita-ritar/krita-ritar-1":0.9,"krita-ritar/krita-ritar-2":1.27,"krita-ritar/krita-ritar-3":1.15,"krita-ritar/krita-ritar-4":1.27,"krita-ritar/krita-ritar-5":1.26,"nos/nos-1":1.57,"nos/nos-2":1.01,"nos/nos-3":1.11,"plask/plask-1":0.89,"plask/plask-2":0.76,"plask/plask-3":0.67,"porl/porl-1":1.6,"ritsch/ritsch-1":1.6,"rull/rull-1":1.11,"svansvift/svansvift-1":0.71,"tass/tass-1":0.5,"tass/tass-2":0.51,"tass/tass-3":0.5,"tass/tass-4":0.5,"tass/tass-5":0.51,"tass/tass-6":0.48,"tindra/tindra-3":0.27,"vov-fniss/vov-fniss-1":1.6,"vov-fniss/vov-fniss-2":1.6,"vov-fniss/vov-fniss-3":1.4,"vov-fniss/vov-fniss-4":1.35,"vov-fniss/vov-fniss-5":1.6,"vov-fniss/vov-fniss-6":1.22,"vov-hej/vov-hej-1":0.53,"vov-hejda/vov-hejda-1":0.21,"vov-hejda/vov-hejda-2":0.21,"vov-ja/vov-ja-1":0.33,"vov-ja/vov-ja-2":0.25,"vov-ja/vov-ja-3":0.33,"vov-ja/vov-ja-4":0.28,"vov-pip/vov-pip-1":1.22,"vov-pip/vov-pip-2":0.9,"vov-pip/vov-pip-3":1.6,"vov-suck/vov-suck-1":0.56};
+const VOL = f => NIVA[f] ?? 0.75;
 const RITLANGD = { '01a': () => RR['01a'].d - 0.6, '8a': () => 1.6, '11': () => rl(15), '17a': () => 1.8, '24a': () => 1.5 };
 function ljud() {
   const ut = [];
   for (const r of RAD_L) {
     for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/hunden-gar-pa-pottan/${ROSTER[n - 1][0]}.m4a`, vol: 1.0 });
-    for (const [f, o] of r.ljud || []) if (f && !/^swoosh/.test(f)) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f), ...(/^krita-ritar/.test(f) ? { loop: true, langd: RITLANGD[r.id]?.() ?? 1.5, fade: 0.4 } : {}) });
+    for (const [f, o] of r.ljud || []) if (f && !/^(swoosh|bjallror)/.test(f)) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f), ...(/^krita-ritar/.test(f) ? { loop: true, langd: RITLANGD[r.id]?.() ?? 1.5, fade: 0.4 } : {}) });
   }
   // kritsvepen: ett kort skrrrrt per kritdrag (som 040)
   for (const id of ['15', '40']) { const sv = RR[id].s + RR[id].d - SVEP_IN;
@@ -547,6 +568,7 @@ window.ready = (async () => {
   G.insertAdjacentHTML('afterbegin', `<clipPath id="fyllklipp"><circle id="fyllc" cx="512" cy="560" r="0"/></clipPath>`);
   BLINKA = skapaBlinka(42);
   VID = [BX, RIM + (L.FOTTER - 640) * DS];        // hunden på pallen bakom handfatet (som 023)
+  VIDF = [BX, RIM + (L.FOTTER - 640) * DSF];
   PALL_KS = (B_GOLV - VID[1]) / (551 - PALL_HOG[1]); PALL_X0 = BX - PALL_HOG[0] * PALL_KS; PALL_Y0 = B_GOLV - 548 * PALL_KS;
   KONTUR.potta = await (await fetch(R + 'potta/cut/potta-v3-kontur.json')).json();
   KONTUR.rulle = await (await fetch(R + 'toarulle/cut/toarulle-kontur.json')).json();
