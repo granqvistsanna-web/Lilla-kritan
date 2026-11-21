@@ -5,6 +5,7 @@
 //   DS.defs                          <defs>-innehåll (kritkornet #ds-korn), en gång per sida
 //   DS.stetoskop({ bit, led, vinkel, slak })   hela stetoskopet: öronbågen vid led, slangen ner till bröststycket vid bit
 //   DS.brostbit(x, y, vinkel)        bara bröststycket (det handen håller mot magen)
+//   DS.slang(x1, y1, x2, y2, slak, b) bara den grå slangen (b = bredd), t.ex. från stetoskopet i doktorns bild till handen
 //   DS.oronlampa({ x, y, vinkel, ljus })       öronlampan med greppet i (x, y); ljus 0–1 tänder lampan i spetsen
 const DS = (() => {
   const GRA = '#5f646b', GRAKANT = '#4b4f55', SILVER = '#c6ccd2', SILVERMORK = '#9aa2aa', LJUSARE = '#e8ebee';
@@ -49,6 +50,12 @@ const DS = (() => {
       <g stroke="none">${brostbit(bx, by, bitVinkel)}</g></g>`;
   }
 
+  function slang(x1, y1, x2, y2, slak = 40, b = 17) {
+    const d = `M${x1} ${y1} Q${(x1 + x2) / 2 + slak * 0.4} ${(y1 + y2) / 2 + slak} ${x2} ${y2}`;
+    return `<g fill="none" stroke-linecap="round" filter="url(#ds-korn)"><path d="${d}" stroke="${GRAKANT}" stroke-width="${b + 5}"/>
+      <path d="${d}" stroke="${GRA}" stroke-width="${b}"/></g>`;
+  }
+
   function oronlampa({ x = 0, y = 0, vinkel = 0, ljus = 0 } = {}) {
     // Greppet (handtaget) står rakt upp och ner med (x, y) mitt i; huvudet sitter överst och tratten pekar åt höger.
     const sken = ljus > 0 ? `<circle cx="146" cy="-112" r="${8 + 8 * ljus}" fill="${LAMPA}" opacity="${Math.min(1, 2 * ljus)}"/>
@@ -67,5 +74,5 @@ const DS = (() => {
       ${sken}</g>`;
   }
 
-  return { defs, stetoskop, brostbit, oronlampa };
+  return { defs, stetoskop, brostbit, slang, oronlampa };
 })();
