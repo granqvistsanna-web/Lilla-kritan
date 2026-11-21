@@ -1524,5 +1524,13 @@
   "file": "produktion/youtube/alfabet/abc-a-recept-3/abc-a-recept-3.mp4",
   "status": "granska",
   "name": "Kritans ABC: A recept 3 (apan är hungrig)"
+ },
+ "ABC-d3": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-d3-1121-1910.mp4",
+  "duration": 243.8,
+  "rendered": "2026-11-21 19:10 (Snabb förhandsvisning med datorrösten, Malins tagning saknas)",
+  "file": "produktion/youtube/alfabet/abc-d-recept-3/abc-d-recept-3.mp4",
+  "status": "granska",
+  "name": "Kritans ABC D (recept 3)"
  }
 }
