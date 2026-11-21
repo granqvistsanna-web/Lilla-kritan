@@ -75,6 +75,10 @@ Leken i del 5 är knackningen (receptets handling *Knack knack*), och dörren sv
 - Dinon håller aldrig i något och går inte in genom dörren: den knackar med armen och dörren vickar.
 - Dörren öppnas inte (ett urklipp): dockan står bakom dörren i lagren och tittar fram vid kanten.
 
+## D säger sitt ljud (2026-11-21, som E)
+
+Sanna godkände (feedback på E 3:54: *"det viktigaste att lära sig är hur e låter … kanske får E ögon och mun"*) att bokstavsmärket säger sitt eget ljud. I introt, efter *"Bokstaven D."*, får klossen ögon och mun och säger *"d, d, D!"* en gång. I slutet, efter *"Hej då!"*, blir märket stort och säger det två gånger med en paus för barnet emellan. Ljuden är klippta ur Malins tagning utan nya krediter: `d-ljud-1` (andra "d" ur `p-d-d-dino`), `d-ljud-2` (andra "d" ur `p-d-d-dorr`), `d-ljud-3` (första "D" ur `p-d-d-dino`), med 15/40 ms toning. Ansiktet (`ANS` i `index.html`): ögonen på D:ets övre kant (Sanna: *"eyes on letter"*), (−62, −252) och (30, −250), munnen strax under i hålet (−10, −88), i bokstavens mått. Patchen är samma som i E, A och B.
+
 ## Öppet
 
 - *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.
