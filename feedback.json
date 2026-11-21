@@ -7521,9 +7521,10 @@
   "sec": -1,
   "tags": [],
   "note": "en liten pall så musen kan hänga kulor högre i granen",
-  "fixed": false,
+  "fixed": true,
   "at": 1795293985990,
-  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))"
+  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))",
+  "fixedAt": 1795295348409
  },
  "66f6l8r1ximwqvoyqe": {
   "ep": "034",
@@ -7531,9 +7532,10 @@
   "sec": 20,
   "tags": [],
   "note": "måla inte musen måla en julkula",
-  "fixed": false,
+  "fixed": true,
   "at": 1795293998294,
-  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))"
+  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))",
+  "fixedAt": 1795295348409
  },
  "are88dk9r8mwqvps6q": {
   "ep": "034",
@@ -7541,9 +7543,10 @@
   "sec": 41,
   "tags": [],
   "note": "ändra manys till vi ska dekorera granen med julpyt i lådan hurra vad kul",
-  "fixed": false,
+  "fixed": true,
   "at": 1795294036466,
-  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))"
+  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))",
+  "fixedAt": 1795295348409
  },
  "hwe79q0oubmwqvq9f3": {
   "ep": "034",
@@ -7551,9 +7554,10 @@
   "sec": 206,
   "tags": [],
   "note": "och sen släng upp det sista så kommer lamportna",
-  "fixed": false,
+  "fixed": true,
   "at": 1795294058799,
-  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))"
+  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))",
+  "fixedAt": 1795295348409
  },
  "eiugyyjw4fmwqvqiab": {
   "ep": "034",
@@ -7561,8 +7565,9 @@
   "sec": 206,
   "tags": [],
   "note": "lite mer inredning på väggar och i rummet",
-  "fixed": false,
+  "fixed": true,
   "at": 1795294070291,
-  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))"
+  "render": "2026-11-21 21:43 (djup QA: pling i takt, huvudet i bild i lådbilderna, mjuka blickar, inga hoppklipp (qa.md))",
+  "fixedAt": 1795295348409
  }
 }
