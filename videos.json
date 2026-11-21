@@ -1500,5 +1500,13 @@
   "file": "produktion/youtube/alfabet/abc-e-bg-tiny-curious-steps/abc-e-bg-tiny-curious-steps.mp4",
   "status": "granska",
   "name": "ABC E recept 3, bakgrund: Tiny Curious Steps (prov)"
+ },
+ "ABC-e3-groove": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-e3-groove-1121-0410.mp4",
+  "duration": 234.3,
+  "rendered": "2026-11-21 04:10 (En låt genom hela filmen i stället för de tre spåren)",
+  "file": "produktion/youtube/alfabet/abc-e-bg-playtime-groove/abc-e-bg-playtime-groove.mp4",
+  "status": "granska",
+  "name": "ABC E recept 3, bakgrund: Playtime Groove (prov)"
  }
 }
