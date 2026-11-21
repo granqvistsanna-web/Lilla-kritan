@@ -46,7 +46,8 @@ export const ROST = [
 ];
 export const L = n => ROST[n - 1][1];
 // var ordet börjar i repliken (s), uppmätt med whisper-cli 2026-11-13 (pling: där kulan sätter sig)
-export const ORD = { 19: { Upp: 2.14, pling: 3.45 }, 20: { Upp: 2.30, pling: 4.65 }, 24: { Upp: 0.05, pling: 1.75 } };
+// QA 2026-11-21: pling uppmätt om ur ljudets energi (whisper gav början på pausen före ordet, ca 0,6 s för tidigt); Upp i 20 likaså
+export const ORD = { 19: { Upp: 2.10, pling: 4.10 }, 20: { Upp: 2.90, pling: 5.28 }, 24: { Upp: 0.0, pling: 2.30 } };
 export const ord = (n, w) => ORD[n]?.[w] ?? L(n) * ROST[n - 1][2].indexOf(w) / ROST[n - 1][2].length;
 
 // Musens röst (Claude 2026-11-13, se ../ljud-effekter.md): känsla → fil under assets/ljud/effekter/
@@ -66,7 +67,7 @@ export const RADER = [
     bild: 'Snön faller utanför fönstret. Musen trippar lugnt in från vänster (3,6 s, Sanna 2026-11-15: långsammare), stannar framför granen och vinkar. **Hej med vinkning**', ljudtext: 'tass, hej-pip', ansikte: 'jätteglad' },
   { id: '2', d: 0.4 + L(5) + 1.8, plats: 'Halvbild', malin: [[5, 0.4]], ljud: [MUS('förtjust', 0.6 + L(5))],
     bild: 'Musen vänder sig mot granen, ögonen följer, öronen reser sig, ett litet glatt skutt', ljudtext: 'förtjust pip', ansikte: 'förvånad → glad' },
-  { id: '3', d: 0.3 + L(6) + 1.0 + L(7) + 1.4, plats: 'Granen → närbild musen', malin: [[6, 0.3], [7, 1.3 + L(6)]], ljud: [MUS('trumpen', 0.5 + L(6))],
+  { id: '3', d: 0.3 + L(6) + 1.4 + L(7) + 1.4, plats: 'Granen → närbild musen', malin: [[6, 0.3], [7, 1.7 + L(6)]], ljud: [MUS('trumpen', 0.5 + L(6))],
     bild: 'Närbild på den tomma granen; klipp till musen: öronen faller, blicken ner', ljudtext: 'trumpet pip', ansikte: 'lite ledsen' },
   { id: '4a', d: 1.4 + L(8) + 3.6, plats: 'Golvet framför musen', malin: [[8, 0.3]], ljud: [['krita-ritar/krita-ritar-2', 0.8, 1.0]],
     bild: 'Kritan kommer in och ritar den röda kulans kontur på golvet (3,4 s), väntar och vajar: gisspaus', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
@@ -90,11 +91,11 @@ export const RADER = [
   { id: '13', d: 0.4 + L(18) + 1.2, plats: 'Halvbild', malin: [[18, 0.4]], ljud: [MUS('förtjust', 0.6 + L(18))], bild: 'Musen reser sig och tittar på granen', ljudtext: 'förtjust pip', ansikte: 'glad' },
   { id: '14', d: 0.3 + L(19) + 1.8, plats: 'Halvbild', malin: [[19, 0.3]], ljud: [['ding/ding-1', 0.3 + ord(19, 'pling'), 0.6], ['glimt/glimt-1', 0.4 + ord(19, 'pling'), 0.6]],
     bild: 'Musen sträcker sig mot granen; den röda kulan glider upp på *"Upp, upp"* och sätter sig på grenen på *"pling!"*, gungar och glimtar', ljudtext: 'ding, glimt', ansikte: 'glad' },
-  { id: '15', d: 0.3 + L(20) + 1.8, plats: 'Halvbild', malin: [[20, 0.3]], ljud: [['ding/ding-2', 0.3 + ord(20, 'pling'), 0.6], MUS('förtjust', 0.9 + ord(20, 'pling'))],
+  { id: '15', d: 0.3 + L(20) + 1.8, plats: 'Halvbild', malin: [[20, 0.3]], ljud: [['ding/ding-2', 0.3 + ord(20, 'pling'), 0.6], MUS('förtjust', 0.45 + L(20))],
     bild: 'Samma med den gula, högre upp', ljudtext: 'ding, förtjust pip', ansikte: 'glad' },
   { id: '16', d: 0.4 + L(21) + 1.8, plats: 'Halvbild', malin: [[21, 0.4]], ljud: [MUS('nyfiken', 0.6 + L(21))],
     bild: 'Musen tittar ner, åt vänster, åt höger: den blå kulan är borta', ljudtext: 'frågande pip', ansikte: 'nyfiken' },
-  { id: '17', d: 0.3 + L(22) + 5.0, plats: 'Halvbild → närbild julgransfoten', malin: [[22, 0.3]],
+  { id: '17', d: 0.3 + L(22) + 3.8, plats: 'Halvbild → närbild julgransfoten', malin: [[22, 0.3]],
     bild: 'Frågan; sedan närbild på julgransfoten där en bit av den blå kulan tittar fram. Paus 5 s, skimrar efter 3 s', ljudtext: 'tyst', ansikte: 'nyfiken' },
   { id: '18', d: 0.3 + L(23) + 2.0, plats: 'Närbild foten → halvbild', malin: [[23, 0.3]], ljud: [['tindra/tindra-4', 0.1, 0.8], MUS('förtjust', 0.5 + L(23))],
     bild: 'Kulan skimrar tydligt och rullar fram till musen, som blir jätteglad', ljudtext: 'tindra, förtjust pip', ansikte: 'jätteglad' },
@@ -109,7 +110,7 @@ export const RADER = [
   { id: '23', d: 2.2 + L(30) + 1.4, plats: 'Halvbild', malin: [[30, 2.2]], ljud: [['hopp-mjuk/hopp-mjuk-1', 1.3, 0.3], MUS('trumpen', 2.4 + L(30))],
     bild: 'Stjärnan glider upp i musens hand, musen sträcker sig mot toppen och gör ett litet skutt: når inte. Öronen faller', ljudtext: 'trumpet pip', ansikte: 'nyfiken → lite ledsen' },
   { id: '24', d: 0.3 + L(31) + 3.5, plats: 'Närbild musen', malin: [[31, 0.3]], bild: 'Musen med stjärnan tittar på barnet. Paus 4,4 s med GLES (QA 2026-11-15): barnet säger upp', ljudtext: 'tyst', ansikte: 'hoppfull' },
-  { id: '25', d: L(32) + 2.0 + L(33) + 1.4, plats: 'Helbild', malin: [[32, 0.0], [33, L(32) + 2.0]], ljud: [['swoosh/swoosh-1', 0.3, 0.5], ['tindra/tindra-3', 1.7, 0.9], MUS('förtjust', 2.0)],
+  { id: '25', d: L(32) + 2.0 + L(33) + 1.4, plats: 'Helbild', malin: [[32, 0.0], [33, L(32) + 2.0]], ljud: [['swoosh/swoosh-1', 0.3, 0.5], ['tindra/tindra-3', 1.7, 0.9], MUS('förtjust', 1.75)],
     bild: 'Stjärnan glider i en mjuk båge från handen upp till toppen (1,4 s) och sätter sig; kulorna glimtar', ljudtext: 'swoosh, tindra, förtjust pip', ansikte: 'jätteglad' },
   { id: '26', d: 0.4 + L(34) + 3.0, plats: 'Helbild', malin: [[34, 0.4]], ljud: [MUS('mysig suck', 0.6 + L(34)), ['tass-klapp-tre/tass-klapp-tre-1', 1.8 + L(34), 0.7]],
     bild: 'Den pyntade granen, snön faller. Musen blundar nöjt och klappar tre gånger', ljudtext: 'mysig suck, klapp', ansikte: 'blundar nöjt' },
