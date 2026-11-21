@@ -6,7 +6,7 @@ p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven C.
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-clown  [excited] Clown!
-p-c-c-clown  [playful] C, c, clown!
+p-en-clown  [excited] En clown!
 p-clown-c  [excited] Ja! Clown börjar på bokstaven C.
 n-hej-clownen  [warm] Hej, clownen!
 n-vill-cykla  [warm] Clownen vill cykla.

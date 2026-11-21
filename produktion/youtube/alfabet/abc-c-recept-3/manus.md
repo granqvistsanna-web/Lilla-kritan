@@ -10,12 +10,9 @@ Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur 
 - Bollen `boll-rod`, cykeln `cykel-rod` (med lösa hjul; bara bakhjulet används) och cirkeln, den gröna ringen `cirkel`, finns redan (från recept 1). Inga nya bilder behövdes.
 - Clownen sitter aldrig på cykeln (receptets *"aldrig sitta i något"*): den hoppar bredvid medan cykeln rullar.
 
-## ⚠️ Uttalet: C låter på två sätt
+## Uttalet: C låter på två sätt
 
-**Clown uttalas med k** (*klaun*), men **cykel och cirkel med s**. Filmen lär alltså ut två ljud för C. Det gäller särskilt *"C, c, clown!"*, där bokstavsnamnet (*se*) står bredvid ett ord som börjar med k-ljud, och *"Alla börjar på bokstaven C."* (stämmer i stavningen, inte i ljudet). Två vägar:
-
-1. Behåll som det står (förslaget): barnen hör att C kan låta både *k* och *s*.
-2. Byt *"C, c, clown!"* mot *"En clown!"*, så att ljudramsan bara används för s-orden.
+**Clown uttalas med k** (*klaun*), men **cykel och cirkel med s**. Sanna valde 2026-11-21 att byta *"C, c, clown!"* mot *"En clown!"*, så att ljudramsan (*"C, c, …"*) bara används för s-orden. *"Alla börjar på bokstaven C."* stämmer i stavningen.
 
 ## Uppslagen
 
@@ -25,7 +22,7 @@ Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.
 |---|---|---|---|
 | 1 | Klossen snurrar in, kritan ritar C:et, klossen snurrar ett varv | Hej hej! · Titta, kritan ritar en bokstav. · Det är ju C! · Bokstaven C. | swoosh, pop, krita, pling |
 | 2 | Märket flyger till hörnet. Kritan ritar clownens kontur mitt i bild, med näsa, ögon och mun | Kritan ritar något på bokstaven C. · Hmm … · Vem är det? *(paus 4 s)* | krita |
-| 2 | Bilden fylls i, clownen hoppar och kliver fram | Clown! · C, c, clown! · Ja! Clown börjar på bokstaven C. | pop, pling, fniss, jippi |
+| 2 | Bilden fylls i, clownen hoppar och kliver fram | Clown! · En clown! · Ja! Clown börjar på bokstaven C. | pop, pling, fniss, jippi |
 | 2 | Clownen skuttar åt vänster och vinkar | Hej, clownen! | dunk, dunk |
 | 3 | Närbild: clownen tittar ner (ledsen, blyg) | Clownen vill cykla. · Men clownen har inget att åka på. | – |
 | 3 | Kritan kommer in i bild | Kritan! Kan du rita något att åka på? | – |
@@ -77,6 +74,5 @@ Den lilla viljan i del 6 är att cykeln saknar ett hjul: *"Vad fattas?"* (barnen
 
 ## Öppet
 
-- **Uttalet** (se ovan): behåll *"C, c, clown!"* eller byt till *"En clown!"*.
 - **Cirkeln som hjul:** ringbilden har ett vitt mittfält, så framhjulet blir en grön ring med vit mitt (bakhjulet har ekrar). Säg till om hjulet ska vara genomskinligt i mitten.
 - **Cirkeln i leken:** när klossarna poppar fram hoppar cirkeln ur cykelns hjul till sin kloss, och cykeln behåller sitt gröna hjul (två cirklar en stund).

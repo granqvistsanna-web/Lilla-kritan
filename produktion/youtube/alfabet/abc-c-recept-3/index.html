@@ -65,7 +65,7 @@ const RING_I_CYKEL = (HJUL2[2] * 560 / 1024) / 230;   // cirkelns skala mot cyke
 const ifyllt = (cx, cy, r, sy) => spiral(cx, cy, r, 3).replace(/(-?[\d.]+) (-?[\d.]+)/g, (m, x, y) => `${x} ${(cy + (y - cy) * sy).toFixed(1)}`);   // en fylld oval fläck
 const KALLE = [1024, 1024, 675.84, 252 + (1024 - 945) * 0.66];   // clownens 1024-ruta i teckningens mått (FOTTER 945, fötterna på y 252)
 const SAKER = {
-  clown: { rigg: 'clownen-kalle', platta: ['#E8739A', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-clown', kort: 'p-c-c-clown', berom: 'p-clown-c',
+  clown: { rigg: 'clownen-kalle', platta: ['#E8739A', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-clown', kort: 'p-en-clown', berom: 'p-clown-c',
     // efter konturen ritar kritan den röda bollnäsan, ögonen och munnen (riggens mått i uttryck.html), så att clownen är lätt att gissa
     streck: [['kontur', await kontur('karaktarer/clownen-kalle/premium/kalle-faceless', ...KALLE), '#6A4E9A', 15, 6.5],
       ['nos', iTeckning(ifyllt(512, 425, 30, 1.0), ...KALLE), '#D9473F', 18, 1.0],
@@ -199,7 +199,7 @@ const TAL = {
   'p-hmm': 'Hmm …',
   'p-vem': 'Vem är det?',
   'p-clown': 'Clown!',
-  'p-c-c-clown': 'C, c, clown!',
+  'p-en-clown': 'En clown!',
   'p-clown-c': 'Ja! Clown börjar på bokstaven C.',
   'n-hej-clownen': 'Hej, clownen!',
   'n-vill-cykla': 'Clownen vill cykla.',
