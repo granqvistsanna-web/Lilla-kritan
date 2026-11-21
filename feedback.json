@@ -7184,9 +7184,10 @@
   "sec": 4,
   "tags": [],
   "note": "more happy start kritan ritar, maybe you have another VO of malin for this to use as intro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795261726856,
-  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)",
+  "fixedAt": 1795282022443
  },
  "xgdyrfgrjpmwqchi8v": {
   "ep": "J19",
