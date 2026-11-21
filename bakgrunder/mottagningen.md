@@ -92,3 +92,5 @@ Edit Image 1. Keep the room EXACTLY the same size, layout, straight-on view, col
 ```
 
 **Tandläkarens rum, teal (Sanna 2026-11-21: *"green teal wall"*, take 1 vald):** `mottagningen-teal.png` (1876×1058) är `mottagningen-tom.png` redigerad i Flow (Nano Banana) med grönblå vägg (#2FA89A) och bara några saker: ett litet fönster med moln till vänster, en rund klocka, en tavla med en glad tand och en krukväxt längst till höger. Mitten är tom för tandläkarstolen och tandläkaren. Uppskalad från 1376×768. Tagningarna ligger i `original/rummet-teal-1..4.jpeg` (vald: 1) och de blå i `rummet-bla-1..4.jpeg`. Används i 049.
+
+**Lite dekor (Sanna 2026-11-21: *"add some slight decor to room wall at the left and maybe a small stool to the right edge"*):** `mottagningen-teal-dekor.png` är teal take 1 redigerad i Flow med vimplar ovanför fönstret, en liten hylla med en mugg tandborstar och en burk under fönstret och en liten pall på hjul vid högra kanten bredvid växten. Tagningarna i `original/rummet-dekor-1..4.jpeg` (i scenen: 3). Används i 049.
