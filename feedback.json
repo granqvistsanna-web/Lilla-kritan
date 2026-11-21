@@ -7473,9 +7473,10 @@
   "sec": 116,
   "tags": [],
   "note": "this scene needs work. arm animation looks odd",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291946307,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292702193
  },
  "o7uuuyg8cgmwquh4tc": {
   "ep": "049",
