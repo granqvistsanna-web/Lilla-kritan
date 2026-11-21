@@ -50,6 +50,12 @@ För gamla visor som handlar om barn. Sången får säga deras namn, eftersom de
 | Doktorn A | [doktorn-a.md](doktorn-a.md) (v2-rigg i `assets/karaktarer/doktorn-a/premium/`, Besöket) |
 | Doktorn B | [doktorn-b.md](doktorn-b.md) (v2-rigg i `assets/karaktarer/doktorn-b/premium/`, Besöket) |
 
+## Leksaker
+
+| Figur | Fil |
+|---|---|
+| Clownen Kalle | [clownen-kalle.md](clownen-kalle.md) (mjuk tygclown, Kritans ABC C; heter "clownen") |
+
 ## Fordon
 
 | Figur | Fil |
