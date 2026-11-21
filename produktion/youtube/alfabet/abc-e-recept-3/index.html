@@ -80,6 +80,7 @@ const KATT = ['katt-abc/cut/katt-body', 1024, 1024, 1024 * 420 / 722, 250 + 1024
 const KATT_DELAR = [['tail', 240, 492, 'svans'], ['bak-r', 411, 785, 'benB'], ['fram-r', 696, 740, 'benA'],   // de bortre benen först
   ['bak-l', 316, 757, 'benA'], ['fram-l', 618, 769, 'benB']];   // diagonalt par i takt, som en katt går
 const ELSA = [1024, 1024, 675.84, 328.84];   // elefantens 1024-ruta i teckningens mått
+const ifyllt = (cx, cy, r, sy) => spiral(cx, cy, r, 3).replace(/(-?[\d.]+) (-?[\d.]+)/g, (m, x, y) => `${x} ${(cy + (y - cy) * sy).toFixed(1)}`);   // en fylld oval fläck
 const SAKER = {
   // elefanten är riggen elefanten-elsa (konturen ur elsa-faceless.png i riggens 1024-ruta: x' = (x − 512) · 0,66, y' = y · 0,66 − 347)
   elefant: { rigg: 'elefanten-elsa', platta: ['#F2A541', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-elefant', kort: 'p-e-e-elefant', berom: 'p-elefant-e',
@@ -89,8 +90,8 @@ const SAKER = {
       ['ora-l', await kontur('karaktarer/elefanten-elsa/premium/elsa-ora-l', ...ELSA), '#D9798C', 13, 1.8],
       ['ora-r', await kontur('karaktarer/elefanten-elsa/premium/elsa-ora-r', ...ELSA), '#D9798C', 13, 1.8],
       ['snabel', await kontur('karaktarer/elefanten-elsa/premium/elsa-snabel', ...ELSA), '#6B7490', 13, 2.2],
-      ['oga-l', iTeckning(ell(420, 402, 14, 21), ...ELSA), '#3B3431', 12, 0.6],
-      ['oga-r', iTeckning(ell(601, 401, 14, 21), ...ELSA), '#3B3431', 12, 0.6]] },
+      ['oga-l', iTeckning(ifyllt(420, 402, 11, 1.45), ...ELSA), '#3B3431', 12, 0.6],   // fyllda ögon som B
+      ['oga-r', iTeckning(ifyllt(601, 401, 11, 1.45), ...ELSA), '#3B3431', 12, 0.6]] },
   ekorre: { platta: ['#E8739A', 0, 560, -0.08], fraga: 'p-vem', lang: 'p-ekorre', kort: 'p-e-e-ekorre', berom: 'p-ocksa-ekorre', bild: EKORRE, delar: EKORRE_DELAR, ogon: [[-155, -77, 10]], smil: ['M106 447 Q110 458 119 461 Q135 466 151 455', '#5A2E14', 6],
     streck: [['kontur', await kontur('karaktarer/ekorren/premium/ekorre-faceless', ...EKORRE.slice(1)), '#A9561C', 15, 7.5],
       ['oga', iTeckning(ell(239, 384, 13, 15), ...EKORRE.slice(1)), '#3B3431', 12, 0.6]] },
@@ -284,7 +285,8 @@ const { elefant, ekorre, ekollon, katt, hund } = SAKER;
 const GB = 875, golvY = sd => GB - sd / 2;   // klossarnas nederkant på golvet
 const RX = 0.2, RY = -0.22;   // alla klossar lutar lika, så att toppen och högra sidan syns och muren går ihop
 const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0 };   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
-const AV = [960, 420, 0], AS = 400, AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
+const AV = [960, 500, 0], AS = 560,   // som B (Sanna 2026-11-21, 0:04): klossen i introt större och mitt i bild
+      AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
 const RS = 240, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // Sanna 2026-11-20: "bigger blocks" (alla klossar ca 30 % större)   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
 const RC = [[670, golvY(RS)], [960, golvY(RS)], [1250, golvY(RS)]];   // samma rad mitt i bild, där de blandas
 const MS = 300, MB = [960 - MS * 1.14 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
@@ -325,7 +327,7 @@ let t = sag(1.3, 'p-hej-hej'); A.hopp.push(1.4);   // introt är kortat ca 4 s (
 t = sag(t + 0.4, 'p-kritan-ritar') - 0.3;   // "Kritan ritar." (Malin, röstbanken), och kritan börjar rita på slutet av repliken
 A.rita = [t + 0.2, t + 3.0];
 for (const [a, b] of [[0, 0.3], [0.33, 1]]) fx(lerp(...A.rita, a), 'skrrrrt-lang', 3, { loop: true, langd: (b - a) * (A.rita[1] - A.rita[0]), fade: 0.1 });   // ryggen och bågen
-A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); GN.push([A.svar, AV[0], AV[1] - 20, 330, 250]);
+A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); GN.push([A.svar, AV[0], AV[1] - 20, 460, 350]);
 // Introt (Sanna 2026-11-18): "Det är ju A! Bokstaven A. A säger ah. Kan du säga ah?" och en paus för barnet.
 // d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
 t = sag(A.svar + 0.2, 'p-det-ar-e');
@@ -336,6 +338,7 @@ t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 // RECEPT 3: KOMPISEN VILL NÅGOT. Slagen per ord är desamma som förut (kritan ritar, "Hmm …", frågan, pausen, svaret, närbilden,
 // saken gör sitt, "… börjar på E"), men saken blir ingen kloss efteråt: den står kvar i bilden tills leken börjar.
 const RITA = [1180, 590, 1.2];     // där ord 2 och det felritade ritas: till höger om kompisen
+const KVISA = [], KNICK = [];   // när kritan kommer fram och väntar i bild, och när den nickar (som B, Sanna 2026-11-21)
 const KOMPIS = [400, 700, 0.95];   // här står kompisen kvar, stor, med fötterna på golvet (y + 252 · skalan = 940)
 const hoppLjud = t0 => { fx(t0 + 0.1, 'hopp-mjuk', 0.8); fx(t0 + 0.5, 'dunk', 0.5); fx(t0 + 1.0, 'dunk', 0.5); };   // elefantens två hopp
 function ritaOchGissa(s, rit) {   // kritan ritar, "Hmm …", frågan, pausen och svaret: teckningen blir bilden
@@ -381,13 +384,14 @@ elefant.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-elefanten'] + 0.4]); 
   t = sag(t0 + 1.0, 'n-vill-leka') + 0.4;
   t = sag(t, 'n-ingen-kompis') + 0.6;   // samma närbild, elefanten är fortfarande blyg
   kamTill(t, 960, 540, 1, 1.0);
+  KVISA.push(t + 0.2);   // kritan kommer fram när Malin pratar med den och står kvar tills den ritar (som B)
   t = sag(t + 0.6, 'n-rita-kompis') + 0.5;   // Malin ber kritan
   // Elefanten lutar sig fram och "viskar" (Malin lyssnar): hon upprepar vad den vill, och elefanten hoppar till: ja!
   kanner(t, t + 0.6 + D['n-vad-sa-du'] + 0.5, 'nyfiken', 'lutaH');
   t = sag(t + 0.6, 'n-vad-sa-du') + 0.4;
   t = sag(t, 'n-maste-e'); elefant.levande.push([t, 'nicka']); fxf(t + 0.15, BRUM(4), 0.8, { langd: 1.2, fade: 0.3 });   // elefanten nickar: ja (Sanna 2026-11-20)
   t += 0.9;
-  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3;
+  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3; KNICK.push(t - 0.1);   // kritan nickar: ja!
   t = sag(t, 'n-nu-ritar') - 1.0; }   // kritan börjar rita (t + 0.6) när repliken tar slut
 
 // 4. Kritan ritar fel: en katt. Elefanten blir förvånad i närbild, Malin skrattar ("Busiga kritan!"), katten går ut åt höger
@@ -429,7 +433,7 @@ t = sag(t + 0.6, 'n-hopp-hopp') + 1.0;   // båda hoppar tillsammans
 ekorre.levande.push([t + 0.3, 'vicka']); fx(t + 0.3, 'kurr', 0.9);
 kanner(t + 0.5, t + 1.2 + D['n-hungrig'] + 0.5, 'nyfiken');
 t = sag(t + 1.2, 'n-hungrig');
-t = sag(t + 0.4, 'n-rita-nagot-gott') - 0.3;
+KVISA.push(t + 0.4); t = sag(t + 0.4, 'n-rita-nagot-gott') - 0.3;
 gissning(ekollon, 'vicka', 'gunga', 1.8, [900, 610, 0.9], [900, 650, 1.05]); fx(ekollon.svar + 0.4, 'plopp', 0.8);
 kanner(ekollon.svar + 0.3, ekollon.svar + 2.4, 'jatteglad', 'hurra');
 t = flytta(ekollon, t + 0.4, 1128, 790, 0.24, 0.9);   // framför ekorrens tassar fx(t - 0.9, 'swoosh', 0.4); fx(t, 'plopp', 0.6);
@@ -719,6 +723,7 @@ const lage = (s, t) => {   // [x, y, skala] ur nyckelrutorna, lugnt in och ut me
   return [lerp(a[1], b[1], k), lerp(a[2], b[2], k), lerp(a[3], b[3], k)];
 };
 const VILA = [2060, 420];   // utanför bild: kritan är borta när saken lever (en sak i taget)
+const KFRAM = [1330, 400];   // där kritan väntar i bild när Malin pratar med den (KVISA), till höger där den sedan ritar
 // Kritsmulor (Sanna 2026-11-20, som i 019 och ritintro.md): spetsen tappar några smulor i taget medan konturen ritas,
 // de faller lite och bleknar. Samma smulor varje gång för samma tid (ingen slump mellan renderingarna).
 const smulG = document.getElementById('smulor'), slump = x => { const v = Math.sin(x * 127.1) * 43758.5453; return v - Math.floor(v); };
@@ -733,7 +738,9 @@ function kritan(t) {
     return [x + sk * rs * (lx + rx), y + sk * rs * (ly + ry)]; };
   if (nu) { const p = pa(nu, inUt(del([nu[2], nu[3]], t))); return [p[0], p[1] + Math.sin(t * 107) * 1.2, nu[4]]; }
   const fore = STRECK.filter(x => x[3] <= t).at(-1), efter = STRECK.find(x => x[2] > t);
-  const vila = [VILA[0], VILA[1] + Math.sin(t * 3.7) * 8];
+  const fram = KVISA.reduce((m, t0) => !fore || fore[3] < t0 ? Math.max(m, inUt(clamp((t - t0) / 1.0))) : m, 0);   // in i bild från t0 tills nästa streck
+  const nick = KNICK.reduce((n, t0) => n + 26 * (bage(clamp((t - t0) / 0.35)) + bage(clamp((t - t0 - 0.4) / 0.35))), 0);
+  const vila = [lerp(VILA[0], KFRAM[0], fram), lerp(VILA[1], KFRAM[1], fram) + Math.sin(t * 3.7) * 8 + nick];
   if (fore && efter && efter[2] - fore[3] < 1) {   // lyfter till nästa streck
     const q = pa(fore, 1), r = pa(efter, 0), k = inUt(del([fore[3], efter[2]], t));
     return [lerp(q[0], r[0], k), lerp(q[1], r[1], k) - 50 * Math.sin(Math.PI * k), efter[4]];

@@ -56,6 +56,12 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 - Inga djurnamn (apan, hunden), inga utdragna ord, ingen *"Lyssna!"*, inget *"Säg du"*, aldrig *"Vad kan det vara?"*.
 - *"Hej hej!"* i introt, en v3-tagg per rad, 61 rader.
 
+## B:s ändringar 2026-11-21 (Sannas feedback på B, flyttad hit)
+
+- Klossen i introt är större (400 → 560) och står mitt i bild (y 420 → 500).
+- apans skiss får näsborrarna, munnen och fyllda ögon (mätta i `uttryck.html`).
+- Kritan kommer in i bild när Malin ber den rita (båda gångerna), nickar efter *"Kan du det, kritan?"* och går därifrån direkt till att rita (`KVISA`, `KNICK`, `KFRAM`).
+
 ## Öppet
 
 - **Malins tagning:** en tagning med alla 61 rader ur `malin-a-recept-3.txt`, delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Gjort 2026-11-21: tagning 1 av 2 valdes (tagning 2 sa "Deal" på "Bil?").

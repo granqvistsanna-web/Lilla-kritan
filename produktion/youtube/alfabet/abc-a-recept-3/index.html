@@ -69,13 +69,19 @@ const passa = (f, w, h, y0, y1, H) => [f, w, h, h * H / (y1 - y0), 250 + h * H /
 const APELSIN = ['apelsin/cut/apelsin', 726, 771, 410, 238];   // som i recept 1 (abc-a/), med ögon, kinder och mun i kod
 const ANANAS = ['ananas/cut/ananas-kropp', 512, 939, 520, 250];   // kroppen; kronan är en egen bild som svajar (abc-a/)
 const BIL = passa('bil-rod/cut/bil-rod', 1024, 1024, 227, 847, 330);   // bilen, hjulen snurrar (bil-rod-rigg.json)
+const ifyllt = (cx, cy, r, sy) => spiral(cx, cy, r, 3).replace(/(-?[\d.]+) (-?[\d.]+)/g, (m, x, y) => `${x} ${(cy + (y - cy) * sy).toFixed(1)}`);   // en fylld oval fläck
 const SAKER = {
   // efter konturen ritar kritan apans ljusa ansikte (spårat ur färgen i alfons-faceless.png) och ögonen (OGON i apans uttryck.html)
   apa: { rigg: 'apan-alfons', platta: ['#F2A541', 15, 440, 0.10], fraga: 'p-vem', lang: 'p-apa', kort: 'p-a-a-apa', berom: 'p-apa-a',
     streck: [['kontur', await kontur('karaktarer/apan-alfons/premium/alfons-faceless', ...ALFONS), '#5E3A22', 15, 6.5],
       ['ansikte', await kontur('karaktarer/apan-alfons/premium/alfons-ansikte', ...ALFONS), '#C98A5E', 13, 2.2],
-      ['oga-l', iTeckning(ell(418, 401, 14, 21), ...ALFONS), '#3B3431', 12, 0.6],
-      ['oga-r', iTeckning(ell(601, 400, 14, 21), ...ALFONS), '#3B3431', 12, 0.6]] },
+      // som B (Sanna 2026-11-21): näsborrarna och munnen också, och fyllda ögon (mätta i uttryck.html: näsborrar 488–500/520–532 × 428–439,
+      // munnen en båge från (472, 468) till (548, 464) med botten i (510, 490))
+      ['nasa-l', iTeckning(ifyllt(494, 434, 6, 1), ...ALFONS), '#5E3530', 10, 0.3],
+      ['nasa-r', iTeckning(ifyllt(526, 433, 6, 1), ...ALFONS), '#5E3530', 10, 0.3],
+      ['mun', iTeckning('M472 468 Q510 514 548 464', ...ALFONS), '#5E3530', 9, 0.6],
+      ['oga-l', iTeckning(ifyllt(418, 401, 11, 1.45), ...ALFONS), '#3B3431', 12, 0.6],
+      ['oga-r', iTeckning(ifyllt(601, 400, 11, 1.45), ...ALFONS), '#3B3431', 12, 0.6]] },
   apelsin: { platta: ['#59B36A', 30, 400, -0.08], fraga: 'p-vad-blir', lang: 'p-apelsin', kort: 'p-a-a-apelsin', berom: 'p-ocksa-apelsin', bild: APELSIN,
     ogon: [[-48, 28, 15], [48, 28, 15]], kinder: [[-88, 70], [88, 70]], mun: [0, 58, 20],
     streck: [['kontur', await kontur('rekvisita/apelsin/cut/apelsin', ...APELSIN.slice(1)), MORKORANGE, 15, 6]] },
@@ -272,7 +278,8 @@ const { apa, apelsin, ananas, bil, hund } = SAKER;
 const GB = 875, golvY = sd => GB - sd / 2;   // klossarnas nederkant på golvet
 const RX = 0.2, RY = -0.22;   // alla klossar lutar lika, så att toppen och högra sidan syns och muren går ihop
 const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0 };   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
-const AV = [960, 420, 0], AS = 400, AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
+const AV = [960, 500, 0], AS = 560,   // som B (Sanna 2026-11-21, 0:04): klossen i introt större och mitt i bild
+      AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
 const RS = 240, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // Sanna 2026-11-20: "bigger blocks" (alla klossar ca 30 % större)   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
 const RC = [[670, golvY(RS)], [960, golvY(RS)], [1250, golvY(RS)]];   // samma rad mitt i bild, där de blandas
 const MS = 300, MB = [960 - MS * 1.14 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
@@ -313,7 +320,7 @@ let t = sag(1.3, 'p-hej-hej'); A.hopp.push(1.4);   // introt är kortat ca 4 s (
 t = sag(t + 0.4, 'p-kritan-ritar') - 0.3;   // "Kritan ritar." (Malin, röstbanken), och kritan börjar rita på slutet av repliken
 A.rita = [t + 0.2, t + 3.0];
 for (const [a, b] of [[0, 0.3], [0.33, 1]]) fx(lerp(...A.rita, a), 'skrrrrt-lang', 3, { loop: true, langd: (b - a) * (A.rita[1] - A.rita[0]), fade: 0.1 });   // ryggen och bågen
-A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); GN.push([A.svar, AV[0], AV[1] - 20, 330, 250]);
+A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); GN.push([A.svar, AV[0], AV[1] - 20, 460, 350]);
 // Introt (Sanna 2026-11-18): "Det är ju A! Bokstaven A. A säger ah. Kan du säga ah?" och en paus för barnet.
 // d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
 t = sag(A.svar + 0.2, 'p-det-ar-a');
@@ -324,6 +331,7 @@ t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 // RECEPT 3: KOMPISEN VILL NÅGOT. Slagen per ord är desamma som förut (kritan ritar, "Hmm …", frågan, pausen, svaret, närbilden,
 // saken gör sitt, "… börjar på E"), men saken blir ingen kloss efteråt: den står kvar i bilden tills leken börjar.
 const RITA = [1180, 590, 1.2];     // där ord 2 och det felritade ritas: till höger om kompisen
+const KVISA = [], KNICK = [];   // när kritan kommer fram och väntar i bild, och när den nickar (som B, Sanna 2026-11-21)
 const KOMPIS = [400, 700, 0.95];   // här står kompisen kvar, stor, med fötterna på golvet (y + 252 · skalan = 940)
 const hoppLjud = t0 => { fx(t0 + 0.1, 'hopp-mjuk', 0.8); fx(t0 + 0.5, 'dunk', 0.5); fx(t0 + 1.0, 'dunk', 0.5); };   // elefantens två hopp
 function ritaOchGissa(s, rit) {   // kritan ritar, "Hmm …", frågan, pausen och svaret: teckningen blir bilden
@@ -371,13 +379,14 @@ apa.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-apan'] + 0.4]); t = sag(t
   kanner(t, t + 0.3 + D['n-hungrig'] + 0.6, 'ledsen', 'magen'); fx(t + 0.1, 'kurr', 0.6);
   t = sag(t + 0.3, 'n-hungrig') + 0.6;
   kamTill(t, 960, 540, 1, 1.0);
+  KVISA.push(t + 0.2);   // kritan kommer fram när Malin pratar med den och står kvar tills den ritar (som B)
   t = sag(t + 0.6, 'n-rita-gott') + 0.5;   // Malin ber kritan
   // Apan lutar sig fram och "viskar" (Malin lyssnar): hon upprepar vad den vill, och apan nickar: ja!
   kanner(t, t + 0.6 + D['n-vad-sa-du'] + 0.5, 'nyfiken', 'lutaH');
   t = sag(t + 0.6, 'n-vad-sa-du') + 0.4;
   t = sag(t, 'n-maste-a'); apa.levande.push([t, 'nicka']); fxf(t + 0.15, APAL(4), 0.8, { langd: 1.2, fade: 0.3 });
   t += 0.9;
-  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3;
+  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3; KNICK.push(t - 0.1);   // kritan nickar: ja!
   t = sag(t, 'n-nu-ritar') - 1.0; }   // kritan börjar rita (t + 0.6) när repliken tar slut
 
 // 4. Kritan ritar fel: en bil. Den tutar, apan blir förvånad i närbild, Malin skrattar ("Busiga kritan! En bil kan man inte äta!"),
@@ -418,7 +427,7 @@ t = sag(t + 0.5, 'n-mums') + 0.8;
 //    kittlar: atjo! (närbild). "Prosit, apan!", sedan "Mums!" som med apelsinen, och apan jublar i närbild.
 kanner(t, t + 0.4 + D['n-mer'] + 0.5, 'nyfiken', 'magen'); fx(t + 0.1, 'kurr', 0.5);
 t = sag(t + 0.4, 'n-mer');
-t = sag(t + 0.4, 'n-rita-mer') - 0.3;
+KVISA.push(t + 0.4); t = sag(t + 0.4, 'n-rita-mer') - 0.3;
 kanner(t + 0.8, t + 6, 'nyfiken', 'lutaH');
 gissning(ananas, 'hoppa', 'gunga', 1.2); fx(ananas.svar + 0.4, 'hopp-mjuk', 0.8); fx(ananas.svar + 0.95, 'hopp-mjuk', 0.6); fx(ananas.svar + 0.5, 'prassel-lov', 0.35);
 kanner(ananas.svar + 0.3, ananas.svar + 2.4, 'jatteglad', 'hurra'); fxf(ananas.svar + 0.6, APAL(2), 0.8, { langd: 1.6, fade: 0.3 });
@@ -719,6 +728,7 @@ const lage = (s, t) => {   // [x, y, skala] ur nyckelrutorna, lugnt in och ut me
   return [lerp(a[1], b[1], k), lerp(a[2], b[2], k), lerp(a[3], b[3], k)];
 };
 const VILA = [2060, 420];   // utanför bild: kritan är borta när saken lever (en sak i taget)
+const KFRAM = [1330, 400];   // där kritan väntar i bild när Malin pratar med den (KVISA), till höger där den sedan ritar
 // Kritsmulor (Sanna 2026-11-20, som i 019 och ritintro.md): spetsen tappar några smulor i taget medan konturen ritas,
 // de faller lite och bleknar. Samma smulor varje gång för samma tid (ingen slump mellan renderingarna).
 const smulG = document.getElementById('smulor'), slump = x => { const v = Math.sin(x * 127.1) * 43758.5453; return v - Math.floor(v); };
@@ -733,7 +743,9 @@ function kritan(t) {
     return [x + sk * rs * (lx + rx), y + sk * rs * (ly + ry)]; };
   if (nu) { const p = pa(nu, inUt(del([nu[2], nu[3]], t))); return [p[0], p[1] + Math.sin(t * 107) * 1.2, nu[4]]; }
   const fore = STRECK.filter(x => x[3] <= t).at(-1), efter = STRECK.find(x => x[2] > t);
-  const vila = [VILA[0], VILA[1] + Math.sin(t * 3.7) * 8];
+  const fram = KVISA.reduce((m, t0) => !fore || fore[3] < t0 ? Math.max(m, inUt(clamp((t - t0) / 1.0))) : m, 0);   // in i bild från t0 tills nästa streck
+  const nick = KNICK.reduce((n, t0) => n + 26 * (bage(clamp((t - t0) / 0.35)) + bage(clamp((t - t0 - 0.4) / 0.35))), 0);
+  const vila = [lerp(VILA[0], KFRAM[0], fram), lerp(VILA[1], KFRAM[1], fram) + Math.sin(t * 3.7) * 8 + nick];
   if (fore && efter && efter[2] - fore[3] < 1) {   // lyfter till nästa streck
     const q = pa(fore, 1), r = pa(efter, 0), k = inUt(del([fore[3], efter[2]], t));
     return [lerp(q[0], r[0], k), lerp(q[1], r[1], k) - 50 * Math.sin(Math.PI * k), efter[4]];

@@ -63,6 +63,12 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 - En rörelse per uppslag, Malin efter handlingen, ett reaktionsslag per händelse (närbilderna 0:37, 1:05, 2:21).
 - Fem djur syns sammanlagt (elefanten, katten, ekorren, hunden), men högst två samtidigt. `regler.md` säger högst tre figurer; ABC-filmerna följer inte den regeln i recept 1 heller.
 
+## B:s ändringar 2026-11-21 (Sannas feedback på B, flyttad hit)
+
+- Klossen i introt är större (400 → 560) och står mitt i bild (y 420 → 500).
+- elefantens skiss får fyllda ögon.
+- Kritan kommer in i bild när Malin ber den rita (båda gångerna), nickar efter *"Kan du det, kritan?"* och går därifrån direkt till att rita (`KVISA`, `KNICK`, `KFRAM`).
+
 ## Öppet
 
 - Muren står fortfarande still ca 12 s medan Malin säger orden och frågar.
