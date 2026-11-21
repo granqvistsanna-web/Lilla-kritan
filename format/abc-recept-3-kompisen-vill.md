@@ -1,10 +1,10 @@
 # Kritans ABC – recept 3: Kompisen vill något
 
-**Status:** Sanna gillar formen (2026-11-20: *"i like this"*) och bad om att receptet skulle uppdateras. Förlagan är E: `produktion/youtube/alfabet/abc-e-recept-3/` (scenen `index.html`, manuset `manus.md`, Malins repliker `malin-e-recept-3.txt`, filmen `abc-e-recept-3.mp4` som snabb förhandsvisning). Filmen är inte slutrenderad och ingen har lyssnat på blandningen.
+**Status:** Sanna gillar formen (2026-11-20: *"i like this"*). **Kopiera B** (`produktion/youtube/alfabet/abc-b-recept-3/`): den har Sannas feedback från 21/11 (se *Lärdomar från A, B, D och E* nedan), och A, D och E har samma ändringar. Den första förlagan var E: `produktion/youtube/alfabet/abc-e-recept-3/` (scenen `index.html`, manuset `manus.md`, Malins repliker `malin-e-recept-3.txt`, filmen `abc-e-recept-3.mp4` som snabb förhandsvisning). Filmen är inte slutrenderad och ingen har lyssnat på blandningen.
 
-**Sannas ändringar samma kväll, alla med i förlagan:** kritan ritar bara konturen och bilden fylls i inifrån, introt är ca 4 s kortare, introts kloss har rundare kanter, och katten och ekorren är nya bilder ur Flow: vanliga små djur från sidan, inte figurer på två ben.
+**Sannas ändringar 2026-11-20, med i alla:** kritan ritar bara konturen och bilden fylls i inifrån, introt är ca 4 s kortare, introts kloss har rundare kanter, och katten och ekorren är nya bilder ur Flow: vanliga små djur från sidan, inte figurer på två ben.
 
-Recept 1 (`produktion/youtube/alfabet/abc-prov/recept-1.md`) är fortfarande det som A–E är gjorda med. Recept 3 använder samma scen, samma klossar och samma slag per ord. Det som är nytt är att orden hänger ihop i en liten berättelse.
+Recept 1 (`produktion/youtube/alfabet/abc-prov/recept-1.md`) är det som de gamla A–E är gjorda med. De ersätts helt av recept 3 och publiceras inte. Planen för alla bokstäver: `produktion/youtube/alfabet/plan-recept-3.md`. Recept 3 använder samma scen, samma klossar och samma slag per ord. Det som är nytt är att orden hänger ihop i en liten berättelse.
 
 ## Varför
 
@@ -75,10 +75,10 @@ Välj en per bokstav. Alla går att göra med rörelserna i menyn nedan.
 
 Förslag för bokstäverna som finns:
 
-- **A:** Apan är hungrig. Bil? Nej. Apelsin, mums. Ananasens blad kittlar: atjo!
-- **B:** Björnen vill leka. Ko? Nej. Bollen studsar och björnen hoppar med. Ballongen flyger upp.
-- **C:** Cykeln saknar ett hjul. Boll? Nej. Kritan ritar en cirkel, och den blir hjulet. Citronen rullar in.
-- **D:** Knack knack, en dörr. Gris? Nej. Vem är bakom dörren? Dockan.
+- **A** (gjord): Apan är hungrig. Bil? Nej. Apelsin, mums. Ananasens blad kittlar: atjo!
+- **B** (gjord): Björnen vill leka. Ko? Nej. Bollen studsar och björnen hoppar med. Ballongen flyger upp och ner igen.
+- **C** (bestämt): Clownen, en mjuk tygclown (ny v2-figur), vill cykla men har ingen cykel. Boll? Nej. Cykeln, men ett hjul fattas: kritan ritar en cirkel, och den blir hjulet. Clown uttalas med k, cykel och cirkel med s.
+- **D** (gjord): Dinon vill veta vem som bor bakom dörren. Gris? Nej. Dinon knackar på dörren, knack knack. Dockan tittar fram.
 - **E:** Elefanten vill leka. Katt? Nej. Ekorren hoppar och elefanten härmar. Ekorren är hungrig, och ekollonet glider dit.
 
 ## Rörelsemenyn
@@ -123,19 +123,46 @@ De udda sakerna kan vara desamma i många bokstäver. Den som ritas fel behöver
 - **Fälla:** en sak glider mot sin nästa nyckelruta hela tiden fram till den. Lägg en ruta som håller kvar läget precis före (kompisen gled åt höger i en minut innan discot).
 - `kontur(fil, …mått)` läser `<bild>-kontur.json`; `streck: [['kontur', banan, färg, bredd, sekunder / TEMPO]]`.
 - Bilden fylls i inifrån med masken `s.fyll` (`FYLL` 0,7 s).
+- `KVISA` (tider då kritan kommer fram och väntar vid `KFRAM`, x 1330, y 400) och `KNICK` (tider då den nickar två gånger). Se *Kritan syns* nedan.
+- `ifyllt(cx, cy, r, sy)`: en fylld oval fläck (ögon, nosar) som kritan ritar i en spiral.
+- `delEl` tar delar både som `…-body` → `…-<del>` och med hela filnamnet (B:s `ko-ben1`–`4`).
 - **Fälla:** tar man flera stillbilder långt isär i samma körning kan bokstavsmärket synas en extra gång bredvid kompisens kloss. I en renderad film syns det inte. Ta en stillbild per körning när klossarna ska kontrolleras.
+
+## Lärdomar från A, B, D och E (2026-11-21)
+
+Allt här finns i B och har förts in i A, D och E. Den som kopierar B får det på köpet.
+
+**Introt.** Klossen är större (`AS` 400 → 560) och står mitt i bild (`AV` y 420 → 500), med större gnistor på svaret (Sanna, B 0:04).
+
+**Kompisens skiss ska gå att gissa.** Efter konturen ritar kritan ansiktet: nosen, munnen, fyllda ögon (`ifyllt`, inte ringar) och öronens ljusa insida. Allt mäts i riggens delar eller i `uttryck.html` (`OGON`, näsborrar, munnens båge), inte på ögonmått. Frågan *"Vem är det?"* kommer när nosen ritas (Sanna, B 0:28).
+
+**Det felritade djuret syns mot väggen.** En vit ko försvann mot den vita väggen. Välj en bild med kontrast (B: en beige ko med stora svarta fläckar, `rekvisita/ko-abc`, gjord i Flow) och låt kritan rita det som känns igen efter konturen: fläckarna, mulen och ögonen (Sanna, B 1:11: *"consider the contrast"*). Har det inga lösa ben går det ut vaggande.
+
+**Kritan syns när Malin pratar med den.** När Malin ber kritan rita (*"Kritan! Kan du rita …"*, och igen i del 6) glider kritan in i bild till höger och väntar där. Den nickar efter *"Kan du det, kritan?"* och går därifrån direkt till sitt första streck (`KVISA`, `KNICK`, `KFRAM`; Sanna, B 0:49).
+
+**Storlekar mäts i stillbilder.** Stora kompisar (dinon, skala 0,5) mäts mot det de ska nå. Dörren ska vara ca 1,25 gånger så hög som dinon (D). Figurerna står med fötterna på y 940.
+
+**Vita kanter mäts innan bilden går in.** D:s dörr (13,5 px) och docka (9,7 px) var för tjocka mot regeln (3 px + 1 %), och de fick tunnare versioner (`-tunn`) bredvid originalen. Se skillen `vita-kanter`.
+
+**Något bakom något annat.** När ord 3 gömmer sig bakom ord 2 (dockan bakom dörren) ritas den vid kanten, så att en del är gömd. Kritan rör sig då en kort stund över dörren medan den ritar den gömda delen av konturen. Det är kvar att lösa om Sanna ser det.
+
+**Rendering.** `verktyg/render-delat.mjs` fungerar inte för alfabetsmapparna: den tar alfabetets egen `render.mjs`, som saknar `--snabb`. Kör `node avsnitt/020-grisen-badar/scener/render.mjs <mapp> --snabb` och flytta den gamla filmen till `aldre/` först. Stillbilder: samma kommando med tiderna i stället för `--snabb` (`… <mapp> 4 27 51`).
+
+**Ljud.** Kompisar utan eget läte i ljudbanken (elefanten, dinon) låter med björnens `brum-glad` tills vidare.
+
+**Flow.** Agent-knappen har bytt namn i Flow, så `mcp__flow__flow_generate` behövde rättas för att hitta den (C, 2026-11-21). Nano Banana kostar 0 krediter.
 
 ## Ny bokstav
 
 1. Fyll i meningen och välj handling ur tabellen.
-2. Kopiera förlagans mapp. Byt bokstavens drag och färg, `SAKER` (kompisen, ord 2, ord 3, den som ritas fel, den udda i leken) och replikerna i `TAL`. Gör en kontur per bild med `kontur-bild.py`, och mät ögats plats i bilden.
+2. Kopiera `abc-b-recept-3/`. Byt bokstavens drag och färg, `SAKER` (kompisen, ord 2, ord 3, den som ritas fel, den udda i leken) och replikerna i `TAL`. Gör en kontur per bild med `kontur-bild.py`, och mät ögats plats i bilden.
 3. Skriv delarna 3–6 med `kanner`, `narbild`, `gissning` och `flytta`. Delarna 1, 2, 7 och 8 är som de är.
-4. Stillbilder: viljan, det felritade, varje ord bredvid kompisen, saken som går dit den behövs, klossarna som poppar, muren, discot. Leta efter saker som täcker varandra och figurer som inte står på golvet.
+4. Stillbilder: introts kloss, kompisens skiss med ansiktet, kritan som väntar i bild, viljan, det felritade, varje ord bredvid kompisen, saken som går dit den behövs, klossarna som poppar, muren, discot. Leta efter saker som täcker varandra och figurer som inte står på golvet.
 5. Malins tagning (en tagning, alla rader; dela med `verktyg/dela-tagning.py` och läs utskriften: korta ord som *"Ekorre!"* och *"Det är ju E!"* hamnar lätt i grannens fil och får klippas om för hand). Sedan förhandsvisning med `--snabb`.
 
 ## Öppet
 
 - Tredje rundan (Sanna 2026-11-18, *"lite svårare"*) och andra rundan är borta ur den långa filmen. De kan bli Shorts, ca 25 s var.
-- Elefanten låter fortfarande som björnen (`brum-glad`). Sök ett mjukt trumpetande på Openverse.
+- Elefanten och dinon låter fortfarande som björnen (`brum-glad`). Sök egna läten på Openverse.
 - Hunden i leken är kvar i den gamla, ritade stilen. Den bör få en ny bild som katten och ekorren.
-- Flow-verktyget (`mcp__flow__flow_generate`) fastnade 2026-11-20 på en knapp det inte hittade. Bilderna gjordes för hand i Flow i webbläsaren, med projektets egna bilder som referenser.
+- Flow-verktyget fastnade 2026-11-20 på en knapp det inte hittade. Det är rättat (C, 2026-11-21), men kolla först att knappen finns om Flow ändras igen.
