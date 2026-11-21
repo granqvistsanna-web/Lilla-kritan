@@ -2,7 +2,7 @@
 
 Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur `../abc-b-recept-3/` (så att B:s rättelser från feedbacken 21/11 följer med: större klossen i introt, ansiktsdetaljer i kompisens skiss, kritan i bild med `KVISA`, `KNICK`, `KFRAM`). Den gamla C-filmen (recept 1) står kvar orörd i `../abc-c/` tills den här är godkänd.
 
-**Läge (2026-11-21):** clownen är vald (Sanna: tagning C1, `karaktarer/clownen-kalle.md`) och riggad i v2. Sanna godkände replikerna (61 rader, `malin-c-recept-3.txt`). Scenen `index.html` är byggd och `abc-c-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **datorrösten** (`platshallare/`, `say -v Alva`). Ingen tagning i ElevenLabs än. Feedbacksidan: `ABC-c3`.
+**Läge (2026-11-21):** clownen är vald (Sanna: tagning C1, `karaktarer/clownen-kalle.md`) och riggad i v2. Sanna godkände replikerna (61 rader, `malin-c-recept-3.txt`) och krediterna. `abc-c-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **Malins tagning 2** (ElevenLabs, Malin – Professional Swedish Narration, Eleven v4, stability 0,5, similarity 0,75, samma som B och D; `produktion/ljud-original/roster/abc-c-recept-3/tagning-2.mp3`), delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-c-recept-3/`. Fem rader är ur tagning 1 (samma körning), där de lät tydligare: *"Titta, kritan ritar en bokstav."*, *"Cykel!"*, *"C, c, cykel!"* (sades två gånger i tagning 2), *"Ett hjul till!"*, *"Cykeln rullar!"*. Alla 61 rader kontrollerade med whisper. *"Clown!"* uttalas *klaun* i tagning 2. Datorrösten ligger kvar i `platshallare/`, platshållarfilmen i `aldre/`. Feedbacksidan: `ABC-c3`.
 
 **Meningen:** Clownen vill cykla men har inget att åka på. Malin ber kritan rita något att åka på, och det måste börja på C. Kritan ritar fel (bollen, hej då!). Kritan ritar cykeln (ord 2), men cykeln har bara ett hjul. Kritan ritar något runt: en cirkel (ord 3), som rullar dit och blir hjulet. Cykeln rullar och clownen hoppar med. Den udda i leken är hunden, som i E och B.
 
@@ -77,7 +77,6 @@ Den lilla viljan i del 6 är att cykeln saknar ett hjul: *"Vad fattas?"* (barnen
 
 ## Öppet
 
-- **Malins tagning:** när Sanna säger ja till krediterna, dela tagningen med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-c-recept-3/` och byt `ROST` i `index.html`.
 - **Uttalet** (se ovan): behåll *"C, c, clown!"* eller byt till *"En clown!"*.
 - **Cirkeln som hjul:** ringbilden har ett vitt mittfält, så framhjulet blir en grön ring med vit mitt (bakhjulet har ekrar). Säg till om hjulet ska vara genomskinligt i mitten.
 - **Cirkeln i leken:** när klossarna poppar fram hoppar cirkeln ur cykelns hjul till sin kloss, och cykeln behåller sitt gröna hjul (två cirklar en stund).
