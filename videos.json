@@ -1542,12 +1542,12 @@
   "name": "Kritans ABC C, recept 3 (Malins tagning)"
  },
  "049": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/049-1121-2155.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/049-1121-2225.mp4",
   "duration": 276.5,
-  "rendered": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))",
+  "rendered": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))",
   "file": "avsnitt/049-kaninen-gar-till-tandlakaren/scener/mottagningen/mottagningen.mp4",
   "status": "granska",
-  "name": "Förhandsvisning 3 (QA)"
+  "name": "Förhandsvisning 4"
  },
  "J22": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1121-2213.mp4",
