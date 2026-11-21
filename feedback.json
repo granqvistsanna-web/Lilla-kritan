@@ -7506,8 +7506,9 @@
   "sec": 165,
   "tags": [],
   "note": "improve tandborste in pocket. improve confused look. have tandborste in pocket there for the start",
-  "fixed": false,
+  "fixed": true,
   "at": 1795292005086,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292709266
  }
 }
