@@ -1,0 +1,50 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-hm-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-tandborste  [delighted] En tandborste!
+04-hej-kaninen-hej-hej  [happy] Hej, kaninen! Hej, hej!
+05-titta-dar-ar-tandlakaren  [cheerfully] Titta, där är tandläkaren. Hej, tandläkaren!
+06-idag-ar-kaninen-hos  [warmly] Idag är kaninen hos tandläkaren. Tandläkaren tittar på tänderna.
+07-oj-det-ar-en  [softly] Oj. Det är en stor stol.
+08-kaninen-ar-visst-lite  [softly] Kaninen är visst lite osäker.
+09-hm-vad-gor-vi  [curious] Hm … vad gör vi nu?
+10-titta-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+11-en-elefant-varsagod-kaninen  [happy] En elefant! Varsågod, kaninen.
+12-tack-kritan  [happy] Tack, kritan!
+13-elefanten-ar-med-da  [warmly] Elefanten är med. Då går det bra.
+14-upp-i-stolen-hopp  [cheerfully] Upp i stolen! Hopp … och hopp!
+15-stolen-aker-upp-upp  [playfully] Stolen åker upp … upp … upp! Stopp!
+16-oj-vad-hogt  [delighted] Oj, vad högt!
+17-titta-en-lampa-klick  [curious] Titta, en lampa. Klick … ljus!
+18-forst-elefanten-klick-ljus  [happy] Först elefanten. Klick … ljus!
+19-nu-kaninen-klick-ljus  [giggles] Nu kaninen. Klick … ljus! Hi hi, det blinkar.
+20-en-liten-spegel-med  [delighted] En liten spegel! Med den tittar tandläkaren på tänderna.
+21-forst-elefanten-gapa-oj  [chuckles] Först elefanten. Gapa … oj! Elefanten har en snabel!
+22-kan-du-ocksa-gapa  [cheerfully] Kan du också gapa?
+23-aaa  [playfully] Aaa!
+24-nu-kaninen-gapa-aaa  [happy] Nu kaninen. Gapa … aaa! En, två, tre …
+25-vilka-stora-tander-fina  [delighted] Vilka stora tänder! Fina tänder!
+26-kan-du-visa-dina  [warmly] Kan du visa dina tänder?
+27-dar  [excited] Där!
+28-nu-ska-tandlakaren-borsta  [surprised] Nu ska tandläkaren borsta lite. Men … var är tandborsten?
+29-tandlakaren-hittar-inte-tandborsten  [curious] Tandläkaren hittar inte tandborsten.
+30-kan-du-hjalpa-tandlakaren  [warmly] Kan du hjälpa tandläkaren? Kan du se var tandborsten är?
+31-ja-dar-i-fickan  [excited] Ja, där! I fickan!
+32-forst-elefanten-borsta-borsta  [happy] Först elefanten. Borsta, borsta …
+33-nu-kaninen-borsta-borsta  [happy] Nu kaninen. Borsta, borsta … blankt!
+34-tandlakaren-undrar-ater-kaninen  [curious] Tandläkaren undrar … äter kaninen godis?
+35-bara-ibland-det-ar  [warmly] Bara ibland. Det är bra!
+36-och-borstar-kaninen-tanderna  [curious] Och borstar kaninen tänderna?
+37-ja-varje-morgon-och  [happy] Ja! Varje morgon och kväll. Bra!
+38-borstar-du-ocksa-tanderna  [warmly] Borstar du också tänderna?
+39-bra  [happy] Bra!
+40-stolen-aker-ner-hopp  [playfully] Stolen åker ner … Hopp!
+41-titta-kritan-ritar-igen  [excited] Titta! Kritan ritar igen.
+42-en-glad-tand-ett  [delighted] En glad tand! Ett klistermärke!
+43-till-kaninen  [happy] Till kaninen.
+44-och-en-till-elefanten  [giggles] Och en till elefanten!
+45-bra-kaninen-nu-ar  [happy] Bra, kaninen! Nu är det klart.
+46-ska-vi-saga-tack  [warmly] Ska vi säga tack till tandläkaren?
+47-tack-tandlakaren  [happy] Tack, tandläkaren!
+48-hej-da-tandlakaren  [happy] Hej då, tandläkaren!
+49-hej-da-kaninen-hej  [happy] Hej då, kaninen! Hej då, elefanten!
+50-hej-da-vi-ses  [warmly] Hej då! Vi ses snart! [giggles]

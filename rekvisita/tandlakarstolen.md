@@ -1,0 +1,13 @@
+# Tandläkarstolen
+
+Tandläkarens stol i 049 *Kaninen går till tandläkaren* (Besöket, `format/besoket.md`). Står i mottagningens tomma rum (`assets/bakgrunder/mottagningen/mottagningen-tom.png`) i stället för britsen. Sedd rakt från sidan, vänd åt höger mot tandläkaren: en mjuk korallröd dyna i ett stycke (nackstöd, ryggstöd, säte, benstöd med fotstöd) i samma färg som britsen, på en tjock vit pelare med en låg rund fot, och en tunn vit arm med en liten rund lampa ovanför huvudändan. Inga verktyg, ingen borr, inga slangar.
+
+**Rörelse:** stolen åker upp och ner lugnt (60 px på 2 s). Dynan, armen och lampan följer med; pelaren förlängs bakom dynan och foten står kvar på golvet. Lampans ljus ritas i kod.
+
+**Bild (Google Flow, Nano Banana 2.1, 0 krediter, 2026-11-21, tagning 2 av 4, vald av Sanna):** `assets/rekvisita/tandlakarstolen/original/tandlakarstolen-2.jpeg`, utklippt med `verktyg/egen_kant.py` till `cut/tandlakarstolen.png` (797 × 849, egen vit kant). Stilreferenser: `assets/bakgrunder/mottagningen/cut/brits.png` och `assets/rekvisita/gosedjur-leopard/cut/gosedjur-leopard.png`. Jämförelse: `original/jamforelse.jpg`. Mät sätet, pelaren och lampan när scenen byggs.
+
+Används i: 049 Kaninen går till tandläkaren.
+
+```prompt
+Images 1 and 2 are STYLE references only: copy their drawing technique exactly (clean, smooth, even colour fill with only a very subtle fine crayon grain, soft premium toddler picture-book look, no dark outline, clean white sticker border), and copy the warm coral-red cushion colour of the bench in image 1, not their subjects. Draw ONE friendly, simple toddler-cartoon dentist's chair seen exactly from the side, facing right, completely flat, no perspective: a soft rounded seat cushion and a tall rounded backrest leaning slightly back on the left, a short rounded headrest on top, a gently sloping leg rest going down to the right ending in a small flat footrest, all as one smooth coral-red cushion (#E8604C) with soft rounded shapes. The cushion sits on one short, thick, straight, round white column (#F4F4F2) standing on a wide, low, flat, rounded white base plate on the floor, so it is clear the chair can go up and down on the column. A thin white arm on the left holds one small round white dentist's lamp above the head end. No tools, no tray, no drill, no hoses, no water, no sink, no screens, nothing sharp. Cute, calm and friendly, not clinical. No shading, no 3D, no shine, no outline. A thick, clean, even white sticker border all around. Centered with space around, plain pure solid white background, no shadow, no ground, no wall, no text.
+```

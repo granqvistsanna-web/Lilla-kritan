@@ -45,6 +45,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Vattenrutschbanan | [rutschkana.md](rutschkana.md) | 007 |
 | Gosekaninen (ersatt av nallen) | [gosekanin.md](gosekanin.md) | 007 |
 | Nallen | [nalle.md](nalle.md) | 007 |
+| Gosedjurselefanten | [gosedjur-elefant.md](gosedjur-elefant.md) | 049 |
 | Gosedjursleoparden | [gosedjur-leopard.md](gosedjur-leopard.md) | 046 |
 | Kanelbullen | [kanelbulle.md](kanelbulle.md) | 007 |
 | Kotten | [kotte.md](kotte.md) | 007 |
@@ -133,6 +134,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Mössan | [mossan.md](mossan.md) | 024 |
 | Tygpåsen | [tygpase.md](tygpase.md) | 024 |
 | Väggklockan | [klocka.md](klocka.md) | 024 |
+| Tandläkarstolen | [tandlakarstolen.md](tandlakarstolen.md) | 049 |
 | Tandborsten | [tandborsten.md](tandborsten.md) | 025 |
 | Muggen | [muggen.md](muggen.md) | 025 |
 | Stegen | [stege.md](stege.md) | 021 |

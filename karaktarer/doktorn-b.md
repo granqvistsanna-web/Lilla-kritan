@@ -1,6 +1,6 @@
 # Doktorn B
 
-**Art:** doktor (människa) · **Favoritsak:** – · **Status:** 🔧 Rigg klar 2026-11-20, inte använd än (A valdes för 046; B kan bli sköterskan på BVC eller tandläkaren)
+**Art:** doktor (människa) · **Favoritsak:** – · **Status:** 🔧 Rigg klar 2026-11-20, **tandläkaren i 049** (Sanna 2026-11-21)
 
 > **Besöket** ([`format/besoket.md`](../format/besoket.md)): den tysta doktorn, först i 046 *Kaninen går till doktorn*. Mer mänskliga proportioner än Mor (Sanna 2026-11-20): ett runt huvud på kort hals, kropp i rock, långa raka armar och ben. Doktorn A och B är två förslag; den som inte väljs kan bli sköterskan på BVC eller tandläkaren.
 >
@@ -11,6 +11,10 @@
 > **Ansikte i kod** (Mors kod, skalad 0,66 runt huvudet): ögon (436, 399) och (588, 399), kinder (410, 446) och (618, 446), leendet y 474.
 >
 > **Uttryck, poser och testfilm:** [`premium/uttryck.html`](../assets/karaktarer/doktorn-b/premium/uttryck.html), samma API som Mor (`ansikte`, `pose`, `rorelse`, `?ark=poser`, `?film=1`). Riktningsposerna vänder bara huvudet, armarna stannar på var sin sida. Klappen möts lågt på rocken. **Sitta, sova och ligga ser konstiga ut med de långa benen**, men doktorn står alltid still (receptet).
+
+> **Armbågsarmar i kod och vit kant (som doktor A, 2026-11-21):** armarna ritas av `armRita()` i `uttryck.html` (överärm, underarm, manschettstreck och en rund hand) i rockens egen krita, `cut/doktorn-b-rock-tile.png` (128 × 128, provtagen ur den ljusblå rocken), med grå kant. Axellederna är runda och sitter strax innanför rockens kant, **(390, 471) och (635, 473)**, så ingen rot syns i någon vinkel. `armar` lyfter armen och armbågen böjs uppåt (vinka, hurra), `armbage` böjer underarmen extra (håller fram, når, pekar), `fram` lägger armen framför rocken (magen, klappen). Klappen är egen (`ROR.klappa`). Urklippsarmarna `cut/doktorn-b-arm-*.png` används inte längre (vridpunkterna i riggfilen gäller bara dem). **EN jämn vit kant** runt hela figuren: filtret `#dkant` på `.figuren`. Delarna är kantlösa kopior `cut/doktorn-b-{body,head,leg-l,leg-r}-nk.png` (inbakad vit kant, blekt bryn och lösa kritsmulor bortplockade; kroppen gjord av den nya kroppen utan stetoskop). Stetoskop- och lampkoden från doktor A är inte med. Kontroll: `premium/doktorn-b-poser.png`.
+
+> **Utan stetoskop och penna (049, Sanna 2026-11-21):** Flow-redigering av `-utan-lemmar.jpg`, tagning 1 av 2 (`original/doktorn-b-utan-stetoskop-1.jpeg`, jämförelse `original/utan-stetoskop-jamforelse.jpg`), pixeljusterad. Bara stetoskopets och pennans pixlar bytta i `cut/doktorn-b-body.png` (det gamla i `-body-med-stetoskop.png`). Bröstfickan är tom, ca x 558–628, y 490–550 i 1024-riggen: där sticker tandborsten upp (ritas i kod) i 049. Tandläkarens saker (spegeln, lampan, tandborsten) ritas i kod som doktorns i 046.
 
 ## Utseende
 - Form: människa, ca 4,5 huvuden hög, runt huvud på kort hals.
