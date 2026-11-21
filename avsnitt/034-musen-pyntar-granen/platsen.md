@@ -1,5 +1,7 @@
 # 034 – platsen: vardagsrummet (jul)
 
+> **Ändrat 2026-11-21:** avsnittet utspelar sig nu i brasrummet utan krans och strumpor (`assets/bakgrunder/brasrummet-rent/`), med brasan i kod. Inga gardiner, ingen matta, ingen fåtölj, inget fönster. Se `bakgrunder/vardagsrummet.md`, sista avsnittet. Texten nedan beskriver det gamla rummet.
+
 Sanna 2026-11-13: *"ej säng i rummet, mysig snö som faller utanför fönster, mysig inredning"*. Därför blir det inte sovrummet utan en **ny platta, vardagsrummet**, som kan återanvändas i fler bilderböcker och nästa jul. När den är vald skrivs den in som `bakgrunder/vardagsrummet.md` och läggs i `bakgrunder/README.md`.
 
 ## Uppställningen

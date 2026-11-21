@@ -29,3 +29,16 @@ Edit Image 1. Keep this living room EXACTLY the same in layout: same flat straig
 ## Vardagsrummet v4: teal (julkalendern)
 
 `assets/bakgrunder/vardagsrummet/vardagsrummet-v4.jpeg` är v3 med teal vägg (#1F9E96). Den är omfärgad i kod med en färgmatris som flyttar den blå väggen men behåller vitt, trä, rött, grönt och girlangens glöd, så fönstret, golvet och `fonster-mask-v3.png` passar som förut. Sanna 2026-11-16: starka färger i rummen, som i 022, 024 och 029. Används av julkalendern (`djur.js`).
+
+
+## Brasrummet utan pynt (034 sedan 2026-11-21)
+
+034 Musen pyntar granen använder inte längre vardagsrummet. Sanna 2026-11-21: *"no curtain"*, *"no rug"*, *"no chair"*, *"consider generate new rum, like brasrummet"*, *"remove krans and hang over brasa"*, sedan röd 1 av tre förslag.
+
+`assets/bakgrunder/brasrummet-rent/brasrummet-rent.jpeg` (2752 × 1536): brasrummet-v1 utan kransen och utan strumporna över spisen. Röd vägg, vit spis med tom mörk öppning, vitt golv. Golvet görs varmt i kod (multiply `#EBC79A`, 0,3, och tre svaga plankstreck), brasan och skenet ritas i kod som i `produktion/rum/brasrummet-tom`. Mått i scenen (1920 × 1080): golvlinjen y 816, spisens öppning x 181–466, y 545–773, elden står på (323, 766). Tagningarna (också två blå med trägolv) ligger i `original/` med `jamforelse.jpg`.
+
+Google Flow, Nano Banana, image2image (Edit Image 1 = brasrummet-v1), 16:9, uppskalad 2K, 0 krediter:
+
+```
+Edit image 1 and keep it identical, pixel for pixel: the same flat straight-on view, the same wall colour and grainy wax-crayon texture with the same light scratchy streaks, the same cream fireplace with its mantel shelf in exactly the same place and size, the same dark fireplace opening, the same floor and the same floor line at the same height, the same soft toddler picture-book crayon style. ONLY remove two things: 1) remove the green Christmas wreath with the bow on the wall completely and fill that area with the same plain wall colour and texture as around it; 2) remove the two green stockings hanging from the fireplace mantel completely and fill those areas with the same cream mantel and dark fireplace opening as around them, so the fireplace looks complete and plain. Nothing hangs on the wall or on the fireplace. No new objects, no text, no letters, no characters, no shadows.
+```
