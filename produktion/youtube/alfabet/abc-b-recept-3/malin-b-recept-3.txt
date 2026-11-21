@@ -1,0 +1,61 @@
+p-hej-hej  [warm] Hej hej!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-b  [excited] Det är ju B!
+p-bokstaven-b  [warm] Bokstaven B.
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven B.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-bjorn  [excited] Björn!
+p-b-b-bjorn  [playful] B, b, björn!
+p-bjorn-b  [excited] Ja! Björn börjar på bokstaven B.
+n-hej-bjornen  [warm] Hej, björnen!
+n-vill-leka  [warm] Björnen vill leka.
+n-inget-att-leka  [warm] Men björnen har inget att leka med.
+n-rita-nagot  [excited] Kritan! Kan du rita något att leka med?
+n-vad-sa-du  [curious] Vad sa du, björnen?
+n-maste-b  [curious] Måste det börja på bokstaven B?
+n-kan-du-kritan  [playful] Kan du det, kritan?
+n-nu-ritar  [warm] Nu ritar kritan.
+p-ko  [curious] Ko?
+p-en-ko  [surprised] En ko!
+n-busiga  [laughs] Ha ha! Busiga kritan!
+p-ko-inte  [playful] Ko börjar inte på B.
+p-hej-da-kon  [warm] Hej då, kon!
+p-engang  [excited] En gång till!
+n-nagot-pa-b  [playful] Något att leka med på bokstaven B, tack!
+p-vad-blir  [curious] Vad blir det?
+p-boll  [excited] Boll!
+p-b-b-boll  [playful] B, b, boll!
+p-ocksa-boll  [warm] Boll börjar också på B!
+n-hej-bollen  [warm] Hej, bollen!
+n-vill-du-leka  [curious] Vill du leka med björnen?
+n-bollen-studsar  [playful] Bollen studsar!
+n-bjornen-hoppar  [excited] Björnen hoppar!
+n-hopp-hopp  [excited] Hopp, hopp, hopp!
+n-vill-mer  [warm] Björnen vill leka mer.
+n-rita-flyger  [playful] Kritan, rita något som flyger!
+p-ballong  [excited] Ballong!
+p-en-ballong  [excited] En ballong!
+p-ocksa-ballong  [warm] Ballong börjar också på B!
+n-ballongen-flyger  [excited] Titta! Ballongen flyger!
+n-upp-upp  [playful] Upp, upp, upp!
+n-ner-igen  [warm] Och ner igen. Vad roligt!
+p-nuleker  [excited] Nu leker vi!
+n-titta-noga  [curious] Titta noga. Var är björnen?
+n-dar-ar-den  [excited] Där är den!
+p-entill  [curious] Titta! En till.
+p-hund  [curious] Hund.
+p-vilken  [curious] Vilken ska bort?
+p-inte-b  [curious] Vilken börjar inte på B?
+p-hunden  [excited] Hunden!
+p-hund-inte  [playful] Hund börjar inte på B.
+n-hej-da-hunden  [warm] Hej då, hunden!
+n-tre-pa-b  [warm] Björn, boll, ballong.
+p-alla-b  [warm] Alla börjar på bokstaven B.
+p-nu-dansar  [excited] Nu dansar vi!
+n-bjornen-dansar  [excited] Björnen dansar!
+n-bollen-snurrar  [playful] Bollen snurrar!
+n-ballongen-snurrar  [playful] Ballongen snurrar!
+n-allt-for-idag  [warm] Det var allt för i dag.
+n-vad-kul  [warm] Vad kul det var att leka!
+p-hej-da-slut  [warm] Hej då!
