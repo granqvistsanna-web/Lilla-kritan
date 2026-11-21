@@ -7180,9 +7180,10 @@
   "sec": 71,
   "tags": [],
   "note": "better ko drawing and image, create new one a bit more polished, aslo consider the contrast as cow is white and bg is white",
-  "fixed": false,
+  "fixed": true,
   "at": 1795259988753,
-  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)",
+  "fixedAt": 1795282396781
  },
  "gadij1ix46mwqch9xk": {
   "ep": "J19",
