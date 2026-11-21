@@ -2,7 +2,7 @@
 
 Gjord 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur `../abc-b-recept-3/` (B:s rättelser från feedbacken 21/11 följer med: stor kloss mitt i introt, skissen med ansikte, kritan som syns och nickar). Den gamla D-filmen (recept 1) står kvar orörd i `../abc-d/` tills den här är godkänd.
 
-**Läge (2026-11-21):** Sanna godkände replikerna (61 rader, `malin-d-recept-3.txt`). Scenen `index.html` är byggd och `abc-d-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **datorrösten** (Alva, `platshallare/`, gjord med `say`). Ingen tagning med Malin än: fråga Sanna före krediterna, dela sedan med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-d-recept-3/` och byt `ROST` i `index.html`. Feedbacksidan: `ABC-d3`.
+**Läge (2026-11-21):** Sanna godkände replikerna (61 rader, `malin-d-recept-3.txt`) och tagningen. Scenen `index.html` är byggd och `abc-d-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **Malins tagning 2** (ElevenLabs, Malin – Professional Swedish Narration, Eleven v4, stability 0,5, similarity 0,75, samma inställningar som B; `produktion/ljud-original/roster/abc-d-recept-3/tagning-2.mp3`), delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-d-recept-3/`. *"Gris?"* och *"Docka!"* är ur tagning 1 (samma körning, `tagning-1.mp3`), där de lät tydligare. Alla 61 rader kontrollerade med whisper. Datorrösten ligger kvar i `platshallare/`, platshållarfilmen i `aldre/`. Feedbacksidan: `ABC-d3`.
 
 - Konturerna (nya, spårade med `kontur-bild.py`): `karaktarer/dinon-disa/premium/disa-faceless-kontur.json`, `rekvisita/gris-rosa/cut/gris-rosa-hel-kontur.json`, `rekvisita/dorr-abc/cut/dorr-abc-kontur.json`, `rekvisita/docka/cut/docka-kontur.json`. Skissernas detaljer (dinons mage, ögon, kinder och leende; grisens tryne och öga; dörrens knopp; dockans ögon och mun) är mätta i bilderna.
 - Storlekarna: `RIGG_SKALA` 0,62 och `KOMPIS` 0,95 ger dinon ca 450 px; dörren (`DORR_RIT`) är ca 570 px hög med steget på golvet, x ca 1060–1425. Dinon knackar från `DINO_DORR` (x 870). Dockan tittar fram vid `DOCKA_TITT` (x 1480, en tredjedel bakom dörren) och ställer sig vid `DOCKA_UT` (x 1640).
@@ -77,6 +77,6 @@ Leken i del 5 är knackningen (receptets handling *Knack knack*), och dörren sv
 
 ## Öppet
 
-- Malins tagning (61 rader) saknas: scenen läser datorrösten. Fråga Sanna före krediterna.
+- *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.
 - Dörren vickar 7° på varje knack (`vicka`, samma som sakerna). Kan bli mindre om det ser för vingligt ut.
 - Kritan ritar dockans kontur även bakom dörren (linjen syns inte där, men kritan gör det en kort stund).

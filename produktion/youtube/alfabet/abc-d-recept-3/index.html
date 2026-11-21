@@ -24,8 +24,9 @@ const inUt = k => k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
 const bage = k => k <= 0 || k >= 1 ? 0 : Math.sin(Math.PI * k);
 const ell = (cx, cy, rx, ry) => `M${cx} ${cy - ry} C${cx + rx * .55} ${cy - ry} ${cx + rx} ${cy - ry * .55} ${cx + rx} ${cy} C${cx + rx} ${cy + ry * .55} ${cx + rx * .55} ${cy + ry} ${cx} ${cy + ry} C${cx - rx * .55} ${cy + ry} ${cx - rx} ${cy + ry * .55} ${cx - rx} ${cy} C${cx - rx} ${cy - ry * .55} ${cx - rx * .55} ${cy - ry} ${cx + 4} ${cy - ry - 2}`;
 const render = navigator.webdriver;
-// Tills Malins tagning finns: datorrösten (Alva) i platshallare/. Byt sedan till assets/ljud/roster/alfabet/abc-d-recept-3 (verktyg/dela-tagning.py).
-const ROST = 'produktion/youtube/alfabet/abc-d-recept-3/platshallare';
+// Malins tagning 2 (ElevenLabs, Eleven v4, stability 0,5, 2026-11-21, produktion/ljud-original/roster/abc-d-recept-3/tagning-2.mp3), delad med
+// verktyg/dela-tagning.py; "Gris?" och "Docka!" ur tagning 1 (samma körning). Datorrösten ligger kvar i platshallare/.
+const ROST = 'assets/ljud/roster/alfabet/abc-d-recept-3';
 const fil = n => `${ROST}/${n}.m4a`;
 const effekt = n => `assets/ljud/effekter/${n}/${n}-1.m4a`;
 const langd = async (f, reserv) => {   // m4a-längden ur mvhd, som i gissa.js
