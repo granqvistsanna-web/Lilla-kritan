@@ -56,7 +56,8 @@ export const RADER = [
     bild: 'Bussen glider in och saktar in mjukt, stannar med dörren vid katten. Malin när den står still', ljudtext: 'broms (mjukt)', ansikte: 'jätteglad' },
   { id: '7', d: 0.3 + L(10) + 1.0, plats: 'Närbild på dörren', malin: [[10, 0.3]], ljud: [[DORR, 1.3]],
     bild: 'Bussdörren glider upp på *"pschhh"*', ljudtext: '`pschhh`', ansikte: '–' },
-  { id: '8', d: 0.3 + L(11) + 1.8, plats: 'Hållplatsen, helbild', malin: [[11, 0.3]], ljud: [[HOPP, 0.3 + L(11) - 0.4]],
+  // 8 slutar strax efter landningen på trappsteget (Sanna 2026-11-21 "0:59 end scene here"), inte när dörren stängts
+  { id: '8', d: 0.3 + L(11) - 0.1, plats: 'Hållplatsen, helbild', malin: [[11, 0.3]], ljud: [[HOPP, 0.3 + L(11) - 0.4]],
     bild: 'Vantehanden kommer in och håller kattens tass. Katten skuttar upp på trappsteget på *"hopp!"*', ljudtext: '`hopp-mjuk`', ansikte: 'glad' },
 
   // --- I bussen ---

@@ -1,6 +1,6 @@
 # Julkalendern – parkerade luckor
 
-**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 19–20 och 22–24 står öppna (tomma) tills vidare.
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 20 och 22–24 står öppna (tomma) tills vidare.
 Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
 | Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
@@ -23,7 +23,8 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 16 | J16 | `16-grisen-matar-faglarna` | 043 Grisen matar fåglarna, bilderbok, hel video (scenens snogarden.mp4, ingen `fran`), granska. Feedback 20/11 runda 3 fixad: öga på fågelteckningen, kritan glider utan hopp, närbild på holkens tak (röda, gula) och lugnare tempo, låg julmusik (dagbädd 2, 0,10), kalenderramen kvar, nya gulliga grisljud av Sanna (`noff-ooo`, `noff-aah`, `noff-kolla`). Feedback 20/11 runda 4 fixad: fåglarnas ögon i höjd med näbben, lugnare vid holken, bara "Varsågod!", grisljuden kortas före Malin, närbilder vid noffet och fågeln på luvan, ny hel Malin-tagning (malin-tagning-3: kärven "hela vintern", fågeln "i fågelholken"). Feedback 21/11 fixad: snöknarret vid 0:31 bort (rad 1 får Sannas eget `noff-aah` i stället för noff hej), svagt jämnt snöfall i hela snögården (0,3, mer där berättelsen snöar). Förhandsvisning (--snabb) 272,8 s, −16,2 LUFS, uppladdad som J16. Slutrendering kvar. Sanna 2026-11-20: "both should be in julkal" |
 | 17 | J17 | `17-hunden-gar-pa-pottan` (ny) | 042 Hunden går på pottan, bilderbok, hel video (scenens badrummet.mp4, ingen `fran`). Förhandsvisning (--snabb) 20/11: 247,9 s, −16,1 LUFS, uppladdad som J17, granska. Replik 07 ny (under pallen). Sanna 2026-11-20: "julkal intro and outro" |
 | 18 | J18 | `14-bruna-sangen` | 007 Bruna sången, hel video (`fran: 8.8`), nya kalenderintrot, 235,7 s, −16,1 LUFS. Sanna 2026-11-19 |
-| 19–20 | – | – | öppna |
+| 19 | J19 | `19-katten-aker-buss` (ny) | 047 Katten åker buss, Besöket, hel video (scenens resan.mp4, ingen `fran`). Feedback 21/11 kväll fixad (11 punkter): gladare intro *"Titta! Kritan ritar något."* (036:s tagning), kritljud hela ritningen, större utspridda gnistor, fågeln flyger in vid 0:20, bussen hörs från *"Hör du?"*, påstigningen slutar 0:59, tassen i kod, kaninen åker iväg bakom snökanten, mindre fågel på hatten, knappen lyser och pulserar på *"Är det dags nu?"*. Förhandsvisning (--snabb) 308,4 s, −14,1 LUFS, uppladdad som J19, granska. Slutrendering och luckan (hel-video.sh) kvar Sanna 2026-11-21: "add to julkal" |
+| 20 | – | – | öppen |
 | 21 | J21 | `18-rosa-sangen` | 019 Rosa sången, hel video (`fran: 11.1`), nya kalenderintrot, 219,4 s, −16,1 LUFS. Sanna 2026-11-19 |
 | 22–24 | – | – | öppna |
 

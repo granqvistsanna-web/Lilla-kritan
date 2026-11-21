@@ -1,4 +1,4 @@
-  '01-kritan-ritar': 2.05,   // -3.0 dB
+  '01-titta-kritan-ritar': 2.48,   // -3.0 dB, 036:s [excited] 'Titta! Kritan ritar något.' (Sanna 2026-11-21 'more happy start')
   '02-hm-vad-blir-det': 1.87,   // -3.0 dB
   '03-oj-en-buss': 1.65,   // -3.1 dB
   '04-hej-katten-hej-hej': 1.87,   // -3.0 dB
