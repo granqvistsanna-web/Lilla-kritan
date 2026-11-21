@@ -1,6 +1,6 @@
 # Julkalendern – parkerade luckor
 
-**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 19–20 och 22–24 står öppna (tomma) tills vidare.
+**Ny ordning (Sanna 2026-11-19):** bara nya avsnitt, de som är längst fram först. Lucka 20 och 22–24 står öppna (tomma) tills vidare.
 Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`) och id:t på feedbacksidan är det som gäller.
 
 | Lucka | Feedbacksidan | Mapp (`produktion/youtube/shorts/jul/`) | Läge |
@@ -15,7 +15,7 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 8 | J08 | `08-katten-snogubbe` (ny) | 044 Katten gör en snögubbe, bilderbok, hel video (scenens film, ingen `fran`), 275,1 s, −16,06 LUFS. **Godkänd av Sanna 2026-11-19** |
 | 9 | J09 | `09-kaninen-badar-varmt` (ny) | 041 Kaninen badar varmt, hel video (scenens badet.mp4, ingen `fran`), 236,6 s, −16,0 LUFS. **Godkänd av Sanna 2026-11-20** |
 | 10 | J10 | `10-tre-pussel-till` (ny) | Tre julpussel till: julgranen, snögubben, julklappen (`pussel-prov.py pussel-lucka-10`, samma upplägg som lucka 5). Sanna 2026-11-19: "ett till julpussel" |
-| 11 | J11 | `21-blinka-lilla-stjarna` | 016 Blinka lilla stjärna, hel video (`fran: 9.9, till: 157.0`), nya kalenderintrot, 161,0 s, −16,1 LUFS. **Grovklippet** som platshållare: byt filen i index.html och kör hel-video.sh igen när 016 är färdigt. Sanna 2026-11-19 |
+| 11 | J11 | `11-kaninen-gar-till-doktorn` (ny) | 046 Kaninen går till doktorn, bilderbok (Besöket), hel video (scenens mottagningen.mp4, ingen `fran`). Slutrenderad 21/11 (1920×1080, 30 fps, 277,6 s). Doktorsbesöket är inte juligt och ligger därför tidigt, och Blinka lilla stjärna (juligare) flyttades till lucka 19. Sanna 2026-11-21: "lägg till i julkal tidigt och lägg en mer jultema lite senare" |
 | 12 | J12 | `12-tittut-grisen` (ny) | granska. Feedback 19/11 fixad: Malin 0,5 s efter rörelsen genom hela filmen (`voEfter`; förra förhandsvisningen hade dessutom bilden 4 s före rösten, 15 fps-felet i hel-video.sh), större gran med toppen tydligt utanför bild, inget vindljud. Hel video (`fran: 4.0, till: 169.3`), 179,2 s, −16,15 LUFS. Mitt i kalendern (Sanna 2026-11-18: "one early and one in middle") |
 | 13 | J13 | `13-grona-sangen` (ny) | 014 Gröna sången, hel video (`fran: 11.0`, utan logotypintrot). Sanna 2026-11-19. OBS: sången har *"Vad kan det vara?"* (ca 0:05 in i luckans film), den går inte att klippa bort |
 | 14 | J14 | `11-roda-sangen` | 013 Röda sången, hel video (`fran: 9.9`), nya kalenderintrot. Flyttad från lucka 8 (Sanna 2026-11-19: "Röda to lucka 14"). **Godkänd av Sanna 2026-11-19** |
@@ -23,7 +23,8 @@ Mapparna har kvar sina gamla nummer i namnet; numret i `index.html` (`lucka: N`)
 | 16 | J16 | `16-grisen-matar-faglarna` | 043 Grisen matar fåglarna, bilderbok, hel video (scenens snogarden.mp4, ingen `fran`), granska. Feedback 20/11 runda 3 fixad: öga på fågelteckningen, kritan glider utan hopp, närbild på holkens tak (röda, gula) och lugnare tempo, låg julmusik (dagbädd 2, 0,10), kalenderramen kvar, nya gulliga grisljud av Sanna (`noff-ooo`, `noff-aah`, `noff-kolla`). Feedback 20/11 runda 4 fixad: fåglarnas ögon i höjd med näbben, lugnare vid holken, bara "Varsågod!", grisljuden kortas före Malin, närbilder vid noffet och fågeln på luvan, ny hel Malin-tagning (malin-tagning-3: kärven "hela vintern", fågeln "i fågelholken"). Förhandsvisning (--snabb) 272,8 s, −16,2 LUFS, uppladdad som J16. Slutrendering kvar. Sanna 2026-11-20: "both should be in julkal" |
 | 17 | J17 | `17-hunden-gar-pa-pottan` (ny) | 042 Hunden går på pottan, bilderbok, hel video (scenens badrummet.mp4, ingen `fran`). Förhandsvisning (--snabb) 20/11: 247,9 s, −16,1 LUFS, uppladdad som J17, granska. Replik 07 ny (under pallen). Sanna 2026-11-20: "julkal intro and outro" |
 | 18 | J18 | `14-bruna-sangen` | 007 Bruna sången, hel video (`fran: 8.8`), nya kalenderintrot, 235,7 s, −16,1 LUFS. Sanna 2026-11-19 |
-| 19–20 | – | – | öppna |
+| 19 | J19 | `21-blinka-lilla-stjarna` | 016 Blinka lilla stjärna, hel video (`fran: 9.9, till: 157.0`), nya kalenderintrot. Flyttad från lucka 11 (Sanna 2026-11-21). **Grovklippet** som platshållare: byt filen i index.html och kör hel-video.sh igen när 016 är färdigt |
+| 20 | – | – | öppen |
 | 21 | J21 | `18-rosa-sangen` | 019 Rosa sången, hel video (`fran: 11.1`), nya kalenderintrot, 219,4 s, −16,1 LUFS. Sanna 2026-11-19 |
 | 22–24 | – | – | öppna |
 
