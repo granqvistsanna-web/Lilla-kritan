@@ -7092,9 +7092,10 @@
   "sec": 2,
   "tags": [],
   "note": "julkal intro and outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179367652,
-  "render": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)"
+  "render": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)",
+  "fixedAt": 1795282167527
  },
  "lhpji4yfejmwozgd17": {
   "ep": "J17",
@@ -7102,9 +7103,10 @@
   "sec": 8,
   "tags": [],
   "note": "make kritan rita potta in intro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795179383035,
-  "render": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)"
+  "render": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)",
+  "fixedAt": 1795282167527
  },
  "iontod5ec6mwp0yn2m": {
   "ep": "J16",
