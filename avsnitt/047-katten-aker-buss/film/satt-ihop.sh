@@ -14,7 +14,7 @@ ffmpeg -loglevel error -y -i scener/resan/resan-effekter.wav -af "aformat=sample
 M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i $T/mix.wav -filter_complex \
-  "[1:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,alimiter=limit=0.75:level=false,volume=-0.5dB,alimiter=limit=0.78:level=false[a]" \
+  "[1:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,volume=1dB,alimiter=limit=0.80:level=false,volume=-0.3dB,alimiter=limit=0.84:level=false[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k $UT
 rm -rf $T
 langd $UT

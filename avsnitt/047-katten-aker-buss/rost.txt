@@ -52,3 +52,4 @@
 50-dar-ar-farmor-hej  [excited] Där är farmor! Hej, farmor!
 51-en-stor-kram-katten  [warmly] En stor kram. Katten är framme!
 52-hej-da-katten-vi  [warmly] Hej då, katten! Vi ses snart! [giggles]
+41b-ar-det-dags-nu-inte-an  [curious] Är det dags nu? Inte än.

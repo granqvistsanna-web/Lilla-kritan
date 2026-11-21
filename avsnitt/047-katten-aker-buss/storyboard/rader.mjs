@@ -91,6 +91,9 @@ export const RADER = [
     bild: 'En liten blå fågel flyger in och landar på snögubbens hatt. Malin när den landat', ljudtext: 'pip, kvitter, fniss (3)', ansikte: 'bakifrån' },
   { id: '24', d: 0.5 + L(28) + 1.0, plats: 'Bild A', malin: [[28, 0.5]],
     bild: 'Landskapet börjar glida igen', ljudtext: 'brum', ansikte: 'bakifrån' },
+  // 25 (Sanna 2026-11-21 "add earlier dags att trycka på knappen nu? nej inte än"): katten tittar på knappen och vill trycka, inte än
+  { id: '25', d: 0.5 + L(RN('41b')) + 2.2, plats: 'I bussen, katten på sätet och knappen', malin: [[RN('41b'), 0.5]],
+    bild: 'Katten tittar på knappen och sträcker sig. Inte än: tassen ner, nickar', ljudtext: '–', ansikte: 'nyfiken → nickar' },
   { id: '26', d: 1.6 + L(30) + FRAGA - SVARREAK, plats: 'Bild A, stopp 2', malin: [[30, 1.6]], ljud: [[BROMS, 0.2], [BLINK, 1.6 + L(30)]],
     bild: 'Landskapet saktar in. En gul snöplog står utanför, lampan blinkar. Paus 4 s', ljudtext: 'broms, blinkers tick-tick', ansikte: 'bakifrån' },
   { id: '27', reak: 'nyfiken', d: 0.8 + L(31) + 1.4, plats: 'Bild A', malin: [[31, 0.8]], ljud: [[SKRAP, 0.3]],
@@ -102,8 +105,9 @@ export const RADER = [
     bild: 'Katten andas på det vita glaset och tittar på imman', ljudtext: '–', ansikte: 'nyfiken' },
   { id: '30', d: 0.3 + L(34) + 3.0 + L(35) + 1.2, plats: 'Bild A, imman', malin: [[34, 0.3], [35, 0.3 + L(34) + 3.0]], ljud: [[RITAR, 0.3 + L(34) + 0.5], [GLITTER, 0.3 + L(34) + 2.2]],
     bild: 'Kritan kommer in och ritar ett hjärta i imman. Gisspaus 3 s. Genom hjärtat syns det klart', ljudtext: 'kritan ritar, `glitter`', ansikte: 'bakifrån' },
-  { id: '31', d: 0.3 + L(36) + FRAGA, plats: 'Bild B', malin: [[36, 0.3]], ljud: [[M(5), 0.3 + L(36) + 0.2]],
-    bild: 'Katten tittar på hjärtat, stolt. Paus 4 s: barnet ritar med fingret', ljudtext: 'nyfiken (5)', ansikte: 'stolt' },
+  // 31 utan "Kan du också rita ett hjärta?" (Sanna 2026-11-21): bara hjärtat på glaset och den stolta katten
+  { id: '31', d: 4.2, plats: 'Bild B', ljud: [[M(5), 1.2]],
+    bild: 'Katten tittar på hjärtat, stolt', ljudtext: 'nyfiken (5)', ansikte: 'stolt' },
   { id: '32', d: 0.5 + L(37) + 1.2, plats: 'Bild A, genom hjärtat', malin: [[37, 0.5]],
     bild: 'Stan glider förbi genom hjärtat: hus och affärer med ljusslingor och stjärnor', ljudtext: 'brum', ansikte: 'bakifrån' },
   { id: '33', d: 1.6 + L(38) + FRAGA - SVARREAK, plats: 'Bild A, stopp 3', malin: [[38, 1.6]], ljud: [[BROMS, 0.2]],
@@ -116,8 +120,9 @@ export const RADER = [
     bild: 'Katten tittar på knappen och sedan upp mot tittaren, öronen högt', ljudtext: 'jippi (trill)', ansikte: 'nyfiken → jätteglad' },
   { id: '37', d: 0.6 + L(42) + 0.6, plats: 'Närbild på knappen', malin: [[42, 0.6]],
     bild: 'Den röda stoppknappen. Kattens tass kommer in', ljudtext: '–', ansikte: '–' },
-  { id: '38', d: 0.3 + L(43) + FRAGA + L(44) + 1.0, plats: 'Närbild på knappen', malin: [[43, 0.3], [44, 0.3 + L(43) + FRAGA + 0.15]], ljud: [[PLING, 0.3 + L(43) + FRAGA - 0.3]],
-    bild: 'Paus 4 s, sedan trycker tassen, knappen lyser, *"Pling!"*', ljudtext: '`pling`', ansikte: '–' },
+  // 38 utan "Kan du också trycka? Tryck!" (Sanna 2026-11-21): tassen trycker direkt efter rad 37, knappen lyser, "Pling!"
+  { id: '38', d: 1.9 + L(44) + 1.0, plats: 'Närbild på knappen', malin: [[44, 1.9]], ljud: [[PLING, 1.45]],
+    bild: 'Tassen trycker, knappen lyser, *"Pling!"*', ljudtext: '`pling`', ansikte: '–' },
   { id: '39', d: 1.6 + L(45) + FRAGA - SVARREAK, plats: 'Bild A, framme', malin: [[45, 1.6]], ljud: [[BROMS, 0.2]],
     bild: 'Landskapet saktar in. Farmors röda hus med kransen glider in och stannar mitt i fönstret. Paus 4 s', ljudtext: 'broms, tyst', ansikte: 'bakifrån' },
   { id: '40', reak: 'jatteglad', d: 0.3 + L(46) + 1.4, plats: 'Bild A', malin: [[46, 0.3]], ljud: [[TRILL, 0.5 + L(46)]],
@@ -126,7 +131,7 @@ export const RADER = [
   // --- Farmors dörr ---
   { id: '41', d: 0.3 + L(47) + 1.2, plats: 'Farmors dörr, helbild', malin: [[47, 0.3]], ljud: [[DORR, 0.0], [STEG(1), 1.6], [STEG(2), 2.3], [STEG(3), 3.0], [STEG(4), 3.7]],
     bild: 'Katten trippar in från vänster med nallen och stannar framför dörren', ljudtext: '`pschhh` långt bort, `knarr-sno`', ansikte: 'glad' },
-  { id: '42', d: 0.3 + L(48) + 0.4 + L(49) + FRAGA, plats: 'Farmors dörr, halvbild', malin: [[48, 0.3], [49, 0.3 + L(48) + 0.4]], ljud: [[KNACK, 0.3 + L(48) - 1.2]],
+  { id: '42', d: 0.3 + L(48) + 0.4 + L(49) + FRAGA, plats: 'Farmors dörr, halvbild', malin: [[48, 0.3], [49, 0.3 + L(48) + 0.4]], ljud: [[KNACK, 0.3 + L(48) - 1.2], ['knack/knack-2', 0.3 + L(48) + 0.4 + L(49) + 1.6]],   // andra knackningen i pausen (Sanna 2026-11-21 "add knocking sound")
     bild: 'Katten knackar på dörren med tassen (rak arm). Paus 4 s: barnet knackar', ljudtext: 'knack ×2', ansikte: 'glad' },
   { id: '43', d: 1.4 + L(50) + 1.2, plats: 'Farmors dörr, helbild', malin: [[50, 1.4]], ljud: [[DORRHUS, 0.1], [TRILL, 1.4 + L(50) + 0.2]],
     bild: 'Dörren öppnas. Farmor står i dörren och ler. Malin när dörren är öppen', ljudtext: 'dörr (mjuk), jippi (trill)', ansikte: 'jätteglad' },

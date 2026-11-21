@@ -29,6 +29,10 @@ window.KAJ34 = (() => {
       le: g => `M793 466 Q806 ${f1(482 + 3 * g)} 822 466`,
       morr: 'M834 456 Q880 448 920 440|M838 468 Q884 468 926 472|M834 480 Q878 490 914 502' },
   };
+  // svansen i kod för 'oss' (Sanna 2026-11-21 "polish tail"): urklippet var tunt och knöligt med en stor ojämn vit tuss i toppen.
+  // Samma väg (bakom kroppen åt vänster, upp, böjd åt vänster i toppen), jämn tjocklek, rund gräddvit spets; kant.js lägger kanten
+  const SVANS34 = `<path d="M440 712 C380 714 302 700 270 662 C242 628 246 574 262 538 C276 506 288 480 280 452 C273 430 252 416 228 420" fill="none" stroke="#2b2622" stroke-width="27" stroke-linecap="round"/>
+    <path d="M281 462 C280 440 264 422 242 418 C232 417 224 420 218 426" fill="none" stroke="#f1ebe0" stroke-width="30" stroke-linecap="round"/>`;
   let N = 0;
   // ett öga: vitan, pupillen (tittar åt höger), ljuspunkten; glad = nederlock av kroppens egen textur med gräddvit båge (ögat öppet)
   const oga = (r, id, [cx, cy], rx, ry, { sy, sx, px, py, glad, pb }) => `<g transform="translate(${cx} ${cy})">
@@ -58,7 +62,7 @@ window.KAJ34 = (() => {
     return `<defs><filter id="${id}v"><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>
       <filter id="${id}b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
       <mask id="${id}k" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024"><image href="${r.D}body.png" width="1024" height="1024" filter="url(#${id}v)"/></mask></defs>
-      ${del(r, 'tail', svans, r.tail)}
+      ${namn === 'oss' ? `<g transform="rotate(${svans.toFixed(2)} ${r.tail[0]} ${r.tail[1]})">${SVANS34}</g>` : del(r, 'tail', svans, r.tail)}
       ${ben ? `<g transform="translate(0 ${f1(-benY)})"><g transform="translate(${f1(benX)} 0)">${del(r, 'leg-l', benV[0], r.legL)}</g><g transform="translate(${f1(-benX)} 0)">${del(r, 'leg-r', benV[1], r.legR)}</g></g>` : ''}
       ${del(r, r.oraB[0], oraB, r.oraB[1])}
       ${bild(r, 'body')}

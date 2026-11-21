@@ -6,6 +6,7 @@
   '06-och-nallen-ar-med': 1.36,   // -3.0 dB
   '06b-du-har-ryggsacken': 2.23,   // -3.0 dB, Sanna 2026-11-20
   '33b-det-ar-imma': 3.52,   // -3.0 dB, tagning 1 (rad-imma-1.mp3), Sanna 2026-11-20
+  '41b-ar-det-dags-nu-inte-an': 2.52,   // klippt ur 41 ("Är det dags nu?") + 15 ("Inte än."), Sanna 2026-11-21
   '07-nu-vantar-vi-pa': 2.97,   // -3.0 dB
   '08-hor-du-dar-kommer': 4.55,   // -3.0 dB
   '09-dar-ar-bussen-den': 2.46,   // -3.0 dB
