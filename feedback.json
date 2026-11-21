@@ -7305,5 +7305,65 @@
   "at": 1795261985076,
   "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)",
   "fixedAt": 1795282044401
+ },
+ "ie60aigek2mwqq4p8z": {
+  "ep": "ABC-e3",
+  "time": "0:55",
+  "sec": 55,
+  "tags": [],
+  "note": "elefanten sound here",
+  "fixed": false,
+  "at": 1795284654803,
+  "render": "2026-11-21 18:54 (B:s ändringar: större E-kloss mitt i introt, elefantskiss med fyllda ögon, kritan kommer fram och nickar när Malin pratar med den)"
+ },
+ "vydlpwhoubmwqq67jq": {
+  "ep": "ABC-e3",
+  "time": "2:38",
+  "sec": 158,
+  "tags": [],
+  "note": "try to avoid ovelap of blocks",
+  "fixed": false,
+  "at": 1795284725174,
+  "render": "2026-11-21 18:54 (B:s ändringar: större E-kloss mitt i introt, elefantskiss med fyllda ögon, kritan kommer fram och nickar när Malin pratar med den)"
+ },
+ "oh5aqkagl1mwqq6s48": {
+  "ep": "ABC-e3",
+  "time": "2:43",
+  "sec": 163,
+  "tags": [],
+  "note": "more guessing time for där är den, då barn förstår vad man ska göra, lite otydligt just nu",
+  "fixed": false,
+  "at": 1795284751832,
+  "render": "2026-11-21 18:54 (B:s ändringar: större E-kloss mitt i introt, elefantskiss med fyllda ögon, kritan kommer fram och nickar när Malin pratar med den)"
+ },
+ "errbbeqv3amwqq7nnb": {
+  "ep": "ABC-e3",
+  "time": "3:24",
+  "sec": 204,
+  "tags": [],
+  "note": "overlap blocks",
+  "fixed": false,
+  "at": 1795284792695,
+  "render": "2026-11-21 18:54 (B:s ändringar: större E-kloss mitt i introt, elefantskiss med fyllda ögon, kritan kommer fram och nickar när Malin pratar med den)"
+ },
+ "yju2xqlaqxmwqq84xe": {
+  "ep": "ABC-e3",
+  "time": "3:41",
+  "sec": 221,
+  "tags": [],
+  "note": "overlap blocks",
+  "fixed": false,
+  "at": 1795284815090,
+  "render": "2026-11-21 18:54 (B:s ändringar: större E-kloss mitt i introt, elefantskiss med fyllda ögon, kritan kommer fram och nickar när Malin pratar med den)"
+ },
+ "ed5e9k1q0mmwqq9fk3": {
+  "ep": "ABC-e3",
+  "time": "3:54",
+  "sec": 234,
+  "tags": [],
+  "note": "det viktigaste att lära sig är hur e låter. typ e säger e e e. det är lite svårt för malin att ljuda. men kanske kan man lägga till ett segment där e säger e e e kanske får E ögon och mUN?",
+  "fixed": false,
+  "at": 1795284875523,
+  "render": "2026-11-21 18:54 (B:s ändringar: större E-kloss mitt i introt, elefantskiss med fyllda ögon, kritan kommer fram och nickar när Malin pratar med den)"
  }
 }
