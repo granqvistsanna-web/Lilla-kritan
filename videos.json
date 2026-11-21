@@ -1591,5 +1591,13 @@
   "file": "produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4",
   "status": "granska",
   "name": "Kritans ABC: E recept 3 (kompisen vill leka)"
+ },
+ "J19": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J19-1121-0356.mp4",
+  "duration": 313.3,
+  "rendered": "2026-11-21 03:56 (Förhandsvisning med vägen genom hela filmen. Skogsklippet vid 1:33, kaninen på backen och det närmare fönsterutsnittet kommer med slutrenderingen.)",
+  "file": "avsnitt/047-katten-aker-buss/film/avsnitt-047-snabb.mp4",
+  "status": "granska",
+  "name": "Lucka 19: Katten åker buss"
  }
 }
