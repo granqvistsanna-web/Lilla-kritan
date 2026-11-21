@@ -348,7 +348,7 @@ function ritaRad(id, tl, d) {
   if (s.spegel === 'kontur' && s.sk > 0) { const B = bana(SP_DRAG(SP, SPS, SPV), SP_VIKT, ritfart(s.sk), LINJE(8)); lagg('saker', B.html); if (s.sk < 1) spets = B.pos; }
   // tandborsten i bröstfickan; i 23d lyfts den upp i tandläkarens högra hand (handen runt skaftets nedre ände, huvudet upp)
   const ficka = dokPunkt(FICKA), iFickan = [ficka[0] + 4, ficka[1] - 30];
-  if (s.ficka) { const ta = s.ta ?? 0, hh = ta > 0 ? hogerHand() : null, sk = 0.42, mal = hh ? [hh[0], hh[1] - 150 * sk + 40 * sk] : iFickan;
+  if (s.ficka) { const ta = s.ta ?? 0, hh = ta > 0 ? hogerHand() : null, sk = lerp(0.42, 0.5, ta), mal = hh ? [hh[0], hh[1] - 150 * sk + 85 * sk] : iFickan;   // handtagets ände sticker ut under handen
     const p = lerp2(iFickan, mal, mjuk(kl(ta * 1.4 - 0.2))), v = lerp(-84, -90, ta);
     lagg('fram', tandborste(p[0], p[1], sk, v) + (ta > 0.6 && hh ? `<circle cx="${f1(hh[0])}" cy="${f1(hh[1])}" r="${f1(35 * DOKTOR[2])}" fill="#f7ba99" stroke="#e3a07f" stroke-width="2.5"/>` : ''));
     if (s.skim) lagg('fram', skimmer(iFickan[0], iFickan[1] - 30, 55, s.tl, s.skim)); }
