@@ -1550,10 +1550,10 @@
   "name": "Förhandsvisning 3 (QA)"
  },
  "J22": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1121-2201.mp4",
-  "duration": 240.2,
-  "rendered": "2026-11-21 22:01 (Lucka 22: 034 Musen pyntar granen, hel video med kalenderramen. Slutrenderad i molnet 21/11 (före kvällens 5 punkter).)",
-  "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1121-2213.mp4",
+  "duration": 260.6,
+  "rendered": "2026-11-21 22:13 (034 Musen pyntar granen som hel video med kalenderramen (förhandsvisning, byggs om efter slutrenderingen))",
+  "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen-liten.mp4",
   "status": "granska"
  }
 }
