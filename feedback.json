@@ -7112,9 +7112,10 @@
   "sec": 31,
   "tags": [],
   "note": "remove this gris sound effect and replace and delete this soud effect",
-  "fixed": false,
+  "fixed": true,
   "at": 1795181915470,
-  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))"
+  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))",
+  "fixedAt": 1795282018105
  },
  "ruid0ar4srmwp0zglt": {
   "ep": "J16",
