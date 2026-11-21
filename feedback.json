@@ -7378,8 +7378,9 @@
   "sec": 37,
   "tags": [],
   "note": "more bold bg. make mouse bigger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795288827951,
-  "render": "2026-11-15 23:58"
+  "render": "2026-11-15 23:58",
+  "fixedAt": 1795289277560
  }
 }
