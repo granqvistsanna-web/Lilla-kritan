@@ -7430,9 +7430,10 @@
   "sec": 42,
   "tags": [],
   "note": "add clifying då ska du får sitta i den här tandläkare stolen så kan tandläkaren undersöka tänderna",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291816367,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795293194429
  },
  "h9pfbsbhdrmwqueeix": {
   "ep": "049",
