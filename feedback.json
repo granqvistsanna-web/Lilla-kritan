@@ -7085,5 +7085,205 @@
   "at": 1795259692191,
   "render": "2026-11-21 04:11 (Slutrenderad lucka: kontinuerlig väg, skogsklipp vid 1:33, kaninen på backen, närmare fönsterutsnitt.)",
   "fixedAt": 1795260931044
+ },
+ "6rve6qci73mwozg15w": {
+  "ep": "J17",
+  "time": "0:02",
+  "sec": 2,
+  "tags": [],
+  "note": "julkal intro and outro",
+  "fixed": false,
+  "at": 1795179367652,
+  "render": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)"
+ },
+ "lhpji4yfejmwozgd17": {
+  "ep": "J17",
+  "time": "0:08",
+  "sec": 8,
+  "tags": [],
+  "note": "make kritan rita potta in intro",
+  "fixed": false,
+  "at": 1795179383035,
+  "render": "2026-11-20 09:41 (042 grind 6b, förhandsvisning (--snabb). Nya pottan v3, mindre tomteluva, sugrör i glaset (tassen håller glasets kant, glaset stannar vid magen), närmare kamera när hunden dricker, handduken till vänster mot pottan)"
+ },
+ "iontod5ec6mwp0yn2m": {
+  "ep": "J16",
+  "time": "0:31",
+  "sec": 31,
+  "tags": [],
+  "note": "remove this gris sound effect and replace and delete this soud effect",
+  "fixed": false,
+  "at": 1795181915470,
+  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))"
+ },
+ "ruid0ar4srmwp0zglt": {
+  "ep": "J16",
+  "time": "1:16",
+  "sec": 76,
+  "tags": [],
+  "note": "add light snow all video",
+  "fixed": false,
+  "at": 1795181953745,
+  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))"
+ },
+ "n91j5kacukmwp10qzt": {
+  "ep": "J16",
+  "time": "2:55",
+  "sec": 175,
+  "tags": [],
+  "note": "keep snowing all video",
+  "fixed": false,
+  "at": 1795182013865,
+  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))"
+ },
+ "e9vp422bl4mwqbe2ln": {
+  "ep": "ABC-b3",
+  "time": "0:28",
+  "sec": 28,
+  "tags": [],
+  "note": "better sketch with nose so its easier to guess",
+  "fixed": false,
+  "at": 1795259897771,
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+ },
+ "ksf1knsn29mwqbef5m": {
+  "ep": "ABC-b3",
+  "time": "0:04",
+  "sec": 4,
+  "tags": [],
+  "note": "bigger block in intro, size can be larger and center",
+  "fixed": false,
+  "at": 1795259914042,
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+ },
+ "ctinkv0s13mwqbf0tp": {
+  "ep": "ABC-b3",
+  "time": "0:49",
+  "sec": 49,
+  "tags": [],
+  "note": "show kritan",
+  "fixed": false,
+  "at": 1795259942125,
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+ },
+ "jwc3w8qermwqbg0sx": {
+  "ep": "ABC-b3",
+  "time": "1:11",
+  "sec": 71,
+  "tags": [],
+  "note": "better ko drawing and image, create new one a bit more polished, aslo consider the contrast as cow is white and bg is white",
+  "fixed": false,
+  "at": 1795259988753,
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+ },
+ "gadij1ix46mwqch9xk": {
+  "ep": "J19",
+  "time": "0:04",
+  "sec": 4,
+  "tags": [],
+  "note": "more happy start kritan ritar, maybe you have another VO of malin for this to use as intro",
+  "fixed": false,
+  "at": 1795261726856,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "xgdyrfgrjpmwqchi8v": {
+  "ep": "J19",
+  "time": "0:06",
+  "sec": 6,
+  "tags": [],
+  "note": "missing sound effect for crayon",
+  "fixed": false,
+  "at": 1795261737631,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "geik04ne97mwqci42h": {
+  "ep": "J19",
+  "time": "0:14",
+  "sec": 14,
+  "tags": [],
+  "note": "sparkles look too small and center focused, polish",
+  "fixed": false,
+  "at": 1795261765913,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "vphhagsoxsmwqciclg": {
+  "ep": "J19",
+  "time": "0:20",
+  "sec": 20,
+  "tags": [],
+  "note": "have bird enter here",
+  "fixed": false,
+  "at": 1795261776964,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "a38a9f0xe1mwqcj81v": {
+  "ep": "J19",
+  "time": "0:39",
+  "sec": 39,
+  "tags": [],
+  "note": "start bus soud here",
+  "fixed": false,
+  "at": 1795261817731,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "6cv5ash271mwqcjiv8": {
+  "ep": "J19",
+  "time": "0:59",
+  "sec": 59,
+  "tags": [],
+  "note": "end scene here",
+  "fixed": false,
+  "at": 1795261831748,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "cjq61qyz9tmwqcl47h": {
+  "ep": "J19",
+  "time": "2:08",
+  "sec": 128,
+  "tags": [],
+  "note": "polish cat hand",
+  "fixed": false,
+  "at": 1795261906061,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "zpnujayf3emwqcliqv": {
+  "ep": "J19",
+  "time": "2:20",
+  "sec": 140,
+  "tags": [],
+  "note": "bunny leave and fade away",
+  "fixed": false,
+  "at": 1795261924903,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "wrzslgptjimwqclv6b": {
+  "ep": "J19",
+  "time": "2:25",
+  "sec": 145,
+  "tags": [],
+  "note": "maybe bunny go down behind hill",
+  "fixed": false,
+  "at": 1795261941011,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "nq0i9r6s1pmwqcm5sy": {
+  "ep": "J19",
+  "time": "2:33",
+  "sec": 153,
+  "tags": [],
+  "note": "make bird smaller",
+  "fixed": false,
+  "at": 1795261954786,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+ },
+ "ls7bd5rj2mmwqcmt6c": {
+  "ep": "J19",
+  "time": "2:53",
+  "sec": 173,
+  "tags": [],
+  "note": "make more clear dags att trycka på knappen nu?",
+  "fixed": false,
+  "at": 1795261985076,
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
  }
 }
