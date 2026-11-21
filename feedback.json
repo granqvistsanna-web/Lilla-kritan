@@ -7262,9 +7262,10 @@
   "sec": 140,
   "tags": [],
   "note": "bunny leave and fade away",
-  "fixed": false,
+  "fixed": true,
   "at": 1795261924903,
-  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)",
+  "fixedAt": 1795282038367
  },
  "wrzslgptjimwqclv6b": {
   "ep": "J19",
