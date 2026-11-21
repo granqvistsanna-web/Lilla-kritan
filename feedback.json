@@ -7576,9 +7576,10 @@
   "sec": 113,
   "tags": [],
   "note": "ta bort byrå och ljus till höger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795295812253,
-  "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))"
+  "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))",
+  "fixedAt": 1795296489526
  },
  "h28tkubyapmwqwtkip": {
   "ep": "034",
@@ -7586,9 +7587,10 @@
   "sec": 229,
   "tags": [],
   "note": "add ljustakar till ett ljus ovan spis och ta bort den andra. byt regnbåge till ett till julmotiv kanske en julgris eller vinterlandskap",
-  "fixed": false,
+  "fixed": true,
   "at": 1795295892769,
-  "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))"
+  "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))",
+  "fixedAt": 1795296489526
  },
  "tldpqth70gmwqwu06p": {
   "ep": "034",
@@ -7596,9 +7598,10 @@
   "sec": 236,
   "tags": [],
   "note": "add liten krans ovan spisen",
-  "fixed": false,
+  "fixed": true,
   "at": 1795295913073,
-  "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))"
+  "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))",
+  "fixedAt": 1795296489526
  },
  "nk5sikm3vkmwqvofv4": {
   "ep": "049",
