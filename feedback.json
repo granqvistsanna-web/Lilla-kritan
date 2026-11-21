@@ -7157,9 +7157,10 @@
   "sec": 4,
   "tags": [],
   "note": "bigger block in intro, size can be larger and center",
-  "fixed": false,
+  "fixed": true,
   "at": 1795259914042,
-  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)",
+  "fixedAt": 1795282391167
  },
  "ctinkv0s13mwqbf0tp": {
   "ep": "ABC-b3",
