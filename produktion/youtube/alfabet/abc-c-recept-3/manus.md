@@ -2,12 +2,12 @@
 
 Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur `../abc-b-recept-3/` (så att B:s rättelser från feedbacken 21/11 följer med: större klossen i introt, ansiktsdetaljer i kompisens skiss, kritan i bild med `KVISA`, `KNICK`, `KFRAM`). Den gamla C-filmen (recept 1) står kvar orörd i `../abc-c/` tills den här är godkänd.
 
-**Läge (2026-11-21):** clownen är vald (Sanna: tagning C1, `karaktarer/clownen-kalle.md`) och riggas. Replikerna (61 rader, `malin-c-recept-3.txt`) väntar på Sannas godkännande. Ingen tagning i ElevenLabs förrän hon säger ja. Scenen `index.html` är än så länge B:s, oförändrad.
+**Läge (2026-11-21):** clownen är vald (Sanna: tagning C1, `karaktarer/clownen-kalle.md`) och riggad i v2. Sanna godkände replikerna (61 rader, `malin-c-recept-3.txt`). Scenen `index.html` är byggd och `abc-c-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **datorrösten** (`platshallare/`, `say -v Alva`). Ingen tagning i ElevenLabs än. Feedbacksidan: `ABC-c3`.
 
 **Meningen:** Clownen vill cykla men har inget att åka på. Malin ber kritan rita något att åka på, och det måste börja på C. Kritan ritar fel (bollen, hej då!). Kritan ritar cykeln (ord 2), men cykeln har bara ett hjul. Kritan ritar något runt: en cirkel (ord 3), som rullar dit och blir hjulet. Cykeln rullar och clownen hoppar med. Den udda i leken är hunden, som i E och B.
 
 - Clownen är riggen `clownen-kalle` (ny i v2, mjuk tygclown). Hunden riggen `hunden-hugo`, som i E.
-- Bollen `boll-rod` (finns). Cykeln och cirkeln behöver bilder och konturer (se Öppet).
+- Bollen `boll-rod`, cykeln `cykel-rod` (med lösa hjul; bara bakhjulet används) och cirkeln, den gröna ringen `cirkel`, finns redan (från recept 1). Inga nya bilder behövdes.
 - Clownen sitter aldrig på cykeln (receptets *"aldrig sitta i något"*): den hoppar bredvid medan cykeln rullar.
 
 ## ⚠️ Uttalet: C låter på två sätt
@@ -77,7 +77,7 @@ Den lilla viljan i del 6 är att cykeln saknar ett hjul: *"Vad fattas?"* (barnen
 
 ## Öppet
 
-- **Cykeln:** ny bild (Flow, 0 krediter), från sidan, enkel barncykel, och en version utan framhjul. Den ska kunna rulla och tippa. Kritan ritar konturen med bara bakhjulet.
-- **Cirkeln:** ingen bild behövs, den ritas i kod som en rund kritring i hjulets storlek (samma färg som bakhjulet), så att den passar exakt som hjul.
-- **Ljud:** ringklocka, rull och klick (sök på Openverse först).
-- Ingen tagning än: scenen ska byggas med datorrösten (`platshallare/`) när replikerna är godkända.
+- **Malins tagning:** när Sanna säger ja till krediterna, dela tagningen med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-c-recept-3/` och byt `ROST` i `index.html`.
+- **Uttalet** (se ovan): behåll *"C, c, clown!"* eller byt till *"En clown!"*.
+- **Cirkeln som hjul:** ringbilden har ett vitt mittfält, så framhjulet blir en grön ring med vit mitt (bakhjulet har ekrar). Säg till om hjulet ska vara genomskinligt i mitten.
+- **Cirkeln i leken:** när klossarna poppar fram hoppar cirkeln ur cykelns hjul till sin kloss, och cykeln behåller sitt gröna hjul (två cirklar en stund).
