@@ -7147,9 +7147,10 @@
   "sec": 28,
   "tags": [],
   "note": "better sketch with nose so its easier to guess",
-  "fixed": false,
+  "fixed": true,
   "at": 1795259897771,
-  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)"
+  "render": "2026-11-21 12:11 (Malins röst (tagning 2), nya varianter på 8 rader)",
+  "fixedAt": 1795282393038
  },
  "ksf1knsn29mwqbef5m": {
   "ep": "ABC-b3",
