@@ -238,7 +238,7 @@
   "file": "produktion/youtube/alfabet/alfabet-prov-1.mp4",
   "name": "Ljudjakten A (prov 1)",
   "rendered": "2026-11-16 11:16",
-  "status": "granska",
+  "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/4ba6f7cc0c92c7e71a1a608dff414aa9.mp4"
  },
  "ABC-a2": {
@@ -246,7 +246,7 @@
   "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
   "name": "Ljudjakten A – Apans fruktfest (prov 2, three.js)",
   "rendered": "2026-11-16 12:16",
-  "status": "granska",
+  "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/f806fe2ef921d66c82e0c988323b649e.mp4",
   "videoId": "f806fe2ef921d66c82e0c988323b649e"
  },
@@ -255,7 +255,7 @@
   "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
   "name": "ABC A prov 3: klossar, teal, lika stora djur",
   "rendered": "2026-11-16",
-  "status": "granska",
+  "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/265f83f943b441dc302bd816971963a2.mp4",
   "videoId": "265f83f943b441dc302bd816971963a2"
  },
@@ -264,7 +264,7 @@
   "file": "produktion/youtube/alfabet/a-film/a-film.mp4",
   "name": "ABC A prov 4: teal tapet, stor apa i mitten, magen kurrar",
   "rendered": "2026-11-16",
-  "status": "granska",
+  "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/3b8e5c6f270776b0ec81233ee252c6ff.mp4",
   "videoId": "3b8e5c6f270776b0ec81233ee252c6ff"
  },
@@ -1367,7 +1367,7 @@
   "duration": 215.5,
   "rendered": "2026-11-18 21:32 (Malin säger Kritan ritar något på bokstaven A och Nu dansar vi · torndans: klossarna snurrar upp en i taget till en pyramid)",
   "file": "produktion/youtube/alfabet/abc-prov/recept-1/recept-1.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC recept 1: Klossbygget"
  },
  "ABC-p4": {
@@ -1391,7 +1391,7 @@
   "duration": 165.1,
   "rendered": "2026-11-18 10:34",
   "file": "produktion/youtube/alfabet/abc-bokstaven/abc-bokstaven.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC riktning 3: Stora bokstaven"
  },
  "JP-hunden-snogubbe-bg": {
@@ -1445,7 +1445,7 @@
   "duration": 231.9,
   "rendered": "2026-11-20 20:42 (Kritans ABC! sägs nu varmt (samma tagning som D).)",
   "file": "produktion/youtube/alfabet/abc-b/abc-b.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC: B (recept 1)"
  },
  "J12": {
@@ -1509,7 +1509,7 @@
   "duration": 232.7,
   "rendered": "2026-11-19 19:13 (Förhandsvisning (--snabb). A byggd om efter B: A-märket överst, apans närbilder, sakernas ljud, nytt disco och outro.)",
   "file": "produktion/youtube/alfabet/abc-a/abc-a.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC: A omgjord (lärdomar från B)"
  },
  "ABC-c": {
@@ -1517,7 +1517,7 @@
   "duration": 221.2,
   "rendered": "2026-11-20 20:46 (Kritans ABC! sägs nu varmt (samma tagning som D).)",
   "file": "produktion/youtube/alfabet/abc-c/abc-c.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC: C"
  },
  "ABC-d": {
@@ -1525,7 +1525,7 @@
   "duration": 236.4,
   "rendered": "2026-11-20 20:32 (Förhandsvisning (--snabb) med Malins röst (ElevenLabs v3). Kritans ABC! sägs nu varmt i stället för upphetsat.)",
   "file": "produktion/youtube/alfabet/abc-d/abc-d.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC: D"
  },
  "ABC-e": {
@@ -1533,7 +1533,7 @@
   "duration": 236.2,
   "rendered": "2026-11-20 20:51 (Kritans ABC! sägs nu varmt (samma tagning som D).)",
   "file": "produktion/youtube/alfabet/abc-e/abc-e.mp4",
-  "status": "granska",
+  "status": "arkiv",
   "name": "Kritans ABC: E"
  },
  "J14": {
