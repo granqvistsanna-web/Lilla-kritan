@@ -111,8 +111,10 @@ function gard({ spar = 0, fron = 0, sno = 0 } = {}) {
   if (spar) lagg('bak', Array.from({ length: Math.floor(spar) }, (_, i) => `<ellipse cx="${60 + i * 80}" cy="${874 + (i % 2) * 12}" rx="15" ry="6.5" fill="#b9c9d8" opacity=".55"/>`).join(''));
   const n = Math.round(FRON.length * kl(fron));
   if (n) lagg('bak', FRON.slice(0, n).map(([x, y], i) => `<ellipse cx="${x}" cy="${y}" rx="7" ry="4.5" transform="rotate(${i * 37} ${x} ${y})" fill="#8a5a2b" stroke="#fff" stroke-width="2"/>`).join(''));
-  snofall(sno);
+  snofall(Math.max(sno, SNO_BAS));
 }
+// Sanna 2026-11-21 (J16 1:16, 2:55 "light snow all video"): ett svagt, lugnt snöfall i hela snögården, samma flingor hela vägen
+const SNO_BAS = 0.3;
 // julkärven: foten (stångens nederkant, bildens 243, 890) i (x, y), skala 0,5
 const KARV = [1250, 884, 0.5], KTOPP = [KARV[0], KARV[1] - 870 * KARV[2]];
 const karveT = () => `translate(${KARV[0] - 243 * KARV[2]} ${KARV[1] - 890 * KARV[2]}) scale(${KARV[2]})`;

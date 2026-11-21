@@ -35,8 +35,8 @@ export const RADER = [
     bild: 'Fågeln fylls i inifrån, pipar. Zoom in i teckningen, till snögården, och fågeln flyger iväg in i granen', ljudtext: '`glitter`, pip, flax', ansikte: '–' },
 
   // --- Snögården ---
-  { id: '1', d: 2.0 + L(4) + 1.4, plats: 'Snögården, helbild', malin: [[4, 2.0]], ljud: [[STEG(1), 0.3], [STEG(2), 1.0], [N(1), 2.3 + L(4)]],
-    bild: 'Grisen med tomteluvan trippar in i snön från vänster med fröpåsen och vinkar (armen bakom kroppen). Fotspår i snön', ljudtext: '`knarr-sno`, noff hej (1)', ansikte: 'jätteglad' },
+  { id: '1', d: 2.0 + L(4) + 1.4, plats: 'Snögården, helbild', malin: [[4, 2.0]], ljud: [[AAH(1), 2.3 + L(4)]],   // Sanna 2026-11-21 (J16 0:31): snöknarret bort, Sannas eget aah i stället för noff hej
+    bild: 'Grisen med tomteluvan trippar in i snön från vänster med fröpåsen och vinkar (armen bakom kroppen). Fotspår i snön', ljudtext: 'förtjust aah', ansikte: 'jätteglad' },
   // Sanna 2026-11-20: oinket efter frågan (noff 5, sedan noff-visa) avvisat två gånger; nytt ljud noff-titta ("titta!", riktiga grymt uppväxlade som noff-sot)
   { id: '2', d: 0.8 + L(5) + 1.6, plats: 'Närbild, påsen', malin: [[5, 0.8]], ljud: [[PRASSEL, 0.2], [KOLLA, 1.0 + L(5)]],
     bild: 'Grisen skakar påsen, det rasslar. Frågan efter skakningen', ljudtext: 'prassel, nyfiken (5)', ansikte: 'nyfiken' },
