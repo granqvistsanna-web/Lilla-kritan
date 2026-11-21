@@ -1,0 +1,61 @@
+p-hej-hej  [warm] Hej hej!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-a  [excited] Det är ju A!
+p-bokstaven-a  [warm] Bokstaven A.
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven A.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-apa  [excited] Apa!
+p-a-a-apa  [playful] A, a, apa!
+p-apa-a  [excited] Ja! Apa börjar på bokstaven A.
+n-hej-apan  [warm] Hej, apan!
+n-vad-later  [curious] Oj. Vad var det som lät?
+n-hungrig  [warm] Apan är hungrig.
+n-rita-gott  [excited] Kritan! Kan du rita något gott?
+n-vad-sa-du  [curious] Vad sa du, apan?
+n-maste-a  [curious] Måste det börja på bokstaven A?
+n-kan-du-kritan  [playful] Kan du det, kritan?
+n-nu-ritar  [warm] Nu ritar kritan.
+p-vad-blir  [curious] Vad blir det?
+p-bil  [curious] Bil?
+p-en-bil  [surprised] En bil!
+n-busiga  [laughs] Ha ha! Busiga kritan!
+n-inte-ata-bil  [playful] En bil kan man inte äta!
+p-bil-inte  [playful] Bil börjar inte på A.
+p-hej-da-bilen  [warm] Hej då, bilen!
+p-engang  [excited] En gång till!
+n-gott-pa-a  [playful] Något gott på bokstaven A, tack!
+p-apelsin  [excited] Apelsin!
+p-a-a-apelsin  [playful] A, a, apelsin!
+p-ocksa-apelsin  [warm] Apelsin börjar också på A!
+n-apelsinen-rullar  [playful] Apelsinen rullar!
+n-varsagod  [warm] Varsågod, apan!
+n-mums  [playful] Mums!
+n-mer  [curious] Oj. Apan vill ha mer.
+n-rita-mer  [playful] Kritan, rita något mer!
+p-ananas  [excited] Ananas!
+p-en-ananas  [excited] En ananas!
+p-ocksa-ananas  [warm] Ananas börjar också på A!
+n-kittlar  [playful] Oj! Bladen kittlar.
+n-atjo  [laughs] Atjo!
+n-prosit  [warm] Prosit, apan!
+n-matt  [warm] Nu är apan mätt och glad.
+p-nuleker  [excited] Nu leker vi!
+n-titta-noga  [curious] Titta noga. Var är apan?
+n-dar-ar-den  [excited] Där är den!
+p-entill  [curious] Titta! En till.
+p-hund  [curious] Hund.
+p-vilken  [curious] Vilken ska bort?
+p-inte-a  [curious] Vilken börjar inte på A?
+p-hunden  [excited] Hunden!
+p-hund-inte  [playful] Hund börjar inte på A.
+n-hej-da-hunden  [warm] Hej då, hunden!
+n-tre-pa-a  [warm] Apa, apelsin, ananas.
+p-alla-a  [warm] Alla börjar på bokstaven A.
+p-nu-dansar  [excited] Nu dansar vi!
+n-apan-dansar  [excited] Apan dansar!
+n-apelsinen-snurrar  [playful] Apelsinen snurrar!
+n-ananasen-snurrar  [playful] Ananasen snurrar!
+n-allt-for-idag  [warm] Det var allt för i dag.
+n-vad-kul  [warm] Vad kul det var att leka!
+p-hej-da-slut  [warm] Hej då!
