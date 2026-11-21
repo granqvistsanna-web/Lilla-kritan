@@ -48,3 +48,4 @@
 48-hej-da-tandlakaren  [happy] Hej då, tandläkaren!
 49-hej-da-kaninen-hej  [happy] Hej då, kaninen! Hej då, elefanten!
 50-hej-da-vi-ses  [warmly] Hej då! Vi ses snart! [giggles]
+51-du-ska-fa-sitta  [warmly] Du ska få sitta i den här tandläkarstolen. Då kan tandläkaren undersöka tänderna.

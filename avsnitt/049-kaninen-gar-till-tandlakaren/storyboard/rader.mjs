@@ -39,7 +39,8 @@ export const RADER = [
     bild: 'Tandläkaren vinkar och ler', ljudtext: '`doktor-hej`', ansikte: 'tandläkaren glad' },
   { id: '3', d: 0.4 + L(6) + G + 0.8, plats: 'Närbild: kaninen', malin: [[6, 0.4]], ljud: [[KN('fragande'), 0.6 + L(6)]],
     bild: 'Kaninen tittar nyfiket', ljudtext: 'frågande', ansikte: 'nyfiken' },
-  { id: '4', d: 1.6 + L(7) + G + 0.6, plats: 'Mottagningen, helbild', malin: [[7, 1.6]], ljud: [[KN('trumpen'), 1.8 + L(7)]],
+  { id: '4', d: 3.6 + L(7) + L(51) + G, plats: 'Mottagningen, helbild', malin: [[7, 1.6], [51, 3.6 + L(7)]],   // 51: Sannas tillägg (feedback 2026-11-21)
+    ljud: [[KN('trumpen'), 1.8 + L(7)]],
     bild: 'Tandläkaren pekar på stolen. Kaninen tittar upp på den stora stolen, backar ett litet steg, skakar på huvudet, öronen faller. Malin efter', ljudtext: 'trumpen (mjuk)', ansikte: 'orolig' },
   { id: '5', d: 0.4 + L(8) + 1.0 + L(9) + G, plats: 'Närbild: kaninen', malin: [[8, 0.4], [9, 1.4 + L(8)]],
     bild: 'Kaninen orolig: bryn snett upp, blicken ner, öronen nere', ljudtext: '–', ansikte: 'orolig' },
