@@ -1,0 +1,61 @@
+p-hej-hej  [warm] Hej hej!
+p-kritan-ritar  [warm] Titta, kritan ritar en bokstav.
+p-det-ar-c  [excited] Det är ju C!
+p-bokstaven-c  [warm] Bokstaven C.
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven C.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-clown  [excited] Clown!
+p-c-c-clown  [playful] C, c, clown!
+p-clown-c  [excited] Ja! Clown börjar på bokstaven C.
+n-hej-clownen  [warm] Hej, clownen!
+n-vill-cykla  [warm] Clownen vill cykla.
+n-inget-att-aka  [warm] Men clownen har inget att åka på.
+n-rita-aka  [excited] Kritan! Kan du rita något att åka på?
+n-vad-sa-du  [curious] Vad sa du, clownen?
+n-maste-c  [curious] Måste det börja på bokstaven C?
+n-kan-du-kritan  [playful] Klarar du det, kritan?
+n-nu-ritar  [warm] Nu ritar kritan.
+p-vad-blir  [curious] Vad blir det?
+p-boll  [curious] Boll?
+p-en-boll  [surprised] En boll!
+n-busiga  [laughs] Ha ha! Busiga kritan!
+p-boll-inte  [playful] Boll börjar inte på C.
+p-hej-da-bollen  [warm] Hej då, bollen!
+p-engang  [excited] En gång till!
+n-nagot-pa-c  [playful] Något att åka på, som börjar på C!
+p-cykel  [excited] Cykel!
+p-c-c-cykel  [playful] C, c, cykel!
+p-ocksa-cykel  [warm] Cykel börjar också på C!
+n-hej-cykeln  [warm] Hej, cykeln!
+n-oj-hjul  [surprised] Oj! Cykeln har bara ett hjul.
+n-vad-fattas  [curious] Vad fattas?
+n-ett-hjul-till  [warm] Ett hjul till!
+n-rita-runt  [playful] Kritan, rita något runt!
+p-cirkel  [excited] Cirkel!
+p-en-cirkel  [excited] En cirkel!
+p-ocksa-cirkel  [warm] Cirkel börjar också på C!
+n-cirkeln-rullar  [excited] Titta! Cirkeln rullar dit.
+n-blir-hjul  [playful] Nu blir cirkeln ett hjul!
+n-cykeln-rullar  [excited] Cykeln rullar!
+n-clownen-hoppar  [excited] Clownen hoppar med!
+n-hopp-hopp  [excited] Hopp, hopp, hopp!
+p-nuleker  [excited] Kom, nu leker vi!
+n-titta-noga  [curious] Titta noga. Var är clownen?
+n-dar-ar-den  [excited] Där är den ju!
+p-entill  [curious] Titta! En till.
+p-hund  [curious] Hund.
+p-vilken  [curious] Vilken ska bort?
+p-inte-c  [curious] Vilken börjar inte på C?
+p-hunden  [excited] Hunden!
+p-hund-inte  [playful] Hund börjar inte på C.
+n-hej-da-hunden  [warm] Hej då, hunden!
+n-tre-pa-c  [warm] Clown, cykel, cirkel.
+p-alla-c  [warm] Alla börjar på bokstaven C.
+p-nu-dansar  [excited] Nu dansar vi!
+n-clownen-dansar  [excited] Clownen dansar!
+n-cykeln-snurrar  [playful] Cykeln snurrar!
+n-cirkeln-snurrar  [playful] Cirkeln snurrar!
+n-allt-for-idag  [warm] Nu är vi klara för i dag.
+n-vad-kul  [warm] Tack för att du lekte med C!
+p-hej-da-slut  [warm] Hej då! Vi ses!
