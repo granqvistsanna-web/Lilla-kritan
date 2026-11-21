@@ -69,10 +69,17 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 - elefantens skiss får fyllda ögon.
 - Kritan kommer in i bild när Malin ber den rita (båda gångerna), nickar efter *"Kan du det, kritan?"* och går därifrån direkt till att rita (`KVISA`, `KNICK`, `KFRAM`).
 
+## Feedback 2026-11-21 (renderingen 18:54)
+
+- 0:55: elefanten trumpetar när den nickar (och på *"E, e, elefant!"* och på sitt ord i muren) i stället för björnens brum. Ljudet är `elefant-trut-1` (Openverse, CC0); `-2` och `-3` finns att välja på. Närbilderna har fortfarande brum.
+- 2:38, 3:24, 3:41: klossarna går inte in i varandra. Blandningen står glesare och den som hoppar över går högre. I discot står elefantens tomma kloss där ekollonet stod, och ekollonet längst ut, så att ingen går igenom en annan. Slutraden, pyramiden och muren är glesare.
+- 2:43: efter blandningen säger Malin *"Hmm …"*, och barnet får ca 3 s att peka innan *"Där är den!"*.
+- 3:54: E säger e. Efter *"Hej då!"* hoppar E-märket till mitten, blir större och får ögon och mun i kod. Det säger *"e, e, E!"* två gånger med en paus emellan. Ljuden är klippta ur Malins *"E, e, elefant!"* och *"E, e, ekorre!"* (`e-ljud-1…3`), inga nya krediter. Filmen är 4:06.
+
 ## Öppet
 
 - Muren står fortfarande still ca 12 s medan Malin säger orden och frågar.
-- Elefanten låter som björnen (`brum-glad`).
+- Elefanten brummar fortfarande som björnen i närbilderna (`brum-glad`).
 - Hunden är kvar i den gamla, ritade stilen.
 - Ingen har lyssnat på blandningen. Lyssna särskilt på *"Det är ju E!"*, *"Kan du det, kritan?"*, *"Nu ritar kritan."* och *"E, e, elefant!"*: whisper hörde dem lite fel i tagning 3.
 - Stillbilder tagna långt isär i samma körning kan visa bokstavsmärket en extra gång bredvid elefantens kloss. I den renderade filmen syns det inte.
