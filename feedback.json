@@ -7451,9 +7451,10 @@
   "sec": 79,
   "tags": [],
   "note": "improge animation of chair raising, not whole chair just the seat, need to be cut apart, or recreate bottom part in code",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291896666,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292698848
  },
  "bdprfqt8f5mwqugk05": {
   "ep": "049",
