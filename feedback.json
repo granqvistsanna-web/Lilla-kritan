@@ -7123,9 +7123,10 @@
   "sec": 76,
   "tags": [],
   "note": "add light snow all video",
-  "fixed": false,
+  "fixed": true,
   "at": 1795181953745,
-  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))"
+  "render": "2026-11-20 14:22 (runda 4: fåglarnas ögon högre, lugnare vid holken, bara Varsågod, inga grisljud över Malin, närbilder på ansiktet vid noffet och fågeln på luvan, ny Malin-tagning (kärven hela vintern, fågeln i fågelholken))",
+  "fixedAt": 1795282020364
  },
  "n91j5kacukmwp10qzt": {
   "ep": "J16",
