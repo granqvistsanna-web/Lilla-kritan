@@ -75,6 +75,7 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 - 2:38, 3:24, 3:41: klossarna går inte in i varandra. Blandningen står glesare och den som hoppar över går högre. I discot står elefantens tomma kloss där ekollonet stod, och ekollonet längst ut, så att ingen går igenom en annan. Slutraden, pyramiden och muren är glesare.
 - 2:43: efter blandningen säger Malin *"Hmm …"*, och barnet får ca 3 s att peka innan *"Där är den!"*.
 - 3:54: E säger e. Efter *"Hej då!"* hoppar E-märket till mitten, blir större och får ögon och mun i kod. Det säger *"e, e, E!"* två gånger med en paus emellan. Ljuden är klippta ur Malins *"E, e, elefant!"* och *"E, e, ekorre!"* (`e-ljud-1…3`), inga nya krediter. Filmen är 4:06.
+- E säger e också i introt (Sanna 2026-11-21): efter *"Bokstaven E."* får klossen ögon och mun och säger *"e, e, E!"* en gång, och ansiktet försvinner innan märket flyger till hörnet. Filmen är 4:09. Samma sak bör in i A–D.
 
 ## Öppet
 

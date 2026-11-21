@@ -287,7 +287,7 @@ const { elefant, ekorre, ekollon, katt, hund } = SAKER;
 // Klossarnas lägen: kk = [t, x, y, z, sidan, båge, fall] (mitten i px, z mot kameran; båge = lyft på vägen dit, fall = faller dit)
 const GB = 875, golvY = sd => GB - sd / 2;   // klossarnas nederkant på golvet
 const RX = 0.2, RY = -0.22;   // alla klossar lutar lika, så att toppen och högra sidan syns och muren går ihop
-const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0 };   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
+const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0, mun: [], ansikten: [] };   // ansikten: [från, till] när E-märket har ögon och mun   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
 const AV = [960, 500, 0], AS = 560,   // som B (Sanna 2026-11-21, 0:04): klossen i introt större och mitt i bild
       AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
 const RS = 240, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // Sanna 2026-11-20: "bigger blocks" (alla klossar ca 30 % större)   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
@@ -335,6 +335,10 @@ A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); G
 // d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
 t = sag(A.svar + 0.2, 'p-det-ar-e');
 t = sag(t + 0.3, 'p-bokstaven-e') + 0.6; A.spinn = [[t - 1.3, t - 0.3]]; fx(t - 1.3, 'swoosh', 0.4);   // ett varv på "Bokstaven E" i stället för två vickande hopp (Sanna 2026-11-21: "jiggle a bit too repetitive, perhaps it could spin")   // "E, e, elefant!" sägs nu på svaret (tagning 3)
+// E säger e redan i introt (Sanna 2026-11-21): klossen får ögon och mun och säger "e, e, E!" en gång, och ansiktet försvinner innan märket flyger till hörnet
+{ const a = t - 0.1; fx(a, 'pop', 0.45); let u = a + 0.8;
+  for (const n of ['e-ljud-1', 'e-ljud-2', 'e-ljud-3']) { A.mun.push([u, u + D[n]]); sag(u, n); u += D[n] + 0.4; }
+  A.hopp.push(u - 0.55); A.ansikten.push([a, u + 0.5]); t = u + 0.5; }
 A.vrid = t + 0.3; kamTill(t - 0.4, 960, 540, 1, 1.2);   // ut igen innan plattan flyttar; den vickar lite i vinjetten och hänger still i hörnet
 t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 
@@ -625,9 +629,9 @@ let sist = t;
   A.hopp.push(t0 + 1.15); GN.push([t0 + 1.15, 960, 460, 330, 260]); fx(t0 + 1.2, 'pling', 0.45);
   // E säger e (feedback 2026-11-21 3:54): det viktigaste är hur E låter. Klossen får ögon och mun i kod och säger "e, e, E!"
   // två gånger med en paus emellan, så att barnet hinner säga det själv. Ljuden är klippta ur Malins "E, e, elefant!" och "E, e, ekorre!".
-  A.ansikte = t0 + 1.7; fx(A.ansikte, 'pop', 0.5); A.mun = [];
-  flyttaK(A, A.ansikte - 0.4, [960, 500, 0], 760, 0.7);   // större medan den pratar, så att ansiktet syns
-  let u = A.ansikte + 1.0;
+  const a = t0 + 1.7; A.ansikten.push([a, 1e9]); fx(a, 'pop', 0.5);
+  flyttaK(A, a - 0.4, [960, 500, 0], 760, 0.7);   // större medan den pratar, så att ansiktet syns
+  let u = a + 1.0;
   for (const varv of [0, 1]) {
     for (const n of ['e-ljud-1', 'e-ljud-2', 'e-ljud-3']) { A.mun.push([u, u + D[n]]); sag(u, n); u += D[n] + 0.4; }
     A.hopp.push(u - 0.55); u += varv ? 0.8 : 2.6; }
@@ -887,10 +891,10 @@ const eOgon = [0, 1].map(() => [el('ellipse', { fill: '#2B2523', stroke: '#fff',
 const eMun = el('ellipse', { fill: '#8E2F26', stroke: '#2B2523', 'stroke-width': 5 }, ansG);
 const eSmil = el('path', { fill: 'none', stroke: '#2B2523', 'stroke-width': 7, 'stroke-linecap': 'round' }, ansG);
 function eAnsikte(t, ut) {
-  if (!A.ansikte || t < A.ansikte) return ansG.style.display = 'none';
+  const [a0, a1] = A.ansikten.find(([a, b]) => t >= a && t < b + 0.3) ?? []; if (a0 === undefined) return ansG.style.display = 'none';
   ansG.style.display = ''; ansG.setAttribute('opacity', ut.toFixed(3));
   const pt = (u, v) => varld(KB.skarm(0, u, v)), [ax, ay] = pt(-0.5, 0), [bx, by] = pt(0.5, 0), U = Math.hypot(bx - ax, by - ay);
-  const pop = inUt(clamp((t - A.ansikte) / 0.3)) + 0.15 * bage((t - A.ansikte - 0.2) / 0.3), blundar = (t - A.ansikte) % 3.2 > 3.05;
+  const pop = (inUt(clamp((t - a0) / 0.3)) + 0.15 * bage((t - a0 - 0.2) / 0.3)) * (1 - inUt(clamp((t - a1) / 0.3))), blundar = (t - a0) % 3.2 > 3.05;
   [[-0.005, 0.115], [0.095, 0.115]].forEach(([u, v], i) => { const [x, y] = pt(u, v), r = 0.036 * U * pop, [e, g] = eOgon[i];
     for (const [k, w] of Object.entries({ cx: x, cy: y, rx: r, ry: r * 1.15 * (blundar ? 0.12 : 1) })) e.setAttribute(k, w.toFixed(1));
     for (const [k, w] of Object.entries({ cx: x - 0.3 * r, cy: y - 0.4 * r, r: 0.33 * r })) g.setAttribute(k, w.toFixed(1));
