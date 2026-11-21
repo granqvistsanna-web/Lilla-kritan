@@ -7616,9 +7616,10 @@
   "sec": 91,
   "tags": [],
   "note": "lower chair from the start, so it doesnt get so high. stick toothbrush more down in pocket and make it red",
-  "fixed": false,
+  "fixed": true,
   "at": 1795295971731,
-  "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))"
+  "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))",
+  "fixedAt": 1795296386682
  },
  "v9rbot8qrtmwqwvzvd": {
   "ep": "049",
@@ -7626,8 +7627,9 @@
   "sec": 197,
   "tags": [],
   "note": "polish tanke bubblor så de syns bättre. först aksnke en pratbubbla och sedan tanke bubbla? bättre animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795296005977,
-  "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))"
+  "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))",
+  "fixedAt": 1795296386682
  }
 }
