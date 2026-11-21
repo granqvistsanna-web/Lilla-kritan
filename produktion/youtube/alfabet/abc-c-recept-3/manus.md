@@ -14,6 +14,10 @@ Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur 
 
 **Clown uttalas med k** (*klaun*), men **cykel och cirkel med s**. Sanna valde 2026-11-21 att byta *"C, c, clown!"* mot *"En clown!"*, så att ljudramsan (*"C, c, …"*) bara används för s-orden. *"Alla börjar på bokstaven C."* stämmer i stavningen.
 
+## C-märket säger sitt ljud
+
+Som A, B och E (Sanna 2026-11-21): efter *"Bokstaven C."* får märket ögon och mun och säger *"c, c, C!"* en gång, och i slutet efter *"Hej då! Vi ses!"* två gånger. Sanna valde **s-ljudet** (bokstavsnamnet *se*, som i ramsan *"C, c, cykel!"*), inte k som i clown. Klippen `c-ljud-1…3` är klippta ur `p-c-c-cykel` (tagning 1 och 2), inga nya krediter.
+
 ## Uppslagen
 
 Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.
