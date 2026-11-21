@@ -7229,9 +7229,10 @@
   "sec": 39,
   "tags": [],
   "note": "start bus soud here",
-  "fixed": false,
+  "fixed": true,
   "at": 1795261817731,
-  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)"
+  "render": "2026-11-21 12:35 (Feedback 21/11: glans, bussen hörs komma, längre fönsterbild, svansar, kaninen på backen + katten vinkar, nytt 'Är det dags nu? Inte än', hjärtat högre, två frågor borta, imman långsammare, knack i pausen, stjärnor i fönstren, rosa hjärtan, mjukare klipp)",
+  "fixedAt": 1795282032668
  },
  "6cv5ash271mwqcjiv8": {
   "ep": "J19",
