@@ -7419,9 +7419,10 @@
   "sec": 26,
   "tags": [],
   "note": "center tandläkare face, move camera up",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291778380,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292694423
  },
  "endmnw6bjemwque75b": {
   "ep": "049",
