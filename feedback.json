@@ -7389,9 +7389,10 @@
   "sec": 99,
   "tags": [],
   "note": "no overlap ball dog",
-  "fixed": false,
+  "fixed": true,
   "at": 1795292122877,
-  "render": "2026-11-21 19:11 (slutrendering)"
+  "render": "2026-11-21 19:11 (slutrendering)",
+  "fixedAt": 1795293228102
  },
  "ehxry8xyggmwqulob5": {
   "ep": "J17",
@@ -7399,9 +7400,10 @@
   "sec": 162,
   "tags": [],
   "note": "rulle is hard to see on white flooe",
-  "fixed": false,
+  "fixed": true,
   "at": 1795292165201,
-  "render": "2026-11-21 19:11 (slutrendering)"
+  "render": "2026-11-21 19:11 (slutrendering)",
+  "fixedAt": 1795293228102
  },
  "qqdzktpu9mwqulypg": {
   "ep": "J17",
@@ -7409,9 +7411,10 @@
   "sec": 189,
   "tags": [],
   "note": "make dog bugger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795292178676,
-  "render": "2026-11-21 19:11 (slutrendering)"
+  "render": "2026-11-21 19:11 (slutrendering)",
+  "fixedAt": 1795293228102
  },
  "u876150wfemwquddu4": {
   "ep": "049",
