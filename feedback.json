@@ -7495,9 +7495,10 @@
   "sec": 158,
   "tags": [],
   "note": "chair is too high",
-  "fixed": false,
+  "fixed": true,
   "at": 1795291967729,
-  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))"
+  "render": "2026-11-21 21:00 (förhandsvisning 1 (snabb, utan logotyp och slutmix))",
+  "fixedAt": 1795292706892
  },
  "7c4ope628cmwqui8ri": {
   "ep": "049",
