@@ -1,6 +1,6 @@
 01-kritan-ritar 1.54
 02-vad-blir-det 1.73
-03-oj-en-hund 1.84
+03-en-potta 1.05
 04-hej-hunden 1.68
 05-fin-tomteluva 2.33
 06-vad-du-leker 1.71

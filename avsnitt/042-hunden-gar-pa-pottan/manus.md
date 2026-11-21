@@ -46,13 +46,13 @@ Lilla Kritans logotyp i 1 s, sedan papperet. Ingen jingel, inget titelkort.
 
 ## KRITAN RITAR (~16 s) – papper
 
-Kritan ritar hunden med tomteluvan: konturen i lugna drag (7 s), väntar medan barnet gissar, den riktiga hunden fylls i. Zoom in i teckningen, in i det julpyntade vardagsrummet.
+Kritan ritar pottan: konturen i ett lugnt drag (7 s), väntar medan barnet gissar, den riktiga pottan fylls i. Zoom in i teckningen, in i det julpyntade vardagsrummet. (Sanna 2026-11-21, J17 0:08: "make kritan rita potta in intro"; förut ritade kritan hunden.)
 
 ## VARDAGSRUMMET (jul)
 
 | # | Bild (en rörelse) | Malin säger | Hunden svarar, ljud |
 |---|---|---|---|
-| 01 | Papperet: kritan ritar konturen | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En hund! | krita-ritar, karolen lågt |
+| 01 | Papperet: kritan ritar konturen | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* En potta! | krita-ritar, karolen lågt |
 | 1 | Helbild, hunden trippar in vid granen och vinkar. Snön faller utanför fönstret | Hej, hunden! Hej, hej! | små steg, `vov-hej`, svansen viftar |
 | 2 | Närbild, hunden vickar på luvan | Oj, vilken fin tomteluva du har! | `vov-fniss`, `bjallror` lätt |
 | 3 | Helbild, hunden puffar bollen förbi paketet, den far upp och landar | Oj, vad du leker! | `nos`, `boing`, `vov-fniss` |
@@ -124,7 +124,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 ```
 [warmly] Kritan ritar …
 [curious] Hm … vad blir det nu?
-[excited] Oj! En hund!
+[happy] En potta!   ← 03-en-potta: klippt ur tagningen av 23 ("En potta! Varsågod, hunden."), 2026-11-21
 [happy] Hej, hunden! Hej, hej!
 [delighted] Oj, vilken fin tomteluva du har!
 [laughs] Oj, vad du leker!
@@ -204,6 +204,7 @@ Familjen finns i `assets/ljud/effekter/`: `vov-hej`, `vov-ja`, `vov-fniss`, `vov
 - **Musiken lägre** (Sanna: "lower music"): karolen 0,3 × 0,4 i scenen mot 0,25 i animatiken.
 - Rad 6 fick 1,3 s mer före repliken, så att hunden hinner plocka upp glaset.
 - Scenen: `scener/badrummet/index.html`, ritintrots kontur spårad ur riggen (`hund-kontur.json`). Julkalenderns lucka 17 är intro och outro.
+- **Feedback J17 2026-11-21:** kritan ritar pottan i introt i stället för hunden (`potta-v3-kontur.json`, ett drag, fylls inifrån, linjen tonas bort), Malin säger *"En potta!"* (replik 03, klippt ur 23). Hunden syns första gången när den kommer in i kaktusrummet. Luckan byggd om med julkalenderns ram (förra uppladdningen var scenens film utan ram).
 
 ## Öppet
 

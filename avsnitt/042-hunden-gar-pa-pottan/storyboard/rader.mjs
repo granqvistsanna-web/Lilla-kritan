@@ -23,13 +23,13 @@ const klunk2 = (r, n) => [[KLUNK(1), r + L(n) * 0.12], [KLUNK(2), r + L(n) * 0.3
 export const RADER = [
   { id: '00', d: 1.0, plats: 'Logotypen', bild: 'Lilla Kritans logotyp i 1 s, sedan papperet', ljudtext: '–', ansikte: '–' },
 
-  // --- Kritan ritar hunden med tomteluvan (papperet) ---
+  // --- Kritan ritar pottan (papperet). Sanna 2026-11-21 (J17 0:08): "make kritan rita potta in intro" ---
   { id: '01a', d: 8.0, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [[RITA(1), 0.3]], musik: true,
-    bild: 'Kritan ritar hunden med tomteluvan: konturen i ett lugnt drag (huvudet, öronen, luvan, kroppen, armarna)', ljudtext: 'kritan ritar, karolen lågt', ansikte: '–' },
+    bild: 'Kritan ritar pottan: konturen i ett lugnt drag', ljudtext: 'kritan ritar, karolen lågt', ansikte: '–' },
   { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]], musik: true,
     bild: 'Konturen klar, kritan väntar bredvid och svajar: barnet gissar', ljudtext: 'tyst, karolen lågt', ansikte: '–' },
   { id: '01c', d: 0.6 + L(3) + 1.6, plats: 'Papperet → zoom in', malin: [[3, 0.6]], ljud: [[GLITTER, 0.1]], musik: true,
-    bild: 'Hunden fylls i inifrån. Zoom in i papperet, in i det julpyntade vardagsrummet', ljudtext: '`glitter`', ansikte: '–' },
+    bild: 'Pottan fylls i inifrån ("En potta!"). Zoom in i papperet, in i det julpyntade vardagsrummet', ljudtext: '`glitter`', ansikte: '–' },
 
   // --- Kaktusrummet (Sanna 2026-11-20, v1 förlängt åt höger): leka med bollen ---
   { id: '1', d: 4.0 + L(4) + G + 1.0, plats: 'Kaktusrummet, helbild', malin: [[4, 4.0]], musik: true,

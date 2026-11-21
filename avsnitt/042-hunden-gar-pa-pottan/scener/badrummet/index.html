@@ -101,8 +101,8 @@ const svajP = (x, y, tl) => [x + 14 * Math.sin(tl * 1.6), y + 10 * Math.sin(tl *
 const kritaGlid = (A, B, k, s, bage = 40) => { const m = mjuk(k), h = Math.min(1, Math.hypot(B[0] - A[0], B[1] - A[1]) / 300) * bage * Math.sin(Math.PI * m);
   krita(lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h, lerp(A[2] ?? 125, B[2] ?? 125, m), s); };
 const ritfart = k => (k = kl(k), 0.6 * k + 0.4 * mjuk(k));
-function kontur(namn, t, k, bredd, farg = '#3a2c28') {
-  lagg('pilar', `<g transform="${t}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(bredd)}"
+function kontur(namn, t, k, bredd, farg = '#3a2c28', o = 1) {
+  lagg('pilar', `<g transform="${t}" opacity="${o.toFixed(3)}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(bredd)}"
     stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k.toFixed(4)} 2"/></g>`);
   const p = $('k-' + namn), q = p.getPointAtLength(p.getTotalLength() * Math.min(0.999, k)), sm = $('kamera').getCTM().inverse().multiply(p.getCTM());
   const pt = new DOMPoint(q.x, q.y).matrixTransform(sm); return [pt.x, pt.y];
@@ -321,27 +321,29 @@ const HZ = 1.3, HEL = (cx = STA[0]) => kamera(HZ, cx, 580),   // helbilden 1.3 (
 const DRK = () => kamera(1.95, VID_GLAS[0] + 70, K_GOLV - 245);   // Sanna 2026-11-20 (0:47): "bigger dog" när den dricker
 const pottaKam = (z = 1.9) => kamera(z, POTTA[0] + 60, B_GOLV - 250);
 
-// --- Ritintrot: kritan ritar hundens kontur (spårad ur riggen med luvan, hund-kontur.json), sedan fylls hunden i -----------------
-const PH = [960, 990], PS = 0.78;
-function papperHund(k, fyll, f = ANS('glad')) {
-  papper(); PW = 1920; let sp = null;
-  const t = `translate(${PH[0]} ${PH[1]}) scale(${PS}) translate(-512 ${-L.FOTTER})`;
-  if (fyll > 0) { hund(PH, f, {}, { s: PS, skugga: false });
-    G.setAttribute('clip-path', 'url(#fyllklipp)'); }
-  if (fyll < 1) { const q = kontur('hund', t, ritfart(k), 10 / PS, '#5b3a2a'); if (k > 0 && k < 1) sp = q; }
+// --- Ritintrot: kritan ritar pottans kontur (som i badrummet, men stor på papperet), sedan fylls pottan i inifrån ------------------
+// Sanna 2026-11-21 (J17 0:08): "make kritan rita potta in intro". Linjen tonas bort medan pottan fylls (kritan-ritar).
+const PP = [960, 850, 500];
+function papperPotta(k, fyll) {
+  papper(); PW = 1920; let sp = null; const [t, s] = sakT('potta', PP);
+  if (fyll > 0) { skugga(PP[0], PP[1], 300, 'bak', 0.10 * mjuk(fyll)); sakFyll('potta', PP, fyll); }
+  const o = 1 - del(0.15, 0.9, fyll);
+  if (o > 0 && k > 0) { const q = kontur('potta', t, ritfart(k), 12 / s, '#3a2c28', o); if (k > 0 && k < 1) sp = q; }
   return sp;
 }
 
 // --- Raderna --------------------------------------------------------------------------------------------------------------------
 const VID_GLAS = [GLAS[0] - 150, K_GOLV];
 const S = {
-  '01a': (tl, d) => { kamera(1); const k = kl((tl - 0.3) / (d - 0.6)), sp = papperHund(k, 0); if (sp) krita(sp[0], sp[1], 125, 0.42 * (0.7 + 0.3 * del(0, 0.4, tl))); },
-  '01b': tl => { kamera(1); papperHund(1, 0);
-    kritaGlid([PH[0] - 60, 300, 125], svajP(1420, 300, tl), del(0, 1.1, tl), 0.42, 60); },
+  '01a': (tl, d) => { kamera(1); const k = kl((tl - 0.3) / (d - 0.6)), sp = papperPotta(k, 0);
+    if (tl < 0.3) { const [, s] = sakT('potta', PP), st = KONTUR.potta.start; return kritaGlid([2100, 60, 140], [PP[0] + (st[0] - 368) * s, PP[1] + (st[1] - 517) * s, 125], tl / 0.3, 0.42, 0); }
+    if (sp) krita(sp[0], sp[1], 125, 0.42); },
+  '01b': tl => { kamera(1); const [, s] = sakT('potta', PP), sl = KONTUR.potta.start; papperPotta(1, 0);
+    kritaGlid([PP[0] + (sl[0] - 368) * s, PP[1] + (sl[1] - 517) * s, 125], svajP(1420, 300, tl), del(0, 1.1, tl), 0.42, 60); },
   '01c': (tl, d) => { const z0 = mo(0) + rl(3) + 0.2, klipp = z0 + 1.0;
-    if (tl < klipp) { const z = mjuk((tl - z0) / (klipp - z0)); kamera(lerp(1, 2.6, z), 960, lerp(560, 480, z));
-      fyllR(del(0, 0.9, tl)); papperHund(1, del(0, 0.9, tl)); kritaGlid(svajP(1420, 300, RR['01b'].d + tl), [2100, 60, 140], del(0.2, 1.4, tl), 0.42, 0);
-      skimmer(960, 640, 0.7 * bump(0.3, 2.0, tl), 2.4); vit(del(klipp - 0.45, klipp, tl)); return; }
+    if (tl < klipp) { const z = mjuk((tl - z0) / (klipp - z0)); kamera(lerp(1, 2.6, z), 960, lerp(560, 620, z));
+      papperPotta(1, del(0, 0.9, tl)); kritaGlid(svajP(1420, 300, RR['01b'].d + tl), [2100, 60, 140], del(0.2, 1.4, tl), 0.42, 0);
+      skimmer(960, 600, 0.7 * bump(0.3, 2.0, tl), 2.4); vit(del(klipp - 0.45, klipp, tl)); return; }
     kaktus(); boll(BOLL_FRAM); kamera(HZ, 760, 580); vit(1 - del(klipp, klipp + 0.6, tl)); },
 
   // --- Kaktusrummet: hunden kommer in genom dörren och leker med bollen ---

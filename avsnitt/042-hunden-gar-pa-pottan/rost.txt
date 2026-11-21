@@ -1,6 +1,6 @@
 01-kritan-ritar  [warmly] Kritan ritar …
 02-vad-blir-det  [curious] Hm … vad blir det nu?
-03-oj-en-hund  [excited] Oj! En hund!
+03-en-potta  [happy] En potta!
 04-hej-hunden  [happy] Hej, hunden! Hej, hej!
 05-fin-tomteluva  [delighted] Oj, vilken fin tomteluva du har!
 06-vad-du-leker  [laughs] Oj, vad du leker!
