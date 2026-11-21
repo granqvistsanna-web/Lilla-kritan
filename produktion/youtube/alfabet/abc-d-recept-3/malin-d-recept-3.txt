@@ -1,0 +1,61 @@
+p-hej-hej  [warm] Hej hej!
+p-kritan-ritar  [warm] Kritan ritar.
+p-det-ar-d  [excited] Det är ju D!
+p-bokstaven-d  [warm] Bokstaven D.
+p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven D.
+p-hmm  [curious] Hmm …
+p-vem  [curious] Vem är det?
+p-dino  [excited] Dinosaurie!
+p-d-d-dino  [playful] D, d, dinosaurie!
+p-dino-d  [excited] Ja! Dinosaurie börjar på bokstaven D.
+n-hej-dinon  [warm] Hej, dinon!
+n-vill-halsa  [warm] Dinon vill hälsa på någon.
+n-ingen-dorr  [warm] Men dinon har ingen dörr att knacka på.
+n-rita-knacka  [excited] Kritan! Kan du rita något att knacka på?
+n-vad-sa-du  [curious] Vad sa du, dinon?
+n-maste-d  [curious] Måste det börja på bokstaven D?
+n-kan-du-kritan  [playful] Kan du det, kritan?
+n-nu-ritar  [warm] Nu ritar kritan.
+p-gris  [curious] Gris?
+p-en-gris  [surprised] En gris!
+n-busiga  [laughs] Ha ha! Busiga kritan!
+p-gris-inte  [playful] Gris börjar inte på D.
+p-hej-da-grisen  [warm] Hej då, grisen!
+p-engang  [excited] En gång till!
+n-nagot-pa-d  [playful] Något på bokstaven D att knacka på, tack!
+p-vad-blir  [curious] Vad blir det?
+p-dorr  [excited] Dörr!
+p-d-d-dorr  [playful] D, d, dörr!
+p-ocksa-dorr  [warm] Dörr börjar också på D!
+n-knacka-pa  [excited] Kom, dinon! Knacka på!
+n-knack-knack  [playful] Knack, knack!
+n-nagon-hemma  [curious] Är det någon hemma?
+n-knackar-igen  [warm] Dinon knackar igen.
+n-knack-knack-knack  [playful] Knack, knack, knack!
+n-vill-veta  [curious] Dinon vill veta vem som bor där.
+n-rita-vem  [playful] Kritan, rita vem som bor bakom dörren!
+p-docka  [excited] Docka!
+p-en-docka  [excited] En docka!
+p-ocksa-docka  [warm] Docka börjar också på D!
+n-dockan-tittar  [excited] Titta! Dockan tittar fram!
+n-hej-dockan  [warm] Hej, dockan!
+n-ny-kompis  [excited] Nu har dinon en kompis!
+p-nuleker  [excited] Nu leker vi!
+n-titta-noga  [curious] Titta noga. Var är dinon?
+n-dar-ar-den  [excited] Där är den!
+p-entill  [curious] Titta! En till.
+p-hund  [curious] Hund.
+p-vilken  [curious] Vilken ska bort?
+p-inte-d  [curious] Vilken börjar inte på D?
+p-hunden  [excited] Hunden!
+p-hund-inte  [playful] Hund börjar inte på D.
+n-hej-da-hunden  [warm] Hej då, hunden!
+n-tre-pa-d  [warm] Dinosaurie, dörr, docka.
+p-alla-d  [warm] Alla börjar på bokstaven D.
+p-nu-dansar  [excited] Nu dansar vi!
+n-dinon-dansar  [excited] Dinon dansar!
+n-dorren-snurrar  [playful] Dörren snurrar!
+n-dockan-snurrar  [playful] Dockan snurrar!
+n-allt-for-idag  [warm] Det var allt för i dag.
+n-vad-kul  [warm] Vad kul det var att leka!
+p-hej-da-slut  [warm] Hej då!
