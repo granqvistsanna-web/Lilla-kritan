@@ -1,5 +1,5 @@
 #!/bin/bash
-# Sätter ihop avsnitt 034 (efter node verktyg/render-delat.mjs avsnitt/034-musen-pyntar-granen/scener/vardagsrummet): det gemensamma bilderbok-introt (produktion/youtube/bilderbok-intro:
+# Sätter ihop avsnitt 034 (efter node verktyg/render-delat.mjs avsnitt/034-musen-pyntar-granen/scener/vardagsrummet): julvarianten av bilderbok-introt (produktion/youtube/bilderbok-intro-jul:
 # intro.mp4 och intro-effekter.wav med jingeln, popp och glitter) och sedan scenen med dess
 # effekter (Malins repliker, ljudeffekterna och rummets ljud ligger i scener/vardagsrummet/vardagsrummet-effekter.wav).
 # Mixen som 020: introts ljud och effekterna +6 dB, scenens förskjutna med introts längd (läses ur filen); mastras till −14,5 LUFS (QA 2026-11-15: −13,7 var för högt) / −1,5 dBTP (loudnorm i två pass).
@@ -7,8 +7,8 @@
 # ca −32 LUFS som 036, slingad, tonas in 2 s och ut sista 3 s, duckas under Malin och ljuden (sidechaincompress på scenens effekter).
 set -e
 cd "$(dirname "$0")/.."
-UT=film/avsnitt-034.mp4
-INTRO=../../produktion/youtube/bilderbok-intro
+UT=${UT:-film/avsnitt-034.mp4}   # UT=film/avsnitt-034-forhand.mp4 för en förhandsvisning
+INTRO=../../produktion/youtube/bilderbok-intro-jul   # julintrot "Djuren hittar på!" som 035 och 040 (Sanna 2026-11-21: "add julkal intro")
 langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 T=film/.tmp; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"

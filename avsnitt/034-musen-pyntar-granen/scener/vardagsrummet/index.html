@@ -38,16 +38,20 @@ const KULA = { bild: A + 'rekvisita/julkula/cut/julkula.png', ogla: [511, 160], 
 const STJ = { bild: A + 'rekvisita/stjarna-gul/cut/stjarna-gul.png', mitt: [510, 544], botten: 902, s: 0.14 };
 const GOLV = 935, MS = PROV.ms ?? 0.68, STA = [PROV.sta ?? 1080, GOLV];   // musens fötter och skala
 const TOPP = [1450, 116];                                                  // granens topp (stjärnans mitt när den sitter)
-// var kulorna ligger på golvet (underkanten) och var de hänger i granen (öglan)
-const KG = { rod: [700, 990], gul: [800, 990], bla: [900, 990] };
-const KT_ = { rod: [1318, 544], gul: [1540, 420], bla: [1598, 684] };
-const GOMD = [1548, 928];                                                 // den blå bakom julgransfotens högra ben, en bit syns
+// Julpyntlådan (2026-11-21, Sanna: "a big box of julpynt som musen ska använda"): står vid granfoten till höger om musen, där
+// musens korta arm når ner i den. Kritan ritar kulorna i lådan (underkanten på glittret) och musen tar dem därifrån.
+const LADA = { x0: 1285, x1: 1515, topp: 870, botten: 996 };
+const KG = { rod: [1331, 862], gul: [1403, 858], bla: [1468, 862] };
+// var kulorna hänger i granen (öglan): där musens hand är på "pling!" (mäts när scenen laddas, se KT_MAT), så att kulan sitter
+// i handen hela vägen och hänger kvar precis där tassen släpper den
+const KT_ = { rod: [1333, 600], gul: [1405, 555], bla: [1470, 650] };
+const GOMD = [1556, 928];                                                 // den blå bakom julgransfotens högra ben, en bit syns
 const TON = { rod: 0, gul: 48, bla: 205 };                                // hue-rotate ur den röda
 const STJ_GOLV = [800, 992];
 
 // --- Kameror [zoom, cx, cy], bara klipp ------------------------------------------------------------------------------------
-const K = { HEL: [1, 960, 540], STA: [1.45, 1150, 640], NARA: [2.0, STA[0], 590], GRAN: [1.35, 1450, 514], GOLV: [1.65, 830, 860],
-  SPEGEL: [4.8, KG.rod[0] - 25, KG.rod[1] - 20]   /* tätare (QA 2026-11-15): musens öra helt utanför bild */, FOT: [2.6, 1580, 850], TOPP: [2.4, 1450, 274], RIT: [1.5, 960, 700] };
+const K = { HEL: [1, 960, 540], STA: [1.45, 1150, 640], NARA: [2.0, STA[0], 590], GRAN: [1.35, 1450, 514], GOLV: [1.65, 1330, 800],
+  SPEGEL: [4.8, KG.rod[0] + 30, KG.rod[1] - 30]   /* tätare (QA 2026-11-15): musens öra helt utanför bild */, FOT: [2.6, 1580, 850], TOPP: [2.4, 1450, 274], RIT: [1.5, 960, 700] };
 let KAM = K.HEL, TT = 0, L, G, BLINKA;
 function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
@@ -57,7 +61,7 @@ function kamera([z, cx, cy]) {
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
 // --- SVG:n -------------------------------------------------------------------------------------------------------------
-const LAGER = ['platta', 'himmel', 'bak', 'gran', 'kulgran', 'figurer', 'gomd', 'fot', 'golvsak', 'fram', 'kontur', 'krita'];
+const LAGER = ['platta', 'himmel', 'bak', 'gran', 'kulgran', 'figurer', 'gomd', 'fot', 'lada', 'golvsak', 'fram', 'kontur', 'krita'];
 function byggSvg() {
   document.body.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 1920 1080">
   <defs>
@@ -85,6 +89,8 @@ function byggSvg() {
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-sak"><circle id="cirkel-sak" r="0"/></clipPath>
     <clipPath id="spegelklipp" clipPathUnits="userSpaceOnUse"><circle id="spegelcirkel" r="0"/></clipPath>
+    <clipPath id="tassklipp"><circle cx="840" cy="612" r="78"/></clipPath>
+    <clipPath id="ladklipp"><path d="M${LADA.x0} ${LADA.topp + 3} L${LADA.x1} ${LADA.topp} L${LADA.x1 - 5} ${LADA.botten - 2} L${LADA.x0 + 6} ${LADA.botten}Z"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">${LAGER.map(n => n === 'figurer' ? `<g filter="url(#boil)"><g id="${n}"></g></g>` : `<g id="${n}"></g>`).join('')}</g>
@@ -114,6 +120,31 @@ function rum() {
     <ellipse cx="${ELD.x}" cy="${ELD.y - 60}" rx="760" ry="520" fill="url(#sken)" style="mix-blend-mode:screen" opacity="${(0.3 + 0.1 * fl).toFixed(2)}"/>`;
 }
 const markskugga = (x, golv, w, o = 0.2) => `<ellipse cx="${f1(x + 6)}" cy="${f1(golv + 2)}" rx="${f1(w * 0.48)}" ry="${f1(w * 0.09)}" fill="#5a3e2a" opacity="${o}" filter="url(#mjukskugga)"/>`;
+// Julpyntlådan i kod: en kartong med lockfliken uppe bak och en åt höger, gyllene glitter som väller upp ur den, en grön
+// girlang i lugna bågar över framkanten och en ljus stjärna på framsidan. Vit klistermärkeskant och kritkorn som resten.
+function lada() {
+  const { x0, x1, topp: y0, botten: y1 } = LADA, kant = 'stroke="#fff" stroke-width="6" stroke-linejoin="round" paint-order="stroke"';
+  const fram = `M${x0} ${y0 + 3} Q${(x0 + x1) / 2} ${y0 - 3} ${x1} ${y0} L${x1 - 5} ${y1 - 2} Q${(x0 + x1) / 2} ${y1 + 2} ${x0 + 6} ${y1}Z`;
+  const glitter = `M${x0 + 8} ${y0 + 4} C${x0 + 6} ${y0 - 22} ${x0 + 40} ${y0 - 30} ${x0 + 62} ${y0 - 14} C${x0 + 80} ${y0 - 34} ${x0 + 118} ${y0 - 32} ${x0 + 130} ${y0 - 14}
+    C${x0 + 150} ${y0 - 36} ${x0 + 196} ${y0 - 30} ${x0 + 204} ${y0 - 10} C${x1 - 6} ${y0 - 24} ${x1 + 4} ${y0 - 6} ${x1 - 6} ${y0 + 2}Z`;
+  const bagar = Array.from({ length: 4 }, (_, i) => { const a = x0 + 6 + i * (x1 - x0 - 12) / 4, b = a + (x1 - x0 - 12) / 4;
+    return `M${f1(a)} ${y0 + 4} Q${f1((a + b) / 2)} ${y0 + 34} ${f1(b)} ${y0 + 4}`; }).join(' ');
+  const tofsar = Array.from({ length: 5 }, (_, i) => { const x = x0 + 6 + i * (x1 - x0 - 12) / 4; return `<circle cx="${f1(x)}" cy="${y0 + 4}" r="9" fill="#2F7D43"/>`; }).join('');
+  const stj = (x, y, r) => `<path d="${Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.45 : r;
+    return `${i ? 'L' : 'M'}${f1(x + rr * Math.cos(a))} ${f1(y + rr * Math.sin(a))}`; }).join('')}Z" fill="#FFF1B8" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke"/>`;
+  lagg('lada', markskugga((x0 + x1) / 2, y1 - 2, x1 - x0 + 30, 0.24) + `<g filter="url(#boil)">
+    <path d="M${x0 + 18} ${y0 + 2} L${x0 + 26} ${y0 - 74} Q${(x0 + x1) / 2} ${y0 - 82} ${x1 - 30} ${y0 - 76} L${x1 - 22} ${y0}Z" fill="#B07A44" ${kant}/>
+    <path d="M${x1 - 4} ${y0 + 2} L${x1 + 40} ${y0 - 58} L${x1 + 62} ${y0 - 30} L${x1 + 6} ${y0 + 40}Z" fill="#C48A50" ${kant}/>
+    <path d="${glitter}" fill="#E9B949" ${kant}/>
+    <g stroke="#FFE38A" stroke-width="4" stroke-linecap="round" opacity=".8">${[[30, -12], [74, -20], [112, -10], [150, -22], [186, -12]].map(([dx, dy]) => `<path d="M${x0 + dx} ${y0 + dy} l8 -10 M${x0 + dx + 10} ${y0 + dy + 2} l6 -12"/>`).join('')}</g>
+    <path d="${fram}" fill="#CF9558" ${kant}/>
+    <rect x="${x0}" y="${y0}" width="${x1 - x0}" height="${y1 - y0}" filter="url(#korn)" opacity=".55" clip-path="url(#ladklipp)"/>
+    <path d="M${x0 + 4} ${y0 + 14} Q${(x0 + x1) / 2} ${y0 + 9} ${x1 - 4} ${y0 + 12}" stroke="#A86E38" stroke-width="5" fill="none" opacity=".5"/>
+    ${stj((x0 + x1) / 2, (y0 + y1) / 2 + 16, 26)}
+    <path d="${bagar}" stroke="#fff" stroke-width="22" fill="none" stroke-linecap="round"/><path d="${bagar}" stroke="#3E9B4F" stroke-width="14" fill="none" stroke-linecap="round"/>
+    ${tofsar}${[[0.22, '#E8452C'], [0.5, '#FFD54A'], [0.78, '#E8452C']].map(([k, c]) => `<circle cx="${f1(x0 + k * (x1 - x0))}" cy="${y0 + 26}" r="6" fill="${c}"/>`).join('')}
+  </g>`);
+}
 const bild = (o, [x, y], fot, s, v = 0, extra = '') => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-fot[0]} ${-fot[1]})"${extra}><image href="${o.bild}" width="1024" height="1024"/></g>`;
 
 // --- Musen ---------------------------------------------------------------------------------------------------------------
@@ -125,6 +156,15 @@ function mus([x, fot], f, p, { s = MS, skugga = true, lager = 'figurer' } = {}) 
   L.rita(G, f, p.andas === false ? p : { ...p, strack: (p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * TT / 3.4) });   // andas lugnt
   G.querySelector('.figuren').setAttribute('opacity', 1);
   if (!skugga) G.querySelector('.skugga')?.setAttribute('opacity', 0);
+}
+// Tassen framför en sak i handen: armen ligger bakom kroppen, så saken ritas framför kroppen och en kopia av handen (bara
+// tassen, en cirkel kring spetsen i armbildens ruta) läggs ovanpå i samma lager.
+function tass() {
+  const el = [...G.querySelectorAll('.arm-r')].find(e => e.getAttribute('opacity') !== '0') || G.querySelector('.arm-r');
+  const m = $('kamera').getCTM().inverse().multiply(el.getCTM()), k = el.cloneNode(true);
+  k.removeAttribute('transform'); k.setAttribute('opacity', 1);
+  lagg('gomd', `<g filter="url(#boil)"><g transform="matrix(${[m.a, m.b, m.c, m.d, m.e, m.f].map(v => v.toFixed(4)).join(' ')})"><g clip-path="url(#tassklipp)" id="tasskopia"></g></g></g>`);
+  $('tasskopia').appendChild(k); $('tasskopia').removeAttribute('id');
 }
 // handens spets (arm-r) i scenen, för stjärnan i handen
 function hand() {
@@ -265,7 +305,7 @@ const INN = 1.6;   // kritans inglidning före ritandet (s)
 const SVART = 0.6, DURATION = acc + SVART;
 const M = (n, r) => Rd[r].malin.find(m => m[0] === n)[1];   // replikens start i raden
 
-// Kulornas och stjärnans läge per rad. kula: { golv } | { gran, gung: s sedan den satte sig } | { upp: 0–1 } | { rit: {ritad, fyll} }
+// Kulornas och stjärnans läge per rad. kula: { golv } (i lådan) | { gran, gung: s sedan den satte sig } | { iHand } | { rit: {ritad, fyll} }
 // | { rull: 0–1 (golv → gömd) } | { gomd } | null. Raderna efter en ändring ärver läget (FORE nedan).
 const G0 = { golv: true }, GR = (g = 9) => ({ gran: true, gung: g });
 const KULOR = { rod: null, gul: null, bla: null, stj: null };
@@ -276,7 +316,7 @@ const SLUT = {};
   for (const r of RAD) {
     if (r.id === '4b') satt(r.id, { rod: G0 }); else if (r.id === '7b') satt(r.id, { gul: G0 }); else if (r.id === '8b') satt(r.id, { bla: G0 });
     else if (r.id === '12') satt(r.id, { bla: { gomd: true } }); else if (r.id === '14') satt(r.id, { rod: GR() }); else if (r.id === '15') satt(r.id, { gul: GR() });
-    else if (r.id === '18') satt(r.id, { bla: G0 }); else if (r.id === '19') satt(r.id, { bla: GR() }); else if (r.id === '21b') satt(r.id, { stj: G0 });
+    else if (r.id === '18') satt(r.id, { bla: { iHand: true } }); else if (r.id === '19') satt(r.id, { bla: GR() }); else if (r.id === '21b') satt(r.id, { stj: G0 });
     else if (r.id === '23') satt(r.id, { stj: { hand: true } }); else if (r.id === '25') satt(r.id, { stj: { topp: true } }); else SLUT[r.id] = { ...k };
   } }
 const FORE = id => { const i = RAD.findIndex(r => r.id === id); return i > 0 ? SLUT[RAD[i - 1].id] : KULOR; };
@@ -285,10 +325,38 @@ const FORE = id => { const i = RAD.findIndex(r => r.id === id); return i > 0 ? S
 const RUM = (id, o = {}) => ({ plats: 'rum', kam: K.STA, pos: STA, kulor: { ...FORE(id) }, ...o });
 const NARA_LED = (tl) => ANS('ledsen', { titt: [0, 8] });
 const tittaKula = n => [Math.sign(KG[n][0] - STA[0]) * 10, 8];
-const upp = (id, n, malinNr) => tl => { const a = M(malinNr, id) + ord(malinNr, 'Upp'), b = M(malinNr, id) + ord(malinNr, 'pling'), u = del(a, b, tl);
-  const arm = bump(a - 0.4, b + 0.9, tl) ** 0.6;
-  return RUM(id, { kam: K.STA, f: ANS('glad', { titt: [10, -10 * u] }), p: POS({ ...L.blandaPose('neutral', 'nar', arm), upp: 0.5 * arm }),
-    kulor: { ...FORE(id), [n]: tl < b ? { upp: u } : GR(tl - b) }, glimt: n !== 'stj' && tl > b ? bump(b, b + 0.8, tl) : 0, glimtVar: n }); };
+// Musen pyntar (feedback 2026-11-21 "improve animation of mouse lifting kulor to tree"): tar kulan ur lådan med handen, håller
+// den vid sidan, lyfter den i en lugn båge på "Upp, upp" (armen svänger kring axeln) och hänger den på "pling!" där handen är
+// (KT_). Kulan sitter vid handens spets hela vägen, tassen framför (kulan ritas bakom musen). Ett litet reaktionsslag när den
+// hänger: öronen vippar, musen sätter sig lite och blir jätteglad, kulan gungar och glimtar. Musen tar ett par små steg åt höger
+// till kulan (lådan är bredare än armen) och tillbaka till STA efteråt. T = { a: börjar, g: greppet, u: "Upp", pl: "pling" } i raden.
+const DX = n => KG[n][0] - KG.rod[0];                                      // så långt åt höger musen står för kulan
+const NYCKEL = n => [['vila', { arm: 0, luta: 0, boj: 0, upp: 0, sank: 0, strack: 0 }],
+  ['plock', { arm: -40, luta: 6, boj: 6, upp: -0.6, sank: 20, strack: 0 }],      // böjer sig ner i lådan (handen når öglan)
+  ['sida', { arm: -2, luta: 2, boj: 2, upp: 0.1, sank: 0, strack: 0 }],          // håller kulan vid sidan och tittar upp
+  ['nar', { arm: n === 'bla' ? 45 : 85, luta: 9, boj: 3, upp: 0.3, sank: -4, strack: 0.04 }]];   // på tå, lutar sig in mot granen, armen upp mot grenen
+const tripp = (tl, a, b) => { const amp = bump(a, b, tl), f = Math.sin((tl - a) / (b - a) * 2 * Math.PI) * amp;   // två små steg
+  return { ben: [14 * f, 14 * f], benY: [-30 * Math.max(0, -f), -30 * Math.max(0, f)], lyft: -Math.abs(f) * 6 }; };
+function pynta(tl, n, T) {
+  const N = Object.fromEntries(NYCKEL(n)), dx = DX(n), hopp = n === 'gul' ? 38 : 0;
+  const kf = [[T.a, N.vila], [T.g, N.plock], [T.g + 0.3, N.plock], [T.g + 1.0, N.sida], [T.u, N.sida], [T.pl, N.nar], [T.pl + 0.55, N.nar], [T.pl + 1.4, N.vila]];
+  let i = kf.findIndex(k => tl < k[0]); if (i < 0) i = kf.length; const A = kf[Math.max(0, i - 1)], B = kf[Math.min(kf.length - 1, i)];
+  const w = A === B ? 0 : mjuk((tl - A[0]) / (B[0] - A[0])), v = k => lerp(A[1][k], B[1][k], w);
+  const ri = del(T.a, T.a + 0.5, tl) * (1 - del(T.pl + 0.8, T.pl + 1.4, tl));
+  const ut = dx ? del(T.a, T.a + 0.7, tl) * (1 - del(T.pl + 1.3, T.pl + 2.3, tl)) : 0;
+  const st = dx ? (tl < T.pl ? tripp(tl, T.a, T.a + 0.7) : tripp(tl, T.pl + 1.3, T.pl + 2.3)) : { ben: [0, 0], benY: [0, 0], lyft: 0 };
+  const slag = bump(T.pl + 0.05, T.pl + 0.45, tl), glad = del(T.pl + 0.05, T.pl + 0.2, tl) * (1 - del(T.pl + 1.3, T.pl + 1.6, tl));   // kort byte, inget halvblundande kis
+  const f = L.blanda(ANS('glad', { titt: [12, lerp(14, -8, del(T.g + 0.4, T.pl, tl))] }), ANS('jatteglad', { titt: [6, -8] }), glad);   // blicken följer kulan
+  const p = POS({ rikt: ri, bada: ri, armar: [0, v('arm')], luta: v('luta'), boj: v('boj'), upp: v('upp') - 0.5 * slag, sank: v('sank'), strack: v('strack') - 0.03 * slag,
+    ben: st.ben, benY: st.benY, lyft: st.lyft - hopp * bump(T.pl - 0.45, T.pl + 0.3, tl), oron: [oronVipp(tl, T.pl + 0.05) - 3 * ri, -oronVipp(tl, T.pl + 0.05) - 3 * ri] });
+  const kula = tl < T.g ? G0 : tl < T.pl ? { iHand: true } : GR(tl - T.pl);
+  return { pos: [STA[0] + dx * ut, GOLV], f, p, kula };
+}
+const PYNT = { rod: { id: '14', nr: 19 }, gul: { id: '15', nr: 20 }, bla: { id: '19', nr: 24 } };
+const upp = (id, n, malinNr) => tl => { const m = M(malinNr, id), pl = m + ord(malinNr, 'pling');
+  const T = n === 'bla' ? { a: -9, g: -8, u: m + ord(malinNr, 'Upp'), pl } : { a: 0.2, g: n === 'gul' ? 1.4 : 1.3, u: m + ord(malinNr, 'Upp'), pl };
+  const y = pynta(tl, n, T);
+  return RUM(id, { kam: K.STA, f: y.f, p: y.p, pos: y.pos, kulor: { ...FORE(id), [n]: y.kula }, glimt: tl > pl ? bump(pl, pl + 0.8, tl) : 0, glimtVar: n }); };
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K.HEL, kontur: (tl - 2.5) / KT, fyll: 0, inn: tl < 2.5 ? tl : null }),
   '01b': tl => ({ plats: 'papper', kam: K.HEL, kontur: (6.0 + tl - 2.5) / KT, fyll: 0, vanta: 6.0 + tl - 2.5 - KT }),
@@ -304,34 +372,37 @@ const S = {
   '3': (tl, d) => { const c = M(6, '3') + LANGD(6) + 0.3, led = del(c, c + 0.7, tl);
     return RUM('3', { kam: tl < c ? K.GRAN : K.NARA, f: tl < c ? ANS('nyfiken', { titt: [14, -10] }) : NARA_LED(tl), p: POS({ upp: -0.5 * led, oron: [12 * led, 12 * led] }) }); },
   '4a': tl => { const r0 = INN, ritad = del(r0, r0 + 3.4, tl);
-    return RUM('4a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-14, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'rod', ritad, fyll: 0, vanta: tl > r0 + 3.4 ? tl - r0 - 3.4 : null, inn: tl <= r0 ? tl / r0 : null } }); },
-  '4b': tl => RUM('4b', { kam: K.GOLV, f: L.blanda(ANS('forvanad', { titt: [-14, 10] }), ANS('glad', { titt: [-14, 10] }), del(1.5, 2.0, tl)), p: POS({ upp: -0.4 }),
+    return RUM('4a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [14, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'rod', ritad, fyll: 0, vanta: tl > r0 + 3.4 ? tl - r0 - 3.4 : null, inn: tl <= r0 ? tl / r0 : null } }); },
+  '4b': tl => RUM('4b', { kam: K.GOLV, f: L.blanda(ANS('forvanad', { titt: [14, 10] }), ANS('glad', { titt: [14, 10] }), del(1.5, 2.0, tl)), p: POS({ upp: -0.4 }),
     rit: { n: 'rod', ritad: 1, fyll: del(0, 1.4, tl), ut: tl }, glitter: bump(0, 2.6, tl), glitterVar: 'rod' }),
-  '5': tl => { const e = M(11, '5'); return RUM('5', { kam: K.NARA, f: L.blanda(ANS('kawaii', { titt: [-10, 10] }), ANS('jatteglad'), del(e - 0.1, e + 0.3, tl)),
+  '5': tl => { const e = M(11, '5'); return RUM('5', { kam: K.NARA, f: L.blanda(ANS('kawaii', { titt: [10, 10] }), ANS('jatteglad'), del(e - 0.1, e + 0.3, tl)),
     p: POS({ upp: -0.3 + nick(tl, e), oron: [oronVipp(tl, e + 0.1) - 4, -oronVipp(tl, e + 0.1) - 4] }) }); },
   '7a': tl => { const r0 = INN, ritad = del(r0, r0 + 2.6, tl);
-    return RUM('7a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-10, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad, fyll: 0, vanta: tl > r0 + 2.6 ? tl - r0 - 2.6 : null, inn: tl <= r0 ? tl / r0 : null } }); },
-  '7b': tl => RUM('7b', { kam: K.GOLV, f: ANS('glad', { titt: [-10, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad: 1, fyll: del(0, 1.2, tl), ut: tl }, glitter: bump(0, 2.2, tl), glitterVar: 'gul' }),
+    return RUM('7a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [12, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad, fyll: 0, vanta: tl > r0 + 2.6 ? tl - r0 - 2.6 : null, inn: tl <= r0 ? tl / r0 : null } }); },
+  '7b': tl => RUM('7b', { kam: K.GOLV, f: ANS('glad', { titt: [12, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'gul', ritad: 1, fyll: del(0, 1.2, tl), ut: tl }, glitter: bump(0, 2.2, tl), glitterVar: 'gul' }),
   '8a': tl => { const r0 = 0.3, ritad = del(r0, r0 + 2.2, tl);   // kritan står kvar efter 7b
-    return RUM('8a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [-6, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad, fyll: 0, vanta: tl > r0 + 2.2 ? tl - r0 - 2.2 : null, inn: tl <= r0 ? 1 : null } }); },
-  '8b': tl => RUM('8b', { kam: K.GOLV, f: ANS('glad', { titt: [-6, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad: 1, fyll: del(0, 1.2, tl), ut: tl, bort: tl }, glitter: bump(0, 2.2, tl), glitterVar: 'bla' }),
+    return RUM('8a', { kam: K.GOLV, f: ANS('nyfiken', { titt: [16, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad, fyll: 0, vanta: tl > r0 + 2.2 ? tl - r0 - 2.2 : null, inn: tl <= r0 ? 1 : null } }); },
+  '8b': tl => RUM('8b', { kam: K.GOLV, f: ANS('glad', { titt: [16, 10] }), p: POS({ upp: -0.4 }), rit: { n: 'bla', ritad: 1, fyll: del(0, 1.2, tl), ut: tl, bort: tl }, glitter: bump(0, 2.2, tl), glitterVar: 'bla' }),
   '9': (tl, d) => { const n = tl < 1.3 ? 'rod' : tl < 2.4 ? 'gul' : 'bla';
-    return RUM('9', { kam: K.STA, f: ANS('glad', { titt: [-18 + (n === 'gul' ? 6 : n === 'bla' ? 12 : 0), 10] }), p: POS({ upp: -0.3 }) }); },
+    return RUM('9', { kam: K.STA, f: ANS('glad', { titt: [10 + (n === 'gul' ? 4 : n === 'bla' ? 8 : 0), 10] }), p: POS({ upp: -0.3, rikt: 0.2 }) }); },
   // musen böjer sig ner mot den röda kulan och ser sig själv i den
   '10': (tl, d) => { const b = del(0.2, 1.2, tl), c = M(16, '10') - 0.3;
-    return RUM('10', { kam: tl < c ? K.STA : K.SPEGEL, f: ANS('nyfiken', { titt: [-14, 12] }), p: POS({ ...BOJ(b) }), spegel: b }); },
+    return RUM('10', { kam: tl < c ? K.STA : K.SPEGEL, f: ANS('nyfiken', { titt: [14, 12] }), p: POS({ ...BOJ(b) }), spegel: b }); },
   '11': (tl, d) => { const e = M(17, '11'), b = 1 - del(0.0, 0.6, tl) + del(e - 0.5, e + 0.05, tl);
-    return RUM('11', { kam: K.SPEGEL, f: ANS('glad', { titt: [-14, 12] }), p: POS({ ...BOJ(b) }), spegel: kl(b) }); },
+    return RUM('11', { kam: K.SPEGEL, f: ANS('glad', { titt: [14, 12] }), p: POS({ ...BOJ(b) }), spegel: kl(b) }); },
   '12': (tl, d) => { const b = 1 - del(0.2, 0.8, tl) + del(1.6, 2.2, tl) - del(3.2, 3.8, tl);
-    return RUM('12', { kam: K.HEL, f: ANS('glad', { titt: [-14, 12] }), p: POS({ ...BOJ(kl(b)) }), kulor: { ...FORE('12'), bla: { rull: del(0.6, 3.1, tl) } } }); },
+    return RUM('12', { kam: K.HEL, f: ANS('glad', { titt: [14, 12] }), p: POS({ ...BOJ(kl(b)) }), kulor: { ...FORE('12'), bla: { rull: del(0.6, 3.1, tl) } } }); },
   '13': tl => RUM('13', { kam: K.STA, f: ANS('glad', { titt: [16, -12] }), p: POS({ rikt: 0.4, upp: 0.4 }) }),
   '14': upp('14', 'rod', 19), '15': upp('15', 'gul', 20),
   '16': (tl, d) => { const r = tl < 1.0 ? [0, 14] : tl < 2.2 ? [-16, 4] : [16, 4];
     return RUM('16', { kam: K.STA, f: ANS('nyfiken', { titt: r }), p: POS({ rikt: 0.3 * Math.sign(r[0]), oron: [4, -4] }) }); },
   '17': (tl, d) => { const c = M(22, '17') + LANGD(22) + 0.2;
     return RUM('17', { kam: tl < c ? K.STA : K.FOT, f: ANS('nyfiken', { titt: [tl < 2 ? -14 : 14, 8] }), p: POS({ oron: [4, -4] }), gomdSkimmer: del(c + 3.0, c + 3.6, tl) * 0.6 }); },
-  '18': (tl, d) => { const r = del(0.9, 2.3, tl);
-    return RUM('18', { kam: tl < 1.0 ? K.FOT : K.STA, f: ANS('jatteglad'), p: POS({ armar: [30, 30] }), gomdSkimmer: tl < 1.0 ? 1 : 0, kulor: { ...FORE('18'), bla: r < 1 ? { rull: 1 - r } : G0 } }); },
+  // den blå rullar fram och hoppar tillbaka upp i lådan (0,9–2,3 s), sedan tar musen den (som de andra, T.a 2,5 s)
+  '18': (tl, d) => { const r = del(0.9, 2.3, tl), arm = 30 * (1 - del(1.8, 2.5, tl));
+    if (tl > 2.5) { const y = pynta(tl, 'bla', { a: 2.5, g: 3.6, u: 99, pl: 100 });
+      return RUM('18', { kam: K.STA, f: L.blanda(ANS('jatteglad'), y.f, del(2.5, 3.0, tl)), p: y.p, pos: y.pos, kulor: { ...FORE('18'), bla: y.kula } }); }
+    return RUM('18', { kam: tl < 1.0 ? K.FOT : K.STA, f: ANS('jatteglad'), p: POS({ armar: [arm, arm] }), gomdSkimmer: tl < 1.0 ? 1 : 0, kulor: { ...FORE('18'), bla: r < 1 ? { rull: 1 - r } : G0 } }); },
   '19': upp('19', 'bla', 24),
   '20': (tl, d) => { const c = M(26, '20') - 0.2;
     return RUM('20', { kam: tl < c ? K.HEL : K.GRAN, f: tl < c ? ANS('jatteglad') : ANS('nyfiken', { titt: [14, -14] }), p: POS({ upp: tl < c ? 0 : 0.6 }), glimt: bump(0.3, 1.3, tl), glimtVar: 'alla' }); },
@@ -357,8 +428,8 @@ const S = {
   '29': (tl, d) => RUM('29', { kam: K.STA, f: ANS('glad'), p: POS(), iris: tl }),
 };
 K.GOLV2 = [1.65, 880, 860];
-// böj ner mot den röda kulan (b 0–1): lutar åt vänster och tittar ner
-const BOJ = b => ({ upp: -1 * b, luta: -7 * b, boj: -9 * b, strack: -0.04 * b, sank: 20 * b, oron: [6 * b, 6 * b] });
+// böj ner mot den röda kulan i lådan (b 0–1): lutar åt höger och tittar ner
+const BOJ = b => ({ upp: -1 * b, luta: 7 * b, boj: 9 * b, strack: -0.04 * b, sank: 20 * b, oron: [6 * b, 6 * b] });
 
 function lage(t) {
   let i = RAD.findIndex(r => t < r.s + r.d); if (i < 0) i = RAD.length - 1;
@@ -378,11 +449,12 @@ function kula(n, X, st, t) {
   if (!X) return;
   const fil = n === 'rod' ? '' : ` filter="url(#ton-${n})"`, s = KULA.s, o = KULA.ogla;
   const hang = (p, v, lager) => lagg(lager, bild(KULA, p, o, s, v, fil));
-  if (X.golv) { lagg('golvsak', markskugga(KG[n][0], KG[n][1] - 4, 80, 0.18)); hang(golvOgla(n), 0, 'golvsak'); }
+  if (X.golv) { lagg('golvsak', markskugga(KG[n][0], KG[n][1] - 4, 70, 0.12)); hang(golvOgla(n), 0, 'golvsak'); }   // i lådan, på glittret
+  else if (X.iHand) { hang(hand(), 3 * Math.sin(t * 1.7 + n.length), 'gomd'); tass(); }   // öglan i handen: framför kroppen, tassen ovanpå
   else if (X.gran) { const g = X.gung, v = 6 * Math.exp(-1.6 * g) * Math.sin(2 * Math.PI * 1.1 * g) + 0.8 * Math.sin(t * 0.9 + n.length); hang(KT_[n], v, 'kulgran'); }
-  else if (X.upp != null) { const a = golvOgla(n), b = KT_[n], u = X.upp, p = [lerp(a[0], b[0], u), lerp(a[1], b[1], u) - 140 * Math.sin(Math.PI * u)];
-    hang(p, 8 * Math.sin(Math.PI * u), 'fram'); if (u > 0 && u < 1) skimmer(p[0], p[1] + 40, 0.5, t, 1.0); }
-  else if (X.rull != null || X.gomd) { const u = X.gomd ? 1 : mjuk(X.rull), x = lerp(KG.bla[0], GOMD[0], u), y = lerp(KG.bla[1], GOMD[1], u);
+  else if (X.rull != null || X.gomd) { const u = X.gomd ? 1 : mjuk(X.rull), x = lerp(KG.bla[0], GOMD[0], u);
+    // rullar över lådans högra kant och ramlar mjukt ner bakom julgransfoten (y = kulans underkant)
+    const kant = (LADA.x1 - KG.bla[0]) / (GOMD[0] - KG.bla[0]), y = u < kant ? lerp(KG.bla[1], KG.bla[1] - 6, u / kant) : lerp(KG.bla[1] - 6, GOMD[1], ((u - kant) / (1 - kant)) ** 2);
     const rot = (x - KG.bla[0]) / (KULA.r * s) * 57.3;   // rullar: vrider sig med sträckan
     lagg('gomd', `<g transform="translate(${f1(x)} ${f1(y - (KULA.botten - KULA.mitt[1]) * s)}) rotate(${f1(rot)}) scale(${s}) translate(${-KULA.mitt[0]} ${-KULA.mitt[1]})"${fil}><image href="${KULA.bild}" width="1024" height="1024"/></g>`); }
 }
@@ -454,6 +526,7 @@ function ritaRum(st, t) {
   lagg('bak', markskugga(FOT.x, FOT.y, 280, 0.22) + bild(FOT, [FOT.x, FOT.y], FOT.fot, FOT.s));
   lagg('gran', bild(GRAN, [GRAN.x, GRAN.y], GRAN.fot, GRAN.s) + granLjus(t));
   lagg('fot', bild(FOT, [FOT.x, FOT.y], FOT.fot, FOT.s, 0, ' clip-path="url(#fotfram)"'));
+  lada();
   // musen
   const pos = st.pos || STA;
   mus(pos, BLINKA(st.f, t), st.p);
@@ -505,7 +578,7 @@ async function ljud() {
   ut.push({ t: 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: KT, loop: true, fade: 0.4 });               // kritan ritar musen
   for (const [id, l] of [['4a', 3.4], ['7a', 2.6], ['8a', 2.2], ['21a', 3.0]]) ut.push({ t: Rd[id].s + (id === '8a' ? 0.3 : INN), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: l, loop: true, fade: 0.3 });
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: Rd['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });           // skogsljud under ritintrot
-  ut.push({ t: Rd['1'].s, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.18, langd: DURATION - Rd['1'].s, loop: true, fade: 2.0, fadeIn: 1.0 });   // rummet, lågt
+  // hemmaljudet (med en tickande klocka) borttaget (Sanna 2026-11-21: "remove ticking clock sound"); brasan är rummets ljud
   ut.push({ t: Rd['1'].s, fil: E + 'brasa/brasa-1.m4a', vol: 0.22, langd: DURATION - Rd['1'].s, loop: true, fade: 2.0, fadeIn: 1.5 });   // brasan sprakar lågt (2026-11-21)
   const ok = await Promise.all(ut.map(c => finns('/' + c.fil)));
   const saknas = ut.filter((c, i) => !ok[i]); if (saknas.length) console.log('ljud saknas:', [...new Set(saknas.map(c => c.fil))].join(', '));
@@ -523,6 +596,9 @@ window.ready = (async () => {
   KONT.kula = (await (await fetch(A + 'rekvisita/julkula/cut/julkula-kontur.json')).json()).d;   // konturerna är färdiga sökvägar
   KONT.stj = (await (await fetch(A + 'rekvisita/stjarna-gul/cut/stjarna-gul-kontur.json')).json()).d;
   await Promise.all([PLATTA, GRAN.bild, FOT.bild, KULA.bild, STJ.bild, KRITA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  // KT_MAT: var kulorna hänger = musens hand på "pling!" i sin rad, så att tassen släpper kulan precis där den hänger
+  for (const [n, o] of Object.entries(PYNT)) { const t = Rd[o.id].s + M(o.nr, o.id) + ord(o.nr, 'pling'); borja(t); const st = lage(t);
+    kamera(st.kam); mus(st.pos, st.f, st.p); KT_[n] = hand(); }
   window.LJUD = await ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;

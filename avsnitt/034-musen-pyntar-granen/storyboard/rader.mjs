@@ -56,7 +56,7 @@ const MUS = (kansla, o) => [null, o, kansla];
 
 // Introt: det gemensamma bilderbok-introt (produktion/youtube/bilderbok-intro/intro.mp4, 3,31 s) före scenen
 export const RADER = [
-  { id: '00', d: 3.31, plats: 'Intro', bild: 'Det gemensamma bilderbok-introt', ljudtext: 'introts jingel', ansikte: '–' },
+  { id: '00', d: 3.31, plats: 'Intro', bild: 'Julintrot Djuren hittar på! (bilderbok-intro-jul)', ljudtext: 'introts jingel', ansikte: '–' },
 
   { id: '01a', d: 6.0, plats: 'Papperet', malin: [[1, 2.9]], bild: 'Kritan kommer in och ritar musens kontur i lugna drag', ljudtext: 'kritan ritar, skogsljud', ansikte: '–' },
   { id: '01b', d: 8.6, plats: 'Papperet', malin: [[2, 0.0]], bild: 'Konturen ritas klar (öronen, nosen, armarna, benen, svansen), kritan väntar och vajar: barnet gissar', ljudtext: 'kritan ritar', ansikte: '–' },
