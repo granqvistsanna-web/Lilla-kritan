@@ -196,12 +196,12 @@ const A_DRAG = (() => { const L = 55, ut = [];
   linje([-165, -5], [30, -5]); bage(30, 122.5, 127.5); linje([30, 250], [-165, 250]);
   return ut; })();
 const BILDKLOSS = ['bjorn', 'boll', 'ballong', 'ko', 'hund'];
-const K = await bokstavsklossar(document.getElementById('klossar'), [{ fram: 'B', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, djup: 0.02 },
+const K = await bokstavsklossar(document.getElementById('klossar'), [{ fram: 'B', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, bubbla: true, djup: 0.02 },
   ...BILDKLOSS.map(n => ({ platta: SAKER[n].platta[0], bakgrund: SAKER[n].platta[4], rund: 0.12, tra: 'mer' }))]);
 BILDKLOSS.forEach((n, i) => { SAKER[n].ki = i + 1; SAKER[n].snett = SAKER[n].platta[3]; });
 // B-märket ritas också i ett eget lager överst (feedback 2026-11-19 3:32 "b letter in corner should be cover content"): i K är den
 // osynlig (bara för måtten), i KB syns den ovanpå klossarna, sakerna och gnistorna, och kritan som ritar B:et följer med upp.
-const KB = await bokstavsklossar(document.getElementById('bokstav'), [{ fram: 'B', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, djup: 0.02 }]);
+const KB = await bokstavsklossar(document.getElementById('bokstav'), [{ fram: 'B', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, bubbla: true, djup: 0.02 }]);
 
 // ---------- tidslinjen: repliker efter sina riktiga längder ----------
 const TAL = {
@@ -266,7 +266,7 @@ const TAL = {
   'n-allt-for-idag': 'Nu är vi klara för i dag.',
   'n-vad-kul': 'Tack för att du lekte med B!',
   'p-hej-da-slut': 'Hej då! Vi ses!',
-  'b-ljud-1': 'b', 'b-ljud-2': 'b', 'b-ljud-3': 'B!',   // klippta ur p-b-b-bjorn och p-b-b-boll
+  'b-ljud-1': 'b', 'b-ljud-2': 'b', 'b-ljud-3': 'B!',   // bokstavens egen röst (ABC-d3 0:33, Sanna 22/11): Louise – Calm & Clear, ElevenLabs v4, produktion/ljud-original/roster/bokstavsrost/louise-1.mp3; Malins gamla klipp heter b-ljud-N-malin
 };
 const D = Object.fromEntries(await Promise.all(Object.keys(TAL).map(async n => [n, await langd(fil(n), 1.5)])));
 const LJUD = [], sag = (t, n) => (LJUD.push({ t, fil: fil(n), vol: 2.5, tal: TAL[n] }), t + D[n]);
@@ -905,25 +905,30 @@ let KN = [960, 540, 1];   // kameran i den här bildrutan; skarm() ger punkter i
 const varld = ([x, y]) => [KN[0] + (x - 960) / KN[2], KN[1] + (y - 540) / KN[2]], skarmV = (i, u, v) => varld(K.skarm(i, u, v));
 const SVGER = [document.getElementById('botten'), document.getElementById('topp'), document.getElementById('ansikte')];
 // Bokstavsmärkets ansikte (som E, Sanna 2026-11-21), i bokstavens mått (−260 … 260 × −330 … 330, y nedåt): ögonen och munnen i bokstavens hål
-const ANS = { ogon: [[-55, -125], [25, -125]], mun: [-15, 125] };
+const HUVUD = [-15, -160, 30, 42];   // ansiktets plats på bokstaven (Sanna 2026-11-22: Huvud upptill)
 const ansG = el('g', { style: 'display:none' }, document.getElementById('ansikte'));
-const aOgon = [0, 1].map(() => [el('ellipse', { fill: '#2B2523', stroke: '#fff', 'stroke-width': 5, 'paint-order': 'stroke' }, ansG), el('circle', { fill: '#fff' }, ansG)]);
-const aMun = el('ellipse', { fill: '#8E2F26', stroke: '#2B2523', 'stroke-width': 5 }, ansG);
-const aSmil = el('path', { fill: 'none', stroke: '#2B2523', 'stroke-width': 7, 'stroke-linecap': 'round' }, ansG);
+const aOgon = [0, 1].map(() => [el('ellipse', { fill: '#231A16' }, ansG), el('circle', { fill: '#fff' }, ansG)]);   // pärlögon (Sanna 2026-11-22)
+const aMun = el('path', { fill: '#231A16' }, ansG), aTunga = el('ellipse', { fill: '#FF7E8E' }, ansG);
+const aSmil = el('path', { fill: 'none', stroke: '#231A16', 'stroke-linecap': 'round' }, ansG);
 function ansikte(t, ut) {
   const [a0, a1] = A.ansikten.find(([a, b]) => t >= a && t < b + 0.3) ?? []; if (a0 === undefined) return ansG.style.display = 'none';
   ansG.style.display = ''; ansG.setAttribute('opacity', ut.toFixed(3));
   const q = KB.TRAV / KB.PX * A_SKALA, pt = (x, y) => varld(KB.skarm(0, q * x, -q * y)), [ax, ay] = pt(-0.5 / q, 0), [bx, by] = pt(0.5 / q, 0), U = Math.hypot(bx - ax, by - ay);
   const pop = (inUt(clamp((t - a0) / 0.3)) + 0.15 * bage((t - a0 - 0.2) / 0.3)) * (1 - inUt(clamp((t - a1) / 0.3))), blundar = (t - a0) % 3.2 > 3.05;
-  ANS.ogon.forEach(([ox, oy], i) => { const [x, y] = pt(ox, oy), r = 0.036 * U * pop, [e, g] = aOgon[i];
-    for (const [k, w] of Object.entries({ cx: x, cy: y, rx: r, ry: r * 1.15 * (blundar ? 0.12 : 1) })) e.setAttribute(k, w.toFixed(1));
-    for (const [k, w] of Object.entries({ cx: x - 0.3 * r, cy: y - 0.4 * r, r: 0.33 * r })) g.setAttribute(k, w.toFixed(1));
+  // Pärlögon (skissen runda 2) i bokstavens huvud (runda 3 "Huvud upptill", Sanna 2026-11-22): HUVUD = [x, y, ögonradie, halvt ögonavstånd] i bokstavens mått, y nedåt
+  const [hx, hy, R, H] = HUVUD, PT = pt, r = R * KB.TRAV / KB.PX * A_SKALA * U * pop;
+  const P = [[hx - H, hy], [hx + H, hy]].map(([x, y]) => PT(x, y)), dx = P[1][0] - P[0][0], dy = P[1][1] - P[0][1], dl = Math.hypot(dx, dy) || 1, ex = dx / dl, ey = dy / dl;
+  P.forEach(([x, y], i) => { const [e, g] = aOgon[i];
+    for (const [k, w] of Object.entries({ cx: x, cy: y, rx: r, ry: r * (blundar ? 0.12 : 1) })) e.setAttribute(k, w.toFixed(1));
+    for (const [k, w] of Object.entries({ cx: x - 0.32 * r, cy: y - 0.35 * r, r: 0.4 * r })) g.setAttribute(k, w.toFixed(1));
     g.setAttribute('opacity', blundar ? 0 : 1); });
   const o = A.mun.reduce((m, [a, b]) => Math.max(m, Math.sin(Math.PI * clamp((t - a + 0.04) / (b - a + 0.08)))), 0);   // öppen på varje ljud
-  const [mx, my] = pt(...ANS.mun), w = 0.06 * U * pop;
-  for (const [k, v] of Object.entries({ cx: mx, cy: my, rx: w, ry: (0.006 + 0.032 * o) * U * pop })) aMun.setAttribute(k, v.toFixed(1));
-  aMun.style.display = o > 0.05 ? '' : 'none'; aSmil.style.display = o > 0.05 ? 'none' : '';
-  aSmil.setAttribute('d', `M${(mx - w).toFixed(1)} ${(my - 0.012 * U).toFixed(1)} Q${mx.toFixed(1)} ${(my + 0.035 * U * pop).toFixed(1)} ${(mx + w).toFixed(1)} ${(my - 0.012 * U).toFixed(1)}`);
+  const mx = (P[0][0] + P[1][0]) / 2 - ey * 2.1 * r, my = (P[0][1] + P[1][1]) / 2 + ex * 2.1 * r, w = 0.65 * r, f = v => v.toFixed(1);
+  const top = my - 0.3 * r, hj = (0.25 + 0.95 * o) * r;   // munnen öppnas på varje ljud, med tunga
+  aMun.setAttribute('d', `M${f(mx - 0.8 * r)} ${f(top)} Q${f(mx)} ${f(top + 0.15 * r)} ${f(mx + 0.8 * r)} ${f(top)} Q${f(mx + 0.7 * r)} ${f(top + hj)} ${f(mx)} ${f(top + hj)} Q${f(mx - 0.7 * r)} ${f(top + hj)} ${f(mx - 0.8 * r)} ${f(top)}Z`);
+  for (const [k, v] of Object.entries({ cx: mx, cy: top + 0.72 * hj, rx: 0.38 * r, ry: 0.22 * r })) aTunga.setAttribute(k, f(v));
+  aMun.style.display = aTunga.style.display = o > 0.05 ? '' : 'none'; aSmil.style.display = o > 0.05 ? 'none' : '';
+  aSmil.setAttribute('stroke-width', f(0.3 * r)); aSmil.setAttribute('d', `M${f(mx - w)} ${f(my - 0.18 * r)} Q${f(mx)} ${f(my + 0.82 * r)} ${f(mx + w)} ${f(my - 0.18 * r)}`);
 }
 const framsida = i => { const [ox, oy] = skarmV(i, 0, 0), [ux, uy] = skarmV(i, 0.5, 0), [vx, vy] = skarmV(i, 0, -0.5);
   return [2 * (ux - ox), 2 * (uy - oy), 2 * (vx - ox), 2 * (vy - oy), ox, oy]; };
@@ -988,7 +993,7 @@ function rita(t) {
   kritaG.querySelector('.farg').setAttribute('fill', kf === F.svart ? '#3B3431' : kf);
   smulor(t, kx, ky, syns && STRECK.some(([, , a, b]) => t >= a && t < b) && (kf === F.svart ? '#3B3431' : kf));
   kritaG.firstChild.setAttribute('transform', `translate(${kx.toFixed(1)} ${ky.toFixed(1)}) rotate(38) scale(${(0.8 * clamp((t - A.rita[1] - 0.6) / 0.4)).toFixed(3)})`);
-  for (const f of document.querySelectorAll('[id=boil-brus]')) f.setAttribute('seed', 1 + Math.floor(t * 8) % 4);
+  gissa.boil(t, z);   // 2,5 px i bild, 6 gånger/s (CLAUDE.md)
   kant.uppdatera();
 }
 

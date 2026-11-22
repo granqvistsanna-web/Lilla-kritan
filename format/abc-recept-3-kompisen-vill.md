@@ -2,6 +2,8 @@
 
 **Status:** Sanna gillar formen (2026-11-20: *"i like this"*). **Kopiera B** (`produktion/youtube/alfabet/abc-b-recept-3/`): den har Sannas feedback från 21/11 (se *Lärdomar från A, B, D och E* nedan), och A, D och E har samma ändringar. Den första förlagan var E: `produktion/youtube/alfabet/abc-e-recept-3/` (scenen `index.html`, manuset `manus.md`, Malins repliker `malin-e-recept-3.txt`, filmen `abc-e-recept-3.mp4` som snabb förhandsvisning). Filmen är inte slutrenderad och ingen har lyssnat på blandningen.
 
+**Ny riktning från C (Sanna 2026-11-22: *"i like this new direction"*):** bokstaven hälsar och visar sina ljud, Malin frågar före varje bokstavsljud, kritan börjar rita på *"Titta"*, kompisens skiss har alla kännetecken och armarna är lägre. Se *C:s riktning* nedan. Den gäller alla bokstäver; A, B, D och E har den inte än.
+
 **Sannas ändringar 2026-11-20, med i alla:** kritan ritar bara konturen och bilden fylls i inifrån, introt är ca 4 s kortare, introts kloss har rundare kanter, och katten och ekorren är nya bilder ur Flow: vanliga små djur från sidan, inte figurer på två ben.
 
 Recept 1 (`produktion/youtube/alfabet/abc-prov/recept-1.md`) är det som de gamla A–E är gjorda med. De ersätts helt av recept 3 och publiceras inte. Planen för alla bokstäver: `produktion/youtube/alfabet/plan-recept-3.md`. Recept 3 använder samma scen, samma klossar och samma slag per ord. Det som är nytt är att orden hänger ihop i en liten berättelse.
@@ -169,10 +171,30 @@ Allt här finns i B och har förts in i A, D och E. Den som kopierar B får det 
 
 **Flow.** Agent-knappen har bytt namn i Flow, så `mcp__flow__flow_generate` behövde rättas för att hitta den (C, 2026-11-21). Nano Banana kostar 0 krediter.
 
+## C:s riktning (Sanna 2026-11-22: *"i like this new direction"*)
+
+Förlagan är `produktion/youtube/alfabet/abc-c-recept-3/` (rendering 2026-11-22 22:13, se *Feedback 2026-11-22 kväll* i dess `manus.md`).
+
+**Kritan börjar rita på *"Titta"*.** Introts replik är *"Titta, kritan ritar en bokstav."*, och första draget börjar på *"Titta"*, inte efter repliken.
+
+**Bokstaven hälsar och visar sina ljud.** Efter *"Bokstaven C."*: *"Hej, C!"* → märket *"Hej! C! C!"*, *"Hur låter C?"* → *"c, c, C!"*. Har bokstaven två ljud (C, G, K i vissa ord) kommer *"Ibland låter C hårt också."* → *"k, k!"*.
+
+**Malin frågar före bokstavsljuden.** Efter varje ord säger märket inte bara ljudet: Malin frågar och märket svarar med ljudet i just det ordet och ordet: *"Hur låter C i clown?"* → *"k, k, clown!"*, *"Och i cykel?"* → *"c, c, cykel!"*, efter ord 3 bara märket (*"c, c, cirkel!"*). Då förstår barnet varför märket pratar. Tabellen står i `plan-recept-3.md` (*Slutet och ljudkartan*).
+
+**Kompisens skiss är detaljerad.** Efter konturen ritar kritan allt som gör kompisen till sig själv, inte bara ansiktet: clownen fick hatt med tofs, lockigt hår, vågig krage, kinder, knappar och två stjärnor. Allt mäts på faceless-bilden (`kalle-faceless.png`), aldrig på ögonmått.
+
+**Armarna är lägre.** Vinkningen är 90° ± 6° i 1,3 gånger/s (var 124° ± 12°), och `hurra` är 84° (var 100°). Armarna ska aldrig sträckas rakt upp förbi huvudet.
+
+**Gömleken i blandningen (ABC-c3 2:59).** Klossarna vänder ryggen till innan de blandas, så att barnet måste följa kompisens kloss med ögonen: *"Titta noga."* medan kompisens kloss hoppar, ett halvt varv (`s.vand`), tre lugna byten (0,8 s, 1,1 s isär), *"Var är [kompisen]?"* och 3 s paus. Kompisens kloss vänder sig först (*"Där är den ju!"*), de andra efter. *"Titta noga. Var är …?"* spelas in som en replik och delas vid pausen.
+
+**Bilden ryms i plattans ram.** Breda bilder (clownens armar, cirkeln) mäts i en stillbild på klossen: ramen ska synas runt om (`platta[2]` större = mindre bild).
+
+**Repliker som tillkommer per bokstav:** `n-hej-x`, `n-hur-later`, (`n-ibland-hart`), `n-hur-<ord1>`, `n-och-<ord2>`, och för märket `x-hej`, `x-<ljud>-<ord1>`, `x-<ljud>-<ord2>`, `x-<ljud>-<ord3>` (plus `x-kk` om bokstaven har två ljud).
+
 ## Ny bokstav
 
 1. Fyll i meningen och välj handling ur tabellen.
-2. Kopiera `abc-b-recept-3/`. Byt bokstavens drag och färg, `SAKER` (kompisen, ord 2, ord 3, den som ritas fel, den udda i leken) och replikerna i `TAL`. Gör en kontur per bild med `kontur-bild.py`, och mät ögats plats i bilden.
+2. Kopiera `abc-b-recept-3/` och för in *C:s riktning* (introt, frågorna före ljuden, skissens detaljer, armarna). Byt bokstavens drag och färg, `SAKER` (kompisen, ord 2, ord 3, den som ritas fel, den udda i leken) och replikerna i `TAL`. Gör en kontur per bild med `kontur-bild.py`, och mät ögats plats i bilden.
 3. Skriv delarna 3–6 med `kanner`, `narbild`, `gissning` och `flytta`. Delarna 1, 2, 7 och 8 är som de är.
 4. Stillbilder: introts kloss, kompisens skiss med ansiktet, kritan som väntar i bild, viljan, det felritade, varje ord bredvid kompisen, saken som går dit den behövs, klossarna som poppar, muren, discot. Leta efter saker som täcker varandra, figurer som inte står på golvet och skuggor som inte ligger på golvet när något hoppar. Kör `krock.mjs` på scenen: inga krockar.
 5. Malins tagning (en tagning, alla rader; dela med `verktyg/dela-tagning.py` och läs utskriften: korta ord som *"Ekorre!"* och *"Det är ju E!"* hamnar lätt i grannens fil och får klippas om för hand). Sedan förhandsvisning med `--snabb`.

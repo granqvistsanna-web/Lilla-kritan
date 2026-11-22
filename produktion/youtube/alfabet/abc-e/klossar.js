@@ -77,7 +77,25 @@ async function bokstavsklossar(cv, def) {
     g.fillStyle = '#fff'; g.beginPath(); g.roundRect(m, m, PX - 2 * m, PX - 2 * m, 72); g.fill(); platta(g, farg, bak); return c; };
   // tjock, rund bokstav utan vit kant, med kritkorn: ritas på en egen duk och får ljusa och mörka korn bara på strecket
   const tjockDuk = document.createElement('canvas'); tjockDuk.width = tjockDuk.height = PX;
-  const tjock = (g, drag, farg, k, liten) => { const t = tjockDuk.getContext('2d'), r = slump(5); t.clearRect(0, 0, PX, PX);
+  const glansDuk = document.createElement('canvas'); glansDuk.width = glansDuk.height = PX;
+  // bubbla: true (recept 3, Sanna 2026-11-22, skissen "Gummimärke"): knubbig bokstav med mörkare kontur, en ljus kudde upptill,
+  // lite vaxkorn och en vit klistermärkskant med en mjuk skugga runt om
+  const fargMix = (hex, mot, k) => { const n = parseInt(hex.slice(1), 16); return `rgb(${[n >> 16, n >> 8 & 255, n & 255].map(v => Math.round(v + (mot - v) * k))})`; };
+  const gummi = (g, drag, farg, k, liten) => { const t = tjockDuk.getContext('2d'), h = glansDuk.getContext('2d'), r = slump(5), s = TRAV * liten, n = drag.length;
+    const drag_ = (c, b, f, dx = 0, dy = 0) => { c.save(); c.translate(PX / 2, PX / 2); c.scale(s, s); c.lineCap = c.lineJoin = 'round'; c.strokeStyle = f; c.lineWidth = b;
+      drag.forEach(([a, e], i) => { const u = Math.min(1, Math.max(0, k * n - i)); if (u <= 0) return; c.beginPath(); c.moveTo(a[0] + dx, a[1] + dy); c.lineTo(a[0] + (e[0] - a[0]) * u + dx, a[1] + (e[1] - a[1]) * u + dy); c.stroke(); });
+      c.restore(); };
+    t.clearRect(0, 0, PX, PX); drag_(t, 164, fargMix(farg, 0, 0.38)); drag_(t, 146, farg);
+    h.clearRect(0, 0, PX, PX); h.filter = `blur(${(9 * s).toFixed(1)}px)`; drag_(h, 60, fargMix(farg, 255, 0.4), -14, -26); h.filter = 'none';   // kudden
+    t.globalCompositeOperation = 'source-atop'; t.globalAlpha = 0.9; t.drawImage(glansDuk, 0, 0); t.globalAlpha = 1;
+    for (let i = 0; i < 2600; i++) { t.fillStyle = r() < 0.6 ? 'rgba(255,240,225,.26)' : 'rgba(60,15,10,.12)'; t.fillRect(r() * PX, r() * PX, 1 + r() * 2.5, 1 + r() * 2.5); }   // vaxkorn
+    for (let i = 0; i < 22; i++) { const y = r() * PX; t.strokeStyle = 'rgba(255,235,220,.12)'; t.lineWidth = 2 + r() * 2; t.beginPath(); t.moveTo(0, y); t.lineTo(PX, y - 40 + r() * 80); t.stroke(); }
+    h.clearRect(0, 0, PX, PX); drag_(h, 210, '#fff');   // vit klistermärkskant under, ritad hel först så att skuggan bara faller en gång
+    t.globalCompositeOperation = 'source-over';
+    g.save(); g.shadowColor = 'rgba(90,55,20,.22)'; g.shadowBlur = 6 * s; g.shadowOffsetY = 6 * s; g.drawImage(glansDuk, 0, 0); g.restore();   // kanten med skugga på plattan,
+    g.drawImage(tjockDuk, 0, 0); };   // bokstaven ovanpå
+  const tjock = (g, drag, farg, k, liten, bubbla) => { if (bubbla) return gummi(g, drag, farg, k, liten);
+    const t = tjockDuk.getContext('2d'), r = slump(5); t.clearRect(0, 0, PX, PX);
     t.save(); t.translate(PX / 2, PX / 2); t.scale(TRAV * liten, TRAV * liten); t.lineCap = t.lineJoin = 'round';
     const n = drag.length, lag = (b, f, dx = 0, dy = 0) => { t.strokeStyle = f; t.lineWidth = b;
       drag.forEach(([a, c], i) => { const u = Math.min(1, Math.max(0, k * n - i)); if (u <= 0) return; t.beginPath(); t.moveTo(a[0] + dx, a[1] + dy); t.lineTo(a[0] + (c[0] - a[0]) * u + dx, a[1] + (c[1] - a[1]) * u + dy); t.stroke(); }); };
@@ -85,7 +103,8 @@ async function bokstavsklossar(cv, def) {
     t.globalCompositeOperation = 'source-atop';   // kritkornen: bara där det finns färg
     for (let i = 0; i < 2200; i++) { t.fillStyle = r() < 0.55 ? 'rgba(255,235,215,.32)' : 'rgba(110,20,15,.16)'; t.fillRect(r() * PX, r() * PX, 1 + r() * 2.5, 1 + r() * 2.5); }
     for (let i = 0; i < 26; i++) { const y = r() * PX; t.strokeStyle = 'rgba(255,230,210,.16)'; t.lineWidth = 2 + r() * 2; t.beginPath(); t.moveTo(0, y); t.lineTo(PX, y - 40 + r() * 80); t.stroke(); }
-    t.globalCompositeOperation = 'source-over'; g.drawImage(tjockDuk, 0, 0); };
+    t.globalCompositeOperation = 'source-over';
+    g.drawImage(tjockDuk, 0, 0); };
   const BOKSTAV_SIDA = { B: [[[-150, -260], [-150, 250]], [[-150, -260], [80, -230]], [[-150, 0], [100, 20]], [[-150, 250], [110, 230]]],
     C: [[[150, -200], [-150, -60]], [[-150, -60], [-140, 120]], [[-140, 120], [150, 220]]] };   // enkla kantiga former, bara pynt på sidorna
 
@@ -129,7 +148,7 @@ async function bokstavsklossar(cv, def) {
       if (k.fram.tra && tr > 0) { g.globalAlpha = tr; g.drawImage(k.fram.tra, 0, 0); }
       if (k.fram.fyrkant && form < 1) { g.globalAlpha = 1 - form; g.drawImage(k.fram.fyrkant, 0, 0); } g.globalAlpha = k.fram.fyrkant ? form : 1; g.drawImage(k.fram.bas, 0, 0); g.globalAlpha = 1;
       k.fram.form = form; k.fram.t = tr;
-      if (k.d.fram) (k.d.platta ? tjock : bokstav)(g, k.d.drag, k.d.farg, o.k ?? 1, k.d.skala ?? 1);
+      if (k.d.fram) (k.d.platta ? tjock : bokstav)(g, k.d.drag, k.d.farg, o.k ?? 1, k.d.skala ?? 1, k.d.bubbla);
       k.fram.k = o.k ?? 1; k.tex.needsUpdate = true; } };
   function rita({ klossar: L = [], krita: kr, dx = 0, opacitet = 1, kam }) {
     const [kx, ky] = kam ? [kam.x, kam.y] : [960 + dx, 540];

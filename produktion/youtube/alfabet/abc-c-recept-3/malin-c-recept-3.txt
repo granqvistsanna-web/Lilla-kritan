@@ -2,12 +2,16 @@ p-hej-hej  [warm] Hej hej!
 p-kritan-ritar  [warm] Titta, kritan ritar en bokstav.
 p-det-ar-c  [excited] Det är ju C!
 p-bokstaven-c  [warm] Bokstaven C.
+n-hej-c  [warm] Hej, C!
+n-hur-later  [curious] Hur låter C?
+n-ibland-hart  [warm] Ibland låter C hårt också.
 p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven C.
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-clown  [excited] Clown!
 p-en-clown  [excited] En clown!
 p-clown-c  [excited] Ja! Clown börjar på bokstaven C.
+n-hur-clown  [curious] Hur låter C i clown?
 n-hej-clownen  [warm] Hej, clownen!
 n-vill-cykla  [warm] Clownen vill cykla.
 n-inget-att-aka  [warm] Men clownen har inget att åka på.
@@ -27,6 +31,7 @@ n-nagot-pa-c  [playful] Något att åka på, som börjar på C!
 p-cykel  [excited] Cykel!
 p-c-c-cykel  [playful] C, c, cykel!
 p-ocksa-cykel  [warm] Cykel börjar också på C!
+n-och-cykel  [curious] Och i cykel?
 n-hej-cykeln  [warm] Hej, cykeln!
 n-oj-hjul  [surprised] Oj! Cykeln har bara ett hjul.
 n-vad-fattas  [curious] Vad fattas?

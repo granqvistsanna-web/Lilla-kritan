@@ -100,11 +100,25 @@ Inget bokstavsljud efter hej då, och märket pratar inte med i hej då (det är
 
 Mellan dem finns minst en replik av Malin, så att ljuden aldrig kommer tätt.
 
+**Malin frågar, bokstaven svarar (C, Sanna gillade riktningen 2026-11-22).** Ljuden kommer aldrig av sig själva: Malin ställer en kort fråga och märket svarar.
+
+| # | Malin | Märket |
+|---|---|---|
+| 1 | *"Bokstaven C."* → *"Hej, C!"* | *"Hej! C! C!"* (glatt, bokstavsnamnet) |
+| 1 | *"Hur låter C?"* | *"c, c, C!"* |
+| 1b | bara bokstäver med två ljud: *"Ibland låter C hårt också."* | *"k, k!"* |
+| 2 | *"Hur låter C i clown?"* (efter berömmet) | ljudet i ordet + ordet: *"k, k, clown!"* |
+| 3 | *"Och i cykel?"* | *"c, c, cykel!"* |
+| 4 | ingen fråga (barnet kan mönstret nu) | *"c, c, cirkel!"* |
+| 5 | slutet | *"c, c, C!"* som förut |
+
+Ljudet i 2–4 är det ljud bokstaven har **i just det ordet** (clown med k, cykel med s). Bokstavens röst är Louise (`produktion/ljud-original/roster/bokstavsrost/`), samma inställningar. Ett ensamt *"K!"* läses som bokstavsnamnet *kå*: klipp det korta ljudet ur början av en längre rad (`c-kk` ur `c-k-clown`).
+
 ## Steg 3: per bokstav (samma steg varje gång)
 
 En session per bokstav (som i feedbackomgångarna), högst två samtidigt så att rösterna och renderingarna inte krockar.
 
-1. **Manus** (Opus): kopiera `abc-b-recept-3/` (den har feedbacken från 21/11) till `abc-x-recept-3/`, skriv `manus.md` och `malin-x-recept-3.txt` (ca 61 rader, ca 20 nya). Byt bokstavens drag och färg, `SAKER` och `TAL`. Regelkoll: inga djurnamn, inga utdragna ord, *"Vem är det?"* / *"Vad blir det?"*, en v3-tagg per rad, *"Hej hej!"* i introt.
+1. **Manus** (Opus): kopiera `abc-b-recept-3/` (den har feedbacken från 21/11), och för in C:s intro, frågorna före bokstavsljuden och den detaljerade skissen (se receptets *C:s riktning*) till `abc-x-recept-3/`, skriv `manus.md` och `malin-x-recept-3.txt` (ca 61 rader, ca 20 nya). Byt bokstavens drag och färg, `SAKER` och `TAL`. Regelkoll: inga djurnamn, inga utdragna ord, *"Vem är det?"* / *"Vad blir det?"*, en v3-tagg per rad, *"Hej hej!"* i introt.
    → **Sanna godkänner replikerna.**
 2. **Bilder:** konturer med `kontur-bild.py` för varje sak, ögats plats mätt, kanter mätta (`tunn_kant.py`). Nya Flow-bilder bara om tabellen ovan säger det.
 3. **Malins tagning** i ElevenLabs (en tagning, alla rader), delad med `verktyg/dela-tagning.py` och kontrollerad rad för rad.

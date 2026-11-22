@@ -18,6 +18,24 @@ Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur 
 
 Som A, B och E (Sanna 2026-11-21): efter *"Bokstaven C."* får märket ögon och mun och säger *"c, c, C!"* en gång, och i slutet efter *"Hej då! Vi ses!"* två gånger. Sanna valde **s-ljudet** (bokstavsnamnet *se*, som i ramsan *"C, c, cykel!"*), inte k som i clown. Klippen `c-ljud-1…3` är klippta ur `p-c-c-cykel` (tagning 1 och 2), inga nya krediter.
 
+## Feedback 2026-11-22 kväll (rendering 16:50)
+
+- **0:06 och 0:17, C hälsar och visar sina två ljud:** efter *"Bokstaven C."* säger Malin *"Hej, C!"*, märket svarar glatt *"Hej! C! C!"*, Malin frågar *"Hur låter C?"* och märket säger *"c, c, C!"*. Sedan *"Ibland låter C hårt också."* och märket säger *"k, k!"*.
+- **0:40, varför märket säger ljuden:** Malin frågar först och märket svarar med ljudet i ordet: *"Hur låter C i clown?"* → *"k, k, clown!"*, *"Och i cykel?"* → *"c, c, cykel!"*, och efter cirkeln bara *"c, c, cirkel!"*. I slutet står *"c, c, C!"* kvar.
+- **0:09:** kritan börjar rita C:et på *"Titta"*.
+- **0:27:** clownskissen har hatt med tofs, lockigt hår, vågig krage, kinder, knappar och två stjärnor (mätta på `kalle-faceless.png`).
+- **Armarna:** vinkningen är 90° ± 6° i 1,3 gånger/s (var 124° ± 12°), och `hurra` i riggen är 64 + 20 = 84° (var 100°).
+- Rösterna: Malin `produktion/ljud-original/roster/abc-c-recept-3/tagning-4.mp3` (tagning-3 är samma rader), bokstaven `produktion/ljud-original/roster/bokstavsrost/louise-4.mp3` (Louise, samma inställningar). Klippen `n-hej-c`, `n-hur-later`, `n-ibland-hart`, `n-hur-clown`, `n-och-cykel`, `c-hej`, `c-kk`, `c-k-clown`, `c-s-cykel`, `c-s-cirkel`. `c-kk` är början av `c-k-clown`, eftersom *"K! K!"* lästes som bokstavsnamnet *kå*.
+
+## Feedback 2026-11-22 sent (rendering 22:13)
+
+- **1:07:** clownen "viskar" med ett mjukt babbel (`hej-babbel-5`) innan Malin säger *"Vad sa du, clownen?"*.
+- **1:15:** kritan fnissar när den nickar (`mus-fniss-kort-1`), sedan *"Nu ritar kritan."*
+- **2:53:** clownen och cirkeln var för stora på klossens platta och täckte ramens kant (`platta` 440 → 530 och 470 → 540). Cirkeln stod också snett efter rullningen; den rätas upp på *"Nu leker vi!"* (`'still'`).
+- **2:59, gömleken:** *"Titta noga."* (första halvan av `n-titta-noga`) medan clownens kloss hoppar, klossarna vänder ryggen till så att bilderna inte syns, tre lugnare byten, *"Var är clownen?"* (andra halvan) och 3 s paus. Clownens kloss vänder sig först (*"Där är den ju!"*), de andra efter.
+- **3:23:** clownen tittar på varje kloss en gång i gissningspausen i stället för två (lugnare).
+- **3:38:** klossarna hoppar på sina ord i ordningen clown, cykel, cirkel (orden i klippet vid 0, 1,03 och 1,76 s).
+
 ## Uppslagen
 
 Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.

@@ -61,9 +61,16 @@ const DEFS = `
   </filter>
   <filter id="boil" x="-5%" y="-5%" width="110%" height="110%">
     <feTurbulence id="boil-brus" type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="1"/>
-    <feDisplacementMap in="SourceGraphic" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    <feDisplacementMap in="SourceGraphic" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
   <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>`;
+
+// Line boil enligt CLAUDE.md: 2,5 px i bild i varje bildruta (skalan delad med kamerazoomen) och ny brusbild 6 gånger/s.
+// Anropas i varje bildruta; [id=…] för att DEFS kan finnas i flera svg:er.
+function boil(t, zoom = 1) {
+  for (const f of document.querySelectorAll('[id=boil-brus]')) f.setAttribute('seed', 1 + Math.floor(t * 6) % 4);
+  for (const d of document.querySelectorAll('[id=boil] feDisplacementMap')) d.setAttribute('scale', (2.5 / zoom).toFixed(3));   // boil
+}
 
 const INTRO = 2.4;   // "Gissa teckningen!" medan kritan poppar fram, en takt i musiken (100 BPM), sedan börjar ritandet
 const TEMPO_SV = 0.7;   // strecken ritas på 70 % av sina sekunder, så att Shorten ryms i musiken (ca 25 s)
@@ -380,7 +387,7 @@ async function kor(g) {
     kritaG.style.display = k.syns === false ? 'none' : '';
     kritaG.querySelector('.farg').setAttribute('fill', kritfarg(k.farg));
     kritaG.firstChild.setAttribute('transform', `translate(${k.p[0].toFixed(1)} ${k.p[1].toFixed(1)}) rotate(38) scale(${0.8 * (k.sk ?? 1)})`);
-    document.getElementById('boil-brus').setAttribute('seed', 1 + Math.floor(t * 8) % 4);
+    boil(t);
     kant.uppdatera();
   }
 
@@ -447,5 +454,5 @@ async function kor(g) {
   requestAnimationFrame(ruta);
 }
 
-window.gissa = { kor, spiral, sick, FARG, streck, DEFS };   // streck och DEFS: ABC-provet (alfabet/abc-prov)
+window.gissa = { kor, spiral, sick, FARG, streck, DEFS, boil };   // streck och DEFS: ABC-provet (alfabet/abc-prov)
 })();
