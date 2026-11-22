@@ -8,17 +8,21 @@ Flera saker på samma ark blir egna filer med --ark (ut = mapp, namn i läsordni
   python3 verktyg/egen_kant.py in.png ut.png
   python3 verktyg/egen_kant.py ark.png utmapp --ark gras buske blommor-vita blommor-rosa
 """
-import sys
+import os, sys
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageFilter
 from scipy import ndimage
 
 
+# Gränsen för "inte bakgrund". Är klipplinjen blek (zebran) räcker inte 246: KANT_GRANS=250 python3 verktyg/delar.py …
+GRANS = int(os.environ.get("KANT_GRANS", 246))
+
+
 def kant_mask(a, linje=12):
     """Allt innanför den ritade klipplinjen, minus den grå linjen själv."""
     mn, gra = a.min(2), (a.max(2) - a.min(2)) < 14
-    m = ndimage.binary_fill_holes(ndimage.binary_closing(mn < 246, iterations=3))
+    m = ndimage.binary_fill_holes(ndimage.binary_closing(mn < GRANS, iterations=3))
     # den grå linjen: omättade, lite mörkare pixlar längst ut i kanten
     yttre = m & ~ndimage.binary_erosion(m, iterations=linje)
     m &= ~(yttre & gra & (mn < 252))
