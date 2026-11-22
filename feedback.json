@@ -8466,9 +8466,10 @@
   "sec": 93,
   "tags": [],
   "note": "improve spade in hand and hink still visable on vänd",
-  "fixed": false,
+  "fixed": true,
   "at": 1795355709591,
-  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)",
+  "fixedAt": 1795358106023
  },
  "a38z46w4fjmwrwfx2x": {
   "ep": "J23",
@@ -8476,9 +8477,10 @@
   "sec": 93,
   "tags": [],
   "note": "and the filled snow sits a bit over bucket",
-  "fixed": false,
+  "fixed": true,
   "at": 1795355722041,
-  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)",
+  "fixedAt": 1795358106023
  },
  "qos221fj9bmwrwg9ct": {
   "ep": "J23",
@@ -8486,9 +8488,10 @@
   "sec": 100,
   "tags": [],
   "note": "polish both hold of spade and position of snow",
-  "fixed": false,
+  "fixed": true,
   "at": 1795355737949,
-  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)",
+  "fixedAt": 1795358106023
  },
  "95tcu54zldmwrwgpfj": {
   "ep": "J23",
@@ -8496,9 +8499,10 @@
   "sec": 163,
   "tags": [],
   "note": "make light a candle smaller",
-  "fixed": false,
+  "fixed": true,
   "at": 1795355758783,
-  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)",
+  "fixedAt": 1795358106023
  },
  "81aa7vxn21mwrwh3iy": {
   "ep": "J23",
@@ -8506,9 +8510,10 @@
   "sec": 165,
   "tags": [],
   "note": "show numbers",
-  "fixed": false,
+  "fixed": true,
   "at": 1795355777050,
-  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)",
+  "fixedAt": 1795358106023
  },
  "0lxqnvzosumwrwosfy": {
   "ep": "J06",
