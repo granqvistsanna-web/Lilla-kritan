@@ -35,3 +35,9 @@
 34-nu-ar-det-jul             2.48   (B 2.24)
 35-hej-da-musen-granen       2.92   (B 2.85)
 36-hej-da-god-jul            4.33   (B 4.44)
+37-en-julkula                1.78
+38-vi-ska-dekorera           4.84
+39-en-pall                   2.14
+40-titta-en-lada             3.55   (tagning 1 av 2, 2026-11-22)
+41-vill-du-dekorera          2.38
+42-ja-vad-kul                1.42

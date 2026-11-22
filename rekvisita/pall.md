@@ -2,7 +2,7 @@
 
 En liten stadig pall med två steg, sedd rakt från sidan: ett lågt steg till vänster och ett högre till höger, ljust trä (`#E8B97E`) med ljusare stegytor, ren fyllning med svagt kritkorn och vit klistermärkeskant. Står bredvid badkaret; grisen kliver upp steg för steg (två lugna skutt) och hoppar i från översta steget (Sanna 2026-11-10: "maybe pig climb on a little pall with steps").
 
-Används i: 020 Grisen badar, 022 Kaninen äter frukost (kaninen kliver upp till stolen, skala 0,5).
+Används i: 020 Grisen badar, 022 Kaninen äter frukost (kaninen kliver upp till stolen, skala 0,5), 034 Musen pyntar granen (kritan ritar den, `cut/pall-tunn-kontur.json`; musen kliver upp och hänger kulorna högre, skala 0,42).
 
 **Bilder (2026-11-10, Google Flow, Nano Banana 2.1, 0 krediter, stilreferens blå badkaret och badankan):** fyra tagningar i `assets/rekvisita/pall/original/pall-1…4.jpeg`. Vald nr 2, utklippt till `assets/rekvisita/pall/cut/pall.png`.
 

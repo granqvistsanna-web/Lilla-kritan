@@ -54,10 +54,10 @@ Kritan ritar musen: konturen i lugna drag (7 s): ägget, de två runda öronen o
 
 | # | Bild (en rörelse) | Malin säger | Musen svarar, ljud |
 |---|---|---|---|
-| 01 | Papperet: kritan ritar musen del för del, armarna med | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En mus! | krita-ritar, skogsljud |
+| 01 | Papperet: kritan ritar en röd julkula (ändrat 2026-11-21 kväll: "måla inte musen måla en julkula"). *"Oj! En mus!"* sägs i stället när musen trippar in i rad 1 | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* En julkula! | krita-ritar, skogsljud |
 | 1 | Helbild, vardagsrummet: snön faller utanför fönstret, fåtöljen med filten till vänster, en naken gran i foten till höger. Musen trippar in från vänster och vinkar | Hej, musen! Hej, hej! | steg, `mus-pip` hej |
 | 2 | Musen ser granen, ett litet glatt skutt | Titta! En julgran! | förtjust pip |
-| 3 | Närbild på granen: inget på den. Klipp till musen, öronen faller | Oj då. Granen är visst alldeles tom. *(paus 1 s)* Hm … vad gör vi nu? | trumpet pip |
+| 3 | Närbild på granen: inget på den. Klipp till musen, öronen faller | Oj då. Granen är visst alldeles tom. *(paus 1 s)* Titta, musen! En låda med julpynt. Vill du dekorera granen tillsammans? *(musen nickar)* Ja! Vad kul! *(ändrat 2026-11-22, replik 40–42)* | trumpet pip, mhm, förtjust pip |
 | 4 | Kritan ritar en röd kula på golvet framför musen: konturen (3,5 s), gisspaus, kulan fylls i | Titta! Kritan ritar något. *(gisspaus 3 s)* En julkula! Varsågod, musen. | krita-ritar, glitter |
 | 5 | Musen tittar på kulan, kawaii-ögon med glitter | Ska vi säga tack? *(paus 2,5 s)* | nyfiket pip |
 | 6 | Musen nickar direkt | Tack! | förtjust pip |
@@ -158,3 +158,28 @@ Musen har `mus-pip` 1–9 (korta pip, 0,46–1,48 s, från 019) men ingen familj
 ## Öppet
 
 Inget. Besluten står i [README](README.md#beslut-2026-11-13), platsen i [platsen.md](platsen.md).
+
+## Ändrat 2026-11-21 kväll (feedback)
+
+- Ritintrot: kritan ritar en röd julkula, inte musen. *"En julkula!"* (37) är klippt ur 09. *"Oj! En mus!"* (03) när musen trippar in.
+- Rad 3: *"Hm … vad gör vi nu?"* (07) ersatt av *"Vi ska dekorera granen med julpyntet i lådan. Hurra, vad kul!"* (38, ny).
+- Ny rad 13b: musen backar, kritan ritar en pall (*"Titta! Kritan ritar något."*, 08 igen), *"En pall! Varsågod, musen."* (39, ny). Musen kliver upp på pallen på *"Upp, upp"* och hänger kulorna högre.
+- Ny rad 25b efter stjärnan: musen slänger upp det sista pyntet (glittergirlangen) i granen, sedan tänds lamporna.
+- Rummet: två tavlor, två ljus på spiselhyllan och ett bord med ett ljus.
+
+```
+37-en-julkula          [excited] En julkula!
+38-vi-ska-dekorera     [excited] Vi ska dekorera granen med julpyntet i lådan! [happy] Hurra, vad kul!
+39-en-pall             [happy] En pall! Varsågod, musen.
+```
+
+## Ändrat 2026-11-22 (feedback)
+
+- Rad 3: *"Vi ska dekorera granen …"* (38) ersatt av *"Titta, musen! En låda med julpynt."* (40), *"Vill du dekorera granen tillsammans?"* (41), musen nickar två gånger (mhm), *"Ja! Vad kul!"* (42).
+- Rad 23: musen kliver upp på pallen med stjärnan, sträcker sig och skuttar, men når ändå inte. *"Oj! Musen når inte upp."* efter försöket.
+
+```
+40-titta-en-lada       [curious] Titta, musen! En låda med julpynt.
+41-vill-du-dekorera    [warmly] Vill du dekorera granen tillsammans?
+42-ja-vad-kul          [happy] Ja! Vad kul!
+```

@@ -45,3 +45,39 @@ Alla klipp går mellan olika bilder. Inga hoppklipp finns kvar. Bilderna före o
 - **Bytet till jätteglad** efter varje "pling!" (14, 15, 19) och i 21b: riggens blandning ger ett kisande ansikte i ca 0,15 s.
 - **Granen:** kulorna hänger där musens hand når, i en båge på granens vänstra halva. Toppen och högra sidan är tomma tills slingan tänds.
 - Förhandsvisningen är `--snabb` (960 × 540, 15 fps). Slutrenderingen är inte gjord.
+
+## Feedback 2026-11-21 kväll (5 punkter)
+
+| Punkt | Ändring |
+|---|---|
+| 0:20 "måla inte musen måla en julkula" | Ritintrot: kritan ritar en röd julkula i ett drag (7,1 s, julkulans kontur), väntar, kulan fylls i och skimrar med glitterljud. *"En julkula!"* (37, klippt ur 09). *"Oj! En mus!"* flyttad till rad 1, när musen trippar in. Musens kontur (`mille-kontur.json`) används inte längre |
+| 0:41 ny replik | *"Vi ska dekorera granen med julpyntet i lådan. Hurra, vad kul!"* (38, ElevenLabs v3, Malin, tagning 1 av 2, rådata i `produktion/ljud-original/034/`) i stället för *"Hm … vad gör vi nu?"*. Musen tittar ner mot lådan och blir jätteglad med öronvipp på "Hurra", förtjust pip efter repliken |
+| Pall | Ny rad 13b: musen backar två små steg till STA2 (790), kritan ritar pallen (`pall-tunn`, 0,42) mellan musen och lådan, *"Titta! Kritan ritar något."* (08) och *"En pall! Varsågod, musen."* (39, ny). I rad 14, 15 och 19 går musen till kulan, tar den, kliver upp på låga steget på "Upp" och höga på andra "upp" (uppmätt: 2,95 / 4,07 / 1,10 s in), hänger kulan på "pling!" (den glider 0,35 s till sin egen gren så att de tre sprids) och hoppar ner till STA2. Kulorna hänger nu i granens mitt, ca 150 px högre |
+| 3:26 "släng upp det sista så kommer lamporna" | Ny rad 25b efter stjärnan: musen går till lådan, tar glittergirlangen, slänger upp den (swoosh), den lägger sig i två guldbågar, sedan tänds lamporna (tindra), musen blir jätteglad och går tillbaka. Lamporna tändes förut när stjärnan landade. Lådan är tom på glitter efteråt |
+| 3:26 mer inredning | Tomtetavlan och regnbågstavlan på väggen, två ljus med lågor på spiselhyllan, ett litet bord (`ljusbord`) med ett ljus till höger om granen. Allt befintlig rekvisita |
+
+Filmen är 4:06 + intro (förut 3:46). Förhandsvisning `--snabb`, slutrendering inte gjord.
+
+## Feedback 2026-11-21 sent (3 punkter)
+
+- 1:53 Byrån (`ljusbord`) och ljuset till höger om granen borta.
+- 3:49 Ett ljus på spiselhyllan, i en mässingsstake ritad i kod; det andra ljuset borta. Regnbågstavlan visar nu vinterkullen (`bakgrunder/vinterkullen-v3`, inklippt i ramens fönster): snö, solnedgång och små röda hus.
+- 3:56 En liten krans över spisen (`krans.png`, samma urklipp som lucka 7, kopierad till scenmappen).
+
+## Feedback 2026-11-22 (11 punkter, lucka J22)
+
+| Punkt | Ändring |
+|---|---|
+| hela: namnge i feedbacksidan | J22 heter *Lucka 22: Musen pyntar granen* på sidan |
+| 0:22 kulan i mitten, fler detaljer | Ritintrot: hela kulan (öglan till botten) mitt i bild. Kulan har fått ett julmönster (två vita vågband med prickar) och teckningen ritar efter konturen lockets kant, öglans hål, banden, prickarna och glansfläckarna (KT 7,1 → 9,4 s, rad 01b +2,3 s). Samma mönster på alla kulor och i kritans kulteckningar |
+| 0:35 tavlan med granar | Vintertavlan större än tomtetavlan (0,27 → 0,34) och fler detaljer: kvällshimmel, måne, en bakre kulle, röd stuga med gult fönster, fyra granar, snögubbe |
+| 0:41 lockflikarna | Borta |
+| 0:44 julsymbol på lådan | Järnek (två blad, tre röda bär) i stället för stjärnan |
+| 0:53 manus | Replik 40–42 (ElevenLabs v3, Malin, tagning 1 av 2, rådata `produktion/ljud-original/034/titta-lada-*.mp3`), musen tittar ner, klipp till lådan på "En låda med julpynt", nickar två gånger med *mhm*, jätteglad på "Ja! Vad kul!" |
+| 1:34 närbild på kulorna | Rad 9 i närbild på lådan (K.KULOR, zoom 3,4) |
+| 1:43 kulorna bakom lådans innehåll | Glittret ligger nu bakom kulorna |
+| 2:23 fler musljud | Befintliga tagningar: *mhm* (mus-suck-2) när musen tar kulan och när den nickar, *jippi* (mus-hej-3, mus-hej-2) efter varje "pling!", pip när den tar den gula, pratpip när den kliver upp på pallen. Inga nya ljud gjorda |
+| 3:35 pallen och stjärnan | Rad 23: musen går till pallen, kliver upp på båda stegen, sträcker sig och skuttar, når ändå inte (raden +2,6 s). Rad 24 närbild på musen på pallen, rad 25 kliver ner efter att stjärnan satt sig |
+| 4:02 julmusik | Pynta salen (instrumental slinga) lågt under hela filmen efter ritintrot, i scenens ljud så att luckan får den |
+
+Filmen är 4:16 (förut 4:07). Förhandsvisning `--snabb`, slutrendering inte gjord.

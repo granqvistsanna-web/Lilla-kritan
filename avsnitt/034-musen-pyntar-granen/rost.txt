@@ -34,3 +34,9 @@
 34-nu-ar-det-jul            [happy sigh] Mmm … nu är det jul.
 35-hej-da-musen-granen      [happy] Hej då, musen! Hej då, granen!
 36-hej-da-god-jul           [warmly] Hej då! God jul! Vi ses snart! [giggles]
+37-en-julkula               [excited] En julkula!   (klippt ur 09)
+38-vi-ska-dekorera          [excited] Vi ska dekorera granen med julpyntet i lådan! [happy] Hurra, vad kul!
+39-en-pall                  [happy] En pall! Varsågod, musen.
+40-titta-en-lada            [curious] Titta, musen! En låda med julpynt.
+41-vill-du-dekorera         [warmly] Vill du dekorera granen tillsammans?
+42-ja-vad-kul               [happy] Ja! Vad kul!
