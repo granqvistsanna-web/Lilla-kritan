@@ -7634,5 +7634,65 @@
   "at": 1795296005977,
   "render": "2026-11-21 21:55 (förhandsvisning 3 (snabb, utan logotyp och slutmix): feedback 1 åtgärdad, ny replik på 0:42, med djup-QA:n (889bf150))",
   "fixedAt": 1795296386682
+ },
+ "804jbarn4lmwrix3gm": {
+  "ep": "034",
+  "time": "2:10",
+  "sec": 130,
+  "tags": [],
+  "note": "avid overlap of julkula and box",
+  "fixed": false,
+  "at": 1795333008838,
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+ },
+ "mpi6r2si1xmwrix9m1": {
+  "ep": "034",
+  "time": "2:10",
+  "sec": 130,
+  "tags": [],
+  "note": "better rig walking up",
+  "fixed": false,
+  "at": 1795333016808,
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+ },
+ "ehd7rl074hmwrixp4x": {
+  "ep": "034",
+  "time": "2:21",
+  "sec": 141,
+  "tags": [],
+  "note": "polish mouse movements overall",
+  "fixed": false,
+  "at": 1795333036929,
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+ },
+ "v7iwzhw34jmwrixttd": {
+  "ep": "034",
+  "time": "2:21",
+  "sec": 141,
+  "tags": [],
+  "note": "add happy wiggle tail",
+  "fixed": false,
+  "at": 1795333042993,
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+ },
+ "kgra2k6l3amwriympi": {
+  "ep": "034",
+  "time": "2:38",
+  "sec": 158,
+  "tags": [],
+  "note": "make edges of box smaller",
+  "fixed": false,
+  "at": 1795333080438,
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+ },
+ "881nea04vlmwrizue3": {
+  "ep": "034",
+  "time": "3:16",
+  "sec": 196,
+  "tags": [],
+  "note": "kritan ska kanske rita stjärnan mer i musens hand till höger",
+  "fixed": false,
+  "at": 1795333137051,
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
  }
 }
