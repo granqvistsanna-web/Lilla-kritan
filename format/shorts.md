@@ -14,7 +14,7 @@ Kritan ritar en sak streck för streck. Berättaren frågar *"Vad kan det vara?"
 | Platser | 1: papperet | max 2 |
 | Figurer | inga, bara teckningen och kritan | max 3 |
 | Slut | teckningen blir levande och lämnar bilden | kritirisen och outrot |
-| Musik | samma instrumentala slinga i alla (`assets/ljud/musik/gissa-bad.m4a`), lågt och jämnt under rösten | en sång per avsnitt |
+| Musik | samma instrumentala slinga i alla (`assets/ljud/musik/abc-bad-lang.m4a`), lågt och jämnt under rösten | en sång per avsnitt |
 | Röst | berättaren (ElevenLabs), bara korta repliker | sång och berättare |
 | Bild | 9:16, 1080×1920, inget viktigt under 75 % av höjden | 16:9 |
 

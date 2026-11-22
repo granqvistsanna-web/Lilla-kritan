@@ -17,7 +17,7 @@ Timing is automatic: the engine reads each voice file's real length (from the m4
 | `produktion/youtube/shorts/gissa/<tema>/<ord>/index.html` | One Short: only the drawing and the words. `bondgarden/ko/` is the reference. |
 | `verktyg/kant.js` | The white sticker rim (skill `vita-kanter`). Loaded by every Short; the engine applies it to the drawing with `andel: 0.025` (drawn in code, no baked rim) when the answer comes. |
 | `avsnitt/004-bussen-badar/scener/render.mjs` | Records any page in the repo; `--staende` = 1080×1920. |
-| `assets/ljud/musik/gissa-bad.m4a` | The shared instrumental bed (Suno, below). |
+| `assets/ljud/musik/abc-bad-lang.m4a` | The shared instrumental bed (since 2026-11-22: the 62 s loop also used by Kritans ABC; it starts right on a downbeat, so `INTRO` = 2.4 s is exactly bar 1). The original 43 s cue `gissa-bad.m4a` is kept but no longer used. |
 | `assets/ljud/roster/intro-1…5`, `hmm-1…5`, `hej-da-1…5` (`.m4a`) | Shared lines in five variants; the Swedish question is always `vad-blir-det-1` ("Vad blir det?"). Never use "Vad kan det vara?" in Swedish – it sounds stiff (Sanna 2026-11-08); English keeps `roster/en/vad-kan-det-vara-N`. Each Short always gets the same number (a hash of its folder), so neighbouring Shorts sound different. Fallback when an intro variant is missing: `gissa-teckningen.m4a`. |
 | `<short>/svar.m4a`, `saga.m4a` | "En ko!", "Kon säger muu." (ElevenLabs). No second name line ("Det är en ko."): it was dropped 2026-11-07 to keep the speech short. |
 | `produktion/youtube/shorts/gissa/ljud-att-gora.md` | Every voice line and sound effect with its file name and text/prompt: the shopping list for ElevenLabs and Suno. |

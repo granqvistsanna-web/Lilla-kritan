@@ -224,4 +224,4 @@ Luckorna ligger i `produktion/youtube/shorts/jul/`. Kalendern (`jul/lucka.js`) h
 
 Lucka 2 (lammet leker tittut) använder tittut-seriens repliker i `assets/ljud/roster/tittut/`, inga nya.
 
-Ljudeffekter som redan finns och används: `swoosh` (in i och ut ur luckan), `ding` (luckan öppnas), `glimt` och `glitter` (stjärnan), `ba` och `ba-fniss` (lammet). Musiken är Gissas bädd, `assets/ljud/musik/gissa-bad.m4a`: ingen ny musik.
+Ljudeffekter som redan finns och används: `swoosh` (in i och ut ur luckan), `ding` (luckan öppnas), `glimt` och `glitter` (stjärnan), `ba` och `ba-fniss` (lammet). Musiken är Gissas bädd, `assets/ljud/musik/abc-bad-lang.m4a`: ingen ny musik.

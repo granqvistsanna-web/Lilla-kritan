@@ -1,7 +1,7 @@
 // Outrot till Gissa teckningen-mixarna (16:9), i formatets stil (format/intro-outro.md, som 003:s outro):
 // tomt papper, tre av temats figurer tittar upp vid nederkanten och vinkar (vaggar, snurrar aldrig), sjunker ner igen,
 // och sedan poppar logotypen fram stort, en bokstav i taget, med ett pop per bokstav och ett pling när den är klar.
-// Under ligger Shortsens musik (gissa-bad), som tonas ut. Outrojingeln finns inte än (sv och en), så ingen röst och
+// Under ligger Shortsens musik (abc-bad-lang), som tonas ut. Outrojingeln finns inte än (sv och en), så ingen röst och
 // ingen jingel här; den läggs till när den finns.
 // Varje mapp har outro/index.html som sätter window.TITT (figurerna) och laddar den här filen.
 // ?en: tiny crayon tv. Rendering: node avsnitt/004-bussen-badar/scener/render.mjs produktion/youtube/mix/gissa-<tema>-liggande/outro [--en]
@@ -105,7 +105,7 @@ function render(t) {
 // ljud i render.mjs format: musiken under (tonas ut), boing när figurerna tittar fram, pop per bokstav, pling på slutet
 const fx = (n, v) => `assets/ljud/effekter/${n}/${n}-${v}.m4a`;
 window.LJUD = [
-  { t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: EN ? 0.4 : 0.55, langd: DURATION, fade: 1.5 },
+  { t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: EN ? 0.4 : 0.55, langd: DURATION, fade: 1.5 },
   ...figurer.map((f, i) => ({ t: TITT[0] + i * 0.25 + 0.2, fil: fx('boing', i + 1), vol: 0.4 })),
   ...bokst.map((b, i) => ({ t: +(LOGO_T + i * 0.2).toFixed(2), fil: fx('pop', i % 4 + 1), vol: 0.45 })),
   { t: +(LOGO_T + bokst.length * 0.2 + 0.3).toFixed(2), fil: fx('pling', 1), vol: 0.6 },

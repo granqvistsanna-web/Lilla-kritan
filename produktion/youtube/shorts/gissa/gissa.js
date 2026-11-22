@@ -70,7 +70,7 @@ const TEMPO_SV = 0.7;   // strecken ritas på 70 % av sina sekunder, så att Sho
 const PAUS_MELLAN = 0.12, PAUS = 4;   // pausen efter frågan: regel 4 i format/regler.md (4–5 s)
 const ROST = 'assets/ljud/roster';      // delade repliker, t.ex. vad-kan-det-vara.m4a
 const VARIANTER = 5;   // hmm-1…5 och vad-kan-det-vara-1…5 i ROST; varje Short får sin egen, vald efter mappens namn
-const BAD = 'assets/ljud/musik/gissa-bad.m4a';   // musiken under, samma i alla
+const BAD = 'assets/ljud/musik/abc-bad-lang.m4a';   // musiken under, samma i alla
 const MIX_KRITA = 0.8, MIX_RITA = 1.3, MIX_SLUT = 1.0;   // mix: kritan poppar fram, ritandet börjar, tid efter att saken gått ut
 const LIGG_SKALA = 0.95;   // 16:9: teckningen i 95 % av sin stående storlek, så att den ryms i 1080 px höjd med marginal
 // en m4a-fils längd i sekunder ur dess mvhd-box (fungerar utan AAC i webbläsaren), eller reserv om filen saknas

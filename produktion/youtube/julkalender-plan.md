@@ -15,7 +15,7 @@ Det som redan finns och som planen bygger på:
 | Ritluckornas motor: kritan ritar en liten saga steg för steg, och suddgummit hjälper till | `produktion/youtube/shorts/jul/rita.js` |
 | Lucka 1, kritan ritar en liten saga: stjärnan och molnet (byggd, liggande, ca 43 s) | `produktion/youtube/shorts/jul/01-stjarna/` |
 | Pilot lucka 2, lammet leker tittut med luckan | `produktion/youtube/shorts/jul/02-lammet-tittut/` |
-| Musiken under alla luckor | `assets/ljud/musik/gissa-bad.m4a` |
+| Musiken under alla luckor | `assets/ljud/musik/abc-bad-lang.m4a` |
 
 ---
 
@@ -49,7 +49,7 @@ Regler som gäller varje bit:
 
 - Ramen (`lucka.js`): kalendern, kaninen som pekar, repliken med dagens nummer, vägen in och ut, *"Vi ses i morgon!"*.
 - Platsen: snön i kod (`djur.js`), på dagen eller på kvällen. Inga andra platser.
-- Musiken: `gissa-bad.m4a`, lågt under rösten.
+- Musiken: `abc-bad-lang.m4a`, lågt under rösten.
 - Bitarnas ordning och längd, hej och hej då, pausen på 4 s.
 - Djurets läten: samma ljudfamilj som i bilderböckerna och Tittut.
 - Rendering och kontroll: liggande med `node avsnitt/004-bussen-badar/scener/render.mjs <mapp>` (gissa-luckorna med `--liggande`), stillbilder först, `ffprobe` (1920×1080, 30 fps, ljud; de nybyggda ca 20–30 s) och ett kontaktark. Den stående extraversionen görs ur samma mapp med `--staende`.
