@@ -7887,5 +7887,35 @@
   "at": 1795338862461,
   "render": "2026-11-22 08:54 (feedback 22/11 (förhandsvisning): kulorna nere i lådans glitter, musen kliver upp och ner för pallen, glad svansvift, tunnare kanter på lådan, stjärnan ritas på pallen vid musens hand)",
   "fixedAt": 1795340990782
+ },
+ "bt123xpg45mwrnmh6k": {
+  "ep": "049",
+  "time": "1:34",
+  "sec": 94,
+  "tags": [],
+  "note": "more reactions and dentrist looking at bunny",
+  "fixed": false,
+  "at": 1795340911484,
+  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)"
+ },
+ "ro9rvhn5p5mwrnmthm": {
+  "ep": "049",
+  "time": "1:36",
+  "sec": 96,
+  "tags": [],
+  "note": "imporve light ljus animation, source looks wrong position",
+  "fixed": false,
+  "at": 1795340927434,
+  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)"
+ },
+ "acofja9lx0mwrnoibq": {
+  "ep": "049",
+  "time": "3:26",
+  "sec": 206,
+  "tags": [],
+  "note": "plish bubbles better contrast for toothbrush",
+  "fixed": false,
+  "at": 1795341006278,
+  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)"
  }
 }
