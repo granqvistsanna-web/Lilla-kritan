@@ -114,7 +114,8 @@ function kamera([z, cx, cy]) {
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
 // --- SVG:n -------------------------------------------------------------------------------------------------------------
-const LAGER = ['platta', 'himmel', 'bak', 'gran', 'kulgran', 'pall', 'figurer', 'gomd', 'fot', 'ladbak', 'ilada', 'lada', 'golvsak', 'fram', 'kontur', 'krita'];
+// krukans framkant bakom musen och kulan i handen (feedback J22 3:01: krukan skar över musen); bara den gömda blå (rull) ligger bakom krukan
+const LAGER = ['platta', 'himmel', 'bak', 'gran', 'kulgran', 'pall', 'rull', 'fot', 'figurer', 'gomd', 'ladbak', 'ilada', 'lada', 'golvsak', 'fram', 'kontur', 'krita'];
 function byggSvg() {
   document.body.insertAdjacentHTML('afterbegin', `<svg viewBox="0 0 1920 1080">
   <defs>
@@ -564,7 +565,7 @@ function kula(n, X, st, t) {
     // rullar över lådans högra kant och ramlar mjukt ner bakom julgransfoten (y = kulans underkant)
     const kant = (LADA.x1 - KG.bla[0]) / (GOMD[0] - KG.bla[0]), y = u < kant ? lerp(KG.bla[1], KG.bla[1] - 6, u / kant) : lerp(KG.bla[1] - 6, GOMD[1], ((u - kant) / (1 - kant)) ** 2);
     const rot = (x - KG.bla[0]) / (KULA.r * s) * 57.3;   // rullar: vrider sig med sträckan
-    lagg('gomd', `<g transform="translate(${f1(x)} ${f1(y - (KULA.botten - KULA.mitt[1]) * s)}) rotate(${f1(rot)}) scale(${s}) translate(${-KULA.mitt[0]} ${-KULA.mitt[1]})"${fil}><image href="${KULA.bild}" width="1024" height="1024"/>${KULA.dekor}</g>`); }
+    lagg('rull', `<g transform="translate(${f1(x)} ${f1(y - (KULA.botten - KULA.mitt[1]) * s)}) rotate(${f1(rot)}) scale(${s}) translate(${-KULA.mitt[0]} ${-KULA.mitt[1]})"${fil}><image href="${KULA.bild}" width="1024" height="1024"/>${KULA.dekor}</g>`); }
 }
 function stjarnaRita(X, st, t) {
   if (!X) return;
