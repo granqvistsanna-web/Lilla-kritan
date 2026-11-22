@@ -7733,9 +7733,10 @@
   "sec": 123,
   "tags": [],
   "note": "make bunny a bit smaller",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333352599,
-  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))",
+  "fixedAt": 1795333928180
  },
  "y9mza2v7ogmwrj55hs": {
   "ep": "049",
