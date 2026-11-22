@@ -1,8 +1,10 @@
-# Avsnitt 051 – Björnen vaknar på julafton (plan)
+# Avsnitt 051 – Leoparden vaknar på julafton
 
-**Status:** grind 1 (manus) **godkänd av Sanna 2026-11-22, replikerna omskrivna av Sanna samma dag** (väckarklocka i stället för tomteluva, kläderna på väggen, luvan bakom krukan, nallen i paketet). Nästa: grind 2 (sovbilden utan ögon, se Öppet 1). Julbilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med björnen, björnen svarar med brum, öron och ansikte. Inget är byggt än. Ca 3,5–4 min.
+**Status:** grind 1 (manus) **godkänd av Sanna 2026-11-22, replikerna omskrivna av Sanna samma dag** (väckarklocka i stället för tomteluva, kläderna på väggen, luvan bakom krukan, nallen i paketet). Grind 2 (saker) klar 2026-11-22: sovbilden nr 3 och krukan nr 3. Grind 3 (rösten) inspelad 2026-11-22: Malins tagning (generation 1 av 2, `produktion/ljud-original/roster/051-leoparden-vaknar-pa-julafton/malin-tagning-1a.mp3`, 1b sparad bredvid) delad med `dela-tagning.py` till 45 filer i `assets/ljud/roster/leoparden-vaknar-pa-julafton/`, toppen −3 dBFS. Provlyssning: `ljud/provlyssna-rost.m4a`. **Godkänd av Sanna 2026-11-22** (alla rader bra). Grind 4 (ljud): inga nya behövs, alla ljud i tabellen finns i `assets/ljud/effekter/` (kontrollerat 2026-11-22). Grind 5: animatiken byggd 2026-11-22 och omgjord efter Sannas feedback samma dag (runda 2, `storyboard/animatik.mp4`, 3:42 med julkalenderns ram för lucka 24): ritintrot ritar en strumpa i stället för den sovande björnen (ny replik 46 *"En strumpa!"* ersätter rad 3, inspelad 2026-11-22 som kort tagning, generation 1 i `produktion/ljud-original/roster/051-leoparden-vaknar-pa-julafton/malin-strumpa-a.mp3`, b sparad bredvid), teckningarna har fler streck (klockan, paketet), björnen kliver ur sängen och står framför den i rad 8–14, halsduken ritas i kod, musiken lägre (0,1) och fler ljud. **Godkänd av Sanna 2026-11-22.** Grind 6: kodscenen `scener/julsovrummet/index.html` (storyboardens bilder med rörelse per rad), snabb förhandsvisning `film/avsnitt-051-snabb.mp4` (3:31 utan julkalenderns ram, −16 LUFS för granskning), QA utan frysta partier och utan lång tystnad. **Förhandsvisningen godkänd av Sanna 2026-11-22.** Slutrenderad samma dag: `film/avsnitt-051.mp4` (3:31, 1920×1080, −16,0 LUFS, topp −1,7 dBFS, QA och whisper utan fel) och upplagd på feedbacksidan som J24 för granskning. Julkalenderns ram lagd på av huvudsessionen samma dag: `produktion/youtube/shorts/jul/24-leoparden-vaknar-pa-julafton/` (224,3 s, slutar med "Vi ses snart!"), uppladdad som J24 i stället för versionen utan ram. **Runda efter J24-feedback 2026-11-22:** nallen byts mot gosedjurselefanten från 049 (ansiktet i kod), replik 37–38 omskrivna och inspelade (*"Björnen öppnar … En elefant!"*, *"Åh! Krama elefanten."*, generation a i `produktion/ljud-original/roster/051-leoparden-vaknar-pa-julafton/malin-elefant-a.mp3`, b bredvid), rummet omfärgat till turkosgrön vägg med gul-vitrutiga gardiner (`assets/bakgrunder/julsovrummet/julsovrummet-valvt-teal.jpeg`, alternativ A av tre, vald av Sanna). Förra filmen sparad som `film/avsnitt-051-nalle-rosa.mp4`. Julbilderbok enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med björnen, björnen svarar med brum, öron och ansikte. Ca 3,5–4 min.
 
-**Julkalenderns lucka 24, den sista** (Sanna 2026-11-22: lucka 24 = julaftons morgon, göra sig fin). Kalenderramen är intro och outro som i lucka 17, så introt *"Djuren hittar på!"* är inte med. Mapp: `produktion/youtube/shorts/jul/24-bjornen-vaknar-pa-julafton/` (skapas när luckan byggs). Lucka 23 (050) leker i snön, så den här håller sig inomhus: snön syns bara i fönstret.
+> **Bytt till leoparden (J24-feedback, Sanna 2026-11-22, "change bear to leo"):** leopardens v2-rigg (`leoparden-lova`) och sovbilden `lova-sover-sangen-jul.png` (slutna ögon, ögonen öppnas i kod som i 040), spinn-ljuden i stället för brum, 12 repliker med "leoparden" nyinspelade (`produktion/ljud-original/roster/051-leoparden-vaknar-pa-julafton/malin-leopard-a.mp3`, b bredvid, delade med `dela-tagning.py`), mappen och röstmappen omdöpta till `leoparden-vaknar-pa-julafton`. Samma runda: bara leoparden andas i sovbilden (inte sängen), inget täckstycke över huvudet i rad 4–5, uppvaknandet i rad 8 är ett skutt från kudden ner bredvid sängen och kudden och täcket ligger kvar (040:s kudde och täcke i kod), krukan närmare väggen, klockan på ett litet bord (`ljusbord`), tittut bakom sängen i stället för det röda täcket (rad 13–14), mindre klädhängare till vänster om gardinen med plaggen i var sin knopp, fotlyft och "pop" när plaggen kommer på, närbilder på reaktionerna (rad 10, 11, 22, 23), paketet har lock med rosett som leoparden lyfter av (`paketlock`). Texten nedan beskriver fortfarande björnen där den inte är uppdaterad.
+
+**Julkalenderns lucka 24, den sista** (Sanna 2026-11-22: lucka 24 = julaftons morgon, göra sig fin). Kalenderramen är intro och outro som i lucka 17, så introt *"Djuren hittar på!"* är inte med. Mapp: `produktion/youtube/shorts/jul/24-leoparden-vaknar-pa-julafton/` (skapas när luckan byggs). Lucka 23 (050) leker i snön, så den här håller sig inomhus: snön syns bara i fönstret.
 
 **Enkel animation.** Inget nytt ritas utom morgonhimlen i fönstret. Plaggen glider själva till björnen och läggs ovanpå i kod, som strumporna och mössan i 024 och 039. Björnen drar aldrig på något med böjda armar: tassen lyfts rakt, plagget glider på plats, ett litet ryck på *"på!"*.
 
@@ -12,7 +14,7 @@
 | **Figurer (1)** | **Björnen Bulle** (v2, riggad, ✅ referensark klart, samma som 023 och tittut i lucka 6). Sovbilden `bulle-sover.png` för början |
 | **Platser (1)** | **Julsovrummet** (`assets/bakgrunder/julsovrummet/`, samma uppställning som 040: plattan, sängen, lampan). **Morgon i stället för kväll:** fönstret får en ljus morgonhimmel (ljusblått mot rosa nere vid snön) och lugnt snöfall i kod bakom `fonster-mask`, som kvällshimlen i 040. Lampan släckt. Ljusslingan över fönstret tänds på *"God jul!"*. Inget platsbyte, inget kritsvep |
 | **Saker som finns** | väckarklockan (`ringklocka`, från 045), klädhängaren (`kladhangare`, från 039), gula stjärnan (`stjarna-gul`, i avskedet), sängen (`sangen`), täcket (`tacket`, julrött), kudden (`kudde`), strumporna (`strumpor`, de blå), halsduken (`halsduk`, röd-vit jul), tomteluvan (`tomteluva`), paketet (`paket` + `rosett`), nallen (`nalle`, i paketet) |
-| **Nya saker** | **krukan** (luvans gömställe på golvet under klädhängaren), vid grind 2 |
+| **Nya saker** | **krukan** (`kruka`, julstjärna i honungsgul kruka, luvans gömställe på golvet under klädhängaren) |
 | **I kod** | morgonhimlen och snön i fönstret, ljusslingans sken, bjällran på luvan (en liten guldprick i tofsen), klockans visare, glitter, skimret runt luvan |
 | **Musik** | ingen ny musik: `assets/ljud/musik/jul/jul-julafton.m4a` lågt (ca 0,10 som dagbädden i 043), upp i sista leken. Ingen musik medan björnen sover, bara andningen |
 | **Favoriter** | 🐻 björn · ⏰ väckarklocka · 🎁 paket · 🧸 nalle · 🎄 jul |
@@ -114,7 +116,7 @@ Avskedet för hela julkalendern (Sanna 2026-11-22). Musiken ligger kvar lågt.
 
 ## Malins repliker att klistra in (ElevenLabs)
 
-Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Ett block, en tagning. Filerna hamnar i `assets/ljud/roster/bjornen-vaknar-pa-julafton/` (`01-kritan-ritar` …) med `rost.txt`.
+Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0,75. Ett block, en tagning. Filerna hamnar i `assets/ljud/roster/leoparden-vaknar-pa-julafton/` (`01-kritan-ritar` …) med `rost.txt`.
 
 ```
 [warmly] Kritan ritar …
@@ -183,7 +185,7 @@ Allt finns i `assets/ljud/effekter/`: `brum-gullig` (alla 8 känslor från 023, 
 - [x] *"I dag är det julafton!"* på rad 2 och igen efter gäspningen (rad 12, *"Vet du, björnen? … Hurra!"*), sedan *"God jul!"* (rad 34) (Sanna 2026-11-22)
 - [x] Kalenderns avsked efter berättelsen, före ramens outro: tack för julkalendern, en riktigt god jul (Sanna 2026-11-22)
 - [x] Ingen ny musik: `jul-julafton.m4a`
-- [ ] Nya saker: krukan, grind 2
+- [x] En ny sak: krukan (högst 2)
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt
 
 ## Grind 2 – saker (2026-11-22)
@@ -202,7 +204,7 @@ Kollbild: `original/saker-koll.jpg` (de befintliga sakerna på julsovrummet med 
 | Nallen | ✅ i paketet (Sannas repliker). `nalle-framifran-v1.png`, mörk chokladbrun mot björnens mellanbrun |
 | Väckarklockan | ✅ `ringklocka` från 045, kontur `ringklocka-kontur.json`, visarna i kod. Vanlig klocka, ingen tomte (Sanna 2026-11-22) |
 | Klädhängaren | ✅ `kladhangare` från 039 (röd ribba, gula knoppar), plaggen på knopparna i kod |
-| **Krukan** | **saknas.** Förslag: en röd julblomma i en rund kruka på golvet, stor nog att luvan får plats bakom. 4 tagningar i Flow |
+| **Krukan** | ✅ **ny, nr 3 vald (Sanna 2026-11-22):** honungsgul kruka med julstjärna, `rekvisita/kruka.md`, `assets/rekvisita/kruka/cut/kruka.png` |
 | **Sovbilden** (björnen i sängen utan ögon) | ✅ **nr 3 vald**, `bulle-sover-sangen-jul.png` + kontur (se Öppet 1). Ritintrots kontur görs från den valda tagningen (`verktyg/kontur.py`), så att teckningen har samma form som bilden |
 
 ## Öppet
@@ -215,4 +217,4 @@ Kollbild: `original/saker-koll.jpg` (de befintliga sakerna på julsovrummet med 
 6. **Strumporna** är lammets ullstrumpor (rosa och blå). Förslag: de blå, och repliken *"Blå strumpor!"*. Fungerar de på björnens fötter (`bulle-leg-*-fram.png`)? Mät vid bygget.
 7. **Avsnittets färg:** julröd som tomteluvan.
 8. ~~**Tomten på väckarklockan**~~ löst 2026-11-22: vanlig klocka, ingen tomte (Sanna).
-9. **Krukan:** vilken kruka? Förslaget är en röd julblomma i kruka på golvet under klädhängaren.
+9. ~~**Krukan**~~ löst 2026-11-22: honungsgul kruka med julstjärna (`kruka`).

@@ -51,7 +51,7 @@ Alla börjar på ett B!
 Bubblan svävar upp så lätt
 Sov nu, Kvack, god natt, god natt
 
-lilla kritan är tecknade sånger och sagor för de minsta. Prenumerera för fler avsnitt med Lilla Kvack och kompisarna 🐥
+lilla kritan är tecknade sånger och sagor för de minsta, med Lilla Kvack och kompisarna 🐥
 
 #lillakritan #LillaKvack #bokstavenB
 ```

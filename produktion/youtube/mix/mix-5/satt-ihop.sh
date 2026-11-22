@@ -10,11 +10,12 @@
 # 016 Blinka sist (som i Mix 3: eget svep, 3,6 s svart kapat), tre pussel till (pussel-mix-5b: bilen, grisen, hunden) och fyra Gissa
 # från Mix 3 (traktor, ko, brandbil, båt). 013, 020 och 016 börjar under sitt eget kritsvep (egen), som i Mix 3.
 # 003 och 004 utan "lilla kritan"-outrot (bilden krymper till ett kort, loggan; Sanna 2026-11-18): kapa 12,3 och 9,8 s, musiken tonas ut 1,2 s.
+# 2026-11-22 (Sanna): lammet i skogen (Tittut) borttaget och 046 kaninen går till doktorn på dess plats (ritintrot, inget kort att hoppa), svagare boil i 017 och 036, lägre klocka i 027, pusslen glider över till nästa bricka (pussel-prov.py), täckande kritsvep.
 # Kör: produktion/youtube/mix/mix-5/satt-ihop.sh
 set -e
 cd "$(dirname "$0")"
 R=../../../..; A=$R/avsnitt; G=$R/produktion/youtube/shorts/gissa; TT=$R/produktion/youtube/tittut; E=$R/assets/ljud/effekter
-UT=mix-5.mp4; T=.tmp; rm -rf $T; mkdir -p $T
+UT=${UT:-mix-5.mp4}; T=.tmp; rm -rf $T; mkdir -p $T
 V="-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -an"
 AU="-ar 48000 -ac 2 -c:a pcm_s16le -vn"
 INTRO=9
@@ -50,7 +51,7 @@ DELAR=(
   "bok|$A/036-hunden-ater-julmat/film/avsnitt-036.mp4|a8784e|3.3"
   "pussel|$P5/pussel-mix-5b.mp4|8e44c9|0"
   "bok|$A/027-zebran-plockar-undan/film/avsnitt-027.mp4|f28d3c|3.3"
-  "tittut|$TT/skogen-2/lammet-ludde/lammet-ludde.mp4|2fb3b5|3.9||23"
+  "bok|$A/046-kaninen-gar-till-doktorn/film/avsnitt-046.mp4|2fb3b5"
   "avsnitt|$A/017-mors-lilla-olle/film/avsnitt-017.mp4|3b8fe0|9.5"
   "bok|$A/039-kaninen-aker-pulka/film/avsnitt-039.mp4|63ab54"
   "short|$G/fordon/brandbil/brandbil-liggande-mix.mp4|f2a33a"
@@ -66,7 +67,8 @@ for d in "${DELAR[@]}"; do IFS='|' read -r _ fil _ <<< "$d"; [ -f "$fil" ] || { 
 # kritsvepet (bild 27 = täckt, på skarven) läggs på varje del innan delarna sätts ihop: andra halvan (bild 27–53) i början
 # av delen med delens färg, första halvan (bild 0–26) i slutet av delen före. I ett enda pass över hela mixen tappade
 # ffmpeg svepen efter ca 13 minuter, så korta förskjutningar per del i stället.
-SV=../mix-1/kritsvep/bilder; FARG=(); for d in "${DELAR[@]}"; do IFS='|' read -r _ _ f _ <<< "$d"; FARG+=("$f"); done
+SV=../mix-1/kritsvep/bilder-opak;   # helt täckande streck (2026-11-22: 88 % lät förra delen lysa igenom mörkt och gav ett hopp i färgen på skarven)
+ FARG=(); for d in "${DELAR[@]}"; do IFS='|' read -r _ _ f _ <<< "$d"; FARG+=("$f"); done
 # delarna kodas parallellt, P åt gången (Sanna 2026-11-13: snabbare); varje del skriver sin rad i $T/NN.txt
 P=${P:-4}
 i=0; for d in "${DELAR[@]}"; do

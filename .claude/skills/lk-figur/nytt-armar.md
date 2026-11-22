@@ -44,6 +44,11 @@ In `HAND` in `uttryck.html` (all optional; defaults above):
 `vinka: [höjd, sving]` · `peka: [lägst, högst]` · `bara: grader` · plus the existing `l`, `r` (grip = paw centre in the arm picture),
 `kant`, `byte`, `fram`, `mun`, `golv`, `bord`. A figure without `byte`/`fram` (Lova) gets Kanel's numbers.
 
+**Rigs with a hidden zone** (`GOM { fran, till }`: Zebbe, kon, grisen, ugglan, pandan, apan, dinosaurierna … ): between those pose angles
+(26–80) the rig slides the arm behind the body on purpose, so arms never "fly". A wave swinging through it made the zebra's arm slide in
+and out with only the hoof peeking (Sanna 22/11, "zebra wave look odd"). `ARMROR` now lifts the wave so the whole swing stays above
+`GOM.till`, and `peka` snaps to the nearest edge of the zone.
+
 Computed wave on today's rigs (all clear the body at 46°, so all wave at 30° ± 16°; in old pose numbers):
 Kanel 75, Lova 68, Ludde 75, Hugo 75, Zebbe 80, Bulle 90. That matches the approved hand-tuned waves (050 Kanel 80, 051 Lova 62).
 
@@ -53,9 +58,9 @@ and `RORELSE.lagga.kropp`. Check with the test sheet, `?prick=1` draws the grip 
 ## Test sheet
 
 `verktyg/prov/armar.html`: six figures (kaninen, leoparden, lammet, hunden, zebran, björnen) do each preset at the same time,
-67 s: vinka 0–4.5, peka 4.5–9.5, räkna 9.5–14.1, plocka 14.1–20.5, bära 20.5–27.5. `?t=` shows one frame, `?prick=1` the grip points.
+110 s: vinka 0–4.5, peka 4.5–9.5, räkna 9.5–14.1, plocka 14.1–20.5, bära 20.5–27.5. `?t=` shows one frame, `?prick=1` the grip points.
 ```bash
-node verktyg/rigg-video.mjs /verktyg/prov/armar.html "" 67 <scratchpad>/armar.mp4
+node verktyg/rigg-video.mjs /verktyg/prov/armar.html "" 110 <scratchpad>/armar.mp4 1600
 node .claude/skills/lk-figur/scripts/stills.mjs "verktyg/prov/armar.html" <scratchpad>/armar.jpg 1.2 6.5 8.5 12 15.8 17.5 22 26.5
 ```
 Known gap: Alma's `HAND` is a copy of Ludde's and her arm pictures point up at rest, so she is left out until her grip is measured.
@@ -82,7 +87,22 @@ own `UTTRYCK`. `STUNDER.namn(tl, d)` returns `[ansikte, pose]`, fading in and ou
 | `titta` | nyfiken, eyes down-front | leans forward from the feet to look at something |
 | `studs` | glad | two soft 18 px lifts with a small crouch before |
 | `satta` / `resa` | glad | sits down / stands up (`sattaSig`, the figure's own numbers) |
+| `jublar` | jätteglad | arms up (`hurra`), one small 16 px lift, tail wags |
+| `ivrig` | ivrig | leans forward, rocks softly on its toes, tail wags |
+| `ah` | kawaii (delighted) | paws in on the tummy, slow sway |
+| `skrattar` / `mums` / `usch` / `stolt` | the engine's existing moments (skrattDel, mumsDel, uschDel, stoltDel), now by name | |
+| `oj` | förvånad in 0.2 s | a small hop back, leans back, ears up, calms down. Surprised, not scared |
+| `gaspar` | sömnig | round mouth opens wide (förvånad's mouth scaled up, at the figure's own mouth height), stretches a little |
+| `blinkar` | glad → wink | head tilts a little |
+| `lyssnar(tl, d, sida)` | a little nyfiken, eyes to the side | `lyssnar` pose, ear toward the sound |
+| `nej` | a little thoughtful | soft head shake (`skakaHuvud`), not cross |
+| `tack` | glad | small bow: nods down from the feet, tail wags |
+| `letar` | a little nyfiken | eyes go one way then the other, head follows 0.25 s later. Never turns |
+| `trostad` | ledsen lite → glad | a sigh, then happy again (problems get solved), tail wags at the end |
+
+**Tail:** every happy moment wags the tail (`glad`, `studs`, `jublar`, `ivrig`, `ah`, `skrattar`, `mums`, `blinkar`, `tack`, `trostad`), using the
+figure's own dance wag (`RORELSE.svansDans`, default 8°) at 2 wags/s (Sanna 22/11, "wiggle tail at happy").
 
 Face only, no body: `blanda('neutral', STUNDER.ansikte('blyg'), k)` (`fundersam` → `tanker`, `ledsenLite` → half `ledsen`).
 Combine with arms: `A.vinka(...STUNDER.glad(tl, 3), tl, k)`. `STUNDLISTA` lists the names in order.
-The test sheet `verktyg/prov/armar.html` shows them after the arm presets, 27.5–67 s (`stunder-kontaktark.jpg`).
+The test sheet `verktyg/prov/armar.html` shows them after the arm presets, 27.5–110 s (`stunder-kontaktark.jpg`).

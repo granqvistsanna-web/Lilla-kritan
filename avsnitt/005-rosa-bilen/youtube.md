@@ -11,7 +11,7 @@ Rosa sången 🚗💗 | Barnsång om färger – musen letar rosa | lilla kritan
 ## Beskrivning
 
 ```
-Brum, brum! Musen Mille kör sin rosa bil och letar efter saker som är rosa. Blommorna är rosa, ballongen är rosa – och nosen! Vid glasskiosken får hon en rosa glass av grodan Gurra, och sedan blir det danspaus med alla kompisar.
+Brum, brum! Musen kör sin rosa bil och letar efter saker som är rosa. Blommorna är rosa, ballongen är rosa – och nosen! Vid glasskiosken får hon en rosa glass av grodan, och sedan blir det danspaus med alla kompisar.
 
 En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Rosa!" i ekot, sniffa, vicka, dansa och leta efter något rosa hemma!
 

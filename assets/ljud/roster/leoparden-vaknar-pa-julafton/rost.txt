@@ -1,0 +1,46 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-bjorn  [softly] En björn! Som sover.
+04-god-morgon  [warmly] God morgon! Titta, det snöar.
+05-idag-julafton  [excited] I dag är det julafton!
+06-vakna  [cheerfully] Vakna, leoparden! Vakna!
+07-sova-lite-till  [chuckles] Oj då. Leoparden vill visst sova lite till.
+08-vad-gor-vi  [curious] Hm … vad gör vi nu?
+09-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+10-en-vackarklocka  [delighted] En väckarklocka!
+11-ring-ring  [playfully] Ring, ring!
+12-nu-vaknar  [laughs] Nu vaknar leoparden!
+13-hej-leoparden  [happy] Hej, leoparden! Hej, hej! God morgon!
+14-tack-for-hjalpen  [warmly] Tack för hjälpen, kritan!
+15-gaspning  [laughs] Oj, vilken gäspning! Kan du också gäspa?
+16-vet-du-julafton  [excited] Vet du, leoparden? I dag är det julafton! Hurra!
+17-var-ar-leoparden  [surprised] Oj! Var är leoparden?
+18-tittut  [playfully] Tittut! Där är du!
+19-bli-fin  [cheerfully] Nu ska leoparden bli fin för julafton.
+20-kladerna-pa-vaggen  [cheerfully] Kläderna hänger på väggen. Vad bra!
+21-forst-strumporna  [cheerfully] Först strumporna.
+22-dra-pa-strumpor  [happy] Dra, dra … på! Dra, dra … på!
+23-bla-strumpor  [delighted] Blå strumpor!
+24-och-halsduken  [cheerfully] Och halsduken.
+25-dra-pa-halsduk  [happy] Dra, dra … på!
+26-mjuk-och-varm  [happy sigh] Så mjuk och varm!
+27-var-ar-luvan  [surprised] Och nu luvan … Oj! Var är luvan?
+28-vet-inte-var  [curious] Leoparden vet inte var luvan är.
+29-kan-du-hjalpa  [warmly] Kan du hjälpa leoparden? Kan du se var luvan är?
+30-bakom-krukan  [excited] Ja, där! Bakom krukan!
+31-dra-pa-luva  [happy] Dra, dra … på!
+32-nu-ar-du-fin  [delighted] Nu är du fin, leoparden! Strumpor, halsduk och luva.
+33-kritan-ritar-igen  [excited] Titta! Kritan ritar igen.
+34-ett-paket  [delighted] Ett paket!
+35-vem-ar-det-till  [curious] Vem är det till?
+36-till-dig  [warmly] Till dig!
+37-en-elefant  [excited] Leoparden öppnar … En elefant!
+38-krama-elefanten  [warmly] Åh! Krama elefanten.
+39-god-jul  [happy] God jul!
+40-mysigt-julafton  [happy sigh] Vad mysigt på julafton!
+41-hej-da-leoparden  [happy] Hej då, leoparden! God jul!
+42-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
+43-tack-for-julkalendern  [warmly] Tack för att du tittade på julkalendern!
+44-lilla-kritan-djuren  [warmly] Med Lilla Kritan och alla djuren.
+45-riktigt-god-jul  [warmly] En riktigt god jul!
+46-en-strumpa  [delighted] En strumpa!

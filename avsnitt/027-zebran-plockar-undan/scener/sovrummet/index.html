@@ -391,7 +391,7 @@ async function ljud() {
   ut.push({ t: Rd['4b'].s + 1.0, fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 1.0, langd: 4.0, loop: true, fade: 0.3 });   // och radion
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: Rd['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });              // mjukt skogsljud under ritintrot
   const b0 = Rd['1'].s, b1 = Rd['22'].s + Rd['22'].d;
-  ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.9, langd: b1 - b0, loop: true, fade: 1.5, fadeIn: 1.0 });       // platsmattan: klockan tickar (hörs nu, runda 2), en gång i sekunden 0,53 s in i slingan
+  ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.25, langd: b1 - b0, loop: true, fade: 1.5, fadeIn: 1.0 });       // platsmattan: klockan tickar lågt (0,25, under Malin; Sanna 2026-11-22 "lower ticking"), en gång i sekunden 0,53 s in i slingan
   // radion: klick på, musiken (radio.mjs bygger filen med nedtoningen), klick av; leksakerna dunsar när de landar på takten
   ut.push({ t: PA - 0.12, fil: E + 'lampa-klick/lampa-klick-2.m4a', vol: 1.4 }, { t: AV, fil: E + 'lampa-klick/lampa-klick-3.m4a', vol: 1.4 });
   ut.push({ t: PA, fil: 'avsnitt/027-zebran-plockar-undan/ljud/radio-musik.m4a', vol: 2.5, langd: AV - PA, fade: 0.3 });

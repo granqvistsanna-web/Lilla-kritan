@@ -1,0 +1,19 @@
+1
+00:00:02,690 --> 00:00:04,610
+Oj! Var är leoparden?
+
+2
+00:00:07,110 --> 00:00:09,240
+Kaninen vet inte var leoparden är.
+
+3
+00:00:12,140 --> 00:00:15,310
+Kan du hjälpa kaninen? Kan du se var leoparden är?
+
+4
+00:00:20,610 --> 00:00:22,780
+Ja, där! Bakom pallen!
+
+5
+00:00:26,380 --> 00:00:27,830
+Där är du, leoparden!

@@ -121,7 +121,7 @@ function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   KAM = [z, tx, ty];
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
-  $('brus').nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(3));
+  $('brus').nextElementSibling.setAttribute('scale', (1.5 / z).toFixed(3));   // svagare boil i 036 (Sanna 2026-11-22 "reduce line boil"): 1,5 px i bild
 }
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 

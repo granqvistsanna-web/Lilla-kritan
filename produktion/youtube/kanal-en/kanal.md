@@ -29,12 +29,12 @@ In every episode, one thing happens at a time. There is lots of repetition, and 
 
 All the songs are our own, with simple words that are easy to learn.
 
-New episodes with songs about colors, vehicles, animals and letters are on the way. Subscribe so you don't miss one!
+New episodes with songs about colors, vehicles, animals and letters are on the way.
 ```
 
 Amerikansk stavning (colors), ändrat på YouTube 6 nov.
 
-Sökord: kids songs, toddler songs, songs for toddlers, baby songs, sing along, learn colors, color songs, preschool, cartoons for kids, crayon, tiny crayon tv.
+Sökord: kids songs, toddler songs, songs for toddlers, sing along, learn colors, color songs, preschool, cartoons for kids, crayon, tiny crayon tv.
 
 ## Kanalbilder
 

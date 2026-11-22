@@ -49,7 +49,7 @@ export function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   KAM = [z, tx, ty];
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (1.5 / z).toFixed(3));   // svagare boil (Sanna 2026-11-22 "too much line boil"): 1,5 px i bild
 }
 export const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
@@ -286,7 +286,7 @@ export function borja(t, varm = true) {
 export function slut(t, DURATION, SVART = 0) {
   if (VARM) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect x="0" y="0" width="1920" height="1080" fill="url(#vinjett)" opacity="0.12"/>');
   if (SVART && t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
-  $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
+  $('brus').setAttribute('seed', (Math.floor(t * 6 + 1e-6) % 50) + 1);   // ny brusbild 6 gånger/s (regeln)
   window.kant?.uppdatera();
 }
 

@@ -20,7 +20,7 @@
     </filter>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
     <filter id="kritkorn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/>
@@ -85,7 +85,7 @@ function kamera(zoom = 1, cx = 960, cy = 540) {
   zoom *= 1 + 0.008 * (0.5 - 0.5 * Math.cos(2 * Math.PI * TT / 6.5)); cx += 5 * Math.sin(TT * 0.55); cy += 3 * Math.sin(TT * 0.41);
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));
 }
 const kameraMix = (A, B, k) => kamera(lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k));
 
@@ -601,6 +601,7 @@ function rita(t) {
   ARMAR_UPP = 0; LX = LX0; $('gomda').appendChild(G); kamera(1);
   S[r.id](Math.min(t - r.s, r.d), r.d);
   if (t > DURATION - SVART) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>`);
+  $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);   // line boil: ny brusbild 6 gånger/s (CLAUDE.md)
   window.kant?.uppdatera();
 }
 window.seek = t => { window.stilla = true; rita(t); };

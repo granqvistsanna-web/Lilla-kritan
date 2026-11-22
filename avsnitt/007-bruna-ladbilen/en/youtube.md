@@ -41,7 +41,7 @@ Tiny Crayon TV is crayon cartoon songs for little kids: one thing at a time and 
 ## Taggar
 
 ```
-kids songs, toddler songs, songs for toddlers, baby songs, nursery songs, sing along, learn colors, color song, colors for kids, brown, the brown song, brown song, truck song, vroom vroom, bear, teddy, hedgehog, lamb, bun, pine cone, chocolate, caramel, slide, dance break, dance song, cartoons for kids, preschool, 1 year old, 2 year old, 3 year old, crayon, tiny crayon tv
+kids songs, toddler songs, songs for toddlers, nursery songs, sing along, learn colors, color song, colors for kids, brown, the brown song, brown song, truck song, vroom vroom, bear, teddy, hedgehog, lamb, bun, pine cone, chocolate, caramel, slide, dance break, dance song, cartoons for kids, preschool, 1 year old, 2 year old, 3 year old, crayon, tiny crayon tv
 ```
 
 ## Inställningar

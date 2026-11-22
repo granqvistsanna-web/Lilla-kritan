@@ -33,7 +33,7 @@ Grodan vill bada! 🐸 Kväk-kväk och hopp, hopp, hopp | lilla kritan #shorts
 
 ### Beskrivning
 ```
-Stopp! Grodan Gurra väntar vid vägen och vill också bada. Kväk-kväk! Ett, två, tre – hopp, hopp, hopp, in i bussen. Ropa stopp, kväka och hoppa med!
+Stopp! Grodan väntar vid vägen och vill också bada. Kväk-kväk! Ett, två, tre – hopp, hopp, hopp, in i bussen. Ropa stopp, kväka och hoppa med!
 
 Hela avsnittet, Vi ska bada!: https://youtu.be/UqfbQq0VoiI
 

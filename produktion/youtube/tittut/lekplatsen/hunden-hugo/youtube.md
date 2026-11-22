@@ -34,7 +34,7 @@ lilla kritan är tecknade sånger och lekar i vaxkrita för små barn: en sak i 
 ## Taggar
 
 ```
-tittut, titt ut, leka tittut, tittut för bebisar, borta tittut, gömma sig, kurragömma, hund, valp, hundvalp, lekplats, lekstuga, sandlåda, rutschkana, djur, tecknat för barn, barnprogram, för de minsta, småbarn, bebis, 1 år, 2 år, objektpermanens, lilla kritan
+tittut, titt ut, leka tittut, tittut för små barn, borta tittut, gömma sig, kurragömma, hund, valp, hundvalp, lekplats, lekstuga, sandlåda, rutschkana, djur, tecknat för barn, barnprogram, för de minsta, småbarn, bebis, 1 år, 2 år, objektpermanens, lilla kritan
 ```
 
 ## Inställningar

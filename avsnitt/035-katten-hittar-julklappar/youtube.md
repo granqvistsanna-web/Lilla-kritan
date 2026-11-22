@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 035 Katten hittar julklappar
 
-**Inte uppladdad än.** Väntar på Sannas godkännande av filmen. Kanal: **lilla kritan**. Fil: `film/avsnitt-035.mp4` (3:59). Miniatyr: `thumbnail/miniatyr-strimma.png`. Ställ in **Ja, det är gjort för barn**.
+**Inte uppladdad än.** Godkänd. Ligger i julkalendern som lucka 6 (Sanna 2026-11-22, `produktion/youtube/shorts/jul/06-katten-hittar-julklappar/`), så den publiceras där och inte för sig. Kanal: **lilla kritan**. Fil: `film/avsnitt-035.mp4` (3:59). Miniatyr: `thumbnail/miniatyr-strimma.png`. Ställ in **Ja, det är gjort för barn**.
 
 Bilderbok i serien *Djuren hittar på!* (jul, ute i snön). Ingen sång, så titel och beskrivning kallar det aldrig en sång.
 

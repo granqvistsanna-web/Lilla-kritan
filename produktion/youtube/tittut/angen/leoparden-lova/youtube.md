@@ -1,6 +1,6 @@
 # YouTube – Tittut: leoparden på ängen (art direction v2)
 
-**Inte uppladdad** som egen video (en privat uppladdning 2026-11-20 togs bort permanent samma dag på Sannas begäran). Den finns i Mix 5 från 6:27. Kanal: **lilla kritan**. Fil: `leoparden-lova.mp4` (ca 2:20). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, rosa, "2 min", `node verktyg/miniatyr-render.mjs tittut-leopard-angen`). Ställ in **Ja, det är gjort för barn**.
+**Inte uppladdad** som egen video (en privat uppladdning 2026-11-20 togs bort permanent samma dag på Sannas begäran). Den togs bort ur Mix 5 den 20 nov och ska aldrig med i någon mix (Sanna 2026-11-22: "delete och ha aldrig med"). Kanal: **lilla kritan**. Fil: `leoparden-lova.mp4` (ca 2:20). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, rosa, "2 min", `node verktyg/miniatyr-render.mjs tittut-leopard-angen`). Ställ in **Ja, det är gjort för barn**.
 
 Tredje tittutplatsen: ängen med den rosa busken, det lilla huset och staketet. Två varv, och i andra varvet kommer en överraskning: leoparden gömmer sig bakom staketet men kommer upp ur busken. Malins egna repliker för ängen finns i `rost.txt`.
 

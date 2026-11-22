@@ -11,7 +11,7 @@ Alla sångerna! 🚌🎨 Sex barnsånger, Tittut och Gissa teckningen i 29 minut
 
 ## Beskrivning
 ```
-Alla sex sångerna, två tittutlekar och tolv teckningar att gissa, i en lång stund med lilla kritan. Sjung med när bussen badar, när musen kör sin rosa bil, när dinon seglar i sin orangea båt, när björnen Bulle letar brunt i sin lastbil och när det blir grönt på bondgården. Kaninen och lammet tittar fram i skogen, så säg "Tittut!" med dem. Mellan sångerna ritar kritan, och du får gissa vad det blir: en ko, ett får, en traktor, ett tåg … Säg ljudet och vinka hej då!
+Alla sex sångerna, två tittutlekar och tolv teckningar att gissa, i en lång stund med lilla kritan. Sjung med när bussen badar, när musen kör sin rosa bil, när dinon seglar i sin orangea båt, när björnen letar brunt i sin lastbil och när det blir grönt på bondgården. Kaninen och lammet tittar fram i skogen, så säg "Tittut!" med dem. Mellan sångerna ritar kritan, och du får gissa vad det blir: en ko, ett får, en traktor, ett tåg … Säg ljudet och vinka hej då!
 
 0:00 lilla kritan
 0:11 Gissa teckningen

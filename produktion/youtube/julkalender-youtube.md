@@ -116,20 +116,23 @@ Heja och säg wiii tillsammans med grisen och björnen.
 
 ## Lucka 6 – 6 dec 05:00 (andra advent)
 
-Fil: `06-leoparden-ljus/06-leoparden-ljus.mp4` (2:01)
+Fil: `06-katten-hittar-julklappar/06-katten-hittar-julklappar.mp4` (hela 035 Katten hittar julklappar bakom luckan, Sanna 2026-11-22; ersätter tittut med björnen)
+YouTube: **inte uppladdad**
 
 ```
-Lucka 6 🕯️ Leoparden och adventsljusen | Lilla Kritans julkalender
+Lucka 6 🎁 Katten hittar julklappar | Lilla Kritans julkalender
 ```
 
 ```
-Det är andra advent. Kritan tänder två ljus, och så fint det lyser. Men oj, fönstret blåser upp, och vinden blåser ut ljusen! Leoparden blir ledsen. Lammet kommer. Kan du peka på fönstret? Lammet stänger fönstret, och nu lyser ljusen igen. Ett, två – räkna med mig!
+Idag öppnar vi lucka sex! Oj, vad mycket snö! Brr, katten fryser. Då ritar kritan en tomteluva. Varsågod, katten! Tack! Titta, något rött i snön! Gräv, gräv … ett paket! Och här: gräv, gräv … ett paket! Men ett paket är kvar. Kan du hjälpa katten att se var det är? Ja, bakom katten! Kritan ritar en pulka, och nu kan katten dra hem paketen. Kan du säga god jul?
 
-Räkna ljusen och hitta var vinden kommer ifrån.
+Säg tack, hjälp katten att hitta det sista paketet och räkna paketen.
 
 [SLUT]
 
-#julkalender #advent #lillakritan
+pineforest winter NL by klankbeeld (freesound.org), CC BY 4.0
+
+#julkalender #adventskalender #lillakritan
 ```
 
 ## Lucka 7 – 7 dec 05:00

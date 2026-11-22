@@ -54,7 +54,10 @@ const AVSNITT = [
   // Stunder (STUNDER i verktyg/rigg-motor.js): uttryck och små kroppsrörelser med namn
   ...[['glad', 'glad', 3], ['forvanad', 'förvånad', 3], ['nyfiken', 'nyfiken', 3], ['fundersam', 'fundersam', 3.4], ['blyg', 'blyg', 3.6],
     ['ledsenLite', 'ledsen (lite)', 3], ['fnissig', 'fnissig', 3], ['somnig', 'sömnig', 3.6], ['nicka', 'nickar', 2], ['lutaHuvud', 'lutar huvudet', 3],
-    ['titta', 'lutar sig fram och tittar', 3], ['studs', 'liten glad studs', 2.2]].map(([n, namn, d]) =>
+    ['titta', 'lutar sig fram och tittar', 3], ['studs', 'liten glad studs', 2.2],
+    ['jublar', 'jublar', 2.6], ['ivrig', 'ivrig', 3], ['ah', 'åh! (förtjust)', 3], ['skrattar', 'skrattar', 3], ['mums', 'mums', 2.4], ['usch', 'usch', 2.4],
+    ['stolt', 'stolt', 3], ['oj', 'oj!', 2.4], ['gaspar', 'gäspar', 3.2], ['blinkar', 'blinkar', 2.2], ['lyssnar', 'lyssnar', 3], ['nej', 'nej (skakar på huvudet)', 2.4],
+    ['tack', 'tack (bugar)', 2.4], ['letar', 'letar', 3.6], ['trostad', 'ledsen, sedan glad igen', 4]].map(([n, namn, d]) =>
     [d, namn, `STUNDER.${n}(tl, d)`, (L, f, p, tl) => L.STUNDER[n](tl, n === 'nicka' ? 1.6 : d)]),
   [3.8, 'sätter sig och reser sig', 'STUNDER.satta / STUNDER.resa', (L, f, p, tl) => tl < 2 ? L.STUNDER.satta(Math.min(tl, 1.6)) : L.STUNDER.resa(Math.min(tl - 2, 1.6))],
 ];

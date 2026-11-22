@@ -1,0 +1,27 @@
+1
+00:00:00,800 --> 00:00:02,740
+Oj! Örat ramlade ner!
+
+2
+00:00:05,740 --> 00:00:07,400
+Ha ha! Upp igen.
+
+3
+00:00:12,000 --> 00:00:13,710
+Nu ska doktorn titta i munnen.
+
+4
+00:00:15,710 --> 00:00:21,340
+Först leoparden. Gapa … oj! Leoparden kan inte gapa!
+
+5
+00:00:25,040 --> 00:00:28,180
+Nu kaninen. Gapa … aaa!
+
+6
+00:00:30,180 --> 00:00:32,280
+Fint! Kan du också gapa?
+
+7
+00:00:36,280 --> 00:00:37,290
+Aaa!

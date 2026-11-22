@@ -11,7 +11,7 @@ Orangea sången ⛵🧡 | Barnsång om färger – dinon letar orange | lilla kr
 ## Beskrivning
 
 ```
-Tut-tut! Dinon Disa kör sin orange båt och letar efter saker som är orange. Fisken är orange, fågeln är orange, västen och flaggan – och apelsinen! Men plask, apelsinen flyter bort. Vem kan hjälpa? Ankan Agda hoppar i och simmar efter den, och sedan delar de en halva var. Till sist blir det danspaus med alla kompisar.
+Tut-tut! Dinon kör sin orange båt och letar efter saker som är orange. Fisken är orange, fågeln är orange, västen och flaggan – och apelsinen! Men plask, apelsinen flyter bort. Vem kan hjälpa? Ankan hoppar i och simmar efter den, och sedan delar de en halva var. Till sist blir det danspaus med alla kompisar.
 
 En glad sång med enkla bilder för de minsta, ungefär 1–3 år. Ropa "Orange!" i ekot, titta efter något orange, plaska, klappa och dansa med!
 

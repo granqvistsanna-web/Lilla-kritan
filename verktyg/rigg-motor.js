@@ -597,7 +597,15 @@ const ARMROR = (() => {
     return ((x - cx) / (rx + m)) ** 2 + ((y - cy) / (ry + m)) ** 2 >= 1; };
   // högsta höjden ≤ h där tassen syns hela vägen (vinkningens topp)
   const synlig = (n, h) => { while (h > -10 && !fri(n, h)) h -= 2; return h; };
-  const vinkTal = n => { const [h, sv] = HAND.vinka || [30, 16]; return [synlig(n, h + sv) - sv, sv]; };
+  // Riggar med en gömzon (GOM { fran, till }, Zebbe och kon): mellan fran och till grader (posens armvinkel) glider armen in
+  // bakom kroppen med flit, så att den aldrig "flyger". En rörelse får inte svänga genom zonen (armen åker in och ut och bara
+  // tassen tittar fram), så höjden lyfts tills hela svängen ligger ovanför den, eller (peka) läggs på närmaste kant.
+  const zon = () => typeof GOM !== 'undefined' && GOM.till ? GOM : null;
+  const utanforZon = (n, h) => { const Z = zon(); if (!Z) return h; const A = h - geo(n).vila;
+    return A > Z.fran && A < Z.till ? (A - Z.fran < Z.till - A ? Z.fran : Z.till) + geo(n).vila : h; };
+  const vinkTal = n => { const [h0, sv] = HAND.vinka || [30, 16], Z = zon(); let h = synlig(n, h0 + sv) - sv;
+    if (Z && h - sv - geo(n).vila < Z.till) h = Z.till + geo(n).vila + sv;
+    return [h, sv]; };
   // en arm (i 0 vänster, 1 höger) till höjden h i bild, blandat med k; tar armen bakom kroppen (fram 0). Uttryckets arm sätts till
   // vila så att höjden blir densamma i alla riggar (Kanel tonar bort uttryckets arm själv, de andra lägger ihop).
   const satt = (f, p, i, h, k = 1) => { const n = i ? 'r' : 'l', N = NEUTRAL.armar[i], fa = [...(f.armar || NEUTRAL.armar)], pa = [...(p.armar || [0, 0])];
@@ -619,7 +627,7 @@ const ARMROR = (() => {
     // (standard −30 … 40), blicken går dit och figuren lutar sig 1,5° åt det hållet. o.hand tvingar en arm.
     peka: (f, p, mal, k = 1, o = {}) => { const i = vilkenHand(mal[0], o), n = i ? 'r' : 'l', g = geo(n), [lo, hi] = HAND.peka || [-30, 40];
       const h = kl(lo, Math.min(hi, synlig(n, hi)), Math.atan2(g.py - mal[1], Math.max(40, g.s * (mal[0] - g.px))) * 180 / Math.PI);
-      const [f2, p2] = satt(titta(f, mal, k), p, i, h, k);
+      const [f2, p2] = satt(titta(f, mal, k), p, i, utanforZon(n, h), k);
       return [f2, { ...p2, luta: (p.luta || 0) + (i ? -1.5 : 1.5) * k }]; },
     // Räkna fram: pekar på saken i mal[j] i tur och ordning, på tiderna o.tider (standard 0,4 s + 1 s per sak; lägg dem på
     // rösten), en liten nick och ett litet tryck med armen på varje tal. Armen glider till nästa sak på 0,35 s, aldrig ett hopp.
@@ -662,10 +670,14 @@ const STUNDER = (() => {
     fundersam: () => param('tanker'), ledsenLite: () => blanda('neutral', 'ledsen', 0.5) };
   const ansikte = n => ANS[n] ? ANS[n]() : param(n);
   const o = () => opt();
+  // svansen viftar när den är glad (Sanna 22/11 "wiggle tail at happy"): figurens dansvift (RORELSE.svansDans, standard 8°), 2 gånger/s, lugnt
+  const vifta = (p, tl, k) => ({ ...p, ...svansen(o(), (o().svansDans || 8) * Math.sin(2 * Math.PI * 2 * tl) * k) });
+  const med = ([f, p], tl, k) => [f, vifta(p, tl, k)];
+  // ett ansikte ur ett annat, munnen lite större (gäspningen: förvånads runda mun, uppskalad, på figurens egen munhöjd)
   return {
     ansikte,
     // --- uttryck ---
-    glad: (tl, d = 3) => { const k = io(tl, d); return nicka(blanda('neutral', 'glad', k), P({ strack: 0.015 * k }), tl - 0.5, 1.2, 1); },
+    glad: (tl, d = 3) => { const k = io(tl, d); return med(nicka(blanda('neutral', 'glad', k), P({ strack: 0.015 * k }), tl - 0.5, 1.2, 1), tl, k); },
     forvanad: (tl, d = 3) => { const k = io(tl, d, 0.25), r = pa(tl, 0, 0.5);   // snabbt in: kroppen sträcks lite och sjunker tillbaka
       return [blanda('neutral', 'forvanad', k), P({ strack: 0.03 * k + 0.02 * r, sank: -6 * r, ...oronen(o(), [-8 * k, -8 * k]) })]; },
     nyfiken: (tl, d = 3) => { const k = io(tl, d); return [blanda('neutral', 'nyfiken', k), blandaPose('neutral', 'lutaH', 0.8 * k)]; },
@@ -679,6 +691,46 @@ const STUNDER = (() => {
       return [blanda('neutral', 'fnissig', k), P({ strack: 0.008 * sk, luta: 1.5 * k, ...oronen(o(), [3 * sk, -3 * sk]) })]; },
     somnig: (tl, d = 3.6) => { const k = io(tl, d, 0.6), dropp = pa(tl, 0.8, 2.6);   // huvudet sjunker sakta och lyfts igen
       return [blanda('neutral', 'somnig', k), P({ nick: [1.2 * dropp, 1.2 * dropp], strack: -0.02 * k, sank: 4 * k, ...oronen(o(), [6 * k, 6 * k]) })]; },
+    // --- reaktioner (22/11, "even more expressions and reactions") ---
+    // jublar: jätteglad, armarna upp (hurra) och ett litet lyft, svansen viftar
+    jublar: (tl, d = 2.6) => { const k = io(tl, d, 0.35), l = pa(tl, 0.5, 1.1);
+      return med([blanda('neutral', 'jatteglad', k), { ...blandaPose('neutral', 'hurra', k), lyft: -16 * l, strack: 0.03 * k + 0.015 * l }], tl, k); },
+    // ivrig: kan inte vänta, lutar sig fram och gungar lätt på tårna, svansen viftar
+    ivrig: (tl, d = 3) => { const k = io(tl, d, 0.35), g = (1 - Math.cos(2 * Math.PI * 1.6 * tl)) / 2 * k;
+      return med([blanda('neutral', 'ivrig', k), P({ lyft: -8 * g, strack: 0.01 * g, boj: 2 * k, upp: 0.2 * k, ...oronen(o(), [-6 * k, -6 * k]) })], tl, k); },
+    // åh!: förtjust (kawaii-ögon), händerna in på magen, ett mjukt gung
+    ah: (tl, d = 3) => { const k = io(tl, d, 0.5), sv = Math.sin(2 * Math.PI * 0.5 * tl) * k;
+      return med([blanda('neutral', 'kawaii', k), { ...blandaPose('neutral', 'magen', 0.8 * k), luta: 1.5 * sv }], tl, 0.6 * k); },
+    // skrattar och mums och usch och stolt: motorns egna stunder (skrattDel, mumsDel, uschDel, stoltDel), här med namn
+    skrattar: (tl, d = 3) => { const k = io(tl, d, 0.3), [f, p] = skrattDel(tl); return med([blanda('neutral', f, k), blandaPose('neutral', p, k)], tl, k); },
+    mums: (tl, d = 2.4) => med(mumsDel(tl, d), tl, io(tl, d)),
+    usch: (tl, d = 2.4) => uschDel(tl, d),
+    stolt: (tl, d = 3) => stoltDel(tl, d),
+    // oj!: lite skrämd men inte rädd: förvånad på 0,2 s, backar ett litet hopp bakåt (lutar bakåt), öronen upp, lugnar sig
+    oj: (tl, d = 2.4) => { const k = io(tl, d, 0.2, 0.6), h = pa(tl, 0.05, 0.45);
+      return [blanda('neutral', 'forvanad', k), P({ lyft: -12 * h, strack: 0.035 * h + 0.01 * k, boj: -3 * k, upp: 0.25 * k, ...oronen(o(), [-10 * k, -10 * k]) })]; },
+    // gäspar: sömnig, munnen öppnas runt och stort, sträcker på sig lite (armarna en aning upp), sedan sömnig igen
+    gaspar: (tl, d = 3.2) => { const k = io(tl, d, 0.5), g = pa(tl, 0.5, 2.3), S = param('somnig'), F = param('forvanad');
+      const f = blanda('neutral', 'somnig', k); return [{ ...f, lock: [Math.max(f.lock[0], 0.85 * g), Math.max(f.lock[1], 0.85 * g)],
+        mun: mix(f.mun, [F.mun[0] * 1.7, F.mun[1] * 2.3, F.mun[2], F.mun[3]], g) }, P({ strack: 0.04 * g, upp: 0.3 * g, armar: [14 * g, 14 * g], ...oronen(o(), [-6 * g, -6 * g]) })]; },
+    // blinkar: blinkar med ena ögat och lutar huvudet lite, glad
+    blinkar: (tl, d = 2.2) => { const k = io(tl, d, 0.3, 0.4), b = pa(tl, 0.5, 1.3);
+      const f = blanda(blanda('neutral', 'glad', k), 'blinkar', b); return med([{ ...f, luta: (f.luta || 0) - 4 * k }, P({ luta: -1.5 * k })], tl, 0.6 * k); },
+    // lyssnar: örat mot ljudet, blicken åt sidan, stilla
+    lyssnar: (tl, d = 3, sida = 1) => { const k = io(tl, d, 0.5); const f = blanda('neutral', 'nyfiken', 0.6 * k);
+      const p = blandaPose('neutral', 'lyssnar', k); return [{ ...f, titt: [9 * sida * k, -2 * k] }, sida > 0 ? p : { ...p, luta: -p.luta, boj: -p.boj, oron: [p.oron[1], p.oron[0]] }]; },
+    // nej: skakar mjukt på huvudet (inte arg), lite allvarlig mun
+    nej: (tl, d = 2.4) => skakaHuvud(blanda('neutral', 'tanker', 0.4), P(), tl, d, 2),
+    // tack: glad, en liten bugning framåt (böjer sig från fötterna och nickar), svansen viftar
+    tack: (tl, d = 2.4) => { const k = io(tl, d, 0.35), b = pa(tl, 0.4, 1.6);
+      return med([{ ...blanda('neutral', 'glad', k), titt: [0, 8 * b] }, P({ upp: -0.4 * b, nick: [1.2 * b, 1.2 * b], sank: 6 * b, strack: -0.02 * b })], tl, k); },
+    // letar: tittar åt ena hållet, sedan åt andra (ögonen först, huvudet lutar efter), nyfiken. Figuren vänds aldrig.
+    letar: (tl, d = 3.6) => { const k = io(tl, d, 0.4), x = Math.sin(2 * Math.PI * tl / 2.4) * k, xl = Math.sin(2 * Math.PI * (tl - 0.25) / 2.4) * k;
+      const f = blanda('neutral', 'nyfiken', 0.5 * k); return [{ ...f, titt: [12 * x, -2 * k], luta: 4 * xl }, P({ luta: 1.5 * xl, upp: 0.1 * k })]; },
+    // tröstad: ledsen lite, en suck, sedan glad igen (problem löses med kompisar); svansen viftar på slutet
+    trostad: (tl, d = 4) => { const k = io(tl, d, 0.5), g = mjuk(kl(0, 1, (tl - 1.8) / 0.8));
+      const f = blanda(blanda('neutral', ANS.ledsenLite(), k), 'glad', g * k), suck = pa(tl, 0.6, 1.4);
+      return med([f, { ...blandaPose('neutral', 'ner', 0.35 * k * (1 - g)), strack: 0.012 * suck + 0.015 * g * k }], tl, g * k); },
     // --- kroppsrörelser ---
     nicka: (tl, d = 1.6) => nicka(param('glad'), P(), tl, d, 2),
     lutaHuvud: (tl, d = 3, sida = 1) => { const k = io(tl, d); const f = blanda('neutral', 'nyfiken', 0.6 * k);   // sida 1 höger, −1 vänster
@@ -688,13 +740,14 @@ const STUNDER = (() => {
       return [{ ...f, titt: mix([0, 0], [4, 12], k) }, P({ boj: 4 * k, luta: 2 * k, upp: -0.35 * k, strack: -0.02 * k, ...oronen(o(), [-4 * k, -4 * k]) })]; },
     // en liten glad studs, lugn: två mjuka lyft på 18 px med lite tryck före, armarna en aning upp
     studs: (tl, d = 2) => { const k = io(tl, d, 0.3, 0.3), l = pa(tl, 0.35, 0.85) + pa(tl, 1.05, 1.55), t1 = pa(tl, 0.2, 0.4) + pa(tl, 0.9, 1.1);
-      return [blanda('neutral', 'glad', k), P({ lyft: -18 * l, strack: 0.02 * l - 0.03 * t1, bred: 0.02 * t1, armar: [8 * l, 8 * l], ...oronen(o(), [-5 * l, -5 * l]) })]; },
+      return med([blanda('neutral', 'glad', k), P({ lyft: -18 * l, strack: 0.02 * l - 0.03 * t1, bred: 0.02 * t1, armar: [8 * l, 8 * l], ...oronen(o(), [-5 * l, -5 * l]) })], tl, k); },
     satta: (tl, d = 1.6) => sattaSig(param('glad'), P(), tl, d),
     resa: (tl, d = 1.6) => sattaSig(param('glad'), P(), tl, d, true),
   };
 })();
 // Slingan ?rorelse=stunder visar alla i tur och ordning (ROR.stunder = stunderSlinga).
-const STUNDLISTA = ['glad', 'forvanad', 'nyfiken', 'fundersam', 'blyg', 'ledsenLite', 'fnissig', 'somnig', 'nicka', 'lutaHuvud', 'titta', 'studs', 'satta', 'resa'];
+const STUNDLISTA = ['glad', 'forvanad', 'nyfiken', 'fundersam', 'blyg', 'ledsenLite', 'fnissig', 'somnig', 'jublar', 'ivrig', 'ah', 'skrattar', 'mums', 'usch',
+  'stolt', 'oj', 'gaspar', 'blinkar', 'lyssnar', 'nej', 'tack', 'letar', 'trostad', 'nicka', 'lutaHuvud', 'titta', 'studs', 'satta', 'resa'];
 
 // ---- Äta och dricka: ataDel(sort, tl, d, o) ger [ansikte, pose] för en klunk eller en tugga ur saken i handen framför magen ----
 // Börjar och slutar med saken framför magen (som efter plocka från bordet, HAND.fram + o.lyft). Ögonen går först till saken,
