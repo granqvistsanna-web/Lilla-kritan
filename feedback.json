@@ -8250,5 +8250,35 @@
   "at": 1795342248090,
   "render": "2026-11-22 11:08 (slutrendering (feedback 22/11))",
   "fixedAt": 1795343773920
+ },
+ "banlxwj62vmwrsxvg7": {
+  "ep": "MIX-tittut",
+  "time": "10:13",
+  "sec": 613,
+  "tags": [],
+  "note": "ta bort denna, delete och ha aldrigmed",
+  "fixed": false,
+  "at": 1795349841271,
+  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)"
+ },
+ "gpcy48ljvjmwrsyaig": {
+  "ep": "MIX-tittut",
+  "time": "2:30",
+  "sec": 150,
+  "tags": [],
+  "note": "ta bort denna också",
+  "fixed": false,
+  "at": 1795349860792,
+  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)"
+ },
+ "lmy3kzq8kcmwrsyjjw": {
+  "ep": "MIX-tittut",
+  "time": "7:53",
+  "sec": 473,
+  "tags": [],
+  "note": "ta bort denna",
+  "fixed": false,
+  "at": 1795349872508,
+  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)"
  }
 }
