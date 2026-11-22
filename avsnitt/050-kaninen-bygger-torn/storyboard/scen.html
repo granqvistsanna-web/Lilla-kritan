@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kaninen bygger torn scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 050 Kaninen bygger torn i snön: kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som i rader.mjs).
+     Serveras från repots rot (bygg.mjs). Gjord ur 048:s scen.html: granstugan (stark), kaninen Kanel med halsduken.
+     Hinken, spaden, ljuset, lågan och julgranen är urklipp; snöhögen, tornen, snöprickarna, skenet och snöfallet är kod. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <filter id="drom"><feGaussianBlur stdDeviation="3"/></filter>
+    <radialGradient id="sken"><stop offset="0" stop-color="#ffd76a" stop-opacity=".85"/><stop offset=".45" stop-color="#ffc94a" stop-opacity=".35"/><stop offset="1" stop-color="#ffc94a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="dromsken"><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></radialGradient>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g id="golv" filter="url(#boil)"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', R = A + 'rekvisita/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => v.toFixed(1);
+
+// --- Filer -----------------------------------------------------------------------------------------------------------------
+const GARD = A + 'bakgrunder/granstugan/granstugan-stark.jpeg';   // Sanna 2026-11-22: jämn stark himmel, vit kant runt granarna och stugan
+const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+const HALSDUK = R + 'halsduk/cut/halsduk.png';
+// Sakerna: [fil, bildens storlek, alfarutan x0 y0 x1 y1]
+const SAK = {
+  hink:   [R + 'hink-bla/cut/hink-bla.png', [1024, 1024], [161, 67, 866, 951]],
+  spade:  [R + 'spade-rod/cut/spade-rod.png', [1024, 1024], [276, 42, 749, 981]],
+  ljus:   [R + 'adventsljus/cut/adventsljus.png', [1024, 1371], [314, 206, 709, 1188]],
+  laga:   [R + 'laga/cut/laga.png', [1024, 1024], [130, 115, 894, 914]],
+  gran:   [R + 'julgran/cut/julgran.png', [1024, 1024], [182, 73, 842, 951]],
+};
+
+// --- Mått i scenen (1920 × 1080) -----------------------------------------------------------------------------------------
+const DS = 0.5;                                   // kaninens skala
+const MARK = 905;                                 // kaninens och tornens fot i snön (snögränsen i plattan ca y 826)
+const STA = [640, MARK];                          // kaninen i mitten-vänster, tornen till höger
+const HOG = [930, MARK + 6];                      // snöhögen framför kaninen
+const TH = 170, TB = 196;                         // tornets höjd, bredd nertill (hinkens öppning nedåt)
+const T1 = [970, MARK], T2 = [1220, MARK], T3 = [1095, MARK - TH];   // T3 ovanpå båda, glipan mellan T1 och T2 under T3
+const HINK = [1095, MARK, 220];                   // hinken full bredvid tornen (x, fot, höjd)
+const GLIPA = [1095, MARK];                       // ljuset står i glipan
+
+let L, G;
+const iFig = ([x, fot], [px, py], s = DS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+const NOS = pos => iFig(pos, [512, 447]);
+const HAND = pos => iFig(pos, [875, 642]);
+
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));
+}
+const HEL = () => kamera(1);
+const HALV = () => kamera(1.6, 980, MARK - 200);           // kaninen och tornen
+const NARA = (pos, dy = 0) => kamera(2.4, pos[0], pos[1] - 260 + dy);
+const GLIP = () => kamera(2.2, GLIPA[0], MARK - 150);      // närbild på glipan
+
+// --- Saker ----------------------------------------------------------------------------------------------------------------
+const sak = (namn, x, fot, hojd, { lager = 'saker', rot = 0, o = 1, filt = '' } = {}) => {
+  const [f, [w, h], [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0);
+  lagg(lager, `<image href="${f}" width="${w}" height="${h}" opacity="${o}" ${filt} transform="translate(${f1(x)} ${f1(fot)}) rotate(${rot}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`);
+};
+const bredd = (namn, hojd) => { const [, , [x0, y0, x1, y1]] = SAK[namn]; return hojd * (x1 - x0) / (y1 - y0); };
+const skugga = (x, fot, rx, lager = 'bak') => lagg(lager, `<ellipse cx="${x}" cy="${fot - 2}" rx="${rx}" ry="${rx * 0.12}" fill="#2a4d7a" opacity="0.10"/>`);
+const stalla = (namn, [x, fot, h], lager = 'saker') => { skugga(x, fot, bredd(namn, h) * 0.42); sak(namn, x, fot, h, { lager }); };
+
+// snöhögen: en låg vit kulle, platt när den grävts i
+const snohog = ([x, fot] = HOG, h = 46) => lagg('golv', `<path d="M${x - 120} ${fot} C${x - 100} ${fot - h} ${x - 40} ${fot - h * 1.15} ${x} ${fot - h * 1.1}
+  C${x + 50} ${fot - h * 1.15} ${x + 105} ${fot - h} ${x + 125} ${fot} Z" fill="#ffffff" stroke="#d6e4f4" stroke-width="4"/>`);
+// ett snötorn: hinkens form upp och ner (bred nertill), ränder från hinkens kant nertill
+function torn([x, fot], { o = 1, glim = false } = {}) {
+  const b = TB / 2, t = TB * 0.39, h = TH;
+  skugga(x, fot, b * 0.95);
+  lagg('saker', `<g opacity="${o}"><path d="M${x - b} ${fot} L${x - t} ${fot - h + 10} Q${x - t} ${fot - h} ${x - t + 10} ${fot - h} L${x + t - 10} ${fot - h} Q${x + t} ${fot - h} ${x + t} ${fot - h + 10} L${x + b} ${fot} Z"
+    fill="#fbfdff" stroke="#cddff2" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M${x - b * 0.93} ${fot - h * 0.2} L${x + b * 0.93} ${fot - h * 0.2}" stroke="#d9e7f6" stroke-width="4"/>
+    <path d="M${x - b * 0.88} ${fot - h * 0.27} L${x + b * 0.88} ${fot - h * 0.27}" stroke="#e4eef9" stroke-width="3"/></g>`);
+  if (glim) skimmer(x, fot - h - 25, 0.6, 34);
+}
+const tornen = (n, opt = {}) => [T1, T2, T3].slice(0, n).forEach(p => torn(p, opt));
+// ljuset i glipan, med lågan och skenet
+function ljus(tand = true, k = 1) {
+  const [x, fot] = GLIPA, h = 88;
+  if (tand) lagg('bak', `<ellipse cx="${x}" cy="${fot - 60}" rx="${320 * k}" ry="${230 * k}" fill="url(#sken)"/>`);
+  sak('ljus', x, fot - 2, h);
+  if (tand) sak('laga', x, fot - h - 2, 38);
+}
+const snoprickar = pos => { const [x, y] = NOS(pos); lagg('fram', [[-14, -8, 7], [6, -14, 6], [16, -2, 5], [-2, 4, 5]].map(([dx, dy, r]) =>
+  `<circle cx="${f1(x + dx)}" cy="${f1(y + dy)}" r="${r}" fill="#fff" stroke="#d6e4f4" stroke-width="1.5"/>`).join('')); };
+const snofall = () => { let s = 7; const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  lagg('pilar', Array.from({ length: 70 }, () => `<circle cx="${f1(r() * 1920)}" cy="${f1(r() * 800)}" r="${f1(2.5 + r() * 4)}" fill="#fff" opacity="${f1(0.55 + r() * 0.4)}"/>`).join('')); };
+// spaden i tasspetsen (lutar lite, bladet nedåt)
+const spadeITass = pos => { const [x, y] = HAND(pos); sak('spade', x + 22, y + 120, 230, { rot: 14 }); };
+
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k, R = 40) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * R, y + dy * R * 0.87, R * 0.39 * s * k, Math.min(1, 0.4 + k))).join('')); }
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s = 6) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const bage = (x0, y0, x1, y1, h, s = 6) => pil(`M${x0} ${y0} Q${(x0 + x1) / 2} ${Math.min(y0, y1) - h} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - (Math.min(y0, y1) - h), x1 - (x0 + x1) / 2), s);
+const text = (t, x = 960, y = 80, s = 30) => lagg('pilar', `<text x="${x}" y="${y}" style="font:700 ${s}px system-ui;fill:#c0392b;stroke:#fff;stroke-width:${s / 6};paint-order:stroke;text-anchor:middle">${t}</text>`);
+const tittVH = (pos, y = 400) => lagg('pilar', rakpil(...iFig(pos, [440, y]), ...iFig(pos, [300, y]), 5) + rakpil(...iFig(pos, [585, y]), ...iFig(pos, [725, y]), 5));
+const nick = pos => { const [x, y] = iFig(pos, [740, 380]); lagg('pilar', rakpil(x, y - 30, x, y + 30, 4) + rakpil(x + 18, y + 30, x + 18, y - 30, 4)); };
+const hopp = (x, y, s = 4) => lagg('pilar', rakpil(x, y, x, y - 40, s));
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${f1(x)} ${f1(y)}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+const vandPil = ([x, fot], [tx, tfot]) => lagg('pilar', bage(x, fot - 180, tx, tfot - TH - 20, 120, 5));
+
+// --- Platsen ---------------------------------------------------------------------------------------------------------------
+function gard({ hog = false, hogPlatt = false, n = 0, hink = false, spade = false, ljusTand = null, sno = true } = {}) {
+  $('platta').innerHTML = `<image href="${GARD}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  if (hog || hogPlatt) snohog(HOG, hogPlatt ? 22 : 46);
+  tornen(n);
+  if (hink) stalla('hink', HINK);
+  if (spade) sak('spade', 1520, MARK + 4, 230, { rot: 8 });
+  if (ljusTand !== null) ljus(ljusTand);
+  if (sno) snofall();
+}
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };
+
+// --- Kritan ritar en sak (kontur ur cut/*-kontur.json: drag[] eller d), returnerar spetsen -----------------------------------
+const KONTUR = {};
+function ritaSak(namn, [x, fot, hojd], k, farg) {
+  const [, , [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0), t = `translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})`;
+  const drag = KONTUR[namn].drag || [KONTUR[namn].d], n = drag.length, kk = k * n;   // dragen ritas efter varandra
+  lagg('pilar', `<g transform="${t}">${drag.map((d, i) => `<path ${i === Math.min(n - 1, Math.floor(kk)) ? 'id="ritkontur"' : ''} d="${d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(5 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${Math.max(0, Math.min(1, kk - i))} 2"/>`).join('')}</g>`);
+  const p = $('ritkontur'), q = p.getPointAtLength(Math.min(Math.max(kk - Math.min(n - 1, Math.floor(kk)), 0), 0.999) * p.getTotalLength());
+  return [x + (q.x - (x0 + x1) / 2) * s, fot + (q.y - y1) * s];
+}
+// ritintrot: spadens kontur på papperet, sedan fylls spaden i inifrån
+function papperSpade(k, fyll) {
+  papper(); kamera(1);
+  const P = [960, 960, 820], [, , [x0, y0, x1, y1]] = SAK.spade, s = P[2] / (y1 - y0);
+  if (fyll > 0) { $('fyllcirkel').setAttribute('cx', 512); $('fyllcirkel').setAttribute('cy', 520); $('fyllcirkel').setAttribute('r', 640 * fyll);
+    lagg('saker', `<image href="${SAK.spade[0]}" width="1024" height="1024" clip-path="url(#fyllklipp)" transform="translate(${P[0]} ${P[1]}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`); }
+  const spets = ritaSak('spade', P, k, '#c0392b');
+  if (k < 1) krita(...spets, 125, 0.45); else if (fyll < 1) krita(P[0] + 300, P[1] - 600, 140, 0.45);
+}
+
+// --- Kaninen med halsduken -------------------------------------------------------------------------------------------------
+const ANS = n => L.blanda('neutral', n, 1);
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), glad: [0, 0], ...o });
+const VINKA = { armar: [0, 150] };
+const TRYCK = { luta: 8, sank: 30, armar: [0, 40] };          // rak tass ner (klappa, gräva)
+function kanin([x, fot], f, p, { s = DS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+}
+// bara öronspetsarna ovanför (tittut bakom tornen): kaninen ritas sänkt bakom tornen
+const oronBakom = () => { lagg('bak', `<clipPath id="ovanmark"><rect x="0" y="0" width="1920" height="${MARK - 20}"/></clipPath><g id="bakom" clip-path="url(#ovanmark)"></g>`);
+  $('bakom').appendChild(G); G.setAttribute('transform', `translate(${GLIPA[0]} ${MARK - TH + 370}) scale(${DS}) translate(-512 ${-L.FOTTER})`); L.rita(G, F('fnissig'), P({})); };
+
+// --- Kritirisen ------------------------------------------------------------------------------------------------------------
+function iris(cx, cy, r) {
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+    return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+  lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`);
+}
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const VID = [STA[0] - 60, MARK];          // kaninen när tornen byggs: lite till vänster om hinken
+// julpynt på drömgranen: kulor i rött, guld och blått, och en gul stjärna i toppen (klistermärken med vit kant)
+function julpynt(x, fot, h) {
+  const P = [[-0.16, 0.30, '#E2483D'], [0.12, 0.36, '#F2C230'], [-0.24, 0.52, '#3F8FE0'], [0.05, 0.55, '#E2483D'], [0.25, 0.60, '#F2C230'], [-0.30, 0.74, '#F2C230'], [-0.06, 0.76, '#3F8FE0'], [0.20, 0.80, '#E2483D'], [0.0, 0.18, '#3F8FE0']];
+  const kulor = P.map(([dx, dy, c]) => `<circle cx="${(x + dx * h).toFixed(1)}" cy="${(fot - h + dy * h).toFixed(1)}" r="${(h * 0.034).toFixed(1)}" fill="${c}" stroke="#fff" stroke-width="5" paint-order="stroke"/>`).join('');
+  const r = h * 0.075, sx = x, sy = fot - h + r * 0.4, st = Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.45 : r; return `${(sx + rr * Math.cos(a)).toFixed(1)} ${(sy + rr * Math.sin(a)).toFixed(1)}`; }).join(' L');
+  lagg('saker', kulor + `<path d="M${st} Z" fill="#FFCB3D" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke"/>`);
+}
+const RAD = {
+  '01a': () => papperSpade(0.55, 0),
+  '01b': () => papperSpade(1, 0),
+  '01c': () => { papperSpade(1, 1); lagg('pilar', `<rect x="660" y="110" width="600" height="870" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { gard({ hog: true }); HEL(); kanin(STA, F('jatteglad'), P({ ...VINKA })); lagg('pilar', rakpil(80, 850, STA[0] - 200, 850, 8)); },
+  '2': () => { gard({ hog: true }); HEL(); kanin([STA[0], MARK - 20], F('jatteglad'), P({ armar: [40, 40] })); hopp(...iFig(STA, [512, 60]), 6); },
+  '3': () => { gard({ hog: true }); kamera(1.5, 1150, 640); kanin(STA, F('kawaii', { titt: [14, -6] }), P({ rikt: 0.5 }));
+    lagg('pilar', rakpil(STA[0] + 160, 600, 1680, 640, 5)); },
+  '4': () => { gard({ hog: true }); NARA(STA); kanin(STA, F('jatteglad'), P({})); nick(STA); },
+  '5': () => { gard({ hog: true }); kamera(1.6, STA[0] + 80, MARK - 220); kanin(STA, F('nyfiken'), P({ luta: 4, oron: [10, -6] })); },
+
+  '6': () => { gard({ hog: true }); HEL(); kanin(STA, F('glad', { titt: [0, -14] }), P({})); },
+  '7': () => { gard({ hog: true }); kamera(1.7, 840, MARK - 190); kanin(STA, F('ivrig', { titt: [12, 10] }), P({ ...TRYCK, rikt: 0.3 }));
+    lagg('pilar', rakpil(...HAND(STA), HOG[0] - 40, HOG[1] - 40, 5)); text('gräver två gånger', 840, 600, 18); },
+  '8': () => { gard({ hogPlatt: true }); kamera(1.7, 840, MARK - 190); kanin(STA, F('forvanad'), P({})); snoprickar(STA);
+    lagg('pilar', bage(HOG[0], HOG[1] - 30, ...NOS(STA), 80, 4)); },
+  '9': () => { gard({ hogPlatt: true }); NARA(STA); kanin(STA, F('blinkar'), P({ luta: 4 })); snoprickar(STA); text('prickarna faller av', STA[0], NOS(STA)[1] + 90, 14); },
+  '10': () => { gard({ hogPlatt: true }); NARA(STA); kanin(STA, F('nyfiken', { titt: [0, -10] }), P({ luta: -4 })); },
+
+  '11a': () => { gard({ hogPlatt: true }); HALV(); kanin(VID, F('nyfiken', { titt: [14, 10] }), P({ rikt: 0.4 }));
+    krita(...ritaSak('hink', HINK, 0.6, '#c0392b'), 125, 0.33); text('gisspaus 3 s', HINK[0], HINK[1] - 220, 22); },
+  '11b': () => { gard({ hogPlatt: true, hink: true }); HALV(); kanin(VID, F('kawaii', { titt: [14, 10] }), P({ rikt: 0.4 }));
+    krita(...ritaSak('spade', [1520, MARK + 4, 230], 0.7, '#c0392b'), 125, 0.33); skimmer(HINK[0], HINK[1] - 100, 0.7, 50); },
+  '12': () => { gard({ hogPlatt: true, hink: true, spade: true }); HALV(); kanin(VID, F('glad', { titt: [14, -14] }), P({ rikt: 0.3 }));
+    krita(1450, 520, 140, 0.33); lagg('pilar', rakpil(1450, 520, 1560, 430, 5)); },
+  '13': () => { gard({ hogPlatt: true, hink: true, spade: true }); HALV(); kanin(VID, F('jatteglad'), P({})); nick(VID); },
+
+  '14': () => { gard({ hogPlatt: true, hink: true }); HALV(); kanin(VID, F('ivrig'), P({ rikt: 0.3 })); spadeITass(VID);
+    lagg('pilar', bage(1520, MARK - 120, ...HAND(VID), 80, 5)); },
+  '15': () => { gard({ hogPlatt: true, hink: true }); HALV(); kanin(VID, F('glad', { titt: [14, 12] }), P({ ...TRYCK })); spadeITass(VID);
+    vandPil([HINK[0], HINK[1]], T1); text('fyll … klappa … vänd!', HINK[0], 560, 22); },
+  '16': () => { gard({ hogPlatt: true, n: 1 }); HALV(); kanin([VID[0], MARK - 20], F('jatteglad'), P({ armar: [40, 40] })); spadeITass([VID[0], MARK - 20]);
+    torn(T1, { glim: true }); hopp(...iFig(VID, [512, 60]), 5); },
+  '17': () => { gard({ hogPlatt: true, n: 1 }); stalla('hink', [T2[0], MARK, 220]); HALV(); kanin(VID, F('glad', { titt: [14, 10] }), P({ rikt: 0.4 })); spadeITass(VID); },
+  '18': () => { gard({ hogPlatt: true, n: 1 }); stalla('hink', [T2[0], MARK, 220]); HALV(); kanin(VID, F('glad', { titt: [14, 12] }), P({ ...TRYCK })); spadeITass(VID);
+    text('fyll … klappa …', T2[0], 560, 22); },
+  '19': () => { gard({ hogPlatt: true, n: 1 }); stalla('hink', [T2[0], MARK, 220]); NARA(VID); kanin(VID, F('nyfiken'), P({})); spadeITass(VID);
+    text('Kan du säga vänd? (paus 4 s)', VID[0], 470, 16); },
+  '20': () => { gard({ hogPlatt: true, n: 2 }); HALV(); kanin(VID, F('jatteglad'), P({})); spadeITass(VID); torn(T2, { glim: true }); },
+
+  '21': () => { gard({ hogPlatt: true }); HEL(); oronBakom(); tornen(2); lagg('pilar', bage(VID[0], MARK - 150, GLIPA[0], MARK - 160, 120, 6)); text('Var är kaninen? (paus 3 s)', GLIPA[0], 560, 26); },
+  '22': () => { gard({ hogPlatt: true, n: 2 }); HEL(); kanin([1450, MARK], F('jatteglad'), P({ rikt: -0.3 })); lagg('pilar', rakpil(1300, 800, 1380, 800, 6)); },
+
+  '23': () => { gard({ hogPlatt: true, n: 2 }); HALV(); kanin(VID, F('nyfiken', { titt: [14, -14] }), P({ rikt: 0.4 })); spadeITass(VID);
+    lagg('pilar', `<path d="M${T3[0] - 75} ${T3[1]} h150 l-30 ${-TH} h-90 Z" fill="none" stroke="#c0392b" stroke-width="5" stroke-dasharray="14 10"/>`); },
+  '24': () => { gard({ hogPlatt: true, n: 2 }); stalla('hink', [VID[0] + 260, MARK, 220]); HALV(); kanin(VID, F('glad', { titt: [14, 0] }), P({ ...TRYCK })); spadeITass(VID);
+    lagg('pilar', bage(VID[0] + 260, MARK - 220, T3[0], T3[1] - TH - 10, 200, 5)); text('vänd: högre båge, landar ovanpå', T3[0], 500, 18); },
+  '25': () => { gard({ hogPlatt: true, n: 3 }); HEL(); kanin(VID, F('forvanad', { titt: [14, -6] }), P({ rikt: 0.4 })); skimmer(T3[0], T3[1] - TH - 20, 0.6, 40); },
+  '25b': () => { gard({ hogPlatt: true }); HEL(); kanin(VID, F('kawaii', { titt: [14, -10] }), P({ rikt: 0.4 }));
+    // Sanna 2026-11-22: visa granen, inte bara tornen. Tornen är helt borta i drömmen, kvar står en stor pyntad julgran med stjärna
+    lagg('saker', `<ellipse cx="${T3[0]}" cy="${MARK - 260}" rx="330" ry="330" fill="url(#dromsken)"/>`);
+    sak('gran', T3[0], MARK, 540); julpynt(T3[0], MARK, 540); skimmer(T3[0] - 200, MARK - 380, 0.5, 30); skimmer(T3[0] + 200, MARK - 230, 0.4, 26);
+    text('kaninens dröm: tornen tonar över i en pyntad julgran och tillbaka', T3[0], 300, 18); },
+  '26': () => { gard({ hogPlatt: true, n: 3 }); kamera(1.9, GLIPA[0] - 60, MARK - 140); kanin(VID, F('nyfiken', { titt: [14, 6] }), P({ rikt: 0.4 }));
+    krita(...ritaSak('ljus', [GLIPA[0], MARK - 2, 88], 0.6, '#c0392b'), 125, 0.25); },
+  '27': () => { gard({ hogPlatt: true, n: 3 }); GLIP(); kanin(VID, F('nyfiken', { titt: [16, 6] }), P({ rikt: 0.5 })); ritaSak('ljus', [GLIPA[0], MARK - 2, 88], 1, '#c0392b');
+    krita(GLIPA[0] + 90, MARK - 160, 140, 0.25); text('Vad blir det? (gisspaus 3 s)', GLIPA[0], MARK - 250, 11); },
+  '28': () => { gard({ hogPlatt: true, n: 0, ljusTand: true }); tornen(3); GLIP(); kanin(VID, F('kawaii', { titt: [16, 6] }), P({ rikt: 0.5 })); skimmer(GLIPA[0], MARK - 160, 0.5, 22); },
+  '29': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); HEL(); kanin([VID[0], MARK - 20], F('jatteglad'), P({ armar: [40, 40] })); hopp(...iFig(VID, [512, 60]), 6); },
+  '30': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); HALV(); kanin(VID, F('glad', { titt: [14, -14] }), P({ rikt: 0.3 })); krita(1450, 480, 140, 0.33); lagg('pilar', rakpil(1450, 480, 1560, 390, 5)); },
+  '31': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); HEL(); kanin(VID, F('glad', { titt: [14, -6] }), P({ rikt: 0.4 }));
+    [T1, T2, T3].forEach(([x, fot], i) => text(String(i + 1), x, fot - TH - 18, 34)); text('ett … två … tre (glimtar)', 1095, 560, 22); },
+  '32': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); kamera(1.7, 1450, MARK - 200); },
+
+  '33': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); HEL(); kanin([1450, MARK - 20], F('jatteglad'), P({ armar: [40, 40] }));
+    lagg('pilar', bage(VID[0], MARK - 120, 900, MARK - 300, 60, 5) + rakpil(960, MARK - 300, 1380, MARK - 300, 5)); text('bakom lyktan och fram på andra sidan', 1095, 470, 20); },
+  '34': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); kamera(1.6, 1250, MARK - 220); kanin([1450, MARK], F('jatteglad'), P({ ...VINKA })); },
+  '35': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); kamera(1.6, 1250, MARK - 220); kanin([1450, MARK], F('glad'), P({ armar: [0, 120] })); },
+  '36': () => { gard({ hogPlatt: true, ljusTand: true }); tornen(3); HEL(); kanin([1450, MARK], F('glad'), P({})); iris(1270, 720, 430); },
+};
+
+window.rad = id => {
+  ['bak', 'golv', 'saker', 'fram', 'pilar', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('kaninen-kanel');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  // halsduken i kroppen (som 038): runt halsen under huvudet
+  // Sanna 2026-11-22: tunn och kant i kant med kroppen. Halsduken görs lite för bred och maskas med kroppens egen form (alfa), så att ändarna följer konturen exakt
+  const kb = G.querySelector('.kropp-bild').getAttribute('href');
+  G.querySelector('.kropp').insertAdjacentHTML('beforeend', `<mask id="halsdukMask" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024"><image href="${kb}" width="1024" height="1024"/></mask>
+    <g mask="url(#halsdukMask)"><g transform="translate(510 545) scale(0.76 0.5) translate(-523 -400)"><image href="${HALSDUK}" width="1024" height="1024"/></g></g>`);
+  for (const [n, f] of [['spade', 'spade-rod/cut/spade-rod-kontur.json'], ['hink', 'hink-bla/cut/hink-bla-kontur.json'], ['ljus', 'adventsljus/cut/adventsljus-kontur.json']])
+    KONTUR[n] = await (await fetch(R + f)).json();
+  window.kant?.lagg(G); window.kant?.lagg($('saker'), { andel: 0.01 });
+  await Promise.all([GARD, KRITA, HALSDUK, ...Object.values(SAK).map(s => s[0])]
+    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>
