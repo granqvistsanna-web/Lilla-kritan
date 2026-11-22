@@ -465,12 +465,12 @@ const S = {
   // --- Inget papper: kritan ritar toarullen ---
   '23': (tl, d) => { badrum(); pottaKam(); const k = del(0.1, 0.5, tl), o = omkring(tl - 0.2, 1.5), ner = del(mo(0) + rl(29) - 0.3, mo(0) + rl(29) + 0.2, tl);
     hund(B_POTTA, ANS('nyfiken', { titt: o.titt.map(v => v * k), oron: [10 * ner, 10 * ner] }), { ...SITTER, rikt: o.rikt * k, luta: o.luta * k }); },
-  '24a': (tl, d) => { badrum(); kamera(2.2, RULLE_VID[0] - 60, B_GOLV - 130); hund(B_POTTA, ANS('nyfiken', { titt: [14, 10] }), { ...SITTER, rikt: 0.4 });
+  '24a': (tl, d) => { badrum(); kamera(1.95, RULLE_VID[0] - 60, B_GOLV - 215); hund(B_POTTA, ANS('nyfiken', { titt: [14, 10] }), { ...SITTER, rikt: 0.4 });
     const a = lo(0), b = a + 1.5, mal = [RULLE_VID[0] + 110, RULLE_VID[1] - 140, 125];
     if (tl < a) return kritaGlid([2100, 100, 140], mal, del(0, a, tl), 0.3);
     const sp = ritaSak('rulle', RULLE_VID, kl((tl - a) / (b - a)), '#7d8a99'); if (tl < b) return krita(sp[0], sp[1], 125, 0.3);
     kritaGlid([...sp, 125], svajP(RULLE_VID[0] + 120, RULLE_VID[1] - 150, tl), del(b, b + 0.8, tl), 0.3); },
-  '24b': (tl, d) => { badrum(); kamera(2.2, RULLE_VID[0] - 60, B_GOLV - 130); if (tl < 0.9) ritaSak('rulle', RULLE_VID, 1, '#7d8a99');
+  '24b': (tl, d) => { badrum(); kamera(1.95, RULLE_VID[0] - 60, B_GOLV - 215); if (tl < 0.9) ritaSak('rulle', RULLE_VID, 1, '#7d8a99');
     sakFyll('rulle', RULLE_VID, del(0, 0.9, tl)); skimmer(RULLE_VID[0], RULLE_VID[1] - 50, 0.8 * bump(0.1, 2.0, tl), 0.9);
     kritaGlid(svajP(RULLE_VID[0] + 120, RULLE_VID[1] - 150, tl + 5), [2100, 60, 140], del(0.4, 1.5, tl), 0.3, 0);
     const g = del(0.6, 1.0, tl); hund(B_POTTA, mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [14, 8] }), g), { ...SITTER, rikt: 0.4 }); },
