@@ -59,7 +59,7 @@ Det är julafton och det snöar. Katten trippar ut i snön, men fryser och vill 
 - **Förgrunden:** julkulan, pepparkaksstjärnan, grankvisten och den gula stjärnan bort. Snötussarna är kvar.
 - **Brr** (`effekter/brr`, 1,1 s) och ett litet huttrande när rad 6 börjar, före *"Katten vill visst gå in"*.
 - **Kameran** i grävnärbilderna (rad 16 och 17) är flyttad upp (y 790 → 700), så att luvan inte klipps.
-- **Spaden** (`rekvisita/spade`, bladet tonat till guld i scenen så att det inte blir en till röd sak i snön): står nedstucken vid björken från början, katten tar den i rad 16, byter tass framför magen i 16b och 18 och lägger den på pulkan i rad 24. Grävandet är ett riktigt tag per *"gräv"*: lyft, stick ner, kasta, och en snöklump flyger ut och puffar i snön.
+- **Spaden** (`rekvisita/spade`, bladet tonat till tydligt gult i scenen så att det inte blir en till röd sak i snön): står nedstucken vid björken från början, katten tar den i rad 16, byter tass framför magen i 16b och 18 och lägger den på pulkan i rad 24. Grävandet är ett riktigt tag per *"gräv"*: lyft, stick ner, kasta, och en snöklump flyger ut och puffar i snön.
 - Line boil sänkt till 2,5 px i bild, 6 gånger/s (CLAUDE.md). `qa-film.sh` flaggar ändå boil i filmen (16,7 px/s), men förra versionen mätte lika (15,5): det är snöfallet som mäts, inte kanterna.
 - Kritan gick över kattens ansikte vid tomteluvan (katten blev större i förra rundan). Luvan ritas nu längre till vänster (x 690), kritan kommer högt in och sedan rakt ner, väntar till vänster om luvan och flyger ut uppåt vänster.
 
