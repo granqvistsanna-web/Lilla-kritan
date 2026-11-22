@@ -8457,5 +8457,55 @@
   "fixed": false,
   "at": 1795355975577,
   "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)"
+ },
+ "9lnie4nhgsmwrwfnh3": {
+  "ep": "J23",
+  "time": "1:33",
+  "sec": 93,
+  "tags": [],
+  "note": "improve spade in hand and hink still visable on vänd",
+  "fixed": false,
+  "at": 1795355709591,
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+ },
+ "a38z46w4fjmwrwfx2x": {
+  "ep": "J23",
+  "time": "1:33",
+  "sec": 93,
+  "tags": [],
+  "note": "and the filled snow sits a bit over bucket",
+  "fixed": false,
+  "at": 1795355722041,
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+ },
+ "qos221fj9bmwrwg9ct": {
+  "ep": "J23",
+  "time": "1:40",
+  "sec": 100,
+  "tags": [],
+  "note": "polish both hold of spade and position of snow",
+  "fixed": false,
+  "at": 1795355737949,
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+ },
+ "95tcu54zldmwrwgpfj": {
+  "ep": "J23",
+  "time": "2:43",
+  "sec": 163,
+  "tags": [],
+  "note": "make light a candle smaller",
+  "fixed": false,
+  "at": 1795355758783,
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
+ },
+ "81aa7vxn21mwrwh3iy": {
+  "ep": "J23",
+  "time": "2:45",
+  "sec": 165,
+  "tags": [],
+  "note": "show numbers",
+  "fixed": false,
+  "at": 1795355777050,
+  "render": "2026-11-22 14:53 (snabb förhandsvisning efter feedback 22/11: större kanin, gång, vinkning, nick, julkarol, grävning, tankebubbla, spadtag, vändning, ljuset)"
  }
 }
