@@ -8415,5 +8415,15 @@
   "at": 1795354359175,
   "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
   "fixedAt": 1795355587862
+ },
+ "twtljmmas7mwrwdfft": {
+  "ep": "J22",
+  "time": "3:01",
+  "sec": 181,
+  "tags": [],
+  "note": "julgranns fot cause someoverlap of julkulor and mus sometimes",
+  "fixed": false,
+  "at": 1795355605865,
+  "render": "2026-11-22 11:36 (feedback 22/11 b: nya musljud (inte fågel), kameran högre vid 3:50)"
  }
 }
