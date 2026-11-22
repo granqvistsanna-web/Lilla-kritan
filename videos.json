@@ -1350,12 +1350,12 @@
   "name": "Jul (parkerad): Hunden snögubbe – bakgrund"
  },
  "J06": {
-  "status": "klar",
-  "name": "Tittut björnen",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-1119-0933.mp4",
-  "duration": 192.4,
-  "rendered": "2026-11-19 09:33 (Förhandsvisning 3 (--snabb): bild och ljud i takt (förra versionen hade bilden 4 s före rösten och för långt slutkort), lägre musik, inget vindljud, närbilder på granen/säcken och tätt på taket genom 'Ett, två, tre…', björnen stannar i närbild under 'Du hittade björnen!'. 192,4 s, −16 LUFS)",
-  "file": "produktion/youtube/shorts/jul/06-tittut-bjornen/06-tittut-bjornen-liten.mp4"
+  "status": "granska",
+  "name": "Lucka 6: Katten hittar julklappar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-1122-1456.mp4",
+  "duration": 249.4,
+  "rendered": "2026-11-22 14:56 (Hela 035 bakom luckan i stället för tittut med björnen (249,4 s, −16,0 LUFS))",
+  "file": "produktion/youtube/shorts/jul/06-katten-hittar-julklappar/06-katten-hittar-julklappar.mp4"
  },
  "J03": {
   "status": "klar",
