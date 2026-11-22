@@ -89,7 +89,7 @@ export const RADER = [
   { id: '23c', d: 0.6 + L(28) + 0.6, plats: 'Närbild snön', malin: [[28, 0.6]], ljud: [['glitter/glitter-2', 0.0]], bild: 'Pulkan fylls i', ljudtext: 'glitter' },
   { id: '24', d: 0.3 + L(29) + 1.6, plats: 'Halvbild', malin: [[29, 0.3]], ljud: [['mjau-aah/mjau-aah-1', 0.6 + L(29)]], bild: 'Katten nickar, kritan flyger ut', ljudtext: 'förtjust mjau' },
   { id: '25', d: 0.6 + L(30) + 1.6, plats: 'Helbild', malin: [[30, 0.6]], ljud: TRE.map((t, i) => ['duns/duns-' + (i + 1), 0.6 + t + 0.1]), bild: 'Paketen hoppar upp på pulkan, ett i taget på orden', ljudtext: 'duns ×3' },
-  { id: '26', d: 0.6 + L(31) + 2.6, plats: 'Helbild', malin: [[31, 0.6]], ljud: [['mjau-puttar/mjau-puttar-1', 0.9 + L(31)]], bild: 'Katten drar pulkan tre steg åt höger', ljudtext: 'tass, förtjust mjau' },
+  { id: '26', d: 0.6 + L(31) + 2.6, plats: 'Helbild', malin: [[31, 0.6]], ljud: [['mjau-puttar/mjau-puttar-1', 0.9 + L(31)], ['fagel-pip/fagel-pip-2', 0.6 + L(31) + 1.55]], bild: 'Katten drar pulkan tre steg åt höger, fågeln flyger ner på paketen', ljudtext: 'tass, förtjust mjau' },
   { id: '27', d: 0.6 + L(32) + 4.0, plats: 'Halvbild', malin: [[32, 0.6]], ljud: [['mjau-prat/mjau-prat-1', 2.6 + L(32)]], bild: 'Tittar på oss, mjauar som om hon säger god jul', ljudtext: 'pratar-mjau' },
   { id: '28', d: L(33) + 1.4, plats: 'Halvbild', malin: [[33, 0.0]], ljud: [['mjau-trill/mjau-trill-2', L(33) + 0.2]], bild: 'Litet glatt skutt', ljudtext: 'förtjust mjau' },
   { id: '29', d: 0.6 + L(34) + 1.6, plats: 'Halvbild', malin: [[34, 0.6]], ljud: [[MJ.hejda, 0.9 + L(34)]], bild: 'Vinkar, pulkan bredvid', ljudtext: 'hej då-mjau' },
