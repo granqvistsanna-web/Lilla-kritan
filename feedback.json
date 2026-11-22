@@ -8808,9 +8808,10 @@
   "sec": 67,
   "tags": [],
   "note": "add sound effect for clown saying something",
-  "fixed": false,
+  "fixed": true,
   "at": 1795384054350,
-  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)"
+  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)",
+  "fixedAt": 1795384938028
  },
  "i6xx1kbsp8mwsdbl1j": {
   "ep": "ABC-c3",
@@ -8818,9 +8819,10 @@
   "sec": 75,
   "tags": [],
   "note": "have kritan respod with a giggle",
-  "fixed": false,
+  "fixed": true,
   "at": 1795384073287,
-  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)"
+  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)",
+  "fixedAt": 1795384938028
  },
  "jy6n4cyq73mwsddx4r": {
   "ep": "ABC-c3",
@@ -8828,9 +8830,10 @@
   "sec": 173,
   "tags": [],
   "note": "missing edge of clown block",
-  "fixed": false,
+  "fixed": true,
   "at": 1795384182267,
-  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)"
+  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)",
+  "fixedAt": 1795384938028
  },
  "gk0tgg8z5nmwsdet5z": {
   "ep": "ABC-c3",
@@ -8838,9 +8841,10 @@
   "sec": 179,
   "tags": [],
   "note": "must have a pause and make make it harder to hiding turning around to backside so kids can guess where clown went",
-  "fixed": false,
+  "fixed": true,
   "at": 1795384223783,
-  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)"
+  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)",
+  "fixedAt": 1795384938028
  },
  "avs9kx7usjmwsdfecx": {
   "ep": "ABC-c3",
@@ -8848,9 +8852,10 @@
   "sec": 203,
   "tags": [],
   "note": "main charceter a bit jittery in this scene, calm down",
-  "fixed": false,
+  "fixed": true,
   "at": 1795384251249,
-  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)"
+  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)",
+  "fixedAt": 1795384938028
  },
  "y4szq14n45mwsdg9sf": {
   "ep": "ABC-c3",
@@ -8858,8 +8863,9 @@
   "sec": 218,
   "tags": [],
   "note": "the order of mentioned words are wrong, clown is mention when block with cykel jumps up",
-  "fixed": false,
+  "fixed": true,
   "at": 1795384291983,
-  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)"
+  "render": "2026-11-22 22:13 (C hälsar och visar sina ljud (s och k), Malin frågar före bokstavsljuden, kritan ritar på Titta, detaljerad clownskiss, lägre armar)",
+  "fixedAt": 1795384938028
  }
 }
