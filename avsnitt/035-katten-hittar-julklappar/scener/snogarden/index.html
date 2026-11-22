@@ -58,6 +58,7 @@
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
 <script src="/verktyg/kritan-ritar.js"></script>
+<script src="/avsnitt/043-grisen-matar-faglarna/fagel.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
 import { RADER, ROST, L as LANGD, GRAV, PAKET, TRE } from '/avsnitt/035-katten-hittar-julklappar/storyboard/rader.mjs';
@@ -99,15 +100,15 @@ let KONT = {};
 // --- Mått i scenen (1920 × 1080). Plattan 2752 × 1536 skalas 0,703 och beskärs 7,5 px på var sida (bakgrunder/snogarden.md) ---
 const GOLV = 880, GS = 0.46;   // större katt (Sanna 2026-11-22, var 0,38)
 const C_MITT = 1000, C_TRAPPA = 470, C_GRAN = 1540,   // björkarna till vänster, fågelholken till höger (förut trappan 790, granen 1430)
-  C_P3 = 1275, C_DRAG = 1525;
-const P_X = [310, 1700, 1135], P_K = [0.14, 0.12, 0.13], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
+  C_P3 = 1390, C_DRAG = 1600;   // J06 22/11: paket 3 längre bort från katten, katten går dit och gräver
+const P_X = [310, 1700, 1250], P_K = [0.14, 0.12, 0.13], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
 const PULKA_X = 900, PULKA_DRAG = 250;
 // platserna på pulkans sits (sitsen y 826, x 735–987): stora till vänster, mellan till höger, lilla ovanpå
 const SITS = [[805, 828], [905, 828], [855, 828 - 82]];
 const LUVA_SNO = [690, GOLV + 12], LUVA_K = 0.17, LUVA_VANT = [520, GOLV - 230];   // kritans väntplats vänster om luvan, bort från kattens ansikte; ut uppåt vänster
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 const K_HEL = [1, 960, 540], K_HALV = x => [1.6, x, 700], K_NARA = x => [2.4, x, 700], K_SPAR = [2.2, 1400, 850],
-  K_LUVA = [2.2, 760, 790], K_VANSTER = [2.0, 480, 700], K_HOGER = [2.0, 1620, 700], K_ROSETT = [2.0, 1080, 740], K_PULKA = [1.8, 920, 760];
+  K_LUVA = [2.2, 760, 790], K_VANSTER = [2.0, 480, 700], K_HOGER = [2.0, 1620, 700], K_ROSETT = [2.0, 1080, 712], K_PULKA = [1.8, 1010, 760];
 const kamMix = (a, b, k) => k < 0.5 ? a : b;
 
 let L, G, KAM = K_HEL, BLINKA, LUVA_PA = [512, 300];
@@ -208,20 +209,23 @@ function paketSvg([x, y], k, r = 0, i = 0) {
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${r.toFixed(2)}) scale(${k.toFixed(4)}) translate(${-P.o[0]} ${-P.o[1]})"><image href="${P.bild}" width="1024" height="1024"/></g>`;
 }
 // Paketens läge vid tiden t: [{ syns, pos, k, r, sank, rosett }]. Tiderna ur raderna (gömt → upp → på snön → hopp → pulkan).
+const UPP_D = 1.3;   // sekunder som ett paket glider upp ur snön
 function paketen(t) {
   const ut = [];
   const pulkaDx = pulkaDrag(t);
   const sitt = (i, t0) => { const u = del(t0, t0 + 0.55, t), fr = [P_X[i], P_Y], til = [SITS[i][0] + pulkaDx, SITS[i][1]];
     return { pos: [lerp(fr[0], til[0], u), lerp(fr[1], til[1], u) - 90 * Math.sin(Math.PI * u)], r: 0, sank: 0 }; };
+  // J06 22/11 "not pop up but fade up": paketen glider lugnt upp ur snön på UPP_D s (förr 0,6 s) och är uppe på "ett paket!"
+  const F = UPP_D - 0.35 - 0.25;
   const def = [
-    { i: 0, fram: M0('14') + 0.3, upp: M0('16') + 0.7 + PAKET[20] - 0.35, hopp: M0('25') + 0.6 + TRE[0] - 0.45 },
-    { i: 1, fram: M0('16b') + 0.3, upp: M0('17') + 0.7 + PAKET[21] - 0.35, hopp: M0('25') + 0.6 + TRE[1] - 0.45 },
-    { i: 2, fram: M0('18') + 0.5, upp: M0('21') + 1.4 + PAKET[25] - 0.35, hopp: M0('25') + 0.6 + TRE[2] - 0.45 }];
+    { i: 0, fram: M0('14') + 0.3, upp: M0('16') + 0.7 + PAKET[20] - 0.35 - F, hopp: M0('25') + 0.6 + TRE[0] - 0.45 },
+    { i: 1, fram: M0('16b') + 0.3, upp: M0('17') + 0.7 + PAKET[21] - 0.35 - F, hopp: M0('25') + 0.6 + TRE[1] - 0.45 },
+    { i: 2, fram: M0('18') + 0.5, upp: M0('21') + 1.4 + PAKET[25] - 0.35 - F, hopp: M0('25') + 0.6 + TRE[2] - 0.45 }];
   for (const d of def) { const i = d.i, k = P_K[i], hojd = PAKETB[i].h * k;
     if (t < d.fram) { ut.push(null); continue; }
     let q;
     if (t < d.upp) q = { pos: [P_X[i], P_Y], r: i === 2 ? 0 : 18, sank: i === 2 ? hojd * 0.45 : hojd * 0.78, in: del(d.fram, d.fram + 0.6, t) };
-    else if (t < d.hopp) { const u = del(d.upp, d.upp + 0.6, t); q = { pos: [P_X[i], P_Y], r: (i === 2 ? 0 : 18) * (1 - u), sank: (i === 2 ? hojd * 0.45 : hojd * 0.78) * (1 - u) }; }
+    else if (t < d.hopp) { const u = del(d.upp, d.upp + UPP_D, t); q = { pos: [P_X[i], P_Y], r: (i === 2 ? 0 : 18) * (1 - u), sank: (i === 2 ? hojd * 0.45 : hojd * 0.78) * (1 - u) }; }
     else q = sitt(i, d.hopp);
     ut.push({ ...q, k, rosett: i === 2 || t >= d.upp, i, upp: d.upp }); }
   return ut;
@@ -232,7 +236,36 @@ function ritaPaket(t) {
     const pos = [p.pos[0], p.pos[1] + p.sank], svg = paketSvg(pos, p.k, p.r, p.i);
     if (p.sank > 0.5) { lagg('sakerbak', `<g clip-path="url(#ovansno)" opacity="${(p.in ?? 1).toFixed(3)}">${svg}</g>`);
       lagg('sakerbak', `<ellipse cx="${f1(p.pos[0])}" cy="${f1(P_Y + 2)}" rx="${f1(70 * p.k / 0.15)}" ry="9" fill="#f6f8fb" opacity="${(0.9 * (p.in ?? 1)).toFixed(2)}"/>`); }
-    else lagg(p.i === 2 && t < p.upp + 0.6 ? 'sakerbak' : 'saker', svg); }
+    else lagg(p.i === 2 && t < p.upp + UPP_D ? 'sakerbak' : 'saker', svg); }
+}
+// --- Den röda småfågeln (043:s fagel.js, J06 22/11 "add a bird for some variation") ------------------------------------------------
+// sitter på fågelholkens snötak (samma platta som 043: taket 1860, 445), blinkar och lutar huvudet; flaxar till när paketet under
+// granen kommer upp; i rad 26 flyger den ner på det översta paketet på pulkan och åker med ut.
+const FAGEL_TAK = [1860, 445], FAGEL_S = 0.13;
+function fagel([x, y], { flax = 0, tilt = 0, lyft = 0, ben = flax, vanster = true } = {}) {
+  const blink = (TT % 3.3) < 0.12 ? 1 : 0, andas = 1 + 0.015 * Math.sin(TT * 3), sx = vanster ? -FAGEL_S : FAGEL_S;
+  lagg('saker', `<g transform="translate(${f1(x)} ${f1(y - lyft)}) scale(${sx} ${(FAGEL_S * andas).toFixed(4)}) rotate(${f1(tilt)}) translate(-400 -689)">
+    ${fagelSvg('rod', { t: TT, flax, blink, ben })}</g>`);
+}
+const fagelPulka = t => [SITS[2][0] + pulkaDrag(t) + 6, SITS[2][1] - PAKETB[2].h * P_K[2] + 6];
+const fagelFlyg = () => { const a = M0('26') + 0.6 + LANGD(31) + 0.1; return [a, a + 1.4]; };
+function fagelNu(t) {
+  const [a, b] = fagelFlyg();
+  if (t < a) { const t17 = M0('17') + 0.7 + PAKET[21] + 0.3, fl = bump(t17 - 0.1, t17 + 0.6, t), c = t % 5.5;
+    return fagel(FAGEL_TAK, { flax: 0.8 * fl, lyft: 8 * fl, ben: 0, tilt: 12 * bump(1.0, 2.2, c) - 8 * bump(3.4, 4.4, c) }); }
+  if (t < b) { const u = (t - a) / (b - a), k = mjuk(u), B = fagelPulka(t);
+    return fagel([lerp(FAGEL_TAK[0], B[0], k), lerp(FAGEL_TAK[1], B[1], k) - 140 * Math.sin(Math.PI * u)], { flax: u < 0.88 ? 1 : (1 - u) / 0.12, ben: 1 - del(0.75, 1, u), tilt: -10 * Math.sin(Math.PI * u) }); }
+  const land = bump(b, b + 0.25, t);
+  fagel(fagelPulka(t), { lyft: -6 * land, vanster: t < b + 0.8, tilt: 8 * bump(b + 2.0, b + 3.0, t) });
+}
+// siffrorna 1, 2, 3 på "Ett paket … två paket … tre paket!" (J06 22/11 "add numbers 1 2 3"): en rad ovanför pulkan, poppar upp
+// på sitt ord och står kvar tills pulkan börjar dras (som 050:s siffror)
+function siffror(t) {
+  const t0 = M0('25') + 0.6, ut = del(M0('26') + 0.3, M0('26') + 0.9, t); if (t < t0 || ut >= 1) return;
+  lagg('fram', [['1', '#E5533D', -6], ['2', '#F2B632', 5], ['3', '#4FA44F', -3]].map(([n, farg, v], i) => { const a = t - t0 - TRE[i]; if (a < 0) return '';
+    const sc = a < 0.22 ? 1.18 * mjuk(a / 0.22) : 1 + 0.18 * Math.exp(-(a - 0.22) * 6) * Math.cos((a - 0.22) * 16);
+    return `<g opacity="${f1(1 - ut)}" transform="translate(${735 + 120 * i} ${f1(575 + 3 * Math.sin(t * 2 + i * 1.7))}) rotate(${v}) scale(${sc.toFixed(3)})"><text y="34" text-anchor="middle"
+      font-family="Fredoka, 'Arial Rounded MT Bold', sans-serif" font-weight="700" font-size="100" fill="${farg}" stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke">${n}</text></g>`; }).join(''));
 }
 // snöpuffar vid grävandet: små vita tussar som sprids och tonar på 0,6 s
 function snopuff([x, y], age) {
@@ -418,9 +451,9 @@ const S = {
   // går tillbaka till mitten, sedan tittar den åt vänster och åt höger (riktningsposen, huvudet vänds inte)
   '18': tl => { const g = gangX('18', tl), a = 2.6, r = -0.5 * del(a + 0.4, a + 0.8, tl) + 1.0 * del(a + 1.9, a + 2.4, tl) - 0.5 * del(a + 3.5, a + 3.9, tl);
     return MED({ kam: kamMix(K_HEL, K_HALV(C_MITT), del(2.4, 2.41, tl)), pos: [g.x, GOLV], f: ANS('nyfiken', { titt: [30 * r, 0] }), p: g.gar ? trippa(POS(), g.vag, -1) : bytTass(POS({ rikt: r }), tl, 2.35) }); },
-  // frågan i helbild, sedan närbild bakom katten: rosetten och svansen. Svansen viftar sakta mot rosetten; den skimrar efter 3 s
+  // frågan i helbild, sedan närbild bakom katten: rosetten och svansen (deep QA 22/11: vidare och högre, så att huvudet och luvan kommer med). Svansen viftar sakta mot rosetten; den skimrar efter 3 s
   '19': (tl, d) => { const P = 0.3 + LANGD(23);
-    return MED({ kam: kamMix(K_HEL, [lerp(2.6, 2.75, mjuk((tl - P) / (d - P))), 1090, 815], del(P + 0.3, P + 0.31, tl)), f: ANS('glad'), p: POS({ svans: 14 * Math.sin(tl * 1.6) * del(P, P + 0.5, tl) }),
+    return MED({ kam: kamMix(K_HEL, [lerp(2.0, 2.1, mjuk((tl - P) / (d - P))), 1090, 712], del(P + 0.3, P + 0.31, tl)), f: ANS('glad'), p: POS({ svans: 14 * Math.sin(tl * 1.6) * del(P, P + 0.5, tl) }),
       skim: [2, 0.35 * del(P + 3.0, P + 3.6, tl)] }); },
   '20': tl => MED({ kam: K_ROSETT, f: ANS('jatteglad', { titt: [16, 6] }), p: POS({ rikt: 0.7 * del(0.3, 0.8, tl), svans: 10 * Math.sin(tl * 2) }), skim: [2, 0.7 + 0.3 * del(0, 0.4, tl)] }),
   // ett steg åt höger, gräver bakom sig (riktning vänster), det sista paketet kommer upp. Litet glatt skutt
@@ -510,7 +543,7 @@ function ritaGard(st, t) {
   if (st.pulka) { const pp = PULKA_POS(t); sakRitad('pulka', pp, PK, { lager: 'sakerbak' });
     if (st.rep) { const kr = [pp[0] + (930 - 512) * PK, pp[1] + (400 - 392) * PK], h = iFig(st.pos, [215, 640]);
       lagg('sakerbak', `<path d="M${f1(kr[0])} ${f1(kr[1])} Q${f1((kr[0] + h[0]) / 2)} ${f1(Math.max(kr[1], h[1]) + 18)} ${f1(h[0])} ${f1(h[1])}" fill="none" stroke="#e2b04a" stroke-width="5" stroke-linecap="round"/>`); } }
-  ritaPaket(t);
+  ritaPaket(t); fagelNu(t); siffror(t);
   katt(st.pos, BLINKA(st.f, t), p, { luva: st.luva });
   { const sp = spadeLage(t, st); lagg(sp.lager, spadeSvg(sp)); }
   (st.klump || []).forEach(snoklump);
@@ -583,7 +616,7 @@ window.ready = (async () => {
   BLINKA = skapaBlinka(35);
   window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker'));
   KONT = { paket: await (await fetch(R_ + 'paket/cut/paket-hog-kontur.json')).json(), luva: await (await fetch(R_ + 'tomteluva/cut/tomteluva-kontur.json')).json(), pulka: await (await fetch(R_ + 'pulka/cut/pulka-kontur.json')).json() };
-  await Promise.all([PLATTA, KRITA, KRITAN.BILD, SPADE, LUVA, PULKA, ...PAKETB.map(p => p.bild), ...FG.map(p => p.bild), FLINGA].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, KRITA, KRITAN.BILD, SPADE, LUVA, PULKA, ...PAKETB.map(p => p.bild), ...FG.map(p => p.bild), FLINGA, '/assets/rekvisita/smafaglar/cut/fagel-kropp-rod-kod.png'].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
