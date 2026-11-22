@@ -107,8 +107,9 @@ export const RADER = [
   { id: '30', d: 0.3 + L(34) + 3.0 + L(35) + 1.2, plats: 'Bild A, imman', malin: [[34, 0.3], [35, 0.3 + L(34) + 3.0]], ljud: [[RITAR, 0.3 + L(34) + 0.5], [GLITTER, 0.3 + L(34) + 2.2]],
     bild: 'Kritan kommer in och ritar ett hjärta i imman. Gisspaus 3 s. Genom hjärtat syns det klart', ljudtext: 'kritan ritar, `glitter`', ansikte: 'bakifrån' },
   // 31 utan "Kan du också rita ett hjärta?" (Sanna 2026-11-21): bara hjärtat på glaset och den stolta katten
-  { id: '31', d: 4.2, plats: 'Bild B', ljud: [[M(5), 1.2]],
-    bild: 'Katten tittar på hjärtat, stolt', ljudtext: 'nyfiken (5)', ansikte: 'stolt' },
+  // rad 31 bort (Sanna 2026-11-22 "3:31 skip this scene"): katten på sätet med hjärtat på glaset
+  // { id: '31', d: 4.2, plats: 'Bild B', ljud: [[M(5), 1.2]],
+  //   bild: 'Katten tittar på hjärtat, stolt', ljudtext: 'nyfiken (5)', ansikte: 'stolt' },
   { id: '32', d: 0.5 + L(37) + 1.2, plats: 'Bild A, genom hjärtat', malin: [[37, 0.5]],
     bild: 'Stan glider förbi genom hjärtat: hus och affärer med ljusslingor och stjärnor', ljudtext: 'brum', ansikte: 'bakifrån' },
   { id: '33', d: 1.6 + L(38) + FRAGA - SVARREAK, plats: 'Bild A, stopp 3', malin: [[38, 1.6]], ljud: [[BROMS, 0.2]],

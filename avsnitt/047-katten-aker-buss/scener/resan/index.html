@@ -304,7 +304,7 @@ function byggRemsa() {
   x = xg + 120; for (const lucka of [0, 260, 520]) { x += lucka ? lucka + SW : 0; if (x + SW > xf - 650) break; rad(x); }
   // broar: en gran eller ett par granar i varje stor lucka mellan sakerna på mitten, staket närmast farmors hus
   const sak = [...MITT].sort((a, b) => a.v - b.v), broar = [];
-  const upptaget = [[G('20').ankare + PLATS.gubbe[0], 220], [G('26').ankare + PLATS.plog[0] + PLOG_DX / RS, 380], [xg, 200]];   // snögubben, plogen, granen
+  const upptaget = [[G('20').ankare + PLATS.gubbe[0], 220], [G('26').ankare + PLATS.plog[0] + PLOG_DX / RS, 500], [xg, 200]];   // snögubben, plogen, granen
   const fritt = X => upptaget.every(([c, r]) => Math.abs(X - c) > r);
   for (let j = 0; j + 1 < sak.length; j++) { const a = sak[j].h, b = sak[j + 1].v, l = b - a; if (l < 170) continue;
     const n = Math.min(3, Math.floor(l / 260)); for (let q = 0; q < Math.max(1, n); q++) { const X = a + l * (q + 1) / (Math.max(1, n) + 1) + 30 * (slump(a + q) - 0.5);
@@ -431,7 +431,7 @@ const sitter = (f, p = {}, o = {}) => (saeck(), katt(f, { ...L.POSER.sitter, ...
 // --- Sakerna utanför (i remsans koordinater) ------------------------------------------------------------------------------------
 const PLATS = { gubbe: [700, 548], plog: [700, 546], gran: [1373, 555] };   // granen i luckan mellan stans husrader (x 1195 … 1376 + 175)
 function snogubbe(U, pop = 0) {
-  const [x, y] = U.P2(...PLATS.gubbe), k = 0.2 * (1 + 0.08 * pop);
+  const [x, y] = U.P2(...PLATS.gubbe), k = 0.15 * (1 + 0.08 * pop);   // 0,15 (Sanna 2026-11-22 "2:23 smaller snowman", förut 0,2)
   lagg('ute', `<g transform="translate(${f1(x)} ${f1(y)}) scale(${k.toFixed(4)}) translate(-512 -1300)"><image href="${GUBBE}" width="1024" height="1371"/>
     <g transform="translate(512 190)"><rect x="-120" y="-30" width="240" height="40" rx="10" fill="#2b2626" stroke="#fff" stroke-width="10"/>
     <rect x="-80" y="-170" width="160" height="150" rx="16" fill="#2b2626" stroke="#fff" stroke-width="10"/></g></g>`);
@@ -440,9 +440,9 @@ function snogubbe(U, pop = 0) {
 // snöplogen (runda 20:30): står med lampan igång vid stoppet (rad 26) och kör sedan jämnt åt vänster (rad 27, kor 0–1): bladet skjuter
 // en växande snövåg framför sig, snö sprutar i en båge från bladets ände, en ren mörk vägrand blir kvar bakom, den gula lampan på
 // hytten roterar och hjulen guppar lite. Returnerar plogens x (kattens blick följer den).
-const PLOG_DX = 340;   // plogen står till höger om katten i fönsterbilden (katten täckte den förut)
+const PLOG_DX = 250;   // 250 med den större plogen (s 0,46), annars klipps den i fönstrets högerkant   // plogen står till höger om katten i fönsterbilden (katten täckte den förut)
 function plog(U, { kor = 0 } = {}) {
-  const [x0, y] = U.P2(...PLATS.plog), s = 0.34, W = PLOG.w * s, H = PLOG.h * s, x = x0 + PLOG_DX - 420 * kor, rull = kor > 0 && kor < 1;
+  const [x0, y] = U.P2(...PLATS.plog), s = 0.46, W = PLOG.w * s, H = PLOG.h * s, x = x0 + PLOG_DX - 420 * kor, rull = kor > 0 && kor < 1;
   const gupp = rull ? 2.2 * Math.abs(Math.sin(TT * 12)) : 0.5 * Math.sin(TT * 3), L0 = x - W / 2, T0 = y - H - gupp;
   let ut = '';
   if (kor > 0) ut += `<rect x="${f1(L0 + 300 * s)}" y="${f1(y - 16)}" width="${f1(x0 - x + W * 0.55)}" height="18" rx="9" fill="#59626d" opacity=".9"/>
@@ -608,7 +608,8 @@ function skiss() {
   // utan snö på taket (Sanna 2026-11-20: "ta bort snö på bussens tak i intro ritning"), varken i konturen eller i bilden
   const D = [[KONTUR.buss.dSlat, 0.40], [hjul(230, 440, 56), 0.06], [hjul(882, 440, 56), 0.06],
     [rr(69, 92, 207, 236), 0.05], [rr(224, 92, 355, 236), 0.05], [rr(378, 92, 509, 236), 0.05], [rr(532, 92, 664, 236), 0.05],
-    [rr(684, 88, 812, 424), 0.07], [rr(829, 92, 894, 236), 0.04], ['M18 300 H1020', 0.06]];
+    [rr(684, 88, 812, 424), 0.07], [rr(697, 104, 734, 242), 0.03], [rr(760, 104, 797, 242), 0.03], [rr(829, 92, 894, 236), 0.04],
+    ['M18 290 H680', 0.05], ['M18 340 H680', 0.05], ['M814 288 H1012', 0.02], ['M814 340 H1018', 0.02]];   // dörrens två fönster och den gula randen som i bilden (Sanna 2026-11-22 "polish rita bussen")
   const LYFT = 0.02, sum = D.reduce((a, [, w]) => a + w, 0) + LYFT * (D.length - 1); let t = 0;
   SKISS = D.map(([d, w, farg, bredd]) => { const a = t / sum, b = (t + w) / sum; t += w + LYFT; return [d, a, b, farg, bredd]; });
   return SKISS;

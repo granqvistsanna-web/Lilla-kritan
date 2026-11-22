@@ -33,6 +33,14 @@ window.KAJ34 = (() => {
   // Samma väg (bakom kroppen åt vänster, upp, böjd åt vänster i toppen), jämn tjocklek, rund gräddvit spets; kant.js lägger kanten
   const SVANS34 = `<path d="M440 712 C380 714 302 700 270 662 C242 628 246 574 262 538 C276 506 288 480 280 452 C273 430 252 416 228 420" fill="none" stroke="#2b2622" stroke-width="27" stroke-linecap="round"/>
     <path d="M281 462 C280 440 264 422 242 418 C232 417 224 420 218 426" fill="none" stroke="#f1ebe0" stroke-width="30" stroke-linecap="round"/>`;
+  // benen i kod för 'oss' (Sanna 2026-11-22 "4:15 polish legs"): urklippen var tunna pinnar med taggiga skarvar och en grå, fransig tass.
+  // Samma plats och längd (rötterna under kroppen), jämn tjocklek i svansens färg, en rund gräddvit tass framåt; kant.js lägger kanten
+  // Benet är en kapsel fylld med kroppens egen kritstruktur (body.png flyttad uppåt, så att den mörka mitten hamnar i benet)
+  const ben34 = (x0, x, y, id) => `<clipPath id="${id}"><rect x="${x - 23}" y="690" width="46" height="${y - 690 + 23}" rx="23"/></clipPath>
+    <g clip-path="url(#${id})" transform="rotate(${f1(Math.atan2(x0 - x, y - 690) * 180 / Math.PI)} ${x} ${y})"><rect x="${x - 30}" y="680" width="60" height="${y - 660}" fill="#2b2622"/>
+      <image href="${P}cut/kaj34-body.png" x="${x - 512}" y="${y - 900}" width="1024" height="1024"/></g>
+    <ellipse cx="${x + 7}" cy="${y + 12}" rx="28" ry="16" fill="#f1ebe0"/><path d="M${x - 2} ${y + 6} v10 M${x + 12} ${y + 6} v10" stroke="#d9cfbf" stroke-width="3" stroke-linecap="round"/>`;
+  const BEN34 = { 'leg-l': ben34(520, 514, 836, 'kbenl'), 'leg-r': ben34(672, 670, 840, 'kbenr') };
   let N = 0;
   // ett öga: vitan, pupillen (tittar åt höger), ljuspunkten; glad = nederlock av kroppens egen textur med gräddvit båge (ögat öppet)
   const oga = (r, id, [cx, cy], rx, ry, { sy, sx, px, py, glad, pb }) => `<g transform="translate(${cx} ${cy})">
@@ -45,6 +53,7 @@ window.KAJ34 = (() => {
     ${sy < 0.3 ? `<path d="M${-rx} 0 Q0 ${f1(ry * 0.25)} ${rx} 0" fill="none" stroke="${GR}" stroke-width="7" stroke-linecap="round"/>` : ''}</g>`;
   const bild = (r, n) => `<image href="${r.D}${n}.png" width="1024" height="1024"/>`;
   const del = (r, n, v, [px, py]) => `<g transform="rotate(${v.toFixed(2)} ${px} ${py})">${bild(r, n)}</g>`;
+  const benDel = (r, namn, n, v, [px, py]) => namn === 'oss' ? `<g transform="rotate(${v.toFixed(2)} ${px} ${py})">${BEN34[n]}</g>` : del(r, n, v, [px, py]);
   function svg(namn, { oraB = 0, oraF = 0, svans = 0, arm = 0, armL = 1, ben = true, blink = 0, glad = 0, forv = 0, nyf = 0, mun = 0, kind = 0.75, titt = [0, 0], nick = 0, benY = 0, benV = [0, 0], benX = 0 } = {}) {
     const r = RIGG[namn], id = 'k34' + (++N % 1000);
     const sy = Math.max(0.08, 1 - 0.92 * blink) * (1 + 0.12 * forv), sx = 1 + 0.1 * forv;
@@ -63,7 +72,7 @@ window.KAJ34 = (() => {
       <filter id="${id}b" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5"/></filter>
       <mask id="${id}k" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024"><image href="${r.D}body.png" width="1024" height="1024" filter="url(#${id}v)"/></mask></defs>
       ${namn === 'oss' ? `<g transform="rotate(${svans.toFixed(2)} ${r.tail[0]} ${r.tail[1]})">${SVANS34}</g>` : del(r, 'tail', svans, r.tail)}
-      ${ben ? `<g transform="translate(0 ${f1(-benY)})"><g transform="translate(${f1(benX)} 0)">${del(r, 'leg-l', benV[0], r.legL)}</g><g transform="translate(${f1(-benX)} 0)">${del(r, 'leg-r', benV[1], r.legR)}</g></g>` : ''}
+      ${ben ? `<g transform="translate(0 ${f1(-benY)})"><g transform="translate(${f1(benX)} 0)">${benDel(r, namn, 'leg-l', benV[0], r.legL)}</g><g transform="translate(${f1(-benX)} 0)">${benDel(r, namn, 'leg-r', benV[1], r.legR)}</g></g>` : ''}
       ${del(r, r.oraB[0], oraB, r.oraB[1])}
       ${bild(r, 'body')}
       ${del(r, r.oraF[0], oraF, r.oraF[1])}
