@@ -8197,9 +8197,10 @@
   "sec": 81,
   "tags": [],
   "note": "straw in glass go down do bottom",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342316115,
-  "render": "2026-11-22 11:05 (feedback 22/11: större boll och hund, kritan ritar första glaset, vattnet stiger när kritan ritar, tassen om glaset, förvånad, rullen framför handfatet, hoppet ner, fler närbilder (förhandsvisning))"
+  "render": "2026-11-22 11:05 (feedback 22/11: större boll och hund, kritan ritar första glaset, vattnet stiger när kritan ritar, tassen om glaset, förvånad, rullen framför handfatet, hoppet ner, fler närbilder (förhandsvisning))",
+  "fixedAt": 1795343418360
  },
  "gujd3lvlc2mwrohddr": {
   "ep": "J17",
@@ -8207,9 +8208,10 @@
   "sec": 126,
   "tags": [],
   "note": "relevied face sooner",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342352895,
-  "render": "2026-11-22 11:05 (feedback 22/11: större boll och hund, kritan ritar första glaset, vattnet stiger när kritan ritar, tassen om glaset, förvånad, rullen framför handfatet, hoppet ner, fler närbilder (förhandsvisning))"
+  "render": "2026-11-22 11:05 (feedback 22/11: större boll och hund, kritan ritar första glaset, vattnet stiger när kritan ritar, tassen om glaset, förvånad, rullen framför handfatet, hoppet ner, fler närbilder (förhandsvisning))",
+  "fixedAt": 1795343418360
  },
  "haq6or4rqxmwroihve": {
   "ep": "J17",
@@ -8217,8 +8219,9 @@
   "sec": 226,
   "tags": [],
   "note": "deep qa",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342405370,
-  "render": "2026-11-22 11:05 (feedback 22/11: större boll och hund, kritan ritar första glaset, vattnet stiger när kritan ritar, tassen om glaset, förvånad, rullen framför handfatet, hoppet ner, fler närbilder (förhandsvisning))"
+  "render": "2026-11-22 11:05 (feedback 22/11: större boll och hund, kritan ritar första glaset, vattnet stiger när kritan ritar, tassen om glaset, förvånad, rullen framför handfatet, hoppet ner, fler närbilder (förhandsvisning))",
+  "fixedAt": 1795343418360
  }
 }
