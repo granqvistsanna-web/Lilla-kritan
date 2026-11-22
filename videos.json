@@ -1547,5 +1547,13 @@
   "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen.mp4",
   "status": "granska",
   "name": "Lucka 22: Musen pyntar granen"
+ },
+ "MIX-tittut": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/MIX-tittut-1122-1313.mp4",
+  "duration": 1028.5,
+  "rendered": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)",
+  "file": "produktion/youtube/mix/tittut-mix/tittut-mix.mp4",
+  "status": "granska",
+  "name": "Mix: Tittut med alla djuren"
  }
 }
