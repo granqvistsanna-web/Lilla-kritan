@@ -8973,9 +8973,10 @@
   "sec": 182,
   "tags": [],
   "note": "make bunny jump on hopp",
-  "fixed": false,
+  "fixed": true,
   "at": 1795387779215,
-  "render": "2026-11-22 15:35 (slutrenderad efter feedback 22/11 b: spaden i tassen, snön i hinken, hinken kvar på tornet, mindre ljus, siffror vid räkningen)"
+  "render": "2026-11-22 15:35 (slutrenderad efter feedback 22/11 b: spaden i tassen, snön i hinken, hinken kvar på tornet, mindre ljus, siffror vid räkningen)",
+  "fixedAt": 1795389016668
  },
  "qc04xmoob7mwsffmch": {
   "ep": "J17",
