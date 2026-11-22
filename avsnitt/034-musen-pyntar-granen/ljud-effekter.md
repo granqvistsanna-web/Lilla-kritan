@@ -27,3 +27,14 @@ Vald av Claude (Sanna 2026-11-13 "push on"); byt i `storyboard/rader.mjs`, konst
 | 7 | pratar | `mus-pip-8` |
 | 8 | hej då | `mus-hejda-1` |
 | – | långt fniss (tittut, slutet) | `mus-fniss-4` |
+
+## Nya musljud 2026-11-22 (feedback J22 1:23: "mouse squeak sounds like a bird")
+
+`mus-pip` (019) är rena visslingar på 1,7–4 kHz och låter som en fågel. De ersattes i 034 av nya ElevenLabs SFX v3-ljud i röstläge (300–700 Hz som `mus-hej`): 1,0 s, prompt influence 55 %, 4 tagningar per prompt, 48 krediter. Tystnad putsad, loudnorm −19 LUFS. Alla 16 i [ljud/provlyssna-nya-musljud.m4a](ljud/provlyssna-nya-musljud.m4a) (ordning: förtjust 1–4, nyfiken 1–4, fniss-kort 1–4, pratar 1–4).
+
+| Känsla | Fil (vald) | Prompt |
+|---|---|---|
+| förtjust | `mus-fortjust-3` (pip: `mus-fortjust-2`) | Tiny cute cartoon baby mouse giving a delighted little "ooh!" squeal, one soft warm voice-like squeak like a tiny child's voice, sweet and round, not a bird, no whistle, no chirp, no words, close dry recording, no music, no background |
+| nyfiken | `mus-nyfiken-3` | Tiny cute cartoon baby mouse making a curious little questioning "hmm?" squeak that rises at the end, soft warm voice-like sound like a tiny child's voice, wondering and sweet, not a bird, no whistle, no chirp, no words, close dry recording, no music, no background |
+| kort fniss | `mus-fniss-kort-1` | Tiny cute cartoon baby mouse giving a short happy little giggle, "hi-hi", two soft warm voice-like giggles like a tiny child's voice, sweet and playful, not a bird, no whistle, no chirp, no words, close dry recording, no music, no background |
+| pratar | `mus-pratar-3` | Tiny cute cartoon baby mouse happily chattering a little babble, "mi-mi-mi-mi", quick soft warm voice-like squeaks like a tiny child talking, sweet and friendly, not a bird, no whistle, no chirp, no real words, close dry recording, no music, no background |

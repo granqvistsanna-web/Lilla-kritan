@@ -60,10 +60,10 @@ export const ORD = { 19: { Upp: 2.10, upp2: 2.95, pling: 4.10 }, 20: { Upp: 2.90
 export const ord = (n, w) => ORD[n]?.[w] ?? L(n) * ROST[n - 1][2].indexOf(w) / ROST[n - 1][2].length;
 
 // Musens röst (Claude 2026-11-13, se ../ljud-effekter.md): känsla → fil under assets/ljud/effekter/
-export const MUS_FIL = { hej: 'mus-hej/mus-hej-1', 'förtjust': 'mus-pip/mus-pip-4', fniss: 'mus-pip/mus-pip-7', 'mysig suck': 'mus-suck/mus-suck-1',
-  nyfiken: 'mus-pip/mus-pip-6', trumpen: 'mus-trumpen/mus-trumpen-1', pratar: 'mus-pip/mus-pip-8', 'hej då': 'mus-hejda/mus-hejda-1', 'långt fniss': 'mus-fniss/mus-fniss-4',
+export const MUS_FIL = { hej: 'mus-hej/mus-hej-1', 'förtjust': 'mus-fortjust/mus-fortjust-3', fniss: 'mus-fniss-kort/mus-fniss-kort-1', 'mysig suck': 'mus-suck/mus-suck-1',
+  nyfiken: 'mus-nyfiken/mus-nyfiken-3', trumpen: 'mus-trumpen/mus-trumpen-1', pratar: 'mus-pratar/mus-pratar-3', 'hej då': 'mus-hejda/mus-hejda-1', 'långt fniss': 'mus-fniss/mus-fniss-4',
   // feedback 2026-11-22 (2:23 "more mouse sound effects … jippi, hej, mhmm"): fler befintliga tagningar, så att det inte låter likadant varje gång
-  jippi: 'mus-hej/mus-hej-3', mhm: 'mus-suck/mus-suck-2', jippi2: 'mus-hej/mus-hej-2', pip: 'mus-pip/mus-pip-5' };
+  jippi: 'mus-hej/mus-hej-3', mhm: 'mus-suck/mus-suck-2', jippi2: 'mus-hej/mus-hej-2', pip: 'mus-fortjust/mus-fortjust-2' };
 const MUS = (kansla, o) => [null, o, kansla];
 
 // Introt: det gemensamma bilderbok-introt (produktion/youtube/bilderbok-intro/intro.mp4, 3,31 s) före scenen
