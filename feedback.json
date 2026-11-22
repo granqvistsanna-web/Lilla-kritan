@@ -7641,9 +7641,10 @@
   "sec": 130,
   "tags": [],
   "note": "avid overlap of julkula and box",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333008838,
-  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
+  "fixedAt": 1795334067669
  },
  "mpi6r2si1xmwrix9m1": {
   "ep": "J22",
@@ -7651,9 +7652,10 @@
   "sec": 130,
   "tags": [],
   "note": "better rig walking up",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333016808,
-  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
+  "fixedAt": 1795334067669
  },
  "ehd7rl074hmwrixp4x": {
   "ep": "J22",
@@ -7661,9 +7663,10 @@
   "sec": 141,
   "tags": [],
   "note": "polish mouse movements overall",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333036929,
-  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
+  "fixedAt": 1795334067669
  },
  "v7iwzhw34jmwrixttd": {
   "ep": "J22",
@@ -7671,9 +7674,10 @@
   "sec": 141,
   "tags": [],
   "note": "add happy wiggle tail",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333042993,
-  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
+  "fixedAt": 1795334067669
  },
  "kgra2k6l3amwriympi": {
   "ep": "J22",
@@ -7681,9 +7685,10 @@
   "sec": 158,
   "tags": [],
   "note": "make edges of box smaller",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333080438,
-  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
+  "fixedAt": 1795334067669
  },
  "881nea04vlmwrizue3": {
   "ep": "J22",
@@ -7691,9 +7696,10 @@
   "sec": 196,
   "tags": [],
   "note": "kritan ska kanske rita stjärnan mer i musens hand till höger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333137051,
-  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))"
+  "render": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
+  "fixedAt": 1795334067669
  },
  "hf4ipdjicsmwqvr7u8": {
   "ep": "J17",
