@@ -22,7 +22,7 @@ async function v2rigg(mapp) {
   // som har det de behöver (kroppRita i rita, RORELSE.trappa/.stege …, HAND), se lk-figur/nytt-kroppsrorelser.md. Saknas en
   // (Fia har ingen motor) blir den undefined. RORELSE går att ändra i scenen (L.RORELSE.trappa = { … }): motorn läser den vid anropet.
   const MER = ['sattaSig', 'laggaSig', 'trappa', 'klattraStege', 'trappaSvg', 'stegeSvg', 'kroppTal', 'plockaDel', 'sakIn', 'sakBild', 'sakKod',
-    'sakFramVag', 'ataDel', 'blinka', 'RORELSE', 'HAND', 'steg'];   // steg: en jämn gångcykel (037:s gångloop)
+    'sakFramVag', 'ataDel', 'blinka', 'RORELSE', 'HAND', 'steg', 'ARMROR', 'STUNDER', 'STUNDLISTA'];   // ARMROR: armrörelserna (vinka, peka, rakna, plockaUpp, bara), STUNDER: uttryck och kroppsrörelser med namn   // steg: en jämn gångcykel (037:s gångloop)
   return new Function(`${motor}\n${kod}
     return { figur, rita, blanda, blandaPose, param, UTTRYCK, NEUTRAL, POSER, POSE0, ROR, RIGG, FOTTER, skakaHuvud, nicka,
       vila: typeof vila === 'function' ? vila : (f, p) => [f, p],   // vila: motorns liv i en figur som står och väntar (blicken, tyngden, ett öra)

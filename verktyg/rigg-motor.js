@@ -535,7 +535,7 @@ const sakRita = (fig, p) => { const sak = fig.sak; if (!sak) return;
 // Greppet flyttar till sakens inre sida (sakGrepp) medan handen fortfarande är gömd bakom kanten: saken glider in bakom kroppen
 // i stället för under handens tonade rot (en brun smet), och tonar sedan fram med handen.
 // Ger armens värden { armar, fram, klapp, armY } och sakGrepp för den armen; lägg dem på index 0 (vänster) eller 1 (höger) i posen.
-const sakFramVag = u => { const [fv, fin, fner] = HAND.fram, [bin, bv] = HAND.byte, a = mjuk(kl(0, 1, u / 0.4)), sw = mjuk(kl(0, 1, (u - 0.36) / 0.18)), b = mjuk(kl(0, 1, (u - 0.54) / 0.46));
+const sakFramVag = u => { const [fv, fin, fner] = HAND.fram || [-124, 70, 40], [bin, bv] = HAND.byte || [110, -73], a = mjuk(kl(0, 1, u / 0.4)), sw = mjuk(kl(0, 1, (u - 0.36) / 0.18)), b = mjuk(kl(0, 1, (u - 0.54) / 0.46));
   return { armar: mix(bv * a, fv, b), fram: sw, klapp: Math.max(0.01, mix(bin * a, fin, b)), armY: -20 * sw + fner * b, sakGrepp: mjuk(kl(0, 1, (u - 0.2) / 0.22)) }; };
 // ?rorelse=halla (8 s): en sak i vänster hand. Står med den vid sidan och tittar på den (ögonen först), lyfter ut den åt sidan
 // och visar den (lutar sig dit), tar in den framför magen (sakFramVag), ett litet glatt hopp med saken, tillbaka till sidan,
@@ -578,6 +578,123 @@ const plockaSlinga = (t, o) => { const T = t % 6.4;   // 0–2,2 upp, 2,2–3,6 
   if (T >= 3.6) return plockaDel('ner', Math.min(T - 3.6, 2.2), 2.2, o);
   const [f, p] = plockaDel('upp', 2.2, 2.2, o), h = Math.sin(Math.PI * (T - 2.2) / 1.4);
   return [{ ...f, titt: mix(f.titt, [o.hand ? 7 : -7, o.fram ? 9 : 5], h) }, { ...p, boj: p.boj + (o.hand ? 1.5 : -1.5) * h }]; };
+
+// ---- Armrörelserna: ARMROR, samma arm på alla figurer (2026-11-22) ----
+// "Armarna är svåra att få rätt" (Sanna 22/11): varje scen hade en egen vinka med ett eget tal (38, 62, 80, 92, 150), eftersom
+// posens armar-tal betyder olika vinklar i bild på olika riggar (armbildernas vila pekar olika). Här räknas armen i bild i stället:
+// HÖJD = armens lutning över vågrätt, utåt från axeln (0 = rakt ut åt sidan, 90 = rakt upp, −45 = vila på de flesta riggar),
+// ur figurens egna mått: axeln RIGG['arm-l' | 'arm-r'], tassen HAND.l | HAND.r (greppet, där saker sitter) och kroppens ellips
+// (RORELSE.lagga.kropp). Raka armar i ett stycke, inget eftersläp eller fjädring, armen bakom kroppen (fram 0) när den lyfts.
+// Figurens egna tal (valfria) står i HAND, inte i scenen:  vinka: [höjd, sving] · peka: [lägst, högst] · bara: grader ut vid sidan.
+// Alla tar och ger [ansikte, pose] (som nicka och skakaHuvud) och lägger sig ovanpå det figuren redan gör (gång, uttryck …).
+// k 0–1 blandar in rörelsen; ARMROR.inUt(tl, d) ger ett k som går upp 0,4 s i början och ner 0,4 s i slutet.
+const ARMROR = (() => {
+  const geo = n => { const [px, py] = RIGG['arm-' + n], [hx, hy] = HAND[n], dx = hx - px, dy = hy - py;
+    return { px, py, L: Math.hypot(dx, dy), vila: Math.atan2(-dy, Math.abs(dx)) * 180 / Math.PI, s: n === 'l' ? -1 : 1 }; };
+  // tassens mitt i figurens ruta när armen har höjden h, och om hela tassen syns utanför kroppen (ellipsen + en tass bred kant)
+  const tass = (n, h) => { const g = geo(n), a = h * Math.PI / 180; return [g.px + g.s * g.L * Math.cos(a), g.py - g.L * Math.sin(a)]; };
+  const fri = (n, h) => { const [cx, cy, rx, ry] = kroppTal('lagga').kropp, m = 0.3 * geo(n).L, [x, y] = tass(n, h);
+    return ((x - cx) / (rx + m)) ** 2 + ((y - cy) / (ry + m)) ** 2 >= 1; };
+  // högsta höjden ≤ h där tassen syns hela vägen (vinkningens topp)
+  const synlig = (n, h) => { while (h > -10 && !fri(n, h)) h -= 2; return h; };
+  const vinkTal = n => { const [h, sv] = HAND.vinka || [30, 16]; return [synlig(n, h + sv) - sv, sv]; };
+  // en arm (i 0 vänster, 1 höger) till höjden h i bild, blandat med k; tar armen bakom kroppen (fram 0). Uttryckets arm sätts till
+  // vila så att höjden blir densamma i alla riggar (Kanel tonar bort uttryckets arm själv, de andra lägger ihop).
+  const satt = (f, p, i, h, k = 1) => { const n = i ? 'r' : 'l', N = NEUTRAL.armar[i], fa = [...(f.armar || NEUTRAL.armar)], pa = [...(p.armar || [0, 0])];
+    const nu = fa[i] + pa[i], mal = h - geo(n).vila, fr = [...(p.fram || [0, 0])];
+    fa[i] = mix(fa[i], N, k); pa[i] = mix(nu, mal, k) - fa[i]; fr[i] *= 1 - k;
+    return [{ ...f, armar: fa }, { ...p, armar: pa, fram: fr }]; };
+  const titta = (f, [mx, my], k) => ({ ...f, titt: mix(f.titt || [0, 0], [kl(-12, 12, (mx - 512) / 25), kl(-6, 12, (my - 430) / 25)], k) });
+  const vilkenHand = (mx, o) => o.hand ?? (mx < 512 ? 0 : 1);
+  return {
+    inUt: (tl, d, r = 0.4) => mjuk(kl(0, 1, Math.min(tl / r, (d - tl) / r))),
+    hojd: (n, A) => A + geo(n).vila,    // posens armvinkel A (f.armar + p.armar) → höjd i bild
+    tass, fri, geo, vinkTal, satt,
+    // Vinka: armen bakom kroppen, snett upp och ut förbi kanten (höjd 30° ± 16°, 1,3 gånger/s), kroppen lutar lite med.
+    // Är armen kort (Lova, Hugo) sänks höjden tills hela tassen syns utanför kroppen. o.hand 0/1 (standard höger).
+    vinka: (f, p, tl, k = 1, o = {}) => { const i = o.hand ?? 1, n = i ? 'r' : 'l', [h, sv] = vinkTal(n), s = Math.sin(2 * Math.PI * 1.3 * tl);
+      const [f2, p2] = satt(f, p, i, h + sv * s, k);
+      return [f2, { ...p2, luta: (p.luta || 0) + (i ? -1 : 1) * k * (1.5 + 1.2 * s) }]; },
+    // Peka på mal [x, y] (figurens ruta, fötterna i FOTTER): armen på den sidan pekar dit, höjden hålls mellan HAND.peka
+    // (standard −30 … 40), blicken går dit och figuren lutar sig 1,5° åt det hållet. o.hand tvingar en arm.
+    peka: (f, p, mal, k = 1, o = {}) => { const i = vilkenHand(mal[0], o), n = i ? 'r' : 'l', g = geo(n), [lo, hi] = HAND.peka || [-30, 40];
+      const h = kl(lo, Math.min(hi, synlig(n, hi)), Math.atan2(g.py - mal[1], Math.max(40, g.s * (mal[0] - g.px))) * 180 / Math.PI);
+      const [f2, p2] = satt(titta(f, mal, k), p, i, h, k);
+      return [f2, { ...p2, luta: (p.luta || 0) + (i ? -1.5 : 1.5) * k }]; },
+    // Räkna fram: pekar på saken i mal[j] i tur och ordning, på tiderna o.tider (standard 0,4 s + 1 s per sak; lägg dem på
+    // rösten), en liten nick och ett litet tryck med armen på varje tal. Armen glider till nästa sak på 0,35 s, aldrig ett hopp.
+    // Visa siffrorna på o.tider. k som de andra (ARMROR.inUt(tl, sista tid + 1)).
+    rakna: (f, p, tl, mal, k = 1, o = {}) => { const tider = o.tider || mal.map((_, j) => 0.4 + j);
+      let j = 0; while (j + 1 < mal.length && tl >= tider[j + 1] - 0.35) j++;
+      const u = j ? mjuk(kl(0, 1, (tl - tider[j] + 0.35) / 0.35)) : 1, M = mix(mal[Math.max(0, j - 1)], mal[j], u);
+      const slag = Math.sin(Math.PI * kl(0, 1, (tl - tider[j]) / 0.4)) * (tl >= tider[j]);
+      const [f2, p2] = ARMROR.peka(f, p, M, k, { hand: o.hand ?? vilkenHand(mal[0], {}) }), i = o.hand ?? vilkenHand(mal[0], {});
+      p2.armar = [...p2.armar]; p2.armar[i] -= 6 * slag * k;
+      return [f2, { ...p2, nick: [(p.nick?.[0] || 0) + 0.6 * slag * k, (p.nick?.[1] || 0) + 0.6 * slag * k] }]; },
+    // Plocka upp och lägga ner (plockaDel med figurens egna böjposer): o.fri [x, y, v] där saken ligger, o.fram true = från ett
+    // bord framför (HAND.bord), annars golvet bredvid (HAND.golv). Handen väljs efter sidan saken ligger på. d ca 2,2 s.
+    plockaUpp: (tl, d, o) => plockaDel('upp', tl, d, ARMROR.plockaTal(o)),
+    laggaNer: (tl, d, o) => plockaDel('ner', tl, d, ARMROR.plockaTal(o)),
+    plockaTal: o => ({ ...o, hand: vilkenHand(o.fri[0], o), boj: o.boj || (o.fram ? HAND.bord || { luta: -1.5, boj: -2.5, strack: -0.03, bred: 0.02, armar: 0 }
+      : HAND.golv || { luta: -4, boj: -6, strack: -0.08, bred: 0.05, armar: -25 }) }),
+    // Bära saken i handen (efter plockaUpp, eller sakIn + hall 1): vid sidan (armen HAND.bara, standard 10°, ut från vilan
+    // så att saken går fri från benen) eller o.fram = framför magen (sakFramVag; k 0 → 1 tar den dit). Armen står still när
+    // figuren går: lägg bara efter gangen. o.hand 0/1 (standard vänster).
+    bara: (f, p, k = 1, o = {}) => { const i = o.hand ?? 0, hall = [...(p.hall || [0, 0])]; hall[i] = 1;
+      if (o.fram) { const v = sakFramVag(k), pa = [...(p.armar || [0, 0])], fr = [...(p.fram || [0, 0])]; pa[i] = v.armar; fr[i] = v.fram;
+        return [f, { ...p, hall, armar: pa, fram: fr, hand: 1, klapp: v.klapp, armY: v.armY, sakGrepp: v.sakGrepp }]; }
+      const n = i ? 'r' : 'l', [f2, p2] = satt(f, p, i, geo(n).vila + NEUTRAL.armar[i] + (HAND.bara ?? 10), k);
+      return [f2, { ...p2, hall }]; },
+  };
+})();
+
+// ---- Stunder: STUNDER, uttryck och små kroppsrörelser med namn, lika på alla figurer (2026-11-22) ----
+// "more movements and face expressions to enhance characters" (Sanna 22/11). Varje stund är ansiktet (figurens egna UTTRYCK,
+// ritade i kod) plus lite lugnt kroppsspel, byggt bara av det alla v2-figurer har (uttrycken glad, forvanad, nyfiken, tanker,
+// ledsen, fnissig, somnig och poserna lutaH, lutaV, blyg, ner, sitter). STUNDER.namn(tl, d) ger [ansikte, pose]; tonar in och ut
+// på 0,4–0,5 s inom d (standard 3 s). Inget studsar mer än 20 px, inget snurrar, armarna rörs knappt (ARMROR för armarna).
+// Ansiktet utan stund: blanda('neutral', STUNDER.ansikte('blyg'), k) ger blyg-ansiktet (fundersam → tanker, ledsenLite → halv ledsen).
+const STUNDER = (() => {
+  const io = (tl, d, a = 0.45, b = 0.5) => mjuk(kl(0, 1, tl / a)) * mjuk(kl(0, 1, (d - tl) / b));
+  const pa = (tl, a, b) => Math.sin(Math.PI * kl(0, 1, (tl - a) / (b - a)));   // 0 → 1 → 0 mellan a och b
+  // blyg: glad men liten, blicken ner åt sidan, ögonlocken lite ner, kinderna fulla
+  const ANS = { blyg: () => ({ ...blanda('neutral', 'glad', 0.55), titt: [-9, 9], lock: [0.3, 0.3], kind: 1, luta: -4 }),
+    fundersam: () => param('tanker'), ledsenLite: () => blanda('neutral', 'ledsen', 0.5) };
+  const ansikte = n => ANS[n] ? ANS[n]() : param(n);
+  const o = () => opt();
+  return {
+    ansikte,
+    // --- uttryck ---
+    glad: (tl, d = 3) => { const k = io(tl, d); return nicka(blanda('neutral', 'glad', k), P({ strack: 0.015 * k }), tl - 0.5, 1.2, 1); },
+    forvanad: (tl, d = 3) => { const k = io(tl, d, 0.25), r = pa(tl, 0, 0.5);   // snabbt in: kroppen sträcks lite och sjunker tillbaka
+      return [blanda('neutral', 'forvanad', k), P({ strack: 0.03 * k + 0.02 * r, sank: -6 * r, ...oronen(o(), [-8 * k, -8 * k]) })]; },
+    nyfiken: (tl, d = 3) => { const k = io(tl, d); return [blanda('neutral', 'nyfiken', k), blandaPose('neutral', 'lutaH', 0.8 * k)]; },
+    fundersam: (tl, d = 3) => { const k = io(tl, d), h = Math.sin(2 * Math.PI * 0.4 * tl) * k;   // tänker: huvudet på sned, blicken upp, en långsam vickning
+      const f = blanda('neutral', 'tanker', k); return [{ ...f, luta: f.luta - 2 * h }, blandaPose('neutral', 'lutaV', 0.6 * k + 0.15 * h)]; },
+    blyg: (tl, d = 3) => { const k = io(tl, d, 0.6), sv = Math.sin(2 * Math.PI * 0.5 * tl) * k;   // blyg gungning: långsamt från sida till sida
+      return [blanda('neutral', ANS.blyg(), k), { ...blandaPose('neutral', 'blyg', 0.8 * k), luta: (-1.5 * 0.8 + 1.5 * sv) * k, boj: -3 * k + 2 * sv }]; },
+    ledsenLite: (tl, d = 3) => { const k = io(tl, d, 0.6), suck = pa(tl, 1.0, 1.8);
+      return [blanda('neutral', ANS.ledsenLite(), k), { ...blandaPose('neutral', 'ner', 0.35 * k), strack: 0.012 * suck - 0.015 * k }]; },
+    fnissig: (tl, d = 3) => { const k = io(tl, d, 0.3), sk = Math.sin(2 * Math.PI * 4 * tl) * pa(tl, 0.4, d - 0.4);   // axlarna skakar lite
+      return [blanda('neutral', 'fnissig', k), P({ strack: 0.008 * sk, luta: 1.5 * k, ...oronen(o(), [3 * sk, -3 * sk]) })]; },
+    somnig: (tl, d = 3.6) => { const k = io(tl, d, 0.6), dropp = pa(tl, 0.8, 2.6);   // huvudet sjunker sakta och lyfts igen
+      return [blanda('neutral', 'somnig', k), P({ nick: [1.2 * dropp, 1.2 * dropp], strack: -0.02 * k, sank: 4 * k, ...oronen(o(), [6 * k, 6 * k]) })]; },
+    // --- kroppsrörelser ---
+    nicka: (tl, d = 1.6) => nicka(param('glad'), P(), tl, d, 2),
+    lutaHuvud: (tl, d = 3, sida = 1) => { const k = io(tl, d); const f = blanda('neutral', 'nyfiken', 0.6 * k);   // sida 1 höger, −1 vänster
+      return [{ ...f, luta: 6 * sida * k }, blandaPose('neutral', sida > 0 ? 'lutaH' : 'lutaV', k)]; },
+    // lutar sig fram och tittar (ner mot något framför): böjer sig från fötterna, blicken ner, hakan fram
+    titta: (tl, d = 3) => { const k = io(tl, d, 0.6); const f = blanda('neutral', 'nyfiken', 0.7 * k);
+      return [{ ...f, titt: mix([0, 0], [4, 12], k) }, P({ boj: 4 * k, luta: 2 * k, upp: -0.35 * k, strack: -0.02 * k, ...oronen(o(), [-4 * k, -4 * k]) })]; },
+    // en liten glad studs, lugn: två mjuka lyft på 18 px med lite tryck före, armarna en aning upp
+    studs: (tl, d = 2) => { const k = io(tl, d, 0.3, 0.3), l = pa(tl, 0.35, 0.85) + pa(tl, 1.05, 1.55), t1 = pa(tl, 0.2, 0.4) + pa(tl, 0.9, 1.1);
+      return [blanda('neutral', 'glad', k), P({ lyft: -18 * l, strack: 0.02 * l - 0.03 * t1, bred: 0.02 * t1, armar: [8 * l, 8 * l], ...oronen(o(), [-5 * l, -5 * l]) })]; },
+    satta: (tl, d = 1.6) => sattaSig(param('glad'), P(), tl, d),
+    resa: (tl, d = 1.6) => sattaSig(param('glad'), P(), tl, d, true),
+  };
+})();
+// Slingan ?rorelse=stunder visar alla i tur och ordning (ROR.stunder = stunderSlinga).
+const STUNDLISTA = ['glad', 'forvanad', 'nyfiken', 'fundersam', 'blyg', 'ledsenLite', 'fnissig', 'somnig', 'nicka', 'lutaHuvud', 'titta', 'studs', 'satta', 'resa'];
 
 // ---- Äta och dricka: ataDel(sort, tl, d, o) ger [ansikte, pose] för en klunk eller en tugga ur saken i handen framför magen ----
 // Börjar och slutar med saken framför magen (som efter plocka från bordet, HAND.fram + o.lyft). Ögonen går först till saken,

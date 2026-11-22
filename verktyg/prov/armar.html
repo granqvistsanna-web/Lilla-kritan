@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Armar och stunder</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:100vh; display:block; } text { font-family: Fredoka, system-ui, sans-serif; fill: #3a2c28; text-anchor: middle; }</style>
+</head>
+<body>
+<!-- Provark för armrörelserna i verktyg/rigg-motor.js (ARMROR): sex figurer gör samma sak samtidigt, så att det syns att armen
+     blir likadan på alla. Avsnitt: vinka, peka, räkna, plocka upp, bära, sedan stunderna (STUNDER: glad … sätter sig). ?t=sekunder visar en bild, ?prick=1 ritar greppet (HAND).
+     Rendera: node verktyg/rigg-video.mjs /verktyg/prov/armar.html "" 31 ut.mp4   (servern ska stå i repots rot) -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <rect y="880" width="1920" height="200" fill="#efe6d4"/>
+  <text id="rubrik" x="960" y="110" font-size="64" font-weight="600"></text>
+  <text id="under" x="960" y="170" font-size="32" opacity="0.7"></text>
+  <g id="mal"></g>
+  <g filter="url(#boil)"><g id="figurer"></g></g>
+  <g id="prickar"></g>
+  <g id="namn"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const FIG = [['kaninen-kanel', 'kaninen'], ['leoparden-lova', 'leoparden'], ['lammet-ludde', 'lammet'], ['hunden-hugo', 'hunden'], ['zebran-zebbe', 'zebran'], ['bjornen-bulle', 'björnen']];
+const SK = 0.36, MARK = 905, X = i => 175 + i * 314, $ = id => document.getElementById(id);
+const kl = (a, b, x) => Math.max(a, Math.min(b, x)), mjuk = k => k * k * (3 - 2 * k), e = (t, a, b) => mjuk(kl(0, 1, (t - a) / (b - a)));
+const prick = new URLSearchParams(location.search).get('prick');
+// figurens ruta (1024, fötterna i FOTTER) ↔ scenen
+const tillScen = (i, L, [x, y]) => [X(i) + SK * (x - 512), MARK + SK * (y - L.FOTTER)];
+// Avsnitten: [sekunder, rubrik, underrubrik, (L, i, tl) => [ansikte, pose], mål att rita (figurens ruta)]
+const BOLL = L => L.sakBild('/assets/rekvisita/boll-rod/cut/boll-rod.png', 1024, 1024, { grepp: [540, 300], fot: [511, 858], skala: 0.18, folj: 0, kant: 10 });
+const RAKNA = [[900, 600], [960, 760], [990, 920]], PEKA = [[[40, 280]], [null, [1000, 760]]];
+const AVSNITT = [
+  [4.5, 'vinka', 'ARMROR.vinka · armen bakom kroppen, snett ut förbi kanten', (L, f, p, tl) => L.ARMROR.vinka(f, p, tl, L.ARMROR.inUt(tl, 4.5, 0.5))],
+  [5, 'peka', 'ARMROR.peka(mal) · upp åt vänster, sedan ner åt höger', (L, f, p, tl) => { const m = tl < 2.5 ? PEKA[0][0] : PEKA[1][1];
+    return L.ARMROR.peka(f, p, m, L.ARMROR.inUt(tl < 2.5 ? tl : tl - 2.5, 2.5, 0.45)); }, tl => [tl < 2.5 ? PEKA[0][0] : PEKA[1][1]]],
+  [4.6, 'räkna fram', 'ARMROR.rakna(mal) · en, två, tre', (L, f, p, tl) => L.ARMROR.rakna(f, p, tl, RAKNA, L.ARMROR.inUt(tl, 4.6, 0.4), { tider: [0.6, 1.6, 2.6] }), tl => RAKNA.slice(0, tl < 0.6 ? 0 : tl < 1.6 ? 1 : tl < 2.6 ? 2 : 3)],
+  [6.4, 'plocka upp', 'ARMROR.plockaUpp / laggaNer · bollen på golvet bredvid', (L, f, p, tl) => { const o = { fri: [150, L.FOTTER, 0] };
+    if (tl < 2.2) return L.ARMROR.plockaUpp(tl, 2.2, o);
+    if (tl >= 3.6) return L.ARMROR.laggaNer(Math.min(tl - 3.6, 2.2), 2.2, o);
+    return L.ARMROR.plockaUpp(2.2, 2.2, o); }],
+  [7, 'bära', 'ARMROR.bara · vid sidan när den går, sedan framför magen', (L, f, p, tl) => {
+    const g = tl < 3.6, gtl = Math.min(tl, 3.6), amp = mjuk(kl(0, 1, Math.min(gtl / 0.3, (3.6 - gtl) / 0.3))), [fs, ps] = L.steg(gtl, amp, Math.sign(Math.cos(Math.PI * gtl / 3.6)) * amp);
+    const x = 90 * Math.sin(Math.PI * gtl / 1.8);
+    return L.ARMROR.bara(g ? fs : f, { ...(g ? ps : p), x }, g ? 1 : e(tl, 3.9, 5.0), { fram: !g }); }],
+  // Stunder (STUNDER i verktyg/rigg-motor.js): uttryck och små kroppsrörelser med namn
+  ...[['glad', 'glad', 3], ['forvanad', 'förvånad', 3], ['nyfiken', 'nyfiken', 3], ['fundersam', 'fundersam', 3.4], ['blyg', 'blyg', 3.6],
+    ['ledsenLite', 'ledsen (lite)', 3], ['fnissig', 'fnissig', 3], ['somnig', 'sömnig', 3.6], ['nicka', 'nickar', 2], ['lutaHuvud', 'lutar huvudet', 3],
+    ['titta', 'lutar sig fram och tittar', 3], ['studs', 'liten glad studs', 2.2]].map(([n, namn, d]) =>
+    [d, namn, `STUNDER.${n}(tl, d)`, (L, f, p, tl) => L.STUNDER[n](tl, n === 'nicka' ? 1.6 : d)]),
+  [3.8, 'sätter sig och reser sig', 'STUNDER.satta / STUNDER.resa', (L, f, p, tl) => tl < 2 ? L.STUNDER.satta(Math.min(tl, 1.6)) : L.STUNDER.resa(Math.min(tl - 2, 1.6))],
+];
+const LANGD = AVSNITT.reduce((s, a) => s + a[0], 0) + 0.5;
+let FIGS = [];
+function render(t) {
+  let t0 = 0, j = 0; t = kl(0, LANGD - 0.01, t);
+  while (j < AVSNITT.length - 1 && t >= t0 + AVSNITT[j][0]) t0 += AVSNITT[j++][0];
+  const [d, rub, und, fn, mal] = AVSNITT[j], tl = Math.min(t - t0, d);
+  $('rubrik').textContent = rub; $('under').textContent = und;
+  $('mal').innerHTML = ''; $('prickar').innerHTML = '';
+  FIGS.forEach(({ L, G }, i) => {
+    const plocka = rub === 'plocka upp' || rub === 'bära';
+    if (!!G.sak !== plocka) L.sakIn(G, plocka ? BOLL(L) : null);
+    const f0 = L.param('glad'), p0 = { ...L.POSE0, ...(rub === 'bära' ? { hall: [1, 0] } : {}) };
+    const [f, p] = fn(L, f0, p0, tl);
+    L.rita(G, f, p);
+    (mal ? mal(tl) : []).forEach(([mx, my], k) => { const [sx, sy] = tillScen(i, L, [mx, my]);
+      $('mal').insertAdjacentHTML('beforeend', `<circle cx="${sx}" cy="${sy}" r="13" fill="#f2b13a" stroke="#fff" stroke-width="4"/>${rub === 'räkna fram' ? `<text x="${sx}" y="${sy - 22}" font-size="26" font-weight="600">${k + 1}</text>` : ''}`); });
+    if (prick) ['l', 'r'].forEach(n => { const a = [...G.querySelectorAll('.arm-' + n)].find(x => x.getAttribute('opacity') !== '0');
+      const pt = new DOMPoint(...L.HAND[n]).matrixTransform(document.querySelector('svg').getScreenCTM().inverse().multiply(a.getScreenCTM()));
+      $('prickar').insertAdjacentHTML('beforeend', `<circle cx="${pt.x}" cy="${pt.y}" r="6" fill="#0a8"/>`); });
+  });
+  $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);
+}
+window.render = render;
+window.ready = (async () => {
+  for (const [i, [mapp, namn]] of FIG.entries()) {
+    const L = await v2rigg(mapp), G = L.figur(X(i), MARK, SK, $('figurer'));
+    window.kant?.lagg(G); FIGS.push({ L, G });
+    $('namn').insertAdjacentHTML('beforeend', `<text x="${X(i)}" y="1040" font-size="30">${namn}</text>`);
+  }
+  render(+(new URLSearchParams(location.search).get('t') || 0)); window.LANGD = LANGD; return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && FIGS.length) render(((performance.now() - start) / 1000) % LANGD); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>
