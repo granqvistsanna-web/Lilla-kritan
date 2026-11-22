@@ -8753,9 +8753,10 @@
   "sec": 9,
   "tags": [],
   "note": "match titta VO to wehn kritan blrjar rita",
-  "fixed": false,
+  "fixed": true,
   "at": 1795378892620,
-  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))"
+  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))",
+  "fixedAt": 1795381965314
  },
  "dhw8c5g38smwsa90sa": {
   "ep": "ABC-c3",
@@ -8763,9 +8764,10 @@
   "sec": 17,
   "tags": [],
   "note": "hur låter C? add this before c c c",
-  "fixed": false,
+  "fixed": true,
   "at": 1795378914874,
-  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))"
+  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))",
+  "fixedAt": 1795381965314
  },
  "5j5q4kmi8smwsa9hpz": {
   "ep": "ABC-c3",
@@ -8773,9 +8775,10 @@
   "sec": 27,
   "tags": [],
   "note": "make sketches more detailed and easier to guess",
-  "fixed": false,
+  "fixed": true,
   "at": 1795378936823,
-  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))"
+  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))",
+  "fixedAt": 1795381965314
  },
  "bqr9b0u3znmwsaaqd5": {
   "ep": "ABC-c3",
@@ -8783,9 +8786,10 @@
   "sec": 6,
   "tags": [],
   "note": "maybe malin says, hej C, och c svarar (HAPPY) C C hur låter c \" c c\" men ibland hårt också \"k\" right",
-  "fixed": false,
+  "fixed": true,
   "at": 1795378994681,
-  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))"
+  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))",
+  "fixedAt": 1795381965314
  },
  "hnzmro7efamwsace9i": {
   "ep": "ABC-c3",
@@ -8793,8 +8797,9 @@
   "sec": 40,
   "tags": [],
   "note": "here maybe C sounds chould be framed better? why is the c eltter saying the sounds? maybe like k k clown? or a happy reavtion cc ?",
-  "fixed": false,
+  "fixed": true,
   "at": 1795379072310,
-  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))"
+  "render": "2026-11-22 16:50 (ny cykel i v2 (Flow-bild 4))",
+  "fixedAt": 1795381965314
  }
 }
