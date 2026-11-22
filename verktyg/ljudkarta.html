@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lilla Kritan – ljudkarta</title>
+<!-- Datan byggs med: python3 verktyg/ljudkarta.py (skriver ljudkarta/data.js) -->
+<script src="ljudkarta/data.js"></script>
+<style>
+  :root { --bg:#faf8f2; --kort:#fff; --text:#2b2722; --svag:#7a7268; --linje:#e6e0d4; --varn:#c0532b; --spelar:#3f9a4a; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:14px/1.4 system-ui, sans-serif; background:var(--bg); color:var(--text); }
+  header { position:sticky; top:0; z-index:1; background:var(--bg); border-bottom:1px solid var(--linje); padding:12px 16px; }
+  h1 { font-size:18px; margin:0 0 8px; }
+  h1 small { font-weight:400; color:var(--svag); font-size:12px; }
+  .rad { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px; }
+  .rad b { font-size:12px; color:var(--svag); margin-right:2px; }
+  button, input[type=search] { font:inherit; border:1px solid var(--linje); background:#fff; border-radius:999px; padding:4px 10px; cursor:pointer; color:inherit; }
+  input[type=search] { cursor:text; min-width:240px; flex:1; max-width:420px; }
+  button.pa { background:var(--text); color:#fff; border-color:var(--text); }
+  .rakna { margin-left:auto; color:var(--svag); font-size:12px; }
+  main { padding:12px 16px 40px; display:flex; flex-direction:column; gap:8px; }
+  .ljud { background:var(--kort); border:1px solid var(--linje); border-radius:10px; padding:8px 10px; display:grid; grid-template-columns:200px 1fr; gap:4px 14px; }
+  .ljud > div { min-width:0; overflow-wrap:anywhere; }
+  .ljud.varn { border-left:4px solid var(--varn); }
+  .namn { font-weight:600; font-family:ui-monospace, monospace; word-break:break-all; cursor:copy; }
+  .kat, .meta { font-size:12px; color:var(--svag); }
+  .flagga { font-size:11px; color:var(--varn); }
+  .nar { font-size:13px; }
+  .nar p { margin:0 0 3px; }
+  .nar code { font-size:12px; background:#f1ede4; padding:0 3px; border-radius:3px; }
+  .tag { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+  .tag button { border-radius:6px; padding:2px 7px; font-size:12px; font-variant-numeric:tabular-nums; }
+  .tag button.spelar { background:var(--spelar); border-color:var(--spelar); color:#fff; }
+  .tag button small { color:var(--svag); margin-left:3px; }
+  .tag button.spelar small { color:#e6f4e6; }
+  .avs { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+  .avs span { font-size:11px; background:#f1ede4; border-radius:999px; padding:1px 7px; }
+  .problem { background:#fff4ee; border:1px solid #f0c9b6; border-radius:10px; padding:8px 12px; font-size:13px; }
+  .problem h2 { font-size:14px; margin:0 0 4px; }
+  .problem ul { margin:0; padding-left:18px; }
+  @media (max-width:640px) { .ljud { grid-template-columns:1fr; } input[type=search] { min-width:0; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Lilla Kritan – ljudkarta <small id="byggd"></small></h1>
+  <div class="rad" id="kategorier"><b>Kategori</b></div>
+  <div class="rad" id="filter"><b>Visa</b></div>
+  <div class="rad">
+    <input type="search" id="sok" placeholder="Sök namn, när eller avsnitt (t.ex. fniss, 036, hej då) …" autofocus>
+    <span class="rakna" id="rakna"></span>
+  </div>
+</header>
+<main id="lista"></main>
+<script>
+const LJUD = window.LJUD || [];
+const BAS = '../assets/ljud/effekter/';
+const FILTER = { alla:'Alla', readme:'Saknas i README', oanvanda:'Används inte i något avsnitt', tomma:'Utan filer' };
+let kat = 'alla', filt = 'alla';
+document.getElementById('byggd').textContent = `${LJUD.length} ljud · byggd ${window.BYGGD || '?'} · klicka på namnet för att kopiera det`;
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const md = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+  .replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+const sek = s => s == null ? '?' : (s < 10 ? s.toFixed(1) : Math.round(s)).toString().replace('.', ',') + ' s';
+const tagnamn = (namn, fil) => fil.replace(/\.[a-z0-9]+$/, '').replace(namn + '-', '') || fil;
+
+function chips(id, val, ar, satt) {
+  const el = document.getElementById(id);
+  for (const [k, txt] of Object.entries(val)) {
+    const b = document.createElement('button');
+    b.textContent = txt; b.dataset.k = k;
+    b.onclick = () => { satt(k); el.querySelectorAll('button').forEach(x => x.classList.toggle('pa', x.dataset.k === k)); visa(); };
+    if (k === ar) b.classList.add('pa');
+    el.append(b);
+  }
+}
+const kategorier = { alla:'Alla' };
+for (const p of LJUD) kategorier[p.kategori] = p.kategori;
+chips('kategorier', kategorier, kat, k => kat = k);
+chips('filter', FILTER, filt, k => filt = k);
+
+const ljudspelare = new Audio();
+let knapp = null;
+ljudspelare.onended = () => knapp && knapp.classList.remove('spelar');
+function spela(b) {
+  if (knapp === b && !ljudspelare.paused) { ljudspelare.pause(); b.classList.remove('spelar'); return; }
+  if (knapp) knapp.classList.remove('spelar');
+  knapp = b; b.classList.add('spelar');
+  ljudspelare.src = b.dataset.src; ljudspelare.currentTime = 0;
+  ljudspelare.play().catch(() => b.classList.remove('spelar'));
+}
+
+function problem() {
+  const rader = window.RADER_UTAN_FILER || [], losa = window.LOSA_FILER || [];
+  const ej = LJUD.filter(p => !p.i_readme).length, tomma = LJUD.filter(p => !p.tagningar.length).map(p => p.namn);
+  if (!rader.length && !losa.length && !ej && !tomma.length) return '';
+  return `<div class="problem"><h2>Att städa</h2><ul>
+    ${ej ? `<li>${ej} mappar saknar rad i README (välj <i>Saknas i README</i> ovan)</li>` : ''}
+    ${rader.map(r => `<li>README-rad ${r.rad} <code>${esc(r.namn)}</code> har ingen mapp eller fil</li>`).join('')}
+    ${tomma.length ? `<li>Mappar utan ljudfiler: ${tomma.map(t => `<code>${esc(t)}</code>`).join(' ')}</li>` : ''}
+    ${losa.length ? `<li>Lösa filer direkt i effekter/: ${losa.map(t => `<code>${esc(t)}</code>`).join(' ')}</li>` : ''}
+  </ul></div>`;
+}
+
+function visa() {
+  const q = document.getElementById('sok').value.trim().toLowerCase();
+  const urval = LJUD.filter(p => {
+    if (kat !== 'alla' && p.kategori !== kat) return false;
+    if (filt === 'readme' && p.i_readme) return false;
+    if (filt === 'oanvanda' && p.avsnitt.length) return false;
+    if (filt === 'tomma' && p.tagningar.length) return false;
+    if (!q) return true;
+    return [p.namn, p.kategori, ...p.nar, ...p.avsnitt, ...p.tagningar.map(t => t.fil)].join(' ').toLowerCase().includes(q);
+  });
+  document.getElementById('rakna').textContent = `${urval.length} av ${LJUD.length}`;
+  document.getElementById('lista').innerHTML = (filt === 'alla' && kat === 'alla' && !q ? problem() : '') + urval.map(p => {
+    const langder = p.tagningar.map(t => t.s).filter(s => s != null);
+    const spann = langder.length ? (Math.min(...langder) === Math.max(...langder) ? sek(langder[0]) : `${sek(Math.min(...langder))}–${sek(Math.max(...langder))}`) : '';
+    const flaggor = [!p.i_readme && 'saknas i README', !p.tagningar.length && 'inga filer', !p.avsnitt.length && 'används inte'].filter(Boolean);
+    return `<div class="ljud${!p.i_readme || !p.tagningar.length ? ' varn' : ''}">
+      <div>
+        <div class="namn" title="Kopiera namnet">${esc(p.namn)}</div>
+        <div class="kat">${esc(p.kategori)} · ${p.tagningar.length} tagn. ${spann ? '· ' + spann : ''}</div>
+        ${flaggor.length ? `<div class="flagga">${flaggor.join(' · ')}</div>` : ''}
+        ${p.egen_readme ? `<div class="meta"><a href="${BAS}${esc(p.namn)}/README.md">egen README</a></div>` : ''}
+      </div>
+      <div>
+        <div class="nar">${p.nar.map(n => `<p>${md(n)}</p>`).join('') || '<p class="meta">Ingen beskrivning.</p>'}</div>
+        <div class="tag">${p.tagningar.map(t => `<button data-src="${BAS}${esc(p.namn)}/${esc(t.fil)}" title="${esc(p.namn)}/${esc(t.fil)}">▶ ${esc(tagnamn(p.namn, t.fil))}<small>${sek(t.s)}</small></button>`).join('')}</div>
+        ${p.avsnitt.length ? `<div class="avs">${p.avsnitt.map(a => `<span>${esc(a)}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('lista').addEventListener('click', e => {
+  const b = e.target.closest('.tag button');
+  if (b) return spela(b);
+  const n = e.target.closest('.namn');
+  if (n) navigator.clipboard?.writeText(n.textContent).then(() => { n.title = 'Kopierat!'; });
+});
+document.getElementById('sok').addEventListener('input', visa);
+visa();
+</script>
+</body>
+</html>

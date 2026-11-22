@@ -4,6 +4,8 @@ Alla effekter i filmerna ligger här, en mapp per ljud: `<namn>/<namn>-N.m4a`. S
 
 Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabellen här, och antalet i `LJUDFILER` i avsnittets `scener/kit.js`. Ljud som står i kit men saknar mapp blir tysta, inte fel.
 
+**Hitta och återanvänd:** [ljudkartan](../../../verktyg/ljudkarta.html) listar varje mapp med uppspelning, längd, "används när" och vilka avsnitt som använder ljudet, och visar mappar som saknar rad här (bygg om med `python3 verktyg/ljudkarta.py`). [Djurens känsloljud](kanslor.md) är tabellen djur × känsla (hej, hej då, hmm, fniss, oj, mums, glad, ledsen) med kompisljud som alla djur kan dela och luckorna.
+
 ## Kritan och ramen
 
 | Ljud | Tagningar | Längd | Används när |
