@@ -485,7 +485,7 @@ let sist = t;
 const UT = [sist + 0.6, sist + 1.4], DURATION = UT[1] + 0.4;   // A-klistermärket står kvar en stund, sedan tonar allt ut
 // Musiken i tre delar (Sanna 2026-11-18 kväll: den korta slingan hördes gå om): Gissa teckningens bädd medan kritan ritar,
 // Städa-radions sömlösa slinga (64 s) under leken och den funkiga tagningen (disco-funkig.m4a) i discot och till slutet.
-LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
+LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
   { t: NULEKER - 0.2, fil: 'assets/ljud/musik/stada-radion-slinga.m4a', vol: 0.42, loop: true, langd: MUSIK_DISCO - NULEKER - 0.6, fade: 1.2, fadeIn: 1.0 },
   { t: MUSIK_DISCO, fil: 'assets/ljud/musik/disco-funkig.m4a', vol: 0.75, langd: Math.min(20.7, DURATION - MUSIK_DISCO), fade: 1.5 });
 const STRECK = [];   // alla streck i tidsordning, för kritan

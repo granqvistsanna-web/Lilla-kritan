@@ -1,4 +1,4 @@
-p-abc  [excited] Kritans ABC!
+p-abc  [warm] Kritans ABC!
 p-kritan-ritar  [warm] Kritan ritar.
 p-det-ar-b  [excited] Det är ju B!
 p-bokstaven-b  [warm] Bokstaven B.

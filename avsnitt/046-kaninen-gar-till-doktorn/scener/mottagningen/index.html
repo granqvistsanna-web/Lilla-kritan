@@ -504,8 +504,8 @@ function ljud() {
   // mottagningens rumsljud (ElevenLabs 2026-11-20, −33 LUFS, lågpass 1,8 kHz) från rad 1 till kritirisens slut, som i receptet
   const r1 = RR['1'], r39 = RR['39'];
   // rumsljudet är borttaget; i stället kanalens instrumentala slinga lågt under hela filmen (Sanna 2026-11-20: "use music we got loop",
-  // gissa-bad.m4a som i shortsen, ABC och julkalendern; nivå som julbädden i 045)
-  ut.push({ t: 0.2, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.075, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
+  // abc-bad-lang.m4a som i shortsen, ABC och julkalendern; nivå som julbädden i 045)
+  ut.push({ t: 0.2, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.075, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
   return ut.filter(c => c.t < DURATION);
 }
 

@@ -1,6 +1,6 @@
 # Julkalendern 2026 – YouTube-texter
 
-Kanal: **lilla kritan**. 21 luckor schemaläggs nu (1–19, 21, 24). Lucka 20, 22 och 23 väntar (20 arkiverad och omskriven, 22 och 23 har öppna anteckningar).
+Kanal: **lilla kritan**. **2026-11-20: alla 12 schemalagda luckor (1, 2, 10, 11, 12, 14, 15, 16, 17, 18, 19, 21) raderades permanent i Studio på Sannas begäran.** Inget är schemalagt nu; luckorna laddas upp på nytt när de är klara. Tidigare plan: 21 luckor (1–19, 21, 24). Lucka 20, 22 och 23 väntar (20 arkiverad och omskriven, 22 och 23 har öppna anteckningar).
 
 Samma för alla:
 
@@ -22,7 +22,7 @@ Lilla Kritans julkalender: en ny lucka varje morgon från 1 december till julaft
 ## Lucka 1 – 1 dec 05:00
 
 Fil: `01-stjarna/01-stjarna.mp4` (2:10)
-YouTube: https://youtu.be/YQxss5M6qVw (schemalagd 1 dec 05:00, GAMMAL render före feedbackrundan 15 nov: radera och ladda upp den nya när den är godkänd)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen YQxss5M6qVw raderades permanent 2026-11-20 på Sannas begäran)
 
 ```
 Lucka 1 ⭐ Stjärnan och molnet | Lilla Kritans julkalender
@@ -41,7 +41,7 @@ Gissa vad kritan ritar, och räkna strålarna på julstjärnan.
 ## Lucka 2 – 2 dec 05:00
 
 Fil: `02-lammet-tittut/02-lammet-tittut.mp4` (2:00)
-YouTube: https://youtu.be/1MOwBd6RWZI (schemalagd 2 dec 05:00, GAMMAL render före feedbackrundan 15 nov: radera och ladda upp den nya när den är godkänd)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen 1MOwBd6RWZI raderades permanent 2026-11-20 på Sannas begäran)
 
 ```
 Lucka 2 🐑 Tittut med lammet i snön | Lilla Kritans julkalender
@@ -208,7 +208,7 @@ Ljud: Cotton Thud by rainial.co (freesound.org), CC BY 4.0
 #julkalender #barnsång #lillakritan
 ```
 
-YouTube: https://youtu.be/tnmzjtLnjYE (schemalagd 10 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen tnmzjtLnjYE raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 11 – 11 dec 05:00
 
@@ -228,7 +228,7 @@ Hela sången finns också här: https://youtu.be/EFhrcqzz7-Q
 #julkalender #färgsång #lillakritan
 ```
 
-YouTube: https://youtu.be/9spN1GWT6HU (schemalagd 11 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen 9spN1GWT6HU raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 12 – 12 dec 05:00
 
@@ -250,7 +250,7 @@ Ljud: Cotton Thud by rainial.co (freesound.org), CC BY 4.0
 #julkalender #bilderbok #lillakritan
 ```
 
-YouTube: https://youtu.be/joqYIsE3Jtg (schemalagd 12 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen joqYIsE3Jtg raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 14 – 14 dec 05:00
 
@@ -270,7 +270,7 @@ Hela sången finns också här: https://youtu.be/b0l9UMURhqU
 #julkalender #färgsång #lillakritan
 ```
 
-YouTube: https://youtu.be/JHwTzQkVyY4 (schemalagd 14 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen JHwTzQkVyY4 raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 15 – 15 dec 05:00
 
@@ -292,7 +292,7 @@ Hela avsnittet finns också här: https://youtu.be/dWbjucD0HxE
 #julkalender #bilderbok #lillakritan
 ```
 
-YouTube: https://youtu.be/WEw2sluGZZA (schemalagd 15 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen WEw2sluGZZA raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 16 – 16 dec 05:00
 
@@ -314,7 +314,7 @@ Hela avsnittet finns också här: https://youtu.be/oNqsUKwfdJM
 #julkalender #bilderbok #lillakritan
 ```
 
-YouTube: https://youtu.be/7Trh7EsXv6c (schemalagd 16 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen 7Trh7EsXv6c raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 17 – 17 dec 05:00
 
@@ -334,7 +334,7 @@ Hela tittut-leken finns också här: https://youtu.be/9Xubu_kM2A8
 #julkalender #tittut #lillakritan
 ```
 
-YouTube: https://youtu.be/QpikbCSJwio (schemalagd 17 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen QpikbCSJwio raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 18 – 18 dec 05:00
 
@@ -356,7 +356,7 @@ Ljudeffekter: slide_whistle_down_slow_01, slide_whistle_up_01 och slide_whistle_
 #julkalender #färgsång #lillakritan
 ```
 
-YouTube: https://youtu.be/MzDjxTlkhQE (schemalagd 18 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen MzDjxTlkhQE raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 19 – 19 dec 05:00
 
@@ -376,7 +376,7 @@ Hela tittut-leken finns också här: https://youtu.be/Sor8z2ECQSk
 #julkalender #tittut #lillakritan
 ```
 
-YouTube: https://youtu.be/ACC-OgnRR1U (schemalagd 19 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen ACC-OgnRR1U raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 21 – 21 dec 05:00 (vintersolståndet)
 
@@ -396,7 +396,7 @@ Hela sången finns också här: https://youtu.be/lYuuZQYO4WY
 #julkalender #barnvisa #lillakritan
 ```
 
-YouTube: https://youtu.be/ZJTkaO8HRxo (schemalagd 21 dec 05:00)
+YouTube: **inte uppladdad** (den schemalagda uppladdningen ZJTkaO8HRxo raderades permanent 2026-11-20 på Sannas begäran)
 
 ## Lucka 24 – 24 dec 05:00 (julafton)
 

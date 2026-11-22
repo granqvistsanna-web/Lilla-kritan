@@ -489,11 +489,11 @@ let sist = t;
 const UT = [sist, sist + 0.9], DURATION = UT[1] + 0.4;   // B-märket står kvar en stund, sedan tonar allt ut
 // Musiken i tre delar (Sanna 2026-11-18 kväll: den korta slingan hördes gå om): Gissa teckningens bädd medan kritan ritar,
 // Städa-radions sömlösa slinga (64 s) under leken och den funkiga tagningen (disco-funkig.m4a) i discot och till slutet.
-LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
+LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
   { t: NULEKER - 0.2, fil: 'assets/ljud/musik/stada-radion-slinga.m4a', vol: 0.42, loop: true, langd: MUSIK_DISCO - NULEKER - 0.6, fade: 1.2, fadeIn: 1.0 },
   { t: MUSIK_DISCO, fil: 'assets/ljud/musik/disco-funkig.m4a', vol: 0.75, langd: Math.min(20.7, DURATION - MUSIK_DISCO), fade: 1.5 });
 // discotagningen är 20,8 s och tar slut medan klossarna rullar ut: introts bädd tar över mjukt till slutet (outrot, 2026-11-19)
-if (DURATION > MUSIK_DISCO + 20.7) LJUD.push({ t: MUSIK_DISCO + 19.2, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.4, loop: true, langd: DURATION - MUSIK_DISCO - 19.2, fade: 1.2, fadeIn: 1.5 });
+if (DURATION > MUSIK_DISCO + 20.7) LJUD.push({ t: MUSIK_DISCO + 19.2, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.4, loop: true, langd: DURATION - MUSIK_DISCO - 19.2, fade: 1.2, fadeIn: 1.5 });
 const STRECK = [];   // alla streck i tidsordning, för kritan
 for (const s of Object.values(SAKER)) for (const x of s.streck) STRECK.push([s, x[0], ...s.T[x[0]], x[2]]);
 STRECK.sort((a, b) => a[2] - b[2]);

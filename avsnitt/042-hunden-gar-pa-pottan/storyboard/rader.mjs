@@ -45,8 +45,9 @@ export const RADER = [
     bild: 'Hunden flämtar med tungan ute, kroppen andas. Nickar efter frågan', ljudtext: '`flamt-valp`, vov ja', ansikte: 'glad, tungan ute' },
 
   // --- Vattnet: tre glas ---
-  { id: '6', d: 1.9 + L(9) + G, plats: 'Halvbild', malin: [[9, 1.9]], ljud: klunk2(1.9 + L(9) * 0.45, 9),   // grind 6: 1,3 s mer före repliken, hunden hinner plocka upp glaset
-    bild: 'Glaset med sugrör står på golvet. Hunden tar det (tassen på glasets kant) och dricker genom sugröret med glaset framför magen, vattnet sjunker i två steg', ljudtext: '`klunk` × 2', ansikte: 'glad' },
+  // Sanna 2026-11-22 (J17 0:57): "kritan ritar first glass of water too" – 3,2 s först: kritan ritar glaset, vattnet stiger, hunden blir glad
+  { id: '6', d: 3.2 + 1.9 + L(9) + G, plats: 'Halvbild', malin: [[9, 5.1]], ljud: [...klunk2(5.1 + L(9) * 0.45, 9), [RITA(2), 0.4], [GLITTER, 2.3]],   // klunkarna först: scenen läser dem som ljud 0 och 1
+    bild: 'Kritan ritar glaset på golvet och vattnet stiger medan den ritar. Glaset med sugrör står på golvet. Hunden tar det (tassen på glasets kant) och dricker genom sugröret med glaset framför magen, vattnet sjunker i två steg', ljudtext: '`klunk` × 2', ansikte: 'glad' },
   { id: '7', d: 0.5 + L(10) + G + 1.0, plats: 'Halvbild', malin: [[10, 0.5]], ljud: [[JA(3), 0.7 + L(10)]],
     bild: 'Hunden tittar ner i det tomma glaset och sedan på oss. Nickar', ljudtext: 'vov ja', ansikte: 'nyfiken → glad' },
   { id: '8a', d: 0.3 + L(11) + 3.0, plats: 'Närbild: glaset', malin: [[11, 0.3]], ljud: [[RITA(2), 0.4]],
@@ -99,13 +100,13 @@ export const RADER = [
   { id: '25', d: 0.2 + L(32) + G + 0.6, plats: 'Halvbild', malin: [[32, 0.2]], ljud: [[JA(4), 0.4 + L(32)]],
     bild: 'Hunden nickar och tar rullen i tassen', ljudtext: 'vov ja', ansikte: 'glad' },
   { id: '26', d: 0.9 + L(33) + G + 0.6, plats: 'Helbild', malin: [[33, 0.9]], ljud: [[RULL, 0.4], [PIP(1), 1.1 + L(33)]],
-    bild: 'Rullen glider ur tassen och rullar lugnt över golvet till bakom handfatet, en lång vit pappersslinga efter sig. Malin efter', ljudtext: '`rull`, pip', ansikte: 'förvånad' },
+    bild: 'Rullen trillar ur tassen, studsar och rullar lugnt fram till golvet framför handfatet, en lång vit pappersslinga efter sig. Malin efter', ljudtext: '`rull`, pip', ansikte: 'förvånad' },
   { id: '27', d: 0.4 + L(34) + G + 0.6, plats: 'Halvbild', malin: [[34, 0.4]], ljud: [[PIP(2), 0.6 + L(34)]],
     bild: 'Hunden tittar åt vänster och åt höger', ljudtext: 'frågande pip', ansikte: 'nyfiken' },
   { id: '28', d: 0.3 + L(35) + 5.0, plats: 'Helbild', malin: [[35, 0.3]],
     bild: 'Slingan går över golvet och försvinner bakom handfatet. Efter 3 s skimrar slingans slut svagt', ljudtext: 'tyst, hunden blinkar', ansikte: 'nyfiken' },
-  { id: '29', d: 0.4 + L(36) + G + 0.8, plats: 'Närbild: bakom handfatet', malin: [[36, 0.4]], ljud: [[TINDRA, 0.2], [JA(1), 0.6 + L(36)]],
-    bild: 'Slingans slut och en bit av rullen skimrar tydligt bakom handfatets skåp', ljudtext: '`tindra`, vov ja', ansikte: 'jätteglad' },
+  { id: '29', d: 0.4 + L(36) + G + 0.8, plats: 'Närbild: framför handfatet', malin: [[36, 0.4]], ljud: [[TINDRA, 0.2], [JA(1), 0.6 + L(36)]],
+    bild: 'Rullen och slingans slut skimrar på golvet framför handfatet (Sanna 2026-11-22, J17 2:47: inte bakom; repliken kortad till "Ja, där!")', ljudtext: '`tindra`, vov ja', ansikte: 'jätteglad' },
   { id: '30', d: 0.6 + L(37) + G, plats: 'Närbild: hunden på pottan', malin: [[37, 0.6]], ljud: [[RITSCH, 0.3]],
     bild: 'Hunden river av en lapp från slingan vid pottan. Malin efter ritschet', ljudtext: '`ritsch`', ansikte: 'glad' },
   { id: '31', d: 0.6 + L(38) + G + 0.6, plats: 'Halvbild', malin: [[38, 0.6]], ljud: [[JA(2), 0.8 + L(38)]],

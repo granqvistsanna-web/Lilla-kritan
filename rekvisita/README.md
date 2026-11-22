@@ -214,3 +214,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Toarullen | [toarulle.md](toarulle.md) | 042 |
 | Stetoskopet | [stetoskop.md](stetoskop.md) | 046 |
 | Öronlampan | [oronlampa.md](oronlampa.md) | 046 |
+| Julklappspapperet | [julklappspapper.md](julklappspapper.md) | 048 |

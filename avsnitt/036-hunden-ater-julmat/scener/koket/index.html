@@ -17,7 +17,7 @@
   <defs>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
     <filter id="korn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
@@ -121,7 +121,7 @@ function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   KAM = [z, tx, ty];
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(3));
 }
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
@@ -588,7 +588,7 @@ function rita(t) {
   if (st.plats === 'papper') ritaPapper(st, t); else ritaKok(st, t);
   lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/>');
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
-  $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
+  $('brus').setAttribute('seed', (Math.floor(t * 6 + 1e-6) % 50) + 1);
   window.kant?.uppdatera();
 }
 function ritaPapper(st, t) {   // som 021: kritan kommer in i helbild (2,5 s), ritar delarna (7 s), väntar bredvid, sedan fylls bilden i inifrån

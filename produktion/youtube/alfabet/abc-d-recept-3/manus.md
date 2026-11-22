@@ -79,6 +79,12 @@ Leken i del 5 är knackningen (receptets handling *Knack knack*), och dörren sv
 
 Sanna godkände (feedback på E 3:54: *"det viktigaste att lära sig är hur e låter … kanske får E ögon och mun"*) att bokstavsmärket säger sitt eget ljud. I introt, efter *"Bokstaven D."*, får klossen ögon och mun och säger *"d, d, D!"* en gång. I slutet, efter *"Hej då!"*, blir märket stort och säger det två gånger med en paus för barnet emellan. Ljuden är klippta ur Malins tagning utan nya krediter: `d-ljud-1` (andra "d" ur `p-d-d-dino`), `d-ljud-2` (andra "d" ur `p-d-d-dorr`), `d-ljud-3` (första "D" ur `p-d-d-dino`), med 15/40 ms toning. Ansiktet (`ANS` i `index.html`): ögonen på D:ets övre kant (Sanna: *"eyes on letter"*), (−62, −252) och (30, −250), munnen strax under i hålet (−10, −88), i bokstavens mått. Patchen är samma som i E, A och B.
 
+## Feedback 22/11 (ABC-d3, render 21/11 20:34)
+
+- **1:22 och 2:33 "arm flying in air":** dinons armar uppe (vinkningen och *hurra*) stod en bit ut från kroppen, med ett glapp. Nu dras armens rot in bakom kroppen (`klapp` 45 px, `s.armIn`, bara för dinon), och vinkarmen går snett ut och upp, 60–80° (+ uttryckets 20), i stället för 112–136°. Knackarmen får samma indrag till 60 %.
+- **1:22 "better pig image":** grisen är nu den runda kritgrisen (`gris-rosa/v1`, samma bild som Gissa teckningens första gris) med rörelsestrecken och ögat bortplockade: `assets/rekvisita/gris-rosa/cut/gris-rosa-rund.png`, konturen `gris-rosa-rund-kontur.json` (kontur-bild.py), trynet (880, 512) och ögat (770, 439) mätta i bilden. Benen sitter fast, så grisen vaggar när den går ut. Den gamla fyrkantiga grisen är orörd.
+- **1:56 "bigger composition, too much white space":** kameran går närmare när dörren fylls i (1,3, mitt 830/650: dinon och dörren) och följer med till dörren när dinon går dit (1,42, mitt 1210/650: dinon, dörren och dockans plats), till närbilden efter dockan.
+
 ## Öppet
 
 - *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.

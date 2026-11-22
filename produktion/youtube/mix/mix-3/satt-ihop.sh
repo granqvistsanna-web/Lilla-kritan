@@ -83,7 +83,7 @@ i=0; for d in "${DELAR[@]}"; do
       # kapa = sekunder svart som tas bort i slutet, med sista 1,2 s uttonade (016: stjärnan på svart; Sanna 2026-11-11 "tona ut")
       # -t måste vara UTdataflagga (QA 2026-11-13): som indataflagga ignoreras den för vissa filer och delen får full längd.
       L0=$(awk "BEGIN{print $(langd $fil)-$hopp-${kapa:-0}}"); kalla=(-ss $hopp -i $fil); VF="scale=1920:1080"; T_UT=${kapa:+-t $L0}
-      ffmpeg -loglevel error -y -i $fil -ss $hopp -af "$(niva $fil $hopp -15)${kapa:+,afade=t=out:st=$(awk "BEGIN{print $L0-1.2}"):d=1.2}" $AU $T/$n.wav ;;
+      ffmpeg -loglevel error -y -ss $hopp -i $fil -af "$(niva $fil $hopp -15)${kapa:+,afade=t=out:st=$(awk "BEGIN{print $L0-1.2}"):d=1.2}" $AU $T/$n.wav ;;
     bok)     # bilderböckerna: ljudet orört; 020 börjar efter sitt långa intro, 021 och 023 har bara det korta kortet (3,3 s)
       kalla=(-ss ${hopp:-0} -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
       ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} $AU $T/$n.wav ;;

@@ -18,6 +18,8 @@
 >
 > **Uttryck, poser och testfilm:** [`premium/uttryck.html`](../assets/karaktarer/doktorn-a/premium/uttryck.html), samma API som Mor (`ansikte`, `pose`, `rorelse`, `?ark=poser`, `?film=1`). Riktningsposerna vänder bara huvudet, armarna stannar på var sin sida. Klappen möts lågt på rocken. **Sitta, sova och ligga ser konstiga ut med de långa benen**, men doktorn står alltid still (receptet).
 
+> **Doktorns saker i handen** (046, Sanna 2026-11-20): stetoskopet och öronlampan ritas i kod av `assets/rekvisita/doktorssaker/doktorssaker.js` och sitter i **vänster hand** (kaninen sitter på britsen till vänster om doktorn). Poserna `stetoskop` och `lampa` sträcker ut handen; parametrarna `steto`, `lampa` (över 0,5 = syns) och `ljus` (0–1, tänder lampan) blandas som andra poser. Med stetoskopet täcks bröststycket i bilden (580, 508) med rockens krita och en grå slang går därifrån till handen, så att det är samma stetoskop. Kontroll: `?pose=stetoskop`, `?pose=lampa`.
+
 ## Utseende
 - Form: människa, ca 4,5 huvuden hög, runt huvud på kort hals.
 - Färger: vit rock (ljust varmgrå krita med grå kant), turkos tröja och byxor `#3BB4A8`, bruna skor, ljust persikofärgad hy.

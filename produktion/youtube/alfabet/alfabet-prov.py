@@ -233,7 +233,7 @@ def main():
         if f % 150 == 0: print(f'{f / FPS:5.1f} / {LANGD:.1f} s', flush=True)
     p.stdin.close(); p.wait()
     # ljudet
-    ins, filt = ['-i', vid, '-stream_loop', '-1', '-i', os.path.join(REPO, 'assets/ljud/musik/gissa-bad.m4a')], []
+    ins, filt = ['-i', vid, '-stream_loop', '-1', '-i', os.path.join(REPO, 'assets/ljud/musik/abc-bad-lang.m4a')], []
     for i, (t0, fil, vol) in enumerate(LJUD):
         ins += ['-i', fil]; filt.append(f'[{i + 2}:a]volume={vol},adelay={int(t0 * 1000)}:all=1[a{i}]')
     filt.append(f'[1:a]volume=0.10,atrim=0:{LANGD:.2f},afade=t=out:st={LANGD - 1.5:.2f}:d=1.5[m]')

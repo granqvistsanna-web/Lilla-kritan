@@ -33,7 +33,7 @@
 33-rullen-rullar 1.87
 34-var-ar-rullen 1.13
 35-kan-du-hjalpa 2.74
-36-ja-dar 2.12
+36-ja-dar 1.05
 37-ett-papper 0.86
 38-torka-torka 1.81
 39-plopp 1.80

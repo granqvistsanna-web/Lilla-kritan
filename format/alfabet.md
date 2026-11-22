@@ -24,7 +24,7 @@ Så lär sig små barn läsa (ljudmetoden):
 | Bild | 16:9 | 9:16 | 16:9 | 16:9 |
 | Platser | 1: papperet | 1 | 1 | max 2 |
 | Figurer | en i taget, bara figurer och saker som redan finns | 1 | inga i rörelse | max 3 |
-| Musik | befintlig slinga lågt (`gissa-bad.m4a`) | samma | samma | en sång |
+| Musik | befintlig slinga lågt (`abc-bad-lang.m4a`) | samma | samma | en sång |
 | Röst | Malin (BERÄTTAREN) | samma | samma | sång och berättare |
 
 Det bryter mot `regler.md` på samma sätt som Gissa teckningen och Pusslet: ingen berättelse och ingen sång. **Ingen ny musik** (minnet *Ingen ny musik*).

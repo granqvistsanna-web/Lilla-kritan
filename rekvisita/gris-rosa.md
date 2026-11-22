@@ -6,6 +6,8 @@ Riggen (`gris-rosa-rigg.json`): kroppen (`cut/gris-rosa.png`) och fyra ben som e
 
 Används i: Gissa teckningen – gris (Shorts).
 
+**Rund version (2026-11-22):** `cut/gris-rosa-rund.png` är v1-grisen (rund, knubbig) med rörelsestrecken och ögat bortplockade, ögat i kod. Benen sitter fast. Konturen för kritan: `cut/gris-rosa-rund-kontur.json`. Tryne (880, 512), öga (770, 439). Används i Kritans ABC D recept 3, där Sanna ville ha en finare gris än den fyrkantiga.
+
 ```prompt
 Image 1 is the exact SHAPE and LAYOUT: a child's drawing of a pig. Keep its silhouette, proportions and every part in exactly the same place and size in the frame: the wide rounded-rectangle body, the round head on the right, the two pointed ears, the round snout at the far right, the small curly tail at the left, and the four short straight rectangular legs hanging straight down below the body with clear gaps between them. Image 2 is the STYLE only: redraw Image 1 in that soft wax-crayon look: bright pink mottled grainy crayon fill, NO black outline anywhere, only a thin uneven white rim around the edges. The four legs are solid pink crayon, straight and vertical, each one separate, not touching each other. The snout darker pink with two small dark nostrils. NO EYE: leave the face without an eye. No mouth. No motion lines, no scribbles, no extra marks. Pure solid white background, no shadow, no ground, no text.
 ```

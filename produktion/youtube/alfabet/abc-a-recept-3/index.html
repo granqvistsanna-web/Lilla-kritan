@@ -469,7 +469,7 @@ let u = sag(NULEKER, 'p-nuleker');
   s.pa = [t0 + 0.3, t0 + 1.1]; fx(t0 + 1.0, 'klistra', 0.8);
   if (s !== apa) s.kf.push([t0 + 0.29, ...lageKf(s, t0)], [t0 + 0.3, RC[i][0], RC[i][1] - 60, 0.03]); });   // apelsinen och ananasen är uppätna: de växer fram på sina plattor
 u += 0.2 + 2 * 0.8 + 1.5;
-kamTill(u - 1.0, 960, 700, 1.5, 1.0);   // nära klossarna medan de blandas
+kamTill(u - 1.0, 960, 655, 1.5, 1.0);   // nära klossarna medan de blandas (lite högre: klossen som hoppar över syns hela, som B)
 apa.hopp.push(u - 0.4); u = sag(u - 0.3, 'n-titta-noga') - 0.4;   // följ elefantens kloss
 { const at = { apa: 0, apelsin: 1, ananas: 2 }, vem = p => [apa, apelsin, ananas].find(s => at[s.namn] === p);
   // klossarna vänder ryggen till (bilden borta) innan de blandas och vänder sig tillbaka efteråt (Sanna 2026-11-22, 2:36)

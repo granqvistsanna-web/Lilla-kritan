@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 037 Kaninen städar
 
-**Inte uppladdad än.** Väntar på Sannas godkännande av filmen. Kanal: **lilla kritan**. Fil: `film/avsnitt-037.mp4` (5:16). Miniatyr: `thumbnail/miniatyr-strimma.png`. Ställ in **Ja, det är gjort för barn**.
+**Offentlig sedan 2026-11-20:** https://youtu.be/kM8pCaPlZD0. Kanal: **lilla kritan**. Fil: `film/avsnitt-037.mp4` (5:16). Miniatyr: `thumbnail/miniatyr-strimma.png`. Ställ in **Ja, det är gjort för barn**.
 
 En loopvideo till Sannas egen städsång: kaninen går hela sången med en korg och plockar upp en leksak var tredje sekund, och en krittimer uppe i hörnet töms på fem minuter. Avsteg från `format/regler.md`: längre än 3–4 min och utan titelkort, avsiktligt.
 

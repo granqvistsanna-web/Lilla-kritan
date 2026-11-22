@@ -1,0 +1,37 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-ett-paket  [excited] Ett paket!
+04-hej-hunden  [happy] Hej, hunden! Hej, hej!
+05-snart-jul  [excited] Snart är det jul!
+06-vad-har-du-dar  [curious] Oj! Vad har du där?
+07-boll-nalle-bil  [delighted] En boll … en nalle … och en bil!
+08-ar-det-julklappar  [warmly] Är det julklappar?
+09-inget-papper  [chuckles] Men … inget papper. Det syns ju vad det är!
+10-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+11-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+12-julklappspapper  [excited] Julklappspapper! Och en rosett! Varsågod, hunden.
+13-saga-tack  [warmly] Ska vi säga tack?
+14-tack  [happy] Tack!
+15-var-ar-hunden  [laughs] Oj! Var är hunden?
+16-tittut  [playfully] Tittut! Där är du!
+17-sla-in-bollen  [cheerfully] Nu slår vi in bollen!
+18-upp-pa-papperet  [cheerfully] Upp på papperet.
+19-vik-1  [happy] Vik … vik … tejp! Klart!
+20-runt-paket  [delighted] Ett runt paket!
+21-nu-nallen  [cheerfully] Nu nallen!
+22-vik-2  [happy] Vik … vik … tejp! Klart!
+23-hogt-paket  [delighted] Ett högt paket!
+24-och-bilen  [playfully] Och bilen! Brum, brum …
+25-vik-3  [happy] Vik … vik … tejp! Klart!
+26-ingen-rosett  [surprised] Oj! Ingen rosett!
+27-var-ar-rosetten  [curious] Var är rosetten? Hunden vet inte var.
+28-kan-du-hjalpa  [warmly] Kan du hjälpa hunden? Kan du se var rosetten är?
+29-pa-svansen  [excited] Ja, där! På svansen!
+30-rosetten-pa-paketet  [happy] Rosetten på paketet. Klart!
+31-rakna  [cheerfully] Ska vi räkna? Ett … två … tre!
+32-tre-julklappar  [happy] Tre julklappar! Bra, hunden!
+33-till-dig  [warmly] Och den här … är till dig!
+34-god-jul  [happy] God jul!
+35-mysigt-vid-brasan  [happy sigh] Vad mysigt vid brasan!
+36-hej-da-hunden  [happy] Hej då, hunden! God jul!
+37-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

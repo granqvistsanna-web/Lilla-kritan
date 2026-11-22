@@ -291,7 +291,7 @@ const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0, mun: [], ansikten: [
 const AV = [960, 500, 0], AS = 560,   // som B (Sanna 2026-11-21, 0:04): klossen i introt större och mitt i bild
       AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
 const RS = 240, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // Sanna 2026-11-20: "bigger blocks" (alla klossar ca 30 % större)   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
-const RC = [[610, golvY(RS)], [960, golvY(RS)], [1310, golvY(RS)]];   // 350 isär (feedback 2026-11-21 2:38: klossarna gick in i varandra)   // samma rad mitt i bild, där de blandas
+const RC = [[610, golvY(RS)], [960, golvY(RS)], [1310, golvY(RS)]];   // 350 isär (feedback 2026-11-21 2:38 och klosskrockar 2026-11-22: klossarna gick in i varandra)   // samma rad mitt i bild, där de blandas
 const MS = 300, MB = [960 - MS * 1.14 * Math.cos(RY) / 2, golvY(MS)], MURX = 960;   // muren: sidan, och nedre vänstra klossens mitt (muren mitt i bild)
 const MUR = (() => { const g = MS * 1.22, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)],   // lite glipa: klossarna är vridna åt olika håll
   o = [0, -MS * 1.0 * Math.cos(RX), MS * Math.sin(RX)], p = (a, b) => [MB[0] + a * h[0] + b * o[0], MB[1] + a * h[1] + b * o[1], a * h[2] + b * o[2]];
@@ -303,12 +303,15 @@ const kamLage = t => { const i = KAM.findIndex(k => k[0] > t); if (i === -1) ret
   const a = KAM[i - 1], b = KAM[i], k = inUt(del([a[0], b[0]], t)); return [1, 2, 3].map(j => lerp(a[j], b[j], k)); };
 const kamTill = (t0, x, y, z, sek = 1.3) => { KAM.push([t0, ...kamLage(t0)], [t0 + sek, clamp(x, 960 / z, 1920 - 960 / z), clamp(y, 540 / z, 1080 - 540 / z), z]); };
 const GN = [];   // krit-gnistor: [t, x, y, halva bredden, halva höjden]
+const LYFT = 0.2;   // andel av en flytt med båge som går åt att lyfta (och sätta ner) klossen rakt upp
 const klossLage = (kf, t) => {   // [x, y, z, sidan]
   const i = kf.findIndex(k => k[0] > t);
   if (i === -1) return kf.at(-1).slice(1, 5);
   if (i === 0) return kf[0].slice(1, 5);
   const a = kf[i - 1], b = kf[i], d = del([a[0], b[0]], t), k = b[6] === 2 ? d : b[6] ? d * d : inUt(d);   // 2 = jämn fart, annat sant = fart upp
-  const v = [1, 2, 3, 4].map(j => lerp(a[j], b[j], k)); v[1] -= (b[5] || 0) * bage(d); return v;
+  // med båge (b[5]): lyft först, flytta sedan, sätt ner sist (klosskrockar 2026-11-22), så att klossen aldrig glider snett in i en granne
+  const lyftK = b[5] ? inUt(clamp((d - LYFT) / (1 - 2 * LYFT))) : k, v = [1, 2, 3, 4].map(j => lerp(a[j], b[j], lyftK));
+  v[1] -= (b[5] || 0) * (b[5] ? Math.min(1, bage(d) / Math.sin(Math.PI * LYFT)) : 0); return v;
 };
 const flyttaK = (X, t, [x, y, z], sd, sek = 0.9, bage = 0) => { X.kk.push([t, ...klossLage(X.kk, t)], [t + sek, x, y, z, sd, bage]); return t + sek; };
 const flytta = (s, t, x, y, sk, sek = 0.9) => { s.kf.push([t, ...lageKf(s, t)], [t + sek, x, y, sk]); return t + sek; };
@@ -459,13 +462,13 @@ let u = sag(NULEKER, 'p-nuleker');
   s.kk.push([0, ...RC[i], 0, RS]); s.kpop = s.ksyns = t0; fx(t0, 'duns', 0.45);
   s.pa = [t0 + 0.3, t0 + 1.1]; fx(t0 + 1.0, 'klistra', 0.8); });
 u += 0.2 + 2 * 0.8 + 1.5;
-kamTill(u - 1.0, 960, 700, 1.5, 1.0);   // nära klossarna medan de blandas
+kamTill(u - 1.0, 960, 655, 1.5, 1.0);   // nära klossarna medan de blandas (lite högre: klossen som hoppar över syns hela, som B)
 elefant.hopp.push(u - 0.4); u = sag(u - 0.3, 'n-titta-noga') - 0.4;   // följ elefantens kloss
 { const at = { elefant: 0, ekorre: 1, ekollon: 2 }, vem = p => [elefant, ekorre, ekollon].find(s => at[s.namn] === p);
   let ts = u;
   for (const [p, q] of [[0, 1], [1, 2], [1, 2]]) {
     const over = vem(p), under = vem(q);
-    flyttaK(over, ts, [...RC[q], 0], RS, 0.7, 290); flyttaK(under, ts, [...RC[p], 0], RS, 0.7, 0);   // bågen högre än klossen
+    flyttaK(over, ts, [...RC[q], 0], RS, 0.7, 300); flyttaK(under, ts, [...RC[p], 0], RS, 0.7, 0);   // bågen högre än klossen
     [at[over.namn], at[under.namn]] = [q, p];
     fx(ts, 'swoosh', 0.45); fx(ts + 0.68, 'duns', 0.3); A.hopp.push(ts + 0.7); ts += 0.85;
   }
@@ -577,9 +580,9 @@ const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_
 { const PS = 230, g = PS * 1.3, h = [g * Math.cos(RY), -g * Math.sin(RY) * Math.sin(RX), -g * Math.sin(RY) * Math.cos(RX)], o = [0, -PS * Math.cos(RX), PS * Math.sin(RX)];
   const torn = (x, k) => [x + k * o[0], golvY(PS) + k * o[1], k * o[2]];   // k klossar upp
   const B = [960 - h[0], golvY(PS), 0], pp = (a, b) => [0, 1, 2].map(j => B[j] + a * h[j] + b * o[j]);   // pyramiden: a åt höger, b upp
-  const lb = ekorre, c1 = ekollon, LX = 330, RX0 = 1320;   // elefantens tomma kloss vid 1320 och ekollonet längst ut, så att ingen går igenom en annan (feedback 2026-11-21 3:24)
-  const START = new Map([[lb, LX], [elefant, RX0], [c1, 1660]]);
-  RADEN.forEach(s => flyttaK(s, slag(0) - 0.3, torn(START.get(s), 0), PS, 0.9)); fx(slag(0) - 0.3, 'swoosh', 0.5);
+  const lb = ekorre, c1 = ekollon, LX = 330, RX0 = 1400;   // elefantens tomma kloss vid 1320 och ekollonet längst ut, så att ingen går igenom en annan (feedback 2026-11-21 3:24)
+  const START = new Map([[lb, LX], [elefant, RX0], [c1, 1700]]);
+  RADEN.forEach(s => flyttaK(s, slag(0) - 0.3, torn(START.get(s), 0), PS, 0.9, s === elefant && Math.abs(START.get(s) - 960) > 400 ? 330 : 0)); fx(slag(0) - 0.3, 'swoosh', 0.5);   // kompisens kloss hoppar över den andra (klosskrockar 2026-11-22)
   const UR = [slag(1) + 0.1, slag(2) + 0.1], IN = [slag(19) - 0.2, slag(20) - 0.2];   // hoppet ut och in, ca 0,6 s
   elefant.av = [...UR, ...IN]; elefant.kf.push([UR[0] - 0.01, ...KOMPIS], [UR[0], 960, 694, 1.15]);   // står kvar på sin plats tills leken (annars glider den dit hela filmen)   // stor mitt på golvet framför klossarna, fötterna ca 985
   fx(UR[0] - 0.1, 'nalle-hopp', 0.7, { langd: 1.6, fade: 0.4 }); fxf(UR[1] + 0.2, BRUM(2), 0.9, { langd: 1.8, fade: 0.3 });
@@ -588,20 +591,22 @@ const slag = k => MUSIK_DISCO + 0.1 + k * SLAG, DISCO = [MUSIK_DISCO, slag(SLAG_
   // tornen: en i taget, vartannat slag; basen hoppar på stället, de andra hoppar upp på den. Ett varv i luften, sitt eget ljud.
   [[lb, torn(LX, 0)], [c1, torn(RX0, 1)], [lb, torn(LX, 0)], [lb, torn(LX, 0)], [c1, torn(RX0, 1)]].forEach(([s, mal], j) => {
     const t0 = slag(3 + 2 * j) - 0.45;
-    flyttaK(s, t0, mal, PS, 0.9, 130); s.spinn.push([t0, t0 + 0.9]); s.landa.push(t0 + 0.9);
+    flyttaK(s, t0, mal, PS, 0.9, s === c1 ? 240 : 130);   // upp på en kloss: högt nog att gå fri när den snurrar
+    s.spinn.push([t0, t0 + 0.9]); s.landa.push(t0 + 0.9);
     latFx(s, t0 + 0.15); fx(t0 + 0.9, 'duns', 0.35); });
   kamTill(slag(13) - 0.6, 960, 690, 1.5, 1.1); kamTill(slag(17) - 0.5, 960, 540, 1, 1.1);   // närbild på den dansande björnen
   GN.push([slag(14), 960, 640, 300, 250], [slag(16), 960, 640, 300, 250]);   // stjärnregn runt den som dansar
   for (const k of [17, 18]) for (const s of RADEN) if (s !== elefant) s.hopp.push(slag(k) - 0.2);   // alla klossar hoppar tillsammans
-  fx(IN[0] - 0.1, 'nalle-hopp', 0.6, { langd: 1.4, fade: 0.4 }); fx(IN[1], 'klistra', 0.8); elefant.hopp.push(IN[1]);
+  fx(IN[0] - 0.1, 'nalle-hopp', 0.6, { langd: 1.4, fade: 0.4 }); fx(IN[1], 'klistra', 0.8); elefant.hopp.push(IN[1]); c1.hopp.push(IN[1]);   // klossen ovanpå hoppar med
+ 
   // pyramiden: ett slag per kloss, översta först ur tornen, björnens kloss (med björnen i) sist och överst
-  [[lb, pp(0.5, 0), 110], [c1, pp(1.5, 0), 110], [elefant, pp(1, 1), 300]].forEach(([s, mal, bg], j) => {
+  [[lb, pp(0.5, 0), 110], [c1, pp(1.5, 0), 220], [elefant, pp(1, 1), 300]].forEach(([s, mal, bg], j) => {
     const t0 = slag(21 + j) - 0.3;
     flyttaK(s, t0, mal, PS, 0.9, bg); s.landa.push(t0 + 0.9); fx(t0, 'swoosh', 0.3); fx(t0 + 0.88, 'duns', 0.4); });
   fx(slag(23) - 0.2, 'nalle-hopp', 0.5, { langd: 1.2, fade: 0.4 });
   { const [x, y] = pp(1, 1); GN.push([slag(23) + 0.7, x, y, 200, 150]); fx(slag(23) + 0.7, 'pling', 0.4); }
   for (const k of [25, 26, 27]) for (const s of RADEN) s.hopp.push(slag(k) - 0.2);   // hela pyramiden hoppar en gång
-  RADEN.forEach((s, i) => flyttaK(s, slag(28) - 0.2, [SX[i], golvY(SS), 0], SS, 1.0, 60)); fx(slag(28) - 0.2, 'swoosh', 0.5);
+  RADEN.forEach((s, i) => s === elefant ? flyttaK(s, slag(28) - 0.2, [SX[i], golvY(SS), 0], SS, 1.2, 160) : flyttaK(s, slag(28) - 0.15, [SX[i], golvY(SS), 0], SS, 0.6));   // den översta lyfter först, de nedre glider isär under den (klosskrockar 2026-11-22) fx(slag(28) - 0.2, 'swoosh', 0.5);
   for (const k of [4, 12, 20, 28]) GN.push([slag(k), 960, 150, 210, 110]);   // gnistor runt kulan
   for (let k = 0; k < SLAG_N; k += 4) A.hopp.push(slag(k) - 0.1);
 }
@@ -639,11 +644,11 @@ let sist = t;
 const UT = [sist, sist + 0.9], DURATION = UT[1] + 0.4;   // B-märket står kvar en stund, sedan tonar allt ut
 // Musiken i tre delar (Sanna 2026-11-18 kväll: den korta slingan hördes gå om): Gissa teckningens bädd medan kritan ritar,
 // Städa-radions sömlösa slinga (64 s) under leken och den funkiga tagningen (disco-funkig.m4a) i discot och till slutet.
-LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
+LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
   { t: NULEKER - 0.2, fil: 'assets/ljud/musik/stada-radion-slinga.m4a', vol: 0.42, loop: true, langd: MUSIK_DISCO - NULEKER - 0.6, fade: 1.2, fadeIn: 1.0 },
   { t: MUSIK_DISCO, fil: 'assets/ljud/musik/disco-funkig.m4a', vol: 0.75, langd: Math.min(20.7, DURATION - MUSIK_DISCO), fade: 1.5 });
 // discotagningen är 20,8 s och tar slut medan klossarna rullar ut: introts bädd tar över mjukt till slutet (outrot, 2026-11-19)
-if (DURATION > MUSIK_DISCO + 20.7) LJUD.push({ t: MUSIK_DISCO + 19.2, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.4, loop: true, langd: DURATION - MUSIK_DISCO - 19.2, fade: 1.2, fadeIn: 1.5 });
+if (DURATION > MUSIK_DISCO + 20.7) LJUD.push({ t: MUSIK_DISCO + 19.2, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.4, loop: true, langd: DURATION - MUSIK_DISCO - 19.2, fade: 1.2, fadeIn: 1.5 });
 const STRECK = [];   // alla streck i tidsordning, för kritan
 for (const s of Object.values(SAKER)) for (const x of s.streck) STRECK.push([s, x[0], ...s.T[x[0]], x[2]]);
 STRECK.sort((a, b) => a[2] - b[2]);

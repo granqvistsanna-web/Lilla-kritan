@@ -167,7 +167,7 @@ Det här gäller alla besök. Det mesta är gjort i `avsnitt/046-kaninen-gar-til
 
 **Ljud**
 - **Inga ljud ovanpå varandra:** Malin, djuret och doktorn turas om. Kontrollera med ffprobe-längder innan rendering.
-- **Musik:** en befintlig loop under hela filmen, svag (`gissa-bad.m4a` på 0,075), med fade in och ut. Inget rumsljud.
+- **Musik:** en befintlig loop under hela filmen, svag (`abc-bad-lang.m4a` på 0,075), med fade in och ut. Inget rumsljud.
 
 **Tempo**
 - **Lugnt:** 1,6 s extra luft efter varje replik (`G` i `rader.mjs`), och ungefär 4:30 långt.

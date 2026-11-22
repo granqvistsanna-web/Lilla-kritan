@@ -38,6 +38,10 @@ Sanna bad om nya paket med rosetten i bilden (feedback 035: *"generate 3 new pac
 | `paket-orange-hog.png` | högt, orange, blått band och rosett | slätt |
 | `paket-kraft.png` | fyrkantigt, brunt kraftpapper, rött band och rosett | slätt |
 | `paket-mint-bred.png` | brett, mintgrönt, hallonrosa band och rosett | slätt |
+| `paket-hog-rod.png` | `paket-hog` omfärgat: högt med lock, rött, guldgult band och rosett | ljusa prickar som julklappspapperet |
+| `paket-prickar.png` | `paket` med prickar: rött, guldgult band i kors, **ingen rosett** | ljusa prickar som julklappspapperet |
+
+**Röda med prickar (2026-11-21, 048):** så att alla tre paketen i 048 matchar [julklappspapperet](julklappspapper.md) (`paket-rund`, `paket-hog-rod`, `paket-prickar`). Google Flow, Nano Banana Pro, bildredigering, 0 krediter: bild 1 = `cut/paket-hog.png` resp. `cut/paket.png`, bild 2 = julklappspapperet. Två tagningar var (`original/paket-hog-rod-1…2.jpeg`, `original/paket-prickar-1…2.jpeg`, sida vid sida i `original/rod-prickar-jamforelse.jpg`), tagning 1 vald för båda. Urklippta med `verktyg/klistra.py` och kanten 32 px (`tunn_kant.py 32`), samma som de andra. `paket-prickar` har ingen rosett: [rosetten](rosett.md) seglar dit i 048, knuten på färgytans överkant i mitten, (512, 202). Kontur: `cut/paket-prickar-kontur.json` (`kontur.py --krymp 32`, bbox [93, 170, 838, 684]).
 
 Bottenmitten är ungefär (512, 905) i alla (kanten nedanför). 035 använder de tre första: det höga vid trappan (*"Något rött i snön"* är rosetten), det breda under granen och det runda bakom katten (bara den guldgula rosetten syns).
 

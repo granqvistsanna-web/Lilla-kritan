@@ -33,7 +33,7 @@
 33-rullen-rullar  [surprised] Oj! Rullen rullar iväg!
 34-var-ar-rullen  [curious] Var är rullen nu?
 35-kan-du-hjalpa  [warmly] Kan du hjälpa hunden? Kan du se var rullen är?
-36-ja-dar  [excited] Ja, där! Bakom handfatet!
+36-ja-dar  [excited] Ja, där!
 37-ett-papper  [cheerfully] Ett papper.
 38-torka-torka  [happy] Torka, torka … klart!
 39-plopp  [playfully] Och papperet i pottan. Plopp!

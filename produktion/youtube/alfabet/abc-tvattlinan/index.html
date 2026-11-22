@@ -302,7 +302,7 @@ for (const s of [A, apa, apelsin, ananas]) s.hopp.push(t + 0.1);
 apa.levande.push([t, 'vinka', t + D['a41-t1'] + 1.6]);
 t = sag(t, 'a41-t1');
 const UT = [t + 2.2, t + 3.2], DURATION = UT[1] + 0.5;   // slutbilden står kvar 2 s
-LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/gissa-bad.m4a', vol: 0.5, loop: true, langd: DURATION, fade: 1.0 });
+LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.5, loop: true, langd: DURATION, fade: 1.0 });
 const STRECK = [];   // alla streck i tidsordning, för kritan
 for (const s of Object.values(SAKER)) for (const x of s.streck) STRECK.push([s, x[0], ...s.T[x[0]], x[2]]);
 STRECK.sort((a, b) => a[2] - b[2]);

@@ -504,7 +504,7 @@ const S = {
     return RUM('23', { kam: K.HEL, pos, f: L.blanda(ANS('glad', { titt: [10, lerp(4, -16, arm)] }), ANS('ledsen', { titt: [10, -6] }), led),
       p: POS({ ...L.blandaPose('neutral', 'nar', arm), rikt: ri, armar: [0, 70 * arm], upp: 0.7 * arm - 0.4 * (kl_.landa || 0), luta: kl_.framat || 0, ben: st.ben, benY: st.benY, lyft: st.lyft || 0, oron: [10 * led, 10 * led] }),
       kulor: { ...FORE('23'), stj: g < 1 ? { tillHand: g } : { hand: true } } }); },
-  '24': tl => RUM('24', { kam: [2.0, HOG23()[0], HOG23()[1] - 215], pos: HOG23(), f: ANS('glad', { titt: [0, 0] }), p: POS({ armar: [0, 70] }), kulor: { ...FORE('24'), stj: { hand: true } } }),
+  '24': tl => RUM('24', { kam: [2.0, HOG23()[0], HOG23()[1] - 285], pos: HOG23(), f: ANS('glad', { titt: [0, 0] }), p: POS({ armar: [0, 70] }), kulor: { ...FORE('24'), stj: { hand: true } } }),
   // stjärnan flyger till toppen, sedan kliver musen ner för pallen (2,6 och 3,25 s) till STA2, där rad 25b börjar
   '25': (tl, d) => { const u = del(0.3, 1.7, tl), arm = 1 - del(1.6, 2.2, tl), LAG2 = [PALL_LAG[0] - 10, PALL_LAG[1]], kl_ = klattra(tl, [[2.6, HOG23(), LAG2, 22], [3.25, LAG2, STA2, 24]]);
     return RUM('25', { kam: K.HEL, pos: kl_.pos, f: L.blanda(ANS('forvanad', { titt: [10, -16] }), ANS('jatteglad'), del(1.6, 2.0, tl)),

@@ -33,7 +33,6 @@ DELAR=(
   "short|$LP/gunga/gunga-liggande-mix.mp4|"
   "avsnitt|$A/003-bussen-halsar-pa/film/avsnitt-003-youtube.mp4|2fb3b5|11||12.3"
   "bok|$A/022-kaninen-ater-frukost/film/avsnitt-022.mp4|f2a33a|3.3"
-  "tittut|$TT/angen/leoparden-lova/leoparden-lova.mp4|63ab54|3.9||24.2"
   "avsnitt|$A/013-rod-brandbil/film/avsnitt-013-final.mp4|de4b2b|9|egen"
   "short|$LP/gungbrada/gungbrada-liggande-mix.mp4|8e44c9"
   "short|$LP/hink/hink-liggande-mix.mp4|"
@@ -87,7 +86,8 @@ i=0; for d in "${DELAR[@]}"; do
       # kapa = sekunder svart som tas bort i slutet, med sista 1,2 s uttonade (016: stjärnan på svart; Sanna 2026-11-11 "tona ut")
       # -t måste vara UTdataflagga (QA 2026-11-13): som indataflagga ignoreras den för vissa filer och delen får full längd.
       L0=$(awk "BEGIN{print $(langd $fil)-$hopp-${kapa:-0}}"); kalla=(-ss $hopp -i $fil); VF="scale=1920:1080"; T_UT=${kapa:+-t $L0}
-      ffmpeg -loglevel error -y -i $fil -ss $hopp -af "$(niva $fil $hopp -15)${kapa:+,afade=t=out:st=$(awk "BEGIN{print $L0-1.2}"):d=1.2}" $AU $T/$n.wav ;;
+      # -ss som INdataflagga: annars räknas afade-tiden från filens början och musiken tystnar $hopp s för tidigt (003, 004, 016; Sanna 2026-11-20)
+      ffmpeg -loglevel error -y -ss $hopp -i $fil -af "$(niva $fil $hopp -15)${kapa:+,afade=t=out:st=$(awk "BEGIN{print $L0-1.2}"):d=1.2}" $AU $T/$n.wav ;;
     bok)     # bilderböckerna: ljudet orört; 020 börjar efter sitt långa intro, 021 och 023 har bara det korta kortet (3,3 s)
       kalla=(-ss ${hopp:-0} -i $fil); VF="scale=1920:1080"; L0=$(awk "BEGIN{print $(langd $fil)-${hopp:-0}}")
       ffmpeg -loglevel error -y -i $fil -ss ${hopp:-0} $AU $T/$n.wav ;;
