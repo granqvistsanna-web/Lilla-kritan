@@ -8257,9 +8257,10 @@
   "sec": 613,
   "tags": [],
   "note": "ta bort denna, delete och ha aldrigmed",
-  "fixed": false,
+  "fixed": true,
   "at": 1795349841271,
-  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)"
+  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)",
+  "fixedAt": 1795350471440
  },
  "gpcy48ljvjmwrsyaig": {
   "ep": "MIX-tittut",
@@ -8267,9 +8268,10 @@
   "sec": 150,
   "tags": [],
   "note": "ta bort denna också",
-  "fixed": false,
+  "fixed": true,
   "at": 1795349860792,
-  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)"
+  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)",
+  "fixedAt": 1795350471440
  },
  "lmy3kzq8kcmwrsyjjw": {
   "ep": "MIX-tittut",
@@ -8277,8 +8279,9 @@
   "sec": 473,
   "tags": [],
   "note": "ta bort denna",
-  "fixed": false,
+  "fixed": true,
   "at": 1795349872508,
-  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)"
+  "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)",
+  "fixedAt": 1795350471440
  }
 }
