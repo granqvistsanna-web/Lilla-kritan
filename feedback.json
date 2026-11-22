@@ -9025,8 +9025,9 @@
   "sec": 147,
   "tags": [],
   "note": "hide paket further away from katt",
-  "fixed": false,
+  "fixed": true,
   "at": 1795387913690,
-  "render": "2026-11-22 23:45 (Spadens blad tydligt gult)"
+  "render": "2026-11-22 23:45 (Spadens blad tydligt gult)",
+  "fixedAt": 1795388944336
  }
 }
