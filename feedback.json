@@ -8283,5 +8283,125 @@
   "at": 1795349872508,
   "render": "2026-11-22 13:14 (live https://youtu.be/hQjs8KJjmPY)",
   "fixedAt": 1795350471440
+ },
+ "o6epaws1ezmwrvijyh": {
+  "ep": "J23",
+  "time": "0:31",
+  "sec": 31,
+  "tags": [],
+  "note": "better walking rig animation",
+  "fixed": false,
+  "at": 1795354165385,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "x50my84yyqmwrvinw0": {
+  "ep": "J23",
+  "time": "0:32",
+  "sec": 32,
+  "tags": [],
+  "note": "bigger bunny",
+  "fixed": false,
+  "at": 1795354170480,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "8tbs9lpk8lmwrviuyb": {
+  "ep": "J23",
+  "time": "0:33",
+  "sec": 33,
+  "tags": [],
+  "note": "better wave, arm behind body",
+  "fixed": false,
+  "at": 1795354179635,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "fbnjs1fzq0mwrvj08n": {
+  "ep": "J23",
+  "time": "0:33",
+  "sec": 33,
+  "tags": [],
+  "note": "closer crop on face",
+  "fixed": false,
+  "at": 1795354186487,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "9lwlvmbspbmwrvj9mw": {
+  "ep": "J23",
+  "time": "0:41",
+  "sec": 41,
+  "tags": [],
+  "note": "nodding",
+  "fixed": false,
+  "at": 1795354198664,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "tyykf7sxlqmwrvjg63": {
+  "ep": "J23",
+  "time": "0:45",
+  "sec": 45,
+  "tags": [],
+  "note": "better anmation nodding",
+  "fixed": false,
+  "at": 1795354207131,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "sysx2kfo51mwrvjty5": {
+  "ep": "J23",
+  "time": "0:49",
+  "sec": 49,
+  "tags": [],
+  "note": "lower bjällror and add xmas xoundtrack",
+  "fixed": false,
+  "at": 1795354224989,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "lw1u1ttcoemwrvk5ix": {
+  "ep": "J23",
+  "time": "0:56",
+  "sec": 56,
+  "tags": [],
+  "note": "imrpove digging animation",
+  "fixed": false,
+  "at": 1795354239993,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "pc2m7ljly3mwrvkqah": {
+  "ep": "J23",
+  "time": "1:09",
+  "sec": 69,
+  "tags": [],
+  "note": "make it more clear that bunny wants to build a tower",
+  "fixed": false,
+  "at": 1795354266905,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "ydih3zuygzmwrvlgr5": {
+  "ep": "J23",
+  "time": "1:31",
+  "sec": 91,
+  "tags": [],
+  "note": "improve animtion of bunny holding spade and filling buckret",
+  "fixed": false,
+  "at": 1795354301201,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "7n8xodymzqmwrvluyq": {
+  "ep": "J23",
+  "time": "1:49",
+  "sec": 109,
+  "tags": [],
+  "note": "needs much polish",
+  "fixed": false,
+  "at": 1795354319618,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+ },
+ "9gueqoq7cnmwrvmphj": {
+  "ep": "J23",
+  "time": "2:32",
+  "sec": 152,
+  "tags": [],
+  "note": "draw light better so easier to guess",
+  "fixed": false,
+  "at": 1795354359175,
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
  }
 }
