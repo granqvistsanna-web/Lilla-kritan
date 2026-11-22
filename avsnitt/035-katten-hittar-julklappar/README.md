@@ -43,6 +43,15 @@ Det är julafton och det snöar. Katten trippar ut i snön, men fryser och vill 
 | 5 | Animatik | hoppades över, se nedan |
 | 6 | Förhandsvisning | 🎬 `film/avsnitt-035.mp4` (3:59, −14,2 LUFS, topp −1,6 dBFS, whisper hör alla repliker, pauserna efter frågorna 4,5–5,5 s), Sanna granskar |
 
+## Feedback J06 2026-11-22
+
+- Ny bakgrund: den blå björkdungen (`bjorkdungen/bjorkdungen-platt-bla.jpeg`) i stället för Snögården. Paket 1 ligger vid björkarna (x 310), paket 2 vid fågelholken (x 1700). Ingen stuga, så katten tittar bara bort åt vänster när den vill gå in.
+- Större katt (`GS` 0,38 → 0,46; rosettnärbilden vidare så att katten syns).
+- Fler och nya kattljud i stället för samma `mjau-gullig-2` överallt: 044:s kattunge (`mjau-trill`, `-ooo`, `-oj`, `-spinn`, `-puttar`) och Sannas nya tagningar (`mjau-aah`, `-fraga`, `-glad`, `-prat`, provlyssna i `ljud/provlyssna-mjau-sanna.m4a`), plus ett litet oj-mjau när katten fryser.
+- Snöret i kod mellan pulkan och tassen bort.
+- *"Det är julafton!"* bort: replik `32b-saga-god-jul` (bara *"Kan du säga god jul?"*).
+- Outrot: kameran glider in på kattens ansikte och kritirisen sluts runt det.
+
 ## Kimis granskning av replikerna (2026-11-13)
 
 Sanna bad om en granskning av Kimi innan Malins röst görs. Kimi hade fem anmärkningar. Ingen ändrades, för alla fem är val som serien redan gjort och Sanna godkänt i 020–024:

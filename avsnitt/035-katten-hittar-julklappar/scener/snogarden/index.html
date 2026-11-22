@@ -31,6 +31,7 @@
       <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
     </filter>
     <filter id="kritskugga" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="8" dy="13" stdDeviation="6" flood-color="#7a4a3a" flood-opacity="0.22"/></filter>
+    <filter id="blaare" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="gamma" amplitude="1" exponent="3.2" offset="0"/><feFuncG type="gamma" amplitude="1" exponent="1.75" offset="0"/><feFuncB type="gamma" amplitude="1" exponent="1.05" offset="0"/></feComponentTransfer></filter>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-sak"><circle id="cirkel-sak" r="0"/></clipPath>
     <clipPath id="ovansno"><rect x="-500" y="-2000" width="3000" height="2892"/></clipPath>
@@ -59,7 +60,7 @@
 import { RADER, ROST, L as LANGD, GRAV, PAKET, TRE } from '/avsnitt/035-katten-hittar-julklappar/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/', R_ = A + 'rekvisita/';
-const PLATTA = A + 'bakgrunder/snogarden/snogarden.jpeg';
+const PLATTA = A + 'bakgrunder/bjorkdungen/bjorkdungen-platt-bla.jpeg';   // blå björkdungen (Sanna 2026-11-22: "more bold blue bg", "maybe the one with björk"); förut snogarden/snogarden.jpeg
 const KRITA = '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
 const LUVA = R_ + 'tomteluva/cut/tomteluva.png', LUVA_O = [450, 845];
 const PULKA = R_ + 'pulka/cut/pulka.png', PULKA_O = [512, 392], PK = 0.42;
@@ -85,16 +86,17 @@ const f1 = v => v.toFixed(1);
 let KONT = {};
 
 // --- Mått i scenen (1920 × 1080). Plattan 2752 × 1536 skalas 0,703 och beskärs 7,5 px på var sida (bakgrunder/snogarden.md) ---
-const GOLV = 880, GS = 0.38;
-const C_MITT = 1000, C_TRAPPA = 790, C_GRAN = 1430, C_P3 = 1275, C_DRAG = 1525;
-const P_X = [630, 1590, 1135], P_K = [0.14, 0.12, 0.13], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
+const GOLV = 880, GS = 0.46;   // större katt (Sanna 2026-11-22, var 0,38)
+const C_MITT = 1000, C_TRAPPA = 470, C_GRAN = 1540,   // björkarna till vänster, fågelholken till höger (förut trappan 790, granen 1430)
+  C_P3 = 1275, C_DRAG = 1525;
+const P_X = [310, 1700, 1135], P_K = [0.14, 0.12, 0.13], P_Y = GOLV + 10;           // paketen: trappan, granen, bakom katten
 const PULKA_X = 900, PULKA_DRAG = 250;
 // platserna på pulkans sits (sitsen y 826, x 735–987): stora till vänster, mellan till höger, lilla ovanpå
 const SITS = [[805, 828], [905, 828], [855, 828 - 82]];
 const LUVA_SNO = [790, GOLV + 12], LUVA_K = 0.17;
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 const K_HEL = [1, 960, 540], K_HALV = x => [1.6, x, 700], K_NARA = x => [2.4, x, 700], K_SPAR = [2.2, 1400, 850],
-  K_LUVA = [2.2, 820, 790], K_VANSTER = [2.0, 700, 790], K_HOGER = [2.0, 1520, 790], K_ROSETT = [2.6, 1090, 815], K_PULKA = [1.8, 920, 760];
+  K_LUVA = [2.2, 820, 790], K_VANSTER = [2.0, 480, 790], K_HOGER = [2.0, 1620, 790], K_ROSETT = [2.0, 1080, 740], K_PULKA = [1.8, 920, 760];
 const kamMix = (a, b, k) => k < 0.5 ? a : b;
 
 let L, G, KAM = K_HEL, BLINKA, LUVA_PA = [512, 300];
@@ -331,7 +333,7 @@ const S = {
     return GARD({ kam: K_HALV(C_MITT), f: L.blanda(ANS('neutral'), ANS('trumpen', { lock: [0.45, 0.45], le: -0.2 }), k), p: POS({ luta: darr, oron: [10 * k, 10 * k], bred: -0.02 * k, armar: [-6, -6] }) }); },
   // "Ska vi leka i snön?": skakar på huvudet
   '5': (tl, d) => { const [f, p] = L.skakaHuvud(ANS('trumpen'), POS(), Math.max(0, tl - 0.3 - LANGD(8) + 0.2)); return GARD({ f, p }); },
-  // vill gå in: tittar mot stugans dörr (riktning vänster), öronen faller
+  // vill gå in: tittar bort åt vänster (björkdungen har ingen stuga) (riktning vänster), öronen faller
   '6': tl => { const b = del(0.3, 0.9, tl); return GARD({ kam: K_NARA(C_MITT), f: L.blanda(ANS('ledsen', { le: -0.3 }), ANS('ledsen', { le: -0.3, titt: [-12, 0] }), b), p: POS({ rikt: -b, oron: [14 * del(0.8, 1.5, tl), 14 * del(0.8, 1.5, tl)] }) }); },
   // kritan kommer in uppifrån höger mot snön bredvid katten
   '7a': tl => { const st = luvaStart(), u = mjuk((tl - 0.3) / 2.2);
@@ -396,13 +398,15 @@ const S = {
     return MED({ pos: [C_P3, GOLV], f: ANS('jatteglad', { titt: [kl((mal[0] - C_P3) / 14, -16, 0), 6] }), p: POS({ rikt: -0.5 }), pulka: true,
       gnista: TRE.map((t0, k) => ({ p: [SITS[k][0], SITS[k][1] - 100], age: x - t0 - 0.1, R: 60 })) }); },
   // tar repet och drar pulkan tre steg åt höger
-  '26': tl => { const g = gangX('26', tl); return MED({ pos: [g.x, GOLV], f: ANS('glad', { titt: [12, 0] }), p: g.gar ? trippa(POS(), g.vag, 1) : POS({ rikt: 0.5 * (1 - del(3.2, 3.8, tl)) }), pulka: true, rep: true }); },
-  '27': tl => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: tl > 2.0 + LANGD(32) && tl < 4.2 + LANGD(32) ? ANS('jatteglad') : ANS('glad'), p: POS({ oron: [oronVipp(tl, 2.6 + LANGD(32)), -oronVipp(tl, 2.6 + LANGD(32))] }), pulka: true, rep: true }),
-  '28': tl => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV - skutt(tl, 0.1, 0.7)], f: ANS('jatteglad'), p: POS({ ...tryck(tl, 0.1, 0.7) }), luva: { y: 0, vipp: vipp(tl, 0.7, 3) }, pulka: true, rep: true, gnista: [{ p: [C_DRAG, GOLV - 330], age: tl - 0.6, R: 160 }] }),
-  '29': (tl, d) => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: ANS('jatteglad'), p: POS({ luta: 2 }), pulka: true, rep: true, vinka: VINKA(tl, 0.1, 99) }),
-  '30': (tl, d) => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: fnissOgon(ANS('glad'), tl, 0.5 + LANGD(35)), p: POS({ luta: 2 }), pulka: true, rep: true,
+  '26': tl => { const g = gangX('26', tl); return MED({ pos: [g.x, GOLV], f: ANS('glad', { titt: [12, 0] }), p: g.gar ? trippa(POS(), g.vag, 1) : POS({ rikt: 0.5 * (1 - del(3.2, 3.8, tl)) }), pulka: true }); },
+  '27': tl => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: tl > 2.0 + LANGD(32) && tl < 4.2 + LANGD(32) ? ANS('jatteglad') : ANS('glad'), p: POS({ oron: [oronVipp(tl, 2.6 + LANGD(32)), -oronVipp(tl, 2.6 + LANGD(32))] }), pulka: true }),
+  '28': tl => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV - skutt(tl, 0.1, 0.7)], f: ANS('jatteglad'), p: POS({ ...tryck(tl, 0.1, 0.7) }), luva: { y: 0, vipp: vipp(tl, 0.7, 3) }, pulka: true, gnista: [{ p: [C_DRAG, GOLV - 330], age: tl - 0.6, R: 160 }] }),
+  '29': (tl, d) => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: ANS('jatteglad'), p: POS({ luta: 2 }), pulka: true, vinka: VINKA(tl, 0.1, 99) }),
+  '30': (tl, d) => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: fnissOgon(ANS('glad'), tl, 0.5 + LANGD(35)), p: POS({ luta: 2 }), pulka: true,
     vinka: { upp: 1 - del(d - 1.0, d - 0.4, tl), sving: 1 - del(d - 1.4, d - 1.0, tl), tl: tl + R['29'].d - 0.6 } }),
-  '31': tl => MED({ kam: K_HALV(1400), pos: [C_DRAG, GOLV], f: ANS('glad'), p: POS(), pulka: true, rep: true, iris: tl }),
+  // outrot: kameran glider in på kattens ansikte och kritirisen sluts runt det (Sanna 2026-11-22: "outro zoom cat face")
+  '31': tl => { const u = mjuk(tl / 1.6), fy = GOLV - (L.FOTTER - 440) * GS;
+    return MED({ kam: [lerp(1.6, 2.8, u), lerp(1400, C_DRAG, u), lerp(700, fy, u)], pos: [C_DRAG, GOLV], f: ANS('glad'), p: POS(), pulka: true, iris: tl }); },
 };
 const luvaStart = () => { const b = bana('luva', KONT.luva.d), [px, py] = banPunkt(b, 0); return [LUVA_SNO[0] + (px - LUVA_O[0]) * LUVA_K, LUVA_SNO[1] + (py - LUVA_O[1]) * LUVA_K]; };
 const pulkaStart = () => { const b = bana('pulka', KONT.pulka.d), [px, py] = banPunkt(b, 0); return [PULKA_X + (px - PULKA_O[0]) * PK, GOLV + 8 + (py - PULKA_O[1]) * PK]; };
@@ -486,7 +490,7 @@ function ritaGard(st, t) {
   snofall(t, KAM[0]);
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (st.iris !== undefined) {
-    const c = skarm([(C_DRAG + PULKA_X + PULKA_DRAG) / 2, GOLV - 110]), u = st.iris, r = u < 1.5 ? lerp(1400, 300, mjuk(u / 1.5)) : lerp(300, 0, mjuk((u - 1.9) / 0.6));
+    const n = nosen(), c = skarm([n[0], n[1] - 25]), u = st.iris, r = u < 1.5 ? lerp(1400, 330, mjuk(u / 1.5)) : lerp(330, 0, mjuk((u - 1.9) / 0.6));
     kritiris(r, c, t);
   }
 }

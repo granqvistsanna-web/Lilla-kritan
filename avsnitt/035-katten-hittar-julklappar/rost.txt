@@ -30,6 +30,7 @@
 30-ett-tva-tre  [happy] Ett paket … två paket … tre paket!
 31-dra-hem  [cheerfully] Nu kan katten dra hem paketen.
 32-saga-god-jul  [warmly] Det är julafton! Kan du säga god jul?
+# 32b-saga-god-jul = 32 utan "Det är julafton!" (klippt från 1,92 s), används i filmen sedan 2026-11-22 (lucka 6 är inte julafton)
 33-god-jul  [happy] God jul!
 34-hej-da-katten  [happy] Hej då, katten! Hej då, paketen!
 35-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
