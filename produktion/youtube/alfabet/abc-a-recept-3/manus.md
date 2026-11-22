@@ -62,6 +62,15 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 - apans skiss får näsborrarna, munnen och fyllda ögon (mätta i `uttryck.html`).
 - Kritan kommer in i bild när Malin ber den rita (båda gångerna), nickar efter *"Kan du det, kritan?"* och går därifrån direkt till att rita (`KVISA`, `KNICK`, `KFRAM`).
 
+## Feedback 2026-11-22 (ABC-a3, renderingarna 21/11 18:54 och 20:34)
+
+- 0:50: apan "viskar" (babbel) innan Malin säger *"Vad sa du, apan?"*.
+- 1:18: kritan kommer fram på *"Busiga kritan!"* och fnissar (tre fniss, kritan skakar, `KFNISS`).
+- 1:30: bädden är `abc-bad-lang.m4a` (den längre slingan från 22/11) i stället för `gissa-bad.m4a`.
+- 1:47, 1:50: apelsinen och ananasen har inga ansikten, apan äter upp dem.
+- 2:36: klossarna vänder ryggen till innan de blandas och vänder sig tillbaka efteråt, apan sist (`vand`).
+- 2:38: apelsinen stod upp och ner på klossen (rullningens vinkel räknades efter rullningen). Rättat.
+
 ## Öppet
 
 - **Malins tagning:** en tagning med alla 61 rader ur `malin-a-recept-3.txt`, delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Gjort 2026-11-21: tagning 1 av 2 valdes (tagning 2 sa "Deal" på "Bil?").
