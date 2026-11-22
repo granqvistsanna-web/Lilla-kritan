@@ -8425,5 +8425,35 @@
   "fixed": false,
   "at": 1795355605865,
   "render": "2026-11-22 11:36 (feedback 22/11 b: nya musljud (inte fågel), kameran högre vid 3:50)"
+ },
+ "nt7n7vnmk2mwrp6wtg": {
+  "ep": "ABC-d3",
+  "time": "2:14",
+  "sec": 134,
+  "tags": [],
+  "note": "door looks blurry. maybe a code door.",
+  "fixed": false,
+  "at": 1795343544484,
+  "render": "2026-11-22 11:21 (Feedback 22/11: armarna sitter i kroppen, rund gris, närmare vid dörren)"
+ },
+ "0qwh81ez8cmwrp7u9n": {
+  "ep": "ABC-d3",
+  "time": "3:32",
+  "sec": 212,
+  "tags": [],
+  "note": "bigger dino",
+  "fixed": false,
+  "at": 1795343587835,
+  "render": "2026-11-22 11:21 (Feedback 22/11: armarna sitter i kroppen, rund gris, närmare vid dörren)"
+ },
+ "cgr9yimfcemwrwlcpl": {
+  "ep": "ABC-d3",
+  "time": "0:33",
+  "sec": 33,
+  "tags": [],
+  "note": "maybe letters should their own voice? Some sounds like d sounds a bit ansträngda and odd",
+  "fixed": false,
+  "at": 1795355975577,
+  "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)"
  }
 }
