@@ -58,7 +58,8 @@ Granskat mot förskolepedagogik och Montessori (se fliken Pedagogik i `format/ar
 2. **En sak i taget.** Högst en sak rör sig i bakgrunden medan huvudhändelsen pågår; resten står still eller väntar på sin tur.
 3. **Verklighetsnära.** Att fordonen pratar är fantasi, så allt annat är på riktigt: riktiga djurläten, och fordon som stannar, öppnar dörren och tutar som riktiga.
 4. **Delaktighet.** Efter frågan till tittaren: pausa 4–5 s, sedan visar en figur svaret. Bjud in barnet att vinka, hoppa och tuta med, tydligt och flera gånger.
-5. **Vardagssaker.** En vardagshandling och ett "tack" (och "varsågod") i varje avsnitt, till exempel att någon kliver på bussen själv eller tar emot en glass.
+5. **Tydlighet och reaktioner** (Sanna 2026-11-22). Manusets repliker är korta och säger tydligt vad som händer. Varje händelse får tid för figurens reaktion, och närbilder (tät beskärning) visar det barnet ska titta på och figurens känsla.
+6. **Vardagssaker.** En vardagshandling och ett "tack" (och "varsågod") i varje avsnitt, till exempel att någon kliver på bussen själv eller tar emot en glass.
 
 ## Övergångar och effekter (tillagt efter 005)
 
@@ -80,4 +81,6 @@ Effektstreck (fartstreck, dunsstreck, strålar) används inte. De såg billiga u
 - [ ] Kritsvep vid platsbyte, zoom in och ut i början och slutet av berättelsen
 - [ ] Sången går att klippa ut som Short (30–60 s)
 - [ ] `harriets-favoriter.md` är uppdaterad
+- [ ] Rösttaggar: `[warm]`, `[gentle]`, `[curious]`, `[happy]` … aldrig `[excited]` (lät för skarpt, 2026-11-22)
+- [ ] Utsnitt och storlek enligt `format/bildutsnitt.md`: fyra utsnitt, alla djur lika stora, inga kapade huvuden eller halva figurer vid kanten
 - [ ] Pedagogiken ovan: tempo, en sak i taget, verklighetsnära, paus 4–5 s efter frågan, en vardagshandling och ett tack

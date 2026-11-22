@@ -690,9 +690,25 @@ if __name__ == '__main__':
     rd = os.path.join(UT, 'rutor-' + namn); os.makedirs(rd, exist_ok=True)
     for x in os.listdir(rd): os.remove(os.path.join(rd, x))
     ljud, f0, tagn = [], 0, Tagningar()
+    starter = []
     for k, p in enumerate(val):
+        starter.append(f0)
         f0 += rendera(p, rd, f0, ljud, tagn, k == 0, k == len(val) - 1)
     total = f0 / FPS
+    # Sanna 2026-11-22 valde "Brickan glider vidare" (inte kritsvepet): vid varje skarv glider det färdiga pusslet ut åt vänster
+    # och nästa tomma bricka in från höger, 1,3 s, ett mjukt swoosh. Nästa pussels första 1,3 s (tom bricka, öppningsrepliken) glider in.
+    if not BARA_TID:
+        GLID = int(1.3 * FPS)
+        for fb in starter[1:]:
+            forra = Image.open(os.path.join(rd, f'{fb - 1:05d}.png')).convert('RGB')
+            for s in range(GLID):
+                ruta = os.path.join(rd, f'{fb + s:05d}.png')
+                if not os.path.exists(ruta): break
+                x = round(W * easeio((s + 1) / GLID))
+                ram = Image.new('RGB', (W, H), PAPPER)
+                ram.paste(forra, (-x, 0)); ram.paste(Image.open(ruta).convert('RGB'), (W - x, 0))
+                ram.save(ruta)
+            ljud.append((E + f'swoosh/swoosh-{len(ljud) % 4 + 1}.m4a', fb / FPS, 0.2))
     args, filt, lab = [], [], []
     musik, mvol = MUSIK.get(namn, MUSIK['pussel-vanliga'])
     badd = os.path.join(UT, f'badd-{namn}.wav'); musikbadd(os.path.join(REPO, musik), total, badd)

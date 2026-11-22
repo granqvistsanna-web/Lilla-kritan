@@ -110,7 +110,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 |---|---|
 | `[warmly]` | *Kritan ritar …*, *Ska vi säga tack?*, *Kan du hjälpa …?* |
 | `[curious]` | *Hm … vad blir det nu?*, *Hm … vad gör vi nu?*, *Kritan ritar mer …* |
-| `[excited]` | svaret (*Oj! En gris!*), *Titta!*, *En båt!*, *Ja, där!* |
+| `[happy]` (aldrig `[excited]`, lät för skarpt 2026-11-22) | svaret (*Oj! En gris!*), *Titta!*, *En båt!*, *Ja, där!* |
 | `[happy]` | hej, tack, hej då, *Skrubba, skrubba … borta!* |
 | `[cheerfully]` | frågorna till figuren: *Nu ska du väl bada?*, *Upp på pallen …* |
 | `[laughs]`, `[chuckles]`, `[giggles]` | *Oj, oj, oj!*, *Oj då.*, *Ha ha!*, *Ni pratar visst …*, efter *plopp!* |
@@ -547,13 +547,13 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 ```
 [warmly] Kritan ritar …
 [curious] Hm … vad blir det nu?
-[excited] Oj! <En …>!
+[happy] Oj! <En …>!
 [happy] Hej, <djuret>!
 [laughs] Oj, oj, oj! <Problemet>!
 [cheerfully] Nu ska du väl <…>?
 [chuckles] Oj då. <Djuret> vill visst inte <…>.
 [curious] Hm … vad gör vi nu?
-[excited] Titta! Kritan ritar något.
+[happy] Titta! Kritan ritar något.
 [happy] <En …>! Varsågod, <djuret>.
 [warmly] Ska vi säga tack?
 [happy] Tack!
@@ -564,7 +564,7 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 [happy] Och <…>. <Fras, fras> … borta!
 [curious] Oj, lite <…> är kvar. <Djuret> vet inte var.
 [warmly] Kan du hjälpa <djuret>? Kan du se var <…> är?
-[excited] Ja, där! Ja, på <…>!
+[happy] Ja, där! Ja, på <…>!
 [happy] <Fras, fras> … borta!
 [happy] Nu är du <…>! Kan du <…>?
 [playfully] <Ljudord> … [laughs]

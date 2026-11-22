@@ -84,11 +84,11 @@ Save as `assets/ljud/musik/gissa-bad.m4a`. At 100 BPM a bar is 2.4 s: bar 1 is t
 ## ElevenLabs
 
 - **Voice:** BERÄTTAREN, the same voice in every Short: *Malin – Professional Swedish Narration* (ElevenLabs).
-- **Text to speech:** Eleven v3 (or newer), stability 0.5, similarity 0.75; warm and calm, a grown-up talking to a two-year-old, not a presenter. Lines that need a feeling get a v3 audio tag in square brackets: `[excited] Gissa teckningen!`, `[thoughtful] Hmm…`, `[warm] Hej då!`. Answers bright with "!".
+- **Text to speech:** Eleven v3 (or newer), stability 0.5, similarity 0.75; warm and calm, a grown-up talking to a two-year-old, not a presenter. Lines that need a feeling get a v3 audio tag in square brackets: `[happy] Gissa teckningen!`, `[thoughtful] Hmm…`, `[warm] Hej då!`. Answers bright with "!".
 
 | File | Text |
 |---|---|
-| `assets/ljud/roster/intro-1…5` | `[excited] Gissa teckningen!` and four variants (list in `ljud-att-gora.md`) |
+| `assets/ljud/roster/intro-1…5` | `[happy] Gissa teckningen!` and four variants (list in `ljud-att-gora.md`) |
 | `assets/ljud/roster/hmm-1…5` | `[thoughtful] Hmm…` and four variants |
 | `assets/ljud/roster/vad-blir-det-1` | `Vad blir det?` (the only Swedish question) |
 | `assets/ljud/roster/hej-da-1…5` | `[warm] Hej då!` and four variants |

@@ -112,7 +112,7 @@ Ledtrådarna blir tydligare för varje bit, och den sista avgör. Alla pussels l
 | Äpplet | Något rött. | Något runt. | Det blänker! | Rött och runt … | Ett blad! | Ett äpple! |
 | Kaninen | Något brunt. | En rund svans. | En liten tass. | Ett litet öga. | Långa öron! | En kanin! |
 
-Efter bit 1, 3 (och ibland 2) säger hon *"Där!"* eller *"Den passar!"*. Efter bit 3 kommer *"Hmm … vad blir det?"*. Sist i filmen: *"Så fint! Hej då!"*.
+Efter bit 1, 3 (och ibland 2) säger hon *"Där!"* eller *"Den passar!"*. Efter bit 3 kommer *"Hmm … vad blir det?"*. Sist i filmen: *"Så fint! Hej då!"*, glatt och varmt (`[warm]`), aldrig hårt eller skarpt; låter en tagning aggressiv väljs en annan (2026-11-22).
 
 - **Aldrig** *"Vad kan det vara?"* (minnet *Aldrig "Vad kan det vara?"*). Frågan är *"Vad blir det?"*.
 - **Inga djurnamn:** *"En kanin!"*, aldrig ett namn ur `karaktarer/`.
