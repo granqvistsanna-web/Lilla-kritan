@@ -191,15 +191,6 @@
   "videoId": "9ae5e75827f3e433aaa776fe92f7a10a",
   "youtube": "https://youtu.be/IwpsFBglFiU"
  },
- "034": {
-  "duration": 250.5,
-  "file": "avsnitt/034-musen-pyntar-granen/film/avsnitt-034-forhand.mp4",
-  "name": "Musen pyntar granen",
-  "rendered": "2026-11-21 22:27 (feedback 21/11 sent: byrån bort, ett ljus i stake, vintertavla, krans över spisen (förhandsvisning))",
-  "status": "granska",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/034-1121-2227.mp4",
-  "videoId": "63d20bb842e77d2ab6e2ad49f2d6be9a"
- },
  "035": {
   "duration": 239.1,
   "file": "avsnitt/035-katten-hittar-julklappar/film/avsnitt-035.mp4",
@@ -1554,6 +1545,7 @@
   "duration": 260.6,
   "rendered": "2026-11-21 22:28 (034 med feedback 21/11 sent (förhandsvisning))",
   "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen-liten.mp4",
-  "status": "granska"
+  "status": "granska",
+  "name": "Lucka 22: Musen pyntar granen"
  }
 }
