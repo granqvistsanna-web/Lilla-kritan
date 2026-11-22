@@ -9,3 +9,6 @@ Används i: Gissa teckningen – spade (Shorts).
 ```prompt
 Image 1 is the exact SHAPE and LAYOUT: a child's drawing of a toy spade standing upright. Keep its silhouette, proportions and every part in exactly the same place and size in the frame: the round loop handle grip at the top, the long thin straight yellow shaft, and the pointed red shield-shaped blade at the bottom. Image 2 is the STYLE only: redraw Image 1 in that soft wax-crayon look: the shaft and grip bright yellow grainy crayon, the blade bright red mottled grainy crayon, NO black outline anywhere, only a thin uneven white rim around the edges. No sand, no faces, no motion lines, no scribbles, no extra marks. Pure solid white background, no shadow, no ground, no text.
 ```
+
+**Konturen (2026-11-22, för 050 Kaninen bygger torn):** `assets/rekvisita/spade-rod/cut/spade-rod-kontur.json` (`verktyg/kontur.py … --krymp 8 --mitt`, 58 stödpunkter, bbox [276, 43, 472, 937], mitt [512, 751]). `drag`: ytterkonturen och öglan (alfans hål vidgat 8 px). Kritan ritar `ritBana(K.drag)`. **Kanten:** `spade-rod.png` 8 px = 0,9 % av höjden (922 px), `spade-rod-tunn.png` 9 px = 1,0 %. Båda går; 050 använder `spade-rod.png`, så konturen stämmer med den.
+Används också i: 050 Kaninen bygger torn i snön (kritan ritar den, kaninen håller den).

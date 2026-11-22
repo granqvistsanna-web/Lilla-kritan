@@ -55,7 +55,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Röda bilen | [bil-rod.md](bil-rod.md) | Shorts: gissa teckningen |
 | Röda bollen | [boll-rod.md](boll-rod.md) | Shorts: gissa teckningen |
 | Gröna traktorn | [traktor-gron.md](traktor-gron.md) | Shorts: gissa teckningen |
-| Blå hinken | [hink-bla.md](hink-bla.md) | Shorts: gissa teckningen |
+| Blå hinken | [hink-bla.md](hink-bla.md) | Shorts: gissa teckningen, 050 Kaninen bygger torn |
 | Kon | [ko.md](ko.md) | Shorts: gissa teckningen |
 | Rosa grisen | [gris-rosa.md](gris-rosa.md) | Shorts: gissa teckningen |
 | Gröna traktorn, öppen | [traktor-gron-oppen.md](traktor-gron-oppen.md) | 014 |
@@ -89,7 +89,7 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Gungbrädan | [gungbrada.md](gungbrada.md) | Shorts: gissa teckningen |
 | Gula rutschkanan | [rutschkana-gul.md](rutschkana-gul.md) | Shorts: gissa teckningen |
 | Sandlådan | [sandlada.md](sandlada.md) | Shorts: gissa teckningen |
-| Röda spaden | [spade-rod.md](spade-rod.md) | Shorts: gissa teckningen |
+| Röda spaden | [spade-rod.md](spade-rod.md) | Shorts: gissa teckningen, 050 Kaninen bygger torn |
 | Bruna hästen | [hast-brun.md](hast-brun.md) | Shorts: gissa teckningen |
 | Mjölkglaset | [mjolkglas.md](mjolkglas.md) | Godnattsagorna, 022 |
 | Kudden | [kudde.md](kudde.md) | Godnattsagorna |

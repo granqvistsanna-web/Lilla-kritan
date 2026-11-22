@@ -1,0 +1,40 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-spade  [excited] Oj! En spade!
+04-hej-kaninen  [happy] Hej, kaninen! Hej, hej!
+05-vad-glad  [laughs] Oj, vad glad du är!
+06-julafton-i-morgon  [curious] Är det för att det är julafton i morgon?
+07-ja-saklart  [happy] Ja, såklart! Det är så kul.
+08-vad-gora-i-dag  [curious] Men vad ska vi göra i dag då?
+09-sa-mycket-sno  [excited] Titta, så mycket snö!
+10-graver-du  [curious] Gräver du med tassarna?
+11-sno-pa-nosen  [surprised] Oj! Snö på nosen! [giggles]
+12-med-tassar  [chuckles] Med tassar går det visst inte så bra.
+13-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+14-kritan-ritar-nagot  [excited] Titta! Kritan ritar något.
+15-en-hink-varsagod  [excited] En hink! Och en spade! Varsågod, kaninen.
+16-tack-kritan  [happy] Tack, kritan!
+17-kaninen-tackar  [warmly] Kaninen säger också tack.
+18-nu-bygger-vi  [cheerfully] Nu bygger vi ett torn!
+19-fyll-klappa-vand-1  [happy] Fyll … klappa … vänd!
+20-ett-torn-1  [delighted] Ett torn!
+21-och-igen  [cheerfully] Och igen!
+22-fyll-klappa  [happy] Fyll … klappa …
+23-sag-vand  [warmly] Kan du säga vänd?
+24-vand-torn-till  [excited] Vänd! Ett torn till!
+25-var-ar-kaninen  [laughs] Oj! Var är kaninen?
+26-tittut  [playfully] Tittut! Där är du!
+27-hogst-upp  [curious] Två torn. Och ett till … högst upp?
+28-fyll-klappa-vand-3  [happy] Fyll … klappa … vänd!
+29-torn-pa-tornen  [surprised] Oj! Ett torn på tornen!
+30-som-en-julgran  [dreamy] Oj … det ser ut som en julgran!
+31-kritan-ritar-igen  [curious] Titta! Kritan ritar igen.
+32-titta-noga  [curious] Titta noga. Vad blir det?
+33-ett-ljus  [excited] Ett ljus! Titta, det lyser!
+34-en-snolykta  [warmly] En snölykta!
+35-tack-kritan-2  [happy] Tack, kritan!
+36-rakna-tornen  [cheerfully] Ska vi räkna tornen? Ett … två … tre!
+37-snart-jul  [warmly] Snart är det jul!
+38-hoppar-runt-lyktan  [laughs] Nu hoppar kaninen runt lyktan! Hopp, hopp!
+39-hej-da-kaninen  [happy] Hej då, kaninen!
+40-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
