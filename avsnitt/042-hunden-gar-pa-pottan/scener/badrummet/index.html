@@ -129,9 +129,10 @@ let SVEP = 0, SVEP_F = '#7ECCB8';
 const SVEP_IN = 1.0, SVEP_UT = 0.7, BAD_FARG = '#7ECCB8', KAKTUS_FARG = '#B93564';
 
 // --- Sakerna -------------------------------------------------------------------------------------------------------------------
-const sak = (namn, x, fot, hojd, { lager = 'saker', rot = 0, extra = '' } = {}) => {
-  const [f, [w, h], [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0); 
-  lagg(lager, `<image href="${f}" width="${w}" height="${h}" ${extra} transform="translate(${f1(x)} ${f1(fot)}) rotate(${f1(rot)}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`);
+// mitt: vrid kring sakens mitt i stället för kring foten (bollen; Sanna 2026-11-22 J17 0:44: kring foten hängde den rullade bollen under golvet)
+const sak = (namn, x, fot, hojd, { lager = 'saker', rot = 0, extra = '', mitt = false } = {}) => {
+  const [f, [w, h], [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0), py = mitt ? (y0 + y1) / 2 : y1;
+  lagg(lager, `<image href="${f}" width="${w}" height="${h}" ${extra} transform="translate(${f1(x)} ${f1(fot - (mitt ? hojd / 2 : 0))}) rotate(${f1(rot)}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-py})"/>`);
 };
 const sakT = (namn, [x, fot, hojd]) => { const [, , [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0);
   return [`translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})`, s]; };
@@ -146,7 +147,7 @@ function sakFyll(namn, pos, fyll, lager = 'saker') {
 const ritaSak = (namn, pos, k, farg) => { const [t, s] = sakT(namn, pos); return kontur(namn, t, ritfart(k), 5 / s, farg); };
 const skugga = (x, fot, rx, lager = 'bak', o = 0.08) => lagg(lager, `<ellipse cx="${f1(x)}" cy="${f1(fot - 2)}" rx="${f1(rx)}" ry="${f1(rx * 0.12)}" fill="#000" opacity="${o}"/>`);
 const BD = 78;
-const boll = ([x, y], rot = 0) => { skugga(x, y + BD / 2 + 2, BD * 0.42 * (1 - kl((y + BD / 2 - K_GOLV) / -300) * 0.5), 'bak'); sak('boll', x, y + BD / 2, BD, { rot }); };
+const boll = ([x, y], rot = 0) => { skugga(x, y + BD / 2 + 2, BD * 0.42 * (1 - kl((y + BD / 2 - K_GOLV) / -300) * 0.5), 'bak'); sak('boll', x, y + BD / 2, BD, { rot, mitt: true }); };
 
 // --- Kaktusrummet (2880 bred): dörren x 155–500, pallen med kaktusen x 1670–1855 (fötterna y 845), golvet från 812 ---------------
 const K_GOLV = 905, STA = [1250, K_GOLV], PALLK = [1762, 845];
