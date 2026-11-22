@@ -669,6 +669,7 @@ def remsa(p):
 if __name__ == '__main__':
     import sys, shutil
     a = sys.argv[1:]
+    tider = '--tider' in a; a = [x for x in a if x != '--tider']     # --tider: räkna bara tiderna och kolla Malins repliker (verktyg/qa-scen.py)
     if '--rost' in a:
         skriv_rost(); sys.exit()
     if a and a[0] == '--remsa':
@@ -687,6 +688,13 @@ if __name__ == '__main__':
     OPPNA_LISTA = OPPNA.get(namn)
     K = TEMPO.get(namn, 1.0); IN, VISA, LAGG, MELLAN = IN * K, VISA * K, LAGG * K, MELLAN * K
     if LIGG_KOMMENTAR: TAKTER['dar'] = []
+    if tider:
+        BARA_TID, f0, ljud, tagn = True, 0, [], Tagningar()
+        for k, p in enumerate(val): f0 += rendera(p, None, f0, ljud, tagn, k == 0, k == len(val) - 1)
+        rost = sorted((t, langd(f), os.path.basename(f)[:-4]) for f, t, _ in ljud if ROST in f)
+        fel = [f'{a[2]} ({a[0]:.1f}s) slutar {a[0] + a[1] - b[0]:.2f}s inne i {b[2]}' for a, b in zip(rost, rost[1:]) if a[0] + a[1] > b[0] + 0.02]
+        fel += [f'{n} ({t:.1f}s) går förbi filmens slut' for t, d, n in rost if t + d > f0 / FPS + 0.02]
+        print(f'{len(rost)} repliker, {f0 / FPS:.0f}s', '; '.join(fel)); sys.exit()
     rd = os.path.join(UT, 'rutor-' + namn); os.makedirs(rd, exist_ok=True)
     for x in os.listdir(rd): os.remove(os.path.join(rd, x))
     ljud, f0, tagn = [], 0, Tagningar()

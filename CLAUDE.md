@@ -30,3 +30,5 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 
 ## Kontroll
 `python3 verktyg/prompt.py --lista` ska lista alla figurer, platser och saker utan fel.
+
+`bash verktyg/qa-film.sh <film.mp4>` i QA-passet. Den kör också `verktyg/qa-scen.py`, som flaggar för stark line boil (i scenkoden: `#boil` fast, över 2,5 eller inte delad med zoom; i filmen: kanternas darr per sekund mot gränser kalibrerade på 051 och 045) och avklippt röst (Malins repliker i `rader.json` som går in i nästa replik, och tal som tar slut tvärt vid ett bildklipp). Raderna ska vara tomma efter kolon. `python3 verktyg/qa-scen.py --alla` går igenom koden i alla scener, `--pussel` Malins tider i `pussel-prov.py`.
