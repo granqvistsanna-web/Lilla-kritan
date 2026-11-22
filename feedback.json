@@ -8156,9 +8156,10 @@
   "sec": 10,
   "tags": [],
   "note": "need julkal intro and outro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795282650424,
-  "render": "2026-11-21 18:26 (snabb)"
+  "render": "2026-11-21 18:26 (snabb)",
+  "fixedAt": 1795342922265
  },
  "acw0x5hgn8mwqoxwfa": {
   "ep": "J19",
