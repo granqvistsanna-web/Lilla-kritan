@@ -36,3 +36,9 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 - 2:03 Kaninen är lite mindre (0,55 → 0,5), elefanten med (200 → 185).
 - 2:26 De påklistrade tänderna är borta. Det är riggens egna tänder i gapet: de går från matta till blanka två och två (20, 25) och riggens glansstjärna tänds i 21.
 - 3:29 Bubblorna i kritstil: krämvit yta med kritkorn, mjuk skugga, vit kant och mörk kritlinje. Bubblan poppar med en liten gummistuds, sakerna poppar in en i taget och gungar, molnets bucklor andas. Större innehåll som klistermärken: randigt godis, sol och måne med små ansikten, den nya tandborsten. Båda bubblorna ligger lite lägre så att de inte nuddar bildens överkant.
+
+## Feedback 4 (2026-11-22)
+
+- 1:34 Fler reaktioner i 13: kaninen tittar upp mot lampan med öronen upp, gör ett litet hoppande "oj" på klicket och blir sedan glad. Tandläkaren vänder sig mot kaninen (rikt −0,8, blicken åt vänster) och nickar efter klicket, också i 14 och 15. I 14 tittar kaninen ner på elefanten och fnissar.
+- 1:36 Ljuset utgår nu från glödlampan (`STOL.lampa` [282, 98], var [220, 115] utanför skärmen). Lampan blinkar till på klicket och tänds med en liten överglans, andas sedan lugnt. Skenet är smalt vid lampan, mjukt i kanterna, starkast vid lampan, och lägger en ljusfläck på kaninens ansikte (13, 15) och elefanten (14). Kameran i 13 har samma utsnitt som förut.
+- 3:26 Bubblorna: pipen utgår från ovalens kant och är 90 px lång och lätt böjd, så att den syns. Sakerna i bubblorna har en tunn mörk kant och en liten skugga (den vita kanten syntes inte mot den krämvita ytan). Kaninens tandborste i bubblorna är en mörkare mint (`BUBBBORSTE`) och lite större.
