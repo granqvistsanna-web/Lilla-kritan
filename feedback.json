@@ -8103,9 +8103,10 @@
   "sec": 82,
   "tags": [],
   "note": "better wave, arm flying in air. better pig image",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342035600,
-  "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))"
+  "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))",
+  "fixedAt": 1795342897749
  },
  "v3aq72ht28mwrob8wi": {
   "ep": "ABC-d3",
@@ -8113,9 +8114,10 @@
   "sec": 116,
   "tags": [],
   "note": "bigger composiion, too much white space atound objects",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342067154,
-  "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))"
+  "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))",
+  "fixedAt": 1795342897749
  },
  "lkhd5jnf7vmwrobqff": {
   "ep": "ABC-d3",
@@ -8123,9 +8125,10 @@
   "sec": 153,
   "tags": [],
   "note": "arms flying in air",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342089867,
-  "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))"
+  "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))",
+  "fixedAt": 1795342897749
  },
  "kx9u8xdnbdmwrok6fe": {
   "ep": "J19",
