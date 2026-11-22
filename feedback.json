@@ -8230,9 +8230,10 @@
   "sec": 83,
   "tags": [],
   "note": "mouse sqeek sound like a bird, we need new sounds",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342213531,
-  "render": "2026-11-22 11:08 (slutrendering (feedback 22/11))"
+  "render": "2026-11-22 11:08 (slutrendering (feedback 22/11))",
+  "fixedAt": 1795343773920
  },
  "4wchrcdq73mwrof4ii": {
   "ep": "J22",
@@ -8240,8 +8241,9 @@
   "sec": 230,
   "tags": [],
   "note": "move camera up a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342248090,
-  "render": "2026-11-22 11:08 (slutrendering (feedback 22/11))"
+  "render": "2026-11-22 11:08 (slutrendering (feedback 22/11))",
+  "fixedAt": 1795343773920
  }
 }
