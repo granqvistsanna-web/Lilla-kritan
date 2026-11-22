@@ -7722,9 +7722,10 @@
   "sec": 106,
   "tags": [],
   "note": "maybe bunny ear should be behind lamp",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333341507,
-  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))",
+  "fixedAt": 1795333925955
  },
  "jwn6ulrj15mwrj4gpj": {
   "ep": "049",
