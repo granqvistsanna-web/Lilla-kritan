@@ -4,10 +4,10 @@ Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur 
 
 **Läge (2026-11-21):** clownen är vald (Sanna: tagning C1, `karaktarer/clownen-kalle.md`) och riggad i v2. Sanna godkände replikerna (61 rader, `malin-c-recept-3.txt`) och krediterna. `abc-c-recept-3.mp4` är en snabb förhandsvisning (960 × 540) med **Malins tagning 2** (ElevenLabs, Malin – Professional Swedish Narration, Eleven v4, stability 0,5, similarity 0,75, samma som B och D; `produktion/ljud-original/roster/abc-c-recept-3/tagning-2.mp3`), delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-c-recept-3/`. Fem rader är ur tagning 1 (samma körning), där de lät tydligare: *"Titta, kritan ritar en bokstav."*, *"Cykel!"*, *"C, c, cykel!"* (sades två gånger i tagning 2), *"Ett hjul till!"*, *"Cykeln rullar!"*. Alla 61 rader kontrollerade med whisper. *"Clown!"* uttalas *klaun* i tagning 2. Datorrösten ligger kvar i `platshallare/`, platshållarfilmen i `aldre/`. Feedbacksidan: `ABC-c3`.
 
-**Meningen:** Clownen vill cykla men har inget att åka på. Malin ber kritan rita något att åka på, och det måste börja på C. Kritan ritar fel (bollen, hej då!). Kritan ritar cykeln (ord 2), men cykeln har bara ett hjul. Kritan ritar något runt: en cirkel (ord 3), som rullar dit och blir hjulet. Cykeln rullar och clownen hoppar med. Den udda i leken är hunden, som i E och B.
+**Meningen:** Clownen vill cykla men har inget att åka på. Malin ber kritan rita något att åka på, och det måste börja på C. Kritan ritar fel (bollen, hej då!). Kritan ritar cykeln (ord 2), men cykeln har bara ett hjul. Kritan ritar något runt: en cirkel (ord 3), som rullar dit och blir hjulet. Cykeln rullar och clownen hoppar med. Den udda i leken är bollen igen (feedback 2026-11-22: *"det kan inte vara hund i varje video"*), med bollens egna repliker ur del 4, så inga nya krediter.
 
-- Clownen är riggen `clownen-kalle` (ny i v2, mjuk tygclown). Hunden riggen `hunden-hugo`, som i E.
-- Bollen `boll-rod`, cykeln `cykel-rod` (med lösa hjul; bara bakhjulet används) och cirkeln, den gröna ringen `cirkel`, finns redan (från recept 1). Inga nya bilder behövdes.
+- Clownen är riggen `clownen-kalle` (ny i v2, mjuk tygclown). Den har en egen dans (`ROR.dansa` i `uttryck.html`: kroppen dansar, armarna stannar nere) och låga armar i hoppet, så att armarna inte glider in och ut bakom kroppen (feedback 2026-11-22).
+- Bollen `boll-rod`, cykeln `cykel-v2` (ny i v2 2026-11-22, feedback 1:49: ramen och bakhjulet var för sig, se `rekvisita/cykel-v2.md`) och cirkeln, den gröna ringen `cirkel`, finns redan (från recept 1). Inga nya bilder behövdes.
 - Clownen sitter aldrig på cykeln (receptets *"aldrig sitta i något"*): den hoppar bredvid medan cykeln rullar.
 
 ## Uttalet: C låter på två sätt
@@ -48,8 +48,8 @@ Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.
 | 6 | Närbild: clownen jublar (hurra) | – | fniss |
 | 7 | Tre bildklossar poppar fram och hoppar in på sina plattor. Blandningen | Kom, nu leker vi! · Titta noga. Var är clownen? | duns, klistra, swoosh |
 | 7 | Clownens kloss hoppar till | Där är den ju! | pling |
-| 7 | Muren. Hunden dunsar ner, clownen blir förvånad i närbild | Titta! En till. · Clown! · Cykel! · Cirkel! · Hund. · Vilken ska bort? · Vilken börjar inte på C? *(paus 4 s)* | vov, fniss |
-| 7 | Hunden hoppar ner och går ut, clownen vinkar och jublar | Hunden! · Hund börjar inte på C. · Hej då, hunden! | vov, tassar, jippi |
+| 7 | Muren. Bollens kloss dunsar ner, clownen blir förvånad i närbild | Titta! En till. · Clown! · Cykel! · Cirkel! · Boll? · Vilken ska bort? · Vilken börjar inte på C? *(paus 4 s)* | studs, fniss |
+| 7 | Bollens kloss hoppar ner och rullar ut, clownen vinkar och jublar | En boll! · Boll börjar inte på C. · Hej då, bollen! | studs, rull, jippi |
 | 8 | Klossarna på rad, var och en hoppar på sitt ord | Clown, cykel, cirkel. · Alla börjar på bokstaven C. | – |
 | 8 | Discot: clownen hoppar ur klossen och dansar stor, de andra snurrar, pyramid | Nu dansar vi! · Clownen dansar! · Cykeln snurrar! · Cirkeln snurrar! | disco |
 | 8 | Clownen vinkar | Nu är vi klara för i dag. · Tack för att du lekte med C! · Hej då! Vi ses! | – |

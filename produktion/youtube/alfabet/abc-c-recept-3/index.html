@@ -9,7 +9,7 @@
 <script>
 // Kritans ABC C efter recept 3 (2026-11-21), kopierad ur abc-b-recept-3/: clownen vill cykla men har inget att åka på.
 // Kritan ritar fel (bollen, "Busiga kritan!"), sedan cykeln (bara ett hjul, den tippar) och cirkeln (rullar dit och blir hjulet).
-// "Vilken ska bort?" spelas en gång (hunden), sedan discot. Manus: manus.md, repliker: malin-c-recept-3.txt.
+// "Vilken ska bort?" spelas en gång (bollen igen, inte hunden), sedan discot. Manus: manus.md, repliker: malin-c-recept-3.txt.
 // Förhandsvisning som film: node avsnitt/020-grisen-badar/scener/render.mjs produktion/youtube/alfabet/abc-c-recept-3 --snabb
 (async () => {
 if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
@@ -57,11 +57,12 @@ const kontur = async (f, ...matt) => iTeckning((await (await fetch(`/assets/${f}
 // Bollen: 700 px hög (y 162–862) och 260 i teckningens mått, ungefär halva clownen.
 const BOLL = ['boll-rod/cut/boll-rod', 1024, 1024, 1024 * 260 / 700, 250 + 1024 * 260 / 700 - 862 * 260 / 700];
 // Cykeln: hjulen på marken (y 250). Bakhjulet (hjul1) är en egen bild som rullar; framhjulet fattas tills cirkeln blir det.
-const CYKEL = ['cykel-rod/cut/cykel-rod', 1024, 1024, 560, 372];
-const HJUL2 = [804, 610, 178];   // framhjulets mitt och ytterradie i cykelns 1024-ruta (cykel-rod-hjul2.png)
+// Ny cykel i v2 (feedback 2026-11-22 1:49 "need new image for cykel"): Flow-bild 4, ramen utan hjul och bakhjulet för sig (rekvisita/cykel-v2).
+const CYKEL = ['cykel-v2/cut/cykel-v2', 1024, 1024, 595, 351];
+const HJUL2 = [785, 675, 170];   // framhjulets mitt (navet på gaffeln) och däckets ytterradie i cykelns 1024-ruta
 // Cirkeln: den gröna ringen, ytterradie 432 px, mitten (437, 437) → (0, 20) i teckningens mått, ytterradie 230.
 const CIRKEL = ['cirkel/cut/cirkel', 874, 874, 465, 252];
-const RING_I_CYKEL = (HJUL2[2] * 560 / 1024) / 230;   // cirkelns skala mot cykelns när den är framhjulet
+const RING_I_CYKEL = (HJUL2[2] * CYKEL[3] / 1024) / 230;   // cirkelns skala mot cykelns när den är framhjulet
 const ifyllt = (cx, cy, r, sy) => spiral(cx, cy, r, 3).replace(/(-?[\d.]+) (-?[\d.]+)/g, (m, x, y) => `${x} ${(cy + (y - cy) * sy).toFixed(1)}`);   // en fylld oval fläck
 const KALLE = [1024, 1024, 675.84, 252 + (1024 - 945) * 0.66];   // clownens 1024-ruta i teckningens mått (FOTTER 945, fötterna på y 252)
 const SAKER = {
@@ -77,15 +78,15 @@ const SAKER = {
     streck: [['kontur', await kontur('rekvisita/boll-rod/cut/boll-rod', ...BOLL.slice(1)), '#A3261E', 15, 4.5]] },
   // cykeln: bakhjulet, ekrarna, den röda ramen, sadeln, styret och pedalen; frågan när ramen ritas. Framhjulet ritas inte (det fattas).
   cykel: { platta: ['#F2C53D', 100, 420, 0.08], fragaVid: 'ram', fraga: 'p-vad-blir', lang: 'p-cykel', kort: 'p-c-c-cykel', berom: 'p-ocksa-cykel', bild: CYKEL, markY: 250,
-    hjulC: [['cykel-rod/cut/cykel-rod-hjul1', 222, 612]],
-    streck: [['hjul1', ell(-158, 147, 96, 96), F.svart, 20, 0.6], ['eker1', 'M-254 147 L-62 147 M-206 64 L-110 230 M-110 64 L-206 230', F.gra, 6, 0.4],
-      ['ram', 'M-161 143 L-51 3 L127 3 L160 148 M-51 3 L-9 146 L127 3 M-9 146 L-161 143', F.rod, 16, 1.3],
-      ['sadel', 'M-94 -9 L-7 -9', F.svart, 16, 0.25], ['styre', 'M127 3 L122 -43 L177 -40', F.svart, 14, 0.3],
-      ['pedal', 'M-9 146 L26 173', F.svart, 10, 0.15]] },
+    hjulC: [['cykel-v2/cut/cykel-v2-hjul', 237, 675]],
+    // strecken följer cykel-v2: bakhjulet, ekrarna, den tjocka röda ramen med gaffeln ner till framnavet, sadeln, styret med handtaget och pedalen
+    streck: [['hjul1', ell(-158, 146, 88, 88), F.svart, 24, 0.6], ['eker1', 'M-158 146 L-158 66 M-158 146 L-82 121 M-158 146 L-111 211 M-158 146 L-205 211 M-158 146 L-234 121', F.gra, 6, 0.4],
+      ['ram', 'M-158 146 L-14 133 L-60 0 L-158 146 M-60 0 L121 -21 L-14 133 M121 -21 L158 146', F.rod, 22, 1.3],
+      ['sadel', 'M-126 -58 Q-70 -76 -14 -58 M-65 -55 L-60 0', '#6B3F2A', 18, 0.3], ['styre', 'M121 -21 L135 -81 Q128 -98 104 -92 M84 -118 L82 -116', F.rod, 16, 0.35],
+      ['pedal', 'M-14 133 L5 184', '#E8B730', 12, 0.15]] },
   // cirkeln: en tjock, grön ring i tre varv (som i recept 1). Den rullar kring sin mitt (y 20).
   cirkel: { platta: ['#9C78D6', 20, 470, -0.06], fraga: 'p-vad-blir', lang: 'p-cirkel', kort: 'p-en-cirkel', berom: 'p-ocksa-cirkel', bild: CIRKEL, mittY: 20,
     streck: [['kontur', ell(0, 20, 185, 185), '#4BB35E', 34, 0.9], ['ringin', ell(0, 20, 156, 156), '#4BB35E', 32, 0.7], ['ringut', ell(0, 20, 213, 213), '#4BB35E', 32, 0.9]] },
-  hund: { platta: ['#5BB8C9', 20, 440, -0.07], rigg: 'hunden-hugo', streck: [] },
 };
 const RIGG_SKALA = 0.66;   // clownen-kalle och hunden-hugo (som elefanten-elsa i E) i teckningens mått: samma 0,66 som teckningen är mätt i (stillbild 2026-11-19)
 
@@ -143,13 +144,14 @@ for (const [namn, s] of Object.entries(SAKER)) {
     s.delEl = [];   // ekorrens delar bakom kroppen, var och en vriden kring sin led i levande()
     const delEl = async ([d, px, py, typ]) => s.delEl.push([typ, await bildEl(/body$/.test(f) ? f.replace(/body$/, d) : f.replace(/[^/]+$/, d), w, h, '', el('g', { transform: tr }, s.liv)), px, py]);
     for (const x of (s.delar ?? []).filter(x => !x[4])) await delEl(x);
-    await bildEl(f, w, h, tr, s.liv);
+    if (!s.hjulC) await bildEl(f, w, h, tr, s.liv);
     if (s.hjulC) { s.hjulCEl = []; for (const [hf, hx, hy] of s.hjulC) s.hjulCEl.push([await bildEl(hf, w, h, '', el('g', { transform: tr }, s.liv)), hx, hy]); }   // hjulen rullar när cykeln cyklar
     if (s === SAKER.cykel) {   // framhjulet: cirkeln, osynlig tills den har rullat dit (cirkel.svetsa)
       const [hx, hy, hr] = HJUL2, rs = hr / 432, rot = el('g', {}, el('g', { transform: tr }, s.liv));
       s.ringEl = rot; rot.setAttribute('opacity', 0);
       await bildEl(CIRKEL[0], 874, 874, `translate(${hx - 437 * rs} ${hy - 437 * rs}) scale(${rs})`, rot);
       s.hjulCEl.push([rot, hx, hy]); }
+    if (s.hjulC) await bildEl(f, w, h, tr, s.liv);   // cykelns ram ovanpå hjulen (ram-rören och gaffeln går fram till naven)
     for (const x of (s.delar ?? []).filter(x => x[4])) await delEl(x);
     for (const [x, y, r] of s.prickar ?? []) el('circle', { cx: x, cy: y, r, fill: '#3B3431', transform: tr }, s.liv);
     for (const [x, y] of s.kinder ?? []) el('ellipse', { cx: x, cy: y, rx: 24, ry: 14, fill: '#F29C94', opacity: 0.55 }, s.liv);
@@ -187,12 +189,12 @@ const A_DRAG = (() => { const L = 55, cx = 40, cy = 0, rx = 215, ry = 255, a0 = 
   const n = Math.round((Math.abs(a1 - a0) * Math.PI / 180) * (rx + ry) / 2 / L);
   for (let i = 0; i < n; i++) ut.push([p(a0 + (a1 - a0) * i / n), p(a0 + (a1 - a0) * (i + 1) / n)]);
   return ut; })();
-const BILDKLOSS = ['clown', 'cykel', 'cirkel', 'boll', 'hund'];
-const K = await bokstavsklossar(document.getElementById('klossar'), [{ fram: 'C', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, djup: 0.02 },
+const BILDKLOSS = ['clown', 'cykel', 'cirkel', 'boll'];
+const K = await bokstavsklossar(document.getElementById('klossar'), [{ fram: 'C', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, bubbla: true, djup: 0.02 },
   ...BILDKLOSS.map(n => ({ platta: SAKER[n].platta[0], bakgrund: SAKER[n].platta[4], rund: 0.12, tra: 'mer' }))]);
 BILDKLOSS.forEach((n, i) => { SAKER[n].ki = i + 1; SAKER[n].snett = SAKER[n].platta[3]; });
 // C-märket ritas också i ett eget lager överst (som B): i K är det osynligt (bara för måtten), i KB syns det ovanpå allt.
-const KB = await bokstavsklossar(document.getElementById('bokstav'), [{ fram: 'C', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, djup: 0.02 }]);
+const KB = await bokstavsklossar(document.getElementById('bokstav'), [{ fram: 'C', farg: A_ROD, drag: A_DRAG, rund: 0.12, platta: A_ROD, skala: A_SKALA, klister: true, bubbla: true, djup: 0.02 }]);
 
 // ---------- tidslinjen: repliker efter sina riktiga längder ----------
 const TAL = {
@@ -257,7 +259,7 @@ const TAL = {
   'n-allt-for-idag': 'Nu är vi klara för i dag.',
   'n-vad-kul': 'Tack för att du lekte med C!',
   'p-hej-da-slut': 'Hej då! Vi ses!',
-  'c-ljud-1': 'c', 'c-ljud-2': 'c', 'c-ljud-3': 'C!',   // klippta ur p-c-c-cykel (tagning 1 och 2): bokstavsnamnet se, som i ramsan C, c, cykel (Sanna 2026-11-21: s-ljudet, inte k)
+  'c-ljud-1': 'c', 'c-ljud-2': 'c', 'c-ljud-3': 'C!',   // bokstavens egen röst (ABC-d3 0:33, Sanna 22/11): Louise – Calm & Clear, ElevenLabs v4, produktion/ljud-original/roster/bokstavsrost/louise-1.mp3; Malins gamla klipp heter c-ljud-N-malin
 };
 const D = Object.fromEntries(await Promise.all(Object.keys(TAL).map(async n => [n, await langd(fil(n), 1.5)])));
 const LJUD = [], sag = (t, n) => (LJUD.push({ t, fil: fil(n), vol: 2.5, tal: TAL[n] }), t + D[n]);
@@ -265,11 +267,11 @@ const fx = (t, n, vol = 0.8, mer = {}) => LJUD.push({ t, fil: effekt(n), vol, ..
 // sakernas egna ljud (Sanna 2026-11-19: "more sound effects from the things"): efter ordet, när klossen snurrar i dansen, björnens brum i närbilderna
 const fxf = (t, p, vol = 0.8, mer = {}) => LJUD.push({ t, fil: `assets/ljud/effekter/${p}.m4a`, vol, ...mer });
 const BRUM = k => `fniss/fniss-${k}`;   // clownens fniss (1–8; namnet BRUM är kvar från B)
-const LAT = { clown: [BRUM(3), 0.8], boll: ['studs/studs-1', 0.7], cykel: ['cykelklocka/cykelklocka-1', 0.6], cirkel: ['rull/rull-1', 0.6], hund: ['vov/vov-1', 0.8] };
+const LAT = { clown: [BRUM(3), 0.8], boll: ['studs/studs-1', 0.7], cykel: ['cykelklocka/cykelklocka-1', 0.6], cirkel: ['rull/rull-1', 0.6] };
 const latFx = (s, t, langd = 0.85) => { const [p, v] = LAT[s.namn]; fxf(t, p, v, { langd, fade: 0.25 }); };
 const TEMPO = 0.8, MELLAN = 0.12, PAUS = 4, FYLL = 0.7;
 const MITT = [960, 590, 1.2], NARA = [960, 640, 1.35];   // där teckningen ritas: mitt i bild (Sanna 2026-11-18), och "närbilden": saken kliver fram på "En clown!"
-const { clown, boll, cykel, cirkel, hund } = SAKER;
+const { clown, boll, cykel, cirkel } = SAKER;
 // Klossarnas lägen: kk = [t, x, y, z, sidan, båge, fall] (mitten i px, z mot kameran; båge = lyft på vägen dit, fall = faller dit)
 const GB = 875, golvY = sd => GB - sd / 2;   // klossarnas nederkant på golvet
 const RX = 0.2, RY = -0.22;   // alla klossar lutar lika, så att toppen och högra sidan syns och muren går ihop
@@ -439,7 +441,7 @@ const CIRKEL_RIT = [1500, 660, 0.9];
 gissning(cirkel, 'rulla', 'gunga', 2.0, CIRKEL_RIT, [1500, 650, 1.1]); fx(cirkel.svar + 0.4, 'rull', 0.6, { langd: 1.6, fade: 0.4 });
 kanner(cirkel.svar + 0.3, cirkel.svar + 2.4, 'jatteglad', 'hurra');
 { const [bx, by, bs] = CYKEL_STAR, cs = bs * RING_I_CYKEL;
-  const hx = (HJUL2[0] - 512) * 560 / 1024, hy = 372 - 560 + HJUL2[1] * 560 / 1024;   // framhjulets mitt i cykelns teckningsmått
+  const hx = (HJUL2[0] - 512) * CYKEL[3] / 1024, hy = CYKEL[4] - CYKEL[3] + HJUL2[1] * CYKEL[3] / 1024;   // framhjulets mitt i cykelns teckningsmått
   const t0 = t + 0.3, t1 = flytta(cirkel, t0, bx + bs * hx, by + bs * hy - cs * 20, cs, 1.8);
   cirkel.levande.push([t0, 'rullaTill', t1, -300]); fx(t0, 'rull', 0.7, { langd: 1.8, fade: 0.4 });
   clown.levande.push([t0 + 0.2, 'titta', t1 + 0.6, 'nyfiken', { rikt: 1 }]);
@@ -507,9 +509,9 @@ function tittaMot(a, t0, t1, ansikte = 'nyfiken') {
 }
 function runda(s, { lat, ord, svar, inte, forst, ut, ordning = [clown, cykel, cirkel, s], redan = false, vag }) {
   const [x3, y3, z3] = MUR[3];
-  s.svar = 0; s.pa = [-2, -1];
+  s.svar ??= 0; s.pa = [u - 0.46, u - 0.45];   // bollen har redan svarat och synts i del 4: den hoppar in på sin platta först nu
   if (!redan) {
-    s.toppT.push([u, 1e9]); s.syns = s.ksyns = u - 0.45;
+    s.toppT.push([u, 1e9]); s.ksyns = u - 0.45; s.syns ??= u - 0.45;
     s.kk.push([0, x3, -300, z3, MS], [u - 0.45, x3, -300, z3, MS], [u, x3, y3, z3, MS, 0, 1]); s.landa.push(u);
     fx(u, 'duns', 1.0); fx(u + 0.35, lat, 1.0);
     u = reaktion(u + 0.7, { ansikte: 'forvanad', ljud: 5, mot: MUR[3], tillbaka: [MURX, 600, 1.3] });   // björnen ser den nya: oj, vem är det?
@@ -543,9 +545,10 @@ function runda(s, { lat, ord, svar, inte, forst, ut, ordning = [clown, cykel, ci
   A.hopp.push(u + 0.1); fx(u, 'jippi', 0.5); GN.push([u, MURX, 590, 500, 360]);
   u = reaktion(u + 1.2, { ansikte: 'jatteglad', pose: 'hurra', ljud: 2, tillbaka: [960, 540, 1] }) + 0.1;   // björnen i närbild: så glad!
 }
-// Hunden går ut, och elefanten (överst i muren) vinkar: "Hej då!"
-runda(hund, { lat: 'vov', ord: 'p-hund', svar: 'p-hunden', inte: 'p-hund-inte', forst: true,
-  ut: (a, b) => (hund.levande.push([a + 1.0, 'ga', b]), fx(a + 1.0, 'tass', 0.8, { loop: true, langd: b - a - 1.0, fade: 0.5 }), clown.levande.push([a + 0.9, 'vinka', b + 0.3]), clown.fram.push([a + 0.8, b + 0.3]), sag(a + 1.5, 'n-hej-da-hunden')) });
+// Den udda är bollen igen (feedback 2026-11-22 2:40: "det kan inte vara hund i varje video"): kritans felritade boll dunsar ner
+// på muren. Bollens egna repliker ur del 4, inga nya krediter. Klossen hoppar ner och rullar ut, och clownen vinkar: "Hej då, bollen!"
+runda(boll, { lat: 'studs', ord: 'p-boll', svar: 'p-en-boll', inte: 'p-boll-inte', forst: true,
+  ut: (a, b) => (fx(a + 1.0, 'rull', 0.7, { langd: b - a - 1.0, fade: 0.5 }), clown.levande.push([a + 0.9, 'vinka', b + 0.3]), clown.fram.push([a + 0.8, b + 0.3]), sag(a + 1.5, 'p-hej-da-bollen')) });
 t = u;
 
 // 6. Alla tillsammans: alla sex bildklossarna i en rad på golvet, A-märket i hörnet.
@@ -909,25 +912,30 @@ let KN = [960, 540, 1];   // kameran i den här bildrutan; skarm() ger punkter i
 const varld = ([x, y]) => [KN[0] + (x - 960) / KN[2], KN[1] + (y - 540) / KN[2]], skarmV = (i, u, v) => varld(K.skarm(i, u, v));
 const SVGER = [document.getElementById('botten'), document.getElementById('topp'), document.getElementById('ansikte')];
 // Bokstavsmärkets ansikte (som E, Sanna 2026-11-21), i bokstavens mått (−260 … 260 × −330 … 330, y nedåt): ögonen och munnen i bokstavens hål
-const ANS = { ogon: [[-20, -60], [70, -60]], mun: [25, 75] };
+const HUVUD = [-30, -228, 28, 40];   // ansiktets plats på bokstaven (Sanna 2026-11-22: Huvud upptill)
 const ansG = el('g', { style: 'display:none' }, document.getElementById('ansikte'));
-const aOgon = [0, 1].map(() => [el('ellipse', { fill: '#2B2523', stroke: '#fff', 'stroke-width': 5, 'paint-order': 'stroke' }, ansG), el('circle', { fill: '#fff' }, ansG)]);
-const aMun = el('ellipse', { fill: '#8E2F26', stroke: '#2B2523', 'stroke-width': 5 }, ansG);
-const aSmil = el('path', { fill: 'none', stroke: '#2B2523', 'stroke-width': 7, 'stroke-linecap': 'round' }, ansG);
+const aOgon = [0, 1].map(() => [el('ellipse', { fill: '#231A16' }, ansG), el('circle', { fill: '#fff' }, ansG)]);   // pärlögon (Sanna 2026-11-22)
+const aMun = el('path', { fill: '#231A16' }, ansG), aTunga = el('ellipse', { fill: '#FF7E8E' }, ansG);
+const aSmil = el('path', { fill: 'none', stroke: '#231A16', 'stroke-linecap': 'round' }, ansG);
 function ansikte(t, ut) {
   const [a0, a1] = A.ansikten.find(([a, b]) => t >= a && t < b + 0.3) ?? []; if (a0 === undefined) return ansG.style.display = 'none';
   ansG.style.display = ''; ansG.setAttribute('opacity', ut.toFixed(3));
   const q = KB.TRAV / KB.PX * A_SKALA, pt = (x, y) => varld(KB.skarm(0, q * x, -q * y)), [ax, ay] = pt(-0.5 / q, 0), [bx, by] = pt(0.5 / q, 0), U = Math.hypot(bx - ax, by - ay);
   const pop = (inUt(clamp((t - a0) / 0.3)) + 0.15 * bage((t - a0 - 0.2) / 0.3)) * (1 - inUt(clamp((t - a1) / 0.3))), blundar = (t - a0) % 3.2 > 3.05;
-  ANS.ogon.forEach(([ox, oy], i) => { const [x, y] = pt(ox, oy), r = 0.036 * U * pop, [e, g] = aOgon[i];
-    for (const [k, w] of Object.entries({ cx: x, cy: y, rx: r, ry: r * 1.15 * (blundar ? 0.12 : 1) })) e.setAttribute(k, w.toFixed(1));
-    for (const [k, w] of Object.entries({ cx: x - 0.3 * r, cy: y - 0.4 * r, r: 0.33 * r })) g.setAttribute(k, w.toFixed(1));
+  // Pärlögon (skissen runda 2) i bokstavens huvud (runda 3 "Huvud upptill", Sanna 2026-11-22): HUVUD = [x, y, ögonradie, halvt ögonavstånd] i bokstavens mått, y nedåt
+  const [hx, hy, R, H] = HUVUD, PT = pt, r = R * KB.TRAV / KB.PX * A_SKALA * U * pop;
+  const P = [[hx - H, hy], [hx + H, hy]].map(([x, y]) => PT(x, y)), dx = P[1][0] - P[0][0], dy = P[1][1] - P[0][1], dl = Math.hypot(dx, dy) || 1, ex = dx / dl, ey = dy / dl;
+  P.forEach(([x, y], i) => { const [e, g] = aOgon[i];
+    for (const [k, w] of Object.entries({ cx: x, cy: y, rx: r, ry: r * (blundar ? 0.12 : 1) })) e.setAttribute(k, w.toFixed(1));
+    for (const [k, w] of Object.entries({ cx: x - 0.32 * r, cy: y - 0.35 * r, r: 0.4 * r })) g.setAttribute(k, w.toFixed(1));
     g.setAttribute('opacity', blundar ? 0 : 1); });
   const o = A.mun.reduce((m, [a, b]) => Math.max(m, Math.sin(Math.PI * clamp((t - a + 0.04) / (b - a + 0.08)))), 0);   // öppen på varje ljud
-  const [mx, my] = pt(...ANS.mun), w = 0.06 * U * pop;
-  for (const [k, v] of Object.entries({ cx: mx, cy: my, rx: w, ry: (0.006 + 0.032 * o) * U * pop })) aMun.setAttribute(k, v.toFixed(1));
-  aMun.style.display = o > 0.05 ? '' : 'none'; aSmil.style.display = o > 0.05 ? 'none' : '';
-  aSmil.setAttribute('d', `M${(mx - w).toFixed(1)} ${(my - 0.012 * U).toFixed(1)} Q${mx.toFixed(1)} ${(my + 0.035 * U * pop).toFixed(1)} ${(mx + w).toFixed(1)} ${(my - 0.012 * U).toFixed(1)}`);
+  const mx = (P[0][0] + P[1][0]) / 2 - ey * 2.1 * r, my = (P[0][1] + P[1][1]) / 2 + ex * 2.1 * r, w = 0.65 * r, f = v => v.toFixed(1);
+  const top = my - 0.3 * r, hj = (0.25 + 0.95 * o) * r;   // munnen öppnas på varje ljud, med tunga
+  aMun.setAttribute('d', `M${f(mx - 0.8 * r)} ${f(top)} Q${f(mx)} ${f(top + 0.15 * r)} ${f(mx + 0.8 * r)} ${f(top)} Q${f(mx + 0.7 * r)} ${f(top + hj)} ${f(mx)} ${f(top + hj)} Q${f(mx - 0.7 * r)} ${f(top + hj)} ${f(mx - 0.8 * r)} ${f(top)}Z`);
+  for (const [k, v] of Object.entries({ cx: mx, cy: top + 0.72 * hj, rx: 0.38 * r, ry: 0.22 * r })) aTunga.setAttribute(k, f(v));
+  aMun.style.display = aTunga.style.display = o > 0.05 ? '' : 'none'; aSmil.style.display = o > 0.05 ? 'none' : '';
+  aSmil.setAttribute('stroke-width', f(0.3 * r)); aSmil.setAttribute('d', `M${f(mx - w)} ${f(my - 0.18 * r)} Q${f(mx)} ${f(my + 0.82 * r)} ${f(mx + w)} ${f(my - 0.18 * r)}`);
 }
 const framsida = i => { const [ox, oy] = skarmV(i, 0, 0), [ux, uy] = skarmV(i, 0.5, 0), [vx, vy] = skarmV(i, 0, -0.5);
   return [2 * (ux - ox), 2 * (uy - oy), 2 * (vx - ox), 2 * (vy - oy), ox, oy]; };

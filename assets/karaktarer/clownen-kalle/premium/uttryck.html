@@ -274,10 +274,26 @@ const KLAPP = { v: -105, dv: 30, in: 50, din: 22, ner: -25 };   // ner −25: h�
 const KLAPPTYP = new URLSearchParams(location.search).get('klapp') === 'kant' ? 'kant' : 'ny';
 const KLAPPNY = { kontakt: [-148, 178], oppen: [-130, 138], y: 60, spets: 35, gnista: [50, 22] };
 // Figurens egna tal för rörelserna i verktyg/rigg-motor.js (det som inte står här är motorns standard).
-const RORELSE = { svans: null, oron: false, boj: true, blick: 31 };
+// hoppArm 4 (inte motorns 16): med glada ansiktets 20° hamnar armarna annars i GOM-bandet (26–80°) och glider in och ut
+// bakom kroppen i varje hopp, så att de ser ut att flyga (feedback ABC-c3 2026-11-22 3:25).
+const RORELSE = { svans: null, oron: false, boj: true, blick: 31, hoppArm: l => 4 * Math.sin(Math.PI * l) };
 const ROR = {
   ...kanslorRorelser(),
   ...rorelser(),
+  // Clownens egen dans (feedback ABC-c3 2026-11-22 3:34 "better dancing clown"): kroppen dansar, inte armarna. Ett steg åt
+  // sidan per gung (1 s) med lut åt samma håll, en studs på varje slag (två per gung), foten lyfts på andra sidan, huvudet
+  // vickar emot och nickar på slaget, och sista gungen i slingan är ett litet hopp. Armarna flaxar lite i otakt men stannar
+  // under GOM.fran (glada ansiktets 16–20° + högst 2°), så de glider aldrig in bakom kroppen. Slinga 4 s, mjukt in och ut.
+  dansa: t => {
+    const T = t % 4, in_ = mjuk(kl(0, 1, T / 0.4)) * mjuk(kl(0, 1, (4 - T) / 0.4)), fi = 2 * Math.PI * T;
+    const s = Math.sin(fi) * in_, studs = Math.abs(Math.sin(fi)) * in_, hopp = T >= 2.5 && T < 3 ? 1 : 0, eft = Math.sin(fi - 0.9) * in_;
+    const f = blanda('glad', 'jatteglad', in_);
+    return [blinka(f, t), P({ x: 40 * s, luta: 5 * s, boj: 3 * s, lyft: -(16 + 34 * hopp) * studs,
+      strack: (0.025 + 0.03 * hopp) * studs - 0.02 * (1 - studs) * in_, bred: 0.015 * (1 - studs) * in_,
+      armar: [in_ * (-7 + 9 * eft), in_ * (-7 - 9 * eft)],
+      benY: [-24 * Math.max(0, -s), -24 * Math.max(0, s)], ben: [8 * Math.max(0, -s), 8 * Math.max(0, s)],
+      skak: [-0.45 * eft, 0], nick: [0.35 * studs * (1 - hopp), 0] })];
+  },
 };
 Object.assign(window, { UTTRYCK, NEUTRAL, POSER, POSE0, blanda, blandaPose, ansikte, pose, riktning, rorelse, ROR });
 
