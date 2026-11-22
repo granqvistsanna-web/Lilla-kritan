@@ -49,7 +49,8 @@ nb=$((nb - f0)); fdur=$(python3 -c "print($nb / $ffps)")   # det som spelas, i h
 # 2. tider: sidans längd är OPPEN + 3 + 2,4 s (video.js), och --bara-ljud skriver en wav av exakt den längden
 node avsnitt/004-bussen-badar/scener/render.mjs $mapp --bara-ljud > /dev/null
 wav=$mapp/$namn-effekter.wav; sidlangd=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $wav); rm $wav
-n0=$(python3 -c "print(round(($sidlangd - 5.4) * 30))")   # första helt öppna bildrutan
+oppen=$(node avsnitt/004-bussen-badar/scener/render.mjs $mapp --langd | tail -1 | python3 -c 'import sys, json; print(json.load(sys.stdin).get("oppen", ""))')
+n0=$(python3 -c "print(round(${oppen:-$sidlangd - 5.4} * 30))")   # första helt öppna bildrutan (OPPEN ur video.js; äldre: sidans längd − 3 − 2,4 s)
 # tystnad efter filmens sista ljud: stängningens svisch ska inte börja ovanpå det
 ljudslut=$(ffmpeg -hide_banner -nostats -sseof -4 -i $film -vn -af silencedetect=noise=-45dB:d=0.05 -f null - 2>&1 | python3 -c '
 import sys, re

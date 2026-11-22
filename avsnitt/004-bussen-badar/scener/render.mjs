@@ -61,9 +61,9 @@ if (ts.length) {
     '-frames:v', '1', join(STILLS, 'sheet.jpg')]);
   console.log(join(STILLS, 'sheet.jpg'));
 } else {
-  const { DURATION, SANG: sang, LJUD: ljud = [] } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD }));
+  const { DURATION, SANG: sang, LJUD: ljud = [], OPPEN: oppen } = await p.evaluate(() => ({ DURATION: window.DURATION, SANG: window.SANG, LJUD: window.LJUD, OPPEN: window.OPPEN }));
   const till = tillArg ?? DURATION, ut = UT ?? join(dir, `${basename(dir)}${staende ? '-staende' : ''}${kort ? '-kort' : ''}${liggande ? '-liggande' : ''}${mix ? '-mix' : ''}${sist ? '-sist' : ''}${en ? '-en' : ''}${fran || tillArg ? `-${fran}-${till}` : ''}.mp4`);
-  if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut })); process.exit(0); }
+  if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut, oppen })); process.exit(0); }
   // Ljud: sångbiten (scenens t = 0 är sångens sang[0], tonas ut vid sang[1], sedan tystnad) + effekterna ur kit.ljud,
   // var och en fördröjd till sin tid, −8 dB × vol, loopar kortade med uttoning. Tysta (saknade) effekter hoppas över.
   const effekter = ljud.filter(c => c.fil && c.t < till && c.t + (c.langd ?? 30) > fran);

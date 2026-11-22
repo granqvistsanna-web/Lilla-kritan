@@ -7,10 +7,10 @@
 // forst.png och sist.png i luckans mapp (hel-video.sh tar dem ur filmen).
 // Tidslinjen: öppningen tills luckan är helt öppen vid OPPEN (hela bildrutor: bild OPPEN*30 är den första helt öppna), tre sekunder
 // stilla (bilden byts efter en sekund), sedan stängs luckan (lucka.js slut(): 2,4 s). Sidans längd är alltså OPPEN + 3 + 2,4 s, och
-// hel-video.sh läser OPPEN ur den. Ändrar du HALL eller lucka.js slut() måste hel-video.sh ändras med.
+// hel-video.sh läser OPPEN (window.OPPEN via render.mjs --langd). Ändrar du HALL eller lucka.js slut() måste hel-video.sh ändras med.
 window.video = (() => {
 const HALL = 3;
-async function kor({ lucka: N }) {
+async function kor({ lucka: N, slut }) {   // slut: 'vi-ses-snart' eller 'alla-luckor' (lucka.js), annars "Vi ses i morgon!"
   if (document.readyState === 'loading') await new Promise(r => addEventListener('DOMContentLoaded', r));
   const mapp = location.pathname.replace(/[^/]*$/, '');
   document.head.insertAdjacentHTML('beforeend', '<style>html,body{margin:0;height:100%;background:#000}svg{display:block;width:min(100vw,177.78vh);margin:auto}</style>');
@@ -18,12 +18,12 @@ async function kor({ lucka: N }) {
     <image id="forst" href="${mapp}forst.png" width="1920" height="1080"/><image id="sist" href="${mapp}sist.png" width="1920" height="1080"/></svg>`;
   const svg = document.querySelector('svg');
   await Promise.all([lucka.bild(mapp + 'forst.png'), lucka.bild(mapp + 'sist.png')]);
-  const K = await lucka.bygg(svg, N, { film: true }), OPPEN = Math.ceil(K.oppen * 30) / 30, DURATION = K.slut(OPPEN + HALL);
+  const K = await lucka.bygg(svg, N, { film: true, ...(slut && { slut }) }), OPPEN = Math.ceil(K.oppen * 30) / 30, DURATION = K.slut(OPPEN + HALL);
   const rita = t => { document.getElementById('sist').style.display = t >= OPPEN + 1 ? '' : 'none'; K.rita(t); };
   const ljud = K.ljud();   // saknade röster är tysta, som i rita.js
   await Promise.all(ljud.map(async c => { if (!(await fetch('/' + c.fil, { method: 'HEAD' }).catch(() => ({}))).ok) c.fil = null; }));
   window.LJUD = ljud.filter(c => c.fil);
-  window.DURATION = DURATION;
+  window.DURATION = DURATION; window.OPPEN = OPPEN;   // hel-video.sh läser OPPEN (render.mjs --langd), eftersom slutet kan vara längre (alla-luckor)
   window.seek = window.render = rita;
   window.ready = true;   // render.mjs väntar på den
   rita(+new URLSearchParams(location.search).get('t') || 0);   // förhandsvisning: ?t=1.5 visar en bildruta
