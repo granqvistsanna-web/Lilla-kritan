@@ -52,6 +52,17 @@ Det är julafton och det snöar. Katten trippar ut i snön, men fryser och vill 
 - *"Det är julafton!"* bort: replik `32b-saga-god-jul` (bara *"Kan du säga god jul?"*).
 - Outrot: kameran glider in på kattens ansikte och kritirisen sluts runt det.
 
+## Feedback J06 2026-11-22, runda 2
+
+- **Ritintrot ritar paketet** (det gröna med röd rosett, paket 1) i stället för katten, med `verktyg/kritan-ritar.js` och konturen `assets/rekvisita/paket/cut/paket-hog-kontur.json`. Svaret är *"… ett paket!"*, klippt ur Malins `25-grav-grav` (från 2,52 s) till `03b-ett-paket.m4a`, så ingen ny tagning behövdes. Övergången in i björkdungen är hålet i papperet (som 011), inte den vita toningen.
+- **Svansen** vickar lugnt hela tiden och släpar efter stegen i gången.
+- **Förgrunden:** julkulan, pepparkaksstjärnan, grankvisten och den gula stjärnan bort. Snötussarna är kvar.
+- **Brr** (`effekter/brr`, 1,1 s) och ett litet huttrande när rad 6 börjar, före *"Katten vill visst gå in"*.
+- **Kameran** i grävnärbilderna (rad 16 och 17) är flyttad upp (y 790 → 700), så att luvan inte klipps.
+- **Spaden** (`rekvisita/spade`, bladet tonat till guld i scenen så att det inte blir en till röd sak i snön): står nedstucken vid björken från början, katten tar den i rad 16, byter tass framför magen i 16b och 18 och lägger den på pulkan i rad 24. Grävandet är ett riktigt tag per *"gräv"*: lyft, stick ner, kasta, och en snöklump flyger ut och puffar i snön.
+- Line boil sänkt till 2,5 px i bild, 6 gånger/s (CLAUDE.md). `qa-film.sh` flaggar ändå boil i filmen (16,7 px/s), men förra versionen mätte lika (15,5): det är snöfallet som mäts, inte kanterna.
+- Kritan gick över kattens ansikte vid tomteluvan (katten blev större i förra rundan). Luvan ritas nu längre till vänster (x 690), kritan kommer högt in och sedan rakt ner, väntar till vänster om luvan och flyger ut uppåt vänster.
+
 ## Kimis granskning av replikerna (2026-11-13)
 
 Sanna bad om en granskning av Kimi innan Malins röst görs. Kimi hade fem anmärkningar. Ingen ändrades, för alla fem är val som serien redan gjort och Sanna godkänt i 020–024:

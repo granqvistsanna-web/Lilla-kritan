@@ -4,7 +4,7 @@
 export const ROST = [
   ['01-kritan-ritar', 'Kritan ritar …', 2.09],
   ['02-vad-blir-det', 'Hm … vad blir det nu?', 1.91],
-  ['03-en-katt', 'Oj! En katt!', 1.53],
+  ['03b-ett-paket', '… ett paket!', 1.19],   // 2026-11-22 (J06 "draw julklapp istället för katt"): slutet av 25-grav-grav, 2,52 s →
   ['04-hej-katten', 'Hej, katten! Hej, hej!', 2.75],
   ['05-mycket-sno', 'Oj, vad mycket snö!', 1.50],
   ['06-tassar-i-snon', 'Titta, tassar i snön!', 2.92],
@@ -54,16 +54,16 @@ export const MJ = { hej: M(1), fortjust: M(2), fniss: M(3), mysig: M(4), nyfiken
 // 2026-11-22 (feedback J06 "more new cute animal sounds"): blandat med 044:s kattunge (mjau-trill, -ooo, -oj, -spinn, -puttar)
 // och Sannas nya tagningar 22/11 (mjau-aah, -fraga, -glad, -prat). mjau-gullig är kvar för tack, trumpen och hej då.
 export const RADER = [
-  { id: '01a', d: 6.0, plats: 'Papperet', malin: [[1, 3.0]], bild: 'Kritan ritar kattens kontur, halvvägs', ljudtext: 'kritan ritar, vintermatta' },
+  { id: '01a', d: 6.0, plats: 'Papperet', malin: [[1, 3.0]], bild: 'Kritan ritar paketets kontur, halvvägs', ljudtext: 'kritan ritar, vintermatta' },
   { id: '01b', d: 7.5, plats: 'Papperet', malin: [[2, 0.0]], bild: 'Konturen klar, kritan väntar: barnet gissar', ljudtext: 'kritan ritar' },
-  { id: '01c', d: 0.6 + L(3) + 0.5, plats: 'Papperet → zoom in', malin: [[3, 0.6]], bild: 'Katten fylls i, zoom in i teckningen', ljudtext: 'glitter' },
+  { id: '01c', d: 0.4 + L(3) + 0.9 + 1.8, plats: 'Papperet → hålet', malin: [[3, 0.4]], ljud: [['pling/pling-1', 0.0], ['swoosh/swoosh-1', 0.4 + L(3) + 0.9]], bild: 'Paketet fylls i, gnistor, kritan flyger ut; hål i papperet in mot björkdungen (1,8 s)', ljudtext: 'pling, swoosh' },
 
   { id: '1', d: 2.8 + L(4) + 1.4, plats: 'Helbild', malin: [[4, 2.8]], ljud: [['mjau-glad/mjau-glad-3', 3.1 + L(4)]], bild: 'Katten trippar in från höger, tassavtryck, vinkar', ljudtext: 'tass, hej-mjau' },
   { id: '2', d: 0.5 + L(5) + 1.6, plats: 'Halvbild', malin: [[5, 0.5]], ljud: [['mjau-trill/mjau-trill-2', 0.8 + L(5)]], bild: 'Tittar upp på flingorna, litet skutt', ljudtext: 'förtjust mjau' },
   { id: '3', d: 0.4 + L(6) + 1.8, plats: 'Närbild tassavtrycken', malin: [[6, 0.4]], ljud: [['mjau-oj/mjau-oj-1', 0.8 + L(6)]], bild: 'Tassavtrycken i snön', ljudtext: 'nyfiket mjau' },
   { id: '4', d: 0.6 + L(7) + 1.6, plats: 'Halvbild', malin: [[7, 0.8]], ljud: [['huttra/huttra-1', 0.2], ['mjau-oj/mjau-oj-2', 1.6]], bild: 'Katten darrar tre gånger', ljudtext: 'huttra' },
   { id: '5', d: 0.3 + L(8) + 2.2, plats: 'Helbild', malin: [[8, 0.3]], ljud: [[MJ.trumpen, 0.6 + L(8)]], bild: 'Skakar på huvudet', ljudtext: 'trumpet mjau' },
-  { id: '6', d: 0.9 + L(9) + 1.0 + L(10) + 1.3, plats: 'Närbild', malin: [[9, 0.9], [10, 1.9 + L(9)]], ljud: [[MJ.trumpen, 0.5]], bild: 'Tittar mot stugans dörr', ljudtext: 'trumpet mjau' },
+  { id: '6', d: 0.9 + L(9) + 1.0 + L(10) + 1.3, plats: 'Närbild', malin: [[9, 0.9], [10, 1.9 + L(9)]], bild: 'Huttrar (brr), tittar bort åt vänster', ljudtext: 'brr' },
   { id: '7a', d: 1.3 + L(11) + 0.8, plats: 'Helbild', malin: [[11, 1.3]], bild: 'Kritan kommer in', ljudtext: '–' },
   { id: '7b', d: 6.8, plats: 'Närbild snön', bild: 'Kritan ritar tomteluvan på snön (3,5 s), gisspaus', ljudtext: 'kritan ritar' },
   { id: '7c', d: 0.6 + L(12) + 0.6, plats: 'Närbild snön', malin: [[12, 0.6]], ljud: [['glitter/glitter-1', 0.0]], bild: 'Luvan fylls i, kritan flyger iväg', ljudtext: 'glitter' },
