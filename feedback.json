@@ -7894,9 +7894,10 @@
   "sec": 94,
   "tags": [],
   "note": "more reactions and dentrist looking at bunny",
-  "fixed": false,
+  "fixed": true,
   "at": 1795340911484,
-  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)"
+  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)",
+  "fixedAt": 1795341356644
  },
  "ro9rvhn5p5mwrnmthm": {
   "ep": "049",
@@ -7904,9 +7905,10 @@
   "sec": 96,
   "tags": [],
   "note": "imporve light ljus animation, source looks wrong position",
-  "fixed": false,
+  "fixed": true,
   "at": 1795340927434,
-  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)"
+  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)",
+  "fixedAt": 1795341356644
  },
  "acofja9lx0mwrnoibq": {
   "ep": "049",
@@ -7914,9 +7916,10 @@
   "sec": 206,
   "tags": [],
   "note": "plish bubbles better contrast for toothbrush",
-  "fixed": false,
+  "fixed": true,
   "at": 1795341006278,
-  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)"
+  "render": "2026-11-22 08:52 (feedback 3: ny mindre tandborste, örat bakom lampan, mindre kanin, riggens egna tänder, bubblor i kritstil)",
+  "fixedAt": 1795341356644
  },
  "jg4z38hnhzmwrmf57p": {
   "ep": "J17",
