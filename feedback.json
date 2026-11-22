@@ -8432,9 +8432,10 @@
   "sec": 134,
   "tags": [],
   "note": "door looks blurry. maybe a code door.",
-  "fixed": false,
+  "fixed": true,
   "at": 1795343544484,
-  "render": "2026-11-22 11:21 (Feedback 22/11: armarna sitter i kroppen, rund gris, närmare vid dörren)"
+  "render": "2026-11-22 11:21 (Feedback 22/11: armarna sitter i kroppen, rund gris, närmare vid dörren)",
+  "fixedAt": 1795356068574
  },
  "0qwh81ez8cmwrp7u9n": {
   "ep": "ABC-d3",
@@ -8442,9 +8443,10 @@
   "sec": 212,
   "tags": [],
   "note": "bigger dino",
-  "fixed": false,
+  "fixed": true,
   "at": 1795343587835,
-  "render": "2026-11-22 11:21 (Feedback 22/11: armarna sitter i kroppen, rund gris, närmare vid dörren)"
+  "render": "2026-11-22 11:21 (Feedback 22/11: armarna sitter i kroppen, rund gris, närmare vid dörren)",
+  "fixedAt": 1795356068574
  },
  "cgr9yimfcemwrwlcpl": {
   "ep": "ABC-d3",
