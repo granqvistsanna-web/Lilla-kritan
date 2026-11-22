@@ -8136,9 +8136,10 @@
   "sec": 183,
   "tags": [],
   "note": "bigger car",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342483850,
-  "render": "2026-11-21 19:35 (slutrendering)"
+  "render": "2026-11-21 19:35 (slutrendering)",
+  "fixedAt": 1795345157037
  },
  "2p4xne8nfamwrokbvo": {
   "ep": "J19",
@@ -8146,9 +8147,10 @@
   "sec": 143,
   "tags": [],
   "note": "smaller snowman",
-  "fixed": false,
+  "fixed": true,
   "at": 1795342490916,
-  "render": "2026-11-21 19:35 (slutrendering)"
+  "render": "2026-11-21 19:35 (slutrendering)",
+  "fixedAt": 1795345157037
  },
  "rxcegnor2ymwqoxqns": {
   "ep": "J19",
@@ -8167,9 +8169,10 @@
   "sec": 12,
   "tags": [],
   "note": "polish rita bussen",
-  "fixed": false,
+  "fixed": true,
   "at": 1795282657894,
-  "render": "2026-11-21 18:26 (snabb)"
+  "render": "2026-11-21 18:26 (snabb)",
+  "fixedAt": 1795345157037
  },
  "wgwryb3qu7mwqp1h8t": {
   "ep": "J19",
@@ -8177,9 +8180,10 @@
   "sec": 211,
   "tags": [],
   "note": "skip this scene",
-  "fixed": false,
+  "fixed": true,
   "at": 1795282824845,
-  "render": "2026-11-21 18:26 (snabb)"
+  "render": "2026-11-21 18:26 (snabb)",
+  "fixedAt": 1795345157037
  },
  "ebw24ripd9mwqp201f": {
   "ep": "J19",
@@ -8187,9 +8191,10 @@
   "sec": 255,
   "tags": [],
   "note": "polish legs",
-  "fixed": false,
+  "fixed": true,
   "at": 1795282849203,
-  "render": "2026-11-21 18:26 (snabb)"
+  "render": "2026-11-21 18:26 (snabb)",
+  "fixedAt": 1795345157037
  },
  "kv9tv3hstomwrogl03": {
   "ep": "J17",
