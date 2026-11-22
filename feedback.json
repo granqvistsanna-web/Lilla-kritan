@@ -8996,5 +8996,25 @@
   "fixed": false,
   "at": 1795387642392,
   "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)"
+ },
+ "amkk1m5vtnmwsfpfiz": {
+  "ep": "ABC-c3",
+  "time": "3:05",
+  "sec": 185,
+  "tags": [],
+  "note": "make it a bit easier to guess, a few hints",
+  "fixed": false,
+  "at": 1795388078555,
+  "render": "2026-11-22 23:02 (gömlek med klossarnas baksida, viskning, kritans fniss, bilden i ramen, lugnare clown, ordens ordning)"
+ },
+ "yihs6o03wlmwsfpxfs": {
+  "ep": "ABC-c3",
+  "time": "3:07",
+  "sec": 187,
+  "tags": [],
+  "note": "missing edge of clown block",
+  "fixed": false,
+  "at": 1795388101768,
+  "render": "2026-11-22 23:02 (gömlek med klossarnas baksida, viskning, kritans fniss, bilden i ramen, lugnare clown, ordens ordning)"
  }
 }
