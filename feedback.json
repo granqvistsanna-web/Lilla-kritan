@@ -8146,5 +8146,45 @@
   "fixed": false,
   "at": 1795342490916,
   "render": "2026-11-21 19:35 (slutrendering)"
+ },
+ "rxcegnor2ymwqoxqns": {
+  "ep": "J19",
+  "time": "0:10",
+  "sec": 10,
+  "tags": [],
+  "note": "need julkal intro and outro",
+  "fixed": false,
+  "at": 1795282650424,
+  "render": "2026-11-21 18:26 (snabb)"
+ },
+ "acw0x5hgn8mwqoxwfa": {
+  "ep": "J19",
+  "time": "0:12",
+  "sec": 12,
+  "tags": [],
+  "note": "polish rita bussen",
+  "fixed": false,
+  "at": 1795282657894,
+  "render": "2026-11-21 18:26 (snabb)"
+ },
+ "wgwryb3qu7mwqp1h8t": {
+  "ep": "J19",
+  "time": "3:31",
+  "sec": 211,
+  "tags": [],
+  "note": "skip this scene",
+  "fixed": false,
+  "at": 1795282824845,
+  "render": "2026-11-21 18:26 (snabb)"
+ },
+ "ebw24ripd9mwqp201f": {
+  "ep": "J19",
+  "time": "4:15",
+  "sec": 255,
+  "tags": [],
+  "note": "polish legs",
+  "fixed": false,
+  "at": 1795282849203,
+  "render": "2026-11-21 18:26 (snabb)"
  }
 }
