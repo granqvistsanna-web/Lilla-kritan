@@ -7744,9 +7744,10 @@
   "sec": 146,
   "tags": [],
   "note": "added teeth here? looks odd",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333384720,
-  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))",
+  "fixedAt": 1795333930523
  },
  "pnjrv34vl7mwrj6gw1": {
   "ep": "049",
