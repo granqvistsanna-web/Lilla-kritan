@@ -318,23 +318,23 @@ YouTube: **inte uppladdad** (den schemalagda uppladdningen 7Trh7EsXv6c raderades
 
 ## Lucka 17 – 17 dec 05:00
 
-Fil: `17-tittut-leoparden/17-tittut-leoparden.mp4` (2:33)
+Fil: `17-hunden-gar-pa-pottan/17-hunden-gar-pa-pottan.mp4` (4:02). Miniatyr: `17-hunden-gar-pa-pottan/thumbnail/miniatyr-strimma.png` (raden `jul-17-pottan`). Avsnitt 042, byggt som lucka 2026-11-22; ersätter tittut med leoparden.
 
 ```
-Lucka 17 🐆 Tittut med leoparden | Lilla Kritans julkalender
+Lucka 17 🐶 Hunden går på pottan | Lilla Kritans julkalender
 ```
 
 ```
-Borta! … Tittut! Bakom lucka sjutton leker leoparden tittut på lekplatsen. Leoparden gömmer sig bakom den stora bollen, bakom rutschkanan och i sandlådan, och kommer fram igen, varje gång. Kan du säga tittut innan leoparden kommer?
+Hunden leker vid granen och blir törstig. Ett glas vatten, ett till och ett till! Oj, behöver du kissa? I badrummet finns ingen potta, så kritan ritar en. Men inget papper! Kritan ritar en toarulle, och den rullar iväg. Kan du se var den är? Sist tvättar hunden händerna: gnugga, gnugga … ren!
 
-Hela tittut-leken finns också här: https://youtu.be/9Xubu_kM2A8
+Bra att titta på när man själv övar på att gå på pottan.
 
 [SLUT]
 
-#julkalender #tittut #lillakritan
+#julkalender #bilderbok #lillakritan
 ```
 
-YouTube: **inte uppladdad** (den schemalagda uppladdningen QpikbCSJwio raderades permanent 2026-11-20 på Sannas begäran)
+YouTube: **inte uppladdad**
 
 ## Lucka 18 – 18 dec 05:00
 
