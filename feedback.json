@@ -8976,5 +8976,25 @@
   "fixed": false,
   "at": 1795387779215,
   "render": "2026-11-22 15:35 (slutrenderad efter feedback 22/11 b: spaden i tassen, snön i hinken, hinken kvar på tornet, mindre ljus, siffror vid räkningen)"
+ },
+ "qc04xmoob7mwsffmch": {
+  "ep": "J17",
+  "time": "1:00",
+  "sec": 60,
+  "tags": [],
+  "note": "polsih animation, straw is flashing",
+  "fixed": false,
+  "at": 1795387620833,
+  "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)"
+ },
+ "gq36q0b7d6mwsfg2zc": {
+  "ep": "J17",
+  "time": "1:02",
+  "sec": 62,
+  "tags": [],
+  "note": "better pick up water or make glass fly up in hand",
+  "fixed": false,
+  "at": 1795387642392,
+  "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)"
  }
 }
