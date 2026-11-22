@@ -8422,9 +8422,10 @@
   "sec": 181,
   "tags": [],
   "note": "julgranns fot cause someoverlap of julkulor and mus sometimes",
-  "fixed": false,
+  "fixed": true,
   "at": 1795355605865,
-  "render": "2026-11-22 11:36 (feedback 22/11 b: nya musljud (inte fågel), kameran högre vid 3:50)"
+  "render": "2026-11-22 11:36 (feedback 22/11 b: nya musljud (inte fågel), kameran högre vid 3:50)",
+  "fixedAt": 1795357240118
  },
  "nt7n7vnmk2mwrp6wtg": {
   "ep": "ABC-d3",
