@@ -1563,5 +1563,13 @@
   "file": "produktion/youtube/mix/vardagsberattelser-mix/vardagsberattelser-mix.mp4",
   "status": "granska",
   "name": "Mix: Djuren hittar på! (vardagsberättelser)"
+ },
+ "J23": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-1122-1418.mp4",
+  "duration": 192.7,
+  "rendered": "2026-11-22 14:18 (snabb förhandsvisning (grind 6), julkalenderns ram, dagbädd 2 som musik)",
+  "file": "produktion/youtube/shorts/jul/23-kaninen-bygger-torn/23-kaninen-bygger-torn.mp4",
+  "status": "granska",
+  "name": "Kaninen bygger torn i snön"
  }
 }
