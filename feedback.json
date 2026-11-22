@@ -7704,5 +7704,55 @@
   "fixed": false,
   "at": 1795294103408,
   "render": "2026-11-21 21:33 (1:07 vatten, 1:39 boll, 2:42 rulle, 3:09 större hund, stilla klocka, färre bjällror, ljudnivåer)"
+ },
+ "ki4j5kgexemwrj0xnn": {
+  "ep": "049",
+  "time": "0:09",
+  "sec": 9,
+  "tags": [],
+  "note": "rita en bättre tandborste ocj lite mindre",
+  "fixed": false,
+  "at": 1795333187939,
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+ },
+ "1mjhgjygbpmwrj485f": {
+  "ep": "049",
+  "time": "1:46",
+  "sec": 106,
+  "tags": [],
+  "note": "maybe bunny ear should be behind lamp",
+  "fixed": false,
+  "at": 1795333341507,
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+ },
+ "jwn6ulrj15mwrj4gpj": {
+  "ep": "049",
+  "time": "2:03",
+  "sec": 123,
+  "tags": [],
+  "note": "make bunny a bit smaller",
+  "fixed": false,
+  "at": 1795333352599,
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+ },
+ "y9mza2v7ogmwrj55hs": {
+  "ep": "049",
+  "time": "2:26",
+  "sec": 146,
+  "tags": [],
+  "note": "added teeth here? looks odd",
+  "fixed": false,
+  "at": 1795333384720,
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+ },
+ "pnjrv34vl7mwrj6gw1": {
+  "ep": "049",
+  "time": "3:29",
+  "sec": 209,
+  "tags": [],
+  "note": "polish the talk and tanke bubblor better contrast, better animations, more in style of lilla kritan",
+  "fixed": false,
+  "at": 1795333446145,
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
  }
 }
