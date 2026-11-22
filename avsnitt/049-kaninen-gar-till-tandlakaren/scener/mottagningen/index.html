@@ -18,6 +18,9 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap id="boilStyrka" in="SourceGraphic" scale="2.5"/>
     </filter>
+    <!-- kritkorn i bubblornas yta: glesa varma prickar -->
+    <filter id="bubbKorn" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.86  0 0 0 0 0.80  0 0 0 0 0.70  0 0 0 -3 1.75" result="k"/><feComposite in="k" in2="SourceGraphic" operator="in"/></filter>
     <filter id="mjukStrale" x="-0.2" y="-0.2" width="1.4" height="1.4"><feGaussianBlur stdDeviation="14"/></filter>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -28,6 +31,8 @@
     <g id="stolkolv"><image class="stolbild" clip-path="url(#stolKlippKolv)" href="/assets/rekvisita/tandlakarstolen/cut/tandlakarstolen.png"/></g>
     <g id="stolg"><image class="stolbild" clip-path="url(#stolKlippTopp)" href="/assets/rekvisita/tandlakarstolen/cut/tandlakarstolen.png"/></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
+    <!-- lampan (huvudet och armen) en gång till framför figurerna, så att kaninens öra hamnar bakom den (feedback 3) -->
+    <g id="stollampa"><image class="stolbild" clip-path="url(#stolKlippLampa)" href="/assets/rekvisita/tandlakarstolen/cut/tandlakarstolen.png"/></g>
     <g filter="url(#boil)"><g id="saker"></g></g>
     <g id="fram"></g>
   </g>
@@ -50,10 +55,10 @@ const ELE_OGON = [[372, 318], [548, 318]], ELE_KIND = [[330, 392], [596, 392]], 
 const RUM = { fil: A + 'bakgrunder/mottagningen/mottagningen-teal-dekor.png', w: 1876, h: 1058 }, RS = 1920 / RUM.w;
 const STOL = { w: 797, h: 849, x: 404, fot: 975, s: 0.88, satesY: 440, satesX: 370, lampa: [220, 115], UPP: 36, KLIPP: 660, KLIPPX: 480 };   // sätet åker upp 36 px (Sanna: 60 var för högt); stolen 88 % så att sätet sitter lägre från början (feedback 2)
 const STOL_TOPP = STOL.fot - STOL.h * STOL.s, SATE = [STOL.x + STOL.satesX * STOL.s, STOL_TOPP + STOL.satesY * STOL.s];
-const KS = 0.55, PA_GOLV = [560, 990], PA_STOL = [SATE[0], SATE[1] + 108], PA_NER = [SATE[0] - 140, PA_GOLV[1]];
+const KS = 0.5, PA_GOLV = [560, 990], PA_STOL = [SATE[0], SATE[1] + 108 * 0.5 / 0.55], PA_NER = [SATE[0] - 140, PA_GOLV[1]];   // feedback 3: kaninen lite mindre (0,55 → 0,5)
 const DOKTOR = [1050, 990, 0.85];   // närmare stolen, så att hennes egen arm når munnen
 const MAGE = [540, 700], MUN = [512, 470], FICKA = [589, 497];   // kaninen och doktorn B (riggarnas 1024-ruta); FICKA: bröstfickans överkant
-const NER = -30, EH = 200;
+const NER = -30, EH = 185;
 
 let DL, KL, GD, GK, BL, ELEK;
 let KZ = 1, BOILZ = null;
@@ -89,20 +94,23 @@ const elefant = (x, y, h = EH) => { const s = h / ELE_H;
 const eleT = ([x, y], h = EH) => { const s = h / ELE_H; return `translate(${f1(x - ELE_C[0] * s)} ${f1(y - ELE_C[1] * s)}) scale(${s.toFixed(4)})`; };
 const elePunkt = ([x, y], [px, py], h = EH) => { const s = h / ELE_H; return [x + (px - ELE_C[0]) * s, y + (py - ELE_C[1]) * s]; };
 const krita = (x, y, s = 0.33 / Math.sqrt(KZ), v = 125) => `<image href="${KRITA}" width="755" height="265" transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`;
-// Tandborsten: skaft (mint), borsthuvud, vita borststrån uppåt. Mitten i (x, y), liggande, längd 300·s; v = vridning
+// Tandborsten (feedback 3: rundare och tydligare): skaft med greppfläck och glans, smal hals, huvud och en borsttuss med rundad,
+// ljusblå topp. Klistermärke: vit kant, ingen kontur. Mitten i (x, y), liggande, längd ca 320·s; v = vridning
 const RODBORSTE = ['#E2483D', '#B8322A'];   // tandläkarens tandborste (Sanna: röd); kaninens egen i tankebubblan är mint
+const TB_FORM = 'M-140,-15 L40,-15 Q70,-15 88,-11 L152,-11 Q166,-11 166,0 Q166,11 152,11 L88,11 Q70,15 40,15 L-140,15 Q-158,15 -158,0 Q-158,-15 -140,-15 Z';
+const TB_TUSS = 'M96,-11 L96,-38 Q96,-48 105,-48 Q112,-42 120,-48 Q128,-42 136,-48 Q144,-42 151,-48 Q160,-48 160,-38 L160,-11 Z';
+const TB_TOPP = 'M96,-36 L96,-38 Q96,-48 105,-48 Q112,-42 120,-48 Q128,-42 136,-48 Q144,-42 151,-48 Q160,-48 160,-38 L160,-36 Q128,-31 96,-36 Z';
 function tandborste(x, y, s = 1, v = 0, [fs, fh] = ['#5CC8B5', '#3FA796']) {
-  const sk = `M-150 -14 Q-155 0 -150 14 L95 12 Q110 10 112 0 Q110 -10 95 -12 Z`, hu = `M95 -16 L150 -16 Q160 -16 160 -6 L160 6 Q160 16 150 16 L95 16 Z`;
-  const str = Array.from({ length: 6 }, (_, i) => `<rect x="${100 + i * 10}" y="-46" width="7" height="32" rx="3"/>`).join('');
-  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s})"><path d="${sk}" fill="${fs}" stroke="#fff" stroke-width="7" paint-order="stroke"/><path d="${hu}" fill="${fh}" stroke="#fff" stroke-width="7" paint-order="stroke"/>
-    <g fill="#fff" stroke="#d9e4ea" stroke-width="2">${str}</g></g>`;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s})"><g fill="#fff" stroke="#fff" stroke-width="10" stroke-linejoin="round"><path d="${TB_FORM}"/><path d="${TB_TUSS}"/></g>
+    <path d="${TB_FORM}" fill="${fs}"/><path d="M88,-11 L152,-11 Q166,-11 166,0 Q166,11 152,11 L88,11 Q92,0 88,-11 Z" fill="${fh}"/><ellipse cx="-92" cy="0" rx="40" ry="7" fill="${fh}" opacity=".55"/>
+    <path d="M-138,-7 L30,-7" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+    <path d="${TB_TUSS}" fill="#fff"/><path d="${TB_TOPP}" fill="#8fd3f0"/><g stroke="#d4e6ef" stroke-width="2.5" stroke-linecap="round"><path d="M112,-14 L112,-38 M128,-14 L128,-38 M144,-14 L144,-38"/></g></g>`;
 }
-// Tandborstens streck i ritordning (skaftet, huvudet, sex borststrån), i scenens mått: mitt c, skala s, vridning v
+// Tandborstens streck i ritordning (konturen, borsttussen, tre borstlinjer), i scenens mått: mitt c, skala s, vridning v
 const TB_DRAG = ([cx, cy], s, v) => { const r = v * Math.PI / 180, P = (x, y) => `${f1(cx + s * (x * Math.cos(r) - y * Math.sin(r)))} ${f1(cy + s * (x * Math.sin(r) + y * Math.cos(r)))}`;
-  return [`M${P(-150, -14)} Q${P(-157, 0)} ${P(-150, 14)} L${P(95, 12)} Q${P(110, 10)} ${P(112, 0)} Q${P(110, -10)} ${P(95, -12)} L${P(-150, -14)}`,
-    `M${P(95, -16)} L${P(150, -16)} Q${P(160, -16)} ${P(160, -6)} L${P(160, 6)} Q${P(160, 16)} ${P(150, 16)} L${P(95, 16)}`,
-    ...[0, 1, 2, 3, 4, 5].map(i => `M${P(103 + 10 * i, -18)} L${P(103 + 10 * i, -44)}`)]; };
-const TB_VIKT = [3.0, 1.4, 0.35, 0.35, 0.35, 0.35, 0.35, 0.35];
+  const T = d => d.replace(' Z', '').replace(/(-?[\d.]+),(-?[\d.]+)/g, (_, a, b) => P(+a, +b));
+  return [T(TB_FORM) + ` L${P(-140, -15)}`, T(TB_TUSS), ...[112, 128, 144].map(i => `M${P(i, -14)} L${P(i, -38)}`)]; };
+const TB_VIKT = [3.2, 1.6, 0.4, 0.4, 0.4];
 // Spegeln: ett runt glas på ett skaft
 // glans (0–1, sakbilden): en ljus strimma sveper över glaset
 function spegel(x, y, s = 1, v = -30, glans = null) {
@@ -135,42 +143,61 @@ function tand(x, y, r = 40) {
     <path d="M${f1(x - r * .25)} ${f1(y - r * .1)} Q${f1(x)} ${f1(y + r * .15)} ${f1(x + r * .25)} ${f1(y - r * .1)}" stroke="#2a1d18" stroke-width="${f1(r * .07)}" fill="none" stroke-linecap="round"/>
     <ellipse cx="${f1(x - r * .55)}" cy="${f1(y - r * .15)}" rx="${f1(r * .14)}" ry="${f1(r * .09)}" fill="#F4A6B8"/><ellipse cx="${f1(x + r * .55)}" cy="${f1(y - r * .15)}" rx="${f1(r * .14)}" ry="${f1(r * .09)}" fill="#F4A6B8"/></g>`;
 }
-// Bubblorna (feedback 2): först tandläkarens pratbubbla med frågan, sedan kaninens tankebubbla med svaret. Båda har vit kant,
-// mörk kritlinje och vit yta (formen d ritas tre gånger), poppar fram med en liten översväng, gungar lugnt och krymper bort.
+// Bubblorna (feedback 2, putsade i feedback 3): först tandläkarens pratbubbla med frågan, sedan kaninens tankebubbla med svaret.
+// Som klistermärken i kritstil: mjuk skugga, vit kant, mörk kritlinje, krämvit yta med kritkorn. Bubblan poppar fram med översväng
+// och en liten gummistuds, sakerna poppar in en i taget, allt gungar lugnt (molnets bucklor andas var för sig) och krymper bort mot den som pratar.
 const backUt = k => { k = kl(k); return 1 + 2.7 * (k - 1) ** 3 + 1.7 * (k - 1) ** 2; };
-const pop = (tl, a, ut = 99, dur = 0.4) => tl < a ? 0 : tl < ut ? backUt((tl - a) / dur) : 1 - mjuk((tl - ut) / 0.35);
-const kontur = d => `<path d="${d}" fill="#fff" stroke="#fff" stroke-width="30" stroke-linejoin="round"/><path d="${d}" fill="#fff" stroke="#3a2c28" stroke-width="12" stroke-linejoin="round"/><path d="${d}" fill="#fff"/>`;
-const skala = (x, y, k, inne) => k <= 0.01 ? '' : `<g transform="translate(${f1(x)} ${f1(y)}) scale(${k.toFixed(3)}) translate(${f1(-x)} ${f1(-y)})">${inne}</g>`;
+const pop = (tl, a, ut = 99, dur = 0.4) => tl < a ? 0 : tl < ut ? backUt((tl - a) / dur) : 1 - mjuk((tl - ut) / 0.3);
+const gummi = (tl, a, dur = 0.8) => { const u = (tl - a) / dur; return u < 0 || u > 1 ? 0 : 0.1 * Math.sin(2 * Math.PI * u) * (1 - u); };
+const kontur = d => `<path d="${d}" fill="#173f3d" opacity=".18" transform="translate(8 11)"/><path d="${d}" fill="#fff" stroke="#fff" stroke-width="30" stroke-linejoin="round"/>
+  <path d="${d}" fill="#FFFCF2" stroke="#3a2c28" stroke-width="10" stroke-linejoin="round"/><path d="${d}" fill="#FFFCF2"/><path d="${d}" filter="url(#bubbKorn)"/>`;
+const skala = (x, y, k, inne, q = 0) => k <= 0.01 ? '' : `<g transform="translate(${f1(x)} ${f1(y)}) scale(${(k * (1 + q)).toFixed(3)} ${(k * (1 - q)).toFixed(3)}) translate(${f1(-x)} ${f1(-y)})">${inne}</g>`;
 const ring = (x, y, r) => `M${f1(x - r)} ${f1(y)} a${f1(r)} ${f1(r)} 0 1 0 ${f1(2 * r)} 0 a${f1(r)} ${f1(r)} 0 1 0 ${f1(-2 * r)} 0 `;
-// pratbubbla: oval med en pip mot munnen (mun), innehållet poppar in strax efter bubblan
-function prat(x, y, mun, inne, tl, a, ut) {
-  const k = pop(tl, a, ut), ki = pop(tl, a + 0.2, ut), gy = y + 5 * Math.sin(TT * 1.5); if (k <= 0.01) return '';
-  const rx = 200, ry = 120, dx = mun[0] - x, dy = mun[1] - gy, L = Math.hypot(dx, dy), ex = dx / L, ey = dy / L, tip = [x + dx * 0.62, gy + dy * 0.62];
-  const b0 = [x + ex * rx * 0.75 - ey * 38, gy + ey * ry * 0.75 + ex * 38], b1 = [x + ex * rx * 0.75 + ey * 38, gy + ey * ry * 0.75 - ex * 38];
-  const d = `M${f1(x - rx)} ${f1(gy)} a${rx} ${ry} 0 1 0 ${2 * rx} 0 a${rx} ${ry} 0 1 0 ${-2 * rx} 0 Z M${f1(b0[0])} ${f1(b0[1])} Q${f1(tip[0] - ex * 30)} ${f1(tip[1] - ey * 30)} ${f1(tip[0])} ${f1(tip[1])} Q${f1(tip[0] - ex * 60)} ${f1(tip[1] - ey * 20)} ${f1(b1[0])} ${f1(b1[1])} Z`;
-  return `<g filter="url(#boil)">${skala(...lerp2([x, gy], tip, 0.6), k, kontur(d) + skala(x, gy, ki, `<g transform="translate(0 ${f1(gy - y)})">${inne}</g>`))}</g>`;
+// sakerna i bubblan: [[x, y, html], …] relativt bubblans mitt; var och en poppar in 0,18 s efter den förra och gungar i egen takt
+const saker = (x, y, lista, tl, a, ut) => lista.map(([dx, dy, h], i) => { const t0 = a + 0.3 + 0.18 * i, k = pop(tl, t0, ut, 0.35), px = x + dx, py = y + dy + 4 * Math.sin(TT * 1.8 + i * 1.3);
+  return skala(px, py, k, `<g transform="translate(${f1(px)} ${f1(py)}) rotate(${f1(4 * Math.sin(TT * 1.4 + i * 2))})">${h}</g>`, gummi(tl, t0, 0.6)); }).join('');
+// pratbubbla: oval med en böjd pip mot munnen (mun)
+function prat(x, y, mun, lista, tl, a, ut) {
+  const k = pop(tl, a, ut), gy = y + 5 * Math.sin(TT * 1.5); if (k <= 0.01) return '';
+  const rx = 215, ry = 130, dx = mun[0] - x, dy = mun[1] - gy, L = Math.hypot(dx, dy), ex = dx / L, ey = dy / L, tip = [x + dx * 0.6, gy + dy * 0.6];
+  const b0 = [x + ex * rx * 0.7 - ey * 44, gy + ey * ry * 0.7 + ex * 44], b1 = [x + ex * rx * 0.7 + ey * 44, gy + ey * ry * 0.7 - ex * 44];
+  const d = `M${f1(x - rx)} ${f1(gy)} a${rx} ${ry} 0 1 0 ${2 * rx} 0 a${rx} ${ry} 0 1 0 ${-2 * rx} 0 Z M${f1(b0[0])} ${f1(b0[1])} Q${f1(tip[0] - ex * 50 + ey * 10)} ${f1(tip[1] - ey * 50 - ex * 10)} ${f1(tip[0])} ${f1(tip[1])} Q${f1(tip[0] - ex * 70 - ey * 14)} ${f1(tip[1] - ey * 70 + ex * 14)} ${f1(b1[0])} ${f1(b1[1])} Z`;
+  const p0 = lerp2([x, gy], tip, 0.6);
+  return `<g filter="url(#boil)">${skala(...p0, k * (1 + 0.012 * Math.sin(TT * 2.1)), kontur(d) + saker(x, gy, lista, tl, a, ut), gummi(tl, a))}</g>`;
 }
-// tankebubbla: tre prickar som poppar fram en i taget från huvudet, sedan molnet, sedan innehållet
-function tanke(x, y, fran, inne, tl, a, ut) {
+// tankebubbla: tre prickar som poppar fram en i taget från huvudet, sedan molnet (bucklorna andas), sedan sakerna
+function tanke(x, y, fran, lista, tl, a, ut) {
   const gy = y + 6 * Math.sin(TT * 1.3); let h = '';
-  [[0.2, 13], [0.42, 21], [0.66, 30]].forEach(([u, r], i) => { const k = pop(tl, a + 0.14 * i, ut == null ? 99 : ut + 0.1 * (2 - i), 0.3), px = lerp(fran[0], x, u), py = lerp(fran[1], gy, u) + 25 * Math.sin(Math.PI * u);
-    h += skala(px, py, k, kontur(ring(px, py, r))); });
-  const k = pop(tl, a + 0.42, ut), ki = pop(tl, a + 0.62, ut);
-  const moln = [[0, 0, 105], [-110, 20, 72], [110, 18, 74], [-62, -62, 70], [58, -66, 74], [-55, 70, 66], [55, 72, 66]].map(([cx, cy, r]) => ring(x + cx, gy + cy, r)).join('');
-  h += skala(x, gy, k, kontur(moln) + skala(x, gy, ki, `<g transform="translate(0 ${f1(gy - y)})">${inne}</g>`));
+  [[0.2, 13], [0.42, 20], [0.66, 28]].forEach(([u, r], i) => { const t0 = a + 0.14 * i, k = pop(tl, t0, ut == null ? 99 : ut + 0.1 * (2 - i), 0.3), px = lerp(fran[0], x, u), py = lerp(fran[1], gy, u) + 25 * Math.sin(Math.PI * u);
+    h += skala(px, py, k, kontur(ring(px, py, r)), gummi(tl, t0, 0.5)); });
+  const t0 = a + 0.42, k = pop(tl, t0, ut);
+  const moln = [[0, 0, 105], [-112, 20, 72], [112, 18, 74], [-62, -62, 70], [58, -66, 74], [-55, 70, 66], [55, 72, 66]].map(([cx, cy, r], i) => ring(x + cx, gy + cy, r * (1 + 0.035 * Math.sin(TT * 2 + i * 1.9)))).join('');
+  h += skala(x, gy, k, kontur(moln) + saker(x, gy, lista, tl, t0, ut), gummi(tl, t0));
   return `<g filter="url(#boil)">${h}</g>`;
 }
-const godis = (x, y, s = 1.25) => `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s})"><path d="M-62 -24 L-32 0 L-62 24 Z M62 -24 L32 0 L62 24 Z" fill="#F48FB1"/><circle r="34" fill="#F06292"/><path d="M-18 -18 Q0 -8 18 -18" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
-const solMane = (x, y) => `<g transform="translate(${f1(x)} ${f1(y)})"><circle cx="-62" cy="-38" r="18" fill="#FFD23F"/>${Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4;
-  return `<path d="M${f1(-62 + 25 * Math.cos(a))} ${f1(-38 + 25 * Math.sin(a))} L${f1(-62 + 34 * Math.cos(a))} ${f1(-38 + 34 * Math.sin(a))}" stroke="#FFD23F" stroke-width="5" stroke-linecap="round"/>`; }).join('')}
-  <path d="M70 -56 A22 22 0 1 0 70 -18 A17 17 0 1 1 70 -56 Z" fill="#9FA8DA"/></g>`;
+// innehållet: klistermärken med vit kant, starka färger
+const GODIS_V = 'M-30,-12 Q-50,-36 -70,-28 Q-61,0 -70,28 Q-50,36 -30,12 Z M30,-12 Q50,-36 70,-28 Q61,0 70,28 Q50,36 30,12 Z';
+const godis = (s = 1.3) => `<g transform="scale(${s})"><g fill="#fff" stroke="#fff" stroke-width="14" stroke-linejoin="round"><path d="${GODIS_V}"/><circle r="37"/></g>
+  <path d="${GODIS_V}" fill="#F7A1C4"/><path d="M-44,-10 L-64,-18 M-44,10 L-64,18 M44,-10 L64,-18 M44,10 L64,18" stroke="#E8789F" stroke-width="4" stroke-linecap="round"/>
+  <circle r="37" fill="#EC4F8E"/><path d="M-20,-26 Q4,-4 -8,30 M8,-34 Q26,-8 20,26" stroke="#F9B9D3" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <ellipse cx="-16" cy="-20" rx="10" ry="5" fill="#fff" opacity=".85" transform="rotate(-38 -16 -20)"/></g>`;
+const sol = (s = 1) => `<g transform="scale(${s})"><g stroke-linecap="round">${[0, 1].map(j => Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4;
+    return `<path d="M${f1(36 * Math.cos(a))} ${f1(36 * Math.sin(a))} L${f1(50 * Math.cos(a))} ${f1(50 * Math.sin(a))}" stroke="${j ? '#FFB21E' : '#fff'}" stroke-width="${j ? 8 : 18}"/>`; }).join('')).join('')}</g>
+  <circle r="28" fill="#FFCB3D" stroke="#fff" stroke-width="8" paint-order="stroke"/><circle cx="-9" cy="-4" r="3.5" fill="#3a2c28"/><circle cx="9" cy="-4" r="3.5" fill="#3a2c28"/>
+  <path d="M-8,7 Q0,14 8,7" stroke="#3a2c28" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="-16" cy="5" r="4.5" fill="#F7A07A" opacity=".7"/><circle cx="16" cy="5" r="4.5" fill="#F7A07A" opacity=".7"/></g>`;
+const mane = (s = 1) => `<g transform="scale(${s})"><path d="M10,-38 A38,38 0 1 0 10,38 A46,46 0 0 1 10,-38 Z" fill="#8E9BEA" stroke="#fff" stroke-width="9" stroke-linejoin="round" paint-order="stroke"/>
+  <path d="M-22,-4 Q-16,2 -10,-4" stroke="#3a2c28" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="-19" cy="9" r="4.5" fill="#F4A6B8" opacity=".8"/></g>`;
+const BUBBEL = {   // [x, y, html] relativt bubblans mitt
+  fragaGodis: () => [[-60, 0, godis(1.25)], [110, -4, `<g transform="scale(.8)">${fraga(0, 0, TT)}</g>`]],
+  fragaBorste: () => [[-130, -36, sol(0.95)], [-15, -36, mane(0.95)], [-45, 58, tandborste(0, 0, 0.68)], [140, -4, `<g transform="scale(.8)">${fraga(0, 0, TT)}</g>`]],
+  godis: () => [[0, 0, godis(1.4)]],
+  borste: () => [[-62, -34, sol(1)], [66, -34, mane(1)], [0, 62, tandborste(0, 0, 0.8)]],
+};
 const ljusKagla = (fran, till, b = 120, op = 1) => { if (op <= 0.01) return ''; const [ax, ay] = fran, [bx, by] = till, dx = bx - ax, dy = by - ay, l = Math.hypot(dx, dy), nx = -dy / l, ny = dx / l;
   return `<g opacity="${op.toFixed(2)}"><path d="M${f1(ax)} ${f1(ay)} L${f1(bx + nx * b)} ${f1(by + ny * b)} L${f1(bx - nx * b)} ${f1(by - ny * b)} Z" fill="#fff3b0" opacity=".2"/><circle cx="${f1(bx)}" cy="${f1(by)}" r="${b}" fill="#fff3b0" opacity=".14"/>
     <circle cx="${f1(ax)}" cy="${f1(ay)}" r="18" fill="#fff6c8" opacity=".8"/></g>`; };
 const skimmer = (x, y, R, t, op = 1) => op <= 0 ? '' : [0, 1, 2, 3].map(i => { const a = i * Math.PI / 2 + 0.4 + t * 1.2, px = x + R * Math.cos(a), py = y + R * 0.75 * Math.sin(a), r = 10 * (0.6 + 0.4 * Math.sin(t * 6 + i));
   return `<path d="M${f1(px - r)} ${f1(py)} L${f1(px + r)} ${f1(py)} M${f1(px)} ${f1(py - r)} L${f1(px)} ${f1(py + r)}" stroke="#fff7b0" stroke-width="5" stroke-linecap="round" opacity="${f1(op)}"/>`; }).join('');
-const tander = (m, k = 1, lys = [1, 1]) => [[-14, 0], [2, 1]].map(([dx, i]) => `<rect x="${f1(m[0] + dx * k)}" y="${f1(m[1] - 12 * k)}" width="${f1(12 * k)}" height="${f1(16 * k)}" rx="${f1(3 * k)}" fill="#fff" stroke="#e5ded3" stroke-width="1.5"/>
-  ${lys[i] > 0 ? `<rect x="${f1(m[0] + dx * k - 2)}" y="${f1(m[1] - 12 * k - 2)}" width="${f1(12 * k + 4)}" height="${f1(16 * k + 4)}" rx="${f1(4 * k)}" fill="#fff7b0" opacity="${(0.55 * lys[i]).toFixed(2)}"/>` : ''}`).join('');
 
 // Kritirisen (som 045/046)
 function kritiris(r, [cx, cy]) {
@@ -277,10 +304,10 @@ function S(id, tl, d) {
     case '16a': { const rit = 3.0; return { kam: 'dokKanin', k: { ...stol, f: KF('nyfiken', 1, { titt: [14, -4] }) }, e: 'famn', d: { f: 'nyfiken' }, spegel: 'kontur', sk: kl((tl - 0.4) / rit), krita: 'spegel', ritSlut: 0.4 + rit, tl }; }
     case '16b': return { sak: 'spegel', gnista: MT() + 0.5 };
     case '18': { const f = LT('doktor-fniss')[0] ?? 99; return { kam: 'ele', k: { ...stol, f: KL.blanda(glad, KF('fnissig'), del(MT() + 1.6, MT() + 2.0, tl)) }, e: 'famn', verktyg: 'eleSpegel', d: { p: DARM(del(0, 0.8, tl), ARM.ele), f: 'nyfiken' } }; }
-    case '19': { const a = MT(1); return { kam: 'kanin', k: { ...stol, f: KL.blanda(KL.blanda(glad, KF('gapar'), del(MT() + 0.6, MT() + 1.0, tl) * (1 - del(a - 0.8, a - 0.4, tl))), KF('gapar'), del(a, a + 0.25, tl)) }, e: 'famn', tander: del(MT() + 0.7, MT() + 1.0, tl) * (1 - del(a - 0.8, a - 0.4, tl)) + del(a, a + 0.25, tl) }; }
+    case '19': { const a = MT(1); return { kam: 'kanin', k: { ...stol, f: KL.blanda(KL.blanda(glad, KF('gapar'), del(MT() + 0.6, MT() + 1.0, tl) * (1 - del(a - 0.8, a - 0.4, tl))), KF('gapar'), del(a, a + 0.25, tl)) }, e: 'famn' }; }
     case '20': { const t0 = MT() + ML(24) * 0.45, lys = [del(t0, t0 + 0.2, tl), del(t0 + 0.5, t0 + 0.7, tl)];   // "En, två, tre": tänderna lyser upp en i taget
-      return { kam: 'mun', k: { ...stol, f: { ...KF('gapar'), titt: [0, -4] }, p: SITT({ upp: 0.25 }) }, e: 'famn', tander: 1, lys, verktyg: 'spegel', d: { p: DARM(del(0, 0.8, tl), ARM.mun), f: 'nyfiken' } }; }
-    case '21': return { kam: 'mun', k: { ...stol, f: KL.blanda({ ...KF('gapar'), titt: [0, -4] }, KF('jatteglad'), del(MT() + ML(25) + 0.2, MT() + ML(25) + 0.6, tl)), p: SITT({ upp: 0.25 * (1 - del(MT() + ML(25) + 0.2, MT() + ML(25) + 0.6, tl)) }) }, e: 'famn', tander: 1 - del(MT() + ML(25) + 0.2, MT() + ML(25) + 0.5, tl), lys: [1, 1], glitter: MT() + 0.3, verktyg: 'spegel', d: { p: DARM(1 - del(MT() + ML(25), MT() + ML(25) + 0.8, tl), ARM.mun) } };
+      return { kam: 'mun', k: { ...stol, f: { ...KF('gapar'), titt: [0, -4] }, p: SITT({ upp: 0.25 }) }, e: 'famn', lys, verktyg: 'spegel', d: { p: DARM(del(0, 0.8, tl), ARM.mun), f: 'nyfiken' } }; }
+    case '21': return { kam: 'mun', k: { ...stol, f: KL.blanda({ ...KF('gapar'), titt: [0, -4] }, KF('jatteglad'), del(MT() + ML(25) + 0.2, MT() + ML(25) + 0.6, tl)), p: SITT({ upp: 0.25 * (1 - del(MT() + ML(25) + 0.2, MT() + ML(25) + 0.6, tl)) }) }, e: 'famn', lys: [1, 1], glitter: MT() + 0.3, verktyg: 'spegel', d: { p: DARM(1 - del(MT() + ML(25), MT() + ML(25) + 0.8, tl), ARM.mun) } };
     case '22': return { kam: 'kanin', k: { ...stol, f: KL.blanda(glad, KF('stolt'), del(0, 0.5, tl)), p: SITT({ strack: 0.03 * del(0, 0.5, tl) }) }, e: 'famn', nick: LT('kanin-ny/kanin-ny-ja')[0] };
     case '23': return { kam: 'doktor', k: stol, e: 'famn', d: { p: DP('neutral', { armar: [0, 35 * del(0, 0.6, tl)], armbage: [0, -30 * del(0, 0.6, tl)], upp: -0.5 * del(0, 0.6, tl) }), f: 'nyfiken' } };
     case '23b': {   // tandläkaren tittar vänster, höger, vänster (bara huvudet); kaninen tittar också
@@ -293,7 +320,7 @@ function S(id, tl, d) {
       return { kam: 'doktor', k: stol, e: 'famn', d: { p: DP('neutral', { upp: -0.8 * (1 - ta), armar: [0, 40 * ta], armbage: [0, -55 * ta] }), f: 'glad' }, ta, tl }; }
     case '24': { const b = LT('borsta')[0] ?? 1; return { kam: 'ele', k: { ...stol, f: KL.blanda(glad, KF('fnissig'), del(b, b + 0.4, tl)) }, e: 'famn', verktyg: 'eleBorste', bx: borsta(tl, b, 3, 0.7), d: { p: DARM(del(0, 0.8, tl), ARM.eleB, borsta(tl, b, 3, 0.7)), f: 'nyfiken' } }; }
     case '25': { const b = LT('borsta')[0] ?? 1, ti = LT('tindra')[0] ?? 99, slut = MT() + ML(33) + 0.2;
-      return { kam: 'mun', k: { ...stol, f: KL.blanda({ ...KF('gapar'), titt: [0, -4] }, KF('jatteglad'), del(slut, slut + 0.4, tl)), p: SITT({ upp: 0.25 * (1 - del(slut, slut + 0.4, tl)) }) }, e: 'famn', tander: 1 - del(slut, slut + 0.3, tl), lys: tl > ti ? [1, 1] : [0, 0], glitter: ti, verktyg: 'borste', bx: borsta(tl, b, 3, 0.8), d: { p: DARM(del(0, 0.8, tl) * (1 - del(ti + 0.2, ti + 1.0, tl)), ARM.munB, borsta(tl, b, 3, 0.8)) } }; }
+      return { kam: 'mun', k: { ...stol, f: KL.blanda({ ...KF('gapar'), titt: [0, -4] }, KF('jatteglad'), del(slut, slut + 0.4, tl)), p: SITT({ upp: 0.25 * (1 - del(slut, slut + 0.4, tl)) }) }, e: 'famn', lys: [del(ti - 0.4, ti + 0.1, tl), del(ti, ti + 0.5, tl)], glitter: ti, verktyg: 'borste', bx: borsta(tl, b, 3, 0.8), d: { p: DARM(del(0, 0.8, tl) * (1 - del(ti + 0.2, ti + 1.0, tl)), ARM.munB, borsta(tl, b, 3, 0.8)) } }; }
     // frågan i tandläkarens pratbubbla (25b, 25d), svaret i kaninens tankebubbla (25c, 25e); kaninen i halvbild så att molnet får plats
     case '25b': return { kam: 'dokKanin', k: { ...stol, f: KF('nyfiken') }, e: 'famn', d: { p: DP('lutaV', {}, del(0, 0.5, tl)), f: 'nyfiken' }, prat: 'godis', ba: MT() + 0.2, but: d - 0.45 };
     case '25c': { const j = LT('kanin-ny/kanin-ny-ja')[0] ?? 0.1; return { kam: 'kanin', k: { ...stol, f: KF('glad'), p: { ...SITT({ armar: [6, 6 + 30 * bump(MT(), MT() + 1.4, tl)] }), nick: KNICK(tl, j) } }, e: 'famn', tanke: 'godis', ba: 0.15, but: d - 0.5 }; }
@@ -326,13 +353,16 @@ function ritaRad(id, tl, d) {
   if (s.sak) return sakbild(s, tl);
   if (s.papper) return papper(s, tl, d);
   const k = s.k, dd = s.d || {}, upp = s.upp ?? (STOLRAD.has(id) ? 1 : 0), dy = -STOL.UPP * upp;
-  $('stolg').setAttribute('transform', `translate(0 ${f1(dy)})`); $('stolkolv').setAttribute('transform', `translate(0 ${f1(dy / 2)})`);
+  $('stolg').setAttribute('transform', `translate(0 ${f1(dy)})`); $('stollampa').setAttribute('transform', `translate(0 ${f1(dy)})`); $('stolkolv').setAttribute('transform', `translate(0 ${f1(dy / 2)})`);
   $('kolvRect').setAttribute('y', f1(STOL_TOPP + STOL.KLIPP * STOL.s - 2 + dy / 2)); $('kolvRect').setAttribute('height', f1(4 - dy));
   const paStol = k.pa === PA_STOL;   // sitter i stolen: följer med upp och ner
   kaninPa(paStol ? [k.pa[0], k.pa[1] + dy] : k.pa);
   let kp = liv(k.p || KP(), TT);
   if (s.nick != null) kp = { ...kp, nick: KNICK(tl, s.nick) };
-  KL.rita(GK, BL(k.f || KF('glad'), TT), kp);
+  // tänderna är riggens egna (gapet i 'gapar'); lys gör dem blanka två och två, glitter tänder riggens glansstjärna (feedback 3: inga påklistrade tänder)
+  let kf = BL(k.f || KF('glad'), TT);
+  if (s.lys) kf = { ...kf, tander: [0, 0, 1, 1, 0, 0, 1, 1].map(i => 0.3 + 0.7 * kl(s.lys[i])), glimt: s.glitter != null ? del(0, 0.4, tl - s.glitter) * (1 - del(1.6, 2.2, tl - s.glitter)) : 0 };
+  KL.rita(GK, kf, kp);
   doktorPa(DOKTOR[0], DOKTOR[1]);
   // Tandläkarens liv (som 046:s doktor): gungar lite, och de små ljuden syns i ansiktet (hej/bra/ooo/hej då glad, oj förvånad, fniss skrattar, mm-hm/hmm nickar, bra klappar)
   let dp = dd.p || DP();
@@ -374,7 +404,6 @@ function ritaRad(id, tl, d) {
   if (s.ljus === 'ele') lagg('fram', ljusKagla(lampa, eleHuvud, 80, s.lj));
   if (s.ljus === 'kanin') lagg('fram', ljusKagla(lampa, huvud, 150, s.lj));
   // tänderna och glittret
-  if (s.tander > 0) lagg('fram', `<g opacity="${kl(s.tander).toFixed(2)}">${tander([mun[0], mun[1] - 6], 1.4, s.lys || [0, 0])}</g>`);
   if (s.glitter != null) lagg('fram', gn(mun[0], mun[1] - 10, 70, tl - s.glitter, 0.4));
   // klistermärket: kritan ritar tanden i luften till höger om kaninen, sedan till magen och elefanten
   const LUFT = [mage[0] - 230, mage[1] - 250], MAGS = [mage[0] + 75, mage[1] - 60], ELES = [famn[0] - 25, famn[1] + 25];
@@ -406,13 +435,12 @@ function ritaRad(id, tl, d) {
     const mal = { eleSpegel: [eleSnabel[0] + 20, eleSnabel[1] - 25], spegel: [mun[0] + 22, mun[1] + 4], eleBorste: [eleSnabel[0] + 10 * b, eleSnabel[1] + 4], borste: [mun[0] + 12 * b, mun[1] + 10] }[s.verktyg];
     lagg('fram', iHand(h, mal, /Spegel|spegel/.test(s.verktyg) ? 'spegel' : 'borste') + handKnopp(h)); }
   if (s.fraga) lagg('fram', fraga(dansikte[0] + 150, dansikte[1] - 110, TT, s.fraga));
-  // bubblorna: tandläkarens pratbubbla snett ovanför hennes huvud, kaninens tankebubbla över stolsryggen till vänster
-  const fragetecken = (x, y) => `<g transform="translate(${f1(x)} ${f1(y)}) scale(.7)">${fraga(0, 0, 0)}</g>`;
+  // bubblorna: tandläkarens pratbubbla snett ovanför hennes huvud (inom bildens högerkant), kaninens tankebubbla över stolsryggen till vänster
   const dmun = [dansikte[0] + 70, dansikte[1] + 75];   // kinden vid munnen
-  if (s.prat) { const P = [Math.min(dansikte[0] + 310, (huvud[0] + dansikte[0]) / 2 + 960 / ZOOM.dokKanin - 225), dansikte[1] - 95];   // inom bildens högerkant
-    lagg('fram', prat(...P, dmun, s.prat === 'godis' ? godis(P[0] - 45, P[1] + 5) + fragetecken(P[0] + 95, P[1] + 2) : tandborste(P[0] - 40, P[1] + 30, 0.6) + solMane(P[0] - 40, P[1] + 5) + fragetecken(P[0] + 120, P[1] + 2), tl, s.ba, s.but)); }
-  if (s.tanke) { const T = [huvud[0] - 330, huvud[1] - 190], fr = [huvud[0] - 120, huvud[1] - 110];
-    lagg('fram', tanke(...T, fr, s.tanke === 'godis' ? godis(T[0], T[1]) : tandborste(T[0], T[1] + 40, 0.62) + solMane(T[0], T[1] + 5), tl, s.ba, s.but)); }
+  if (s.prat) { const P = [Math.min(dansikte[0] + 320, (huvud[0] + dansikte[0]) / 2 + 960 / ZOOM.dokKanin - 250), dansikte[1] - 135];
+    lagg('fram', prat(...P, dmun, BUBBEL[s.prat === 'godis' ? 'fragaGodis' : 'fragaBorste'](), tl, s.ba, s.but)); }
+  if (s.tanke) { const T = [huvud[0] - 320, huvud[1] - 148], fr = [huvud[0] - 110, huvud[1] - 100];
+    lagg('fram', tanke(...T, fr, BUBBEL[s.tanke](), tl, s.ba, s.but)); }
   // kritan: vid linjens spets medan den ritar, sedan till en väntplats och svajar; kritaUt: glider ut uppåt till höger
   const W = { ele: [golvE[0] + 170, golvE[1] - 150], spegel: [SP[0] + 130, SP[1] - 40], tand: [LUFT[0] - 195, LUFT[1] + 150] }[s.krita], SIDA = s.krita === 'tand' ? -1 : 1;   // tanden: kritan till vänster om kaninen
   if (W) { const svP = t => [W[0] + 5 / KZ * Math.sin(t * 1.2), W[1] + 4 / KZ * Math.sin(t * 1.7)], svV = t => 140 + 1.5 * Math.sin(t * 1.0);
@@ -454,7 +482,7 @@ function sakbild(s, tl) {
 
 // Ritintrot (format/ritintro.md, som 046): krämvitt papper, kritan ritar tandborstens kontur i ett lugnt drag (skaftet, huvudet,
 // borststråna), väntar och svajar, på svaret fylls den riktiga tandborsten i inifrån, kritan flyger ut och kameran zoomar in.
-const IC = [960, 560], IK = 3.8, IV = -18, SVAJ = [1500, 300];
+const IC = [960, 560], IK = 2.9, IV = -18, SVAJ = [1500, 300];
 function papper(s, tl, d) {
   const z = s.zoom ?? 0, Z = (1 + 0.12 * mjuk(kl(((s.tl ?? 0) - 8.6) / 5))) * (1 + 1.6 * mjuk(z));
   lagg('papper', `<g transform="translate(${IC[0]} ${IC[1]}) scale(${Z.toFixed(3)}) translate(${-IC[0]} ${-IC[1]})"><rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><g id="pk" filter="url(#boil)"></g></g>`);
@@ -512,6 +540,7 @@ window.ready = (async () => {
   const sx = x => f1(STOL.x + x * STOL.s), sy = y => f1(STOL_TOPP + y * STOL.s), { KLIPP: K, KLIPPX: KX } = STOL;
   $('defs').insertAdjacentHTML('beforeend', `<clipPath id="stolKlippTopp" clipPathUnits="userSpaceOnUse"><path d="M${sx(0)} ${sy(0)} H${sx(797)} V${sy(745)} H${sx(KX)} V${sy(K)} H${sx(0)} Z"/></clipPath>
     <clipPath id="stolKlippFot" clipPathUnits="userSpaceOnUse"><path d="M${sx(0)} ${sy(K)} H${sx(KX)} V${sy(745)} H${sx(797)} V${sy(849)} H${sx(0)} Z"/></clipPath>
+    <clipPath id="stolKlippLampa" clipPathUnits="userSpaceOnUse"><path d="M${sx(196)} ${sy(0)} H${sx(350)} V${sy(160)} H${sx(214)} V${sy(225)} H${sx(152)} V${sy(50)} H${sx(196)} Z"/></clipPath>
     <clipPath id="stolKlippKolv" clipPathUnits="userSpaceOnUse"><rect id="kolvRect" x="${sx(290)}" width="${f1(160 * STOL.s)}" y="${sy(K)}" height="4"/></clipPath>`);
   const { RADER, ROST } = await (await fetch('/avsnitt/049-kaninen-gar-till-tandlakaren/scener/mottagningen/rader.json')).json();
   ROSTER = ROST; let acc = 0;

@@ -28,3 +28,11 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 - 1:31 Stolen är 88 % stor, så sätet sitter ca 50 px lägre från början och kaninen hamnar inte så högt när stolen åker upp. Kolven skalas med.
 - Tandläkarens tandborste är röd (`RODBORSTE`) och sitter djupt i fickan, bara huvudet och en bit skaft syns. Kaninens egen tandborste i tankebubblan är mint.
 - 3:17 Bubblorna: först tandläkarens pratbubbla med frågan (godis ?, tandborste sol måne ?) i 25b och 25d, sedan kaninens tankebubbla med svaret i 25c och 25e (halvbild så att molnet får plats över stolsryggen). Vit kant, mörk kritlinje, poppar fram med liten översväng, tankeprickarna en i taget, gungar lugnt och krymper bort.
+
+## Feedback 3 (2026-11-22)
+
+- 0:09 Tandborsten är omritad: rundat skaft med greppfläck och glans, smal hals, borsttuss med rundad ljusblå topp. Ritintrots teckning är mindre (skala 3,8 → 2,9). Samma form överallt (tandläkarens röda, bubblorna).
+- 1:46 Lampan (huvudet och armen) ritas en gång till framför figurerna (`#stollampa`), så att kaninens öra går bakom den.
+- 2:03 Kaninen är lite mindre (0,55 → 0,5), elefanten med (200 → 185).
+- 2:26 De påklistrade tänderna är borta. Det är riggens egna tänder i gapet: de går från matta till blanka två och två (20, 25) och riggens glansstjärna tänds i 21.
+- 3:29 Bubblorna i kritstil: krämvit yta med kritkorn, mjuk skugga, vit kant och mörk kritlinje. Bubblan poppar med en liten gummistuds, sakerna poppar in en i taget och gungar, molnets bucklor andas. Större innehåll som klistermärken: randigt godis, sol och måne med små ansikten, den nya tandborsten. Båda bubblorna ligger lite lägre så att de inte nuddar bildens överkant.
