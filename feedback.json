@@ -8126,5 +8126,25 @@
   "fixed": false,
   "at": 1795342089867,
   "render": "2026-11-21 20:34 (D säger sitt ljud med ögon på bokstaven och mun (intro och slut))"
+ },
+ "kx9u8xdnbdmwrok6fe": {
+  "ep": "J19",
+  "time": "3:03",
+  "sec": 183,
+  "tags": [],
+  "note": "bigger car",
+  "fixed": false,
+  "at": 1795342483850,
+  "render": "2026-11-21 19:35 (slutrendering)"
+ },
+ "2p4xne8nfamwrokbvo": {
+  "ep": "J19",
+  "time": "2:23",
+  "sec": 143,
+  "tags": [],
+  "note": "smaller snowman",
+  "fixed": false,
+  "at": 1795342490916,
+  "render": "2026-11-21 19:35 (slutrendering)"
  }
 }
