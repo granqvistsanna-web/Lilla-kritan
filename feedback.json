@@ -8290,9 +8290,10 @@
   "sec": 31,
   "tags": [],
   "note": "better walking rig animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354165385,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "x50my84yyqmwrvinw0": {
   "ep": "J23",
@@ -8300,9 +8301,10 @@
   "sec": 32,
   "tags": [],
   "note": "bigger bunny",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354170480,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "8tbs9lpk8lmwrviuyb": {
   "ep": "J23",
@@ -8310,9 +8312,10 @@
   "sec": 33,
   "tags": [],
   "note": "better wave, arm behind body",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354179635,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "fbnjs1fzq0mwrvj08n": {
   "ep": "J23",
@@ -8320,9 +8323,10 @@
   "sec": 33,
   "tags": [],
   "note": "closer crop on face",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354186487,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "9lwlvmbspbmwrvj9mw": {
   "ep": "J23",
@@ -8330,9 +8334,10 @@
   "sec": 41,
   "tags": [],
   "note": "nodding",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354198664,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "tyykf7sxlqmwrvjg63": {
   "ep": "J23",
@@ -8340,9 +8345,10 @@
   "sec": 45,
   "tags": [],
   "note": "better anmation nodding",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354207131,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "sysx2kfo51mwrvjty5": {
   "ep": "J23",
@@ -8350,9 +8356,10 @@
   "sec": 49,
   "tags": [],
   "note": "lower bjällror and add xmas xoundtrack",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354224989,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "lw1u1ttcoemwrvk5ix": {
   "ep": "J23",
@@ -8360,9 +8367,10 @@
   "sec": 56,
   "tags": [],
   "note": "imrpove digging animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354239993,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "pc2m7ljly3mwrvkqah": {
   "ep": "J23",
@@ -8370,9 +8378,10 @@
   "sec": 69,
   "tags": [],
   "note": "make it more clear that bunny wants to build a tower",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354266905,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "ydih3zuygzmwrvlgr5": {
   "ep": "J23",
@@ -8380,9 +8389,10 @@
   "sec": 91,
   "tags": [],
   "note": "improve animtion of bunny holding spade and filling buckret",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354301201,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "7n8xodymzqmwrvluyq": {
   "ep": "J23",
@@ -8390,9 +8400,10 @@
   "sec": 109,
   "tags": [],
   "note": "needs much polish",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354319618,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  },
  "9gueqoq7cnmwrvmphj": {
   "ep": "J23",
@@ -8400,8 +8411,9 @@
   "sec": 152,
   "tags": [],
   "note": "draw light better so easier to guess",
-  "fixed": false,
+  "fixed": true,
   "at": 1795354359175,
-  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)"
+  "render": "2026-11-22 14:26 (snabb förhandsvisning efter QA: större snö på nosen, längre paus efter vänd)",
+  "fixedAt": 1795355587862
  }
 }
