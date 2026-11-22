@@ -8983,9 +8983,10 @@
   "sec": 60,
   "tags": [],
   "note": "polsih animation, straw is flashing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795387620833,
-  "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)"
+  "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)",
+  "fixedAt": 1795388981250
  },
  "gq36q0b7d6mwsfg2zc": {
   "ep": "J17",
@@ -8993,9 +8994,10 @@
   "sec": 62,
   "tags": [],
   "note": "better pick up water or make glass fly up in hand",
-  "fixed": false,
+  "fixed": true,
   "at": 1795387642392,
-  "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)"
+  "render": "2026-11-22 11:52 (slutrenderad i molnet efter feedback 22/11 eftermiddag)",
+  "fixedAt": 1795388981250
  },
  "amkk1m5vtnmwsfpfiz": {
   "ep": "ABC-c3",
