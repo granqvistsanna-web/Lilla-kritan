@@ -7707,9 +7707,10 @@
   "sec": 44,
   "tags": [],
   "note": "mer tydligt under pallen",
-  "fixed": false,
+  "fixed": true,
   "at": 1795294103408,
-  "render": "2026-11-21 21:33 (1:07 vatten, 1:39 boll, 2:42 rulle, 3:09 större hund, stilla klocka, färre bjällror, ljudnivåer)"
+  "render": "2026-11-21 21:33 (1:07 vatten, 1:39 boll, 2:42 rulle, 3:09 större hund, stilla klocka, färre bjällror, ljudnivåer)",
+  "fixedAt": 1795334870490
  },
  "ki4j5kgexemwrj0xnn": {
   "ep": "049",
