@@ -148,6 +148,23 @@ Allt här finns i B och har förts in i A, D och E. Den som kopierar B får det 
 
 **Rendering.** `verktyg/render-delat.mjs` fungerar inte för alfabetsmapparna: den tar alfabetets egen `render.mjs`, som saknar `--snabb`. Kör `node avsnitt/020-grisen-badar/scener/render.mjs <mapp> --snabb` och flytta den gamla filmen till `aldre/` först. Stillbilder: samma kommando med tiderna i stället för `--snabb` (`… <mapp> 4 27 51`).
 
+**Klossarna går aldrig in i varandra (2026-11-22).** Alla fem filmerna kontrollerades med `produktion/youtube/alfabet/krock.mjs`, som provar klossarna mot varandra i 3D varje bildruta. Reglerna nedan finns i alla fem scenerna:
+- **Lyft, flytta, sätt ner.** En flytt med båge (`flyttaK(…, bage)`) lyfter klossen rakt upp de första 20 % av tiden (`LYFT`), flyttar den i sidled på toppen och sätter ner den rakt de sista 20 %. Bågen ska vara högre än klossen (blandningen: 265 för klossar på 240). Glider en kloss på golvet (ingen båge) får ingen annan kloss stå i vägen.
+- **Avstånd.** Blandningens rad står 350 isär (`RC` 610, 960, 1310) och slutraden 375 isär (`SX` 585, 960, 1335), så att de vridna klossarna har glipa också när de trycks ihop när de landar. Pyramidens nedre klossar står `PS * 1,3` isär.
+- **Kameran i blandningen** är 1,35 på y 655, så att klossen som lyfts syns hela och inte hamnar vid bokstavsmärket i hörnet.
+- **Discot.** Kompisens tomma kloss hoppar över den andra på väg ut (båge 330). Klossen som hoppar upp i tornet snurrar, så den får båge 240. När kompisen hoppar in i sin kloss hoppar klossen ovanpå med (`c1.hopp`). Från pyramiden till slutraden lyfter den översta först (1,2 s, båge 160) och de nedre glider isär under den. Ställer sig kompisens kloss bredvid pyramiden ska den stå så långt bort att pyramidens nedre klossar får plats (E: `RX0` 1400).
+- **Kontroll:** kör `node produktion/youtube/alfabet/krock.mjs <scenmapp>` efter varje ändring av klossarnas rörelser. Den ska säga *inga krockar*. Med `DUMP=t0,t1` skriver den ut lägena runt en krock.
+
+**Skuggorna ligger på golvet (B, feedback 2026-11-21 2:35 och 2:37).** Sakernas skuggor satt förut i sakens egen grupp och åkte med när saken hoppade, studsade eller flög. Nu har varje sak en markskugga i scenens px (`#sakskuggor` i bottensvg:n, `s.mark`): den ligger på golvlinjen under fötterna (nederkanten, 250 i teckningens mått) och blir mindre och ljusare ju högre saken är (`k = 1 − höjd/380`). Höjden är scenens hopp, sakens eget lyft i `levande()` (`s.lyft`: studsa, hoppa, svava och riggens `p.lyft`) och kompisens hopp ur klossen. En sak som flyger dit (B:s ballong) får `s.flyg = [start, landar, golvets y]`, så att skuggan stannar kvar och glider mjukt till det nya stället när saken landar. Skuggan är två ellipser med radiella gradienter och inget filter: en bred, mjuk och en mörkare kontaktskugga (`#sakskugga-g`, `#sakkarna-g`). Ett suddfilter på en platt ellips klipptes av i kanterna. Riggens egen skugga döljs. Bredden står i `skuggaB` (standard 150, riggar 185).
+
+**Klossarna är raka i tornen och pyramiden.** `slutVrid` (varannan kloss vriden i slutraden) stängs av i discot (`s.slutAv`) och slås på igen när raden ställs upp. Annars går klossar med olika vridning in i varandra i pyramiden (B 3:47).
+
+**Bokstavens ljud och slutet är fasta (Sanna 2026-11-22).** Bokstaven säger sitt ljud på fem ställen: i introt, efter vart och ett av de tre orden och en gång i slutet. Slutet är detsamma i varje bokstav: klara för i dag, de tre orden igen, bokstavens ljud, tack, *"Hej då! Vi ses!"*, klossarna rullar ut och bokstaven står kvar. Se *Slutet och ljudkartan* i `produktion/youtube/alfabet/plan-recept-3.md`.
+
+**Små bilder blir suddiga i närbild.** D:s dörr var ett urklipp på 600 px och såg suddig ut (ABC-d3 2:14). Enkla saker ritas i kod i stället (`DORR_KOD`, `kod:` i `SAKER`): samma form och mått som urklippet, så att kritans kontur stämmer, skarpa kanter, vit klistermärkeskant, lätta kritdrag och ett svagt korn. Vaxfiltret (`#vax`) blev för brusigt på stora ytor.
+
+**Bädden** är `abc-bad-lang.m4a` (62 s, ersätter `gissa-bad.m4a`).
+
 **Ljud.** Kompisar utan eget läte i ljudbanken (elefanten, dinon) låter med björnens `brum-glad` tills vidare.
 
 **Flow.** Agent-knappen har bytt namn i Flow, så `mcp__flow__flow_generate` behövde rättas för att hitta den (C, 2026-11-21). Nano Banana kostar 0 krediter.
@@ -157,7 +174,7 @@ Allt här finns i B och har förts in i A, D och E. Den som kopierar B får det 
 1. Fyll i meningen och välj handling ur tabellen.
 2. Kopiera `abc-b-recept-3/`. Byt bokstavens drag och färg, `SAKER` (kompisen, ord 2, ord 3, den som ritas fel, den udda i leken) och replikerna i `TAL`. Gör en kontur per bild med `kontur-bild.py`, och mät ögats plats i bilden.
 3. Skriv delarna 3–6 med `kanner`, `narbild`, `gissning` och `flytta`. Delarna 1, 2, 7 och 8 är som de är.
-4. Stillbilder: introts kloss, kompisens skiss med ansiktet, kritan som väntar i bild, viljan, det felritade, varje ord bredvid kompisen, saken som går dit den behövs, klossarna som poppar, muren, discot. Leta efter saker som täcker varandra och figurer som inte står på golvet.
+4. Stillbilder: introts kloss, kompisens skiss med ansiktet, kritan som väntar i bild, viljan, det felritade, varje ord bredvid kompisen, saken som går dit den behövs, klossarna som poppar, muren, discot. Leta efter saker som täcker varandra, figurer som inte står på golvet och skuggor som inte ligger på golvet när något hoppar. Kör `krock.mjs` på scenen: inga krockar.
 5. Malins tagning (en tagning, alla rader; dela med `verktyg/dela-tagning.py` och läs utskriften: korta ord som *"Ekorre!"* och *"Det är ju E!"* hamnar lätt i grannens fil och får klippas om för hand). Sedan förhandsvisning med `--snabb`.
 
 ## Öppet

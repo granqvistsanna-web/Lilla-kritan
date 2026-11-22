@@ -76,6 +76,30 @@ De nya bokstäverna börjar efter A–E, en i taget i alfabetisk ordning, samma 
 
 ✅ = referensark klart. Utan ✅ finns riggen men den är inte godkänd, så Sanna godkänner den innan den blir kompis.
 
+## Slutet och ljudkartan (samma i varje bokstav, 2026-11-22)
+
+Sanna 2026-11-22: *"now it ends with sounding letter, is a bit random … where should sounding letters be placed in clip, same in every letter."* Förlagan är B (`abc-b-recept-3`).
+
+**Slutet**, efter discot (klossarna står i slutraden):
+1. *"Nu är vi klara för i dag."*
+2. De tre orden en gång till, i berättelsens ordning (*"Björn!"*, *"Boll!"*, *"Ballong!"*, kompisens och sakernas egna `lang`-repliker): varje kloss hoppar på sitt ord.
+3. Bokstavsmärket hoppar från hörnet till mitten ovanför raden, får ögon och mun och säger *"b, b, B!"* en sista gång. Klossarna hoppar med.
+4. *"Tack för att du lekte med B!"* medan kompisen vinkar från sin kloss.
+5. *"Hej då! Vi ses!"* Alla hoppar en gång, gnistor.
+6. Klossarna rullar ut åt höger. Märket glider ner till mitten, lite större, ler och står kvar medan musiken och bilden tonar ut (bokstaven sist).
+
+Inget bokstavsljud efter hej då, och märket pratar inte med i hej då (det är Malins replik).
+
+**Ljudkartan**, bokstavens ljud (*"b, b, B!"*, märket med ögon och mun) på fem fasta ställen och aldrig ovanpå Malin:
+
+| # | Var | Hur |
+|---|---|---|
+| 1 | Introt, efter *"Bokstaven B."* | stora klossen mitt i bild |
+| 2–4 | Efter varje ord, när berömmet (*"Boll börjar också på B!"*) är sagt | märket i hörnet växer lite och säger det en gång (`bLjud()` i `gissning()`) |
+| 5 | Slutet, efter de tre orden | märket i mitten ovanför raden (punkt 3 ovan) |
+
+Mellan dem finns minst en replik av Malin, så att ljuden aldrig kommer tätt.
+
 ## Steg 3: per bokstav (samma steg varje gång)
 
 En session per bokstav (som i feedbackomgångarna), högst två samtidigt så att rösterna och renderingarna inte krockar.
@@ -86,6 +110,7 @@ En session per bokstav (som i feedbackomgångarna), högst två samtidigt så at
 3. **Malins tagning** i ElevenLabs (en tagning, alla rader), delad med `verktyg/dela-tagning.py` och kontrollerad rad för rad.
    → **Fråga Sanna före krediterna.**
 4. **Scenen:** delarna 3–6 skrivs nya (`kanner`, `narbild`, `gissning`, `flytta`), delarna 1, 2, 7 och 8 följer med från B. Se receptets *Lärdomar* (skissens ansikte, kontrast i det felritade, `KVISA`/`KNICK`, renderingen). Stillbilder enligt receptets punkt 4.
+   Från ABC-b3 (2026-11-22) följer med från B: markskuggorna på golvet, slutet och ljudkartan (ovan), raka klossar i discot och bädden `abc-bad-lang.m4a`. Kör `krock.mjs`.
 5. **Förhandsvisning** med `--snabb`, lokalt (020:s `render.mjs`, inte `render-delat.mjs`). Länk till feedbacksidan (`…/feedback/#ep`).
    → **Sanna granskar.**
 6. **Slutrendering** i molnet, miniatyr (`miniatyrer`-skillen, färgstrimman), `youtube.md`. Den gamla mappen flyttas till `aldre/` eller tas bort när den nya är godkänd.

@@ -620,13 +620,26 @@ for (const s of [boll, ballong]) s.levande.push([DISCO[0], 'gunga', DISCO[1]]);
 KULA.upp = DISCO[1] - 0.2;
 t = DISCO[1] + 0.3; GN.push([t, 960, 560, 640, 300]);
 for (const s of [A, ...RADEN]) s.hopp.push(t + 0.1);
-t = sag(t + 0.2, 'n-allt-for-idag') + 0.3;
-bjorn.levande.push([t + 0.6, 'vinka', t + D['n-vad-kul'] + 1.4]);   // björnen vinkar medan Malin tackar; hej då kommer allra sist
-t = sag(t, 'n-vad-kul') + 0.6;
-// Utrullningen (Sanna 2026-11-18): klossarna rullar åt höger, kant över kant (vrids bara i bildplanet, så bilderna följer med),
-// den högra först. Putsat 2026-11-19 (3:49 "polish outro"): de rullar i jämn fart hela vägen ut ur bild i stället för att stanna och
-// hoppa (då hann nästa kloss ikapp och gick in i den), och sedan hoppar B-märket från hörnet till mitten, stort, med gnistor,
-// och står kvar en stund innan allt tonar ut. Bokstaven sist, som i alfabet.md.
+// SLUTET, samma i varje bokstav (Sanna 2026-11-22: "ends with sounding letter, is a bit random … same in every letter"):
+// 1. "Nu är vi klara för i dag."  2. De tre orden en gång till: varje kloss hoppar på sitt ord.  3. Märket hoppar från hörnet
+// till mitten ovanför raden och säger "b, b, B!" en sista gång; klossarna hoppar med.  4. "Tack för att du lekte med B!" medan
+// kompisen vinkar.  5. "Hej då! Vi ses!", alla hoppar en gång, gnistor.  6. Klossarna rullar ut åt höger, märket står kvar i mitten
+// och växer lite, musiken och bilden tonar ut. Inget bokstavsljud efter hej då. Se plan-recept-3.md, Slutet och ljudkartan.
+const ORDEN = [bjorn, boll, ballong];   // i berättelsens ordning
+t = sag(t + 0.2, 'n-allt-for-idag') + 0.5;
+for (const s of ORDEN) { s.hopp.push(t); t = sag(t, s.lang) + 0.45; }
+{ const t0 = t + 0.1, B_REP = [960, 330, 0];   // märket till mitten ovanför raden
+  flyttaK(A, t0, B_REP, 330, 1.0, 70); fx(t0, 'swoosh', 0.5); fx(t0 + 0.98, 'pop', 0.6); A.hopp.push(t0 + 1.05);
+  const a = t0 + 1.3; A.ansikten.push([a, 1e9]); let u = a + 0.5;
+  for (const n of ['b-ljud-1', 'b-ljud-2', 'b-ljud-3']) { A.mun.push([u, u + D[n]]); sag(u, n); u += D[n] + 0.4; }
+  A.hopp.push(u - 0.55); for (const s of RADEN) s.hopp.push(u - 0.35); GN.push([u - 0.4, 960, 330, 260, 200]);
+  t = u + 0.4; }
+bjorn.levande.push([t + 0.2, 'vinka', t + 0.4 + D['n-vad-kul'] + 0.4 + D['p-hej-da-slut'] + 0.5]);   // kompisen vinkar genom tacket och hej då
+t = sag(t + 0.4, 'n-vad-kul') + 0.4;
+t = sag(t, 'p-hej-da-slut');
+for (const s of [A, ...RADEN]) s.hopp.push(t - 0.4); GN.push([t - 0.3, 960, 560, 640, 300]); fx(t - 0.35, 'jippi', 0.4);
+t += 0.4;
+// Utrullningen (Sanna 2026-11-18, putsad 2026-11-19 3:49): klossarna rullar i jämn fart åt höger ut ur bild, den högra först.
 const RULL_V = 620;   // px/s
 let sist = t;
 [...RADEN].reverse().forEach((s, i) => { const t0 = t + 0.3 + i * 0.5, [x0, y0, , sd] = klossLage(s.kk, t0);
@@ -634,20 +647,9 @@ let sist = t;
   s.rull = [t0, x0, x1]; s.kk.push([t0, x0, y0, 0, sd], [ta, x0 + sd, y0, 0, sd, 0, 1], [t1, x1, y0, 0, sd, 0, 2]);
   for (let k = 1; k <= n; k++) { const tk = k === 1 ? ta : ta + (k - 1) * sd / RULL_V; if (tk < t1 - 0.6) fx(tk, 'duns', 0.28); }
   sist = Math.max(sist, ta + (1920 + sd - x0 - sd) / RULL_V); });   // när den sista har lämnat bilden
-{ const t0 = sist - 1.1, B_MITT = [960, 460, 0], B_S = 470;
-  flyttaK(A, t0, B_MITT, B_S, 1.1, 90); fx(t0, 'swoosh', 0.5); fx(t0 + 1.08, 'pop', 0.8);
-  A.hopp.push(t0 + 1.15); GN.push([t0 + 1.15, 960, 460, 330, 260]); fx(t0 + 1.2, 'pling', 0.45);
-  // B säger sitt ljud (som E, Sanna 2026-11-21): märket blir större, får ögon och mun och säger "b, b, B!" två gånger med en paus för barnet
-  const a = t0 + 1.7; A.ansikten.push([a, 1e9]); fx(a, 'pop', 0.5);
-  flyttaK(A, a - 0.4, [960, 500, 0], 760, 0.7);
-  let u = a + 1.0;
-  for (const varv of [0, 1]) {
-    for (const n of ['b-ljud-1', 'b-ljud-2', 'b-ljud-3']) { A.mun.push([u, u + D[n]]); sag(u, n); u += D[n] + 0.4; }
-    A.hopp.push(u - 0.55); u += varv ? 0.8 : 2.6; }
-  // och sist "Hej då! Vi ses!" (Sanna 2026-11-22: "finish with hejdå"): märket pratar med, två munrörelser, och hoppar till
-  const h = D['p-hej-da-slut']; sag(u, 'p-hej-da-slut'); A.mun.push([u, u + 0.45 * h], [u + 0.55 * h, u + h]); A.hopp.push(u + 0.1, u + h - 0.2);
-  GN.push([u + h - 0.2, 960, 500, 380, 300]);
-  sist = u + h + 1.0; }
+{ const t0 = sist - 1.0;   // bokstaven sist (alfabet.md): märket glider ner till mitten, lite större, ler, och står kvar medan allt tonar ut
+  flyttaK(A, t0, [960, 480, 0], 470, 1.2); A.hopp.push(t0 + 1.25); GN.push([t0 + 1.25, 960, 480, 330, 260]); fx(t0 + 1.25, 'pling', 0.4);
+  sist = t0 + 3.0; }
 const UT = [sist, sist + 0.9], DURATION = UT[1] + 0.4;   // B-märket står kvar en stund, sedan tonar allt ut
 // Musiken i tre delar (Sanna 2026-11-18 kväll: den korta slingan hördes gå om): Gissa teckningens bädd medan kritan ritar,
 // Städa-radions sömlösa slinga (64 s) under leken och den funkiga tagningen (disco-funkig.m4a) i discot och till slutet.
