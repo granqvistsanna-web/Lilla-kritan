@@ -7755,8 +7755,9 @@
   "sec": 209,
   "tags": [],
   "note": "polish the talk and tanke bubblor better contrast, better animations, more in style of lilla kritan",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333446145,
-  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))",
+  "fixedAt": 1795333932516
  }
 }
