@@ -7711,9 +7711,10 @@
   "sec": 9,
   "tags": [],
   "note": "rita en bättre tandborste ocj lite mindre",
-  "fixed": false,
+  "fixed": true,
   "at": 1795333187939,
-  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))"
+  "render": "2026-11-21 22:26 (feedback 2: lägre stol, röd tandborste djupare i fickan, pratbubbla sedan tankebubbla (3:17))",
+  "fixedAt": 1795333923245
  },
  "1mjhgjygbpmwrj485f": {
   "ep": "049",
