@@ -1579,5 +1579,13 @@
   "file": "avsnitt/051-leoparden-vaknar-pa-julafton/film/avsnitt-051-snabb.mp4",
   "status": "granska",
   "name": "J24 · 051 Leoparden vaknar på julafton"
+ },
+ "MIX-5": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/MIX-5-1122-1915.mp4",
+  "duration": 4120.5,
+  "rendered": "2026-11-22 19:21 (22/11: utan lammet i skogen, med 046 doktorn, svagare boil i 036 och 017, lägre klocka i 027, pusslen glider, täckande kritsvep)",
+  "file": "produktion/youtube/mix/mix-5/mix-5.mp4",
+  "status": "granska",
+  "name": "Mix 5: Sjung, pussla och gissa"
  }
 }
