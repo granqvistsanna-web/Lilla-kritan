@@ -82,7 +82,7 @@ Mått som är osäkra står som det: **säkert** (räknat bildruta för bildruta
 | Jämn nivå i sånger | LRA 2,8–7,6 LU i 7 av 7 sånger; sagan 15,0, samlingen 10,7 | ✅ sånger 2,5–7,2. N1 12,6 och N2 8,4 (tal mot musik) |
 | Musik under hela sången | ljudet i pauserna bara 0–6 dB under ljudet när det sjungs, 6 av 6 sånger som har pauser över 1 s; tyst (under −45 dBFS) 2–8 % av tiden i 8 av 8 | ✅ |
 | Sagan vågar vara tyst | sagan: 38 % av tiden tyst, pauserna 16 dB under rösten (1 av 1) | N1 och N2 har musik under allt (0,1–0,9 % tyst, pauser 5–7 dB under) |
-| True peak | kan inte jämföras: YouTube-filerna (AAC) går över 0 dBFS i 6 av 9 av sig själva | ⚠️ men N1:s egen fil i repot ligger på +0,4 dBFS, över gränsen −1,5 i `qa-film.sh` |
+| True peak | kan inte jämföras: YouTube-filerna (AAC) går över 0 dBFS i 6 av 9 av sig själva | N1:s egen fil låg på +0,4 dBFS (klipp 0,8 s in i introt), över gränsen −1,5 i `qa-film.sh`; rättad 23/11 till −2,2 |
 
 ## Så görs mätningen om
 
