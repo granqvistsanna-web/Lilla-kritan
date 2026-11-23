@@ -15,4 +15,5 @@ python3 "$(dirname "$0")/qa-scen.py" "$f"
 for k in $(seq 1 19); do t=$(echo "$D*$k/20" | bc -l); ffmpeg -loglevel error -y -ss $t -i "$f" -frames:v 1 -vf scale=384:-1 $T/$(printf %02d $k).jpg; done
 ffmpeg -loglevel error -y -ss $(echo "$D-1.4" | bc) -i "$f" -frames:v 1 -vf scale=384:-1 $T/20.jpg
 ffmpeg -loglevel error -y -pattern_type glob -i "$T/*.jpg" -vf tile=5x4 -frames:v 1 "$U/$n-qa.jpg" && echo " kontaktark: $U/$n-qa.jpg"
+echo " titta själv: inget går genom väggar, golv, lådkanter eller figurer (täta bilder, 6/s, runt varje rörelse där något når fram till eller rör något)"
 rm -rf $T

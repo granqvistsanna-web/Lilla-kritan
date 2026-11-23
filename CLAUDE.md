@@ -32,4 +32,8 @@ Repot innehåller allt material för YouTube-kanalen *Lilla Kritan*: tecknade cu
 ## Kontroll
 `python3 verktyg/prompt.py --lista` ska lista alla figurer, platser och saker utan fel.
 
-`bash verktyg/qa-film.sh <film.mp4>` i QA-passet. Den kör också `verktyg/qa-scen.py`, som flaggar för stark line boil (i scenkoden: `#boil` fast, över 2,5 eller inte delad med zoom; i filmen: bara hoppet när brusbilden byts 6 gånger/s, så snö och andning räknas inte, mot gränser kalibrerade på 051, 035 och 045) och avklippt röst (Malins repliker i `rader.json` som går in i nästa replik, och tal som tar slut tvärt vid ett bildklipp). Raderna ska vara tomma efter kolon. `python3 verktyg/qa-scen.py --alla` går igenom koden i alla scener, `--pussel` Malins tider i `pussel-prov.py`.
+`bash verktyg/qa-film.sh <film.mp4>` i QA-passet. Den kör också `verktyg/qa-scen.py`, som flaggar för stark line boil (i scenkoden: `#boil` fast, över 2,5 eller inte delad med zoom; i filmen: bara hoppet när brusbilden byts 6 gånger/s, så snö och andning räknas inte, mot gränser kalibrerade på 051, 035 och 045) och avklippt röst (Malins repliker i `rader.json` som går in i nästa replik, och tal som tar slut tvärt vid ett bildklipp). Raderna ska vara tomma efter kolon.
+
+**Inget går genom något (Sanna 2026-11-23):** ingen sak, figur, arm, tass eller kamera får gå genom en vägg, ett golv, en lådkant, ett bord eller en annan figur. En boll som läggs i en låda åker över kanten och ner, inte genom sidan. En tass som håller något ligger på det, inte inne i det. Kameran stannar inne i rummet. Kontaktarket med 20 bilder missar korta ögonblick, så titta på täta bilder (6 per sekund) runt varje rörelse där något når fram till, lämnar eller rör något annat. `qa-film.sh` påminner om det.
+
+`python3 verktyg/qa-scen.py --alla` går igenom koden i alla scener, `--pussel` Malins tider i `pussel-prov.py`.
