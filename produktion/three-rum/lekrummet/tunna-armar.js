@@ -14,7 +14,8 @@ const NS = 'http://www.w3.org/2000/svg';
 export function tunnaArmar(G, L, { bredd = 24, ben = false } = {}) {
   const svg = G.ownerSVGElement, kanel = G.querySelector('.kanel'), kropp = kanel.querySelector('.kropp');
   // armfärgen: kroppens egen bruna (#ac6744 i kanel-body), så att roten smälter in i kroppen; kanten som figurens inbakade (ca 7 enheter vit)
-  const FARG = '#ab6643', VANTE = '#97553b', VIT = 7, BEN = [62, 58];   // runda 6: kortare (var 88, 84, sedan 74, 70)   // överarm, underarm (enheter)
+  const FARG = '#a05d3e',   // runda 6: en aning mörkare än kroppen (#ab6643), så att armen läses
+        VANTE = '#97553b', VIT = 7, BEN = [62, 58];   // runda 6: kortare (var 88, 84, sedan 74, 70)   // överarm, underarm (enheter)
   // kritkorn i strecken: ljusa prickar inne i strecket, som vaxkritan i pälsen
   svg.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="armkorn" x="-0.2" y="-0.2" width="1.4" height="1.4">
     <feTurbulence type="fractalNoise" baseFrequency="0.45" numOctaves="2" seed="4" result="n"/>
@@ -63,7 +64,12 @@ export function tunnaArmar(G, L, { bredd = 24, ben = false } = {}) {
         const v = [mitt[0] - P[0], mitt[1] - P[1]], lv = Math.hypot(...v) || 1, S = [P[0] + v[0] / lv * 42, P[1] + v[1] / lv * 42 - 34];   // runda 6: axeln högre (var −6)
         // eget mål: en förskjutning från axeln (följer kroppens lutning och andning), blandat in med k
         if (o.mal?.[n] && o.k?.[n]) { const M = [S[0] + o.mal[n][0], S[1] + o.mal[n][1]], k = o.k[n]; H = [H[0] + (M[0] - H[0]) * k, H[1] + (M[1] - H[1]) * k]; }
-        const [E, H2] = ik(S, H, [S[0] + sida * 50, S[1] + 220]);   // runda 6: armbågen ner, inte ut (ut såg mallig ut)
+        // o.klapp 0–1: handen till magens mitt (o.oppen enheter från mitten); armen sträcks så mycket som behövs (gummiarm som i referensen)
+        let ben = BEN;
+        if (o.klapp) { const M = [mitt[0] + sida * (10 + (o.oppen || 0)), mitt[1] + 50], k = o.klapp;
+          H = [H[0] + (M[0] - H[0]) * k, H[1] + (M[1] - H[1]) * k];
+          const s = Math.max(1, 1.02 * Math.hypot(H[0] - S[0], H[1] - S[1]) / (BEN[0] + BEN[1])); ben = BEN.map(b => b * s); }
+        const [E, H2] = ik(S, H, [S[0] + sida * 50, S[1] + 220], ben);   // runda 6: armbågen ner, inte ut (ut såg mallig ut)
         const C = [2 * E[0] - (S[0] + H2[0]) / 2, 2 * E[1] - (S[1] + H2[1]) / 2];   // kontrollpunkt så att kurvan går genom armbågen
         const d = `M${S[0].toFixed(1)} ${S[1].toFixed(1)} Q${C[0].toFixed(1)} ${C[1].toFixed(1)} ${H2[0].toFixed(1)} ${H2[1].toFixed(1)}`;
         svg.querySelectorAll(`.arm-kant .${n}, .arm-farg .${n}`).forEach(q => q.setAttribute('d', d));

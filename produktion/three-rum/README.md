@@ -98,6 +98,10 @@ Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar ige
 - `?ricks`: huvudet vänder sig dit hon tittar (riggens `rikt`, bara ansikte, mage och öron) och en reaktionsnärbild 3,4–4,8 s medan hon håller bollen. Förhandsvisning: `lekrummet/lekrummet-ricks-snabb.mp4` (`--fraga "armar=kurva&dolly&ricks"`).
 - Armarna (Sanna: "ser ut som en mallig kille"): axeln högre, kortare (62 + 58), armbågen böjer nedåt i stället för utåt, vilan 4° från kroppen.
 - Uttryckspopp med `?ricks`: ansiktet slår om på 0,1 s och glider tillbaka. Glittriga ögon (kawaii) i närbilden, förvånad (runda ögon, o-mun, öronen spetsas, lite uppåt) när bollen landar, jätteglad 0,5 s efter, på Malins "Hurra".
+- Armarna har en smal vit kant även framför kroppen (från 30 % av armen, så roten smälter in) och är en aning mörkare (#a05d3e), så att de inte flyter ihop med kroppen.
+- Mer rörelse med `?ricks`: båda armarna upp på "Hurra", sedan två klapp vid magen (armarna sträcks så långt som behövs, gummiarm). Kroppen dippar lite med nicken. Bollen studsar upp över lådkanten en gång efter landningen, med squash vid kontakt och ett svagare andra duns.
+- Hel film: `lekrummet/lekrummet-ricks.mp4` (1920×1080, 30 fps, ca 2 min 15 s att rendera). Obs: `--ut` gör filmen stum (den är till för render-delat), så ljudet blandas med `--bara-ljud --fraga …` och läggs på med ffmpeg; ljudet ligger i `lekrummet-ricks-effekter.wav`. QA: −16,3 LUFS, topp −5,4 dB, line boil 3,1 px/s (gräns 4,5).
+- Förgrund med `?ricks`: två klossar nära kameran nere till höger i helbilden (0,5/1,6 och 0,74/1,42), placerade så att de inte krockar med något och inte syns i närbilden eller halvnära.
 - Förhandsvisning: `lekrummet/lekrummet-kurva-snabb.mp4` (`--snabb --fraga "armar=kurva&dolly" --ut …`). Stillbilder: `lekrummet/stills/runda6/`. Standardfilmen är oförändrad.
 
 ## Runda 6 (Sanna: 3D-effekt på Kanel och fler uttryck)

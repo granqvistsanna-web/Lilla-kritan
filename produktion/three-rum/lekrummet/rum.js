@@ -242,6 +242,8 @@ async function byggRum() {
   lada(0.2, 0.2, 0.2, '#f2b33d', '#b98216', [1.05, 0.1, 0.55], { rot: [0, 0.35, 0] });
   lada(0.18, 0.18, 0.18, '#3d7bd9', '#1f4a95', [1.08, 0.29, 0.53], { rot: [0, -0.2, 0] });
   lada(0.16, 0.16, 0.16, '#d9443a', '#a12a24', [1.36, 0.08, 0.78], { rot: [0, 0.6, 0] });
+  // ?ricks: förgrund nära kameran (två klossar nere till höger), så att åkningen får parallax
+  if (RICKS) { lada(0.22, 0.22, 0.22, '#d9443a', '#a12a24', [0.5, 0.11, 1.6], { rot: [0, 0.4, 0] }); lada(0.18, 0.18, 0.18, '#f2b33d', '#b98216', [0.74, 0.09, 1.42], { rot: [0, -0.3, 0] }); }
   // en rund rosa golvkudde längst fram till vänster (förgrund, blir mjukt suddig)
   klot(0.24, '#e86fa8', [-1.3, 0.1, 1.0], [1, 0.42, 0.9], 0.03);
   // en liten krukväxt i hörnet till höger
@@ -394,7 +396,8 @@ function kanel(t) {
   else { [f, p] = L.plockaDel('ner', D, D, LADA_O()); const k = mjuk((t - T_NER - D) / 0.6);
     f = L.blanda(f, GLAD(), Math.max(k, 0)); f = { ...f, glad: [0, 0], titt: [0, 0] }; p = { ...p, hall: [0, 0], rack: [0, 0] }; }
   if (t >= T_NER + D && t < KLIPP) {   // glad efter "bra jobbat": en liten nick när Malin säger det
-    const u = (t - (LANDAR + 0.7)) / 0.5; if (u > 0 && u < 2) p = { ...p, nick: [1.1 * Math.sin(Math.PI * (u % 1)), 1.1 * Math.sin(Math.PI * ((u + 0.15) % 1))] };
+    const u = (t - (LANDAR + 0.7)) / 0.5; if (u > 0 && u < 2) p = { ...p, nick: [1.1 * Math.sin(Math.PI * (u % 1)), 1.1 * Math.sin(Math.PI * ((u + 0.15) % 1))],
+      strack: (p.strack || 0) - (RICKS ? 0.018 * Math.sin(Math.PI * (u % 1)) : 0) };   // ?ricks: kroppen dippar lite med nicken
   }
   let vk = 0;
   if (t >= KLIPP) { f = GLAD(); p = P({}); }
@@ -427,7 +430,12 @@ function kanel(t) {
     p = { ...p, strack: (p.strack || 0) + 0.035 * wow, oron: (p.oron || [0, 0]).map(o => o - 10 * wow) };   // lite uppåt och öronen spetsas
   }
   L.rita(G, nara(t) ? f : BL(f, t), liv(p, t));
-  TA?.rita({ mal: { l: malL, r: malR }, k: { l: kl_, r: 1 } });
+  // ?ricks: hurra (båda armarna upp) på Malins "Hurra", sedan klappar hon två gånger
+  let klapp = 0, oppen = 0, mL = malL, mR = malR;
+  if (RICKS) { const hu = popp(t, LANDAR + 0.45, 0.25, 0.45, 0.35), up = s => bage(s, 150, 112);
+    mL = malL.map((v, i) => lerp(v, up(-1)[i], hu)); mR = malR.map((v, i) => lerp(v, up(1)[i], hu));
+    klapp = popp(t, LANDAR + 1.5, 0.35, 0.95, 0.4); oppen = 55 * (0.5 + 0.5 * Math.cos(2 * Math.PI * (t - LANDAR - 1.85) / 0.48)); }
+  TA?.rita({ mal: { l: mL, r: mR }, k: { l: Math.max(kl_, RICKS ? popp(t, LANDAR + 0.4, 0.2, 2.5, 0.4) : 0), r: 1 }, klapp, oppen });
   return iFig;
 }
 function bollen(t) {
@@ -436,6 +444,12 @@ function bollen(t) {
   const [fx, fy] = LADA_O().fri, start = kort.localToWorld(new THREE.Vector3((fx - 512) * ENHET, (FOT - fy) * ENHET, 0));
   const slut = new THREE.Vector3(LADA.x - 0.06, 0.03, LADA.z + 0.02), u = kl(0, 1, (t - SLAPP) / FALL);
   bollKort.position.set(lerp(start.x, slut.x, u), lerp(start.y, slut.y, u * u), lerp(start.z, slut.z, u));   // faller: snabbare nedåt (u²)
+  if (RICKS) {   // studs ovanför lådkanten och squash vid varje kontakt, lite stretch i fallet
+    const b = t - LANDAR, B = 0.42, sq = Math.max(0, 1 - Math.abs(b) / 0.07) + Math.max(0, 1 - Math.abs(b - B) / 0.07);
+    if (b > 0 && b < B) bollKort.position.y += 0.2 * Math.sin(Math.PI * b / B);
+    const st = b < 0 ? 0.08 * u : 0;
+    bollKort.scale.set(1 + 0.16 * sq - 0.04 * st, 1 - 0.22 * sq + st, 1);
+  }
   bollKort.rotation.y = Math.atan2(cam.position.x - bollKort.position.x, cam.position.z - bollKort.position.z);
 }
 
@@ -537,6 +551,7 @@ async function seek(t) {
 const RB = 'assets/ljud/roster/';
 window.LJUD = [
   { t: LANDAR - 0.02, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 0.5 },
+  ...(RICKS ? [{ t: LANDAR + 0.4, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 0.22 }] : []),   // studsen
   { t: LANDAR + 0.6, fil: RB + 'kaninen-stadar/hurra-bra-jobbat.m4a', vol: 2.5 },
   { t: T_VINK + 1.0, fil: RB + 'tittut/kanin-hejda.m4a', vol: 2.5 },
 ];
