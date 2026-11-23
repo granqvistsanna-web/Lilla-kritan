@@ -92,8 +92,12 @@ Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar ige
 - QA: boil 1,8 px/s, −16,3 LUFS, inget klippt.
 
 ### Runda 6 (prov 23/11, efter Ricks Clips): kurvarmar och kurvben, jämn dolly
-- `?armar=kurva`: kritarmar och kritben (48 enheter, först 30: `lekrummet-kurva-snabb-30.mp4`), alla omritade som kurvor varje bildruta (`tunna-armar.js`, `ben: true`). Benen ligger bakom kroppen. Foten står kvar på golvet när kroppen sjunker, så knät böjs utåt. Benlängden är riggens.
+- `?armar=kurva`: kritarmar och kritben (64 enheter; tidigare 30 och 48: `lekrummet-kurva-snabb-30.mp4`, `-48.mp4`), alla omritade som kurvor varje bildruta (`tunna-armar.js`, `ben: true`). Benen ligger bakom kroppen. Foten står kvar på golvet när kroppen sjunker, så knät böjs utåt. Benlängden är riggens.
 - `?dolly`: kameraåkningarna går med jämn fart, utan in- och uttoning.
+- Sanna: tjockare armar och de målade benen. Nu: kurvarmar 64 enheter, lite kortare (74 + 70) och närmare kroppen i vilan (9°). Kurvbenen finns kvar med `ben: true` men används inte.
+- `?ricks`: huvudet vänder sig dit hon tittar (riggens `rikt`, bara ansikte, mage och öron) och en reaktionsnärbild 3,4–4,8 s medan hon håller bollen. Förhandsvisning: `lekrummet/lekrummet-ricks-snabb.mp4` (`--fraga "armar=kurva&dolly&ricks"`).
+- Armarna (Sanna: "ser ut som en mallig kille"): axeln högre, kortare (62 + 58), armbågen böjer nedåt i stället för utåt, vilan 4° från kroppen.
+- Uttryckspopp med `?ricks`: ansiktet slår om på 0,1 s och glider tillbaka. Glittriga ögon (kawaii) i närbilden, förvånad (runda ögon, o-mun, öronen spetsas, lite uppåt) när bollen landar, jätteglad 0,5 s efter, på Malins "Hurra".
 - Förhandsvisning: `lekrummet/lekrummet-kurva-snabb.mp4` (`--snabb --fraga "armar=kurva&dolly" --ut …`). Stillbilder: `lekrummet/stills/runda6/`. Standardfilmen är oförändrad.
 
 ## Runda 6 (Sanna: 3D-effekt på Kanel och fler uttryck)

@@ -16,10 +16,13 @@ import { Pass, FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { tunnaArmar } from './tunna-armar.js';
 // Runda 3: ?armar=bild (Kanels målade armar, som runda 2), a (tunna kritarmar 5 % av huvudets bredd, standard) eller b (7 %)
-const ARMAR = new URLSearchParams(location.search).get('armar') || 'bild', BREDD = { a: 24, b: 34, c: 60, d: 84, kurva: 48 }[ARMAR];
+const ARMAR = new URLSearchParams(location.search).get('armar') || 'bild', BREDD = { a: 24, b: 34, c: 60, d: 84, kurva: 64 }[ARMAR];
 // Runda 6 (Sanna, efter Ricks Clips): ?armar=kurva ger tunna kritarmar OCH kritben, omritade som kurvor varje bildruta.
 // ?dolly gör kameraåkningarna jämna (samma fart hela vägen, ingen in- och uttoning), som referensens långsamma, stadiga åkning.
 const DOLLY = new URLSearchParams(location.search).has('dolly');
+// ?ricks: huvudet vänder sig dit hon tittar (riggens rikt: ansiktet, magen och öronen glider, kroppen vänds aldrig) och en
+// reaktionsnärbild medan hon håller bollen och tittar glatt på den (3,4–4,8 s), två klipp som i referensen.
+const RICKS = new URLSearchParams(location.search).has('ricks');
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = 18;
@@ -313,7 +316,7 @@ async function byggKanel() {
   // röda bollen (rekvisita), samma mått som i Kanels uttryck.html: handen ovanpå bollen, nära toppen
   SAK = L.sakBild('/assets/rekvisita/boll-rod/cut/boll-rod.png', 1024, 1024, { grepp: [540, 300], fot: [511, 858], skala: BOLLS, folj: 0, kant: 10 });
   L.sakIn(G, SAK);
-  if (BREDD) TA = tunnaArmar(G, L, { bredd: BREDD, ben: ARMAR === 'kurva' });   // en kopia av Kanel med tunna armar, bara i den här sidan
+  if (BREDD) TA = tunnaArmar(G, L, { bredd: BREDD });   // runda 6: benen är de målade (Sanna), kurvben finns med ben: true   // en kopia av Kanel med tunna armar, bara i den här sidan
   // bilderna blir data-URL:er, så att SVG:n kan ritas som en bild (en SVG i <img> hämtar inga egna filer)
   await Promise.all([...$('kort').querySelectorAll('image')].map(async im => {
     const b = await (await fetch(im.getAttribute('href'))).blob();
@@ -373,6 +376,13 @@ const nara = t => BYTEN.some(c => Math.abs(t - c) < 0.45);
 const spar = (K, t) => { if (t <= K[0][0]) return K[0][1];
   for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const u = mjuk((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])); return K[i - 1][1].map((v, j) => lerp(v, K[i][1][j], u)); }
   return K.at(-1)[1]; };
+// popp: 0 → 1 på 'upp' s (snabbt in, mjukt sista biten), håller 'hall' s, 1 → 0 på 'ner' s
+const popp = (t, t0, upp, hall, ner) => { const u = t - t0; if (u <= 0) return 0; if (u < upp) return 1 - (1 - u / upp) ** 3;
+  return 1 - mjuk((u - upp - hall) / ner); };
+const blandaV = (a, b, k) => Array.isArray(b) ? b.map((v, i) => lerp(a?.[i] ?? v, v, k)) : lerp(a ?? b, b, k);
+const mot = (f, namn, k) => { if (k <= 0) return f; const m = L.blanda('neutral', namn, 1), u = { ...f };   // f mot ett uttryck, blicken behålls
+  for (const n in m) if (n !== 'titt' && n !== 'namn' && typeof (Array.isArray(m[n]) ? m[n][0] : m[n]) === 'number') u[n] = blandaV(f[n] ?? L.NEUTRAL[n], m[n], k);
+  return u; };
 function kanel(t) {
   let f, p;
   if (t < T_UPP) {   // tittar på bollen bredvid sig
@@ -398,7 +408,7 @@ function kanel(t) {
   const env = mjuk((t - T_VINK) / 0.8) * (1 - mjuk((t - T_VINK - D_VINK + 0.8) / 0.8)), sv = Math.sin(2 * Math.PI * 1.1 * (t - T_VINK));
   const andas = Math.sin(2 * Math.PI * t / 3.6);
   const bage = (sida, grad, r) => { const v = grad * Math.PI / 180; return [sida * r * Math.sin(v), r * Math.cos(v)]; };
-  const malL = bage(-1, 18 + 3 * andas, 162), malR = bage(1, 18 - 3 * andas + env * (122 + 16 * sv), 162 - 34 * env);
+  const malL = bage(-1, 4 + 1.5 * andas, 112), malR = bage(1, 4 - 1.5 * andas + env * (136 + 16 * sv), 112 - 22 * env);   // runda 6: tätt intill kroppen (var 18°, 162)
   const kl_ = kl(0, 1, 1 - mjuk((t - T_UPP + 0.15) / 0.45) + mjuk((t - SLAPP - 0.35) / 0.6));
   // bollen: i figuren (på golvet, i handen, över lådan) tills den släpps; sedan det egna kortet som faller i lådan
   const iFig = t < SLAPP;
@@ -410,6 +420,12 @@ function kanel(t) {
   // (gäller bara kodarmarna; de målade armarna byter lager som i runda 2)
   if (TA) { if (!G.sak) L.sakIn(G, SAK); G.querySelectorAll('.sak-plats').forEach(e => e.style.visibility = iFig ? '' : 'hidden'); }
   else { if (iFig && !G.sak) L.sakIn(G, SAK); if (!iFig && G.sak) L.sakIn(G, null); }
+  if (RICKS) p = { ...p, rikt: (p.rikt || 0) + 0.04 * (f.titt?.[0] || 0) };
+  if (RICKS) {   // uttryckspopp (Ricks Clips): ansiktet slår om snabbt (0,1 s) vid en händelse, håller kvar och glider tillbaka
+    const kawaii = popp(t, T_UPP + D, 0.12, T_NER - T_UPP - D - 0.5, 0.4), wow = popp(t, LANDAR, 0.1, 0.3, 0.35), hurra = popp(t, LANDAR + 0.5, 0.15, 0.8, 0.6);
+    f = mot(mot(mot(f, 'kawaii', kawaii), 'forvanad', wow), 'jatteglad', hurra);
+    p = { ...p, strack: (p.strack || 0) + 0.035 * wow, oron: (p.oron || [0, 0]).map(o => o - 10 * wow) };   // lite uppåt och öronen spetsas
+  }
   L.rita(G, nara(t) ? f : BL(f, t), liv(p, t));
   TA?.rita({ mal: { l: malL, r: malR }, k: { l: kl_, r: 1 } });
   return iFig;
@@ -427,7 +443,9 @@ function bollen(t) {
 function kamera(t) {
   let v, r, y, mx, my;
   const fart = DOLLY ? k => kl(0, 1, k) : lugn;
-  if (t < KLIPP) { const u = fart(t / KLIPP);   // helbild: glider in och lite runt, Kanel och lådan i bild
+  if (RICKS && t >= T_UPP + D - 0.1 && t < T_NER) { const u = fart((t - T_UPP - D + 0.1) / (T_NER - T_UPP - D + 0.1));   // reaktionsnärbild
+    v = (-8 + 3 * u) * Math.PI / 180; r = lerp(1.95, 1.8, u); y = 0.6; mx = -0.12; my = 0.54;
+  } else if (t < KLIPP) { const u = fart(t / KLIPP);   // helbild: glider in och lite runt, Kanel och lådan i bild
     v = (-20 + 14 * u) * Math.PI / 180; r = LINS * lerp(4.0, 3.25, u); y = lerp(0.85, 0.74, u); mx = lerp(-0.18, -0.12, u); my = lerp(0.55, 0.5, u);
   } else { const u = fart((t - KLIPP) / (DURATION - KLIPP));   // halvnära: kroppen fyller bilden, en långsam glidning in
     v = (10 + 5 * u) * Math.PI / 180; r = LINS * lerp(2.05, 1.85, u); y = 0.66; mx = 0.02; my = 0.56; }

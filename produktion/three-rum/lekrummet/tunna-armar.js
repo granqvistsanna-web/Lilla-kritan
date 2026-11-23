@@ -14,7 +14,7 @@ const NS = 'http://www.w3.org/2000/svg';
 export function tunnaArmar(G, L, { bredd = 24, ben = false } = {}) {
   const svg = G.ownerSVGElement, kanel = G.querySelector('.kanel'), kropp = kanel.querySelector('.kropp');
   // armfärgen: kroppens egen bruna (#ac6744 i kanel-body), så att roten smälter in i kroppen; kanten som figurens inbakade (ca 7 enheter vit)
-  const FARG = '#ab6643', VANTE = '#97553b', VIT = 7, BEN = [88, 84];   // överarm, underarm (enheter)
+  const FARG = '#ab6643', VANTE = '#97553b', VIT = 7, BEN = [62, 58];   // runda 6: kortare (var 88, 84, sedan 74, 70)   // överarm, underarm (enheter)
   // kritkorn i strecken: ljusa prickar inne i strecket, som vaxkritan i pälsen
   svg.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="armkorn" x="-0.2" y="-0.2" width="1.4" height="1.4">
     <feTurbulence type="fractalNoise" baseFrequency="0.45" numOctaves="2" seed="4" result="n"/>
@@ -28,7 +28,9 @@ export function tunnaArmar(G, L, { bredd = 24, ben = false } = {}) {
   const bak = document.createElementNS(NS, 'g'), fram = document.createElementNS(NS, 'g');
   bak.setAttribute('class', 'arm-kant'); fram.setAttribute('class', 'arm-farg');
   bak.innerHTML = ['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>`).join('');
-  fram.innerHTML = `<g filter="url(#armkorn)">${['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/>`).join('')}</g>`;
+  // runda 6 (Sanna: armen smälter in i kroppen): en smal vit kant även framför kroppen, men först från 30 % av armen,
+  // så att roten fortfarande smälter in och ingen vit linje korsar axeln
+  fram.innerHTML = ['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 9}" pathLength="100" stroke-dasharray="100 100" stroke-dashoffset="-30"/>`).join('') + `<g filter="url(#armkorn)">${['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/>`).join('')}</g>`;
   kanel.insertBefore(bak, kropp); kropp.after(fram);
   const benG = document.createElementNS(NS, 'g');
   if (ben) { bak.insertAdjacentHTML('beforeend', ['bl', 'br'].map(n => `<path class="${n}" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>`).join(''));
@@ -58,10 +60,10 @@ export function tunnaArmar(G, L, { bredd = 24, ben = false } = {}) {
         const img = synlig(n), m = rel(img, kanel), [px, py] = L.RIGG['arm-' + n], [hx, hy] = L.HAND[n];
         const P = pt(m, px, py); let H = pt(m, hx, hy);
         // axeln en bit in i kroppen (ingen stump syns), polen ut och ner
-        const v = [mitt[0] - P[0], mitt[1] - P[1]], lv = Math.hypot(...v) || 1, S = [P[0] + v[0] / lv * 42, P[1] + v[1] / lv * 42 - 6];
+        const v = [mitt[0] - P[0], mitt[1] - P[1]], lv = Math.hypot(...v) || 1, S = [P[0] + v[0] / lv * 42, P[1] + v[1] / lv * 42 - 34];   // runda 6: axeln högre (var −6)
         // eget mål: en förskjutning från axeln (följer kroppens lutning och andning), blandat in med k
         if (o.mal?.[n] && o.k?.[n]) { const M = [S[0] + o.mal[n][0], S[1] + o.mal[n][1]], k = o.k[n]; H = [H[0] + (M[0] - H[0]) * k, H[1] + (M[1] - H[1]) * k]; }
-        const [E, H2] = ik(S, H, [S[0] + sida * 160, S[1] + 170]);
+        const [E, H2] = ik(S, H, [S[0] + sida * 50, S[1] + 220]);   // runda 6: armbågen ner, inte ut (ut såg mallig ut)
         const C = [2 * E[0] - (S[0] + H2[0]) / 2, 2 * E[1] - (S[1] + H2[1]) / 2];   // kontrollpunkt så att kurvan går genom armbågen
         const d = `M${S[0].toFixed(1)} ${S[1].toFixed(1)} Q${C[0].toFixed(1)} ${C[1].toFixed(1)} ${H2[0].toFixed(1)} ${H2[1].toFixed(1)}`;
         svg.querySelectorAll(`.arm-kant .${n}, .arm-farg .${n}`).forEach(q => q.setAttribute('d', d));
