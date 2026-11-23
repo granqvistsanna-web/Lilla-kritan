@@ -16,7 +16,7 @@ import { Pass, FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { tunnaArmar } from './tunna-armar.js';
 // Runda 3: ?armar=bild (Kanels målade armar, som runda 2), a (tunna kritarmar 5 % av huvudets bredd, standard) eller b (7 %)
-const ARMAR = new URLSearchParams(location.search).get('armar') || 'd', BREDD = { a: 24, b: 34, c: 60, d: 84 }[ARMAR];
+const ARMAR = new URLSearchParams(location.search).get('armar') || 'bild', BREDD = { a: 24, b: 34, c: 60, d: 84 }[ARMAR];
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = 18;
@@ -340,7 +340,9 @@ function kanel(t) {
   // bollen: i figuren (på golvet, i handen, över lådan) tills den släpps; sedan det egna kortet som faller i lådan
   const iFig = t < SLAPP;
   // bollen ligger kvar i riggen efter släppet, bara dold: sakIn(G, null) byter armlager i riggen och handen hoppade 87 enheter
-  if (!G.sak) L.sakIn(G, SAK); G.querySelectorAll('.sak-plats').forEach(e => e.style.visibility = iFig ? '' : 'hidden');
+  // (gäller bara kodarmarna; de målade armarna byter lager som i runda 2)
+  if (TA) { if (!G.sak) L.sakIn(G, SAK); G.querySelectorAll('.sak-plats').forEach(e => e.style.visibility = iFig ? '' : 'hidden'); }
+  else { if (iFig && !G.sak) L.sakIn(G, SAK); if (!iFig && G.sak) L.sakIn(G, null); }
   L.rita(G, BL(f, t), liv(p, t));
   TA?.rita({ mal: { l: malL, r: malR }, k: { l: kl_, r: 1 } });
   return iFig;

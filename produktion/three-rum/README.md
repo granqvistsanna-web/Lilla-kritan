@@ -63,7 +63,7 @@ Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av r
 
 - **Hur:** varje arm är ett kritstreck genom axel, armbåge och hand, en mjuk kurva. Armbågen räknas med tvåbens-IK mot en punkt ut och ner från axeln, så den böjer sig alltid samma naturliga väg och aldrig bakåt. Det finns inget släp, ingen fjäder och ingen efterstudsning. Handen följer riggens (osynliga) hand, så bollen sitter i den, och den följer egna mål i vilan och i vinkningen. Strecket har kroppens bruna, lite mörkare, kritkorn och vit klistermärkeskant. Line boil är som för figuren. Axeln sitter inne i kroppen, så ingen stump syns.
 - **Handen:** först en rund prick, nu en oval tass längs underarmen med en liten tumme åt kroppen till, i samma bruna med vit kant.
-- **Tre bredder** (`?armar=a|b|c`, `--fraga armar=b` i render.mjs, `armar=bild` ger dagens målade armar): A 24 enheter (5 % av huvudet), B 34 (7 %), C 60 (12 %, ungefär lika tjock som dagens), D 84. Filmen använder **D** (runda 4).
+- **Tre bredder** (`?armar=a|b|c`, `--fraga armar=b` i render.mjs, `armar=bild` ger dagens målade armar): A 24 enheter (5 % av huvudet), B 34 (7 %), C 60 (12 %, ungefär lika tjock som dagens), D 84. Filmen använder D i runda 4.
 - **Ändrat i scenen:** lådan står 10 cm längre till vänster, så att handen och bollen på golvet inte skyms av lådans hörn.
 - Jämförelse: `lekrummet/stills/jamfor-armar.jpg` (dagens målade armar mot de nya D-armarna vid sträcker sig, håller, släpper och vinkar). Runda 2:s film ligger i `lekrummet/aldre/lekrummet-202611232049.mp4`.
 - QA: line boil 1,7 px/s, −16,3 LUFS, topp −5,4 dB, ingen röst klipps vid klippet.
@@ -82,6 +82,9 @@ Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av r
 - **Ingen vit kant vid roten:** det bruna strecket ligger framför kroppen i kroppens egen färg (#ab6643, mätt i `kanel-body`). Den vita kanten ligger bakom kroppen och syns bara utanför den. Det vita strecket vid roten var kroppens egen klistermärkeskant, som korsade armen.
 - Runda 4:s film ersätter C-filmen, som ligger i `aldre/lekrummet-202611232058.mp4`. QA: boil 1,6 px/s, −16,3 LUFS, inget klippt.
 
+### Beslut (Sanna 2026-11-23): de gamla armarna är bättre
+Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar igen (`armar=bild` är nu standard). Lådan står kvar 10 cm längre till vänster, så att greppet syns. `tunna-armar.js` finns kvar och går att visa med `?armar=d`, men inget använder den. Runda 4:s film ligger i `aldre/`.
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 
@@ -89,5 +92,5 @@ Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av r
 1. **Rumsbyggsats:** flytta lådan, klotet, teckningen, väggen, golvet, ljuset, kortet, kameran och efterbehandlingen ur `rum.js` till en gemensam fil, så att ett nytt rum bara blir en lista med saker. Prova sedan köket eller badrummet.
 2. **Saker som egna kort:** en sak på golvet blir ett eget kort och lämnas över till handen vid greppet, så att den ligger still när kameran sveper.
 3. **Flera vyer som byts vid klipp:** trekvart och sida för Kanel i v2, för kameravinklar över ca 30°. Bara vid klipp, aldrig en snurr.
-4. **Kodarmar C som tillval:** om Sanna gillar C, flytta `tunna-armar.js` till en gemensam fil och prova den i en vanlig platt scen.
+4. ~~Kodarmar~~: avvisade 23/11. De målade armarna gäller.
 5. **Ett riktigt avsnitt:** en bilderbokscen (`format/bilderbok.md`) i det här rummet med Malins hela manus, för att se om det håller i flera minuter och om renderingen står pall (nu ca 3 s per sekund film).
