@@ -8,7 +8,7 @@ Så görs scenen där kritan ritar dagens sak, likadant i varje färgsång. Rece
 
 ## Grundidén
 
-Kritan ritar **bara konturen** av dagens sak i ett enda lugnt drag, så att barnet hinner följa linjen och gissa. Sedan väntar kritan. På svaret fylls den riktiga bilden i inifrån och linjen tonas bort. Ingen musik spelas under ritandet, bara skogsljud och berättaren. Sången börjar efter "Nu kör vi!".
+Kritan ritar **bara konturen** av dagens sak i ett enda drag, så att barnet hinner följa linjen och gissa. **Kort:** konturen ca 2,8 s och svaret efter ca 5 s, hela scenen ca 7–8 s (Sanna 2026-11-23, gäller nya avsnitt; förut 7,4 s kontur och 14–15 s scen). Referenserna i `regelbok.md` är inne i sången efter 0–8 s. Sedan väntar kritan. På svaret fylls den riktiga bilden i inifrån och linjen tonas bort. Ingen musik spelas under ritandet, bara skogsljud och berättaren. Sången börjar efter "Nu kör vi!".
 
 ## Tidslinjen
 
@@ -16,18 +16,18 @@ Tiderna är scentid: s = 0 när kritsvepet ut ur introt är klart. Skriv dem som
 
 | s | Bild | Ljud |
 |---|---|---|
-| 0,0–0,4 | Kritan poppar fram vid konturens startpunkt och sänker spetsen mot papperet. Kameran är redan nära. | skogsljud tonas in (1,2 s) |
+| 0,0–0,4 | Kritan poppar fram vid konturens startpunkt och sänker spetsen mot papperet. Kameran är redan nära. | skogsljud tonas in (0,8 s) |
 | 0,2 | | **"Titta!"** (`titta-1…4`) |
-| 0,6–8,0 | **Konturen i ett drag, ca 7,4 s.** Spetsen har nästan jämn fart (`jamn`), skakar lite (`skrrt`, 17 Hz, ±1,6°) och lutar 40°. Kameran följer spetsen i närbild (zoom 1,8 med 0,25 s eftersläp). | `krita-ritar`, två tagningar med 0,5 s övertoning |
-| ca 4,5 | Mitt i ritandet | **ledtråden om formen:** "Något runt." / "Något långt." … |
-| 8,0–8,8 | Kritan lyfter till en väntplats bredvid och vickar lugnt. Kameran glider ut till hela konturen. | |
-| 8,8–10,1 | **Gissningspaus**, ungefär 1,5–2 s. Kameran kryper sakta in (+12 %). Kritan gungar lite. | bara skogsljud |
-| 10,1 | **Svaret.** Den riktiga bilden fylls i inifrån på 0,7 s med vaxig kant, och linjen tonas bort. Bilden hoppar (40 px) och gungar på sin botten, fyra krit-gnistor poppar fram och kritan flyger ut uppe till höger. Kameran går nära bilden (+20 %). | **"Ett rött äpple!" / "En gul banan!"**, `pling` |
+| 0,6–3,4 | **Konturen i ett drag, ca 2,8 s.** Spetsen har nästan jämn fart (`jamn`), skakar lite (`skrrt`, 17 Hz, ±1,6°) och lutar 40°. Kameran följer spetsen i närbild (zoom 1,8 med 0,25 s eftersläp). | `krita-ritar`, två tagningar med 0,5 s övertoning |
+| ca 1,8 | Mitt i ritandet | **ledtråden om formen:** "Något runt." / "Något långt." … |
+| 3,4–3,9 | Kritan lyfter till en väntplats bredvid och vickar lugnt. Kameran glider ut till hela konturen. | |
+| 3,9–5,0 | **Gissningspaus**, ungefär 1,1 s. Kameran kryper sakta in (+12 %). Kritan gungar lite. | bara skogsljud |
+| 5,0 | **Svaret.** Den riktiga bilden fylls i inifrån på 0,7 s med vaxig kant, och linjen tonas bort. Bilden hoppar (40 px) och gungar på sin botten, fyra krit-gnistor poppar fram och kritan flyger ut uppe till höger. Kameran går nära bilden (+20 %). | **"Ett rött äpple!" / "En gul banan!"**, `pling` |
 | svar + ca 0,5 | Ett litet skutt (18 px) på färgordet | |
-| svar + 3 | **"Nu kör vi!"** / "Nu flyger vi!". Kameran går till helbild. | |
+| svar + 1,5 | **"Nu kör vi!"** / "Nu flyger vi!". Kameran går till helbild. | |
 | sedan | **Övergången in i första scenen: zoom in genom ett hål i papperet** som växer fram med vaxig kant. Under hålet syns första platsen. | `swoosh`, sångens första ton |
 
-Hela scenen är ungefär 14–15 s. När konturen görs längre ska svaret och sången flyttas lika mycket, så att sången står kvar i takt. Se `KAP` i `satt-ihop.sh` och `fargsang-v2.md`.
+Hela scenen är ungefär 7–8 s (var 14–15 s före 2026-11-23). När konturen görs längre ska svaret och sången flyttas lika mycket, så att sången står kvar i takt. Se `KAP` i `satt-ihop.sh` och `fargsang-v2.md`.
 
 ## Bilden
 

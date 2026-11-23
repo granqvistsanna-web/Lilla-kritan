@@ -11,7 +11,7 @@ Färgsångernas recept är [fargsang-v2.md](fargsang-v2.md). Det här receptet �
 | Del | 020 | Scentid (s) |
 |---|---|---|
 | Intro | 020: formatets intro, 9,0 s, med titel och kritsvep. **Från 021: det gemensamma introt *"Djuren hittar på!"*** (först *"Vad ska vi göra?"*, bytt av Sanna 2026-11-11) (`produktion/youtube/bilderbok-intro/`, ca 3,3 s): Tittuts papperskort, bokstäverna poppar i takt med Tittut-jingeln, rösten säger *"Djuren hittar på!"*, kortet tonar till tomt papper. Inget kritsvep (Sanna 2026-11-11) | före scenen |
-| Kritan ritar | konturen i ett lugnt drag (7 s), kritan väntar medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–16 |
+| Kritan ritar | konturen i ett drag (ca 2,8 s från 2026-11-23, förut 7 s; se ritintro.md), kritan väntar kort medan barnet gissar, den riktiga figuren fylls i, sedan zoom in i teckningen | 0–16 |
 | Problemet | hej, figuren är smutsig, vill inte bada | 16–47 |
 | Hjälpen | kritan ritar en sak i scenen (badankan, sedan båten och bubblorna), "Varsågod" – "Tack!" | 47–93 |
 | Leken | upp på pallen, hoppa i, prata med ankan, ankan på huvudet | 93–133 |

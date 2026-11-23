@@ -2,7 +2,9 @@
 
 Görs **en gång** och sparas i `assets/format/`. Varje avsnitt byter bara titeln och numret på titelkortet.
 
-## Intro (ca 8 sekunder)
+## Intro (6,5 sekunder)
+
+Från 2026-11-23 är sångintrot det gemensamma `produktion/youtube/sang-intro/` (6,5 s, engelska 7,75 s): kopiera mappen till `avsnitt/NNN/intro/`. Hela jingeln sjungs ("se!" slutar ca 5,9 s), titeln kommer på "Kom och se!", kritsvepet täcker bilden från 5,7 s, och jingelns musik tonas ut 6,0–6,5 s i `satt-ihop.sh` (`atrim=0:6.5,afade=t=out:st=6.0:d=0.5`). Bilderboksintrot är redan 3,3 s. Tabellen nedan är den första versionen.
 
 | Tid | Bild | Ljud |
 |---|---|---|

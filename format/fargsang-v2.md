@@ -7,7 +7,7 @@
 | Del | 013 | Tid i filmen |
 |---|---|---|
 | Intro | formatets intro med jingeln, 9,0 s, slutar med ett kritsvep in i ritandet | 0:00–0:09 |
-| Kritan ritar | konturen i ett lugnt drag (7 s), skogsljud under, kort väntan, riktiga bilden fylls i inifrån, "Ett rött äpple!", "Nu kör vi!" | 0:09–0:22 |
+| Kritan ritar | konturen i ett drag (ca 2,8 s från 2026-11-23, förut 7 s), skogsljud under, kort väntan, riktiga bilden fylls i inifrån, "Ett rött äpple!", "Nu kör vi!" | 0:09–0:22 |
 | Vers 1 och refräng 1 | körscen på vägen, en röd sak i taget, refrängen på en egen plats (äppelbacken) | 0:22–1:31 |
 | Danspaus | sakerna dansar (äppelmarschen) | 1:31–1:47 |
 | Discot | tre djur dansar, klistermärken med det vi hittat, sista refrängen, hejdå | 1:47–2:29 |
@@ -44,7 +44,7 @@ Räkna om Sannas filmtid till avsnittstid innan du letar i koden, och skriv form
 **Hela receptet står i [ritintro.md](ritintro.md)** (2026-11-10, gäller före det som står här).
 
 - Introt slutar med ett kritsvep som drar rakt in i ritandet. Ingen papperszoom.
-- Kritan ritar **konturen i ett drag, lugnt** (01a ca 7 s), sedan blad och skaft. Den riktiga bilden fylls i inifrån först på svaret.
+- Kritan ritar **konturen i ett drag** (01a ca 2,8 s från 2026-11-23, förut ca 7 s; se ritintro.md), sedan blad och skaft. Den riktiga bilden fylls i inifrån först på svaret.
 - **Skogsljud** (`assets/ljud/effekter/skogsljud/skogsljud-1.m4a`) under hela ritandet: från svepet ut ur introt tills sången har börjat, volym 0,4, in 1,2 s och ut 2,2 s.
 - Väntan efter konturen kortas i `satt-ihop.sh` med `KAP0`/`KAP`. **Tre saker flyttas ihop**: `KAP`, sångens `adelay` och storyboardraden för 01b. Gör konturen längre, så kortas väntan lika mycket och sången står kvar i takt.
 - Repliken *"Vad kan det vara?"* används aldrig. 013 säger *"Titta!"* när kritan börjar rita och *"Något runt."* medan konturen ritas, en ledtråd om formen före svaret (Sanna 2026-11-09: kort är bättre; "i asked for malin to add the line något runt in drawing scene"). Nästa avsnitt gör likadant: *"Något långt."* för bananen i 011.
