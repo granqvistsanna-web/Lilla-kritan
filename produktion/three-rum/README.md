@@ -102,6 +102,16 @@ Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar ige
 - QA: boil 2,5 px/s (gränsen är 4,5; glansen följer boilen lite), −16,3 LUFS, inget klippt.
 - Obs: stillbilder som renderas i omvänd ordning (t.ex. 13 före 4,2) kan tappa bollen, eftersom riggen minns att den släppts. Filmen spelas alltid framåt och påverkas inte.
 
+## Runda 7 (Sanna: rummet lite plattare och med mer textur)
+- **Plattare:** rummets ytor lyser till 40 % av sig själva (golv och matta 20 %, så att Kanels skugga syns kvar), så att lådsidor, dörr, hylla och kudde läses som platta målade färgfält. Objektivet är längre (24° i stället för 30°, kameran längre bort med samma utsnitt), så att perspektivet blir mindre brant.
+- **Mer textur:** starkare vaxkorn i två skalor, mjuk ojämn färg på saker, golv och kudde och ett tredje kornlager på väggen. Fortfarande inga streck på väggen. Dörren har bara korn, eftersom dess bild upprepas och fläckarna blev ett mönster.
+
+## Runda 8 (Sanna: lugnare och mer avsiktliga ansiktsuttryck)
+- **Färre uttryck, kvar längre:** fyra stunder i stället för åtta: nyfiken när hon ser bollen (0,5–3,3 s), nöjd när hon håller den (3,1–4,9), jätteglad när "hurra" kommer (ca 2,5 s) och riggens glada ansikte i vinkningen. Förvånad, stolt, nyfiken mot teckningarna, fnissig och blinkningen på slutet är borta. Bytena tonas på 0,4 s.
+- **Blicken:** den flyttas bara med ett syfte och långsamt. Hon tittar ner på bollen när hon ser den och en gång mot lådan där bollen hamnade, annars på oss. Blickflytten ut i rummet i början och blicken åt sidan efter hej då är borta.
+- **Ingen blinkning ovanpå en ändring:** ingen blinkning inom 0,45 s från ett uttrycksbyte eller en blickflytt.
+- QA: boil 1,9 px/s, −16,3 LUFS, inget klippt.
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 

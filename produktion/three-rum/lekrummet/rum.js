@@ -35,7 +35,8 @@ R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.NoToneMapping; 
 R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFShadowMap;
 const scen = new THREE.Scene();
 scen.background = new THREE.Color('#05a167');
-const cam = new THREE.PerspectiveCamera(30, W / H, 0.1, 40);
+const cam = new THREE.PerspectiveCamera(24, W / H, 0.1, 40);   // runda 7: längre objektiv (24° i stället för 30°), plattare perspektiv
+const LINS = Math.tan(15 * Math.PI / 180) / Math.tan(12 * Math.PI / 180);   // kameran längre bort så att utsnittet blir detsamma
 
 // ---------- texturer ----------
 const bild = src => new Promise((ok, fel) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fel; i.src = src; });
@@ -49,11 +50,16 @@ let KORNC;
 async function korn() {
   const i = await bild('/verktyg/papper-textur.png'), c = canvas(1024, 1024), x = c.getContext('2d');
   x.drawImage(i, 0, 0, 1024, 1024); const d = x.getImageData(0, 0, 1024, 1024);
-  for (let j = 0; j < d.data.length; j += 4) { const v = 255 * kl(0.86, 1, 0.95 + (d.data[j] - 128) / 255 * 0.5); d.data[j] = d.data[j + 1] = d.data[j + 2] = v; }
+  for (let j = 0; j < d.data.length; j += 4) { const v = 255 * kl(0.8, 1, 0.94 + (d.data[j] - 128) / 255 * 0.75); d.data[j] = d.data[j + 1] = d.data[j + 2] = v; }   // runda 7: starkare korn (förut 0,86–1)
   x.putImageData(d, 0, 0); return c;
 }
 const kornPa = (x, w, h, ruta = 256) => { x.globalCompositeOperation = 'multiply';
   for (let i = 0; i < w; i += ruta) for (let j = 0; j < h; j += ruta) x.drawImage(KORNC, i, j, ruta, ruta); x.globalCompositeOperation = 'source-over'; };
+// runda 7: lite ojämn färg, som vaxkrita på papper: mjuka ljusare och mörkare fläckar (storlek efter ytan)
+const flackar = (x, w, h, styrka = 0.1) => { const n = 5 + Math.round(w * h / 90000), m = Math.max(w, h);
+  for (let i = 0; i < n; i++) { const px = slump() * w, py = slump() * h, r = m * (0.12 + 0.25 * slump()), g = x.createRadialGradient(px, py, 0, px, py, r);
+    g.addColorStop(0, slump() < 0.5 ? `rgba(255,250,235,${styrka})` : `rgba(60,30,10,${styrka * 0.45})`); g.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); } };
 // Ett kritstreck: flera tunna, lite skakiga linjer med låg täckning ovanpå varandra (som vaxkrita på papper).
 function krita(x, pts, farg, bredd, alfa = 0.5, n = 4) {
   x.lineCap = 'round'; x.lineJoin = 'round';
@@ -74,19 +80,19 @@ function vaggBit(w, h) {
   x.fillStyle = '#05a167'; x.fillRect(0, 0, w, h);
   for (let n = 0; n < w * h / 9000; n++) {   // fläckar
     const px = slump() * w, py = slump() * h, r = 60 + slump() * 160, g = x.createRadialGradient(px, py, 0, px, py, r), ljus = slump() < 0.5;
-    g.addColorStop(0, ljus ? 'rgba(60,190,120,0.09)' : 'rgba(0,110,70,0.09)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); }
+    g.addColorStop(0, ljus ? 'rgba(60,190,120,0.12)' : 'rgba(0,110,70,0.12)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); }
   x.lineCap = 'round';
   for (let n = 0; n < w * h / 180; n++) {   // skraffering: korta snea drag, nästan osynliga ett och ett
     const px = slump() * w, py = slump() * h, l = 8 + slump() * 12, ljus = slump() < 0.55, a = -1.1 + (slump() - 0.5) * 1.2;
     x.strokeStyle = ljus ? 'rgba(120,215,150,0.04)' : 'rgba(0,90,55,0.04)'; x.lineWidth = 2.5 + slump() * 3;
     x.beginPath(); x.moveTo(px, py); x.lineTo(px + l * Math.cos(a), py + l * Math.sin(a)); x.stroke(); }
-  kornPa(x, w, h, 512); kornPa(x, w, h, 160);
+  kornPa(x, w, h, 512); kornPa(x, w, h, 160); kornPa(x, w, h, 72);
   return c;
 }
 // Golvet: varmt ljust golv, kritkorn och plankstreck som vickar lite.
 function golvBit() {
   const c = canvas(1024, 1024), x = c.getContext('2d');
-  x.fillStyle = '#f2dfc6'; x.fillRect(0, 0, 1024, 1024); kornPa(x, 1024, 1024);
+  x.fillStyle = '#f2dfc6'; x.fillRect(0, 0, 1024, 1024); flackar(x, 1024, 1024, 0.07); kornPa(x, 1024, 1024); kornPa(x, 1024, 1024, 128);
   for (let k = 0; k < 4; k++) { const y = 128 + k * 256; krita(x, skakig([-10, y], [1034, y + 4], 3, 30), 'rgb(185,135,90)', 5, 0.16, 3); }
   return c;
 }
@@ -155,7 +161,7 @@ const mat = (farg, o = {}) => new THREE.MeshLambertMaterial({ color: farg, ...o 
 const PXM = 420;
 function sidBild(b, h, farg, linje) {
   const w = Math.max(24, Math.round(b * PXM)), hh = Math.max(24, Math.round(h * PXM)), c = canvas(w, hh), x = c.getContext('2d');
-  x.fillStyle = farg; x.fillRect(0, 0, w, hh); kornPa(x, w, hh);
+  x.fillStyle = farg; x.fillRect(0, 0, w, hh); flackar(x, w, hh); kornPa(x, w, hh); kornPa(x, w, hh, 96);
   if (linje) { const k = 0.022 * PXM, o = k * 0.75, P = [[o, o], [w - o, o], [w - o, hh - o], [o, hh - o]];
     for (let i = 0; i < 4; i++) krita(x, skakig(P[i], P[(i + 1) % 4], k * 0.25, 10), linje, k, 0.5, 4); }
   const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t;
@@ -173,7 +179,7 @@ const lada = (b, h, d, farg, linje, pos, o = {}) => {
   const m = new THREE.Mesh(g, sidor); m.position.set(...pos); if (o.rot) m.rotation.set(...o.rot);
   m.castShadow = m.receiveShadow = true; scen.add(m); return m; };
 const klot = (r, farg, pos, sk = [1, 1, 1], vick = 0.02) => {
-  const c = canvas(512, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 512, 256); kornPa(x, 512, 256);
+  const c = canvas(512, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 512, 256); flackar(x, 512, 256); kornPa(x, 512, 256); kornPa(x, 512, 256, 96);
   const m = new THREE.Mesh(ojamn(new THREE.SphereGeometry(r, 40, 28), r * vick, pos[0]), new THREE.MeshLambertMaterial({ map: tex(c) }));
   m.position.set(...pos); m.scale.set(...sk); m.castShadow = m.receiveShadow = true; scen.add(m); return m; };
 
@@ -200,7 +206,7 @@ async function byggRum() {
   // dörren: gräddvit med rosa kritram och gul knopp (plattan: #fae7c4, #e757b2)
   const DX = -1.85, DB = 0.8, DH = 1.55;
   const dorrForm = (b, h) => { const s = new THREE.Shape(); s.moveTo(-b / 2, 0); s.lineTo(-b / 2, h - b / 2); s.absarc(0, h - b / 2, b / 2, Math.PI, 0, true); s.lineTo(b / 2, 0); s.lineTo(-b / 2, 0); return s; };
-  const dorr = (b, h, d, farg) => { const c = canvas(256, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 256, 256); kornPa(x, 256, 256);
+  const dorr = (b, h, d, farg) => { const c = canvas(256, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 256, 256); kornPa(x, 256, 256); kornPa(x, 256, 256, 96);   // dörren: bara korn (fläckar upprepas i mönster)
     const t = tex(c, [3, 3]); const m = new THREE.Mesh(new THREE.ExtrudeGeometry(dorrForm(b, h), { depth: d, bevelEnabled: true, bevelSize: 0.008, bevelThickness: 0.008, bevelSegments: 2, curveSegments: 24 }),
       new THREE.MeshLambertMaterial({ map: t })); m.position.set(DX, 0, BAK); m.castShadow = m.receiveShadow = true; scen.add(m); return m; };
   dorr(DB + 0.08, DH + 0.04, 0.035, '#e757b2'); dorr(DB - 0.03, DH - 0.02, 0.05, '#fae7c4');
@@ -354,11 +360,16 @@ const liv = (p, t) => { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2;   /
   return { ...p, strack: (p.strack || 0) + 0.014 * a, bred: (p.bred || 0) + 0.007 * a, oron: (p.oron || [0, 0]).map((o, i) => o - 2 * a + (i ? -1 : 1) * 1.5 * Math.sin(t * 1.3 + 2 * i)) }; };
 const GLAD = () => ({ ...L.blanda('neutral', 'glad', 1), glad: [0, 0] });
 // blicken: [titt x, titt y, huvudlutning], mjukt mellan nycklarna. Tittar på oss, runt i rummet, ner på bollen, på lådan, upp på teckningarna.
-const BLICK = [[0, [0, 0, 0]], [0.2, [0, 0, 0]], [0.6, [13, -5, -2.5]], [0.95, [13, -5, -2.5]], [1.3, [-14, 14, 2.5]],
-  [7.0, [0, 0, 0]], [8.0, [0, 0, 0]], [8.45, [-13, 8, 2]], [9.0, [-13, 8, 2]], [9.5, [11, -10, -3.4]], [10.2, [11, -10, -3.4]], [10.7, [0, 0, 0]],
-  [15.2, [0, 0, 0]], [15.7, [-11, 2, 2.5]], [16.5, [-11, 2, 2.5]], [17.0, [0, 0, 1.4]]];
-const UTR = [[0.8, 1.45, 'nyfiken', 0.8], [3.6, 4.75, 'jatteglad', 0.7], [LANDAR - 0.05, LANDAR + 0.45, 'forvanad', 0.7],
-  [LANDAR + 0.55, LANDAR + 2.0, 'jatteglad', 0.9], [8.4, 9.1, 'stolt', 0.8], [9.45, 10.3, 'nyfiken', 0.7], [15.6, 16.6, 'fnissig', 0.8], [16.9, 17.6, 'blinkar', 1]];
+// runda 8 (Sanna: lugnare, mer avsiktliga uttryck): blicken flyttas bara med ett syfte och långsamt (minst 0,7 s):
+// ner på bollen när hon ser den, en gång bort mot lådan där bollen hamnade, annars på oss. [titt x, titt y, huvudlutning]
+const BLICK = [[0, [0, 0, 0]], [0.4, [0, 0, 0]], [1.2, [-14, 14, 2.5]],
+  [7.0, [0, 0, 0]], [8.2, [0, 0, 0]], [8.9, [-12, 8, 2]], [9.9, [-12, 8, 2]], [10.6, [0, 0, 0]]];
+// fyra uttryck, vart och ett knutet till en tydlig stund och kvar minst 1,5 s, mjukt in och ut på 0,4 s (vinkningen är riggens glada):
+// nyfiken när hon ser bollen, nöjd (jätteglad) när hon håller den, jätteglad när "hurra" kommer. Inga små uttryck emellan.
+const UTR = [[0.5, 3.3, 'nyfiken', 0.7], [3.1, 4.9, 'jatteglad', 0.7], [LANDAR + 0.55, LANDAR + 3.1, 'jatteglad', 0.9]];
+// ingen blinkning nära ett uttrycksbyte eller en blickflytt (ingen blinkning ovanpå en ändring)
+const BYTEN = [...UTR.flatMap(([a, b]) => [a, b]), ...BLICK.map(k => k[0]).filter(x => x > 0)];
+const nara = t => BYTEN.some(c => Math.abs(t - c) < 0.45);
 const spar = (K, t) => { if (t <= K[0][0]) return K[0][1];
   for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const u = mjuk((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])); return K[i - 1][1].map((v, j) => lerp(v, K[i][1][j], u)); }
   return K.at(-1)[1]; };
@@ -393,13 +404,13 @@ function kanel(t) {
   const iFig = t < SLAPP;
   // runda 6: fler uttryck ovanpå (blicken och armarna behålls): nyfiken på bollen, jätteglad med bollen, lite förvånad av dunset,
   // jätteglad på "bra jobbat", stolt mot lådan, nyfiken mot teckningarna, fnissig efter hej då och en blinkning till oss på slutet
-  for (const [a, b, namn, s] of UTR) { const k = s * mjuk(kl(0, 1, (t - a) / 0.3)) * mjuk(kl(0, 1, (b - t) / 0.3));
-    if (k > 0) { const { titt, armar } = f; f = { ...L.blanda(f, namn, k), titt: namn === 'nyfiken' ? L.blanda(f, namn, k).titt : titt, armar }; } }
+  for (const [a, b, namn, s] of UTR) { const k = s * mjuk(kl(0, 1, (t - a) / 0.4)) * mjuk(kl(0, 1, (b - t) / 0.4));
+    if (k > 0) { const { titt, armar } = f; f = { ...L.blanda(f, namn, k), titt, armar }; } }   // blicken och armarna är våra
   // bollen ligger kvar i riggen efter släppet, bara dold: sakIn(G, null) byter armlager i riggen och handen hoppade 87 enheter
   // (gäller bara kodarmarna; de målade armarna byter lager som i runda 2)
   if (TA) { if (!G.sak) L.sakIn(G, SAK); G.querySelectorAll('.sak-plats').forEach(e => e.style.visibility = iFig ? '' : 'hidden'); }
   else { if (iFig && !G.sak) L.sakIn(G, SAK); if (!iFig && G.sak) L.sakIn(G, null); }
-  L.rita(G, BL(f, t), liv(p, t));
+  L.rita(G, nara(t) ? f : BL(f, t), liv(p, t));
   TA?.rita({ mal: { l: malL, r: malR }, k: { l: kl_, r: 1 } });
   return iFig;
 }
@@ -417,9 +428,9 @@ function kamera(t) {
   let v, r, y, mx, my;
   const fart = DOLLY ? k => kl(0, 1, k) : lugn;
   if (t < KLIPP) { const u = fart(t / KLIPP);   // helbild: glider in och lite runt, Kanel och lådan i bild
-    v = (-20 + 14 * u) * Math.PI / 180; r = lerp(4.0, 3.25, u); y = lerp(0.85, 0.74, u); mx = lerp(-0.18, -0.12, u); my = lerp(0.55, 0.5, u);
+    v = (-20 + 14 * u) * Math.PI / 180; r = LINS * lerp(4.0, 3.25, u); y = lerp(0.85, 0.74, u); mx = lerp(-0.18, -0.12, u); my = lerp(0.55, 0.5, u);
   } else { const u = fart((t - KLIPP) / (DURATION - KLIPP));   // halvnära: kroppen fyller bilden, en långsam glidning in
-    v = (10 + 5 * u) * Math.PI / 180; r = lerp(2.05, 1.85, u); y = 0.66; mx = 0.02; my = 0.56; }
+    v = (10 + 5 * u) * Math.PI / 180; r = LINS * lerp(2.05, 1.85, u); y = 0.66; mx = 0.02; my = 0.56; }
   cam.position.set(KANEL.x + r * Math.sin(v), y, KANEL.z + r * Math.cos(v));
   cam.lookAt(KANEL.x + mx, my, KANEL.z);
   cam.updateMatrixWorld();
@@ -513,7 +524,13 @@ window.LJUD = [
 ];
 window.DURATION = DURATION;
 window.ready = (async () => {
-  await byggRum(); await byggKanel();
+  await byggRum();
+  // runda 7 (Sanna: plattare rum): rummets ytor lyser till 40 % av sig själva (golv och matta 20 %, så att Kanels skugga syns kvar),
+  // så att ljus och skugga skiljer mindre mellan sidorna och ytorna läses som platta målade färgfält, som i 2D-plattan
+  scen.traverse(o => { if (!o.isMesh) return; for (const m of [].concat(o.material)) { if (!m.isMeshLambertMaterial) continue;
+    const e = o.rotation.x === -Math.PI / 2 ? 0.2 : 0.4; m.color.multiplyScalar(1 - e);
+    if (m.map) { m.emissiveMap = m.map; m.emissive.setScalar(e); } else m.emissive.copy(m.color).multiplyScalar(e / (1 - e)); m.needsUpdate = true; } });
+  await byggKanel();
   await seek(+(new URLSearchParams(location.search).get('t') || 0));
   window.seek = seek;
   return true;
