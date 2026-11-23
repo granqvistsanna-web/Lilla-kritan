@@ -64,17 +64,20 @@ function krita(x, pts, farg, bredd, alfa = 0.5, n = 4) {
 const skakig = ([ax, ay], [bx, by], d = 2, n = 12) => Array.from({ length: n + 1 }, (_, i) => { const u = i / n;
   return [ax + (bx - ax) * u + (slump() - 0.5) * d * (i % n ? 1 : 0.3), ay + (by - ay) * u + (slump() - 0.5) * d * (i % n ? 1 : 0.3)]; });
 
-// Väggen: plattans gröna (#05a167) med kritkorn och långa, snea kritsvep (ljusgröna och turkosa, som i plattan), lite starkare
-// än i runda 1. En egen bild per vägg (ingen upprepning), så att svepen inte speglas till mönster.
+// Väggen (runda 5, Sanna: inga linjer på väggen, mer textur): plattans gröna med mjuka, stora fläckar (ljusare och mörkare),
+// tät kort kritskraffering åt ett håll med mycket låg täckning (läses som vaxkrita, inte som streck) och kritkorn i två skalor.
 function vaggBit(w, h) {
   const c = canvas(w, h), x = c.getContext('2d');
-  x.fillStyle = '#05a167'; x.fillRect(0, 0, w, h); kornPa(x, w, h, 512);
-  for (let n = 0; n < w / 200; n++) {
-    const turkos = slump() < 0.35, x0 = slump() * w, y0 = h * (0.15 + 0.85 * slump()), l = (turkos ? 120 : 260) + slump() * (turkos ? 180 : 600), a = -(0.55 + 0.25 * slump());
-    const b = [x0 + l * Math.cos(a), y0 + l * Math.sin(a)];
-    krita(x, skakig([x0, y0], b, 3, 16), turkos ? 'rgb(70,200,185)' : 'rgb(135,220,95)', 4 + 3 * slump(), 0.17 + 0.07 * slump(), 6);
-    if (turkos && slump() < 0.6) krita(x, skakig([x0 + 20, y0 + 30], [b[0] + 30, b[1] + 40], 3, 10), 'rgb(70,200,185)', 4, 0.15, 4);   // dubbla svep, som plattans krumelurer
-  }
+  x.fillStyle = '#05a167'; x.fillRect(0, 0, w, h);
+  for (let n = 0; n < w * h / 9000; n++) {   // fläckar
+    const px = slump() * w, py = slump() * h, r = 60 + slump() * 160, g = x.createRadialGradient(px, py, 0, px, py, r), ljus = slump() < 0.5;
+    g.addColorStop(0, ljus ? 'rgba(60,190,120,0.09)' : 'rgba(0,110,70,0.09)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); }
+  x.lineCap = 'round';
+  for (let n = 0; n < w * h / 180; n++) {   // skraffering: korta snea drag, nästan osynliga ett och ett
+    const px = slump() * w, py = slump() * h, l = 8 + slump() * 12, ljus = slump() < 0.55, a = -1.1 + (slump() - 0.5) * 1.2;
+    x.strokeStyle = ljus ? 'rgba(120,215,150,0.04)' : 'rgba(0,90,55,0.04)'; x.lineWidth = 2.5 + slump() * 3;
+    x.beginPath(); x.moveTo(px, py); x.lineTo(px + l * Math.cos(a), py + l * Math.sin(a)); x.stroke(); }
+  kornPa(x, w, h, 512); kornPa(x, w, h, 160);
   return c;
 }
 // Golvet: varmt ljust golv, kritkorn och plankstreck som vickar lite.
@@ -99,24 +102,46 @@ function klickBit() {
   g.addColorStop(0, 'rgb(150,120,105)'); g.addColorStop(0.45, 'rgb(200,180,165)'); g.addColorStop(1, 'rgb(255,255,255)');
   x.fillStyle = g; x.fillRect(0, 0, 256, 256); return c;
 }
-// Teckningar på väggen: ett papper med en kritteckning, fasttejpat (en sol över gräs, ett hus, ett hjärta)
+// Teckningar på väggen (runda 5): barnens kritteckningar, allt ifyllt med kritklotter ända ut till papperskanten (ingen vit remsa),
+// på lite ojämnt gräddvitt papper med två tejpbitar och en mjuk skugga mot väggen. Bilden har en kant runt pappret för skuggan.
+const TP = 34;   // kant runt pappret i bilden (för skuggan)
+function klotter(x, form, farg, alfa = 0.55, tat = 9, vinkel = -0.9) {   // fyll en form med täta kritsicksackar
+  x.save(); x.beginPath(); form(x); x.clip();
+  const b = x.canvas.width, h = x.canvas.height, dx = Math.cos(vinkel), dy = Math.sin(vinkel);
+  for (let o = -b - h; o < b + h; o += tat) krita(x, skakig([o * -dy - dx * 900, o * dx - dy * 900], [o * -dy + dx * 900, o * dx + dy * 900], 3, 24), farg, tat * 1.3, alfa, 2);
+  x.restore();
+}
 function teckning(typ) {
-  const c = canvas(420, 340), x = c.getContext('2d');
-  x.fillStyle = '#fffaf0'; x.fillRect(0, 0, 420, 340); kornPa(x, 420, 340);
+  const W0 = 420, H0 = 340, c = canvas(W0 + 2 * TP, H0 + 2 * TP), x = c.getContext('2d');
+  const papper = q => { q.moveTo(TP + 2, TP + 1); q.lineTo(TP + W0 - 1, TP + 3); q.lineTo(TP + W0 + 1, TP + H0 - 2); q.lineTo(TP + 1, TP + H0); q.closePath(); };
+  x.save(); x.shadowColor = 'rgba(0,60,35,0.38)'; x.shadowBlur = 16; x.shadowOffsetX = 5; x.shadowOffsetY = 9;
+  x.fillStyle = '#fbf3e2'; x.beginPath(); papper(x); x.fill(); x.restore();
+  x.save(); x.beginPath(); papper(x); x.clip(); kornPa(x, c.width, c.height); x.translate(TP, TP);
+  const ring = (cx, cy, r) => q => q.arc(cx, cy, r, 0, 7), rekt = (a, b2, w, h) => q => q.rect(a, b2, w, h);
   if (typ === 'sol') {
-    krita(x, skakig([0, 270], [420, 262], 4), '#3da35a', 26, 0.7, 5);
-    x.fillStyle = '#f7c531'; x.beginPath(); x.arc(150, 130, 52, 0, 7); x.fill();
-    for (let i = 0; i < 9; i++) { const a = i / 9 * 2 * Math.PI; krita(x, [[150 + 66 * Math.cos(a), 130 + 66 * Math.sin(a)], [150 + 100 * Math.cos(a), 130 + 100 * Math.sin(a)]], '#f2a929', 10, 0.8, 3); }
-    krita(x, skakig([300, 90], [370, 80], 3), '#7cc4ee', 18, 0.6, 3);
+    klotter(x, rekt(0, 0, W0, 262), '#8fd0f0', 0.45, 10);
+    klotter(x, q => { q.moveTo(0, 250); q.quadraticCurveTo(210, 225, W0, 248); q.lineTo(W0, H0); q.lineTo(0, H0); }, '#3da35a', 0.75, 8, -1.2);
+    klotter(x, ring(150, 120, 54), '#f7c531', 0.9, 7);
+    krita(x, Array.from({ length: 25 }, (_, i) => [150 + 56 * Math.cos(i / 24 * 6.4), 120 + 56 * Math.sin(i / 24 * 6.4)]), '#f2a929', 7, 0.85, 3);
+    for (let i = 0; i < 9; i++) { const a = i / 9 * 2 * Math.PI; krita(x, [[150 + 70 * Math.cos(a), 120 + 70 * Math.sin(a)], [150 + 102 * Math.cos(a), 120 + 102 * Math.sin(a)]], '#f2a929', 9, 0.85, 3); }
+    klotter(x, q => { q.ellipse(320, 80, 52, 24, 0, 0, 7); }, '#ffffff', 0.8, 7);
   } else if (typ === 'hus') {
-    x.fillStyle = '#e8574e'; x.fillRect(120, 150, 180, 140);
-    krita(x, [[100, 155], [210, 60], [320, 155]], '#7a4a32', 16, 0.85, 4);
-    x.fillStyle = '#ffc93c'; x.fillRect(150, 185, 45, 45); x.fillStyle = '#fae7c4'; x.fillRect(225, 205, 45, 85);
+    klotter(x, rekt(0, 0, W0, 260), '#8fd0f0', 0.4, 10);
+    klotter(x, rekt(0, 270, W0, 70), '#3da35a', 0.75, 8, -1.2);
+    klotter(x, rekt(118, 150, 184, 140), '#e8574e', 0.85, 7);
+    klotter(x, q => { q.moveTo(98, 158); q.lineTo(210, 58); q.lineTo(322, 158); q.closePath(); }, '#8a5236', 0.85, 7, -0.5);
+    klotter(x, rekt(148, 182, 48, 48), '#ffc93c', 0.9, 6); klotter(x, rekt(226, 204, 46, 86), '#fae7c4', 0.9, 6);
+    krita(x, skakig([118, 150], [118, 290], 2, 8), '#a8332c', 6, 0.7, 3); krita(x, skakig([302, 150], [302, 290], 2, 8), '#a8332c', 6, 0.7, 3);
   } else {
-    x.fillStyle = '#e86fa8'; x.beginPath(); x.moveTo(210, 270); x.bezierCurveTo(60, 170, 110, 60, 210, 120); x.bezierCurveTo(310, 60, 360, 170, 210, 270); x.fill();
+    klotter(x, rekt(0, 0, W0, H0), '#fde3ef', 0.5, 10);
+    const hj = q => { q.moveTo(210, 280); q.bezierCurveTo(50, 175, 100, 50, 210, 118); q.bezierCurveTo(320, 50, 370, 175, 210, 280); };
+    klotter(x, hj, '#e86fa8', 0.9, 7);
+    const pts = []; for (let i = 0; i <= 40; i++) { const u = i / 40, a = u * 2 * Math.PI; pts.push([210 + 128 * Math.pow(Math.sin(a), 3) * 1.05, 165 - (95 * Math.cos(a) - 38 * Math.cos(2 * a) - 15 * Math.cos(3 * a) - 6 * Math.cos(4 * a)) * 0.95]); }
+    krita(x, pts, '#c94584', 7, 0.8, 3);
   }
-  kornPa(x, 420, 340);
-  x.fillStyle = 'rgba(255,250,225,0.75)'; x.save(); x.translate(210, 12); x.rotate(-0.06); x.fillRect(-45, -14, 90, 28); x.restore();   // tejp
+  x.restore();
+  for (const [tx, ty, v] of [[TP + 40, TP + 4, -0.5], [TP + W0 - 40, TP + 4, 0.45]]) {   // tejp i två hörn
+    x.save(); x.translate(tx, ty); x.rotate(v); x.fillStyle = 'rgba(255,248,220,0.82)'; x.fillRect(-34, -11, 68, 22); x.restore(); }
   return c;
 }
 
@@ -187,7 +212,7 @@ async function byggRum() {
 
   // teckningar på väggen (barnens kritteckningar, tejpade), lite snett
   for (const [typ, x, y, b, v] of [['sol', -0.85, 1.45, 0.46, -0.05], ['hus', 0.62, 1.62, 0.4, 0.04], ['hjarta', 2.45, 0.95, 0.32, -0.07]]) {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(b, b * 340 / 420), new THREE.MeshLambertMaterial({ map: tex(teckning(typ)) }));
+    const k = (420 + 2 * TP) / 420, m = new THREE.Mesh(new THREE.PlaneGeometry(b * k, b * (340 + 2 * TP) / 420), new THREE.MeshLambertMaterial({ map: tex(teckning(typ)), transparent: true, depthWrite: false }));
     m.position.set(x, y, BAK + 0.006); m.rotation.z = v; m.receiveShadow = true; scen.add(m); }
 
   // mattan (platt på golvet)
@@ -313,11 +338,17 @@ const P = o => ({ ...L.POSE0, ...o });
 const liv = (p, t) => { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2;   // andning, som 050
   return { ...p, strack: (p.strack || 0) + 0.014 * a, bred: (p.bred || 0) + 0.007 * a, oron: (p.oron || [0, 0]).map((o, i) => o - 2 * a + (i ? -1 : 1) * 1.5 * Math.sin(t * 1.3 + 2 * i)) }; };
 const GLAD = () => ({ ...L.blanda('neutral', 'glad', 1), glad: [0, 0] });
+// blicken: [titt x, titt y, huvudlutning], mjukt mellan nycklarna. Tittar på oss, runt i rummet, ner på bollen, på lådan, upp på teckningarna.
+const BLICK = [[0, [0, 0, 0]], [0.2, [0, 0, 0]], [0.6, [13, -5, -2.5]], [0.95, [13, -5, -2.5]], [1.3, [-14, 14, 2.5]],
+  [7.0, [0, 0, 0]], [8.0, [0, 0, 0]], [8.45, [-13, 8, 2]], [9.0, [-13, 8, 2]], [9.5, [11, -10, -3.4]], [10.2, [11, -10, -3.4]], [10.7, [0, 0, 0]],
+  [15.2, [0, 0, 0]], [15.7, [-11, 2, 2.5]], [16.5, [-11, 2, 2.5]], [17.0, [0, 0, 1.4]]];
+const spar = (K, t) => { if (t <= K[0][0]) return K[0][1];
+  for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const u = mjuk((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])); return K[i - 1][1].map((v, j) => lerp(v, K[i][1][j], u)); }
+  return K.at(-1)[1]; };
 function kanel(t) {
   let f, p;
   if (t < T_UPP) {   // tittar på bollen bredvid sig
-    [f, p] = L.plockaDel('upp', 0, D, GOLV_O()); const k = mjuk((t - 0.3) / 0.6);
-    f = { ...f, titt: [-9 * k, 9 * k] }; p = { ...p, luta: 1.5 * k };
+    [f, p] = L.plockaDel('upp', 0, D, GOLV_O());
   } else if (t < T_UPP + D) [f, p] = L.plockaDel('upp', t - T_UPP, D, GOLV_O());
   else if (t < T_NER) { [f, p] = L.plockaDel('upp', D, D, GOLV_O()); const h = Math.sin(Math.PI * (t - T_UPP - D) / (T_NER - T_UPP - D));
     f = { ...f, titt: (f.titt || [0, 0]).map((v, i) => v + [-7, 5][i] * h) }; p = { ...p, boj: (p.boj || 0) - 1.5 * h }; }
@@ -328,7 +359,11 @@ function kanel(t) {
     const u = (t - (LANDAR + 0.7)) / 0.5; if (u > 0 && u < 2) p = { ...p, nick: [1.1 * Math.sin(Math.PI * (u % 1)), 1.1 * Math.sin(Math.PI * ((u + 0.15) % 1))] };
   }
   let vk = 0;
-  if (t >= KLIPP) { f = GLAD(); p = P({}); vk = L.ARMROR.inUt(t - T_VINK, D_VINK); if (t > T_VINK && t < T_VINK + D_VINK) [f, p] = L.ARMROR.vinka(f, p, t - T_VINK, vk); }
+  if (t >= KLIPP) { f = GLAD(); p = P({}); }
+  // runda 5: hon tittar sig omkring mellan handlingarna (blick + lätt huvudlutning) och flyttar vikten långsamt hela tiden
+  if (t < T_UPP || t >= T_NER + D) { const [bx, by, bl] = spar(BLICK, t); f = { ...f, titt: [bx, by] }; p = { ...p, luta: (p.luta || 0) + bl }; }
+  p = { ...p, luta: (p.luta || 0) + 1.2 * Math.sin(2 * Math.PI * t / 4.7) };
+  if (t >= KLIPP) { vk = L.ARMROR.inUt(t - T_VINK, D_VINK); if (t > T_VINK && t < T_VINK + D_VINK) [f, p] = L.ARMROR.vinka(f, p, t - T_VINK, vk); }
   // kodarmarna (runda 4, som referensens swingArm): handen går i en båge runt axeln. Vila = nästan rak arm som hänger lite ut och
   // svajar mjukt med andningen; vinkningen lyfter handen upp och ut i samma båge och svänger, med mjuk in- och uttoning.
   // Vänstra handen följer riggens hand (till bollen) från strax före upplockningen tills en stund efter att bollen släppts.

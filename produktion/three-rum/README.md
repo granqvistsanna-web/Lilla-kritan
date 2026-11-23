@@ -85,6 +85,12 @@ Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av r
 ### Beslut (Sanna 2026-11-23): de gamla armarna är bättre
 Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar igen (`armar=bild` är nu standard). Lådan står kvar 10 cm längre till vänster, så att greppet syns. `tunna-armar.js` finns kvar och går att visa med `?armar=d`, men inget använder den. Runda 4:s film ligger i `aldre/`.
 
+## Runda 5 (Sanna: städa rummet, mer rörelse)
+- **Väggen:** de långa kritsvepen är borta. Väggen är nu plattans gröna med mjuka, stora fläckar, tät, nästan osynlig kritskraffering och kritkorn i två skalor. Den ser ut som en vaxkritad yta utan streck.
+- **Teckningarna:** allt fylls med kritklotter ända ut till papperskanten (himmel, gräs, sol med ring och strålar, ett moln, huset med tak och dörr, hjärtat på rosa botten), så den vita remsan under bilden är borta. Pappret är lite ojämnt och gräddvitt, har tejp i två hörn och en mjuk skugga mot väggen.
+- **Kanel rör sig mer:** hon tittar sig omkring mellan handlingarna, med blick och huvudlutning. Först ut i rummet, sedan ner på bollen. Efter "bra jobbat" tittar hon på lådan, upp mot teckningarna och tillbaka på oss, och efter hej då åt sidan. Hon flyttar också vikten långsamt hela tiden. Allt är mjukt mellan lägena, och hon vänder sig aldrig runt.
+- QA: boil 1,8 px/s, −16,3 LUFS, inget klippt.
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 
