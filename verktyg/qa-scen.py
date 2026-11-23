@@ -6,11 +6,14 @@
   python3 verktyg/qa-scen.py --pussel [filmnamn ...]                   Malins tider i pussel-prov.py (alla filmer om inga namn)
 Raderna (tomt efter kolon = inget fel):
  boil kod: #boil-skala som är fast, större än 2,5 eller inte delad med kamerazoomen (regeln i CLAUDE.md).
- boil film: kanternas darr i px/s (styrka gånger takt, stilla kantpunkter, se boil_film). Hela filmens median över BOIL_FILM
-   = för stark boil överallt; delar där 5 s-medianen går över BOIL_SPANN listas (introts 5 första s räknas inte).
-   Kalibrerat 2026-11-22: 051 (2,5/zoom, 6/s) median 4,9 px/s, inga delar; 045 julköket (5/zoom, kanterna ändras i nästan varje ruta)
-   median 14,7 px/s, delar upp till 59 px/s. Medianen fångar för stark boil i hela filmen, delarna pekar ut de värsta
-   ställena. Måttet är inte px i absoluta tal, jämför bara med gränserna. Ca 30 s per 3 min film.
+ boil film: boilstegets storlek i px/s (se boil_film): bara hoppet när brusbilden byts 6 gånger/s räknas, jämn rörelse
+   (snö, andning, svans, kamera) tar ut sig själv. Hela filmens median över BOIL_FILM = för stark boil överallt; delar där
+   5 s-medianen går över BOIL_SPANN listas (introts 5 första s räknas inte). Värdet beror också på hur stor del av kanterna
+   som kokar (plattan kokar inte), så ritningar, närbilder och kritirisen läser högre.
+   Kalibrerat 2026-11-23 (det förra måttet räknade rörelse som boil: 035 med snöfall fick 16, gräns 9, fast koden följer regeln):
+   051 median 2,9, 035 3,2, 045 julköket 3,6 (alla 2,5/zoom, 6/s; delar upp till 10, 045:s slut 14). Prov på 035, 3 s:
+   2,5/zoom 2,1–4,2 per sekund, 5/zoom 4,2–5,5. Boil som byter bild i varje ruta (045 före 22/11) går inte att se i filmen
+   (ingen fas sticker ut, 045 då 3,2): koll på takten hör hemma i koden. Måttet är inte px i absoluta tal. Ca 1 min per 4 min film.
  röst rader: en replik (längden ur m4a-filen) som går in i nästa replik eller förbi filmens slut; "över raden" är bara info.
  röst tvärt vid klipp: tal (300–3000 Hz) som faller TVART_DB dB på 10 ms från minst −30 dB (utan avklingning) högst 0,2 s från
    ett bildklipp, som när en scen klipps mitt i en replik. Utan kravet på klipp gav ElevenLabs tvära stopp och effekter falsklarm.
@@ -22,8 +25,8 @@ import numpy as np
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOIL_MAX = 2.5      # px i bild, CLAUDE.md
-BOIL_FILM = 9       # px/s, hela filmens median (filmmåttet, se ovan)
-BOIL_SPANN = 27     # px/s, 5 s-median för en del av filmen (051 har ritning/rörelse upp till 26)
+BOIL_FILM = 4.5     # px/s, hela filmens median av boilsteget (se ovan)
+BOIL_SPANN = 15     # px/s, 5 s-median för en del av filmen (ritningar och kritiris med 2,5/zoom upp till 14)
 TVART_DB = 15       # dB fall på 10 ms (en klippt replik över musik föll 19 dB)
 
 
@@ -62,26 +65,39 @@ def kodfiler(avsnitt=None):
 
 # ---------- boil i filmen ----------
 def boil_film(film, w=640, h=360):
-    """Kanternas darr i px/s (1080p) per sekund. Per bildpar: hur långt kanterna flyttar sig (skillnaden delad med
-    kantens lutning, 90:e percentilen), bara kantpunkter som rör sig under ca 4 px (stilla delar, inte rörelse).
-    Per sekund: summan av paren utom de 2 största (klipp). Fångar både styrka och takt (ny brusbild varje ruta i
-    stället för 6/s blir också högt)."""
+    """Boilstegets storlek i px/s per sekund film. Boil byter brusbild 6 gånger/s (var 5:e ruta i 30 fps), då hoppar alla
+    kanter på en gång; rörelse (snö, andning, svans, kamera) flyttar kanterna jämnt i varje ruta. Per pixel och sekund:
+    kantens flytt (skillnaden delad med lutningen, bara kantpunkter under ca 4 px) som medel per fas (ruta mod 5). Fasen med
+    störst flytt är bytet; dess överskott mot de andra fasernas median är boilen, rörelsen tar ut sig själv. 90:e percentilen
+    av överskottet gånger 6 byten/s. Boil som byter bild i varje ruta syns inte här (ingen fas sticker ut): det fångar koden."""
     import cv2
-    p = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', film, '-vf', f'scale={w}:{h}', '-pix_fmt', 'gray', '-f', 'rawvideo', '-'],
-                         stdout=subprocess.PIPE)
     fps = round(Fraction(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=r_frame_rate',
                                         '-of', 'csv=p=0', film], capture_output=True, text=True).stdout.split(',')[0].strip() or '30'))
-    forra, per_s, n = None, {}, 0
+    if fps % 6: return np.array([])                     # --snabb (15 fps): bytet faller mellan rutorna, går inte att mäta
+    P = fps // 6
+    p = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', film, '-vf', f'scale={w}:{h}', '-pix_fmt', 'gray', '-f', 'rawvideo', '-'],
+                         stdout=subprocess.PIPE)
+    forra, buf, ut = None, [], []
     while len(b := p.stdout.read(w * h)) == w * h:
         a = cv2.GaussianBlur(np.frombuffer(b, np.uint8).reshape(h, w).astype(np.float32), (0, 0), 1.0)
         if forra is not None:
             g = np.hypot(cv2.Sobel(forra, cv2.CV_32F, 1, 0), cv2.Sobel(forra, cv2.CV_32F, 0, 1)) / 8
-            r = np.abs(a - forra) / np.maximum(g, 1e-3)
-            m = (g > 6) & (r < 1.3)
-            per_s.setdefault(n // fps, []).append(np.percentile(r[m], 90) * 1080 / h if m.sum() > 300 else 0)
-        forra, n = a, n + 1
+            r = np.minimum(np.abs(a - forra) / np.maximum(g, 1e-3), 1.3); r[g <= 6] = np.nan
+            buf.append(r)
+        forra = a
+        if len(buf) == fps:
+            with np.errstate(all='ignore'), __import__('warnings').catch_warnings():
+                __import__('warnings').simplefilter('ignore')
+                c = np.stack([np.nanmean(np.stack(buf[k::P]), 0) for k in range(P)])   # medelflytt per fas och pixel
+                mm = np.nanmean(c.reshape(P, -1), 1)
+                v = np.array([])
+                if np.isfinite(mm).any():
+                    k = int(np.nanargmax(mm))
+                    v = c[k] - np.nanmedian(np.delete(c, k, 0), 0); v = v[np.isfinite(v)]
+            ut.append(np.percentile(v, 90) * 1080 / h * 6 if v.size > 300 else 0)
+            buf = []
     p.wait()
-    return np.array([sum(sorted(v)[:-2]) for _, v in sorted(per_s.items())])
+    return np.array(ut)
 
 def boil_spann(s, grans=BOIL_SPANN, intro=5):
     """[(från, till, max)]: sekunder efter introt där 5 s-medianen ligger över gränsen."""
@@ -177,8 +193,9 @@ def main(a):
             f2, over = rost_rader(rj)
             print(f' röst rader {os.path.relpath(rj, avs)}: ' + '; '.join(f2) + (f'  (över raden, info: {" ".join(over)})' if over else ''))
     if film:
-        b = boil_film(film); med = float(np.median(b))
-        print(f' boil film (median {med:.1f} px/s, gräns {BOIL_FILM}): ' + ('FÖR STARK I HELA FILMEN ' if med > BOIL_FILM else '')
+        b = boil_film(film); med = float(np.median(b)) if b.size else 0
+        if not b.size: print(' boil film: (mäts bara i 30 fps, inte --snabb)')
+        else: print(f' boil film (median {med:.1f} px/s, gräns {BOIL_FILM}): ' + ('FÖR STARK I HELA FILMEN ' if med > BOIL_FILM else '')
               + ' '.join(f'{s}-{e + 1}s({m:.0f})' for s, e, m in boil_spann(b)))
         kl = klipp(film)
         print(f' röst tvärt vid klipp ({len(kl)} klipp): ' + ' '.join(f'{t:.2f}s' for t in tvara_slut(film) if any(abs(t - k) < 0.2 for k in kl)))

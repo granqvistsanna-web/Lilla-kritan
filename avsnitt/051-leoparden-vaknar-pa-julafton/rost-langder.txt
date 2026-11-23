@@ -46,3 +46,7 @@
 46-en-strumpa 1.50
 51-dra-pa-strumpa-1 2.25
 52-dra-pa-strumpa-2 2.32
+47-vill-leka 4.57
+48-vill-du-leka 1.71
+49-leoparden-ar-borta 3.19
+50-roda-strumpor 1.45
