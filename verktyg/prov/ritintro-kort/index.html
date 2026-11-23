@@ -1,0 +1,34 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#FDFBF4">
+<svg id="s" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script>
+// Prov av det korta ritintrot (format/ritintro.md, 2026-11-23): kritan ritar bananens kontur på 2,8 s, väntar 1,1 s, svaret vid 5,0 s.
+// Bara tidslinjen och ljudet; ingen kamera och inget hål i papperet. Rendera: node avsnitt/030-borsta-borsta-gulliga-djur/scener/render.mjs verktyg/prov/ritintro-kort
+const T = { in: [0, 0.4], rit: [0.6, 3.4], vanta: [3.4, 3.9], ut: [5.0, 5.8] }, SVAR = 5.0, NU_KOR = 8.9;
+window.DURATION = 10.5;
+const R = 'assets/ljud/roster/', E = 'assets/ljud/effekter/';
+window.LJUD = [
+  { t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 1.0, langd: 10.5, fade: 1.5, fadeIn: 0.8, loop: true },
+  { t: 0.2, fil: R + 'titta-1.m4a', vol: 2.5 },
+  { t: T.rit[0], fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.6, langd: T.rit[1] - T.rit[0], fade: 0.4 },
+  { t: 1.8, fil: R + 'nagot-langt-1.m4a', vol: 2.5 },
+  { t: SVAR, fil: E + 'pling/pling-1.m4a', vol: 1.2 },
+  { t: SVAR + 0.1, fil: R + 'en-banan-en-gul-banan-1.m4a', vol: 2.5 },   // svaret är 3,7 s långt; nya svar bör vara högst ca 2 s
+  { t: NU_KOR, fil: R + 'nu-kor-vi-1.m4a', vol: 2.5 },
+];
+(async () => {
+  const K = await (await fetch('/assets/rekvisita/banan/cut/banan-v2-kontur.json')).json();
+  const W = 1659, H = 1535, sk = 600 / H, ox = 960 - W / 2 * sk, oy = 560 - H / 2 * sk, mitt = [W / 2, H / 2];
+  window.seek = t => {
+    const k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0])), f = _kl((t - SVAR) / 0.7);
+    const Rb = ritBana([K.d], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED / sk}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f)}"` });
+    const g = (x, y) => [ox + x * sk, oy + y * sk];
+    let h = `<g transform="translate(${ox} ${oy}) scale(${sk})">${fyllMask('fy', mitt[0], mitt[1], 1150, f)}<image href="/assets/rekvisita/banan/cut/banan-v2.png" width="${W}" height="${H}" clip-path="url(#fy)"/>${Rb.html}</g>`;
+    const kr = kritaFas(t, T, { start: g(...Rb.start), spets: g(...Rb.spets), slut: g(...Rb.slut), vanta: [1530, 280] });
+    if (kr) h += kritaBild(kr.x, kr.y, kr);
+    h += gnistor(960, 560, 360, t - SVAR);
+    document.getElementById('s').innerHTML = h;
+  };
+  window.ready = true;
+})();
+</script>

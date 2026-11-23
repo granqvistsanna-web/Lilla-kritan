@@ -24,10 +24,10 @@ Tiderna är scentid: s = 0 när kritsvepet ut ur introt är klart. Skriv dem som
 | 3,9–5,0 | **Gissningspaus**, ungefär 1,1 s. Kameran kryper sakta in (+12 %). Kritan gungar lite. | bara skogsljud |
 | 5,0 | **Svaret.** Den riktiga bilden fylls i inifrån på 0,7 s med vaxig kant, och linjen tonas bort. Bilden hoppar (40 px) och gungar på sin botten, fyra krit-gnistor poppar fram och kritan flyger ut uppe till höger. Kameran går nära bilden (+20 %). | **"Ett rött äpple!" / "En gul banan!"**, `pling` |
 | svar + ca 0,5 | Ett litet skutt (18 px) på färgordet | |
-| svar + 1,5 | **"Nu kör vi!"** / "Nu flyger vi!". Kameran går till helbild. | |
+| svar + 1,5 | Spela in svaret kort, högst ca 2 s (*"En gul banan!"*), annars skjuts det här fram. **"Nu kör vi!"** / "Nu flyger vi!". Kameran går till helbild. | |
 | sedan | **Övergången in i första scenen: zoom in genom ett hål i papperet** som växer fram med vaxig kant. Under hålet syns första platsen. | `swoosh`, sångens första ton |
 
-Hela scenen är ungefär 7–8 s (var 14–15 s före 2026-11-23). När konturen görs längre ska svaret och sången flyttas lika mycket, så att sången står kvar i takt. Se `KAP` i `satt-ihop.sh` och `fargsang-v2.md`.
+Hela scenen är ungefär 7–8 s (var 14–15 s före 2026-11-23). Provet är `verktyg/prov/ritintro-kort/` (bananen, efter sångintrot i `intro-test.mp4`). När konturen görs längre ska svaret och sången flyttas lika mycket, så att sången står kvar i takt. Se `KAP` i `satt-ihop.sh` och `fargsang-v2.md`.
 
 ## Bilden
 
