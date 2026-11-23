@@ -63,9 +63,9 @@ Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av r
 
 - **Hur:** varje arm är ett kritstreck genom axel, armbåge och hand, en mjuk kurva. Armbågen räknas med tvåbens-IK mot en punkt ut och ner från axeln, så den böjer sig alltid samma naturliga väg och aldrig bakåt. Det finns inget släp, ingen fjäder och ingen efterstudsning. Handen följer riggens (osynliga) hand, så bollen sitter i den, och den följer egna mål i vilan och i vinkningen. Strecket har kroppens bruna, lite mörkare, kritkorn och vit klistermärkeskant. Line boil är som för figuren. Axeln sitter inne i kroppen, så ingen stump syns.
 - **Handen:** först en rund prick, nu en oval tass längs underarmen med en liten tumme åt kroppen till, i samma bruna med vit kant.
-- **Tre bredder** (`?armar=a|b|c`, `--fraga armar=b` i render.mjs, `armar=bild` ger dagens målade armar): A 24 enheter (5 % av huvudet), B 34 (7 %), C 60 (12 %, ungefär lika tjock som dagens). Filmen använder **C**.
+- **Tre bredder** (`?armar=a|b|c`, `--fraga armar=b` i render.mjs, `armar=bild` ger dagens målade armar): A 24 enheter (5 % av huvudet), B 34 (7 %), C 60 (12 %, ungefär lika tjock som dagens), D 84. Filmen använder **D** (runda 4).
 - **Ändrat i scenen:** lådan står 10 cm längre till vänster, så att handen och bollen på golvet inte skyms av lådans hörn.
-- Jämförelse: `lekrummet/stills/jamfor-armar.jpg` (dagens, A, B och C vid sträcker sig, håller, släpper och vinkar). Runda 2:s film ligger i `lekrummet/aldre/lekrummet-202611232049.mp4`.
+- Jämförelse: `lekrummet/stills/jamfor-armar.jpg` (dagens målade armar mot de nya D-armarna vid sträcker sig, håller, släpper och vinkar). Runda 2:s film ligger i `lekrummet/aldre/lekrummet-202611232049.mp4`.
 - QA: line boil 1,7 px/s, −16,3 LUFS, topp −5,4 dB, ingen röst klipps vid klippet.
 
 ### Ärlig jämförelse
@@ -74,6 +74,13 @@ Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av r
 - **Tjocka C** är bäst av kodarmarna. Den är lika tung som dagens arm men har en riktig armbåge i vinkningen och när hon bär bollen. Den ser inte ut som de böjda korvarna från november, eftersom strecket är jämnt, armbågen mjuk och det inte finns något släp. Den är ändå plattare än den målade armen: kornet är svagare, och kanten är helt jämn.
 - **Handen med tumme** läses som en tass och greppar bollen bättre än pricken.
 - **Kvar att lösa:** när hon sträcker sig ner till golvet ligger armen bakom benet och syns lite, och i helbild är handen liten. Armen kunde få lite mer krita (ojämnare kant) för att möta den målade kroppen.
+
+### Runda 4 (Sannas feedback: "ser riktigt dåligt ut", "inte mjukt som referensen", tjockare, ingen vit kant vid roten, inga händer)
+- **Ryck borta:** en mätning av handens bana bildruta för bildruta hittade ett hopp på 87 enheter vid släppet. Det kom av att `sakIn(G, null)` byter armlager i riggen. Nu ligger bollen kvar i riggen och döljs bara. Vinkningen startade och slutade tvärt. Nu går handen i en båge runt axeln (som referensens `swingArm`) med 0,8 s mjuk in- och uttoning. Efter ändringen finns inga ryck över 6 enheter per bildruta i hela scenen.
+- **Vila:** armarna hänger nästan raka och lite ut, i stället för de böjda "boxararmarna". De svajar mjukt med andningen, så något rör sig hela tiden, som i referensen.
+- **Tjockare (D, 84 enheter), ingen hand:** armen slutar i strecket runda ände.
+- **Ingen vit kant vid roten:** det bruna strecket ligger framför kroppen i kroppens egen färg (#ab6643, mätt i `kanel-body`). Den vita kanten ligger bakom kroppen och syns bara utanför den. Det vita strecket vid roten var kroppens egen klistermärkeskant, som korsade armen.
+- Runda 4:s film ersätter C-filmen, som ligger i `aldre/lekrummet-202611232058.mp4`. QA: boil 1,6 px/s, −16,3 LUFS, inget klippt.
 
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.

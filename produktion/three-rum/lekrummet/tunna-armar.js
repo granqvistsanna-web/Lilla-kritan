@@ -11,8 +11,8 @@
 const NS = 'http://www.w3.org/2000/svg';
 export function tunnaArmar(G, L, { bredd = 24 } = {}) {
   const svg = G.ownerSVGElement, kanel = G.querySelector('.kanel'), kropp = kanel.querySelector('.kropp');
-  // armfärgen: kroppens bruna, lite mörkare; kanten som figurens inbakade (ca 7 enheter vit)
-  const FARG = '#874a33', VANTE = '#97553b', VIT = 7, BEN = [88, 84];   // överarm, underarm (enheter)
+  // armfärgen: kroppens egen bruna (#ac6744 i kanel-body), så att roten smälter in i kroppen; kanten som figurens inbakade (ca 7 enheter vit)
+  const FARG = '#ab6643', VANTE = '#97553b', VIT = 7, BEN = [88, 84];   // överarm, underarm (enheter)
   // kritkorn i strecken: ljusa prickar inne i strecket, som vaxkritan i pälsen
   svg.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="armkorn" x="-0.2" y="-0.2" width="1.4" height="1.4">
     <feTurbulence type="fractalNoise" baseFrequency="0.45" numOctaves="2" seed="4" result="n"/>
@@ -20,20 +20,14 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
     <feComposite in="prick" in2="SourceAlpha" operator="in" result="p2"/>
     <feComponentTransfer in="p2" result="p3"><feFuncA type="linear" slope="0.45"/></feComponentTransfer>
     <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="p3"/></feMerge></filter>`);
-  // armarna bakom kroppen (roten göms inne i kroppen), tumvantarna överst (ovanpå bollen i handen)
+  // runda 4 (Sanna: tjockare, ingen vit kant vid roten, inga händer): den vita kanten ligger BAKOM kroppen och syns bara
+  // utanför den; det bruna strecket ligger FRAMFÖR kroppen i kroppens färg, så roten smälter in och kroppens kant inte korsar armen.
+  // Armen slutar i strecket runda ände, ingen hand.
   const bak = document.createElementNS(NS, 'g'), fram = document.createElementNS(NS, 'g');
-  bak.setAttribute('class', 'tunna-armar'); fram.setAttribute('class', 'tunna-vantar');
-  const arm = () => `<path class="vk" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>
-    <g filter="url(#armkorn)"><path class="fg" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/></g>`;
-  const R = Math.round(bredd < 40 ? bredd * 0.95 + 6 : bredd * 0.55 + 8);   // tumvanten: lite tjockare än armen (tjock arm: lagom vante)
-  // handen: en oval tass längs underarmen och en liten tumme åt kroppen till; vit kant = samma former med vitt streck under
-  const form = `<ellipse cx="${(R * 0.3).toFixed(1)}" cy="0" rx="${(R * 1.05).toFixed(1)}" ry="${(R * 0.82).toFixed(1)}"/>
-    <ellipse class="tumme" cx="${(R * 0.05).toFixed(1)}" cy="${(R * 0.78).toFixed(1)}" rx="${(R * 0.42).toFixed(1)}" ry="${(R * 0.3).toFixed(1)}" transform="rotate(-35 ${(R * 0.05).toFixed(1)} ${(R * 0.78).toFixed(1)})"/>`;
-  const vante = () => `<g class="hand"><g fill="#fff" stroke="#fff" stroke-width="${2 * VIT}" stroke-linejoin="round">${form}</g>
-    <g filter="url(#armkorn)" fill="${VANTE}">${form}</g></g>`;
-  bak.innerHTML = `<g class="l">${arm()}</g><g class="r">${arm()}</g>`;
-  fram.innerHTML = `<g class="l">${vante()}</g><g class="r">${vante()}</g>`;
-  kanel.insertBefore(bak, kropp);
+  bak.setAttribute('class', 'arm-kant'); fram.setAttribute('class', 'arm-farg');
+  bak.innerHTML = ['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>`).join('');
+  fram.innerHTML = `<g filter="url(#armkorn)">${['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/>`).join('')}</g>`;
+  kanel.insertBefore(bak, kropp); kropp.after(fram);
   // de målade armarna (och deras kopior) syns inte i kopian; riggen flyttar dem fortfarande, så vi kan läsa var handen är
   const malade = [...G.querySelectorAll('image')].filter(i => /^arm-/.test(i.getAttribute('class') || ''));
   malade.forEach(i => i.setAttribute('visibility', 'hidden'));
@@ -53,7 +47,6 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
     bredd,
     // o.mal[n] = handens mål i figurens 1024-ruta (som riggen), o.k[n] = hur mycket det målet gäller (annars riggens hand)
     rita(o = {}) {
-      G.appendChild(fram);   // överst, också över bollen som sakIn lägger in
       const mK = kropp.getCTM ? rel(kropp, kanel) : null, mitt = pt(mK, 512, 600);
       for (const [n, sida] of [['l', -1], ['r', 1]]) {
         const img = synlig(n), m = rel(img, kanel), [px, py] = L.RIGG['arm-' + n], [hx, hy] = L.HAND[n];
@@ -65,12 +58,7 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
         const [E, H2] = ik(S, H, [S[0] + sida * 160, S[1] + 170]);
         const C = [2 * E[0] - (S[0] + H2[0]) / 2, 2 * E[1] - (S[1] + H2[1]) / 2];   // kontrollpunkt så att kurvan går genom armbågen
         const d = `M${S[0].toFixed(1)} ${S[1].toFixed(1)} Q${C[0].toFixed(1)} ${C[1].toFixed(1)} ${H2[0].toFixed(1)} ${H2[1].toFixed(1)}`;
-        bak.querySelectorAll(`.${n} path`).forEach(p => p.setAttribute('d', d));
-        // handen i G:s enheter (fram ligger i G), vriden längs underarmen; tummen åt kroppens mitt (spegla annars)
-        const mG = rel(kanel, G), V = pt(mG, ...H2), ri = [H2[0] - E[0], H2[1] - E[1]], lr = Math.hypot(...ri) || 1;
-        const V2 = pt(mG, H2[0] + ri[0] / lr * 10, H2[1] + ri[1] / lr * 10), vinkel = Math.atan2(V2[1] - V[1], V2[0] - V[0]) * 180 / Math.PI;
-        const tumme = Math.sign(ri[0] / lr * (mitt[1] - H2[1]) - ri[1] / lr * (mitt[0] - H2[0])) || 1;
-        fram.querySelector(`.${n} .hand`).setAttribute('transform', `translate(${V[0].toFixed(1)} ${V[1].toFixed(1)}) rotate(${vinkel.toFixed(1)}) scale(1 ${tumme})`);
+        svg.querySelectorAll(`.arm-kant .${n}, .arm-farg .${n}`).forEach(q => q.setAttribute('d', d));
       }
     },
   };

@@ -16,7 +16,7 @@ import { Pass, FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { tunnaArmar } from './tunna-armar.js';
 // Runda 3: ?armar=bild (Kanels målade armar, som runda 2), a (tunna kritarmar 5 % av huvudets bredd, standard) eller b (7 %)
-const ARMAR = new URLSearchParams(location.search).get('armar') || 'c', BREDD = { a: 24, b: 34, c: 60 }[ARMAR];
+const ARMAR = new URLSearchParams(location.search).get('armar') || 'd', BREDD = { a: 24, b: 34, c: 60, d: 84 }[ARMAR];
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = 18;
@@ -329,17 +329,20 @@ function kanel(t) {
   }
   let vk = 0;
   if (t >= KLIPP) { f = GLAD(); p = P({}); vk = L.ARMROR.inUt(t - T_VINK, D_VINK); if (t > T_VINK && t < T_VINK + D_VINK) [f, p] = L.ARMROR.vinka(f, p, t - T_VINK, vk); }
-  // tunna armar: vinkningen har ett eget mål för högra handen, uppe och ute från axeln; armbågen böjs av IK:n (ner och ut)
-  // vila: armarna hänger ner och lite ut, med en mjuk böj i armbågen. Vänstra handen följer riggens hand (till bollen) från strax före
-  // upplockningen tills bollen är släppt; vinkningen blandas in från vilan med riggens in/ut-kurva.
-  const VILA = { l: [-92, 122], r: [92, 122] }, sv = Math.sin(2 * Math.PI * 1.3 * (t - T_VINK));
+  // kodarmarna (runda 4, som referensens swingArm): handen går i en båge runt axeln. Vila = nästan rak arm som hänger lite ut och
+  // svajar mjukt med andningen; vinkningen lyfter handen upp och ut i samma båge och svänger, med mjuk in- och uttoning.
+  // Vänstra handen följer riggens hand (till bollen) från strax före upplockningen tills en stund efter att bollen släppts.
+  const env = mjuk((t - T_VINK) / 0.8) * (1 - mjuk((t - T_VINK - D_VINK + 0.8) / 0.8)), sv = Math.sin(2 * Math.PI * 1.1 * (t - T_VINK));
+  const andas = Math.sin(2 * Math.PI * t / 3.6);
+  const bage = (sida, grad, r) => { const v = grad * Math.PI / 180; return [sida * r * Math.sin(v), r * Math.cos(v)]; };
+  const malL = bage(-1, 18 + 3 * andas, 162), malR = bage(1, 18 - 3 * andas + env * (122 + 16 * sv), 162 - 34 * env);
   const kl_ = kl(0, 1, 1 - mjuk((t - T_UPP + 0.15) / 0.45) + mjuk((t - SLAPP - 0.35) / 0.6));
-  const malR = [lerp(VILA.r[0], 118 + 26 * sv, vk), lerp(VILA.r[1], -100 + 8 * Math.abs(sv), vk)];
   // bollen: i figuren (på golvet, i handen, över lådan) tills den släpps; sedan det egna kortet som faller i lådan
   const iFig = t < SLAPP;
-  if (iFig && !G.sak) L.sakIn(G, SAK); if (!iFig && G.sak) L.sakIn(G, null);
+  // bollen ligger kvar i riggen efter släppet, bara dold: sakIn(G, null) byter armlager i riggen och handen hoppade 87 enheter
+  if (!G.sak) L.sakIn(G, SAK); G.querySelectorAll('.sak-plats').forEach(e => e.style.visibility = iFig ? '' : 'hidden');
   L.rita(G, BL(f, t), liv(p, t));
-  TA?.rita({ mal: { l: VILA.l, r: malR }, k: { l: kl_, r: 1 } });
+  TA?.rita({ mal: { l: malL, r: malR }, k: { l: kl_, r: 1 } });
   return iFig;
 }
 function bollen(t) {
