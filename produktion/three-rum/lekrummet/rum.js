@@ -16,7 +16,10 @@ import { Pass, FullScreenQuad } from 'three/addons/postprocessing/Pass.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { tunnaArmar } from './tunna-armar.js';
 // Runda 3: ?armar=bild (Kanels målade armar, som runda 2), a (tunna kritarmar 5 % av huvudets bredd, standard) eller b (7 %)
-const ARMAR = new URLSearchParams(location.search).get('armar') || 'bild', BREDD = { a: 24, b: 34, c: 60, d: 84 }[ARMAR];
+const ARMAR = new URLSearchParams(location.search).get('armar') || 'bild', BREDD = { a: 24, b: 34, c: 60, d: 84, kurva: 48 }[ARMAR];
+// Runda 6 (Sanna, efter Ricks Clips): ?armar=kurva ger tunna kritarmar OCH kritben, omritade som kurvor varje bildruta.
+// ?dolly gör kameraåkningarna jämna (samma fart hela vägen, ingen in- och uttoning), som referensens långsamma, stadiga åkning.
+const DOLLY = new URLSearchParams(location.search).has('dolly');
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = 18;
@@ -264,17 +267,29 @@ let TA, L, G, BL, kortCanvas, kortCtx, kortTex, kort, kantF, SAK, bollKort;
 // på solsidan. Kanten ligger INNANFÖR den vita klistermärkeskanten: pixeln får ljuset om den inte själv är vit och bilden tar slut
 // (genomskinligt) inom kantbredd + 3 px i bild åt solens håll. Ingen förskjuten kopia utanför figuren.
 const KU = { uSol: { value: new THREE.Vector2(-1, 0) }, uSida: { value: 0.0 }, uFigC: { value: (512 - VB.x) / VB.w }, uHalv: { value: 330 / VB.w },
-  uEnhUv: { value: new THREE.Vector2(1 / VB.w, 1 / VB.h) }, uSteg: { value: 1.5 }, uVit: { value: 12 }, uBand: { value: 5 }, uKant: { value: 0.0 } };
+  uEnhUv: { value: new THREE.Vector2(1 / VB.w, 1 / VB.h) }, uSteg: { value: 1.5 }, uVit: { value: 12 }, uBand: { value: 5 }, uKant: { value: 0.0 }, uVol: { value: new URLSearchParams(location.search).has("platt") ? 0 : 1.0 }, uVolR: { value: 110 } };
 function kortSkugga(m) {
   m.onBeforeCompile = sh => {
     Object.assign(sh.uniforms, KU);
     sh.fragmentShader = sh.fragmentShader.replace('#include <common>', `#include <common>
-      uniform vec2 uSol, uEnhUv; uniform float uSida, uFigC, uHalv, uSteg, uVit, uBand, uKant;`)
+      uniform vec2 uSol, uEnhUv; uniform float uSida, uFigC, uHalv, uSteg, uVit, uBand, uKant, uVol, uVolR;`)
       .replace('#include <envmap_fragment>', `#ifdef USE_MAP
       { float t = clamp((vMapUv.x - uFigC) / uHalv, -1.0, 1.0) * sign(uSol.x) * smoothstep(0.0, 0.35, abs(uSol.x));   // +1 = kanten mot solen
         float mork = smoothstep(-0.15, 0.95, -t);
         outgoingLight *= mix(vec3(1.0), vec3(0.89, 0.875, 0.97), mork * uSida);
         vec4 c0 = texture2D(map, vMapUv); float vit = step(0.8, min(c0.r, min(c0.g, c0.b)));
+        // runda 6, volym (som ett pösigt klistermärke): höjden = suddad alfa i en skiva med radien uVolR (riggens enheter), normalen ur
+        // lutningen, belyst från solen i kortets plan. Mitten är platt (oförändrad), kanterna mot solen ljusare, bort från solen mörkare.
+        { vec2 g = vec2(0.0); float h = 0.0, n = 0.0;
+          for (int r = 1; r <= 5; r++) for (int k = 0; k < 16; k++) { float a = float(k) * 0.3927 + float(r) * 0.71, rr = float(r) / 5.0;
+            vec2 dir = vec2(cos(a), sin(a)); float al = texture2D(map, vMapUv + dir * rr * uVolR * uEnhUv).a;
+            g += dir * al * rr; h += al; n += 1.0; }
+          h /= n; vec3 N = normalize(vec3(-g * 0.06, 1.0)), Ls = normalize(vec3(uSol * 0.8, 0.6));
+          float lam = dot(N, Ls) - Ls.z, ao = smoothstep(0.35, 0.85, h);
+          float spec = pow(max(dot(reflect(-Ls, N), vec3(0.0, 0.0, 1.0)), 0.0), 18.0) * (1.0 - ao * 0.6);
+          float ljus = smoothstep(0.62, 0.8, min(c0.r, min(c0.g, c0.b))), w = uVol * step(0.5, c0.a) * (1.0 - ljus);   // vit kant och vita tussen: orörda
+          outgoingLight *= clamp(1.0 + w * (0.9 * lam - 0.14 * (1.0 - ao)), 0.84, 1.2);
+          outgoingLight += vec3(1.0, 0.93, 0.82) * spec * w * 0.18; }
         float d = 99.0;
         for (int i = 1; i <= 18; i++) { float u = float(i) * uSteg; if (texture2D(map, vMapUv + uSol * uEnhUv * u).a < 0.5) { d = u; break; } }
         float kant = (1.0 - vit) * step(0.5, c0.a) * (1.0 - smoothstep(uVit, uVit + uBand, d)) * step(d, 98.0);
@@ -282,7 +297,7 @@ function kortSkugga(m) {
       #endif
       #include <envmap_fragment>`);
   };
-  m.customProgramCacheKey = () => 'lk-kort1';
+  m.customProgramCacheKey = () => 'lk-kort2';
   return m;
 }
 async function byggKanel() {
@@ -292,7 +307,7 @@ async function byggKanel() {
   // röda bollen (rekvisita), samma mått som i Kanels uttryck.html: handen ovanpå bollen, nära toppen
   SAK = L.sakBild('/assets/rekvisita/boll-rod/cut/boll-rod.png', 1024, 1024, { grepp: [540, 300], fot: [511, 858], skala: BOLLS, folj: 0, kant: 10 });
   L.sakIn(G, SAK);
-  if (BREDD) TA = tunnaArmar(G, L, { bredd: BREDD });   // en kopia av Kanel med tunna armar, bara i den här sidan
+  if (BREDD) TA = tunnaArmar(G, L, { bredd: BREDD, ben: ARMAR === 'kurva' });   // en kopia av Kanel med tunna armar, bara i den här sidan
   // bilderna blir data-URL:er, så att SVG:n kan ritas som en bild (en SVG i <img> hämtar inga egna filer)
   await Promise.all([...$('kort').querySelectorAll('image')].map(async im => {
     const b = await (await fetch(im.getAttribute('href'))).blob();
@@ -342,6 +357,8 @@ const GLAD = () => ({ ...L.blanda('neutral', 'glad', 1), glad: [0, 0] });
 const BLICK = [[0, [0, 0, 0]], [0.2, [0, 0, 0]], [0.6, [13, -5, -2.5]], [0.95, [13, -5, -2.5]], [1.3, [-14, 14, 2.5]],
   [7.0, [0, 0, 0]], [8.0, [0, 0, 0]], [8.45, [-13, 8, 2]], [9.0, [-13, 8, 2]], [9.5, [11, -10, -3.4]], [10.2, [11, -10, -3.4]], [10.7, [0, 0, 0]],
   [15.2, [0, 0, 0]], [15.7, [-11, 2, 2.5]], [16.5, [-11, 2, 2.5]], [17.0, [0, 0, 1.4]]];
+const UTR = [[0.8, 1.45, 'nyfiken', 0.8], [3.6, 4.75, 'jatteglad', 0.7], [LANDAR - 0.05, LANDAR + 0.45, 'forvanad', 0.7],
+  [LANDAR + 0.55, LANDAR + 2.0, 'jatteglad', 0.9], [8.4, 9.1, 'stolt', 0.8], [9.45, 10.3, 'nyfiken', 0.7], [15.6, 16.6, 'fnissig', 0.8], [16.9, 17.6, 'blinkar', 1]];
 const spar = (K, t) => { if (t <= K[0][0]) return K[0][1];
   for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const u = mjuk((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])); return K[i - 1][1].map((v, j) => lerp(v, K[i][1][j], u)); }
   return K.at(-1)[1]; };
@@ -374,6 +391,10 @@ function kanel(t) {
   const kl_ = kl(0, 1, 1 - mjuk((t - T_UPP + 0.15) / 0.45) + mjuk((t - SLAPP - 0.35) / 0.6));
   // bollen: i figuren (på golvet, i handen, över lådan) tills den släpps; sedan det egna kortet som faller i lådan
   const iFig = t < SLAPP;
+  // runda 6: fler uttryck ovanpå (blicken och armarna behålls): nyfiken på bollen, jätteglad med bollen, lite förvånad av dunset,
+  // jätteglad på "bra jobbat", stolt mot lådan, nyfiken mot teckningarna, fnissig efter hej då och en blinkning till oss på slutet
+  for (const [a, b, namn, s] of UTR) { const k = s * mjuk(kl(0, 1, (t - a) / 0.3)) * mjuk(kl(0, 1, (b - t) / 0.3));
+    if (k > 0) { const { titt, armar } = f; f = { ...L.blanda(f, namn, k), titt: namn === 'nyfiken' ? L.blanda(f, namn, k).titt : titt, armar }; } }
   // bollen ligger kvar i riggen efter släppet, bara dold: sakIn(G, null) byter armlager i riggen och handen hoppade 87 enheter
   // (gäller bara kodarmarna; de målade armarna byter lager som i runda 2)
   if (TA) { if (!G.sak) L.sakIn(G, SAK); G.querySelectorAll('.sak-plats').forEach(e => e.style.visibility = iFig ? '' : 'hidden'); }
@@ -394,9 +415,10 @@ function bollen(t) {
 // ---------- kamera: två lugna åkningar och ett klipp ----------
 function kamera(t) {
   let v, r, y, mx, my;
-  if (t < KLIPP) { const u = lugn(t / KLIPP);   // helbild: glider in och lite runt, Kanel och lådan i bild
+  const fart = DOLLY ? k => kl(0, 1, k) : lugn;
+  if (t < KLIPP) { const u = fart(t / KLIPP);   // helbild: glider in och lite runt, Kanel och lådan i bild
     v = (-20 + 14 * u) * Math.PI / 180; r = lerp(4.0, 3.25, u); y = lerp(0.85, 0.74, u); mx = lerp(-0.18, -0.12, u); my = lerp(0.55, 0.5, u);
-  } else { const u = lugn((t - KLIPP) / (DURATION - KLIPP));   // halvnära: kroppen fyller bilden, en långsam glidning in
+  } else { const u = fart((t - KLIPP) / (DURATION - KLIPP));   // halvnära: kroppen fyller bilden, en långsam glidning in
     v = (10 + 5 * u) * Math.PI / 180; r = lerp(2.05, 1.85, u); y = 0.66; mx = 0.02; my = 0.56; }
   cam.position.set(KANEL.x + r * Math.sin(v), y, KANEL.z + r * Math.cos(v));
   cam.lookAt(KANEL.x + mx, my, KANEL.z);

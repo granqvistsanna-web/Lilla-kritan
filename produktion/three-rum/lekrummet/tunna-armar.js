@@ -9,7 +9,9 @@
 //   A.rita({ mal: { r: [dx, dy] }, k: { r: 0..1 } })  efter L.rita(): handen följer riggens (osynliga) hand, eller blandas mot ett
 //   eget mål, en förskjutning från axeln i figurens enheter
 const NS = 'http://www.w3.org/2000/svg';
-export function tunnaArmar(G, L, { bredd = 24 } = {}) {
+// Runda 6 (ben: true): benen är också kritstreck (höft–knä–fot), ritade bakom kroppen. Foten står kvar på golvet när kroppen
+// sjunker, så knät böjer sig utåt av sig självt. Benlängden är riggens (figuren är låst), bara lite längre så att knät alltid böjs.
+export function tunnaArmar(G, L, { bredd = 24, ben = false } = {}) {
   const svg = G.ownerSVGElement, kanel = G.querySelector('.kanel'), kropp = kanel.querySelector('.kropp');
   // armfärgen: kroppens egen bruna (#ac6744 i kanel-body), så att roten smälter in i kroppen; kanten som figurens inbakade (ca 7 enheter vit)
   const FARG = '#ab6643', VANTE = '#97553b', VIT = 7, BEN = [88, 84];   // överarm, underarm (enheter)
@@ -28,16 +30,20 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
   bak.innerHTML = ['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>`).join('');
   fram.innerHTML = `<g filter="url(#armkorn)">${['l', 'r'].map(n => `<path class="${n}" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/>`).join('')}</g>`;
   kanel.insertBefore(bak, kropp); kropp.after(fram);
+  const benG = document.createElementNS(NS, 'g');
+  if (ben) { bak.insertAdjacentHTML('beforeend', ['bl', 'br'].map(n => `<path class="${n}" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>`).join(''));
+    benG.innerHTML = `<g filter="url(#armkorn)">${['bl', 'br'].map(n => `<path class="${n}" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/>`).join('')}</g>`;
+    kanel.insertBefore(benG, kropp); }
   // de målade armarna (och deras kopior) syns inte i kopian; riggen flyttar dem fortfarande, så vi kan läsa var handen är
-  const malade = [...G.querySelectorAll('image')].filter(i => /^arm-/.test(i.getAttribute('class') || ''));
+  const malade = [...G.querySelectorAll('image')].filter(i => (ben ? /^(arm|leg)-/ : /^arm-/).test(i.getAttribute('class') || ''));
   malade.forEach(i => i.setAttribute('visibility', 'hidden'));
 
   const pt = (m, x, y) => { const q = new DOMPoint(x, y).matrixTransform(m); return [q.x, q.y]; };
   const rel = (fran, till) => till.getCTM().inverse().multiply(fran.getCTM());   // fran:s egna enheter → till:s
-  const synlig = n => malade.filter(i => i.getAttribute('class') === 'arm-' + n).find(i => i.getAttribute('display') !== 'none' && +(i.getAttribute('opacity') ?? 1) > 0.01)
-    || malade.find(i => i.getAttribute('class') === 'arm-' + n);
+  const synlig = (n, del = 'arm') => malade.filter(i => i.getAttribute('class') === del + '-' + n).find(i => i.getAttribute('display') !== 'none' && +(i.getAttribute('opacity') ?? 1) > 0.01)
+    || malade.find(i => i.getAttribute('class') === del + '-' + n);
   // tvåbens-IK: armbågen på den sida av axel–hand-linjen som ligger närmast polen (ut och ner från axeln)
-  const ik = (S, H, pol) => { const [a, b] = BEN; let dx = H[0] - S[0], dy = H[1] - S[1]; const d0 = Math.hypot(dx, dy) || 1;
+  const ik = (S, H, pol, [a, b] = BEN) => { let dx = H[0] - S[0], dy = H[1] - S[1]; const d0 = Math.hypot(dx, dy) || 1;
     const d = Math.min(Math.max(d0, Math.abs(a - b) + 1), a + b - 0.5), ux = dx / d0, uy = dy / d0;
     const x = (a * a - b * b + d * d) / (2 * d), h = Math.sqrt(Math.max(0, a * a - x * x)), mx = S[0] + ux * x, my = S[1] + uy * x;
     const e1 = [mx - uy * h, my + ux * h], e2 = [mx + uy * h, my - ux * h];
@@ -59,6 +65,14 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
         const C = [2 * E[0] - (S[0] + H2[0]) / 2, 2 * E[1] - (S[1] + H2[1]) / 2];   // kontrollpunkt så att kurvan går genom armbågen
         const d = `M${S[0].toFixed(1)} ${S[1].toFixed(1)} Q${C[0].toFixed(1)} ${C[1].toFixed(1)} ${H2[0].toFixed(1)} ${H2[1].toFixed(1)}`;
         svg.querySelectorAll(`.arm-kant .${n}, .arm-farg .${n}`).forEach(q => q.setAttribute('d', d));
+      }
+      if (ben) for (const [n, sida] of [['l', -1], ['r', 1]]) {
+        const img = synlig(n, 'leg'), m = rel(img, kanel), [px, py] = L.RIGG['leg-' + n];
+        const S = pt(m, px, py), F = pt(m, px + sida * 6, 947); F[1] = Math.min(F[1], 947);   // foten aldrig under golvet
+        const lang = 0.56 * (947 - py), [E, F2] = ik(S, F, [S[0] + sida * 200, (S[1] + F[1]) / 2], [lang, lang]);
+        const C = [2 * E[0] - (S[0] + F2[0]) / 2, 2 * E[1] - (S[1] + F2[1]) / 2];
+        const d = `M${S[0].toFixed(1)} ${S[1].toFixed(1)} Q${C[0].toFixed(1)} ${C[1].toFixed(1)} ${F2[0].toFixed(1)} ${F2[1].toFixed(1)}`;
+        svg.querySelectorAll(`.b${n}`).forEach(q => q.setAttribute('d', d));
       }
     },
   };

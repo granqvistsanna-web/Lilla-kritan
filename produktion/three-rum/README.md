@@ -91,6 +91,17 @@ Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar ige
 - **Kanel rör sig mer:** hon tittar sig omkring mellan handlingarna, med blick och huvudlutning. Först ut i rummet, sedan ner på bollen. Efter "bra jobbat" tittar hon på lådan, upp mot teckningarna och tillbaka på oss, och efter hej då åt sidan. Hon flyttar också vikten långsamt hela tiden. Allt är mjukt mellan lägena, och hon vänder sig aldrig runt.
 - QA: boil 1,8 px/s, −16,3 LUFS, inget klippt.
 
+### Runda 6 (prov 23/11, efter Ricks Clips): kurvarmar och kurvben, jämn dolly
+- `?armar=kurva`: kritarmar och kritben (48 enheter, först 30: `lekrummet-kurva-snabb-30.mp4`), alla omritade som kurvor varje bildruta (`tunna-armar.js`, `ben: true`). Benen ligger bakom kroppen. Foten står kvar på golvet när kroppen sjunker, så knät böjs utåt. Benlängden är riggens.
+- `?dolly`: kameraåkningarna går med jämn fart, utan in- och uttoning.
+- Förhandsvisning: `lekrummet/lekrummet-kurva-snabb.mp4` (`--snabb --fraga "armar=kurva&dolly" --ut …`). Stillbilder: `lekrummet/stills/runda6/`. Standardfilmen är oförändrad.
+
+## Runda 6 (Sanna: 3D-effekt på Kanel och fler uttryck)
+- **Volym på kortet:** Kanel ser ut som ett pösigt klistermärke. I kortets shader blir en suddad kopia av figurens form (80 punkter, radie 110 riggenheter) en höjdkarta, och normalen ur den belyses av rummets sol. Kanterna mot solen blir ljusare, kanterna bort från solen mörkare, och det blir lite mörkare mot konturen och en svag glans på solsidan. Mitten är oförändrad, och den vita kanten och den vita tussen rörs inte. Mörkningen är begränsad till högst 16 %. Kroppen, öronen, armarna och benen ser runda ut, men kortet är fortfarande platt och vänt mot kameran, så hon snurrar aldrig. `?platt` stänger av volymen för jämförelse.
+- **Fler uttryck** (riggens egna, blandade ovanpå, med blicken och armarna kvar): nyfiken på bollen, jätteglad när hon håller den, lite förvånad av dunset, jätteglad på "bra jobbat", stolt mot lådan, nyfiken mot teckningarna, fnissig efter hej då och en blinkning till oss på slutet.
+- QA: boil 2,5 px/s (gränsen är 4,5; glansen följer boilen lite), −16,3 LUFS, inget klippt.
+- Obs: stillbilder som renderas i omvänd ordning (t.ex. 13 före 4,2) kan tappa bollen, eftersom riggen minns att den släppts. Filmen spelas alltid framåt och påverkas inte.
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 
