@@ -185,7 +185,7 @@ Förlagan är `produktion/youtube/alfabet/abc-c-recept-3/` (rendering 2026-11-22
 
 **Armarna är lägre.** Vinkningen är 90° ± 6° i 1,3 gånger/s (var 124° ± 12°), och `hurra` är 84° (var 100°). Armarna ska aldrig sträckas rakt upp förbi huvudet.
 
-**Gömleken i blandningen (ABC-c3 2:59).** Klossarna vänder ryggen till innan de blandas, så att barnet måste följa kompisens kloss med ögonen: *"Titta noga."* medan kompisens kloss hoppar, ett halvt varv (`s.vand`), tre lugna byten (0,8 s, 1,1 s isär), *"Var är [kompisen]?"* och 3 s paus. Kompisens kloss vänder sig först (*"Där är den ju!"*), de andra efter. *"Titta noga. Var är …?"* spelas in som en replik och delas vid pausen.
+**Gömleken i blandningen (ABC-c3 2:59).** Klossarna vänder ryggen till innan de blandas, så att barnet måste följa kompisens kloss med ögonen: *"Titta noga."* medan kompisens kloss hoppar, ett halvt varv (`s.vand`), tre lugna byten (0,8 s, 1,1 s isär), *"Var är [kompisen]?"* och 3,2 s paus med ledtrådar: kompisens läte inifrån klossen och ett litet vick (`s.vick`), två gånger, och kameran glider lite mot den (ABC-c3 3:05: *"a bit easier to guess"*). Alla klossar vrids åt samma håll som `RY` (`platta[3]` negativ eller liten), annars syns ingen sida när de står mitt i bild (ABC-c3 3:07). Kompisens kloss vänder sig först (*"Där är den ju!"*), de andra efter. *"Titta noga. Var är …?"* spelas in som en replik och delas vid pausen.
 
 **Bilden ryms i plattans ram.** Breda bilder (clownens armar, cirkeln) mäts i en stillbild på klossen: ramen ska synas runt om (`platta[2]` större = mindre bild).
 

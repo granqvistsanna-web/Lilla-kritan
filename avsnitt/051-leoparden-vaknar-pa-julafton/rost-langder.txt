@@ -44,3 +44,5 @@
 44-lilla-kritan-djuren 2.36
 45-riktigt-god-jul 1.90
 46-en-strumpa 1.50
+51-dra-pa-strumpa-1 2.25
+52-dra-pa-strumpa-2 2.32

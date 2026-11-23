@@ -1,13 +1,16 @@
 p-hej-hej  [warm] Hej hej!
-p-kritan-ritar  [warm] Kritan ritar en bokstav.
+p-kritan-ritar  [warm] Titta, kritan ritar en bokstav.   (C:s klipp)
 p-det-ar-b  [excited] Det blev ett B!
 p-bokstaven-b  [warm] Bokstaven B.
+n-hej-b  [warm] Hej, B!
+n-hur-later  [curious] Hur låter B?
 p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven B.
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-bjorn  [excited] Björn!
 p-b-b-bjorn  [playful] B, b, björn!
 p-bjorn-b  [excited] Ja! Björn börjar på bokstaven B.
+n-hur-bjorn  [curious] Hur låter B i björn?
 n-hej-bjornen  [warm] Hej, björnen!
 n-vill-leka  [warm] Björnen vill leka.
 n-inget-att-leka  [warm] Men björnen har inget att leka med.
@@ -27,6 +30,7 @@ p-vad-blir  [curious] Vad blir det?
 p-boll  [excited] Boll!
 p-b-b-boll  [playful] B, b, boll!
 p-ocksa-boll  [warm] Boll börjar också på B!
+n-och-boll  [curious] Och i boll?
 n-hej-bollen  [warm] Hej, bollen!
 n-vill-du-leka  [curious] Vill du leka med björnen?
 n-bollen-studsar  [playful] Bollen studsar!
@@ -41,7 +45,7 @@ n-ballongen-flyger  [excited] Titta! Ballongen flyger!
 n-upp-upp  [playful] Upp, upp, upp!
 n-ner-igen  [warm] Och ner igen. Vad roligt!
 p-nuleker  [excited] Kom, nu leker vi!
-n-titta-noga  [curious] Titta noga. Var är björnen?
+n-titta-noga  [curious] Titta noga. Var är björnen?   (delad: n-titta-noga-1 + n-var-ar-bjornen)
 n-dar-ar-den  [excited] Där är den ju!
 p-entill  [curious] Titta! En till.
 p-hund  [curious] Hund.

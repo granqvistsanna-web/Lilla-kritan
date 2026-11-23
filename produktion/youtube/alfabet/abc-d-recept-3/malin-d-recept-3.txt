@@ -1,13 +1,16 @@
 p-hej-hej  [warm] Hej hej!
-p-kritan-ritar  [warm] Kritan ritar.
+p-kritan-ritar  [warm] Titta, kritan ritar en bokstav.
 p-det-ar-d  [excited] Det är ju D!
 p-bokstaven-d  [warm] Bokstaven D.
+n-hej-d  [warm] Hej, D!
+n-hur-later  [curious] Hur låter D?
 p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven D.
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-dino  [excited] Dinosaurie!
 p-d-d-dino  [playful] D, d, dinosaurie!
 p-dino-d  [excited] Ja! Dinosaurie börjar på bokstaven D.
+n-hur-dino  [curious] Hur låter D i dino?
 n-hej-dinon  [warm] Hej, dinon!
 n-vill-halsa  [warm] Dinon vill hälsa på någon.
 n-ingen-dorr  [warm] Men dinon har ingen dörr att knacka på.
@@ -27,6 +30,7 @@ p-vad-blir  [curious] Vad blir det?
 p-dorr  [excited] Dörr!
 p-d-d-dorr  [playful] D, d, dörr!
 p-ocksa-dorr  [warm] Dörr börjar också på D!
+n-och-dorr  [curious] Och i dörr?
 n-knacka-pa  [excited] Kom, dinon! Knacka på!
 n-knack-knack  [playful] Knack, knack!
 n-nagon-hemma  [curious] Är det någon hemma?

@@ -67,8 +67,11 @@ export const RADER = [
     bild: 'Leoparden tittar mot fönstret, öronen reser sig, glatt skutt på "Hurra!"', ljudtext: '`hopp-mjuk`, förtjust brum', ansikte: 'jätteglad' },
 
   // --- Tittut under täcket ---
-  { id: '13', d: 1.4 + L(17) + 0.5 + L(47) + 2.0, plats: 'Halvbild', malin: [[17, 1.4], [47, 1.4 + L(17) + 0.5]], ljud: [[HOPP(4), 0.1], [PRASSEL, 0.8], [FNISS(1), 1.4 + L(17) + 0.5 + L(47) + 0.3]],
-    bild: 'Leoparden hoppar in bakom sängen och dyker ner, bara öronspetsarna syns. Malin: "Oj, haha! Leoparden vill leka." Paus 2 s', ljudtext: '`prassel-tyg`, fniss under täcket', ansikte: '–' },
+  // J24-feedback 1:20 och 1:23: Malin frågar först om leoparden vill leka, sedan skuttet, "Oj, haha! Leoparden vill leka.", "Leoparden är borta!"
+  { id: '13a', d: 0.8 + L(48) + 1.5, plats: 'Halvbild', malin: [[48, 0.8]], ljud: [[FNISS(2), 0.9 + L(48)]],
+    bild: 'Leoparden tittar busigt mot sängen och mot oss, nickar och hukar sig för ett skutt', ljudtext: 'busigt fniss', ansikte: 'fnissig' },
+  { id: '13', d: 1.0 + L(47) + 0.5 + L(49) + 3.0, plats: 'Halvbild', malin: [[47, 1.0], [49, 1.0 + L(47) + 0.5]], ljud: [[HOPP(4), 0.1], [PRASSEL, 0.8], [LANDA(2), 0.85], [FNISS(4), 1.0 + L(47) + 0.5 + L(49) + 1.4]],
+    bild: 'Leoparden skuttar in bakom sängen och dyker ner. "Oj, haha! Leoparden vill leka." Öronspetsarna tittar upp: "Leoparden är borta! Var är leoparden?" Paus 3 s', ljudtext: '`prassel-tyg`, fniss bakom sängen', ansikte: '–' },
   { id: '14', d: 0.5 + L(18) + G + 1.6, plats: 'Halvbild', malin: [[18, 0.5]], ljud: [[POP(1), 0.0], [B('3b'), 0.7 + L(18)], [HOPP(5), 0.5 + L(18) + G + 0.6], [LANDA(1), 0.5 + L(18) + G + 1.25]],
     bild: 'Leoparden tittar upp bakom sängen, skrattar och hoppar tillbaka fram', ljudtext: '`prassel-tyg`, fniss', ansikte: 'skrattar' },
 
@@ -79,15 +82,17 @@ export const RADER = [
     bild: 'Klädhängaren på väggen: strumporna och halsduken på var sin knopp, den tredje tom. Luvans tofs sticker upp bakom krukan', ljudtext: '–', ansikte: '–' },
   { id: '17', d: 0.3 + L(21) + G, plats: 'Närbild: strumporna', malin: [[21, 0.3]], ljud: [[PLING(2), 0.2]],
     bild: 'Strumporna på knoppen', ljudtext: '–', ansikte: '–' },
-  { id: '18', d: 0.3 + L(22) + G + 0.4, plats: 'Halvbild', malin: [[22, 0.3]], ljud: [[STRUMPA(1), 0.2], [STRUMPA(2), 0.3 + L(22) / 2], [GLITTER(3), 0.3 + L(22) - 0.2], [GLAD(2), 0.5 + L(22)]],
-    bild: 'Strumporna glider från knoppen till fötterna, en i taget, ett litet ryck på "på!"', ljudtext: '`prassel-tyg` × 2, `glitter`, glatt brum', ansikte: 'koncentrerad → glad' },
-  { id: '19', d: 0.3 + L(23) + G + 0.6, plats: 'Halvbild', malin: [[23, 0.3]], ljud: [[B('3'), 0.5 + L(23)]],
+  // J24-feedback 1:50 "a bit slower pace and more varied sounds": en replik per strumpa, strumpan landar på "på!", leoparden reagerar varje gång
+  { id: '18', d: 0.3 + L(51) + 1.6 + L(52) + 1.7, plats: 'Halvbild', malin: [[51, 0.3], [52, 0.3 + L(51) + 1.6]],
+    ljud: [[STRUMPA(1), 0.7], [GLITTER(3), 1.95], [FNISS(3), 2.35], [HOPP(2), 2.6], [STRUMPA(2), 0.3 + L(51) + 1.6 + 0.45], [GLITTER(2), 0.3 + L(51) + 1.6 + 1.75], [B('3b'), 0.3 + L(51) + 1.6 + 2.15], [HOPP(6), 0.3 + L(51) + 1.6 + 2.4]],
+    bild: 'Strumporna glider från knoppen till fötterna, en i taget, var och en landar på "på!" och leoparden fnissar och skuttar', ljudtext: '`prassel-tyg` × 2, `glitter`, glatt brum', ansikte: 'koncentrerad → glad' },
+  { id: '19', d: 0.3 + L(50) + G + 0.9, plats: 'Halvbild', malin: [[50, 0.3]], ljud: [[FNISS(5), 0.5 + L(50)]],   // röda strumpor (J24-feedback 2:36)
     bild: 'Leoparden vickar på fötterna och tittar ner', ljudtext: 'fniss', ansikte: 'glad' },
   { id: '20', d: 0.3 + L(24) + G, plats: 'Närbild: halsduken', malin: [[24, 0.3]], ljud: [[PLING(3), 0.2]],
     bild: 'Halsduken på knoppen', ljudtext: '–', ansikte: '–' },
   { id: '21', d: 0.3 + L(25) + G + 0.4, plats: 'Halvbild', malin: [[25, 0.3]], ljud: [[SUS(1), 0.2], [GLITTER(4), 0.3 + L(25) - 0.2], [GLAD(3), 0.5 + L(25)]],
     bild: 'Halsduken glider på, lågt på halsen', ljudtext: '`prassel-tyg`, `glitter`, glatt brum', ansikte: 'glad' },
-  { id: '22', d: 0.4 + L(26) + G + 0.6, plats: 'Halvbild', malin: [[26, 0.4]], ljud: [[HOPP(2), 0.1], [B('4'), 0.6 + L(26)]],
+  { id: '22', d: 0.4 + L(26) + G + 0.6, plats: 'Halvbild', malin: [[26, 0.4]], ljud: [[HOPP(2), 0.1], [B('4b'), 0.6 + L(26)]],
     bild: 'Leoparden tittar ner på halsduken, glatt skutt', ljudtext: '`hopp-mjuk`, mysig suck', ansikte: 'drömmer' },
 
   // --- Var är luvan? Barnet hjälper ---
@@ -113,7 +118,8 @@ export const RADER = [
     bild: 'Leoparden tittar på paketet, sedan mot kameran', ljudtext: 'nyfiket brum', ansikte: 'nyfiken' },
   { id: '31', d: 0.8 + L(36) + G + 0.6, plats: 'Halvbild', malin: [[36, 0.8]], ljud: [[GLID, 0.2], [B('2'), 1.0 + L(36)], [GLITTER(3), 0.6]],
     bild: 'Paketet glider fram till leopardens fötter', ljudtext: 'förtjust brum, `glitter`', ansikte: 'jätteglad' },
-  { id: '32', d: 1.2 + L(37) + G + 0.6, plats: 'Halvbild', malin: [[37, 1.2]], ljud: [[PRASSEL, 0.2], [POP(2), 0.6], [NALLE, 1.0], [GLITTER(4), 1.2 + L(37) - 0.4], [B('2b'), 1.4 + L(37)]],
+  // J24-feedback 2:55: locket lyfts på "Leoparden öppnar …", elefanten poppar upp på "En elefant!" (2,63 s in i repliken)
+  { id: '32', d: 1.2 + L(37) + G + 0.9, plats: 'Halvbild', malin: [[37, 1.2]], ljud: [[PRASSEL, 2.1], [POP(2), 1.2 + 2.45], [NALLE, 1.2 + 2.55], [GLITTER(4), 1.2 + 3.1], [B('2b'), 1.5 + L(37)]],
     bild: 'Rosetten lyfter av, locket glider upp och elefanten stiger upp ur paketet', ljudtext: '`prassel-tyg`, `glitter`, förtjust brum', ansikte: 'förvånad → jätteglad' },
   { id: '33', d: 1.0 + L(38) + G + 1.0, plats: 'Närbild', malin: [[38, 1.0]], ljud: [[B('4b'), 1.2 + L(38)]],
     bild: 'Elefanten glider in framför leopardens mage, de raka armarna in framför den, ögonen blundar glatt', ljudtext: 'mysig suck', ansikte: 'drömmer' },
@@ -123,20 +129,21 @@ export const RADER = [
     bild: 'Ljusslingan i fönstret tänds, en lampa i taget', ljudtext: '`tindra`, förtjust brum', ansikte: 'jätteglad' },
   { id: '35', d: 4.0 + L(40) + G + 1.5, plats: 'Helbild', malin: [[40, 4.0]], ljud: [[HOPP(4), 1.0], [BJALL, 2.5], [HOPP(5), 3.0]], musik: true,
     bild: 'Musiken kommer upp. Leoparden vickar vid fönstret med elefanten, snön faller', ljudtext: '`jul-julafton` upp, `bjallror`', ansikte: 'jätteglad' },
-  { id: '36', d: 0.4 + L(41) + G + 0.8, plats: 'Halvbild', malin: [[41, 0.4]], ljud: [[B('8'), 0.6 + L(41)]], musik: true,
-    bild: 'Leoparden vinkar (armen bakom kroppen, elefanten i den andra)', ljudtext: 'hej då-brum', ansikte: 'jätteglad' },
+  { id: '36', d: 0.4 + L(41) + G + 0.8, plats: 'Halvbild', malin: [[41, 0.4]], ljud: [[HOPP(2), 0.4 + 1.34], [B('8'), 0.6 + L(41)]], musik: true,
+    bild: 'Leoparden vinkar, ett litet skutt på "God jul!"', ljudtext: 'hej då-brum', ansikte: 'jätteglad' },
   { id: '37', d: 0.3 + L(42) + G + 0.8, plats: 'Halvbild', malin: [[42, 0.3]], ljud: [[B('8b'), 0.5 + L(42)]], musik: true,
-    bild: 'Leoparden vinkar klart', ljudtext: 'hej då-brum', ansikte: 'glad' },
+    bild: 'Leoparden vinkar klart och blinkar mot oss på "Vi ses snart!"', ljudtext: 'hej då-brum', ansikte: 'glad' },
 
   // --- Kalenderns avsked ---
-  { id: '39', d: 2.4 + L(43) + G, plats: 'Helbild', malin: [[43, 2.4]], ljud: [[RITA(4), 0.2], [TINDRA(2), 2.2]], musik: true,
-    bild: 'Kritan ritar en liten gul stjärna i luften ovanför leoparden, den fylls i och tindrar', ljudtext: 'kritan ritar, `tindra`', ansikte: 'glad' },
-  { id: '40', d: 0.3 + L(44) + G, plats: 'Helbild', malin: [[44, 0.3]], ljud: [[HOPP(6), 0.1], [B('2'), 0.5 + L(44)]], musik: true,
-    bild: 'Stjärnan glimmar, ljusslingan lyser, snön faller. Litet glatt skutt', ljudtext: 'förtjust brum', ansikte: 'jätteglad' },
-  { id: '41', d: 0.3 + L(45) + G + 0.6, plats: 'Helbild', malin: [[45, 0.3]], ljud: [[BJALL, 0.4 + L(45)]], musik: true,
-    bild: 'Leoparden vinkar, stjärnan glimmar', ljudtext: '`bjallror`', ansikte: 'jätteglad' },
+  // J24-feedback 3:26: ingen stjärna. Rummet tonas till väggens turkos med snö, kameran in på leoparden, en rörelse per replik
+  { id: '39', d: 2.4 + L(43) + G + 0.4, plats: 'Helbild → halvbild, turkos bakgrund', malin: [[43, 2.4]], ljud: [[TINDRA(2), 0.3], [B('4'), 2.6 + L(43)]], musik: true,
+    bild: 'Rummet tonas bort till turkos med lugn snö, kameran glider in på leoparden med elefanten. "Tack …": en djup nick med glada ögon', ljudtext: '`tindra`, mysig suck', ansikte: 'glad → jätteglad' },
+  { id: '40', d: 0.3 + L(44) + G + 0.5, plats: 'Halvbild, turkos', malin: [[44, 0.3]], ljud: [[SWOOSH(1), 0.6], [HOPP(6), 2.0], [B('2'), 0.6 + L(44)]], musik: true,
+    bild: 'Kritan flyger in på "Lilla Kritan" och svajar bredvid leoparden, som tittar upp på den och skuttar på "alla djuren"', ljudtext: 'swoosh, förtjust spinn', ansikte: 'jätteglad' },
+  { id: '41', d: 0.3 + L(45) + G + 0.6, plats: 'Halvbild, turkos', malin: [[45, 0.3]], ljud: [[BJALL, 0.4 + L(45)], ['spinn-gullig/spinn-gullig-8e', 0.7 + L(45)]], musik: true,
+    bild: 'Leoparden vinkar mot oss, kritan svajar', ljudtext: '`bjallror`, hej då-spinn', ansikte: 'jätteglad' },
   { id: '42', d: 2.4, plats: 'Kritirisen', musik: true,
-    bild: 'Kritirisen runt leoparden och stjärnan, musiken tonar ut', ljudtext: 'musiken tonar ut', ansikte: 'glad' },
+    bild: 'Kritan flyger ut, kritirisen sluter sig om leoparden, musiken tonar ut', ljudtext: 'musiken tonar ut', ansikte: 'glad' },
 ];
 // musiken: ingen medan leoparden sover, lågt från uppvaknandet (rad 8), uppe i sista leken (manus)
 { const fran = RADER.findIndex(r => r.id === '8'); RADER.forEach((r, i) => { if (i >= fran) r.musik = true; }); }

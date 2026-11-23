@@ -71,6 +71,15 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 - 2:36: klossarna vänder ryggen till innan de blandas och vänder sig tillbaka efteråt, apan sist (`vand`).
 - 2:38: apelsinen stod upp och ner på klossen (rullningens vinkel räknades efter rullningen). Rättat.
 
+## C:s riktning 2026-11-23 (Sanna: "Bring C's direction into A, B, D and E")
+
+- Introt: *"Titta, kritan ritar en bokstav."* (C:s klipp) och kritan börjar rita på *"Titta"*. Efter *"Bokstaven A."*: Malin *"Hej, A!"*, märket *"Hej! A! A!"*, Malin *"Hur låter A?"*, märket *"a, a, A!"*.
+- Efter varje ord frågar Malin först och märket svarar med ordet: *"Hur låter A i apa?"* → *"a, a, apa!"*, *"Och i apelsin?"* → *"a, a, apelsin!"*, efter ananasen bara märket: *"a, a, ananas!"*.
+- Gömleken: *"Titta noga."*, klossarna vänder ryggen till, tre lugna byten, *"Var är apan?"* och 3,2 s paus med ledtrådar (apan låter inifrån klossen, klossen vickar två gånger, kameran glider mot den). Apans kloss vänder sig först: *"Där är den!"*. Apans kloss vrids nu som de andra (−0,06, var 0,10), så att en sida syns.
+- Skissen: också öronens ljusa insida, den rullade svansen och fötternas sulor (mätta på `alfons-faceless.png`).
+- Armarna: vinkningen 90° ± 6° i 1,3 gånger/s (var 124° ± 12°), `hurra` 84° i den här scenen (riggen har 100°).
+- Rösterna: `produktion/ljud-original/roster/abc-recept-3-adbe/` (Malin `malin-1.mp3`, bokstaven `louise-1.mp3`, *"a, a, apa!"* ur `louise-2.mp3`). `n-titta-noga` är delad i `n-titta-noga-1` och `n-var-ar-apan`.
+
 ## Öppet
 
 - **Malins tagning:** en tagning med alla 61 rader ur `malin-a-recept-3.txt`, delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Gjort 2026-11-21: tagning 1 av 2 valdes (tagning 2 sa "Deal" på "Bil?").

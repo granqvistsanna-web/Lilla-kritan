@@ -36,6 +36,11 @@ Som A, B och E (Sanna 2026-11-21): efter *"Bokstaven C."* får märket ögon och
 - **3:23:** clownen tittar på varje kloss en gång i gissningspausen i stället för två (lugnare).
 - **3:38:** klossarna hoppar på sina ord i ordningen clown, cykel, cirkel (orden i klippet vid 0, 1,03 och 1,76 s).
 
+## Feedback 2026-11-22 natt (rendering 23:02)
+
+- **3:05, ledtrådar:** i pausen efter *"Var är clownen?"* fnissar clownen inifrån sin kloss och klossen vickar till, två gånger (`s.vick`), och kameran glider lite mot den. Pausen är 3,2 s.
+- **3:07, klossens kant:** clownens kloss var mindre vriden än de andra (−0,12 rad mot −0,14 och −0,28), och mitt i bild syntes ingen sida. `platta[3]` 0,10 → −0,08.
+
 ## Uppslagen
 
 Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.

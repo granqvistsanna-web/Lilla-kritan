@@ -45,3 +45,8 @@
 45-riktigt-god-jul  [warmly] En riktigt god jul!
 46-en-strumpa  [delighted] En strumpa!
 47-vill-leka  [laughs] Oj, haha! Leoparden vill leka.
+48-vill-du-leka  [playfully] Vill du leka, leoparden?
+49-leoparden-ar-borta  [curious] Leoparden är borta! Var är leoparden?
+50-roda-strumpor  [delighted] Röda strumpor!
+51-dra-pa-strumpa-1  [happy] Dra, dra … på!
+52-dra-pa-strumpa-2  [happy] Dra, dra … på!

@@ -44,3 +44,5 @@
 44-lilla-kritan-djuren  [warmly] Med Lilla Kritan och alla djuren.
 45-riktigt-god-jul  [warmly] En riktigt god jul!
 46-en-strumpa  [delighted] En strumpa!
+51-dra-pa-strumpa-1  [happy] Dra, dra … på!  (första halvan av 22, delad 2026-11-22 för långsammare påklädning)
+52-dra-pa-strumpa-2  [happy] Dra, dra … på!  (andra halvan av 22)

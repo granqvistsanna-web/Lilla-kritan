@@ -85,6 +85,15 @@ Sanna godkände (feedback på E 3:54: *"det viktigaste att lära sig är hur e l
 - **1:22 "better pig image":** grisen är nu den runda kritgrisen (`gris-rosa/v1`, samma bild som Gissa teckningens första gris) med rörelsestrecken och ögat bortplockade: `assets/rekvisita/gris-rosa/cut/gris-rosa-rund.png`, konturen `gris-rosa-rund-kontur.json` (kontur-bild.py), trynet (880, 512) och ögat (770, 439) mätta i bilden. Benen sitter fast, så grisen vaggar när den går ut. Den gamla fyrkantiga grisen är orörd.
 - **1:56 "bigger composition, too much white space":** kameran går närmare när dörren fylls i (1,3, mitt 830/650: dinon och dörren) och följer med till dörren när dinon går dit (1,42, mitt 1210/650: dinon, dörren och dockans plats), till närbilden efter dockan.
 
+## C:s riktning 2026-11-23 (Sanna: "Bring C's direction into A, B, D and E")
+
+- Introt: *"Titta, kritan ritar en bokstav."* (C:s klipp) och kritan börjar rita på *"Titta"*. Efter *"Bokstaven D."*: Malin *"Hej, D!"*, märket *"Hej! D! D!"*, Malin *"Hur låter D?"*, märket *"d, d, D!"*.
+- Efter varje ord frågar Malin först och märket svarar med ordet: *"Hur låter D i dino?"* → *"d, d, dino!"*, *"Och i dörr?"* → *"d, d, dörr!"*, efter dockan bara märket: *"d, d, docka!"*.
+- Gömleken: *"Titta noga."*, klossarna vänder ryggen till, tre lugna byten, *"Var är dinon?"* och 3,2 s paus med ledtrådar (dinon brummar inifrån klossen, klossen vickar två gånger, kameran glider mot den). Dinons kloss vänder sig först: *"Där är den!"*. Dinons kloss vrids nu som de andra (−0,06, var 0,10), så att en sida syns.
+- Skissen: också ryggtaggarna i mörkare lila och en linje längs svansen (mätta på `disa-faceless.png`).
+- Armarna: vinkningen 90° ± 6° i 1,3 gånger/s (var 90° ± 10° på 0,7 s), `hurra` 84° i den här scenen (riggen har 100°).
+- Rösterna: `produktion/ljud-original/roster/abc-recept-3-adbe/` (Malin `malin-1.mp3`, bokstaven `louise-1.mp3`). `n-titta-noga` är delad i `n-titta-noga-1` och `n-var-ar-dinon`.
+
 ## Öppet
 
 - *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.

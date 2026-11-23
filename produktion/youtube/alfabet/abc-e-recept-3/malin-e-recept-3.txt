@@ -1,13 +1,16 @@
 p-hej-hej  [warm] Hej hej!
-p-kritan-ritar  [warm] Kritan ritar.
+p-kritan-ritar  [warm] Titta, kritan ritar en bokstav.
 p-det-ar-e  [excited] Det är ju E!
 p-bokstaven-e  [warm] Bokstaven E.
+n-hej-e  [warm] Hej, E!
+n-hur-later  [curious] Hur låter E?
 p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven E.
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-elefant  [excited] Elefant!
 p-e-e-elefant  [playful] E, e, elefant!
 p-elefant-e  [excited] Ja! Elefant börjar på bokstaven E.
+n-hur-elefant  [curious] Hur låter E i elefant?
 n-hej-elefanten  [warm] Hej, elefanten!
 n-vill-leka  [warm] Elefanten vill leka.
 n-ingen-kompis  [warm] Men elefanten har ingen kompis.
@@ -26,6 +29,7 @@ n-kompis-pa-e  [playful] En kompis på bokstaven E, tack!
 p-ekorre  [excited] Ekorre!
 p-e-e-ekorre  [playful] E, e, ekorre!
 p-ocksa-ekorre  [warm] Ekorre börjar också på E!
+n-och-ekorre  [curious] Och i ekorre?
 n-hej-ekorren  [warm] Hej, ekorren!
 n-vill-du-leka  [curious] Vill du leka med elefanten?
 n-ekorren-hoppar  [playful] Ekorren hoppar!

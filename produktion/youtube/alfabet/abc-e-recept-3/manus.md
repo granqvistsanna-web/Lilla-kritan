@@ -77,6 +77,16 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 - 3:54: E säger e. Efter *"Hej då!"* hoppar E-märket till mitten, blir större och får ögon och mun i kod. Det säger *"e, e, E!"* två gånger med en paus emellan. Ljuden är klippta ur Malins *"E, e, elefant!"* och *"E, e, ekorre!"* (`e-ljud-1…3`), inga nya krediter. Filmen är 4:06.
 - E säger e också i introt (Sanna 2026-11-21): efter *"Bokstaven E."* får klossen ögon och mun och säger *"e, e, E!"* en gång, och ansiktet försvinner innan märket flyger till hörnet. Filmen är 4:09. Samma sak bör in i A–D.
 
+## C:s riktning 2026-11-23 (Sanna: "Bring C's direction into A, B, D and E")
+
+- Introt: *"Titta, kritan ritar en bokstav."* (C:s klipp) och kritan börjar rita på *"Titta"*. Efter *"Bokstaven E."*: Malin *"Hej, E!"*, märket *"Hej! E! E!"*, Malin *"Hur låter E?"*, märket *"e, e, E!"*.
+- Efter varje ord frågar Malin först och märket svarar med ordet: *"Hur låter E i elefant?"* → *"e, e, elefant!"*, *"Och i ekorre?"* → *"e, e, ekorre!"*, efter ekollonet bara märket: *"e, e, ekollon!"*.
+- Gömleken: *"Titta noga."*, klossarna vänder ryggen till, tre lugna byten, *"Var är elefanten?"* och 3,2 s paus med ledtrådar (elefanten brummar inifrån klossen, klossen vickar två gånger, kameran glider mot den). Elefantens kloss vänder sig först: *"Där är den!"*. Elefantens kloss (−0,06, var 0,10) och ekollonets (−0,06, var 0,06) vrids nu som de andra, så att en sida syns.
+- Skissen: också svansen med tofsen och de ljusa tånaglarna (mätta på `elsa-faceless.png`).
+- Armarna: vinkningen 90° ± 6° i 1,3 gånger/s (var 124° ± 12°), `hurra` 84° i den här scenen (riggen har 100°).
+- Rösterna: `produktion/ljud-original/roster/abc-recept-3-adbe/` (Malin `malin-1.mp3`, bokstaven `louise-1.mp3`), kopierade till `abc-e-recept-3-v2/` (scenens röstmapp). `n-titta-noga` är delad i `n-titta-noga-1` och `n-var-ar-elefanten`.
+- Att lyssna på: båda rösterna säger *ekorre* med kort e (nästan "äckorre").
+
 ## Öppet
 
 - Muren står fortfarande still ca 12 s medan Malin säger orden och frågar.
