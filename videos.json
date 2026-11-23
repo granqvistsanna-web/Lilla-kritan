@@ -1587,5 +1587,13 @@
   "file": "produktion/youtube/mix/mix-5/mix-5.mp4",
   "status": "granska",
   "name": "Mix 5: Sjung, pussla och gissa"
+ },
+ "J20": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1123-0700.mp4",
+  "duration": 181.9,
+  "rendered": "2026-11-23 07:00 (038 som lucka 20, ersätter 048 (plan))",
+  "file": "produktion/youtube/shorts/jul/17-borsta-borsta-jul/17-borsta-borsta-jul.mp4",
+  "status": "granska",
+  "name": "Borsta, borsta jul"
  }
 }
