@@ -58,6 +58,23 @@ Tysta partier finns, eftersom provet inte har någon musik. Kontaktarket i qa-fi
 - **Upplockningen är riggens golvplock från sidan.** Den läses bra men är liten i helbild. En närbild på handen eller en tydligare blick ner hade hjälpt barnen följa med.
 - **Väggen är stark, men 3D-sakerna har fortfarande raka linjer** jämfört med plattans handritade. Rundningen och vickningen hjälper, men det är fortfarande ett 3D-rum med kritkläder.
 
+## Runda 3: kodarmar med armbåge (prov, Sanna sa ja)
+Samma 18 s-scen, men Kanels målade armar är dolda i den här sidans kopia av riggen och ersatta med armar ritade i kod (`lekrummet/tunna-armar.js`). Hennes riktiga filer är orörda.
+
+- **Hur:** varje arm är ett kritstreck genom axel, armbåge och hand, en mjuk kurva. Armbågen räknas med tvåbens-IK mot en punkt ut och ner från axeln, så den böjer sig alltid samma naturliga väg och aldrig bakåt. Det finns inget släp, ingen fjäder och ingen efterstudsning. Handen följer riggens (osynliga) hand, så bollen sitter i den, och den följer egna mål i vilan och i vinkningen. Strecket har kroppens bruna, lite mörkare, kritkorn och vit klistermärkeskant. Line boil är som för figuren. Axeln sitter inne i kroppen, så ingen stump syns.
+- **Handen:** först en rund prick, nu en oval tass längs underarmen med en liten tumme åt kroppen till, i samma bruna med vit kant.
+- **Tre bredder** (`?armar=a|b|c`, `--fraga armar=b` i render.mjs, `armar=bild` ger dagens målade armar): A 24 enheter (5 % av huvudet), B 34 (7 %), C 60 (12 %, ungefär lika tjock som dagens). Filmen använder **C**.
+- **Ändrat i scenen:** lådan står 10 cm längre till vänster, så att handen och bollen på golvet inte skyms av lådans hörn.
+- Jämförelse: `lekrummet/stills/jamfor-armar.jpg` (dagens, A, B och C vid sträcker sig, håller, släpper och vinkar). Runda 2:s film ligger i `lekrummet/aldre/lekrummet-202611232049.mp4`.
+- QA: line boil 1,7 px/s, −16,3 LUFS, topp −5,4 dB, ingen röst klipps vid klippet.
+
+### Ärlig jämförelse
+- **Dagens målade armar** har mest krita och form, men är raka pinnar som bara vrids vid axeln. Handen når bollen genom att hela armen pekar dit, och vinkningen är en stel arm som svänger.
+- **Tunna A och B** böjer sig fint och läses tydligt, men ser ut som streckgubbsarmar på en rund figur. De är för smala för Kanels kropp, särskilt A.
+- **Tjocka C** är bäst av kodarmarna. Den är lika tung som dagens arm men har en riktig armbåge i vinkningen och när hon bär bollen. Den ser inte ut som de böjda korvarna från november, eftersom strecket är jämnt, armbågen mjuk och det inte finns något släp. Den är ändå plattare än den målade armen: kornet är svagare, och kanten är helt jämn.
+- **Handen med tumme** läses som en tass och greppar bollen bättre än pricken.
+- **Kvar att lösa:** när hon sträcker sig ner till golvet ligger armen bakom benet och syns lite, och i helbild är handen liten. Armen kunde få lite mer krita (ojämnare kant) för att möta den målade kroppen.
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 
@@ -65,5 +82,5 @@ Tysta partier finns, eftersom provet inte har någon musik. Kontaktarket i qa-fi
 1. **Rumsbyggsats:** flytta lådan, klotet, teckningen, väggen, golvet, ljuset, kortet, kameran och efterbehandlingen ur `rum.js` till en gemensam fil, så att ett nytt rum bara blir en lista med saker. Prova sedan köket eller badrummet.
 2. **Saker som egna kort:** en sak på golvet blir ett eget kort och lämnas över till handen vid greppet, så att den ligger still när kameran sveper.
 3. **Flera vyer som byts vid klipp:** trekvart och sida för Kanel i v2, för kameravinklar över ca 30°. Bara vid klipp, aldrig en snurr.
-4. **Enklare armar som tillval:** raka kritstreck som hålls stilla per bild, för figurer där kodarmarna blir besvärliga.
+4. **Kodarmar C som tillval:** om Sanna gillar C, flytta `tunna-armar.js` till en gemensam fil och prova den i en vanlig platt scen.
 5. **Ett riktigt avsnitt:** en bilderbokscen (`format/bilderbok.md`) i det här rummet med Malins hela manus, för att se om det håller i flera minuter och om renderingen står pall (nu ca 3 s per sekund film).

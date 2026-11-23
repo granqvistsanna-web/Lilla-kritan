@@ -26,7 +26,11 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
   const arm = () => `<path class="vk" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="${bredd + 2 * VIT}"/>
     <g filter="url(#armkorn)"><path class="fg" fill="none" stroke="${FARG}" stroke-linecap="round" stroke-width="${bredd}"/></g>`;
   const R = Math.round(bredd < 40 ? bredd * 0.95 + 6 : bredd * 0.55 + 8);   // tumvanten: lite tjockare än armen (tjock arm: lagom vante)
-  const vante = () => `<circle class="vv" r="${R + VIT}" fill="#fff"/><g filter="url(#armkorn)"><circle class="vf" r="${R}" fill="${VANTE}"/></g>`;
+  // handen: en oval tass längs underarmen och en liten tumme åt kroppen till; vit kant = samma former med vitt streck under
+  const form = `<ellipse cx="${(R * 0.3).toFixed(1)}" cy="0" rx="${(R * 1.05).toFixed(1)}" ry="${(R * 0.82).toFixed(1)}"/>
+    <ellipse class="tumme" cx="${(R * 0.05).toFixed(1)}" cy="${(R * 0.78).toFixed(1)}" rx="${(R * 0.42).toFixed(1)}" ry="${(R * 0.3).toFixed(1)}" transform="rotate(-35 ${(R * 0.05).toFixed(1)} ${(R * 0.78).toFixed(1)})"/>`;
+  const vante = () => `<g class="hand"><g fill="#fff" stroke="#fff" stroke-width="${2 * VIT}" stroke-linejoin="round">${form}</g>
+    <g filter="url(#armkorn)" fill="${VANTE}">${form}</g></g>`;
   bak.innerHTML = `<g class="l">${arm()}</g><g class="r">${arm()}</g>`;
   fram.innerHTML = `<g class="l">${vante()}</g><g class="r">${vante()}</g>`;
   kanel.insertBefore(bak, kropp);
@@ -62,8 +66,11 @@ export function tunnaArmar(G, L, { bredd = 24 } = {}) {
         const C = [2 * E[0] - (S[0] + H2[0]) / 2, 2 * E[1] - (S[1] + H2[1]) / 2];   // kontrollpunkt så att kurvan går genom armbågen
         const d = `M${S[0].toFixed(1)} ${S[1].toFixed(1)} Q${C[0].toFixed(1)} ${C[1].toFixed(1)} ${H2[0].toFixed(1)} ${H2[1].toFixed(1)}`;
         bak.querySelectorAll(`.${n} path`).forEach(p => p.setAttribute('d', d));
-        const V = pt(rel(kanel, G), ...H2);   // tumvanten i G:s enheter (fram ligger i G)
-        fram.querySelectorAll(`.${n} circle`).forEach(c => { c.setAttribute('cx', V[0].toFixed(1)); c.setAttribute('cy', V[1].toFixed(1)); });
+        // handen i G:s enheter (fram ligger i G), vriden längs underarmen; tummen åt kroppens mitt (spegla annars)
+        const mG = rel(kanel, G), V = pt(mG, ...H2), ri = [H2[0] - E[0], H2[1] - E[1]], lr = Math.hypot(...ri) || 1;
+        const V2 = pt(mG, H2[0] + ri[0] / lr * 10, H2[1] + ri[1] / lr * 10), vinkel = Math.atan2(V2[1] - V[1], V2[0] - V[0]) * 180 / Math.PI;
+        const tumme = Math.sign(ri[0] / lr * (mitt[1] - H2[1]) - ri[1] / lr * (mitt[0] - H2[0])) || 1;
+        fram.querySelector(`.${n} .hand`).setAttribute('transform', `translate(${V[0].toFixed(1)} ${V[1].toFixed(1)}) rotate(${vinkel.toFixed(1)}) scale(1 ${tumme})`);
       }
     },
   };
