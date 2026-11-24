@@ -123,6 +123,19 @@ Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar ige
 ### Beslut (Sanna, efter runda 6): de gamla armarna igen
 Kurvarmarna läggs ner igen. `?ricks` fungerar med Kanels målade armar (standard `armar=bild`): hurra-armarna blandas in i riggens `armar`, och klappen är riggens egen (`L.ROR.klappa`, tre klapp med gnistor) med klappljud från `effekter/klapp/`. Förhandsvisning: `lekrummet/lekrummet-ricks-bild-snabb.mp4` (`--fraga "dolly&ricks"`).
 
+### Runda 7: ryck och bollen genom lådan (Sanna: "jittery", bollen gick genom lådan)
+Mätt bildruta för bildruta (30 fps) i riggens värden. Det som ryckte, allt bakom `?ricks`:
+- **Armarna:** klappen började när hurra-armarna stod på 70°, och riggens klapp börjar på 0°, så armarna föll 70° på en ruta. Klappen börjar nu när hurra-armarna är nere, och tonas in och ut på 0,25 s.
+- **Riggens klapp-skutt:** riggens `lyft` (6 enheter på en enda ruta vid varje klapp) och sträckning togs med. Nu bara armarna.
+- **Uttryckspoppen** steg på 0,1–0,15 s med en kurva som tog halva vägen på första rutan. Nu mjukt in på 0,25–0,3 s. Förvånad fick också extra sträckning och öron ovanpå uttryckets egna (dubbelt); borttaget. Uttrycken rör inte armarna längre.
+- **Blicken och huvudet** hoppade 14 steg (och huvudvridningen med) när upplockningen började; tonas nu över på 0,6 s.
+- **Nicken** hoppade på första och sista rutan (örat i fas 0,15 med `% 1`). Nu en mjuk 1 − cos. (Samma fel finns kvar i standardfilmen, orört.)
+
+Bollen: handen släpper den framför lådans framvägg, och den gled snett ner genom framväggens överkant och landade delvis i den gula klossen. Nu går den först in över kanten och faller sedan, och landar i vänstra främre hörnet. Klossen i lådan (13 cm, ett hörn ut genom bakväggen, svävade 2 cm) är med `?ricks` 12 cm, lutad framåt i högra bakre hörnet, vilande på botten. Kollad var 1/120 s mot alla lådor med bollen som ellipsoid inklusive squashen: djupast 0,7 mm (vilar på botten). Täta bilder i `lekrummet/stills/runda7/`.
+
+**Viktflytten** (Sanna: "som ett stelt papperskort"): förut vreds hela kortet kring fötterna (`luta` 1,2°, och blickens huvudlutning också som `luta`). Med `?ricks` går den nu genom riggens delar i samma takt (4,7 s): kroppen böjer sig från fötterna (`boj` 2,2°, fötterna står kvar) med 0,3° höft, huvudet följer 0,25 s efter och lutar lite emot (`skak`), öronen släpar 0,45 s (`skak[1]`, `oron` ±2,4 som `lutaH`), armarna pendlar 2° efter och kroppen trycks ihop en aning när vikten landar. Blickens lutning blir `boj` + `skak`.
+**Armarna** (Sanna: "som en fågelskrämma"): uttryckens armar (glad 16, kawaii 20, jätteglad 40 ovanpå vilans 8) togs bort, och i vila hänger armarna 22° lägre, intill sidorna (inte i upplockningen och inte den vinkande armen). Hurra-armarna går till 45° (förut 78) och ner efter 0,2 s. Före/efter: `stills/runda7/fore/` och `efter/` (`vikt.jpg`, `armar.jpg`).
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 

@@ -191,6 +191,7 @@ const klot = (r, farg, pos, sk = [1, 1, 1], vick = 0.02) => {
 const BAK = -1.7, SIDA = 3.1, TAK = 2.7;
 const KANEL = new THREE.Vector3(0.05, 0, 0.1);
 const LADA = { x: KANEL.x - 0.57, z: KANEL.z - 0.26, b: 0.44, d: 0.32, h: 0.22 };   // leksakslådan bakom Kanel till vänster (bollen läggs i den)
+const BOLL_MAL = [LADA.x - 0.07, 0.035, LADA.z + 0.005];   // ?ricks: där bollens fot landar (lådans botten), se bollen()
 async function byggRum() {
   KORNC = await korn();
   // bakvägg och sidoväggar (ca 330 px per meter); lite eget ljus: en stark vägg, som i plattan
@@ -236,7 +237,11 @@ async function byggRum() {
   lada(lb, 0.03, ld, KF, KL, [lx, 0.015, lz], { r: 0.01 });
   lada(lb, lh, t, KF, KL, [lx, lh / 2, lz + ld / 2 - t / 2], { r: 0.012 }); lada(lb, lh, t, KF, KL, [lx, lh / 2, lz - ld / 2 + t / 2], { r: 0.012 });
   lada(t, lh, ld - 2 * t, KF, KL, [lx - lb / 2 + t / 2, lh / 2, lz], { r: 0.012 }); lada(t, lh, ld - 2 * t, KF, KL, [lx + lb / 2 - t / 2, lh / 2, lz], { r: 0.012 });
-  lada(0.13, 0.13, 0.13, '#f2b33d', '#b98216', [lx + 0.09, 0.16, lz - 0.05], { rot: [0.35, 0.5, 0.2] });
+  // ?ricks (runda 7): bollen landar i lådan, så klossen ger plats. Förut stack den 13 cm stora, snedställda klossens övre hörn ut
+  // över platsen där bollen landar (bollen gick genom det), ett hörn gick ut genom bakväggen och den svävade 2 cm över botten.
+  // Nu 12 cm, lutad framåt, i högra bakre hörnet, vilar på botten; bollen (20 cm, 23 i squashen) får plats till vänster med 1 cm kvar.
+  if (RICKS) lada(0.12, 0.12, 0.12, '#f2b33d', '#b98216', [lx + 0.119, 0.12, lz - 0.039], { rot: [0.4, 0, 0] });
+  else lada(0.13, 0.13, 0.13, '#f2b33d', '#b98216', [lx + 0.09, 0.16, lz - 0.05], { rot: [0.35, 0.5, 0.2] });
 
   // klossar på golvet till höger, en liten tornhög
   lada(0.2, 0.2, 0.2, '#f2b33d', '#b98216', [1.05, 0.1, 0.55], { rot: [0, 0.35, 0] });
@@ -378,14 +383,18 @@ const nara = t => BYTEN.some(c => Math.abs(t - c) < 0.45);
 const spar = (K, t) => { if (t <= K[0][0]) return K[0][1];
   for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const u = mjuk((t - K[i - 1][0]) / (K[i][0] - K[i - 1][0])); return K[i - 1][1].map((v, j) => lerp(v, K[i][1][j], u)); }
   return K.at(-1)[1]; };
-// popp: 0 → 1 på 'upp' s (snabbt in, mjukt sista biten), håller 'hall' s, 1 → 0 på 'ner' s
-const popp = (t, t0, upp, hall, ner) => { const u = t - t0; if (u <= 0) return 0; if (u < upp) return 1 - (1 - u / upp) ** 3;
+// popp: 0 → 1 på 'upp' s, håller 'hall' s, 1 → 0 på 'ner' s. Runda 7 (Sanna: ryckigt): mjukt in OCH ut (förut 1 − (1 − u)³
+// på 0,1 s, som tog halva vägen på första bildrutan och syntes som ett ryck i ansiktet och armarna)
+const popp = (t, t0, upp, hall, ner) => { const u = t - t0; if (u <= 0) return 0; if (u < upp) return mjuk(u / upp);
   return 1 - mjuk((u - upp - hall) / ner); };
 const blandaV = (a, b, k) => Array.isArray(b) ? b.map((v, i) => lerp(a?.[i] ?? v, v, k)) : lerp(a ?? b, b, k);
 const mot = (f, namn, k) => { if (k <= 0) return f; const m = L.blanda('neutral', namn, 1), u = { ...f };   // f mot ett uttryck, blicken behålls
-  for (const n in m) if (n !== 'titt' && n !== 'namn' && typeof (Array.isArray(m[n]) ? m[n][0] : m[n]) === 'number') u[n] = blandaV(f[n] ?? L.NEUTRAL[n], m[n], k);
+  for (const n in m) if (n !== 'titt' && n !== 'namn' && n !== 'armar' && typeof (Array.isArray(m[n]) ? m[n][0] : m[n]) === 'number') u[n] = blandaV(f[n] ?? L.NEUTRAL[n], m[n], k);
   return u; };
-const T_KLAPP = LANDAR + 1.2;   // riggens klapp börjar (?ricks, målade armar)
+// riggens klapp börjar (?ricks, målade armar) när hurra-armarna är nere (runda 7: förut LANDAR + 1,2, då armarna stod på 70
+// och klappen började på 0, så de föll 70° på en bildruta)
+// runda 7 b (Sanna: fågelskrämma): hurra-armarna till 45° (förut 70) och tillbaka fortare
+const HURRA = [LANDAR + 0.45, 0.3, 0.2, 0.35], T_KLAPP = HURRA[0] + HURRA[1] + HURRA[2] + HURRA[3];
 function kanel(t) {
   let f, p;
   if (t < T_UPP) {   // tittar på bollen bredvid sig
@@ -397,15 +406,38 @@ function kanel(t) {
   else { [f, p] = L.plockaDel('ner', D, D, LADA_O()); const k = mjuk((t - T_NER - D) / 0.6);
     f = L.blanda(f, GLAD(), Math.max(k, 0)); f = { ...f, glad: [0, 0], titt: [0, 0] }; p = { ...p, hall: [0, 0], rack: [0, 0] }; }
   if (t >= T_NER + D && t < KLIPP) {   // glad efter "bra jobbat": en liten nick när Malin säger det
-    const u = (t - (LANDAR + 0.7)) / 0.5; if (u > 0 && u < 2) p = { ...p, nick: [1.1 * Math.sin(Math.PI * (u % 1)), 1.1 * Math.sin(Math.PI * ((u + 0.15) % 1))],
-      strack: (p.strack || 0) - (RICKS ? 0.018 * Math.sin(Math.PI * (u % 1)) : 0) };   // ?ricks: kroppen dippar lite med nicken
+    const u = (t - (LANDAR + 0.7)) / 0.5;
+    if (RICKS) {   // runda 7: nicken mjuk i båda ändar (1 − cos), och örat 0,15 efter utan hopp (förut (u + 0,15) % 1: 0,5 på första och sista rutan)
+      const n = x => x > 0 && x < 2 ? 0.5 - 0.5 * Math.cos(2 * Math.PI * x) : 0;
+      if (u > 0 && u < 2.15) p = { ...p, nick: [1.1 * n(u), 1.1 * n(u - 0.15)], strack: (p.strack || 0) - 0.018 * n(u) };   // kroppen dippar lite med nicken
+    } else if (u > 0 && u < 2) p = { ...p, nick: [1.1 * Math.sin(Math.PI * (u % 1)), 1.1 * Math.sin(Math.PI * ((u + 0.15) % 1))] };
   }
   let vk = 0;
   if (t >= KLIPP) { f = GLAD(); p = P({}); }
   // runda 5: hon tittar sig omkring mellan handlingarna (blick + lätt huvudlutning) och flyttar vikten långsamt hela tiden
-  if (t < T_UPP || t >= T_NER + D) { const [bx, by, bl] = spar(BLICK, t); f = { ...f, titt: [bx, by] }; p = { ...p, luta: (p.luta || 0) + bl }; }
-  p = { ...p, luta: (p.luta || 0) + 1.2 * Math.sin(2 * Math.PI * t / 4.7) };
+  // ?ricks (runda 7 b): blickens huvudlutning vrider inte hela kortet (luta), kroppen böjer sig från fötterna (boj) och huvudet lutar (skak)
+  const blickLuta = (p, bl) => RICKS ? { ...p, boj: (p.boj || 0) + 0.8 * bl, skak: [(p.skak?.[0] || 0) + 0.12 * bl, (p.skak?.[1] || 0) + 0.1 * bl] } : { ...p, luta: (p.luta || 0) + bl };
+  if (t < T_UPP || t >= T_NER + D) { const [bx, by, bl] = spar(BLICK, t); f = { ...f, titt: [bx, by] }; p = blickLuta(p, bl); }
+  else if (RICKS && t < T_UPP + 0.6) {   // runda 7: blicken (−14, 14) och lutningen (2,5) tonas över i upplockningen, förut ett hopp på en ruta vid T_UPP
+    const [bx, by, bl] = spar(BLICK, t), k = 1 - mjuk((t - T_UPP) / 0.6), ft = f.titt || [0, 0];
+    f = { ...f, titt: [lerp(ft[0], bx, k), lerp(ft[1], by, k)] }; p = blickLuta(p, bl * k); }
+  if (!RICKS) p = { ...p, luta: (p.luta || 0) + 1.2 * Math.sin(2 * Math.PI * t / 4.7) };
+  else {   // runda 7 b (Sanna: viktflytten såg ut som ett stelt papperskort): förut vreds hela kortet kring fötterna (luta 1,2°).
+    // Nu genom riggens delar, samma långsamma takt (4,7 s): kroppen böjer sig från fötterna (boj, fötterna står kvar) med en liten
+    // höftlutning, huvudet följer 0,25 s efter och lutar lite emot (skak), öronen släpar 0,45 s (skak[1] och oron, som lutaH),
+    // armarna pendlar lite efter (0,35 s) och kroppen trycks ihop en aning när vikten landar i varje ände.
+    const S = d => Math.sin(2 * Math.PI * (t - d) / 4.7), s0 = S(0), sH = S(0.25), sO = S(0.45), sA = S(0.35), ner = s0 ** 4;
+    p = { ...p, luta: (p.luta || 0) + 0.3 * s0, boj: (p.boj || 0) + 2.2 * s0, skak: [(p.skak?.[0] || 0) - 0.12 * sH, (p.skak?.[1] || 0) - 0.12 * sO],
+      oron: (p.oron || [0, 0]).map((o, i) => o + (i ? -2.4 : 2.4) * sO), armar: (p.armar || [0, 0]).map((a, i) => a + (i ? 2 : -2) * sA),
+      strack: (p.strack || 0) - 0.008 * ner, bred: (p.bred || 0) + 0.004 * ner };
+  }
   if (t >= KLIPP) { vk = L.ARMROR.inUt(t - T_VINK, D_VINK); if (t > T_VINK && t < T_VINK + D_VINK) [f, p] = L.ARMROR.vinka(f, p, t - T_VINK, vk); }
+  if (RICKS) {   // runda 7 b (Sanna: armarna sticker ut som på en fågelskrämma): uttryckens armar (glad 16, kawaii 20, jätteglad 40
+    // ovanpå vilans 8) tas bort, och i vila hänger armarna 22° lägre (−14° mot bildens vila), intill sidorna. Inte i upplockningen (handen ska nå bollen)
+    // och inte för den vinkande armen.
+    const fri = kl(0, 1, 1 - mjuk((t - T_UPP + 0.5) / 0.4) + mjuk((t - SLAPP - 0.3) / 0.5));
+    f = { ...f, armar: L.NEUTRAL.armar }; p = { ...p, armar: (p.armar || [0, 0]).map((a, i) => a - 22 * fri * (i ? 1 - vk : 1)) };
+  }
   // kodarmarna (runda 4, som referensens swingArm): handen går i en båge runt axeln. Vila = nästan rak arm som hänger lite ut och
   // svajar mjukt med andningen; vinkningen lyfter handen upp och ut i samma båge och svänger, med mjuk in- och uttoning.
   // Vänstra handen följer riggens hand (till bollen) från strax före upplockningen tills en stund efter att bollen släppts.
@@ -426,14 +458,17 @@ function kanel(t) {
   else { if (iFig && !G.sak) L.sakIn(G, SAK); if (!iFig && G.sak) L.sakIn(G, null); }
   if (RICKS) p = { ...p, rikt: (p.rikt || 0) + 0.04 * (f.titt?.[0] || 0) };
   if (RICKS) {   // uttryckspopp (Ricks Clips): ansiktet slår om snabbt (0,1 s) vid en händelse, håller kvar och glider tillbaka
-    const kawaii = popp(t, T_UPP + D, 0.12, T_NER - T_UPP - D - 0.5, 0.4), wow = popp(t, LANDAR, 0.1, 0.3, 0.35), hurra = popp(t, LANDAR + 0.5, 0.15, 0.8, 0.6);
+    // runda 7: in på 0,25–0,3 s (förut 0,1–0,15 s, ett ryck). Förvånad har egen sträckning och egna öron, så inget extra på p
+    // (förut + 0,035 strack och − 10 på öronen ovanpå uttryckets egna: dubbelt, på en bildruta)
+    const kawaii = popp(t, T_UPP + D, 0.3, T_NER - T_UPP - D - 0.7, 0.4), wow = popp(t, LANDAR, 0.25, 0.25, 0.4), hurra = popp(t, LANDAR + 0.5, 0.3, 0.7, 0.6);
     f = mot(mot(mot(f, 'kawaii', kawaii), 'forvanad', wow), 'jatteglad', hurra);
-    p = { ...p, strack: (p.strack || 0) + 0.035 * wow, oron: (p.oron || [0, 0]).map(o => o - 10 * wow) };   // lite uppåt och öronen spetsas
     if (!TA) {   // målade armar (Sanna: tillbaka till de gamla): hurra-armar på "Hurra", sedan riggens egen klapp (tre klapp)
-      const hu = popp(t, LANDAR + 0.45, 0.25, 0.45, 0.35), tk = t - T_KLAPP;
-      p = { ...p, armar: (p.armar || [8, 8]).map(a => lerp(a, 70, hu)) };
-      if (tk > 0 && tk < 3) { const [, pk] = L.ROR.klappa(tk);
-        p = { ...p, ...Object.fromEntries(['fram', 'hand', 'armar', 'klapp', 'armY', 'gnista'].map(n => [n, pk[n]])), strack: (p.strack || 0) + (pk.strack || 0), lyft: pk.lyft || 0 }; }
+      const hu = popp(t, ...HURRA), tk = t - T_KLAPP;
+      p = { ...p, armar: (p.armar || [8, 8]).map(a => lerp(a, 45 - 8, hu)) };   // 45° i bild (uttryckets 8 + 37)
+      // klappen: armarna tonas in och ut på 0,25 s mot riggens klapp. Riggens lyft (6 enheter på en enda ruta vid varje klapp) och
+      // dess sträckning tas inte med: de syntes som ett skutt i kroppen tre gånger
+      if (tk > 0 && tk < 3) { const [, pk] = L.ROR.klappa(tk), k = mjuk(tk / 0.25) * mjuk((3 - tk) / 0.25);
+        p = { ...p, ...Object.fromEntries(['fram', 'armar', 'armY'].map(n => [n, blandaV(p[n] ?? L.POSE0[n], pk[n], k)])), hand: pk.hand, klapp: pk.klapp, gnista: pk.gnista }; }
     }
   }
   L.rita(G, nara(t) ? f : BL(f, t), liv(p, t));
@@ -451,7 +486,12 @@ function bollen(t) {
   const [fx, fy] = LADA_O().fri, start = kort.localToWorld(new THREE.Vector3((fx - 512) * ENHET, (FOT - fy) * ENHET, 0));
   const slut = new THREE.Vector3(LADA.x - 0.06, 0.03, LADA.z + 0.02), u = kl(0, 1, (t - SLAPP) / FALL);
   bollKort.position.set(lerp(start.x, slut.x, u), lerp(start.y, slut.y, u * u), lerp(start.z, slut.z, u));   // faller: snabbare nedåt (u²)
-  if (RICKS) {   // studs ovanför lådkanten och squash vid varje kontakt, lite stretch i fallet
+  if (RICKS) {   // runda 7 (Sanna: bollen gick genom lådan): handen släpper bollen framför lådans framvägg, 2 cm över kanten. Förut gled
+    // den snett ner och skar genom framväggens överkant, och landade delvis inne i den gula klossen. Nu: först in över kanten
+    // (vågrätt snabbt i början, 1 − (1 − u)³, och en liten knuff uppåt), sedan ner. Landar i lådans vänstra främre hörn, fritt från
+    // väggarna och klossen även med squashen (bollen r 0,098 m, 0,114 m bred i squashen).
+    const e = 1 - (1 - u) ** 3, mal = new THREE.Vector3(...BOLL_MAL), a = 0.05;
+    bollKort.position.set(lerp(start.x, mal.x, e), start.y + a * u - (start.y + a - mal.y) * u * u, lerp(start.z, mal.z, e));   // studs ovanför lådkanten och squash vid varje kontakt, lite stretch i fallet
     const b = t - LANDAR, B = 0.42, sq = Math.max(0, 1 - Math.abs(b) / 0.07) + Math.max(0, 1 - Math.abs(b - B) / 0.07);
     if (b > 0 && b < B) bollKort.position.y += 0.2 * Math.sin(Math.PI * b / B);
     const st = b < 0 ? 0.08 * u : 0;
