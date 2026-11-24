@@ -120,6 +120,9 @@ Kodarmarna läggs ner. Filmen `lekrummet.mp4` använder Kanels målade armar ige
 - **Ingen blinkning ovanpå en ändring:** ingen blinkning inom 0,45 s från ett uttrycksbyte eller en blickflytt.
 - QA: boil 1,9 px/s, −16,3 LUFS, inget klippt.
 
+### Beslut (Sanna, efter runda 6): de gamla armarna igen
+Kurvarmarna läggs ner igen. `?ricks` fungerar med Kanels målade armar (standard `armar=bild`): hurra-armarna blandas in i riggens `armar`, och klappen är riggens egen (`L.ROR.klappa`, tre klapp med gnistor) med klappljud från `effekter/klapp/`. Förhandsvisning: `lekrummet/lekrummet-ricks-bild-snabb.mp4` (`--fraga "dolly&ricks"`).
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 

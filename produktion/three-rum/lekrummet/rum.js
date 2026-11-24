@@ -385,6 +385,7 @@ const blandaV = (a, b, k) => Array.isArray(b) ? b.map((v, i) => lerp(a?.[i] ?? v
 const mot = (f, namn, k) => { if (k <= 0) return f; const m = L.blanda('neutral', namn, 1), u = { ...f };   // f mot ett uttryck, blicken behålls
   for (const n in m) if (n !== 'titt' && n !== 'namn' && typeof (Array.isArray(m[n]) ? m[n][0] : m[n]) === 'number') u[n] = blandaV(f[n] ?? L.NEUTRAL[n], m[n], k);
   return u; };
+const T_KLAPP = LANDAR + 1.2;   // riggens klapp börjar (?ricks, målade armar)
 function kanel(t) {
   let f, p;
   if (t < T_UPP) {   // tittar på bollen bredvid sig
@@ -428,6 +429,12 @@ function kanel(t) {
     const kawaii = popp(t, T_UPP + D, 0.12, T_NER - T_UPP - D - 0.5, 0.4), wow = popp(t, LANDAR, 0.1, 0.3, 0.35), hurra = popp(t, LANDAR + 0.5, 0.15, 0.8, 0.6);
     f = mot(mot(mot(f, 'kawaii', kawaii), 'forvanad', wow), 'jatteglad', hurra);
     p = { ...p, strack: (p.strack || 0) + 0.035 * wow, oron: (p.oron || [0, 0]).map(o => o - 10 * wow) };   // lite uppåt och öronen spetsas
+    if (!TA) {   // målade armar (Sanna: tillbaka till de gamla): hurra-armar på "Hurra", sedan riggens egen klapp (tre klapp)
+      const hu = popp(t, LANDAR + 0.45, 0.25, 0.45, 0.35), tk = t - T_KLAPP;
+      p = { ...p, armar: (p.armar || [8, 8]).map(a => lerp(a, 70, hu)) };
+      if (tk > 0 && tk < 3) { const [, pk] = L.ROR.klappa(tk);
+        p = { ...p, ...Object.fromEntries(['fram', 'hand', 'armar', 'klapp', 'armY', 'gnista'].map(n => [n, pk[n]])), strack: (p.strack || 0) + (pk.strack || 0), lyft: pk.lyft || 0 }; }
+    }
   }
   L.rita(G, nara(t) ? f : BL(f, t), liv(p, t));
   // ?ricks: hurra (båda armarna upp) på Malins "Hurra", sedan klappar hon två gånger
@@ -552,6 +559,7 @@ const RB = 'assets/ljud/roster/';
 window.LJUD = [
   { t: LANDAR - 0.02, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 0.5 },
   ...(RICKS ? [{ t: LANDAR + 0.4, fil: 'assets/ljud/effekter/duns/duns-1.m4a', vol: 0.22 }] : []),   // studsen
+  ...(RICKS && ARMAR === 'bild' ? [1, 1.5, 2].map((k, i) => ({ t: T_KLAPP + k, fil: `assets/ljud/effekter/klapp/klapp-${1 + i % 2}.m4a`, vol: 0.6 })) : []),   // riggens klapp möts vid 1, 1,5 och 2 s
   { t: LANDAR + 0.6, fil: RB + 'kaninen-stadar/hurra-bra-jobbat.m4a', vol: 2.5 },
   { t: T_VINK + 1.0, fil: RB + 'tittut/kanin-hejda.m4a', vol: 2.5 },
 ];
