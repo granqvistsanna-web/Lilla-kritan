@@ -136,6 +136,14 @@ Bollen: handen släpper den framför lådans framvägg, och den gled snett ner g
 **Viktflytten** (Sanna: "som ett stelt papperskort"): förut vreds hela kortet kring fötterna (`luta` 1,2°, och blickens huvudlutning också som `luta`). Med `?ricks` går den nu genom riggens delar i samma takt (4,7 s): kroppen böjer sig från fötterna (`boj` 2,2°, fötterna står kvar) med 0,3° höft, huvudet följer 0,25 s efter och lutar lite emot (`skak`), öronen släpar 0,45 s (`skak[1]`, `oron` ±2,4 som `lutaH`), armarna pendlar 2° efter och kroppen trycks ihop en aning när vikten landar. Blickens lutning blir `boj` + `skak`.
 **Armarna** (Sanna: "som en fågelskrämma"): uttryckens armar (glad 16, kawaii 20, jätteglad 40 ovanpå vilans 8) togs bort, och i vila hänger armarna 22° lägre, intill sidorna (inte i upplockningen och inte den vinkande armen). Hurra-armarna går till 45° (förut 78) och ner efter 0,2 s. Före/efter: `stills/runda7/fore/` och `efter/` (`vikt.jpg`, `armar.jpg`).
 
+## ?rum2: rikare rum och ljusdetaljer (prov 2026-11-24, väntar på Sanna)
+Flaggan `?rum2` (t.ex. `--fraga "dolly&ricks&rum2"`) ändrar bara rummet; utan den är standardfilmen och `?ricks` som förut. Allt är kanvastexturer och three.js, inga nya bilder.
+- **Material:** trägolv (ljusare och varmare, fyra plankor per 2 m med egen ton, ådror och förskjutna ändskarvar, `golvBit2`), träådror på hyllan, dörren och leksakslådan (svagare, målat trä; `adror`, `lada(..., { tra })`), vävd matta med luddiga kanter mellan ringarna (`mattBit2`), kudden i tyg med en söm runt (`klot(..., tyg)`).
+- **Ljus som målade lager:** en mjuk solfläck från ett fönster till vänster utanför bild på väggen och golvet, fylld med ljusa snea kritdrag som i plattan (`solBit`, additiv), mjuk hörnskugga där golvet möter väggarna med en aning grönt från väggen, kontaktskuggor under lådan, klossarna, kudden och krukan, och en mjuk skugga under hyllan (`rum2Ljus`, multiply). Ett svagt varmt motljus från höger utan skugga så att sakernas skuggsidor inte blir grumliga.
+- **Gradering:** 6 % mer mättnad, svala skuggor och varmt ljus. Vinjetten oförändrad (0,12).
+- Inte gjort: kantljus (rim light) på klossarna, ljusare vägg. Platthetens emissive-pass (runda 7) gäller också i rum2.
+- Prov: `lekrummet/rum2-fore-efter.jpg` (överst nu, underst rum2, 2, 8 och 14 s), `lekrummet/lekrummet-rum2-snabb.mp4`.
+
 ## Lärdomar (2026-11-24, gäller nästa rundor)
 **Referensen (LostClips / claude-animated-shorts):** looken kommer från rummet, ljuset, kameran och klippen, inte från avancerade riggar. Platta kort mot kameran, riktiga skuggor från korten plus kontaktskuggor, lite skärpedjup, glöd och varm färgton. Olika vyer av en figur är separata teckningar som byts vid ett klipp. Ett kort vrids aldrig runt (figurer snurrar inte). Deras armar är tre punkter (axel, armbåge, hand) i ett tunt kurvstreck med en prick som hand, benen tvåbens-IK.
 
