@@ -136,6 +136,18 @@ Bollen: handen släpper den framför lådans framvägg, och den gled snett ner g
 **Viktflytten** (Sanna: "som ett stelt papperskort"): förut vreds hela kortet kring fötterna (`luta` 1,2°, och blickens huvudlutning också som `luta`). Med `?ricks` går den nu genom riggens delar i samma takt (4,7 s): kroppen böjer sig från fötterna (`boj` 2,2°, fötterna står kvar) med 0,3° höft, huvudet följer 0,25 s efter och lutar lite emot (`skak`), öronen släpar 0,45 s (`skak[1]`, `oron` ±2,4 som `lutaH`), armarna pendlar 2° efter och kroppen trycks ihop en aning när vikten landar. Blickens lutning blir `boj` + `skak`.
 **Armarna** (Sanna: "som en fågelskrämma"): uttryckens armar (glad 16, kawaii 20, jätteglad 40 ovanpå vilans 8) togs bort, och i vila hänger armarna 22° lägre, intill sidorna (inte i upplockningen och inte den vinkande armen). Hurra-armarna går till 45° (förut 78) och ner efter 0,2 s. Före/efter: `stills/runda7/fore/` och `efter/` (`vikt.jpg`, `armar.jpg`).
 
+## Lärdomar (2026-11-24, gäller nästa rundor)
+**Referensen (LostClips / claude-animated-shorts):** looken kommer från rummet, ljuset, kameran och klippen, inte från avancerade riggar. Platta kort mot kameran, riktiga skuggor från korten plus kontaktskuggor, lite skärpedjup, glöd och varm färgton. Olika vyer av en figur är separata teckningar som byts vid ett klipp. Ett kort vrids aldrig runt (figurer snurrar inte). Deras armar är tre punkter (axel, armbåge, hand) i ett tunt kurvstreck med en prick som hand, benen tvåbens-IK.
+
+**Sannas beslut:**
+- Kanels målade armar gäller. Kurvarmarna finns bara kvar som prov bakom `?armar=kurva`. Tunna streckarmar får provas, men tjocka böjda tuber och eftersläp/överslag är avvisade.
+- Rummet ska vara plattare och texturerat (krita, papper), inte blankt 3D. Pallen och hyllan ser fortfarande för 3D ut, och golvet är fortfarande slätt: de är nästa sak att göra.
+- Uttrycken ska vara lugna och avsiktliga: håll ett uttryck, byt på ett slag, inga små ryck.
+
+**Inget går genom något** (QA-regel i `CLAUDE.md`, 1e356cec): ingen sak, figur, arm, tass eller kamera genom vägg, golv, lådkant, bord eller en annan figur. En boll som läggs i en låda går över kanten och faller ner. En tass som håller något ligger på det. Kameran stannar i rummet. Kontaktarket med 20 bilder missar korta ögonblick, så titta på täta bilder (6/s) runt varje kontakt. Sakhanteringen (bollen) är den svagaste delen hittills.
+
+**Arbetssätt:** rendera bara headless (Playwright + ffmpeg, `window.seek`), öppna aldrig en videospelare. `--snabb` för förhandsvisningar, `verktyg/render-delat.mjs` för slutrenderingar, `qa-film.sh` på varje film. Line boil 2,5 px i bild (delat med zoomen), Malin 0,4–0,8 s efter handlingen, inga djurnamn, låsta figurer ändras inte (använd kopior). Committa när Sanna ber om det. Vid `.git/index.lock` från en annan session: vänta och försök igen, ta aldrig bort låset.
+
 ## Är vägen värd att ta?
 **Ja, för återkommande rum och lugna scener, men som ett tillägg, inte som ny grund.** Runda 2 visar att vardagshandlingar fungerar utan nya bilder och utan att rigga om något: plocka upp, lägga i, vinka och Malin efter handlingen. Riggen bär hela handlingen, och 3D-rummet ger djup och lugna kameraåkningar som de platta scenerna inte har. Kostnaden är byggtiden. Rummet och scenen tog ungefär en arbetsdag med provet inräknat, och varje ny sak som går mellan figuren och rummet (bollen i lådan) behöver en liten överlämning i kod. Det lönar sig för ett rum som används i många avsnitt (lekrummet, köket, sovrummet, badrummet), inte för en plats som bara syns en gång.
 
