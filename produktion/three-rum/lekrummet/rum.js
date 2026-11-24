@@ -83,7 +83,7 @@ const skakig = ([ax, ay], [bx, by], d = 2, n = 12) => Array.from({ length: n + 1
 function vaggBit(w, h) {
   const c = canvas(w, h), x = c.getContext('2d');
   x.fillStyle = RUM2 ? '#0fa08d' : '#05a167'; x.fillRect(0, 0, w, h);   // rum2 (Sanna 24/11): mer turkos
-  for (let n = 0; n < w * h / 9000; n++) {   // fläckar
+  for (let n = 0; n < (RUM2 ? 0 : w * h / 9000); n++) {   // fläckar (rum2: inga, Sanna 24/11: väggen såg fläckig ut)
     const px = slump() * w, py = slump() * h, r = 60 + slump() * 160, g = x.createRadialGradient(px, py, 0, px, py, r), ljus = slump() < 0.5;
     g.addColorStop(0, RUM2 ? (ljus ? 'rgba(70,195,175,0.12)' : 'rgba(0,100,90,0.12)') : ljus ? 'rgba(60,190,120,0.12)' : 'rgba(0,110,70,0.12)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); }
   x.lineCap = 'round';
@@ -92,7 +92,7 @@ function vaggBit(w, h) {
     x.strokeStyle = RUM2 ? (ljus ? 'rgba(125,215,195,0.04)' : 'rgba(0,80,72,0.04)') : ljus ? 'rgba(120,215,150,0.04)' : 'rgba(0,90,55,0.04)'; x.lineWidth = 2.5 + slump() * 3;
     x.beginPath(); x.moveTo(px, py); x.lineTo(px + l * Math.cos(a), py + l * Math.sin(a)); x.stroke(); }
   if (RUM2) tapet(x, w, h);
-  kornPa(x, w, h, 512); kornPa(x, w, h, 160); kornPa(x, w, h, 72);
+  if (!RUM2) kornPa(x, w, h, 512); kornPa(x, w, h, 160); kornPa(x, w, h, 72);   // rum2: utan det grova kornet (1,5 m stora moln)
   return c;
 }
 // Tapet (rum2): svaga, handritade ränder (en ljusare krita var 30:e cm) och små femprickiga blommor mellan ränderna,
