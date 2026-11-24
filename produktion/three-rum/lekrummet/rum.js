@@ -23,8 +23,9 @@ const DOLLY = new URLSearchParams(location.search).has('dolly');
 // ?ricks: huvudet vänder sig dit hon tittar (riggens rikt: ansiktet, magen och öronen glider, kroppen vänds aldrig) och en
 // reaktionsnärbild medan hon håller bollen och tittar glatt på den (3,4–4,8 s), två klipp som i referensen.
 const RICKS = new URLSearchParams(location.search).has('ricks');
-// ?rum2 (2026-11-24, prov): rikare material och ljusdetaljer i rummet, se rum2-blocken nedan. Utan flaggan är rummet som runda 7.
-const RUM2 = new URLSearchParams(location.search).has('rum2');
+// rum2 (2026-11-24, Sanna godkände): rikare material och ljusdetaljer i rummet, se rum2-blocken nedan. Standard, också i ?ricks.
+// ?rum1 ger det gamla rummet från runda 7 (för jämförelse).
+const RUM2 = !new URLSearchParams(location.search).has('rum1');
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = 18;
