@@ -336,6 +336,7 @@ async function byggRum() {
   if (RICKS) { lada(0.22, 0.22, 0.22, '#d9443a', '#a12a24', [0.5, 0.11, 1.6], { rot: [0, 0.4, 0] }); lada(0.18, 0.18, 0.18, '#f2b33d', '#b98216', [0.74, 0.09, 1.42], { rot: [0, -0.3, 0] }); }
   // en rund rosa golvkudde längst fram till vänster (förgrund, blir mjukt suddig)
   klot(0.24, '#e86fa8', [-1.3, 0.1, 1.0], [1, 0.42, 0.9], 0.03, RUM2);
+  if (RUM2) bil(BIL.x, BIL.z, BIL.v);   // rum2 (Sanna 24/11): en leksaksbil på golvet framme till vänster
   // en liten krukväxt i hörnet till höger
   if (RUM2) vaxt(2.45, -1.25); else {
   const kruka = new THREE.Mesh(ojamn(new THREE.CylinderGeometry(0.13, 0.1, 0.24, 28), 0.004), new THREE.MeshLambertMaterial({ map: sidBild(0.8, 0.24, '#d8784a', '#9b4a26') }));
@@ -350,6 +351,23 @@ async function byggRum() {
       m.rotation.set(i % 2 ? Math.PI / 2 : 0, 0, Math.atan(dy)); m.castShadow = true; scen.add(m); } };
   kedja(-SIDA + 0.1, 0, 2.2, 0.28); kedja(0, SIDA - 0.1, 2.2, 0.28);
   if (RUM2) rum2Ljus();
+}
+// ?rum2: leksaksbilen. Gul kaross och blå hytt i samma kritklossar som resten (lada), ljusa fönster på hyttens sidor och
+// framruta, fyra mörka hjul med ljusa navkapslar och gula strålkastare. 30 cm lång, står på hjulen (inget går genom golvet).
+const BIL = { x: -0.8, z: 0.95, v: 0.5 };
+function bil(px, pz, v) {
+  const g = new THREE.Group(), ta = m => { scen.remove(m); g.add(m); return m; }, R0 = 0.045;
+  ta(lada(0.3, 0.09, 0.16, '#f2b33d', '#b98216', [0, R0 + 0.035, 0], { r: 0.025 }));
+  ta(lada(0.15, 0.085, 0.13, '#3d7bd9', '#1f4a95', [-0.025, R0 + 0.12, 0], { r: 0.025 }));
+  for (const s of [-1, 1]) ta(lada(0.1, 0.045, 0.006, '#e8f6fb', null, [-0.025, R0 + 0.125, s * 0.066], { r: 0.012 }));   // sidofönster
+  ta(lada(0.006, 0.045, 0.095, '#e8f6fb', null, [0.051, R0 + 0.125, 0], { r: 0.012 }));   // framruta
+  const hjulM = new THREE.MeshLambertMaterial({ map: sidBild(0.3, 0.05, '#3b3540', null) }), navM = mat('#f6ead0');
+  for (const x of [-0.09, 0.09]) for (const z of [-1, 1]) {
+    const h = new THREE.Mesh(new THREE.CylinderGeometry(R0, R0, 0.035, 24), hjulM); h.rotation.x = Math.PI / 2; h.position.set(x, R0, z * 0.08);
+    const n = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.006, 16), navM); n.rotation.x = Math.PI / 2; n.position.set(x, R0, z * 0.0995);
+    for (const m of [h, n]) { m.castShadow = m.receiveShadow = true; g.add(m); } }
+  for (const z of [-0.045, 0.045]) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.014, 16, 12), mat('#ffe27a')); l.scale.set(0.5, 1, 1); l.position.set(0.15, R0 + 0.045, z); g.add(l); }
+  g.position.set(px, 0.004, pz); g.rotation.y = v; scen.add(g);   // 4 mm upp: framhjulen står på mattans kant, inte i den
 }
 // ?rum2: krukväxten. Terrakottakruka med kant och mörk jord, nio blad som bladen på en liten gummiväxt: platta ovaler i två
 // gröna, med kritad mittnerv och korn, som står ut i en solfjäder från jorden (de yttre lutar mer och är lite mindre).
@@ -389,7 +407,7 @@ function rum2Ljus() {
   // kontaktskuggor: [x, z, bredd, djup, vridning]
   const klick = multiply(tex(aoBit(true)));
   const under = [[LADA.x, LADA.z, LADA.b * 1.5, LADA.d * 1.6, 0], [1.05, 0.55, 0.36, 0.36, 0.35], [1.36, 0.78, 0.3, 0.3, 0.6],
-    [-1.3, 1.0, 0.62, 0.5, 0], [2.45, -1.25, 0.36, 0.36, 0], ...(RICKS ? [[0.5, 1.6, 0.4, 0.4, 0.4], [0.74, 1.42, 0.33, 0.33, -0.3]] : [])];
+    [-1.3, 1.0, 0.62, 0.5, 0], [2.45, -1.25, 0.36, 0.36, 0], [BIL.x, BIL.z, 0.42, 0.3, BIL.v], ...(RICKS ? [[0.5, 1.6, 0.4, 0.4, 0.4], [0.74, 1.42, 0.33, 0.33, -0.3]] : [])];
   for (const [x, z, b, d, v] of under) { const m = new THREE.Mesh(new THREE.PlaneGeometry(b, d), klick); m.rotation.set(-Math.PI / 2, 0, v); m.position.set(x, 0.0058, z); scen.add(m); }
   // under hyllan på väggen
   const hy = new THREE.Mesh(new THREE.PlaneGeometry(1.45, 0.3), multiply(tex(aoBit(false, [170, 170, 160], true)))); hy.position.set(1.65, 1.22 - 0.045 - 0.15 + 0.01, BAK + 0.003); scen.add(hy);
