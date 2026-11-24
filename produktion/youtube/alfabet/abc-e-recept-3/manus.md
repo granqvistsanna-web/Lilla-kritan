@@ -94,3 +94,74 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 - Hunden är kvar i den gamla, ritade stilen.
 - Ingen har lyssnat på blandningen. Lyssna särskilt på *"Det är ju E!"*, *"Kan du det, kritan?"*, *"Nu ritar kritan."* och *"E, e, elefant!"*: whisper hörde dem lite fel i tagning 3.
 - Stillbilder tagna långt isär i samma körning kan visa bokstavsmärket en extra gång bredvid elefantens kloss. I den renderade filmen syns det inte.
+
+## Förslag 2026-11-24: introt som ett samtal med E (Sanna)
+
+E blir en figur i introt: konturen fylls i, bokstaven puffar upp till en rund, bubblig kritbokstav med stora ögon och stor mun, och Malin och E pratar med varandra innan kritan ritar elefanten. *"Det är ju E!"*, *"Hur låter E?"* och *"Kritan ritar något på bokstaven E."* går bort: E visar själv hur den låter.
+
+| Bild (en rörelse) | Vem | Replik | Ljud |
+|---|---|---|---|
+| Kritan ritar E:ets kontur | Malin | [warm] Titta, kritan ritar en bokstav. | krita |
+| Bilden fylls i inifrån | Malin | [happy] Bokstaven E! | pling |
+| E puffar upp (skala 1 → 1,25, mjuk studs, ingen snurr), ögon och mun poppar fram | E | [happy] E! *(glad, uppåt)* | pop |
+| E tittar på oss | Malin | [warm] Hej, E! | – |
+| E vinkar med ena hörnet | E | [warm] E-e! *(hälsar, två toner)* | – |
+| – | Malin | [curious] Ska vi leka, E? | – |
+| E hoppar två lugna hopp | E | [happy] E! E! *(ivrigt, ja!)* | dunk, dunk |
+| – | Malin | [happy] Ja! Vad kul! | – |
+| E krymper och flyger till hörnet, ansiktet kvar en stund | Malin | [curious] Vad ritar kritan nu? | swoosh |
+| Kritan ritar elefantens kontur snabbt (ca 2,8 s) | – | – | krita |
+| – | Malin | [curious] Hmm … Vem är det? *(paus 3–4 s)* | – |
+
+Sedan som förut från *"Elefant!"*.
+
+- **Bokstäver säger bara sin bokstav, i olika toner** (Sanna 2026-11-24). Det är så de pratar. Malin förstår och säger det högt (*"Ja! Vad kul!"*), så barnet hör vad E menar.
+- Nya tagningar: Malin `n-ska-vi-leka`, `n-ja-vad-kul` och `n-vad-ritar-nu`; E (Louise) `e-glad` (*E!*), `e-halsar` (*E-e!*), `e-ja` (*E! E!*). Resten finns: `p-kritan-ritar`, `p-bokstaven-e`, `n-hej-e`, `p-vem`, `p-hmm`.
+- Krockar med C:s riktning: där säger märket *"Hej! E! E!"*, *"e, e, elefant!"*, *"e, e, ekorre!"* och *"e, e, ekollon!"*. Med den nya regeln säger märket bara *E* i ordens ställe, och Malin säger orden.
+- E:s toner är korta, inget långt utdraget *"Eeee"*.
+- Malin [happy] i stället för [excited] på *"Bokstaven E!"*.
+- Introt blir ca 2 s kortare men har sex växlingar i stället för två. Gör vi samma i A–D?
+
+### E i resten av filmen (förslag 2026-11-24)
+
+Idag pratar E på tre ställen (introt, efter varje ord, slutet) och säger ord där (*"e, e, elefant!"*). Mellan dem står E tyst i hörnet, också när kritan ritar fel och när hunden ska bort. Förslaget: E säger bara *E* i fem toner, och E blir den som tycker till om ett ord börjar på E. Malin säger alltid vad E menar.
+
+**E:s toner (Louise, fem korta tagningar, återanvänds i A–Ö):**
+
+| Fil | Låter | Betyder | Märket gör |
+|---|---|---|---|
+| `x-glad` | *E!* (uppåt) | hej, titta, jag! | studsar |
+| `x-halsar` | *E-e!* (upp–ner, sjungande) | hej / hej då | vinkar med ett hörn |
+| `x-ja` | *E! E!* (ivrigt) | ja! / min bokstav! | två hopp |
+| `x-nej` | *E-e.* (ner–ner, mjukt) | nej | skakar lätt, sidled |
+| `x-undrar` | *E?* (uppåt, frågande) | va? | lutar sig |
+
+**Var E säger något:**
+
+| Stund | Idag | Förslag |
+|---|---|---|
+| Introt | *"Hej! E! E!"*, *"e, e, E!"* | Se tabellen ovan: `x-glad`, `x-halsar`, `x-ja` |
+| Elefanten fylls i | Malin *"Hur låter E i elefant?"* → E *"e, e, elefant!"* | Efter Malins *"E, e, elefant!"*: E `x-ja` → Malin *"Ja! Elefant börjar på bokstaven E."* (`n-hur-elefant` går bort) |
+| Katten | E tyst | Efter *"En katt!"*: E `x-undrar`, sedan `x-nej` → närbilden, elefanten skrattar → *"Ha ha! Busiga kritan!"* → *"Katt börjar inte på E."* |
+| Ekorren | *"Och i ekorre?"* → *"e, e, ekorre!"* | Efter *"E, e, ekorre!"*: E `x-ja` → *"Ekorre börjar också på E!"* (`n-och-ekorre` går bort) |
+| Ekollonet | *"e, e, ekollon!"* | E `x-ja` → *"Ekollon börjar också på E!"* |
+| Gömleken | E tyst | E tyst (kompisens kloss har ledtrådarna) |
+| Muren | E tyst | Efter pausen och *"Hunden!"*: E `x-nej` → *"Hund börjar inte på E."* → *"Hej då, hunden!"* |
+| Slutet, märket i mitten | *"e, e, E!"* | `x-ja` (stolt) |
+| *"Hej då!"* | inget efter hej då (22/11) | E vinkar med `x-halsar` samtidigt som Malin, inte efter. Samma ton som när E hälsade, så slutet knyter ihop introt |
+
+- E tycker till före Malin vid varje ord: barnet hör ett glatt *E! E!* för rätt och ett mjukt *E-e.* för fel, och lär sig skillnaden. I muren kommer E:s *E-e.* först efter barnets paus, så det avslöjar inget.
+- Kompisen (elefanten) har kvar sina reaktioner i närbild. E reagerar i hörnet, ingen närbild, så det blir inte dubbelt.
+- Ingen ny Malin-replik behövs här. `n-hur-elefant`, `n-och-ekorre` och märkets `e-elefant`, `e-ekorre`, `e-ekollon`, `e-hej`, `e-ljud-1…3` går bort.
+- Muren står fortfarande still ca 12 s (Öppet). E kan titta mot varje kloss när Malin säger ordet, utan ljud.
+
+### Elefanten ritas snabbare (Sanna 2026-11-24)
+
+Idag tar elefanten ca 13 s att rita: konturen 6,5 × `TEMPO` 0,8 = 5,2 s, sedan öronen, snabeln, ögonen, svansen, tofsen och naglarna (ca 7 s till med pauserna). Målet är som ritintrot (*Ritintro kort*): konturen ca 2,8 s och detaljerna i snabb följd, hela teckningen ca 4,5 s. Ge elefanten `tempo` ca 0,35 (konturen 2,3 s, allt 5,3 s) eller korta konturen till 3,5 och detaljerna till hälften. *"Hmm …"* och *"Vem är det?"* kommer då medan snabeln ritas som förut, och pausen för barnet (4 s) börjar tidigare. Katten (6,5) och ekorren (7,5) har samma långa kontur. Gör dem lika snabba.
+
+## Byggt 2026-11-24 (Sanna: "Yes, build it")
+
+- Rösterna: `produktion/ljud-original/roster/abc-e-intro-2026-11-24/` (Malin `malin-1.mp3` v3, Louise `louise-1.mp3` och `louise-2.mp3` v3). Klippta till scenens röstmapp: `n-ska-vi-leka`, `n-ja-vad-kul`, `n-vad-ritar-nu`, `x-glad`, `x-halsar`, `x-ja`, `x-nej`, `x-undrar`. Tonerna valdes efter tonhöjden (`x-glad` faller, `x-halsar` upp–ner, `x-nej` lågt och fallande, `x-undrar` stiger); `x-ja` är två korta *E!* ur `louise-1` med 0,12 s emellan. Ingen har lyssnat på dem än.
+- Introt, E:s reaktioner (elefanten, katten, ekorren, ekollonet, hunden, slutet, hej då) och de snabbare teckningarna är inbyggda som i förslaget. `bLjud` och märkets ord (`e-elefant` …) används inte längre. Märket vickar (`A.vick`) på `x-halsar`, `x-nej` och `x-undrar` och hoppar två gånger på `x-ja`.
+- Elefanten: konturen 8,5 × `tempo` 0,3 = 2,6 s, hela teckningen ca 6 s (var 13). Katten och ekorren `tempo` 0,42.
+- Scenen före ändringen ligger i git (`git show HEAD:produktion/youtube/alfabet/abc-e-recept-3/index.html`).

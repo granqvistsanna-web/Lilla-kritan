@@ -87,7 +87,7 @@ const SAKER = {
     fraga: 'p-vem', lang: 'p-elefant', kort: 'p-e-e-elefant', berom: 'p-elefant-e',
     // Sanna 2026-11-20 ("more details when kritan ritar elefant, easier to guess"): efter konturen ritar kritan öronens rosa insidor,
     // snabeln och ögonen (spårade ur riggens delar: elsa-ora-l/-r ur elsa-faceless.png, elsa-snabel ur elsa-nos.png; ögonen ur elefanten-elsa.md)
-    streck: [['kontur', await kontur('karaktarer/elefanten-elsa/premium/elsa-faceless', ...ELSA), '#6B7490', 15, 6.5],
+    streck: [['kontur', await kontur('karaktarer/elefanten-elsa/premium/elsa-faceless', ...ELSA), '#6B7490', 15, 8.5],
       ['ora-l', await kontur('karaktarer/elefanten-elsa/premium/elsa-ora-l', ...ELSA), '#D9798C', 13, 1.8],
       ['ora-r', await kontur('karaktarer/elefanten-elsa/premium/elsa-ora-r', ...ELSA), '#D9798C', 13, 1.8],
       ['snabel', await kontur('karaktarer/elefanten-elsa/premium/elsa-snabel', ...ELSA), '#6B7490', 13, 2.2],
@@ -287,10 +287,14 @@ const TAL = {
   // (Malin – Professional Swedish Narration, Eleven v4, 50/75). Bokstaven: louise-1.mp3 (Louise – Calm & Clear, v4). Båda säger ekorre med kort e.
   'n-hej-e': 'Hej, E!', 'n-hur-later': 'Hur låter E?', 'n-hur-elefant': 'Hur låter E i elefant?', 'n-och-ekorre': 'Och i ekorre?',
   'e-hej': 'Hej! E! E!', 'e-elefant': 'e, e, elefant!', 'e-ekorre': 'e, e, ekorre!', 'e-ekollon': 'e, e, ekollon!',
+  // E pratar bara med sin bokstav i toner (Sanna 2026-11-24): Louise – Calm & Clear, Eleven v3, produktion/ljud-original/roster/abc-e-intro-2026-11-24/louise-1/-2.mp3
+  'x-glad': 'E!', 'x-halsar': 'E-e!', 'x-ja': 'E! E!', 'x-nej': 'E-e.', 'x-undrar': 'E?',
+  'n-ska-vi-leka': 'Ska vi leka, E?', 'n-ja-vad-kul': 'Ja! Vad kul!', 'n-vad-ritar-nu': 'Vad ritar kritan nu?',   // Malin, malin-1.mp3 där
   'e-ljud-1': 'e', 'e-ljud-2': 'e', 'e-ljud-3': 'E!',   // bokstavens egen röst (ABC-d3 0:33, Sanna 22/11): Louise – Calm & Clear, ElevenLabs v4, produktion/ljud-original/roster/bokstavsrost/louise-1.mp3; Malins gamla klipp heter e-ljud-N-malin
 };
 const D = Object.fromEntries(await Promise.all(Object.keys(TAL).map(async n => [n, await langd(fil(n), 1.5)])));
 const LJUD = [], sag = (t, n) => (LJUD.push({ t, fil: fil(n), vol: 2.5, tal: TAL[n] }), t + D[n]);
+const sagE = (u, n, paus = 0.3) => { A.mun.push([u, u + D[n]]); sag(u, n); return u + D[n] + paus; };   // E-märket säger något: munnen rör sig
 const fx = (t, n, vol = 0.8, mer = {}) => LJUD.push({ t, fil: effekt(n), vol, ...mer });
 // sakernas egna ljud (Sanna 2026-11-19: "more sound effects from the things"): efter ordet, när klossen snurrar i dansen, björnens brum i närbilderna
 const fxf = (t, p, vol = 0.8, mer = {}) => LJUD.push({ t, fil: `assets/ljud/effekter/${p}.m4a`, vol, ...mer });
@@ -301,10 +305,11 @@ const latFx = (s, t, langd = 0.85) => { const [p, v] = LAT[s.namn]; fxf(t, p, v,
 const TEMPO = 0.8, MELLAN = 0.12, PAUS = 4, FYLL = 0.7;
 const MITT = [960, 590, 1.2], NARA = [960, 640, 1.35];   // där teckningen ritas: mitt i bild (Sanna 2026-11-18), och "närbilden": saken kliver fram på "En elefant!"
 const { elefant, ekorre, ekollon, katt, hund } = SAKER;
+elefant.tempo = 0.3; katt.tempo = ekorre.tempo = 0.42;   // ritas snabbare (Sanna 2026-11-24): elefanten ca 6 s i stället för 13, konturen ca 2,6 s som ritintrot
 // Klossarnas lägen: kk = [t, x, y, z, sidan, båge, fall] (mitten i px, z mot kameran; båge = lyft på vägen dit, fall = faller dit)
 const GB = 875, golvY = sd => GB - sd / 2;   // klossarnas nederkant på golvet
 const RX = 0.2, RY = -0.22;   // alla klossar lutar lika, så att toppen och högra sidan syns och muren går ihop
-const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0, mun: [], ansikten: [] };   // ansikten: [från, till] när E-märket har ögon och mun   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
+const A = { kk: [], hopp: [], fram: [], ksyns: 0, snett: 0, mun: [], ansikten: [], vick: [] };   // ansikten: [från, till] när E-märket har ögon och mun   // A-plattan: ett platt klistermärke på väggen (Sanna 2026-11-18)
 const AV = [960, 500, 0], AS = 560,   // som B (Sanna 2026-11-21, 0:04): klossen i introt större och mitt i bild
       AHORN = [195, 180, 0], AHS = 210;   // mitt på väggen i vinjetten, sedan uppe i vänstra hörnet
 const RS = 240, RAD = [[175, golvY(RS)], [375, golvY(RS)], [575, golvY(RS)]];   // Sanna 2026-11-20: "bigger blocks" (alla klossar ca 30 % större)   // bildklossarnas rad på golvet, under A-märket (vänster om teckningen)
@@ -353,17 +358,17 @@ for (const [a, b] of [[0, 0.3], [0.33, 1]]) fx(lerp(...A.rita, a), 'skrrrrt-lang
 A.svar = A.rita[1] + 0.4; fx(A.svar, 'pling', 0.5); A.hopp.push(A.svar + 0.1); GN.push([A.svar, AV[0], AV[1] - 20, 460, 350]);
 // Introt (Sanna 2026-11-18): "Det är ju A! Bokstaven A. A säger ah. Kan du säga ah?" och en paus för barnet.
 // d-* är platshållare med datorrösten (abc-prov/platshallare/) tills de spelas in med Malin.
-t = sag(A.svar + 0.2, 'p-det-ar-e');
-t = sag(t + 0.3, 'p-bokstaven-e') + 0.6; A.spinn = [[t - 1.3, t - 0.3]]; fx(t - 1.3, 'swoosh', 0.4);   // ett varv på "Bokstaven E" i stället för två vickande hopp (Sanna 2026-11-21: "jiggle a bit too repetitive, perhaps it could spin")   // "E, e, elefant!" sägs nu på svaret (tagning 3)
-// E säger e redan i introt (Sanna 2026-11-21): klossen får ögon och mun och säger "e, e, E!" en gång, och ansiktet försvinner innan märket flyger till hörnet
-// C:s riktning (2026-11-23): Malin hälsar, E svarar glatt "Hej! E! E!", och "Hur låter E?" före "e, e, E!".
-{ const a = t - 0.1; fx(a, 'pop', 0.45);
-  const sagE = (u, n, paus) => { A.mun.push([u, u + D[n]]); sag(u, n); return u + D[n] + paus; };
-  let u = sag(a + 0.6, 'n-hej-e') + 0.25;
-  A.hopp.push(u + 0.05); u = sagE(u, 'e-hej', 0.4);
-  u = sag(u, 'n-hur-later') + 0.3;
-  for (const n of ['e-ljud-1', 'e-ljud-2', 'e-ljud-3']) u = sagE(u, n, 0.4);
-  A.hopp.push(u - 0.55); A.ansikten.push([a, u + 0.1]); t = u + 0.1; }
+t = sag(A.svar + 0.2, 'p-bokstaven-e') + 0.6; A.spinn = [[t - 1.3, t - 0.3]]; fx(t - 1.3, 'swoosh', 0.4);   // ett varv på "Bokstaven E!" ("Det är ju E!" och "Hur låter E?" gick bort 2026-11-24)
+// Samtalet med E (Sanna 2026-11-24): klossen puffar upp, får ögon och mun, och E pratar bara med sin bokstav i toner. Malin säger vad E menar.
+{ const a = t - 0.1; fx(a, 'pop', 0.6); flyttaK(A, a, AV, AS * 1.25, 0.45); A.hopp.push(a + 0.4);
+  let u = sagE(a + 0.6, 'x-glad');                    // E!
+  u = sag(u, 'n-hej-e') + 0.25;                       // Hej, E!
+  A.vick.push(u); u = sagE(u, 'x-halsar');            // E-e! (hälsar, vickar)
+  u = sag(u, 'n-ska-vi-leka') + 0.25;                 // Ska vi leka, E?
+  A.hopp.push(u + 0.05, u + 0.55); fx(u + 0.15, 'dunk', 0.35); fx(u + 0.65, 'dunk', 0.35);
+  u = sagE(u, 'x-ja', 0.2);                           // E! E! (ivrigt ja, två hopp)
+  u = sag(u, 'n-ja-vad-kul') + 0.1;                   // Ja! Vad kul!
+  A.ansikten.push([a + 0.3, u + 1.2]); t = u; }       // ansiktet är kvar en stund på väg till hörnet
 A.vrid = t + 0.3; kamTill(t - 0.4, 960, 540, 1, 1.2);   // ut igen innan plattan flyttar; den vickar lite i vinjetten och hänger still i hörnet
 t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 
@@ -388,22 +393,19 @@ function gissning(s, levande, vanta, livSek, rit = RITA, nara = [rit[0], 640, 1.
   u = sag(u + 0.2, s.kort);
   s.levande.push([u + 0.2, vanta, u + 1.5]);
   s === elefant ? fxf(u + 0.4, TRUT, 1.3, { langd: 1.4, fade: 0.3 }) : latFx(s, u + 0.4, 1.1);   // och låter
-  u += 1.9;
-  fx(u + 0.1, 'jippi', 0.5); A.hopp.push(u + 0.9);
+  u = eTon(u + 1.6, 'x-ja') + 0.1;   // E: ja! sedan jublar kompisen och Malin säger att ordet börjar på E
+  fx(u + 0.1, 'jippi', 0.5);
   s.R ? s.levande.push([u + 0.1, 'hoppa']) : s.hopp.push(u + 0.1);
-  t = sag(u, s.berom);
-  t = bLjud(t + 0.3, BL[s.namn]);   // märket i hörnet säger sitt ljud efter varje ord (ABC-b3, Sanna 2026-11-22: fler bokstavsljud genom filmen)
+  t = sag(u + 0.6, s.berom);
 }
-// Bokstavsmärket i hörnet växer lite, får ögon och mun och säger "e, e, E!" en gång, när Malin är tyst. Returnerar när ansiktet har gått.
-// C:s riktning (2026-11-23): Malin frågar först (märket växer och lyssnar), och märket svarar med ljudet i ordet och ordet.
-const BL = { elefant: ['n-hur-elefant', 'e-elefant'], ekorre: ['n-och-ekorre', 'e-ekorre'], ekollon: [null, 'e-ekollon'] };
-function bLjud(a, [fraga, klipp] = []) {
-  fx(a, 'pop', 0.4); A.hopp.push(a + 0.05); let u = a + 0.5;
-  if (fraga) u = sag(u, fraga) + 0.3;
-  for (const n of klipp ? [klipp] : ['e-ljud-1', 'e-ljud-2', 'e-ljud-3']) { A.mun.push([u, u + D[n]]); sag(u, n); A.hopp.push(u + 0.05); u += D[n] + 0.35; }
-  A.hopp.push(u - 0.5); A.ansikten.push([a, u + 0.2]);
-  flyttaK(A, a - 0.25, [AHORN[0] + 45, AHORN[1] + 40, 0], AHS * 1.45, 0.45); flyttaK(A, u + 0.2, AHORN, AHS, 0.5);   // lite större medan det pratar
-  return u + 0.5;
+// E-märket i hörnet tycker till (Sanna 2026-11-24): växer lite, får ögon och mun, säger sina toner och krymper igen.
+// x-ja hoppar två gånger, x-nej och x-undrar vickar. Returnerar när E har sagt sitt (märket krymper i bakgrunden).
+function eTon(a, ...toner) {
+  fx(a, 'pop', 0.3); flyttaK(A, a - 0.25, [AHORN[0] + 45, AHORN[1] + 40, 0], AHS * 1.45, 0.45);
+  let u = a + 0.35;
+  for (const n of toner) { n === 'x-ja' ? A.hopp.push(u + 0.05, u + 0.5) : A.vick.push(u); u = sagE(u, n, 0.25); }
+  A.ansikten.push([a, u + 0.2]); flyttaK(A, u + 0.2, AHORN, AHS, 0.5);
+  return u;
 }
 // Kompisens uttryck en stund, och kompisen i närbild där den står: varje händelse får sitt reaktionsslag.
 const kanner = (t0, t1, ansikte, pose = 'neutral') => elefant.levande.push([t0, 'reagera', t1, ansikte, pose]);
@@ -417,7 +419,7 @@ function narbild(t0, { ansikte, pose = 'neutral', ljud, sek = 1.9, zoom = 1.7 })
 }
 
 // 2. Ord 1 är kompisen: elefanten ritas mitt i bild som förut. Sedan går den åt sidan med två små skutt och står kvar där.
-t = sag(t - 0.6, 'p-kritan-ritar-nagot') - 0.5;
+t = sag(t - 0.6, 'n-vad-ritar-nu') - 0.5;   // Vad ritar kritan nu? (medan märket flyger)
 gissning(elefant, 'hoppa', 'vinka', 1.7, MITT, NARA); hoppLjud(elefant.svar + 0.4);
 t = flytta(elefant, t + 0.3, ...KOMPIS, 1.3); elefant.hopp.push(t - 1.2, t - 0.6); fx(t - 1.2, 'dunk', 0.35); fx(t - 0.6, 'dunk', 0.35);
 elefant.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-elefanten'] + 0.4]); t = sag(t + 0.5, 'n-hej-elefanten');   // elefanten vinkar, Malin hälsar
@@ -443,6 +445,7 @@ elefant.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-elefanten'] + 0.4]); 
 { let u = ritaOchGissa(katt, RITA);   // "Hmm …", "Vem är det?", pausen, "Katt."
   katt.levande.push([katt.svar + 0.4, 'hoppa']); fx(katt.svar + 0.5, 'mjau', 0.9, { langd: 1.4, fade: 0.3 });
   u = sag(Math.max(u + 0.3, katt.svar + 1.6), 'p-en-katt');
+  u = eTon(u + 0.2, 'x-undrar', 'x-nej');   // E? E-e. (Sanna 2026-11-24)
   u = narbild(Math.max(u, katt.svar + 1.5) + 0.2, { ansikte: 'forvanad', ljud: 5 });
   kanner(u, u + D['n-busiga'] + 0.4, 'skrattar');
   u = sag(u, 'n-busiga') + 0.3;
@@ -568,7 +571,8 @@ function runda(s, { lat, ord, svar, inte, forst, ut, ordning = [elefant, ekorre,
       tittaMot(a, ta, ta + steg - 0.45, 'tanker'); a.fram.push([ta + 0.25, ta + steg - 0.35]); }
     kamTill(u - PAUS, MURX, 590, 1.42, PAUS - 0.3); }
   fx(u, 'pling', 0.6); s.fram.push([u - 0.1, u + 2.0]); s.hopp.push(u + 0.05);
-  u = sag(u, svar) + 0.4;
+  u = sag(u, svar) + 0.2;
+  u = eTon(u, 'x-nej') + 0.1;   // E-e.: den börjar inte på E
   u = sag(u, inte) + 0.3;
   fx(u, lat, 1.2); s.hopp.push(u); kamTill(u - 0.2, 960, 540, 1, 1.0);   // ut innan den udda åker
   const ut0 = u + 0.9;
@@ -670,12 +674,13 @@ for (const s of ORDEN) { s.hopp.push(t); t = sag(t, s.lang) + 0.45; }
 { const t0 = t + 0.1, B_REP = [960, 330, 0];   // märket till mitten ovanför raden
   flyttaK(A, t0, B_REP, 330, 1.0, 70); fx(t0, 'swoosh', 0.5); fx(t0 + 0.98, 'pop', 0.6); A.hopp.push(t0 + 1.05);
   const a = t0 + 1.3; A.ansikten.push([a, 1e9]); let u = a + 0.5;
-  for (const n of ['e-ljud-1', 'e-ljud-2', 'e-ljud-3']) { A.mun.push([u, u + D[n]]); sag(u, n); u += D[n] + 0.4; }
+  A.hopp.push(u + 0.05, u + 0.5); u = sagE(u, 'x-ja', 0.6);   // E! E! (stolt)
   A.hopp.push(u - 0.55); for (const s of RADEN) s.hopp.push(u - 0.35); GN.push([u - 0.4, 960, 330, 260, 200]);
   t = u + 0.4; }
 elefant.levande.push([t + 0.2, 'vinka', t + 0.4 + D['n-vad-kul'] + 0.4 + D['p-hej-da-slut'] + 0.5]);   // kompisen vinkar genom tacket och hej då
 t = sag(t + 0.4, 'n-vad-kul') + 0.4;
-t = sag(t, 'p-hej-da-slut');
+sagE(t + 0.45, 'x-halsar'); A.vick.push(t + 0.45);   // E vinkar och säger hej då med Malin, samma ton som när det hälsade
+t = Math.max(sag(t, 'p-hej-da-slut'), t + 0.45 + D['x-halsar']);
 for (const s of [A, ...RADEN]) s.hopp.push(t - 0.4); GN.push([t - 0.3, 960, 560, 640, 300]); fx(t - 0.35, 'jippi', 0.4);
 t += 0.4;
 // Utrullningen (Sanna 2026-11-18, putsad 2026-11-19 3:49): klossarna rullar i jämn fart åt höger ut ur bild, den högra först.
@@ -935,7 +940,7 @@ function klossO(X, t) {
       k: clamp((t - A.rita[0]) / (A.rita[1] - A.rita[0])) };
   }
   return { x, y: y + (X === A ? 0 : (sd - S) / 2) - lyft + S * tr / 2, z: z + (mur ? 30 * hopp + 50 * fram : 0), s: S, rx: X === A ? 0 : RX, ry: (X === A ? 0 : RY) + X.snett + vrid,
-    rz: X === A ? aGung(t) - 0.05 : rull + vick, sy: 1 - tr, sx: 1 + tr * 0.6, syns: pop > 0.001, luft: GB - (y + sd / 2) + lyft,
+    rz: X === A ? aGung(t) - 0.05 + vick : rull + vick, sy: 1 - tr, sx: 1 + tr * 0.6, syns: pop > 0.001, luft: GB - (y + sd / 2) + lyft,
     k: X === A ? clamp((t - A.rita[0]) / (A.rita[1] - A.rita[0])) : 1 };
 }
 // framsidans avbildning i skärmen som en SVG-matris (u åt höger, v nedåt, −0,5 … 0,5)
