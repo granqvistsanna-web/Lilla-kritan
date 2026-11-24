@@ -287,7 +287,7 @@ const TAL = {
   // (Malin – Professional Swedish Narration, Eleven v4, 50/75). Bokstaven: louise-1.mp3 (Louise – Calm & Clear, v4). Båda säger ekorre med kort e.
   'n-hej-e': 'Hej, E!', 'n-hur-later': 'Hur låter E?', 'n-hur-elefant': 'Hur låter E i elefant?', 'n-och-ekorre': 'Och i ekorre?',
   'e-hej': 'Hej! E! E!', 'e-elefant': 'e, e, elefant!', 'e-ekorre': 'e, e, ekorre!', 'e-ekollon': 'e, e, ekollon!',
-  // E pratar bara med sin bokstav i toner (Sanna 2026-11-24): Louise – Calm & Clear, Eleven v3, produktion/ljud-original/roster/abc-e-intro-2026-11-24/louise-1/-2.mp3
+  // E pratar bara med sin bokstav i toner (Sanna 2026-11-24): Olivia – Bright, Youthful and Engaging, v4, produktion/ljud-original/roster/abc-e-intro-2026-11-24/olivia-1.mp3 (Louises klipp i louise-klipp/)
   'x-glad': 'E!', 'x-halsar': 'E-e!', 'x-ja': 'E! E!', 'x-nej': 'E-e.', 'x-undrar': 'E?',
   'n-ska-vi-leka': 'Ska vi leka, E?', 'n-ja-vad-kul': 'Ja! Vad kul!', 'n-vad-ritar-nu': 'Vad ritar kritan nu?',   // Malin, malin-1.mp3 där
   'e-ljud-1': 'e', 'e-ljud-2': 'e', 'e-ljud-3': 'E!',   // bokstavens egen röst (ABC-d3 0:33, Sanna 22/11): Louise – Calm & Clear, ElevenLabs v4, produktion/ljud-original/roster/bokstavsrost/louise-1.mp3; Malins gamla klipp heter e-ljud-N-malin
@@ -950,9 +950,10 @@ const SVGER = [document.getElementById('botten'), document.getElementById('topp'
 // E-klossens ansikte (3:54): ögonen i gapet mellan översta och mellersta armen, munnen mellan mellersta och nedersta
 const ansG = el('g', { style: 'display:none' }, document.getElementById('eansikte'));
 const eOgon = [0, 1].map(() => [el('ellipse', { fill: '#231A16' }, ansG), el('circle', { fill: '#fff' }, ansG)]);   // pärlögon (Sanna 2026-11-22)
+const eKind = [0, 1].map(() => el('ellipse', { fill: '#FF8FA3', opacity: 0.75 }, ansG));   // rosa kinder (2026-11-24)
 const eMun = el('path', { fill: '#231A16' }, ansG), eTunga = el('ellipse', { fill: '#FF7E8E' }, ansG);
 const eSmil = el('path', { fill: 'none', stroke: '#231A16', 'stroke-linecap': 'round' }, ansG);
-const HUVUD = [10, -250, 28, 42];   // ansiktets plats på E:t (Sanna 2026-11-22: Huvud upptill, på översta strecket)
+const HUVUD = [-95, -255, 42, 55];   // ansiktets plats på E:t: i hörnet där ryggen möter översta strecket, större (Sanna 2026-11-24: "bigger face"; var [10, -250, 28, 42])
 function eAnsikte(t, ut) {
   const [a0, a1] = A.ansikten.find(([a, b]) => t >= a && t < b + 0.3) ?? []; if (a0 === undefined) return ansG.style.display = 'none';
   ansG.style.display = ''; ansG.setAttribute('opacity', ut.toFixed(3));
@@ -964,14 +965,16 @@ function eAnsikte(t, ut) {
   P.forEach(([x, y], i) => { const [e, g] = eOgon[i];
     for (const [k, w] of Object.entries({ cx: x, cy: y, rx: r, ry: r * (blundar ? 0.12 : 1) })) e.setAttribute(k, w.toFixed(1));
     for (const [k, w] of Object.entries({ cx: x - 0.32 * r, cy: y - 0.35 * r, r: 0.4 * r })) g.setAttribute(k, w.toFixed(1));
-    g.setAttribute('opacity', blundar ? 0 : 1); });
+    g.setAttribute('opacity', blundar ? 0 : 1);
+    const s = i ? 1 : -1;
+    for (const [k, w] of Object.entries({ cx: x + s * 0.45 * r - ey * 1.25 * r, cy: y + ex * 1.25 * r, rx: 0.5 * r, ry: 0.3 * r })) eKind[i].setAttribute(k, w.toFixed(1)); });
   const o = (A.mun ?? []).reduce((m, [a, b]) => Math.max(m, Math.sin(Math.PI * clamp((t - a + 0.04) / (b - a + 0.08)))), 0);   // öppen på varje "e"
-  const mx = (P[0][0] + P[1][0]) / 2 - ey * 2.1 * r, my = (P[0][1] + P[1][1]) / 2 + ex * 2.1 * r, w = 0.65 * r, f = v => v.toFixed(1);
-  const top = my - 0.3 * r, hj = (0.25 + 0.95 * o) * r;   // munnen öppnas på varje ljud, med tunga
-  eMun.setAttribute('d', `M${f(mx - 0.8 * r)} ${f(top)} Q${f(mx)} ${f(top + 0.15 * r)} ${f(mx + 0.8 * r)} ${f(top)} Q${f(mx + 0.7 * r)} ${f(top + hj)} ${f(mx)} ${f(top + hj)} Q${f(mx - 0.7 * r)} ${f(top + hj)} ${f(mx - 0.8 * r)} ${f(top)}Z`);
-  for (const [k, v] of Object.entries({ cx: mx, cy: top + 0.72 * hj, rx: 0.38 * r, ry: 0.22 * r })) eTunga.setAttribute(k, f(v));
+  const mx = (P[0][0] + P[1][0]) / 2 - ey * 2.1 * r, my = (P[0][1] + P[1][1]) / 2 + ex * 2.1 * r, w = 0.95 * r, f = v => v.toFixed(1);
+  const top = my - 0.3 * r, hj = (0.35 + 1.25 * o) * r;   // munnen öppnas på varje ljud, med tunga
+  eMun.setAttribute('d', `M${f(mx - 1.15 * r)} ${f(top)} Q${f(mx)} ${f(top + 0.15 * r)} ${f(mx + 1.15 * r)} ${f(top)} Q${f(mx + 1.0 * r)} ${f(top + hj)} ${f(mx)} ${f(top + hj)} Q${f(mx - 1.0 * r)} ${f(top + hj)} ${f(mx - 1.15 * r)} ${f(top)}Z`);
+  for (const [k, v] of Object.entries({ cx: mx, cy: top + 0.72 * hj, rx: 0.55 * r, ry: 0.3 * r })) eTunga.setAttribute(k, f(v));
   eMun.style.display = eTunga.style.display = o > 0.05 ? '' : 'none'; eSmil.style.display = o > 0.05 ? 'none' : '';
-  eSmil.setAttribute('stroke-width', f(0.3 * r)); eSmil.setAttribute('d', `M${f(mx - w)} ${f(my - 0.18 * r)} Q${f(mx)} ${f(my + 0.82 * r)} ${f(mx + w)} ${f(my - 0.18 * r)}`);
+  eSmil.setAttribute('stroke-width', f(0.36 * r)); eSmil.setAttribute('d', `M${f(mx - w)} ${f(my - 0.18 * r)} Q${f(mx)} ${f(my + 0.82 * r)} ${f(mx + w)} ${f(my - 0.18 * r)}`);
 }
 const framsida = i => { const [ox, oy] = skarmV(i, 0, 0), [ux, uy] = skarmV(i, 0.5, 0), [vx, vy] = skarmV(i, 0, -0.5);
   return [2 * (ux - ox), 2 * (uy - oy), 2 * (vx - ox), 2 * (vy - oy), ox, oy]; };

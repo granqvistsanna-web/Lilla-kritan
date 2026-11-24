@@ -165,3 +165,5 @@ Idag tar elefanten ca 13 s att rita: konturen 6,5 × `TEMPO` 0,8 = 5,2 s, sedan 
 - Introt, E:s reaktioner (elefanten, katten, ekorren, ekollonet, hunden, slutet, hej då) och de snabbare teckningarna är inbyggda som i förslaget. `bLjud` och märkets ord (`e-elefant` …) används inte längre. Märket vickar (`A.vick`) på `x-halsar`, `x-nej` och `x-undrar` och hoppar två gånger på `x-ja`.
 - Elefanten: konturen 8,5 × `tempo` 0,3 = 2,6 s, hela teckningen ca 6 s (var 13). Katten och ekorren `tempo` 0,42.
 - Scenen före ändringen ligger i git (`git show HEAD:produktion/youtube/alfabet/abc-e-recept-3/index.html`).
+- **E:s röst är Olivia** (Sanna 2026-11-24, "use olivia instead"): *Olivia – Bright, Youthful and Engaging*, v4, `olivia-1.mp3`. Klippen: `x-glad` 0,04–0,62, `x-halsar` 1,73–2,45, `x-ja` 3,22–4,24 (två *E!*), `x-nej` 5,68–6,20 (lågt, fallande), `x-undrar` 7,83–8,15 (stiger). Bitarna 4,48–4,86 och 7,02–7,25 används inte. Louises klipp ligger i `louise-klipp/`.
+- E:s ansikte är större (Sanna 2026-11-24): `HUVUD` i hörnet där ryggen möter översta strecket, ögonradie 42 (var 28), rosa kinder och större mun.
