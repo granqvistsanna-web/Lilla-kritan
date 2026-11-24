@@ -157,3 +157,37 @@ Bollen: handen släpper den framför lådans framvägg, och den gled snett ner g
 3. **Flera vyer som byts vid klipp:** trekvart och sida för Kanel i v2, för kameravinklar över ca 30°. Bara vid klipp, aldrig en snurr.
 4. ~~Kodarmar~~: avvisade 23/11. De målade armarna gäller.
 5. **Ett riktigt avsnitt:** en bilderbokscen (`format/bilderbok.md`) i det här rummet med Malins hela manus, för att se om det håller i flera minuter och om renderingen står pall (nu ca 3 s per sekund film).
+
+### Riggprov i rummet (`?prov`, Sanna 2026-11-24: "more walking and stuff, jumping sitting full test rig")
+34 s med riggens egna rörelser i lekrummet, utan boll: står → går 0,5 m åt höger (`L.steg`, kortet flyttas i rummet, stegen följer sträckan) → två hopp (`ROR.hoppa`; hela kortet lyfts från golvet, kontaktskuggan krymper) → går tillbaka → sätter sig, sitter och tittar åt sidan, reser sig (`sattaSig`) → dansar (`ROR.dansa`) → klappar (`ROR.klappa`) → vinkar (`ARMROR.vinka`). Delarna blandas på 0,3 s vid varje skarv (inga hopp, mätt var 1/30 s). Armarna styrs av rörelsen och hänger 22° lägre i vila som i `?ricks`. Kameran följer i sidled med eftersläp. Förhandsvisning: `lekrummet/lekrummet-prov-snabb.mp4` (`--fraga prov`, stum).
+
+### Rötterna och armen när kroppen vrids (`?ricks` och `?prov`, Sanna 2026-11-24)
+- **Ingen vit söm vid rötterna** ("can the root of arms and legs have no white rim"): de vita linjerna var delarnas inbakade kanter (mest kroppens egen kant över armens och benets rot). Delarna bakom kroppen (kropp, armar, ben, öron, svans) får den rent vita kanten bortnyckad i ett SVG-filter (`#utanKant`), och kant.js-kanten runt hela silhuetten blir 7 enheter bredare, så att ytterkanten, händerna och fötterna har samma kant som förut. Armarna framför kroppen (klapp) behåller sin kant. Kanels bilder är orörda.
+- **Armen när kroppen vrids**: gången i `?prov` använder inte riggens gångarmar (bakre armen framför kroppen ut över magen), båda stannar bakom kroppen och pendlar lite. Axlarna följer vridningen (`axlar`: 18 enheter per hel vridning), och den bortre armen blir lite kortare (86 % vid hel vridning). Före/efter: `lekrummet/stills/rot/`.
+
+## Julkalenderns intro i 3D (prov 2026-11-24, `julkalender-intro/`)
+Samma intro som `lucka.js` (liggande) med exakt samma tider och repliker, byggt med det vi lärt oss i lekrummet. Lucka 24 är provet (`?lucka=N`, `?inne=<forst.png>`).
+- **Tavlan** står i snön som ett tjockt pepparkakskort (sju siluettlager bakåt, snökanten ljus lavendel), med en driva vid foten och riktiga skuggor. Himlen är Vinterkvällen utan stuga och gran långt bak, mjuka snökullar ger parallax.
+- **Luckorna är dörrar på gångjärn** med kartongbaksida. De tidigare dagarna står öppna 100°, och insidan är papper med mjuk skugga.
+- **Effekter:** girlangens bär tindrar, glitter blänker i snön, snön faller i tre djup (de närmaste flingorna suddiga, ingen flinga där tavlan eller Kanel står). Dagens lucka får en lysande guldram, vickar två gånger (4° och 3°) och sprider krit-gnistor när kaninen pekar. När den öppnas strömmar ett dämpat varmt ljus och gnistor ut (ingen vit blixt).
+- **Kameran:** helbilden glider sakta in, knuffar mot luckan när kaninen pekar, åker fram medan "Nu öppnar vi …" sägs och väntar medan dörren slås upp. Sist glider den in i ljuset tills insidan (`forst.png`) fyller bilden. Gradering, bloom och oskärpa tonas bort de sista 0,4 s, så att skarven inte syns. `window.koll()`: kameran är som närmast 0,30 m från dörrens svep.
+- **Skarven:** `skarva.sh` tar introts 328 rutor och sedan lucka 24:s film från ruta 328 (dess `OPPEN`), med luckans eget ljud och två nya effekter ovanpå (tindra vid guldramen, glitter när ljuset kommer). Film: `julkalender-intro/lucka-24-3d-intro.mp4`. Bara introt: `julkalender-intro.mp4`. Luckans riktiga film är orörd.
+- QA (introt): inget svart, fryst eller tyst, boil 3,5 px/s (gräns 4,5).
+- Inte gjort: stängningen och "Vi ses i morgon!" är fortfarande 2D (lucka.js), och kvällsluckorna (`kvall`) och Shorts (stående) är inte byggda i 3D.
+
+### ?prov runda 2 (24/11, inte godkänt än): upplockning, flygande kamera, ljud, ?djup och ?puff
+- **Kanten:** utan rötterna blev kant.js-kanten 7 enheter bredare, för tjockt (Sanna). Nu 3 enheter, i ?ricks och ?prov.
+- **Upplockningen** är provets första del (0–8 s, samma tider som ?ricks, så bollens fall i lådan och den mindre klossen gäller). Filmen är 42 s.
+- **Kameran** skrivs som vyer med `verktyg/kamera3d.mjs` (`KPLAN.stall`): flyger in uppifrån, åker in till närbild när hon håller bollen, ut igen, sedan en båge på högst 30° (−20° till +10°) som följer henne (platsen `folj`), och närmare till klappen och vinkningen.
+- **Ljud** (`PROV_LJUD`, bara effekter/): steg (smyg), hopp-mjuk och landa-mjuk, lagga-sig, prassel-tyg, tass i dansen, klapp, duns för bollen, hemmaljud 0,3. Tiderna är mätta ur riggen och räknas från delarnas start. `lekrummet-prov-effekter.wav` görs med `--bara-ljud --fraga prov` (skriver över `lekrummet-effekter.wav`, så ta en kopia först).
+- **?djup** (inom v2): silhuettens mjuka skugga på golvet (åt höger, solens egen faller rakt bakåt och syns inte), skugga under nosen och under de främre armarna, varm/kall ton i kortet, förgrundsklossar som blir suddiga. Ingen skugga på väggen: hon kommer aldrig nära den.
+- **?puff** (bryter mot v2, bara test): volymen bredare (radie 240), ±13 %, ingen glans.
+
+### Runda 2 av introt (Sanna 24/11: konturen, snön, mysigare, närmare, riggens lärdomar)
+- **Konturen:** tjockleksskikten hade fått kritkornet i de genomskinliga hörnen (multiply fyller genomskinligt), så en grå rektangel syntes runt tavlan. Nu klipps de med tavlans egen alfa.
+- **Snötaket i 3D:** bildens snö mäts kolumn för kolumn, jämnas ut och blir en pösig, rundad kudde (ca 13 cm djup), som hänger ut fram och bak och kastar en mjuk skugga på tavlan. Den täcker den målade snöns kant.
+- **Tjockare tavla:** en massiv pepparkaksplatta, 16 cm, med rundade kanter (2 cm) i tavlans kontur och mörkare sidor (lagren är borta). Kameran börjar snett från vänster (ca 35°), så att kanten syns, och glider runt till nästan rakt fram när kaninen pekar. Därifrån syns också siffrorna på de öppna luckorna.
+- **Mysigare ljus:** lägre och gyllene sol med längre skuggor, lavendel i skuggorna, ett varmt punktljus från girlangen, större och starkare bärlampor och en varmare gradering.
+- **Närmare:** helbilden står ca 0,6 m närmare, och Kanel står 17 cm närmare tavlan, så att båda ryms.
+- **Kanel enligt runda 7–8:** ingen rigg-vila (blicken flyttas bara mot tavlan och luckan), lutningen går genom `boj` + `skak` i stället för `luta` på hela kortet, armarna hänger 22° lägre intill sidorna när de inte används, uttryckens egna armar är borta, viktflytt i 4,7 s-takt med huvudet och öronen efter, inga blinkningar inom 0,45 s från en ändring och ett lugnare skutt.
+- QA: boil 3,7 px/s, inget svart, fryst eller tyst; kameran som närmast 0,29 m från dörren.
