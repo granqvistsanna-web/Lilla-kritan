@@ -2,50 +2,50 @@
 02-vad-blir-det  [curious] Hm … vad blir det nu?
 03-en-badanka  [happy] Oj! En badanka!
 04-hej-lammet  [happy] Hej, lammet! Hej, hej!
-05-vill-du-bada  [cheerfully] Vill du bada?
+05-vill-du-bada  [cheerfully] Vill du bada i badkaret?
 06-ja-vad-kul  [happy] Ja, vad kul!
 07-ankan-i-badet  [happy] Titta! Ankan är redan i badet.
-08-ett-skutt-plask  [cheerfully] Ett skutt … två skutt … plask!
-09-ar-det-varmt  [curious] Är det varmt?
-10-varmt-och-skont  [happy sigh] Mm … varmt och skönt.
-11-ni-pratar  [giggles] Ni pratar visst med varandra.
+08-ett-skutt-plask  [cheerfully] Upp på pallen … ett skutt … två skutt … plask, ner i badet!
+09-ar-det-varmt  [curious] Är vattnet varmt?
+10-varmt-och-skont  [happy sigh] Mm … varmt och skönt vatten.
+11-ni-pratar  [giggles] Lammet och ankan pratar med varandra.
 12-vad-sager-ankan  [curious] Vad säger ankan?
 13-jasa-det-tycker-ankan  [chuckles] Jaså, det tycker ankan!
-14-skumhatt  [laughs] Oj! En skumhatt!
-15-nu-ar-du-ren  [cheerfully] Nu är du ren! Nu går vi upp.
-16-ett-skutt-ner  [cheerfully] Ett skutt … två skutt … ner!
+14-skumhatt  [laughs] Oj! Skum på huvudet! En skumhatt!
+15-nu-ar-du-ren  [cheerfully] Nu är du ren! Nu kliver vi upp ur badet.
+16-ett-skutt-ner  [cheerfully] Ett skutt … två skutt … ner på golvet!
 17-ullen-blot  [surprised] Oj, oj, oj! Ullen är alldeles blöt!
-18-och-platt  [gently] Och platt.
+18-och-platt  [gently] Och ullen är platt.
 19-fryser-du  [gently] Brr … fryser du?
 20-lilla-van  [warmly] Åh, lilla vän.
-21-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+21-vad-gor-vi-nu  [curious] Hm … hur blir ullen torr?
 22-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
 23-en-handduk  [happy] En handduk! En stor handduk! Varsågod, lammet.
 24-ska-vi-saga-tack  [warmly] Ska vi säga tack?
 25-tack  [happy] Tack!
-26-vad-mjuk  [happy sigh] Åh, vad mjuk!
-27-forst-oronen  [warmly] Först öronen. Blött … blött … torrt!
-28-och-magen  [warmly] Och magen. Blött … blött … torrt!
-29-hela-lammet  [playfully] Och sist … hela lammet! Blött … blött … torrt!
-30-ett-ullmoln  [surprised] Oj! Ett ullmoln!
-31-ar-det-skont-nu  [warmly] Är det skönt nu?
+26-vad-mjuk  [happy sigh] Åh, vad mjuk handduken är!
+27-forst-oronen  [warmly] Först torkar vi öronen. Blött … blött … torrt!
+28-och-magen  [warmly] Nu torkar vi magen. Blött … blött … torrt!
+29-hela-lammet  [playfully] Och sist torkar vi hela lammet! Blött … blött … torrt!
+30-ett-ullmoln  [surprised] Oj! Ullen är torr och fluffig! Ett ullmoln!
+31-ar-det-skont-nu  [warmly] Är det skönt att vara torr?
 32-mjukt-och-varmt  [happy sigh] Mm, så mjukt och varmt!
 33-var-ar-ankan  [curious] Men … var är ankan?
 34-ser-du-ankan  [warmly] Kan du hjälpa lammet? Ser du ankan?
-35-ja-dar  [happy] Ja, där! I skummet!
+35-ja-dar  [happy] Ja, där är borsten! I skummet!
 36-blot-och-torrt  [playfully] Ankan är blöt … och lammet är torrt!
 37-ankan-hatt  [laughs] Nu har ankan också en hatt!
-38-sa-fint  [happy] Oj, så fint!
+38-sa-fint  [happy] Oj, vilken fin och slät ull!
 39-roligt-bad  [warmly] Var det ett roligt bad?
 40-ja-vad-bra  [happy] Ja, vad bra!
 41-hej-da-lammet  [happy] Hej då, lammet! Hej då, ankan!
 42-vi-ses-snart  [warmly] Hej då! Vi ses snart!
 43-en-bat  [happy] En båt! En liten båt i badet!
 44-tut-tut  [cheerfully] Tut, tut! Båten åker till ankan.
-45-vad-fluffigt  [laughs] Oj, vad fluffigt! Nu behöver vi borsten.
+45-vad-fluffigt  [laughs] Oj, ullen står åt alla håll! Nu behöver vi borsten.
 46-var-ar-borsten  [curious] Men … var är borsten?
 47-ser-du-borsten  [warmly] Kan du hjälpa lammet? Ser du borsten?
-48-ankan-hjalper  [happy] Ankan hjälper till! Tack, ankan!
-49-borsta-fint  [warmly] Borsta … borsta … så fint!
-50-borsta-mjukt  [warmly] Borsta … borsta … så mjukt!
-51-och-sist-borsta  [warmly] Och sist … borsta … borsta … så fint!
+48-ankan-hjalper  [happy] Ankan hittade borsten! Tack, ankan!
+49-borsta-fint  [warmly] Vi borstar öronen. Borsta … borsta … så fint!
+50-borsta-mjukt  [warmly] Nu borstar vi magen. Borsta … borsta … så mjukt!
+51-och-sist-borsta  [warmly] Och sist borstar vi hela ullen. Borsta … borsta … så fint!

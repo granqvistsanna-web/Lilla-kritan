@@ -1,0 +1,23 @@
+05-vill-du-bada  [cheerfully] Vill du bada i badkaret?
+08-ett-skutt-plask  [cheerfully] Upp på pallen … ett skutt … två skutt … plask, ner i badet!
+09-ar-det-varmt  [curious] Är vattnet varmt?
+10-varmt-och-skont  [happy sigh] Mm … varmt och skönt vatten.
+11-ni-pratar  [giggles] Lammet och ankan pratar med varandra.
+14-skumhatt  [laughs] Oj! Skum på huvudet! En skumhatt!
+15-nu-ar-du-ren  [cheerfully] Nu är du ren! Nu kliver vi upp ur badet.
+16-ett-skutt-ner  [cheerfully] Ett skutt … två skutt … ner på golvet!
+18-och-platt  [gently] Och ullen är platt.
+21-vad-gor-vi-nu  [curious] Hm … hur blir ullen torr?
+26-vad-mjuk  [happy sigh] Åh, vad mjuk handduken är!
+27-forst-oronen  [warmly] Först torkar vi öronen. Blött … blött … torrt!
+28-och-magen  [warmly] Nu torkar vi magen. Blött … blött … torrt!
+29-hela-lammet  [playfully] Och sist torkar vi hela lammet! Blött … blött … torrt!
+30-ett-ullmoln  [surprised] Oj! Ullen är torr och fluffig! Ett ullmoln!
+31-ar-det-skont-nu  [warmly] Är det skönt att vara torr?
+35-ja-dar  [happy] Ja, där är borsten! I skummet!
+38-sa-fint  [happy] Oj, vilken fin och slät ull!
+45-vad-fluffigt  [laughs] Oj, ullen står åt alla håll! Nu behöver vi borsten.
+48-ankan-hjalper  [happy] Ankan hittade borsten! Tack, ankan!
+49-borsta-fint  [warmly] Vi borstar öronen. Borsta … borsta … så fint!
+50-borsta-mjukt  [warmly] Nu borstar vi magen. Borsta … borsta … så mjukt!
+51-och-sist-borsta  [warmly] Och sist borstar vi hela ullen. Borsta … borsta … så fint!

@@ -44,7 +44,7 @@ export const RADER = [
   { id: '5c', d: 0.4 + L(13) + 0.8, plats: 'N', malin: [[13, 0.4]], ljud: [S('5b', 0.5 + L(13))], bild: 'Öronen upp, 0,3 s stilla', ljudtext: 'spinn 5b', ansikte: 'förvånad' },
   { id: '6', d: 0.4 + L(14) + 0.7, plats: 'D korgen → N', malin: [[14, 0.4]], bild: 'Nallen, bollen, bilen, hinken och båten i en hög. Leoparden lutar huvudet', ljudtext: 'tyst', ansikte: 'tänker' },
   { id: '7a', d: 0.8, plats: 'D tassen', ljud: [E('tass', 2, 0.2)], bild: 'Tassen puffar fyrkanten', ljudtext: '`tass`', ansikte: '–' },
-  { id: '7b', d: 0.3 + L(15) + 0.6, plats: 'HB korgen', malin: [[15, 0.3]], ljud: [E('vick', 2, 0.4, 0.6), E('duns', 2, 1.4, 0.5)], bild: 'Fyrkanten upp, vickar, ner igen', ljudtext: '`vick`, `duns` lågt', ansikte: 'nyfiken' },
+  { id: '7b', d: 0.3 + L(15) + 0.6, plats: 'HB korgen', malin: [[15, 0.3]], ljud: [E('vick', 1, 0.4, 0.6), E('duns', 2, 1.4, 0.5)], bild: 'Fyrkanten upp, vickar, ner igen', ljudtext: '`vick`, `duns` lågt', ansikte: 'nyfiken' },
   { id: '8', d: 0.9 + L(16) + 0.6, plats: 'N', malin: [[16, 0.9]], ljud: [S(6, 0.1)], bild: 'Öronen faller, huvudet lutar, svansen hänger', ljudtext: 'spinn 6 (trumpen) före', ansikte: 'ledsen' },
   { id: '9', d: 0.3 + L(17) + 1.0, plats: 'N', malin: [[17, 0.3]], bild: 'Leoparden tittar på oss', ljudtext: 'tyst', ansikte: 'tänker' },
   { id: '10a', d: 0.3 + L(18) + 0.3 + 4.0, plats: 'HB golvet', malin: [[18, 0.3]], ljud: [E('krita-ritar', 1, 0.6 + L(18))], bild: 'Kritan ritar lådans kontur bredvid leoparden (4 s)', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },

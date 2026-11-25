@@ -33,7 +33,7 @@ const LADA_POS = { x: 900, fot: 1030, w: 300 };              // formlådan på g
 const KS = 0.2;                                              // klossarnas skala (ca 80 px)
 const GOLVET = { cirkel: [330, 1045], fyrkant: [1010, 1050], trekant: [1250, 1040] };   // där klossarna ligger i början
 const VID_KORG = { cirkel: [175, 985], fyrkant: [300, 990] };                              // där de landar framför korgen
-const UNDER = [1150, 905];                                    // trekanten under sängen (bakom sängens framkant, ett hörn syns)
+const UNDER = [1150, 932];                                    // trekanten under sängen (bakom sängens framkant, ett hörn syns)
 
 let L, G;
 const iFig = ([x, fot], [px, py], s = LS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
@@ -88,7 +88,7 @@ function rummet({ golv = GOLVET, korgen = true, under = false } = {}) {
   R.rum({ dag: true });
   if (korgen) korg();
   for (const [n, p] of Object.entries(golv)) kloss(n, p, n === 'trekant' ? 6 : n === 'fyrkant' ? -4 : 0);
-  if (under) kloss('trekant', UNDER, 18, KS, 'under');
+  if (under) kloss('trekant', UNDER, 14, KS * 0.85, 'under');
 }
 const VID = { cirkel: VID_KORG.cirkel, fyrkant: VID_KORG.fyrkant, trekant: GOLVET.trekant };
 function trekantPapper(k, fyll) {   // kritan ritar trekanten på papperet: kontur k 0–1, ifyllnad inifrån fyll 0–1
@@ -159,8 +159,8 @@ const RAD = {
   '24': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(NARA()); lova([LX, FOT], F('tanker', { titt: [-14, 0] }), P({ rikt: -0.3 }));
     const [x, y] = iFig([LX, FOT], [512, 330]); rak(x - 60, y, x - 160, y, 3); rak(x + 60, y, x + 160, y, 3); },
   '25a': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(HEL); lova([LX, FOT], F('nyfiken'), P({})); },
-  '25b': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(UNDER[0], UNDER[1] - 40, 3)); skimmer(UNDER[0] + 30, UNDER[1] - 30, 0.35, 0.8); },
-  '26': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(UNDER[0], UNDER[1] - 40, 3)); skimmer(UNDER[0] + 30, UNDER[1] - 30, 0.9, 0.9); },
+  '25b': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(UNDER[0], UNDER[1] - 40, 3)); skimmer(UNDER[0] - 10, UNDER[1] + 2, 0.35, 0.8); },
+  '26': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(UNDER[0], UNDER[1] - 40, 3)); skimmer(UNDER[0] - 10, UNDER[1] + 2, 0.9, 0.9); },
   '27a': () => { rummet({ golv: {} }); lada(); R.kamera([1.5, 900, 820]); lova([LX + 60, FOT], F('ivrig', { titt: [14, 8] }), P({ ...L.POSER.nar, rikt: 0.5 }));
     kloss('trekant', [UNDER[0] - 120, FOT + 10], 10, KS, 'golvsak'); bage(UNDER[0], UNDER[1] + 20, UNDER[0] - 140, FOT - 20, -30, 5); bage(UNDER[0] - 160, FOT - 40, ladaPunkt(LADA.hal.trekant)[0] + 10, ladaPunkt(LADA.hal.trekant)[1] - 40, 160, 5); },
   '27b': () => { rummet({ golv: {} }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3)); const [x, y] = ladaPunkt(LADA.hal.trekant); kloss('trekant', [x, y + 14], 0, KS * 0.9, 'fram'); rak(x, y - 90, x, y - 20, 4); },
