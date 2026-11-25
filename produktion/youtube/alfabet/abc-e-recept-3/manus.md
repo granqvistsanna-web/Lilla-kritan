@@ -175,3 +175,8 @@ Idag tar elefanten ca 13 s att rita: konturen 6,5 × `TEMPO` 0,8 = 5,2 s, sedan 
 - **2:02, skuggorna:** mjukare och ljusare, ca 60 % av förra styrkan; klossarnas skugga lite bredare.
 - **Tempot:** gissningspausen 4 → 3,3 s (alla fem), gömlekens paus 3,2 → 2,8 s, efter *"Hopp, hopp, hopp!"* 1,0 → 0,6 s.
 - **0:06 och 0:44** (E hälsar och E deltar med *E!*, *E-e!*, *E?*) byggdes redan 2026-11-24: samtalet i introt och E:s fem toner.
+
+## Feedback 2026-11-25, åtgärdad samma dag
+
+- **0:33, musiken:** introts och berättelsens bädd (`abc-bad-lang`) 0,5 → 0,38.
+- **2:37, gömleken lättare att gissa:** klossarna vänder ryggen till på 0,9 s (var 0,5), varje byte tar 1,6 s (var 0,8) med 0,7 s vila emellan, och båda klossarna i ett byte snurrar ett varv medan de flyttar, så bilden syns en stund mitt i bytet och man ser vart elefanten går (`VANDSEK`, `BYTSEK`). Filmen är 4:14.

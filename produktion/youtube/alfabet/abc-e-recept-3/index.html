@@ -500,6 +500,7 @@ t = narbild(t + 0.3, { ansikte: 'jatteglad', pose: 'hurra', ljud: 2 });
 //    blandningen (tre byten mellan grannar), muren och EN runda "Vilken ska bort?".
 const NULEKER = t + 0.3;   // här byts musiken till lekens (Städa-radions slinga)
 let u = sag(NULEKER, 'p-nuleker');
+const VANDSEK = 0.9, BYTSEK = 1.6;   // gömleken långsammare (Sanna 2026-11-25, 2:37): vändningen 0,5 → 0,9 s, varje byte 0,8 → 1,6 s
 [elefant, ekorre, ekollon].forEach((s, i) => { const t0 = u + 0.2 + i * 0.8;
   s.kk.push([0, ...RC[i], 0, RS]); s.kpop = s.ksyns = t0; fx(t0, 'duns', 0.45);
   s.pa = [t0 + 0.3, t0 + 1.1]; fx(t0 + 1.0, 'klistra', 0.8); });
@@ -509,21 +510,22 @@ kamTill(u - 1.0, 960, 655, 1.35, 1.0);   // nära klossarna medan de blandas (li
 // blandas lugnt, "Var är elefanten?" och en paus med ledtrådar: elefanten brummar inifrån sin kloss och klossen vickar till, två gånger,
 // och kameran glider lite mot den. Sedan vänder elefantens kloss sig först: "Där är den!", och de andra efter.
 elefant.hopp.push(u - 0.4); u = sag(u - 0.3, 'n-titta-noga-1') + 0.4;
-for (const s of [elefant, ekorre, ekollon]) s.vand = [u]; fx(u, 'swoosh', 0.4); u += 1.0;
+for (const s of [elefant, ekorre, ekollon]) s.vand = [u]; fx(u, 'swoosh', 0.4); u += VANDSEK + 0.6;   // lugnare vändning (Sanna 2026-11-25, 2:37)
 { const at = { elefant: 0, ekorre: 1, ekollon: 2 }, vem = p => [elefant, ekorre, ekollon].find(s => at[s.namn] === p);
   let ts = u;
   for (const [p, q] of [[0, 1], [1, 2], [1, 2]]) {
     const over = vem(p), under = vem(q);
-    flyttaK(over, ts, [...RC[q], 0], RS, 0.8, 265); flyttaK(under, ts, [...RC[p], 0], RS, 0.8, 0);   // lyfts rakt upp lite högre än klossen och sätts ner (inte högre: då hamnar den vid bokstavsmärket i zoomen)
+    flyttaK(over, ts, [...RC[q], 0], RS, BYTSEK, 265); flyttaK(under, ts, [...RC[p], 0], RS, BYTSEK, 0);   // lyfts rakt upp lite högre än klossen och sätts ner (inte högre: då hamnar den vid bokstavsmärket i zoomen)
+    for (const s of [over, under]) s.spinn.push([ts + 0.1, ts + BYTSEK - 0.1]);   // snurrar ett varv medan den flyttar: bilden syns en stund mitt i, så barnet ser vart elefanten går (Sanna 2026-11-25, 2:37)
     [at[over.namn], at[under.namn]] = [q, p];
-    fx(ts, 'swoosh', 0.45); fx(ts + 0.78, 'duns', 0.3); ts += 1.1;
+    fx(ts, 'swoosh', 0.45); fx(ts + BYTSEK - 0.02, 'duns', 0.3); ts += BYTSEK + 0.7;
   }
   u = ts + 0.1; }
 u = sag(u + 0.2, 'n-var-ar-elefanten');
 { const [cx, cy] = klossLage(elefant.kk, u); kamTill(u + 0.2, lerp(960, cx, 0.35), lerp(655, cy, 0.3), 1.42, 2.6);
   for (const h of [u + 0.5, u + 1.9]) { elefant.vick.push(h); fxf(h, BRUM(h < u + 1 ? 1 : 6), 0.55, { langd: 1.0, fade: 0.3 }); } }
 u += 2.8;   // paus: barnet gissar (var 3,2; lite fortare tempo 2026-11-25)
-elefant.vand.push(u); fx(u, 'swoosh', 0.4); u += 0.55;
+elefant.vand.push(u); fx(u, 'swoosh', 0.4); u += VANDSEK + 0.05;
 elefant.hopp.push(u); fx(u, 'pling', 0.4); fxf(u + 0.1, BRUM(3), 0.8, { langd: 1.2, fade: 0.3 }); u = sag(u + 0.1, 'n-dar-ar-den') + 0.2;   // elefantens kloss: där!
 for (const s of [ekorre, ekollon]) s.vand.push(u - 0.6); fx(u - 0.6, 'swoosh', 0.3);
 kamTill(u - 0.2, MURX, 600, 1.3, 1.2);   // till muren
@@ -702,7 +704,7 @@ let sist = t;
 const UT = [sist, sist + 0.9], DURATION = UT[1] + 0.4;   // B-märket står kvar en stund, sedan tonar allt ut
 // Musiken i tre delar (Sanna 2026-11-18 kväll: den korta slingan hördes gå om): Gissa teckningens bädd medan kritan ritar,
 // Städa-radions sömlösa slinga (64 s) under leken och den funkiga tagningen (disco-funkig.m4a) i discot och till slutet.
-LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.5, loop: true, langd: NULEKER + 0.6, fade: 1.2 },
+LJUD.unshift({ t: 0, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.38, loop: true, langd: NULEKER + 0.6, fade: 1.2 },   // 0.5 → 0.38 (Sanna 2026-11-25, 0:33: sänk musiken lite)
   { t: NULEKER - 0.2, fil: 'assets/ljud/musik/stada-radion-slinga.m4a', vol: 0.42, loop: true, langd: MUSIK_DISCO - NULEKER - 0.6, fade: 1.2, fadeIn: 1.0 },
   { t: MUSIK_DISCO, fil: 'assets/ljud/musik/disco-funkig.m4a', vol: 0.75, langd: Math.min(20.7, DURATION - MUSIK_DISCO), fade: 1.5 });
 // discotagningen är 20,8 s och tar slut medan klossarna rullar ut: introts bädd tar över mjukt till slutet (outrot, 2026-11-19)
@@ -934,7 +936,7 @@ function klossO(X, t) {
   const topp = X.toppT?.some(([a, b]) => t >= a && t < b), lyft = (mur ? (topp ? 22 : 0) : 40) * hopp + kant, S = sd * pop;
   const slut = X.slutVrid ? (X.slutAv ? 1 - inUt(del(X.slutAv.slice(0, 2), t)) + inUt(del(X.slutAv.slice(2), t)) : 1) * X.slutVrid * inUt(del([MURTID[1] + (X === elefant ? 0.5 : 0), MURTID[1] + (X === elefant ? 1.5 : 1.0)], t)) : 0;   // vrids medan den flyttar till slutraden
   const spinn = (X.spinn ?? []).reduce((v, [a, b]) => v + 2 * Math.PI * inUt(del([a, b], t)), 0);   // hela varv i torndansen
-  const vand = (X.vand ?? []).reduce((v, a) => v + Math.PI * inUt(del([a, a + 0.5], t)), 0);   // gömleken: ett halvt varv per vändning
+  const vand = (X.vand ?? []).reduce((v, a) => v + Math.PI * inUt(del([a, a + VANDSEK], t)), 0);   // gömleken: ett halvt varv per vändning
   const vick = (X.vick ?? []).reduce((v, a) => { const d = t - a; return d > 0 && d < 0.9 ? v + 0.07 * Math.sin(d * 2 * Math.PI / 0.3) * (1 - d / 0.9) : v; }, 0);   // ledtråd: klossen vickar till
   const vrid = slut + spinn + vand + (X === A ? 0.08 * Math.sin(t * 2 * Math.PI / 7) * (1 - inUt(del([A.vrid, A.vrid + 1], t))) : 0);
   if (X === A) {   // från hörnet och framåt ligger A-märket fast i skärmen, ovanpå bilden: kameran flyttar och zoomar inte det (Sanna 2026-11-18)
