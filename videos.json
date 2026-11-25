@@ -1612,11 +1612,12 @@
   "status": "granska"
  },
  "056": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/056-1125-2003.mp4",
-  "duration": 144.0,
-  "rendered": "2026-11-25 20:03 (Provlyssning: Malins 44 repliker (15 nya, tydligare) över stillbild med sovbilden, lampan och täcket. Ingen animatik än.)",
-  "file": "avsnitt/056-raven-gar-och-lagger-sig/film/provlyssna-repliker.mp4",
-  "status": "granska"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/056-1125-2011.mp4",
+  "duration": 191.8,
+  "rendered": "2026-11-25 20:12 (Animatik (grind 5): 42 stillbilder med Malin, rävens ljud och effekter, 3:12. Fler reaktioner, närmare, snabbare enligt feedbacken.)",
+  "file": "avsnitt/056-raven-gar-och-lagger-sig/storyboard/animatik.mp4",
+  "status": "granska",
+  "name": "animatik"
  },
  "053": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1125-2009.mp4",
