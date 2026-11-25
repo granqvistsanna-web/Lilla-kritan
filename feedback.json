@@ -9745,5 +9745,35 @@
   "fixed": false,
   "at": 1795641287585,
   "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)"
+ },
+ "9x8fk15e2wmwwmlcng": {
+  "ep": "052",
+  "time": "1:03",
+  "sec": 63,
+  "tags": [],
+  "note": "zoom out more here",
+  "fixed": false,
+  "at": 1795641510220,
+  "render": "2026-11-25 22:10"
+ },
+ "ssxniceun0mwwmm792": {
+  "ep": "052",
+  "time": "2:57",
+  "sec": 177,
+  "tags": [],
+  "note": "find sock earlier when they are looking",
+  "fixed": false,
+  "at": 1795641549878,
+  "render": "2026-11-25 22:10"
+ },
+ "5w5mjwvfpvmwwmmgmg": {
+  "ep": "052",
+  "time": "3:04",
+  "sec": 184,
+  "tags": [],
+  "note": "close door in video too",
+  "fixed": false,
+  "at": 1795641562024,
+  "render": "2026-11-25 22:10"
  }
 }
