@@ -1612,10 +1612,10 @@
   "status": "granska"
  },
  "056": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/056-1125-2011.mp4",
-  "duration": 191.8,
-  "rendered": "2026-11-25 20:12 (Animatik (grind 5): 42 stillbilder med Malin, rävens ljud och effekter, 3:12. Fler reaktioner, närmare, snabbare enligt feedbacken.)",
-  "file": "avsnitt/056-raven-gar-och-lagger-sig/storyboard/animatik.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/056-1125-2045.mp4",
+  "duration": 194.7,
+  "rendered": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)",
+  "file": "avsnitt/056-raven-gar-och-lagger-sig/film/avsnitt-056.mp4",
   "status": "granska",
   "name": "animatik"
  },
