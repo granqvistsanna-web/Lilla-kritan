@@ -425,9 +425,9 @@ const S = {
     return tl < c ? { plats: 'bad', kam: [2.8, BO_SKAFTET[0], GOLV - 70], skim: [BO_SKAFTET, 0.9 * bump(0, c + 0.6, tl), 0.6] }
       : RUM({ kam: K_NARA(2.1, -40), oron: 1, mage: 1, moln: 1, f: F('jatteglad', { ogonS: [1.1, 1.1], titt: [14, 8] }), p: P({ rikt: 0.35, oron: [-12 * del(c, c + 0.3, tl), -12 * del(c, c + 0.3, tl)] }) }); },
   // lammet sträcker sig mot pallen; borsten glider ut bakom pallen, hoppar upp och glider i en båge till lammets tass (som handduken)
-  '25': (tl, d) => { const ut = del(0.4, 1.1, tl), x = lerp(BO_PALL[0], BO_START[0], ut);
+  '25': (tl, d) => { const ut = del(0.4, 1.1, tl), x = lerp(BO_PALL[0], BO_START[0] - 6, ut);
     let [bp, r, lag, sp] = boGolv(x);
-    if (tl > 1.2) { [bp, r] = vag(tl, [bp, 0], [[1.2, 1.5, BO_HALL(), -90, 340]]); lag = 'saker'; sp = tl < 1.95; }   // vänds mitt i flygturen, där den går fortast
+    if (tl > 1.2) { [bp, r] = vag(tl, [bp, 0], [[1.2, 0.5, [BO_START[0] - 10, 560], -30, 0], [1.7, 1.1, BO_HALL(), -90, 80]]); lag = 'saker'; sp = tl < 2.2; }   // lyfter rakt upp först, så att den aldrig nuddar pallens hörn   // vänds mitt i flygturen, där den går fortast
     const mot = del(0.2, 0.6, tl) * (1 - del(2.2, 2.7, tl));
     return RUM({ kam: K_HALV, oron: 1, mage: 1, moln: 1, f: F(tl > 2.5 ? 'jatteglad' : 'nyfiken', { titt: [14 * mot, 10 * mot - 6 * bump(1.2, 2.5, tl)] }), p: P({ rikt: 0.4 * mot, luta: 4 * mot }),
       bo: [bp, r, lag, sp] }); },

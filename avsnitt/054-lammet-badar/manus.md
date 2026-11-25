@@ -216,6 +216,7 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **Kameran:** `djup.kamera` ger en lugn glid eller push i varje utsnitt (förut ett eget tau-push). Rad 1 (ritintrot) står still, och pappret har ingen parallax.
 - **Ångan** är `djup.anga` i två lager, en svag bakom lammet och en ännu svagare framför. Den syns fortfarande bara på *"varmt"* (rad 4–5) och tonas in och ut som förut.
 - **Skumbubblorna** längs karkanten är `djup.skum` med ljuset uppe till vänster, så att de glittrar.
+- **QA:** rad 23a är 0,6 s längre, så att bräkandet efter *"Men … var är borsten?"* klingar ut före klippet (det klipptes av tvärt). Borstens flygtur i rad 25 är kontrollerad i täta bilder: den lyfter framför karet och flyger över pallen till tassen utan att gå genom något.
 
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
