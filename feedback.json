@@ -9499,9 +9499,10 @@
   "sec": 35,
   "tags": [],
   "note": "bedding on bed please. consider new bed with bedding",
-  "fixed": false,
+  "fixed": true,
   "at": 1795634946952,
-  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)",
+  "fixedAt": 1795636339060
  },
  "0bampwxujzmwwipkjl": {
   "ep": "052",
