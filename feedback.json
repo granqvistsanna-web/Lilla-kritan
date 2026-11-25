@@ -7603,16 +7603,6 @@
   "render": "2026-11-21 22:09 (feedback 21/11 kväll: julkula i ritintrot, ny replik om julpyntet, pallen, det sista pyntet och lamporna, mer inredning (förhandsvisning))",
   "fixedAt": 1795296489526
  },
- "nk5sikm3vkmwqvofv4": {
-  "ep": "049",
-  "time": "",
-  "sec": -1,
-  "tags": [],
-  "note": "en liten pall så musen kan hänga kulor högre i granen",
-  "fixed": false,
-  "at": 1795293973840,
-  "render": "2026-11-21 21:42 (Djup QA: ingen prick vid hakan, huvudet vänder sig, spegeln (16a) och tanden (31a) ritas inte över tandläkaren. Snabb förhandsvisning.)"
- },
  "y22g8qcvkmmwqwv9g3": {
   "ep": "049",
   "time": "1:31",
@@ -9198,5 +9188,45 @@
   "at": 1795355922747,
   "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)",
   "fixedAt": 1795591119016
+ },
+ "oledq7jxu8mwvskela": {
+  "ep": "049",
+  "time": "0:56",
+  "sec": 56,
+  "tags": [],
+  "note": "abrubpt cut and change of position, make more semaless",
+  "fixed": false,
+  "at": 1795591077598,
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+ },
+ "4dukbe1wsymwvsldve": {
+  "ep": "049",
+  "time": "0:40",
+  "sec": 40,
+  "tags": [],
+  "note": "commen stor stol after mention of stol. when mention stol zoom in on stol too",
+  "fixed": false,
+  "at": 1795591123322,
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+ },
+ "46k58n4maymwvsm1dp": {
+  "ep": "049",
+  "time": "2:56",
+  "sec": 176,
+  "tags": [],
+  "note": "be more clear röd tandborste",
+  "fixed": false,
+  "at": 1795591153789,
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+ },
+ "wmlh2qm2hjmwvsnff3": {
+  "ep": "049",
+  "time": "4:02",
+  "sec": 242,
+  "tags": [],
+  "note": "malin vo poor, should be och en till elefanten as in elefanten får en också now it sounds like and another for the elephant",
+  "fixed": false,
+  "at": 1795591218639,
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
  }
 }
