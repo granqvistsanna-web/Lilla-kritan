@@ -12,7 +12,7 @@
   <defs>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
     <filter id="korn" x="0" y="0" width="1" height="1">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
@@ -101,7 +101,7 @@ const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.
 function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));   // line boil 2,5 px i bild (CLAUDE.md)
 }
 const HALV = () => kamera(1.45, STA[0] + 120, 640), NARA = () => kamera(2.1, STA[0], 640), NARA_BEN = () => kamera(2.4, STA[0], 830),
   NARA_HUVUD = () => kamera(2.4, STA[0], 560), NARA_HANG = () => kamera(2.2, 1380, 560), NARA_KORG = () => kamera(2.6, 1430, 790);
@@ -334,7 +334,7 @@ const efter = (id, n) => IDX[id] > IDX[n], fran = (id, n) => IDX[id] >= IDX[n];
 // (x 121–1657, pallen helt utanför), K_HALV har dörrens kant med vredet till vänster och hängaren hel (x 380–1660, ingen pallflisa).
 // Reaktionerna får närbild på ansiktet (K_ANSIKTE).
 const K_HEL = [1, 960, 540], K_VID = [1.25, 889, 610], K_HALV = [1.5, 1020, 620], K_NARA = [1.75, STA[0], 620], K_BEN = [1.7, STA[0] - 20, 720],
-  K_HUVUD = [1.9, STA[0], 590], K_ANSIKTE = [2.3, STA[0], 590], K_HANG = [1.45, 1250, 600], K_KORG = [2.1, 1430, 780], K_ORON = [2.6, STA[0], 600], K_LUFT = [1.27, 889, 600], K_VANT = [1.7, 780, 610];
+  K_HUVUD = [1.9, STA[0], 590], K_ANSIKTE = [2.3, STA[0], 590], K_HANG = [1.45, 1250, 600], K_KORG = [2.5, 1540, 820], K_ORON = [2.6, STA[0], 600], K_LUFT = [1.27, 889, 600], K_VANT = [1.7, 780, 610];
 function kam(k) { KAM = k; kamera(...k); }
 const skarm = ([x, y]) => { const [z, cx, cy] = KAM, tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z)); return [tx + x * z, ty + y * z]; };
 
@@ -568,19 +568,22 @@ const draU = t => { let n = 0, f = 0; DRA_HOPP.forEach((h, i) => { if (t >= h + 
   return lerp(DRA_U0, DRA_TOPP, (n + (n < 5 ? f : 0)) / 5); };
 const pkM = u => { const [x, y] = pBacke(u); return new DOMMatrix().translate(x, y + 6).rotate(lutning(u)).scale(PK).translate(-PULKA.mitt[0], -PULKA.mitt[1]); };
 // k 0 = står vid backen (u), 1 = sitter på pulkan (su); däremellan ett lugnt hopp
-function hoppPulka(k, u, su, f, pSta, t) {
-  const m = mjuk(k), [wx, wy] = pBacke(u), [sx, sy] = pBacke(su), v = lutning(su);
-  const g = document.createElementNS(NS, 'g'); g.setAttribute('transform', `translate(${f1(lerp(wx, sx, m))} ${f1(lerp(wy + 8, sy + 6, m) - 70 * Math.sin(Math.PI * kl(k)))}) rotate(${(v * m).toFixed(2)})`);
+// H = hoppets höjd. QA 25/11 (lucka 1, 3:50): med 70 px gled stövlarna genom pulkan. Med H 185 lyfter kaninen rakt upp först, håller höjden medan
+// stövlarna passerar pulkans höga nos och sjunker sedan ner i sitsen (benen dras upp tidigt i hoppet: sittposen blandas in från k 0,2).
+function hoppPulka(k, u, su, f, pSta, t, H = 70) {
+  const m = mjuk(k), mx = H > 70 ? mjuk(kl((k - 0.35) / 0.6)) : m, lyftH = H > 70 ? H * (k < 0.35 ? Math.sin(Math.PI / 2 * kl(k) / 0.35) : 1 - mjuk((k - 0.6) / 0.4)) : H * Math.sin(Math.PI * kl(k)), ms = H > 70 ? del(0.2, 0.85, k) : m, [wx, wy] = pBacke(u), [sx, sy] = pBacke(su), v = lutning(su);
+  const g = document.createElementNS(NS, 'g'); g.setAttribute('transform', `translate(${f1(lerp(wx, sx, mx))} ${f1(lerp(wy + 8, sy + 6, mx) - lyftH)}) rotate(${(v * ms).toFixed(2)})`);
   $('figurer').appendChild(g);
-  const p = L.blandaPose(pSta, P({ ...L.POSER.sitter }), m);
+  const p = L.blandaPose(pSta, P({ ...L.POSER.sitter }), ms);
   kanin([PK_SITS[0] * m, PK_SITS[1] * m], BLINKA(f, t), liv(p, t), { ...ALLT_V, foralder: g });
 }
 // kaninen skuttar från platsen nedanför backen uppför backen (fyra lugna skutt) och hoppar upp på pulkan på krönet
-const GA_SKUTT = 0.6, GA_SITT = 4 * GA_SKUTT;
+// sista skuttet slutar fritt till höger om pulkans nos (GA_U, x ≈ 1125; nosen x ≈ 900), inte framför pulkan (QA 25/11)
+const GA_SKUTT = 0.6, GA_SITT = 4 * GA_SKUTT, GA_U = 0.1;
 function gaPulka(x, t) {
   pulkaG(KRON, { kaninPa: false });
-  if (x >= GA_SITT) { hoppPulka(del(GA_SITT, GA_SITT + 0.7, x), 0.6, KRON, FF('jatteglad'), P({ rikt: -0.8 }), t); return; }
-  const pts = [[1400, 930], ...[0.02, 0.22, 0.42, 0.6].map(u => { const [a, b] = pBacke(u); return [a, b + 8]; })];
+  if (x >= GA_SITT) { hoppPulka(del(GA_SITT, GA_SITT + 0.7, x), GA_U, KRON, FF('jatteglad'), P({ rikt: -0.8 }), t, 185); return; }
+  const pts = [[1400, 930], ...[0.02, 0.05, 0.08, GA_U].map(u => { const [a, b] = pBacke(u); return [a, b + 8]; })];
   const i = Math.min(3, Math.floor(x / GA_SKUTT)), a = i * GA_SKUTT;
   const p = skutt(P({ rikt: -0.8 * del(0, 0.3, x) - 0.5 * (1 - del(0, 0.3, x)), upp: 0.3 }), x, a, 32, 0.5);
   kanin(hoppVag(x, a, a + 0.5, pts[i], pts[i + 1]), BLINKA(FF('jatteglad', { titt: [-12, -6] }), t), liv(p, t), { ...ALLT_V });
@@ -798,7 +801,7 @@ function rita(t) {
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FDFBF4" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
   window.kritsvep(st.svep || 0, '#3FA2DC');
-  $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
+  $('brus').setAttribute('seed', (Math.floor(t * 6 + 1e-6) % 50) + 1);   // ny brusbild 6 gånger/s
   window.kant?.uppdatera();
 }
 // Ritintrot ritar pulkan (Sanna 2026-11-18 "draw sled"): målet syns från första sekunden, och kritan ritar samma pulka i backen sedan.

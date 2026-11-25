@@ -1,0 +1,30 @@
+01 26.42 Här kommer katten
+02 29.82 Hej katten
+03 33.12 Gapa stort
+04 36.92 mellanspel katt
+05 41.12 Borsta borsta
+06 45.12 uppe
+07 46.92 nere
+08 48.72 Rena tänder
+09 50.02 Hurra
+10 51.02 En gång till
+11 63.02 Här kommer kaninen
+12 66.12 Gapa stort2
+13 68.92 mellanspel kanin
+14 76.32 uppe2
+15 78.12 nere2
+16 79.92 Rena tänder2
+17 93.92 Här kommer pandan
+18 97.42 Gapa stort3
+19 100.92 mellanspel panda
+20 108.92 dans
+21 115.92 dans2
+22 145.12 Alla borstar
+23 149.92 uppe4
+24 152.22 nere4
+25 155.82 God jul
+26 156.92 Var är tänderna
+27 158.72 paus
+28 160.72 Där är de
+29 163.32 God jul2
+30 165.02 Hej då

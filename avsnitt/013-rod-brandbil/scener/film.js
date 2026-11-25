@@ -244,6 +244,8 @@ window.ready = (async () => {
     ANIM[id]((TID - a) / (b - a), TID - a, b - a);
     for (const c of SVEP) if (Math.abs(TID - c) < SV) rodsvep(0.5 + (TID - c) / (2 * SV), false);   // inget äpple i svepen (Sanna 2026-11-09)
     $('brus').setAttribute('seed', Math.floor(TID * 6) % 50 + 1);   // kritkanten kokar sex gånger i sekunden
+    const zoom = +(($('kamera').getAttribute('transform') || '').match(/scale\(([\d.]+)/) || [0, 1])[1];
+    $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(3));   // 2,5 px i bild i alla zoomar (QA 25/11)
 
   };
   await new Promise(r => setTimeout(r, 1500));   // urklippen hinner laddas

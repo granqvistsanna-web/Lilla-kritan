@@ -1,0 +1,30 @@
+01 37.68 Rosa
+02 45.68 blomma
+03 48.88 en till
+04 50.78 blommor överallt
+05 54.98 Hurra
+06 64.38 glassberg
+07 78.98 Titta där
+08 81.58 rosa ballong
+09 83.98 flyger upp
+10 86.38 upp upp
+11 88.88 där uppe
+12 90.88 rosa moln
+13 93.48 Mjukt
+14 95.48 Hej då ballong
+15 107.18 glassberg2
+16 108.18 Upp bland molnen
+17 117.68 Vad kommer här
+18 123.98 rosa bil
+19 126.08 Brum
+20 128.88 Vart ska vi åka
+21 130.88 köpa glass
+22 133.28 rosa glass
+23 135.78 vinglar
+24 140.88 tyst överraskning
+25 159.18 Nu dansar
+26 162.08 Klappa
+27 164.28 Gunga
+28 166.48 Hoppa
+29 190.58 Rosa blommor
+30 197.98 Rosa glass

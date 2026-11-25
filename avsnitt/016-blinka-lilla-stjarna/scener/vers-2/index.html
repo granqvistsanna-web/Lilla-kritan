@@ -31,7 +31,8 @@ const slag = s => kit.takt(s + S0) - S0;                                     // 
 const R = [0, 1, 2, 3, 4, 5].map(rad);
 
 // närbilder av de liggande figurerna (ansiktena ur LAGE_LIGG_ANS / NICKE_ANS i bild)
-const LAGE_NAR = [641, 445 + m.STIG_DY, 380], NICKE_NAR = [m.LIGG_NICKE_X, 470 + m.STIG_DY, 300];   // + STIG_DY: filten ligger lägre (runda 5)
+// QA 2026-11-25: hunden ligger på sidan (huvudet till vänster mot kudden), och den andra figuren är helt utanför närbilden, aldrig halv vid kanten
+const LAGE_NAR = [575, 450 + m.STIG_DY, 440], NICKE_NAR = [925, 477 + m.STIG_DY, 320];   // + STIG_DY: filten ligger lägre (runda 5)
 // klipplistan: [början, kamera]; ett klipp på radens början och högst ett till inne i raden
 const KLIPP = [
   [R[0], K.stj],                 // 16 stjärnan (första bilden, t = 0, är ändå tva = S3)

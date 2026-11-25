@@ -82,7 +82,9 @@ function kamera(z = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${z})`);
 }
-const KAM = { hel: [1], halv: [1.5, 1010, MARK - 230], glipa: [2.1, GLIPA[0], MARK - 160], glipaHalv: [1.8, GLIPA[0] - 90, MARK - 170],
+// QA 25/11: halv 1010 → 900, så att kaninens vänstra arm har luft till vänsterkanten (rad 26 använder också halv)
+// QA 25/11 (Sanna): glipa 1225 → 1360, så att kaninens arm och spade inte sticker in vid vänsterkanten i detaljen på lyktan
+const KAM = { hel: [1], halv: [1.5, 900, MARK - 230], glipa: [2.1, GLIPA[0] + 135, MARK - 160], glipaHalv: [1.8, GLIPA[0] - 90, MARK - 170],
   fonster: [1.2, 1150, 560], hoger: [1.6, 1480, MARK - 250], lykta: [1.7, 1330, MARK - 210], hog: [1.7, 560, MARK - 240], kaninHalv: [1.6, STA[0] + 80, MARK - 260] };
 const nara = (pos, dy = 0) => kamera(2.0, pos[0], pos[1] - 345 + dy);
 
@@ -120,7 +122,12 @@ function hink([x, fot, h], rot = 0, full = 0, lager = 'saker', mark = null) {
   // Feedback 22/11 b ("the filled snow sits a bit over bucket"): kupolen satt på y 190, ovanför kanten och bredare än hinken
   const sno = full > 0 ? `<path d="M222 420 Q236 ${f1(420 - 80 * full)} 512 ${f1(410 - 100 * full)} Q790 ${f1(420 - 80 * full)} 804 420 Z" fill="#fbfdff" stroke="#d6e4f4" stroke-width="12"/>` : '';
   const dy = rot > 90 ? 46 * mjuk((rot - 90) / 90) : 0, id = 'hinkklipp' + lager;
-  lagg(lager, `${mark != null ? `<clipPath id="${id}"><rect x="-3000" y="-3000" width="8000" height="${f1(mark + 3000)}"/></clipPath>` : ''}<g ${mark != null ? `clip-path="url(#${id})"` : ''}><g transform="translate(0 ${f1(dy)})"><g transform="translate(${f1(cx)} ${f1(cy)}) rotate(${f1(rot)}) translate(${f1(-cx)} ${f1(-cy)})"><g transform="${sakT('hink', x, fot, h)}">${sno}<image href="${SAK.hink[0]}" width="1024" height="1024"/></g></g></g></g>`);
+  // QA 25/11 ("handtaget hänger ner genom snön"): handtaget (hinkens bild ovanför y 362) fälls ner över hinkens sida när hinken
+  // vänds, runt fästena vid kanten (y 400): skalas i höjdled 1 → −0,85, så att det aldrig hänger ut under kanten
+  const fall = mjuk((Math.abs(rot) - 60) / 100), hy = lerp(1, -0.85, fall), img = `<image href="${SAK.hink[0]}" width="1024" height="1024"`;
+  const kropp = fall > 0 ? `<clipPath id="hk${id}"><rect x="0" y="362" width="1024" height="662"/></clipPath><clipPath id="hh${id}"><rect x="0" y="0" width="1024" height="362"/></clipPath>
+    ${img} clip-path="url(#hk${id})"/><g transform="translate(0 400) scale(1 ${hy.toFixed(3)}) translate(0 -400)">${img} clip-path="url(#hh${id})"/></g>` : `${img}/>`;
+  lagg(lager, `${mark != null ? `<clipPath id="${id}"><rect x="-3000" y="-3000" width="8000" height="${f1(mark + 3000)}"/></clipPath>` : ''}<g ${mark != null ? `clip-path="url(#${id})"` : ''}><g transform="translate(0 ${f1(dy)})"><g transform="translate(${f1(cx)} ${f1(cy)}) rotate(${f1(rot)}) translate(${f1(-cx)} ${f1(-cy)})"><g transform="${sakT('hink', x, fot, h)}">${sno}${kropp}</g></g></g></g>`);
 }
 // ljuset i glipan; tand 0–1 (lågan och skenet), fyll 0–1 (fylls i inifrån efter kritans kontur)
 function ljus(tand = 1, fyll = 1) {
@@ -369,7 +376,7 @@ function S(id, tl, d) {
     case '25b': { const inn = del(0.3, 1.5, tl), ut = del(d - 1.3, d - 0.2, tl), dr = inn * (1 - ut);   // tonar över, står kvar, tonar tillbaka
       return { kam: 'hel', hog: 1, n: 3, tornO: 1 - dr, drom: dr, spade: 'tass', k: { pos: VID, f: FB(glad, F('kawaii', { titt: [14, -10] }), del(0.1, 0.6, tl)), p: P({ rikt: 0.4, luta: 3 * dr }) } }; }
     case '26': { const a = 0.4, rit = d - a - 0.6;
-      return { kam: 'glipaHalv', hog: 1, n: 3, spade: 'tass', k: { pos: VID, f: F('nyfiken', { titt: [14, 6] }), p: P({ rikt: 0.4 }) }, rit: { namn: 'ljus', P: [GLIPA[0], MARK - 2, LJUS_H], k: ritfart((tl - a) / (rit * 0.7)), bredd: 7 },
+      return { kam: 'halv', hog: 1, n: 3, spade: 'tass', k: { pos: VID, f: F('nyfiken', { titt: [14, 6] }), p: P({ rikt: 0.4 }) }, rit: { namn: 'ljus', P: [GLIPA[0], MARK - 2, LJUS_H], k: ritfart((tl - a) / (rit * 0.7)), bredd: 7 },
         ljusX: { k: (tl - a - rit * 0.72) / (rit * 0.28) }, krita: { namn: 'ljus', inn: del(0, a, tl), W: [GLIPA[0] + 90, MARK - 170], slut: 'ljus', m: del(a + rit, a + rit + 0.5, tl) } }; }
     case '27': return { kam: 'glipa', hog: 1, n: 3, spade: 'tass', k: { pos: VID, f: F('nyfiken', { titt: [16, 6] }), p: P({ rikt: 0.5 }) }, rit: { namn: 'ljus', P: [GLIPA[0], MARK - 2, LJUS_H], k: 1, bredd: 7 }, ljusX: { k: 1 },
       krita: { W: [GLIPA[0] + 90, MARK - 170] } };
@@ -386,7 +393,8 @@ function S(id, tl, d) {
     case '32': return { kam: 'lykta', hog: 1, n: 3, spade: 'mark3', ljus: {}, k: null };
     // --- lek och hej då ---
     case '33': {   // hoppar bakom lyktan och fram på andra sidan (figurerna ligger bakom sakerna)
-      const h = LT('hopp-mjuk'), X = [VID[0], 980, 1300, HO[0]], fn = LT('kanin-ny/kanin-ny-fniss')[0] ?? 99; let pos = VID;
+      // QA 25/11 ("tassen över högra tornets hörn"): mellanlandningen 1300 → 1250, mitt bakom lyktan, så att båda tassarna är bakom tornen
+      const h = LT('hopp-mjuk'), X = [VID[0], 980, 1250, HO[0]], fn = LT('kanin-ny/kanin-ny-fniss')[0] ?? 99; let pos = VID;
       for (let i = 0; i < 3; i++) if (tl >= h[i] - 0.25) pos = skutt([X[i], MARK], [X[i + 1], MARK], tl, h[i] - 0.25, h[i] + 0.35, i === 1 ? 140 : 80);
       // feedback J23 3:02 ("make bunny jump on hopp"): ett hopp på stället på varje "Hopp!" (ljuden 4 och 5 ligger mitt i luften),
       // armarna lyfts och öronen släpar som i rad 2s hopp

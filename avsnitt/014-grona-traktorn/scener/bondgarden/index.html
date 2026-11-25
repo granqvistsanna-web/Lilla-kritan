@@ -326,10 +326,14 @@ function lovaLage(t, sate) {
   };
   const sitter = { x: sitt[0], y: sitt[1], s: LOVA_S, ben: sittBen, framfor: false };
   if (t < T.NED[0]) return null;
-  // hon landar till vänster om bänken (fri från Gurra) och går bakom Gurra och Pip, bakom sitsen, inte över dem (granskningen 2026-11-06)
-  if (t < T.NED[1]) return { ...hopp(sate, [-25, G.GOLV + 6], T.NED, 30, LK_S, LOVA_S), bakom: true };
-  if (t < T.SITT1[0]) return { ...ga([-25, G.GOLV + 6], [G.LOVA_SIT + 40, G.GOLV + 6], T.GA), vanner: t > T.GA[0] };
-  if (t < T.SITT1[1]) return { ...hopp([G.LOVA_SIT + 40, G.GOLV + 6], sitt, T.SITT1, 22), framfor: false };
+  // hon landar till vänster om bänken (fri från Gurra) och går bakom Gurra och Pip, bakom sitsen, inte över dem (granskningen 2026-11-06).
+  // Bakom bänken går hon längre in i bilden, med fötterna i sitsens höjd (dolda bakom sitsen), inte på golvet framför den: annars
+  // skär sitsen över kroppen och benen syns mellan bänkbenen, som om hon går genom bänken (QA 2026-11-25). Hon är bakom traktorn,
+  // Gurra, Pip och sitsen hela vägen (lagret före traktorn), så att fötterna aldrig svävar framför huven
+  const bak = [-25, sitt[1] + 5];   // fötterna precis ovanför sitsens underkant: så nära golvlinjen som går utan att synas under sitsen
+  if (t < T.NED[1]) return { ...hopp(sate, bak, T.NED, 30, LK_S, LOVA_S), bakom: true };
+  if (t < T.SITT1[0]) return { ...ga(bak, [G.LOVA_SIT + 40, bak[1]], T.GA), bakom: true };   // bakom traktorns huv också (hon står längre in än traktorn)
+  if (t < T.SITT1[1]) return { ...hopp([G.LOVA_SIT + 40, bak[1]], sitt, T.SITT1, 22), framfor: false };
   if (t < T.GAR[0]) return sitter;
   if (t < T.GAR[1]) return hopp(sitt, vid, T.GAR, 18);
   if (t < T.SITT2[0]) return { x: vid[0], y: vid[1], s: LOVA_S, ben: {}, framfor: true };
@@ -474,7 +478,9 @@ function render(t) {
     } else {
       pipVar = 'golv';
       const q = del(...T.HOPP_NER, t), hp = mjukaPoser.hopp(t, T.HOPP_NER[0], T.HOPP_NER[1], 0, 0.14, 0.2);
-      const a = pipPa(G.PIP_X), b = pipGolv(250), [x, y] = bage([a.x, a.y], [b.x, b.y], mjuk(q), 18);
+      // hon hoppar upp och fram över sitsens framkant (fötterna över sitsen) och landar framför bänken, sjunker inte genom den (QA 2026-11-25)
+      const a = pipPa(G.PIP_X), b = pipGolv(250), [x, y] = bage([a.x, a.y], [b.x, b.y], mjuk(q), 65);
+      if (mjuk(q) < 0.39) pipVar = 'bank';
       const trill = mjuk(del(T.TRILL, T.TRILL + 0.4, t)) * (1 - mjuk(del(T.UPPE[0], T.UPPE[1], t)));
       const gar = mjuk(del(T.UPPE[1], T.UPPE[1] + 0.4, t));
       const pick = T.PICK.reduce((m, x) => Math.max(m, Math.sin(Math.PI * clamp((t - x + 0.12) / 0.32))), 0);

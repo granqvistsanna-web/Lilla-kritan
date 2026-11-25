@@ -43,7 +43,7 @@ const T = {
   pek: [75.7, 78.2],                                      // Lage pekar upp (armen ner före gäspningen)
   rrr: [78.5, 79.5],                                      // LAGE "Voff-aaah!" (gäspningen; var "Rrroar!" när det var ett lejon)
   rest: [79.7, 81.6],                                     // "Oj, det blev visst en gäspning."
-  ligg: [81.8, 82.8],                                     // lägger sig: hukar, byter till liggande bilden, landar
+  ligg: [81.6, 83.6],                                     // lägger sig på sidan (riggens lagga, 2 s)
   kryp: [80.4, 83.0],                                     // Nicke kryper intill
 };
 const LM = (T.ligg[0] + T.ligg[1]) / 2;
@@ -130,15 +130,9 @@ function render(t) {
   if (!PEK) { N.lage.pose({ sitter: 1, x: 640, y: m.FILT_Y + 10 }); PEK = N.lage.pekVinkel(N.stjarna.mitt()); }
   const pek = over(del(T.pek[0] - 0.2, T.pek[0] + 0.4, s)) * (1 - mjuk(del(T.pek[1] - 0.4, T.pek[1] + 0.2, s)));
 
-  // lägger sig: hukar (squash) till mitten, byter till liggande bilden, landar med en liten efterstuds
-  if (s < LM) {
-    const huk = Math.sin(Math.PI / 2 * mjuk(del(T.ligg[0], LM, s)));
-    N.lage.pose({ ...L, sitter: 1, x: lerp(640, m.LIGG_LAGE_X, huk), y: m.FILT_Y + 10,
-      sx: (L.sx ?? 1) * (1 + 0.06 * huk), sy: (L.sy ?? 1) * (1 - 0.12 * huk), armR: lerp(35, PEK, pek) });
-  } else {
-    const land = hopp(s, LM, LM + 0.01, 0, 0, 0.35);
-    N.lage.pose({ ...L, ligger: true, sx: land.sx, sy: land.sy });
-  }
+  // lägger sig på sidan (QA 2026-11-25: sover = ligger på sidan): armarna in längs kroppen, sedan vrids han lugnt ner mot kudden
+  const lagg = mjuk(del(...T.ligg, s));
+  N.lage.pose({ ...L, sitter: 1, x: lerp(640, m.LIGG_LAGE_X - 20, lagg), y: m.FILT_Y + 10, lagg, armR: lerp(lerp(35, PEK, pek), 35, lagg) });
 
   // ---- Nicke ----
   let n;
@@ -163,7 +157,7 @@ function render(t) {
   // ---- kameran: hårda klipp på slagen ----
   let lage = 'hel';
   for (const [k0, l] of KLIPP) if (s >= k0) lage = l;
-  kit.utsnitt(lage === 'nicke' && s >= 72 && s < 74.281 ? [m.NICKE_X + 10, 585, 380] : K[lage]);   // QA 2026-11-12: Nicke i mitten av sin närbild
+  kit.utsnitt(K[lage]);   // närbilderna: K.lage13 / K.nicke (natt.js, QA 2026-11-25)
 }
 
 // bara första bilden glider (S2:s närbild ut till helbilden när dansen börjar); resten är hårda klipp

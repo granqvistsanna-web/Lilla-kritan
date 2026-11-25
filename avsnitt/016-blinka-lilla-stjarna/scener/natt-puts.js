@@ -52,7 +52,7 @@ function lagg(N) {
     const y = N.kulle(x) + 6, g = el('g', {}, grasG), inre = el('g', {}, g);
     g.setAttribute('transform', `translate(${x} ${y})`);
     const s = 0.8 + 0.4 * ((i * 37) % 10) / 10;
-    inre.innerHTML = `<g transform="scale(${s})" filter="url(#boil)" stroke-linecap="round" fill="none">
+    inre.innerHTML = `<g transform="scale(${s})" stroke-linecap="round" fill="none">   <!-- boil från #boil runt kameran (inte dubbelt) -->
       <path d="M-9 0 Q-12 -14 -16 -24" stroke="#4E6B4A" stroke-width="5"/><path d="M0 0 Q1 -18 -2 -32" stroke="#5E7C57" stroke-width="5"/>
       <path d="M8 0 Q12 -12 18 -20" stroke="#4E6B4A" stroke-width="5"/></g>`;
     return { inre, fas: i * 1.3 };
@@ -75,7 +75,7 @@ function lagg(N) {
     .sort((a, b) => a[1][0] - b[1][0]).map(([i]) => i);
   // markskuggor (015): mjuka mörkgröna ellipser på marken, lite åt höger; under nallen bakom den, under de liggande ovanpå filten
   const skugga = fore => { const e = el('ellipse', { fill: '#14240F', filter: 'url(#markskugga)' }); fore ? fore.before(e) : N.mark.appendChild(e); return e; };
-  const skuggor = [[N.korg, skugga(N.korg.g), 0.4], [N.nalle, skugga(N.nalle.g), 0.42], [N.lage.ligg, skugga(), 0.45], [N.nicke.sov, skugga(), 0.42]];
+  const skuggor = [[N.korg, skugga(N.korg.g), 0.4], [N.nalle, skugga(N.nalle.g), 0.42], [N.nicke.sov, skugga(), 0.42]];
   // riggarnas egen skugga (hård svart ellips) blir mjuk och mörkgrön som markskuggorna
   for (const f of [N.lage.st.fig, N.nicke.st.fig]) { const e = f.querySelector('.skugga'); e.setAttribute('fill', '#14240F'); e.setAttribute('filter', 'url(#markskugga)'); e.setAttribute('ry', 26); }
   // ton och vinjett över bilden (skärmen, följer inte kameran), under kornet

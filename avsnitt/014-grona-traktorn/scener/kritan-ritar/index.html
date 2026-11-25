@@ -142,6 +142,10 @@ async function bygg() {
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
       <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
     </filter>
+    <filter id="boil-zoom" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="4000">
+      <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap id="boil-zoom-skala" in="SourceGraphic" scale="1"/>
+    </filter>
     <path id="krita-form" d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z"/>
     <filter id="kritkant-mild" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568">
       <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="4"/>
@@ -156,7 +160,7 @@ async function bygg() {
     <rect x="-400" y="-300" width="2720" height="1680" fill="#FBF7EE"/>
     <rect x="-400" y="-300" width="2720" height="1680" filter="url(#korn)"/></g></g>`;
   // den ritade traktorn (kokar), i traktorns 1024-ruta
-  const ritad = el('g', { id: 'ritad', transform: `translate(${RB[1] + OFF[0]} ${RB[2] + OFF[1]}) scale(${RB[0]})` }, el('g', { filter: 'url(#boil)' }, drag.kam));
+  const ritad = el('g', { id: 'ritad', transform: `translate(${RB[1] + OFF[0]} ${RB[2] + OFF[1]}) scale(${RB[0]})` }, el('g', { filter: 'url(#boil-zoom)' }, drag.kam));   // inne i den zoomade kameran: egen boil, skalan delad med zoomen (nedan)
   drag.studs = el('g', {}, ritad);
   bygg_ritning(drag.studs);
   drag.kantFilter = kant.lagg(drag.rand, { andel: 0.01 }).getAttribute('filter');   // vit kant (verktyg/kant.js), sätts på när kroppen är klar
@@ -245,6 +249,7 @@ function render(t) {
   });
   const zk = inUt(del(T.zoom, t)), [cx, cy, z] = KAM.map((v, i) => lerp([W / 2, H / 2, 1][i], v, zk));
   drag.kam.setAttribute('transform', `translate(${W / 2} ${H / 2}) scale(${z.toFixed(4)}) translate(${-cx.toFixed(2)} ${-cy.toFixed(2)})`);
+  document.getElementById('boil-zoom-skala').setAttribute('scale', (2.5 / z * W / 1920).toFixed(3));   // 2,5 px i bild (som kit.BOIL), brusbilden byts i kit.js
 
   const k = kritan(t, skrrt);
   stall(drag.krita, k.p, k.v, k.syns ?? true, k.sk ?? 1);

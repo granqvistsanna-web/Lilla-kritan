@@ -190,7 +190,10 @@ async function tittut(g) {
   // inom saken: där figuren kan stå helt bakom den (aldrig utanför, så att inget syns under golvet bredvid saken)
   const inom = (s, x) => { const lo = s.x0 + figB * 0.62, hi = s.x1 - figB * 0.62; return lo > hi ? (s.x0 + s.x1) / 2 : clamp(x, lo, hi); };   // 0,62: armarna sticker ut lite utanför kroppen; smalare sak än figuren: mitt bakom
   const hog = s => s.h > H * 1.6;
-  const bakY = s => s.hog ? s.y - 40 : s.y - 6;   // fötterna bakom saken (högre upp bakom trädet: inget syns mellan rötterna)   // mycket högre än figuren (trädet): går in från sidan och tittar fram från sidan
+  const bakY = s => s.hog ? s.y - 40 : s.y - 6;
+  // g.granKik: var figuren står precis helt dold bakom en hög sak (smalaste raden från foten till huvudet), och var hela ansiktet syns förbi kanten
+  const granDold = (s, dir) => { let m = Infinity; for (let yy = bakY(s) - 10; yy >= bakY(s) - H; yy -= 8) m = Math.min(m, dir * (kantVid(s, yy, dir) - s.x)); return s.x + dir * (m - figB * 0.55); };
+  const granAnsikte = (s, dir) => kantVid(s, bakY(s) - H * 0.62, dir) + dir * figB * 0.14;   // fötterna bakom saken (högre upp bakom trädet: inget syns mellan rötterna)   // mycket högre än figuren (trädet): går in från sidan och tittar fram från sidan
   // höga saker får masken efter sin riktiga form rad för rad (stammen är smalare än rötterna), låga efter överkanten
   for (const s of DJUP) {
     s.hog = hog(s);
@@ -687,6 +690,10 @@ async function tittut(g) {
           for (let yy = nu.y - 50; yy >= nu.y - H * 0.6; yy -= 8) halv = Math.max(halv, (kantVid(nu, yy, 1) - kantVid(nu, yy, -1)) / 2);
           const fotHalv = (kantVid(nu, nu.y - 50, 1) - kantVid(nu, nu.y - 50, -1)) / 2;
           const skjut = Math.max(0, fotHalv - figB * 0.32), behovs = Math.max(0, halv - figB / 2) + figB * 0.45;
+          if (HUVUD && g.granKik) {   // g.granKik (grisen, QA 2026-11-25): hela ansiktet förbi grenkanten i huvudhöjd, annars syns en halv gris med ett öga som ser vänd ut
+            const dold = granDold(nu, sida), f = clamp((qq - 0.6) / 0.25);   // dold kant först (osynligt), sedan förbi kanten på ett ögonblick: ingen halv gris på vägen
+            kx = (qq < 0.6 ? lerp(nu.x, dold, qq / 0.6) : lerp(dold, granAnsikte(nu, sida), mjuk(f))) - x; lut = sida * qq * 4; return;
+          }
           if (HUVUD) {   // v2 (Sanna 2026-11-07): hela kroppen glider ut tills huvudet och ett öga syns vid stammens kant
             kx = (nu.x - x) + sida * qq * (halv - figB * 0.2); lut = sida * qq * 8; return;
           }
@@ -728,8 +735,14 @@ async function tittut(g) {
       const px = R.rorelse === 'sida' ? kx : clamp(kx / 0.7), py = del(0.7, 1, kx);
       const xe = R.rorelse === 'sida' ? (hog(ut) ? kantVid(ut, ut.y - H * 0.6, R.dir) : R.dir > 0 ? ut.vid[1] : ut.vid[0]) - R.dir * H * 0.31 : R.inne;   // precis dold vid kanten (kroppens halva bredd)
       const xs = R.dir * (xe - R.inne) > 0 ? lerp(R.inne, xe, inUt(clamp(k / delUpp))) : R.inne;
-      const x = lerp(xs, R.slutPos[0], hog(ut) || R.rorelse === 'sida' ? px : inUt(px)),   // hög sak: en mjukning, inte två (gick ut på 0,6 s)
-         y = lerp(bakY(ut), R.slutPos[1], inUt(py));
+      let x = lerp(xs, R.slutPos[0], hog(ut) || R.rorelse === 'sida' ? px : inUt(px));   // hög sak: en mjukning, inte två (gick ut på 0,6 s)
+      const y = lerp(bakY(ut), R.slutPos[1], inUt(py));
+      if (g.granKik && hog(ut) && R.rorelse === 'sida') {   // g.granKik: förbi grenkanten på 0,15 s (ploppar fram), sedan lugnt till platsen; förr syntes en böjd strimma av kroppen ca 0,5 s
+        const k1 = delUpp, k2 = k1 + 0.15 / (R.fram[1] - R.hall - R.fram[0]), d = R.dir, xd = granDold(ut, d);
+        let xf = kantVid(ut, bakY(ut) - H * 0.45, d) + d * figB * 0.45;
+        if (d * (xf - R.slutPos[0]) > 0) xf = R.slutPos[0];
+        x = k < k1 ? lerp(R.inne, xd, inUt(k / k1)) : k < k2 ? lerp(xd, xf, mjuk((k - k1) / (k2 - k1))) : lerp(xf, R.slutPos[0], inUt((k - k2) / (1 - k2)));
+      }
       const ute = x < ut.vid[0] - figB * 0.45 || x > ut.vid[1] + figB * 0.45;
       // ur: när saken är högre än figuren (kaninen och stöveln, Sanna 2026-11-11) kommer huvudet upp en bit över kanten; med retas 'oron' (kaninen, sandlådan) minst lika högt som huvudkiken; annars som förut
       const kantH = ut.y - 6 - toppVid(ut, R.inne), urSj = kantH > H ? H * 0.55 - kantH : g.retas === 'oron' ? Math.min(kvar * 0.3, H * 0.62 - kantH) : kvar * 0.3, cu = clamp(ku);

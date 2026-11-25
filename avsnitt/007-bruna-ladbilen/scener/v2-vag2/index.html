@@ -11,7 +11,8 @@
 <body>
 <!-- Avsnitt 007 v2, sångtid 1:07–1:15 (Sanna 2026-11-09: "maybe 1:18 back to road? for a bit of variation"), mellan två molnövergångar.
      "Chokladträd på rad, på rad (på rad!)": lastbilen kör med grodan, lammet och nallen, och längs vägen står chokladträd i stället
-     för granar; en ny brun gran poppar upp på varje "på rad". "Kolahavet fullt av smak!": närbild på flaket, alla slickar sig om munnen.
+     för granar; en ny brun gran poppar upp på varje "på rad". QA 2026-11-25 (bilden på orden): scenen slutar 72,0 med ett rakt klipp
+     till kolahavet i v2-landet på "Kolahavet fullt av smak!" (förut närbild på flaket och lammets ansikte, där inget kolahav syns).
      Renderas alltid med --v2. -->
 <script src="../kit.js"></script><script src="../../../../verktyg/kant.js"></script><script src="../ansikten.js"></script>
 <script src="../v2-riggar.js"></script><script src="../v2.js"></script><script src="../lastbilen.js"></script>
@@ -23,10 +24,10 @@ const [a0, a1] = M.bild('v2-vag2'), SLUT = a1 - a0, K0 = a0 - M.av;   // K0 = 67
 const fas = t => (t + K0 - BEAT0) / BEAT, tk = s => kit.takt(s) - K0;   // tk: sångtid → närmaste slag i scentid
 const V = 120, pop = u => u <= 0 ? 0 : 1 - Math.exp(-7 * u) * Math.cos(16 * u);
 const ev = (t, a, b, r = 0.25) => mjuk(del(a, a + r, t)) * (1 - mjuk(del(b - r, b, t)));
-const T = { PA_RAD: [tk(68.3), tk(69.7), tk(71.1)], SMAK: [tk(72.0), SLUT], MUMS: [tk(73.2), tk(74.6)] };
+const T = { PA_RAD: [tk(68.3), tk(69.7), tk(71.1)], SMAK: [1e9, 1e9], MUMS: [1e9, 1e9] };   // QA 2026-11-25: smak och mums ligger nu i v2-landet
 // runda 7 ("instead of cloud transition zoom in on sheep face and wink one eye and then zoom out and sheep standing on rutchkana"):
 // efter "mums" glider kameran in på lammets ansikte och lammet blinkar med ena ögat; raka klippet till v2-landet (75,8) sker på ansiktet
-T.ANS = [73.9 - K0, 75.6 - K0]; T.BLINKA = [75.55 - K0, 76.0 - K0];   // runda 8: mycket närmare (bara ögon, nos och mun) och långsammare
+T.ANS = [1e9, 1e9 + 1]; T.BLINKA = [1e9, 1e9];   // QA 2026-11-25: ingen ansiktszoom, scenen slutar före   // runda 8: mycket närmare (bara ögon, nos och mun) och långsammare
 
 const L = kit.duk(kit.VAG_PLATTA);
 const vag = kit.vag(L.plate);
@@ -50,7 +51,6 @@ const NYA_X = [1000, 1180, 1340];   // i bild när de poppar, rullar sedan bakå
 const BIL = { x: M.matt.BIL.x, y: M.matt.BIL.gv, h: M.matt.BIL.h };
 T.PA_RAD.forEach(a => kit.ljud('pop', a, { vol: 0.3 }));
 kit.ljud('brum', 0, { loop: true, langd: SLUT, vol: 0.15, fade: 0.5 });
-kit.ljud('mmm', T.MUMS[0], { vol: 0.3 }); kit.ljud('slurp', T.MUMS[0] + 0.4, { vol: 0.25 });
 const PUFF = lastbilen.puffTider(0.2, SLUT, []);
 
 function render(t) {

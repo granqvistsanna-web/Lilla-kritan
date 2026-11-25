@@ -153,7 +153,9 @@ function sakFyll(namn, pos, fyll, lager = 'saker') {
 const ritaSak = (namn, pos, k, farg, o = 1) => { const [t, s] = sakT(namn, pos); return kontur(namn, t, ritfart(k), 5 / s, farg, o); };
 const skugga = (x, fot, rx, lager = 'bak', o = 0.08) => lagg(lager, `<ellipse cx="${f1(x)}" cy="${f1(fot - 2)}" rx="${f1(rx)}" ry="${f1(rx * 0.12)}" fill="#000" opacity="${o}"/>`);
 const BD = 100;   // Sanna 2026-11-22 (J17 0:43): "bigger ball" (78 → 100)
-const boll = ([x, y], rot = 0) => { skugga(x, y + BD / 2 + 2, BD * 0.42 * (1 - kl((y + BD / 2 - K_GOLV) / -300) * 0.5), 'bak'); sak('boll', x, y + BD / 2, BD, { rot, mitt: true }); };
+const boll = ([x, y], rot = 0) => { skugga(x, y + BD / 2 + 2, BD * 0.42 * (1 - kl((y + BD / 2 - K_GOLV) / -300) * 0.5), 'bak'); sak('boll', x, y + BD / 2, BD, { rot, mitt: true });
+  // QA 25/11 (Sanna: rätta): under pallen ligger bollen bakom pallens ben och tvärslå – pallens grönt nyckelt ur plattan läggs över bollen
+  if (PW === 2880 && y + BD / 2 < 880) lagg('pilar', `<defs><filter id="pallnyckel" filterUnits="userSpaceOnUse" x="1660" y="727" width="200" height="126" color-interpolation-filters="sRGB"><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -4 4 0 0 -0.25"/></filter><clipPath id="pallben"><rect x="1660" y="727" width="200" height="126"/></clipPath></defs><g clip-path="url(#pallben)"><image href="${KAKTUS}" width="2880" height="1080" filter="url(#pallnyckel)"/></g>`); };
 
 // --- Kaktusrummet (2880 bred): dörren x 155–500, pallen med kaktusen x 1670–1855 (fötterna y 845), golvet från 812 ---------------
 const K_GOLV = 905, STA = [1250, K_GOLV], PALLK = [1762, 845];
@@ -182,8 +184,9 @@ function bollNu() {
   if (TT < at('41')) { const [x, y, r] = kast(BOLL_MITT, BOLL_PALL, at('4', 0.5), at('4', 1.5), 40); return [x, y, r + 90]; }
   const UT = [1700, K_GOLV - BD / 2], LAND = [1790, K_GOLV - BD / 2];   // Sanna 2026-11-21 (J17 QA): bollen går aldrig genom hunden – den hoppar åt höger, inte över hunden
   if (TT < at('42')) { const [x, y, r] = kast(BOLL_PALL, UT, at('41', 0.35), at('41', 1.2), 10); return [x, y, 200 + r]; }
-  const [x, y, r] = kast(UT, LAND, at('42', 0.4), at('42', 1.3), 120);
-  return [x, y - 24 * bump(at('42', 1.3), at('42', 1.65), TT) - 9 * bump(at('42', 1.65), at('42', 1.9), TT), r];
+  // QA 25/11 (inget går genom något): bågen var 120 px och bollen gick över pallens sits; nu ett lågt hopp under sitsen
+  const [x, y, r] = kast(UT, LAND, at('42', 0.4), at('42', 1.3), 50);
+  return [x, y - 16 * bump(at('42', 1.3), at('42', 1.65), TT) - 6 * bump(at('42', 1.65), at('42', 1.9), TT), r];
 }
 
 // --- Badrummet (som 023): handfatet till höger, pallen bakom, pottan på golvet till vänster -----------------------------------------
@@ -564,7 +567,8 @@ const S = {
     hund(B_POTTA, ANS('glad', { titt: [14, 12] }), { ...SITTER, rikt: 0.3, armar: [6, 6 - 40 * ner], hall: [0, tl > r ? 1 : 0] }, { sak: tl > r ? 'lapp' : null, armVila: [1, 0] }); },
   '31': (tl, d) => { badrum(); pottaKam(); const ner = bump(0.1, 0.55, tl);
     hund(B_POTTA, ANS('glad', { titt: [0, 8] }), { ...SITTER, hall: [0, 1], armar: [6, 6 - 70 * ner] }, { sak: ner > 0.6 ? null : 'lapp', armVila: [1, 0] }); },
-  '32': (tl, d) => { badrum(); pottaKam(); const plopp = Math.max(1.0, mo(0) + rl(39) * 0.3), upp = del(0.15, 0.7, tl), fn = del(lo(1) - 0.2, lo(1) + 0.2, tl);
+  '32': (tl, d) => { badrum(); kameraMix(UT('halv', [POTTA[0], B_GOLV], 1 / 3), UT('halv', [B_BREDVID[0] - 100, B_GOLV]), del(0.15, 0.9, tl));   // kameran följer hoppet ner, så att hunden inte hamnar halvt utanför bild
+    const plopp = Math.max(1.0, mo(0) + rl(39) * 0.3), upp = del(0.15, 0.7, tl), fn = del(lo(1) - 0.2, lo(1) + 0.2, tl);
     // hoppar ner bredvid pottan med lappen, släpper den i pottan på "Plopp!" (Sanna 2026-11-20: hunden sitter PÅ pottan)
     const x = lerp(B_POTTA[0], B_BREDVID[0] - 100, upp), y = lerp(B_POTTA[1], B_GOLV, upp);
     hund([x, y], mellan(ANS('glad', { titt: [6, 10] }), ANS('fnissig'), fn), { ...mellan(P(SITTER), P({ rikt: 0.35 }), upp), hall: [0, tl < plopp ? 1 : 0] },
@@ -579,9 +583,9 @@ const S = {
     const u = kl((tl - 0.15) / 0.75), m = mjuk(u);
     const x = lerp(B_BREDVID[0], VIDF[0], m), y = lerp(B_GOLV, VIDF[1], m) - 150 * Math.sin(Math.PI * u);
     hund([x, y], ANS('glad', { titt: [10, 6] }), { rikt: 0.4 * (1 - m), strack: 0.05 * bump(0.1, 0.4, tl) - 0.04 * bump(0.85, 1.1, tl) }, { dold: tl > 0.85, s: lerp(DS, DSF, m) }); },
-  '35': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [10, 14] }), { armar: [6, 50 * del(0, 0.3, tl)] }, { dold: true, s: DSF, armVila: 0 }); kamera(2.4, BX + 70, RIM - 60);
+  '35': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [10, 14] }), { armar: [6, 50 * del(0, 0.3, tl)] }, { dold: true, s: DSF, armVila: 0 }); ut('nara', VIDF, 0.5, DSF);   // QA 25/11: luvan kapades i kamera(2.4); samma närbild som rad 37
     const [x, y] = tass(1); lagg('fram', tuss(x, y - 6, 14 + 10 * del(lo(0), lo(0) + 1.5, tl))); },
-  '36': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [-10, 14] }), { armar: [50 * del(0, 0.3, tl), 50] }, { dold: true, s: DSF, armVila: 0 }); kamera(2.4, BX + 20, RIM - 60);
+  '36': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [-10, 14] }), { armar: [50 * del(0, 0.3, tl), 50] }, { dold: true, s: DSF, armVila: 0 }); ut('nara', VIDF, 0.5, DSF);   // QA 25/11: luvan kapades i kamera(2.4); samma närbild som rad 37
     const [x, y] = tass(-1), [x2, y2] = tass(1); lagg('fram', tuss(x, y - 6, 12 + 10 * del(lo(0), lo(0) + 1.5, tl)) + tuss(x2, y2 - 6, 24)); },
   '37': (tl, d) => { badrum(); const gn = lo(1), bort = del(gn, gn + 0.4, tl), arm = bump(gn - 0.5, gn + 0.6, tl);
     hund(VIDF, mellan(ANS('fnissig'), ANS('glad'), bort), { armar: [6, 6 + 110 * arm], luta: -3 * arm }, { dold: true, s: DSF, armVila: 0 }); const [x, y] = iG(512, 450); ut('nara', VIDF, 0.5, DSF);
@@ -647,6 +651,8 @@ function ljud() {
   // julkarolen under varje sammanhängande följd av rader med musik: true. Sanna 2026-11-20: "lower music" (animatiken 0,25 → här 0,15 × 0,4 = 0,06, ca 12 dB under Malin)
   let m = null; for (const r of RAD_L) { if (!r.musik) { m = null; continue; }
     if (m && Math.abs(m.t + m.langd - r.s) < 0.01) m.langd += r.d; else ut.push(m = { t: r.s, fil: KAROL, vol: 0.15, langd: r.d, loop: true, fadeIn: 0.6, fade: 1.2 }); }
+  // QA 25/11: badrummet (rad 16–40) hade inget ljud under pauserna (frågorna, kritan ritar) – badrumsljudet lågt under, som 041 (0,45)
+  ut.push({ t: at('16'), fil: E + 'badrumsljud/badrumsljud-2.m4a', vol: 0.45, langd: at('41') - at('16'), loop: true, fadeIn: 1.0, fade: 1.2 });
   return ut.filter(c => c.t < DURATION);
 }
 

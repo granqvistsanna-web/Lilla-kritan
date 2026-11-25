@@ -17,7 +17,7 @@
     </filter>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
     <filter id="fjader" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
     <clipPath id="tubkropp"><rect width="386" height="594"/></clipPath><clipPath id="tubkork"><rect y="594" width="386" height="147"/></clipPath>
@@ -84,7 +84,7 @@ const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.
 function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2)); $('brus').setAttribute('seed', 1 + Math.floor(TT * 6) % 50);   // line boil 2,5 px i bild, ny brusbild 6 gånger/s (CLAUDE.md)
 }
 
 // --- Effekter och notation ---------------------------------------------------------------------------------------------------
@@ -186,7 +186,7 @@ let SAK = null;
 const MUN0 = [512, 528];   // J03 runda 6 (1:45): borsten lite lägre, 488 → 528   // J03: större gap (mun 58 × 48), borsten lägre                                // borsthuvudets mål: mitt i den öppna munnen (GAP); flyttas när den gnuggar
 // borsten i tassen: m 0 framför magen … 1 vid munnen, g gnuggandet −1 … 1, rad 0 övre raden … 1 nedre
 const BP = (m, g = 0, rad = 0, extra = {}) => { L.HAND.mun = [MUN0[0] + 22 * g * m, MUN0[1] - 8 + 18 * rad];
-  return { hall: [0, 1], fram: [0, 1], hand: 1, klapp: 40, armar: [0, -95 + 4 * g * m], sakGrepp: 1, sakMun: m, sakV: -72 + 30 * m + 4 * g * m, ...extra }; };
+  return { hall: [0, 1], fram: [0, 1], hand: 0, klapp: 40, armar: [0, -95 + 4 * g * m], sakGrepp: 1, sakMun: m, sakV: -72 + 30 * m + 4 * g * m, ...extra }; };
 // sakens mitt i bild (kamerans ruta), för flygturen in i tassen och bubblorna
 function sakSkarm() { const e = [...G.querySelectorAll('.sak-plats')].find(x => x.getAttribute('display') === 'inline'); if (!e) return null;
   const r = e.querySelector('.sak-ting').getBoundingClientRect(), m = $('kamera').getScreenCTM().inverse(), q = new DOMPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2).matrixTransform(m); return [q.x, q.y, e]; }

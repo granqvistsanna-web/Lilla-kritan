@@ -415,7 +415,8 @@ const takt = s => SLAG.length ? SLAG.reduce((a, b) => Math.abs(b - s) < Math.abs
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
 // Boil: förskjutning i px och hur många bilder (av 30/s) mellan varje ny seed.
-const BOIL = { skala: 2.5, bilder: 4 };   // 2,5 i 1376-duken = 3,5 px i 1920
+const BOIL = { skala: 2.5 * W / 1920, bilder: 5 };   // line boil 2,5 px i bild (1920), ny brusbild 6 gånger/s (CLAUDE.md, QA 2026-11-25; förr 2,5 i duken = 3,5 px, 7,5/s).
+// #boil ligger utanför kameran (skärmens mått), så skalan är fast; ett #boil inne i en zoomad grupp ska ha egen skala delad med zoomen (kritan-ritar)
 const BUSS_RORELSE = {
   gungGrader: 1.2,     // största lutning när bussen gungar i takt
   gungBeats: 4,        // ett helt gung (vänster–höger) per 4 beats: långsamt, inte varje steg

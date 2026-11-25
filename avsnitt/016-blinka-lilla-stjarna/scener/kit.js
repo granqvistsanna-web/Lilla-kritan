@@ -267,7 +267,9 @@ const takt = s => SLAG.length ? SLAG.reduce((a, b) => Math.abs(b - s) < Math.abs
 
 
 // Boil: förskjutning i px och hur många bilder (av 30/s) mellan varje ny seed.
-const BOIL = { skala: 2.5, bilder: 4 };   // 2,5 i 1376-duken = 3,5 px i 1920
+// QA 2026-11-25 (CLAUDE.md: 2,5 px i bild, 6 gånger/s): #boil sitter utanför kameran (runt .kamera), så skalan är redan i bild och
+// delas inte med zoomen: 2,5 px i 1920 = 1,79 i 1376-duken; ny brusbild var 5:e bildruta = 6/s. Förut 2,5 i duken (3,5 px) och 7,5/s.
+const BOIL = { skala: 2.5 * 1376 / 1920, bilder: 5 };
 
 // ---------- drivaren ----------
 // Mjuka klipp (Sanna, 2026-11-05: "no abrupt cuts or jagged motions"): kit.kor(kit.mjukaKlipp(render, [t1, t2, …]), …).

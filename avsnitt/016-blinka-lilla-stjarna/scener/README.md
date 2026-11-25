@@ -149,3 +149,8 @@ QA: `_qa/runda4/` (skarvar, skarvar2, nytt).
 - **Lejonet liggande:** v2-ögon i kod (`lejonLigger`): ovala ögon med glans, lock som stängs till en båge, kinder, nos och leende; blicken flyttar hela ögat lite, inga rullande pupiller.
 - **v2-nallen:** `nalle-v2-ljus-tunn.png` (007) med ansiktet i kod (nosfläck, ovala ögon med ljus kant, kinder, leende; sluten båge när blink 1).
 - **Slutet som 015:** kameran åker sakta in mot de sovande (2:14–2:22.5), irisen sluter sig på 1,3 s, kort håll, stängs på pling 2:26.5, stjärnan glimtar i det svarta till slutet.
+
+## QA 2026-11-25 (julkalenderns lucka 11)
+- **Hunden sover på sidan** (regeln: sovande blundar och ligger på sidan): `natt.js` lägger riggen på sidan med Hugos `lagga`-tal (−78°, huvudet till vänster mot kudden) i stället för liggbilden på magen (`hugo-ligger.png`, finns kvar i assets). `N.lage.pose({ lagg: 0..1 })` = lägger sig från sittande (mellanspelet 81,6–83,6), `ligger: true` = ligger. Liggande x = `LIGG_LAGE_X − 20`.
+- **Närbilderna** rymmer bara sin figur (`format/bildutsnitt.md`): `natt.js` sätter `KAMERA.lage/lage13/nicke`, vers-2 och slutet har nya `LAGE_NAR`/`NICKE_NAR`; mellanspelets egen Nicke-närbild är borta (K.nicke).
+- **Line boil** 2,5 px i bild, ny brusbild 6 gånger/s (`kit.js` BOIL; #boil sitter utanför kameran, så skalan delas inte med zoomen). Gräset i `natt-puts.js` hade dubbel boil, borttagen. Prov i 30 fps: vers-2 median 4,2; kullen mäter 6,5 både med och utan boil (gången räknas, inte boilen).

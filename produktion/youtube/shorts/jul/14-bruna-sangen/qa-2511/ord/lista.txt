@@ -1,0 +1,30 @@
+01 48.4 bullar
+02 51.0 choklad
+03 52.8 kakor
+04 55.2 kola
+05 56.0 knäck
+06 57.1 chokladboll
+07 58.6 mums
+08 62.1 brunt
+09 71.6 Tänk om land
+10 74.0 chokladträd
+11 75.1 kolastrand
+12 80.6 rutschkana
+13 81.6 kolasås
+14 84.1 plask
+15 85.6 Mums
+16 87.1 Vilken färg
+17 99.1 Chokladträd på rad
+18 103.6 Kolahavet
+19 106.6 Uppför trappan
+20 109.6 Titta ner
+21 113.6 En rutschkana
+22 117.6 swish ner i såsen
+23 120.6 Plask
+24 143.1 Brygga chokladträd
+25 145.6 klättra upp
+26 149.6 En till dig
+27 152.6 kom och smaka
+28 181.6 Snurra runt
+29 182.6 Hoppa
+30 183.6 Plask

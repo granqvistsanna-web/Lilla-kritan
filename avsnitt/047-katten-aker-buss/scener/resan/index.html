@@ -22,7 +22,7 @@
     </filter>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
     <radialGradient id="imma" cx="0.5" cy="0.5" r="0.75">
       <stop offset="0" stop-color="#fff" stop-opacity="0.72"/><stop offset="1" stop-color="#fff" stop-opacity="0.97"/>
@@ -81,7 +81,7 @@ let GUNG = 0;
 function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${(ty + GUNG).toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2)); $('brus').setAttribute('seed', 1 + Math.floor(TT * 6) % 50);   // line boil 2,5 px i bild, ny brusbild 6 gånger/s (CLAUDE.md)
 }
 
 // --- Effekter (som 044) ---------------------------------------------------------------------------------------------------------
@@ -591,7 +591,7 @@ const fonsterStjarnor = () => [[383, 250], [1543, 250]].map(([x, y0], i) => { co
     <path transform="translate(${x} ${y + 4}) scale(${r})" d="${STJ5}" fill="#fffdf6" stroke="#d99a3a" stroke-width=".05" stroke-linejoin="round"/>
     <path transform="translate(${x} ${y + 4}) scale(${r * 0.5})" d="${STJ5}" fill="#ffe7a6" opacity=".8"/></g>`; }).join('');
 const dorr = (oppen = 0) => { $('platta').innerHTML = `<image href="${oppen ? DORR_OPPEN : DORR}" width="1920" height="1080"/>${fonsterStjarnor()}`; };
-const KD = 640, DGOLV = 1000;
+const KD = 640, DGOLV = 1000, KRAM = () => kamera(1.3, 820, 600);
 
 // --- Ritintrot: kritan ritar bussen (konturen ur urklippet, fönstren, dörren och hjulen som egna drag) --------------------------------
 const PB = [960, 560, 1.15];
@@ -826,8 +826,9 @@ const S = {
     fragaSkimmer(1060, 560, 1.0); snofall(0.6); },
   '43': tl => { const op = tl > 0.5; dorr(op ? 1 : 0); HEL(); if (op) farmor(ANS(tl > 0.9 ? 'jatteglad' : 'glad', {}, LF), {});
     katt(ANS(tl > 0.7 ? 'jatteglad' : 'nyfiken', { titt: [14, -6] }), ENHAND, { x: KD - 40, fot: DGOLV, lyft: skutt(tl, lo(1) - 0.1, lo(1) + 0.5, 22) }); snofall(); },
+  // kramen i halvnära med luft över farmors öron (QA 25/11: 1,5× med mitt 640 kapade öronen och huvudets topp)
   // 44 kramen: rosa hjärtan stiger upp mellan dem (Sanna 2026-11-21 "hearts pink on hug"), ett i taget, svajar och tonar bort
-  '44': tl => { dorr(1); kamera(1.5, 820, 640); const u = del(0.2, 1.2, tl);
+  '44': tl => { dorr(1); KRAM(); const u = del(0.2, 1.2, tl);
     farmor(ANS('glad', {}, LF), { luta: -8 * u, armar: [-40 * u, -40 * u], fram: [u, u] }, { x: lerp(970, 920, u) });
     katt(ANS('glad', { titt: [10, -8] }), { ...ENHAND, luta: 7 * u }, { x: lerp(KD - 40, KD + 90, u), fot: DGOLV }); snofall(0.5);
     for (let i = 0; i < 6; i++) { const q = (tl - 1.0 - 0.55 * i) / 2.4; if (q <= 0 || q >= 1) continue;
@@ -835,7 +836,7 @@ const S = {
       lagg('fram', `<g opacity="${o.toFixed(2)}" transform="rotate(${f1(10 * Math.sin(TT * 2 + i))} ${f1(x)} ${f1(y)})"><path d="${hjarta(x, y, r)}" fill="#f58fb3" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
         <ellipse cx="${f1(x - r * 0.45)}" cy="${f1(y - r * 0.55)}" rx="${f1(r * 0.22)}" ry="${f1(r * 0.14)}" fill="#ffd3e2" transform="rotate(-30 ${f1(x - r * 0.45)} ${f1(y - r * 0.55)})"/></g>`); } },
   // 45 glider ur kramen i stället för att hoppa (Sanna 2026-11-21 "abrupt clip"): samma platser och lutning som när 44 slutar, sedan isär och vinkar
-  '45': (tl, d) => { dorr(1); kamera(1.5, 820, 640); const e = mjuk(del(0, 1.0, tl));
+  '45': (tl, d) => { dorr(1); KRAM(); const e = mjuk(del(0, 1.0, tl));
     farmor(ANS('jatteglad', {}, LF), { luta: -8 * (1 - e), armar: [-40 * (1 - e), -40 * (1 - e)], fram: [1 - e, 1 - e] }, { x: lerp(920, 970, e), vinka: VINKA(tl, 0.9, 99) });
     katt(ANS(e > 0.5 ? 'jatteglad' : 'glad'), { ...ENHAND, luta: 7 * (1 - e) }, { x: lerp(KD + 90, KD, e), fot: DGOLV, vinka: VINKA(tl, 0.6, 99), nalleV: 4 }); snofall(0.5); },
   '46': (tl, d) => { const c = CUR; CUR = RR['45']; TT = RR['45'].s + RR['45'].d - 0.01; S['45'](RR['45'].d - 0.01, RR['45'].d); CUR = c; TT = RR['46'].s + tl;
@@ -951,7 +952,9 @@ window.ready = (async () => {
   GRAN_G = document.createElementNS('http://www.w3.org/2000/svg', 'g'); $('gomda').appendChild(GRAN_G); window.kant?.lagg(GRAN_G, { andel: 0.01 }); ['sakerbak', 'saker'].forEach(n => window.kant?.lagg($(n)));
   KONTUR.buss = await (await fetch(HAR + 'buss-kontur.json')).json();
   const bilder = [BUSS_INTRO, HAR + 'skylt-framfor.png', RYGG, BAKIFRAN, HALL, INNE, HAL, DORR, DORR_OPPEN, KRITA, NALLE, GUBBE, BUSS.fil, PLOG.fil, PULKA.fil, GRAN.fil, STJARNA, ...KAJ34.BILDER, ...['hus', 'sjo', 'pulkabacke', 'skog-bro', 'stan', 'farmors-hus', 'gran'].map(RP)];
-  await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  // avkodas i förväg och ligger kvar dolda i bilden (QA 25/11: första rutan inne i bussen saknade fönsterhålets bild, ljust fält till höger)
+  await Promise.all(bilder.map(u => { const i = new Image(); i.src = u; return i.decode().catch(() => {}); }));
+  $('ram').insertAdjacentHTML('afterend', `<g id="forladda" opacity="0.001">${bilder.map(u => `<image href="${u}" width="4" height="4"/>`).join('')}</g>`);
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;

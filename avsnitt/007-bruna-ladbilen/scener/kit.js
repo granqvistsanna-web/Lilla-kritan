@@ -429,7 +429,7 @@ function brun() {
 
 // ---------- bussens rörelse (samma lugna värden i alla scener) ----------
 // Boil: förskjutning i px och hur många bilder (av 30/s) mellan varje ny seed.
-const BOIL = { skala: 2.5, bilder: 4 };   // 2,5 i 1376-duken = 3,5 px i 1920
+const BOIL = { skala: +(2.5 * H / 1080).toFixed(3), bilder: 5 };   // 2,5 px i 1920-bilden (duken skalas 1080/768), ny brusbild 6 gånger/s (CLAUDE.md; QA 2026-11-25: förut 3,5 px och 7,5/s, median 7,2 px/s). #boil ligger utanför kameran, så zoomen påverkar den inte
 const BUSS_RORELSE = {
   gungGrader: 1.2,     // största lutning när bussen gungar i takt
   gungBeats: 4,        // ett helt gung (vänster–höger) per 4 beats: långsamt, inte varje steg

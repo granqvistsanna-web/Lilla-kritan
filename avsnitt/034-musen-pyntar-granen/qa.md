@@ -81,3 +81,15 @@ Filmen är 4:06 + intro (förut 3:46). Förhandsvisning `--snabb`, slutrendering
 | 4:02 julmusik | Pynta salen (instrumental slinga) lågt under hela filmen efter ritintrot, i scenens ljud så att luckan får den |
 
 Filmen är 4:16 (förut 4:07). Förhandsvisning `--snabb`, slutrendering inte gjord.
+
+## QA 2026-11-25 (julkalenderns djupa QA, lucka J22)
+
+| Fel | Rättning |
+|---|---|
+| Rad 14, 15, 19 (lucka 2:26, 2:34, 3:03): öronen och huvudets topp kapades när musen stod på pallens höga steg (K.STA följde inte med) | Kameran glider från K.STA till K.PALL (×1,2, cy 580) under klivet upp och tillbaka när musen kliver ner. Hela musen med öronen i bild |
+| Fötterna svävade över stegen, och riggens skugga hamnade på väggen | PALL_LAG/PALL_HOG 250/42 → 282/76 (riggens fötter slutar ca 10 px ovanför pos), skuggan ligger på stegets ovansida. Musen mitt på det höga steget (NAR.dx −8/−4/4, KT_UT kompenserat så att kulorna hänger på samma grenar); den blå lutar 5 i stället för 13, annars sjönk högra foten under kanten |
+| Line boil 5/zoom, ny brusbild 10 ggr/s | 2,5/zoom, 6 ggr/s |
+
+qa-film.sh på `--snabb`: boil i koden ok. "Röst tvärt vid klipp" 220,89 s är Malins *"Upp!"* (32), som börjar på klippet 24→25 och slutar på sitt p, alltså inte avklippt. Fryst bild 160–165,5 s är pausen på julgransfoten (rad 17, planerad). Täta bilder 6/s: 20,8–100,8 s och klivet i rad 14, 15 och 19.
+
+Kvar för Sanna: musens fötter är bredare än pallens höga steg, så tårna sticker ut lite på båda sidorna. Närbilderna på lådan (rad 3 och 9) har musens kropp utan huvud i vänsterkanten.

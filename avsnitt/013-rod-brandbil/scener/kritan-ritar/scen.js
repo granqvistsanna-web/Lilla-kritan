@@ -198,7 +198,7 @@
     const [cx, cy, z] = kamMix(kamMix(A1, UTE, ease(del(...T.ut, t))), [960, 540, 1], q);
     kam(z, cx, cy);
     $('rit-mjuk-b').setAttribute('stdDeviation', (1.1 * q).toFixed(2));
-    for (const b of ['brus', 'rit-brus']) $(b).nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));   // samma kokning på skärmen i alla zoomar
+    for (const b of ['brus', 'rit-brus']) $(b).nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(3));   // samma kokning på skärmen i alla zoomar
     $('rit-brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);
   }
   ANIM['01a'] = ANIM['01b'] = ANIM['01c'] = () => bild(TID);

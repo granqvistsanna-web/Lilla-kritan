@@ -478,6 +478,8 @@ const nickP = (f, p, tl) => L.nicka(f, p, Math.max(0, tl))[1];
 const hoppY = (tl, a, h = 26, dur = 0.45) => -h * bump(a, a + dur, tl);
 const ST = (dy = 0) => [STA[0], STA[1] + dy];
 const RAD_S = () => CUR.s;   // radens start i filmen
+// 25/11 QA: bågen över nattduksbordet så hög att fötterna går över klockan (inget går genom något), förut 200–230
+const HOPP_BAGE = 400;
 const GOM = [1060, MADRASS + 300];   // gömstället bakom sängen (bara öronspetsarna ovanför täcket)
 
 // paketet med lock och rosett (J24-feedback: "paket med lock med rosett som leoparden kan öppna"). lyft 0 på … 1 av och åt sidan
@@ -558,11 +560,11 @@ const RADT = {
   // riggen och den bäddade sängen, leoparden skuttar upp ur molnet och ner på golvet, molnet löses upp uppåt
   '8': (tl) => { RADT['8u'](tl); lagg('fram', puffMoln(sovHuvud[0] + 90, MADRASS - 30, 300, (tl - 0.5) / 1.1)); },
   '8u': (tl) => { const upp = 0.75, a = 0.85, b = 1.5;
-    const kam = () => kamera(lerp(1.55, 1.3, del(upp, b, tl)), lerp(sovHuvud[0] - 80, 760, del(upp, b, tl)), lerp(690, 640, del(upp, b, tl)));
+    const kam = () => kamera(lerp(1.55, 1.3, del(upp, b, tl)), lerp(sovHuvud[0] - 80, 760, del(upp, b, tl)), lerp(690, 640, del(upp, b, tl)) - 150 * 4 * kl((tl - a) / (b - a)) * (1 - kl((tl - a) / (b - a))));   // kameran följer hoppet uppåt så att huvudet inte kapas (25/11)
     if (tl < upp) { sovRum({ klocka: true, ogon: del(0.05, 0.35, tl) * (1 - bump(0.45, 0.62, tl)) }); kam(); return; }
     rum({ klocka: true }); sangFram(); kam();
     const sitt = [sovHuvud[0] + 10, MADRASS + 250];   // sitter upp vid kudden: benen bakom sängen
-    const u = kl((tl - a) / (b - a)), pos = [lerp(sitt[0], STA[0], mjuk(u)), lerp(sitt[1], STA[1], u) - 4 * 230 * u * (1 - u)];
+    const u = kl((tl - a) / (b - a)), pos = [lerp(sitt[0], STA[0], mjuk(u)), lerp(sitt[1], STA[1], u) - 4 * HOPP_BAGE * u * (1 - u)];
     const strack = bump(upp, a, tl), land = bump(b, b + 0.3, tl);
     const f = L.blanda(F('somnig'), F('glad'), del(a, b + 0.4, tl));
     bjornT(pos, f, P({ armar: [90 * strack + 30 * bump(a, b, tl), 90 * strack + 30 * bump(a, b, tl)], upp: 0.5 * strack, strack: 0.04 * strack - 0.05 * land, bred: 0.04 * land, rikt: -0.4 * bump(a - 0.1, b, tl) }),
@@ -579,11 +581,11 @@ const RADT = {
     const f = F('fnissig', { titt: [lerp(0, 16, blick), lerp(0, -4, blick)] });
     bjornT(ST(huk * 8), f, nickP(f, P({ rikt: 0.35 * blick, luta: 3 * Math.sin(tl * 4) * del(0.4, 1, tl), strack: -0.04 * huk, bred: 0.03 * huk }), tl - (LT('spinn')[0] ?? 9))); },
   // J24 1:23: skuttet in bakom sängen, "Oj, haha! Leoparden vill leka.", öronspetsarna tittar upp på "Leoparden är borta!"
-  '13': (tl) => { rum({ klocka: true }); sangFram(); kamera(1.3, 820, 640); const a = 0.1, b = 0.75, u = kl((tl - a) / (b - a)), titt = (MT(1) || b + 1.0) - 0.5;
-    const pos = [lerp(STA[0], GOM[0], mjuk(u)), lerp(STA[1], GOM[1], u) - 4 * 200 * u * (1 - u) + 80 * del(b, b + 0.35, tl) - Math.max(del(titt, titt + 0.5, tl) * (125 + 10 * Math.sin(tl * 4)), bump(b + 0.5, titt - 0.2, tl) * (110 + 14 * Math.sin(tl * 7)))];   // 23/11: höjden tar ut sjunket (80) så att öronen faktiskt syns   // öronspetsarna tittar upp och fnissar på "Oj, haha!", sjunker, och tittar upp igen i pausen
+  '13': (tl) => { rum({ klocka: true }); sangFram(); const a = 0.1, b = 0.75, u = kl((tl - a) / (b - a)); kamera(1.3, 820, 640 - 130 * 4 * u * (1 - u)); const titt = (MT(1) || b + 1.0) - 0.5;
+    const pos = [lerp(STA[0], GOM[0], mjuk(u)), lerp(STA[1], GOM[1], u) - 4 * HOPP_BAGE * u * (1 - u) + 80 * del(b, b + 0.35, tl) - Math.max(del(titt, titt + 0.5, tl) * (125 + 10 * Math.sin(tl * 4)), bump(b + 0.5, titt - 0.2, tl) * (110 + 14 * Math.sin(tl * 7)))];   // 23/11: höjden tar ut sjunket (80) så att öronen faktiskt syns   // öronspetsarna tittar upp och fnissar på "Oj, haha!", sjunker, och tittar upp igen i pausen
     bjornT(pos, F('fnissig'), P({ luta: 3 * Math.sin(tl * 5) * del(1.5, 2, tl) }), { bakom: u > 0.5, klippY: pos[0] > SANG_X0 + 60 ? MADRASS + 30 : null }); },
-  '14': (tl, d) => { rum({ klocka: true }); sangFram(); kamera(1.3, 820, 640); const upp = del(0, 0.35, tl), a = d - 1.0, b = d - 0.35, u = kl((tl - a) / (b - a));
-    const fran = [GOM[0], GOM[1] + 80 - 250 * upp], pos = [lerp(fran[0], STA[0], mjuk(u)), lerp(fran[1], STA[1], u) - 4 * 200 * u * (1 - u)];
+  '14': (tl, d) => { rum({ klocka: true }); sangFram(); const upp = del(0, 0.35, tl), a = d - 1.0, b = d - 0.35, u = kl((tl - a) / (b - a)); kamera(1.3, 820, 640 - 130 * 4 * u * (1 - u));
+    const fran = [GOM[0], GOM[1] + 80 - 250 * upp], pos = [lerp(fran[0], STA[0], mjuk(u)), lerp(fran[1], STA[1], u) - 4 * HOPP_BAGE * u * (1 - u)];
     bjornT(pos, F('skrattar'), P({ armar: [50 * upp * (1 - u), 50 * upp * (1 - u)] }), { bakom: u < 0.5, klippY: pos[0] > SANG_X0 + 60 ? MADRASS + 30 : null }); },
 
   '15': (tl) => { rum({ klocka: true, luvaBakom: true }); sangFram(); HEL(); bjornT(STA, F('glad'), P({})); },

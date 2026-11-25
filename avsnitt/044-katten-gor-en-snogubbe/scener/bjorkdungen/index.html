@@ -76,7 +76,7 @@ const duns = id => RR[id].ljud.find(([f]) => /^sno-duns/.test(f))[1];
 function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2)); $('brus').setAttribute('seed', 1 + Math.floor(TT * 6) % 50);   // line boil 2,5 px i bild, ny brusbild 6 gånger/s (CLAUDE.md, QA 25/11)
 }
 
 // --- Effekter (som 043) ---------------------------------------------------------------------------------------------------------
@@ -123,7 +123,9 @@ function snofall(tat = 0.9) {
     h += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(2.6 + 3.2 * r(6))}" fill="#fff" opacity="${(0.65 + 0.3 * r(7)).toFixed(2)}"/>`; }
   lagg('fram', h);
 }
-const skugga = (x, rx = 150) => lagg('bak', `<ellipse cx="${f1(x)}" cy="${GOLV - 2}" rx="${rx}" ry="${f1(rx * 0.12)}" fill="#3a5a7a" opacity="0.08"/>`);
+// QA 25/11 (inget går genom något): nära snögubben går katten i ett spår framför den, 64 px längre ner och lite större
+const SPAR = x => 64 * mjuk((440 - Math.abs(x - GX)) / 170);
+const skugga = (x, rx = 150) => lagg('bak', `<ellipse cx="${f1(x)}" cy="${f1(GOLV - 2 + SPAR(x))}" rx="${rx}" ry="${f1(rx * 0.12)}" fill="#3a5a7a" opacity="0.08"/>`);
 function lund() {
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   tassar(); rullspar(); snofall();
@@ -143,7 +145,7 @@ function tassar() {
   let h = '';
   for (const [id, a, b, x0, x1, m] of GANGAR) { const t0 = at(id, a); if (TT < t0) break;
     const u = kl((TT - t0) / (b - a)), n = Math.floor(Math.abs(x1 - x0) * (m ? mjuk(u) : u) / STEG), dir = Math.sign(x1 - x0);
-    for (let k = 1; k <= n; k++) { const x = x0 + dir * k * STEG, y = GOLV + 8 + (k % 2 ? -6 : 7);
+    for (let k = 1; k <= n; k++) { const x = x0 + dir * k * STEG, y = GOLV + 8 + SPAR(x) + (k % 2 ? -6 : 7);
       if (x < -20) continue;
       h += `<g opacity="0.5" fill="#a9bfd6"><ellipse cx="${f1(x)}" cy="${f1(y)}" rx="11" ry="5"/>${[-7, 0, 7].map(d => `<circle cx="${f1(x + d)}" cy="${f1(y - 7)}" r="2.8"/>`).join('')}</g>`; } }
   lagg('bak', h);
@@ -275,7 +277,7 @@ function katt(f, p = {}, { vinka = null, lyft = 0, skjut = 0, upplyft = 0 } = {}
   if (PASEN) p = { ...p, armar: [p.armar ? p.armar[0] : 0, (p.armar ? p.armar[1] : 0) + 40] };
   skugga(KX);
   $('figurer').appendChild(G);
-  G.setAttribute('transform', `translate(${f1(KX)} ${f1(GOLV - lyft)}) scale(${GS}) translate(-512 ${-L.FOTTER})`);
+  const sp = SPAR(KX); G.setAttribute('transform', `translate(${f1(KX)} ${f1(GOLV + sp - lyft)}) scale(${(GS * (1 + sp / 900)).toFixed(4)}) translate(-512 ${-L.FOTTER})`);
   L.rita(G, BLINKA(f, TT), P(p));
   if (PASEN) paseBild({ ...PASEN, ...handen() });
 }
@@ -285,7 +287,7 @@ function handen() { const e = G.querySelector('image.arm-r') || G.querySelector(
 // kamerorna: närmare än storyboarden (feedback). MED: katten och snögubben, HALV: närmare, NARK: kattens närbild
 const HEL = () => kamera(1), MED = () => kamera(1.4, (KX + GX) / 2, 640), HALV = () => kamera(1.75, (KX + GX) / 2, 650),
   NARK = (dx = 40) => kamera(2.2, KX + dx, GOLV - 290), HUVN = () => kamera(3.2, HUV[0], HUV[1] + 8), MELN = () => kamera(3.0, MEL[0], MEL[1]),
-  STENN = () => kamera(1.9, 460, 730), STOLPN = () => kamera(3.4, GOMD[0] + 20, 820), FOLJ = () => kamera(2.0, Math.max(KX, 300), GOLV - 280);
+  STENN = () => kamera(1.9, 460, 730), STOLPN = () => kamera(3.4 + 0.25 * del(at('26b'), at('28'), TT), GOMD[0] + 20, 820)   // QA 25/11: långsam push, bilden står aldrig helt still, FOLJ = () => kamera(2.0, Math.max(KX, 300), GOLV - 280);
 
 // --- Ritintrot: kritan ritar snögubben med ögon, morot, knappar och kvistarmar ------------------------------------------------------
 // bildens ruta 1024 × 1371: ögonen (428, 282) och (602, 280), moroten från (500, 328) till spetsen (650, 347), knapparna x 514
@@ -383,14 +385,15 @@ const S = {
   // --- Stenarna: närbild på stenarna som glimmar, sedan katten som ser dem ---
   '10': tl => { scen(); if (tl < lo(0) - 0.4) { HUVN(); return; }   // QA 19/11: katten undrar också, sist i gisspausen
     HALV(); const u = del(lo(0) - 0.4, lo(0), tl); katt(ANS('tanker', { titt: [16, -10] }), { luta: 8 * u }); },
-  '11': tl => { scen(); kamera(3.2, 320, 880);
+  '11': (tl, d) => { scen(); kamera(3.2 + 0.25 * del(0, d, tl), 320, 880);   // QA 25/11: långsam push (inte helt still)
     [0, 3, 6, 8, 2, 9].forEach((i, j) => { const o = bump(lo(0) + j * 0.15, lo(0) + 1.6 + j * 0.15, tl); if (o > 0) lagg('fram', glans(STENAR[i][0] + 10, STENAR[i][1] - 12, 15 * o, o)); }); },
   '12': tl => { scen(); MED(); const u = del(0, 0.4, tl);
     if (tl < mo(0) + 0.3) { const [f, p] = ooo(u, { titt: [-16, 16] }); katt(f, { ...p, rikt: -0.4, luta: -5 }); }
     else { const [f, p] = nick(ANS('jatteglad', { titt: [-14, 14] }), { rikt: -0.4, luta: -5 }, tl - mo(0) - 0.4); katt(f, p); } },
   '13': tl => { scen(); HUVN(); },
   '14': tl => { scen(); HUVN(); },
-  '15': tl => { scen(); MELN(); },
+  // QA 25/11: inget hoppklipp huvud → mellanbollen (3,2 → 3,0); kameran glider ner till knapparna i stället
+  '15': tl => { scen(); kameraMix([3.2, HUV[0], HUV[1] + 8], [3.0, MEL[0], MEL[1]], del(0, 0.9, tl)); },
   '16': tl => { scen(); HALV(); const u = del(0, 0.6, tl); katt(ANS('tanker', { titt: [16, -10] }), { luta: 8 * u + 3 * Math.sin(tl * 1.4) * u }); },
   '17': tl => { scen(); NARK(); const u = del(0, 0.6, tl), v = del(1.0, 1.4, tl); katt(ANS('trumpen', { titt: [lerp(16, 0, v), 6] }), { oron: [16 * u, 16 * u], luta: -3 * u }); },
 

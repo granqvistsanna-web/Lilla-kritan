@@ -63,6 +63,23 @@ Det är julafton och det snöar. Katten trippar ut i snön, men fryser och vill 
 - Line boil sänkt till 2,5 px i bild, 6 gånger/s (CLAUDE.md). `qa-film.sh` flaggar ändå boil i filmen (16,7 px/s), men förra versionen mätte lika (15,5): det är snöfallet som mäts, inte kanterna.
 - Kritan gick över kattens ansikte vid tomteluvan (katten blev större i förra rundan). Luvan ritas nu längre till vänster (x 690), kritan kommer högt in och sedan rakt ner, väntar till vänster om luvan och flyger ut uppåt vänster.
 
+## Lärdomar 2026-11-25
+
+Scenen `snogarden/index.html` gjord om efter de senaste lärdomarna (sången och introts längd orörda).
+
+- **Riggen:** armarna ur `ARMROR` (vinka med vänster tass, svansen skymmer höger; peka mot snöflingan, spaden och pulkan) och stunderna ur `STUNDER` i stället för scenens egna posnummer. Uttrycken har inga egna armar längre. Lediga armar hänger lugnt 22° ner. Blinkar hoppas över 0,45 s före och 0,7 s efter ett uttrycksbyte (`blinkaLugnt`). Kattriggen saknar `HAND`, så scenen sätter `window.HAND` innan riggen laddas (borde flytta in i riggen).
+- **Mått:** kroppshöjd 430 px (fot 923 – äggtopp 216 i riggen = 707 px). Allt runt katten (paketen, pulkan, spaden, luvan, steg, siffror, snöklumpar) skalat med samma faktor F ≈ 1,32. Paket 2 flyttat till x 1660 så att spaden syns.
+- **Kameran:** halvnära och närbild räknade med `verktyg/utsnitt.js` (närbilden med luvan räknar luvans topp som huvudets topp). Varje händelse får ett reaktionsslag: rader 16, 17, 21 klipper till närbild 1 s efter händelsen, 7c och 23c klipper från detaljen till halvnära. Kvar från 22/11: rosettnärbilderna, kameran högre upp, paket 3 längre bort, siffrorna och fågeln på holken.
+- **Rad 14:** detaljen på rosetten klipper tillbaka till kattens närbild efter 3,6 s (stod still i 5 s, qa-film flaggade fryst bild).
+- **Inget går genom något:** spaden byter tass före gången (låg förut på rosetten), läggs i en hög båge över paket 3 och ligger framåt över pulkans böj där inget paket landar. Snöflingorna faller utanför kroppen. Katten drar pulkan från x 1580 så att den inte står framför fågelholken.
+
+Lämnat, med skäl:
+- Paket 2 hoppar upp på pulkan framför kattens ben: djup, inte genom.
+- Spaden klipps av nederkanten i reaktionsnärbilderna, som en närbild gör.
+- Svansen ligger över holkens stolpe i rad 17 och 26–30, som i den godkända versionen.
+- Vinkningen är ARMRORs (30° ± 16°), alltså liten.
+- Ritintrot följer inte den nya korta regeln (konturen 7 s, 01a–01c ca 18,5 s mot 2,8 s och 7–8 s). Inte ändrat enligt uppdraget.
+
 ## Kimis granskning av replikerna (2026-11-13)
 
 Sanna bad om en granskning av Kimi innan Malins röst görs. Kimi hade fem anmärkningar. Ingen ändrades, för alla fem är val som serien redan gjort och Sanna godkänt i 020–024:
@@ -100,3 +117,9 @@ Sanna gav klartecken (*"push on"*) och bad att de öppna frågorna besvaras med 
   - 5 och 6: tagning 1, korta och rena.
 - **Effekter:** bara ljud som redan fanns i `assets/ljud/effekter/`, inget nytt laddades ner. `vinterljud` (vind i snögranar) går under hela scenen, `tass` är kattens steg, `puff` grävandet och snöpuffarna, plus plingar, pop och tindra. **`vinterljud` är CC BY 4.0: skriv "pineforest winter NL by klankbeeld (freesound.org), CC BY 4.0" i YouTube-texten.**
 - **Animatiken hoppades över:** Sanna bad om en färdig film att granska direkt, så grind 5 och 6 görs i samma steg.
+
+## QA 2026-11-25 (J06)
+
+- Spåren (rad 3): katten stack fortfarande in en flik i vänsterkanten vid zoom 2,9. Kameran står redan mot plattans högerkant, så `K_SPAR` är zoom 3,3 med en lugn push in (×1,12), som också tar bort en stillbild på 5,8 s.
+- Hörnet vid trappan (rad 14) visar ingen katt i dagens kod. QA-bilden var från en äldre rendering.
+- *"Det är julafton!"* är borta (whisper på förhandsvisningen).

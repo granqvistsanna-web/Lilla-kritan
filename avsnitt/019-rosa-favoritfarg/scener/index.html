@@ -23,7 +23,13 @@ const MOLNFIL = { stor: [641, 366], lang: [677, 260], mellan: [514, 292], liten:
 const ROSAFIL = { stor: [1271, 724], lang: [1346, 509], mellan: [1020, 576], liten: [798, 460] };
 const MOLNROSA = '#F8BDD3';                                   // molnens krita (provtagen)
 
+// line boil 2,5 px i bild (1920) = 1,79 i 1376-duken, ny brusbild 6 gånger/s (CLAUDE.md, QA 2026-11-25; förr 005:s kit.js: 3,5 px, 7,5/s, och ×zoom i ritintrot).
+// #boil ligger utanför kameran (fast skala, sätts före duk()); #boil-zoom är för saker inne i kameran (ritintrot) och delas med zoomen varje bildruta.
+kit.BOIL.skala = 1.79; kit.BOIL.bilder = 5;
 const L = kit.duk(null), defs = document.querySelector('svg defs');
+defs.insertAdjacentHTML('beforeend', `<filter id="boil-zoom" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2176" height="1568"><feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/><feDisplacementMap in="SourceGraphic" scale="1.79"/></filter>`);
+const boilZoom = defs.querySelector('#boil-zoom feDisplacementMap'), kamera0 = kit.kamera;
+kit.kamera = (cx, cy, zoom = 1, fri) => { boilZoom.setAttribute('scale', (1.79 / zoom).toFixed(3)); kamera0(cx, cy, zoom, fri); };
 defs.insertAdjacentHTML('beforeend', `<linearGradient id="himmel19" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fcdee"/><stop offset="1" stop-color="#b4e1f5"/></linearGradient>
   <mask id="m-fyll" maskUnits="userSpaceOnUse" x="-300" y="-300" width="2000" height="1400"><circle id="fyllC" cx="${W / 2}" cy="400" r="0" fill="#fff" filter="url(#halkant)"/></mask>
   <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
@@ -51,7 +57,7 @@ const nyttSet = namn => (SET[namn] = el('g', {}, L.plate));
 nyttSet('papper').innerHTML = `<rect x="-400" y="-300" width="2200" height="1400" fill="#FBF7EE"/><rect x="-400" y="-300" width="2200" height="1400" filter="url(#korn)"/>`;   // kornigt papper som 007:s ritintro
 // kritan ritar blommans kontur i ett drag, sedan fylls riktiga bilden i inifrån med en vaxig kant (som 007:s v2-ritar; Sanna 2026-11-09: "make the ritar kritan similar to other drawing intros"). Sanna 2026-11-09: "drawing scene draw a pink flower"
 const RM = { x: W / 2 - 229, y: 110, width: 458, height: 560 }, BLOMMA = `${ROT}assets/rekvisita/blomma-rosa/cut/blomma-rosa.png`;
-const ritad = el('g', {}, el('g', { filter: 'url(#boil)' }, SET.papper));   // blomman: bilden och konturen, skumpar och gungar runt foten
+const ritad = el('g', {}, el('g', { filter: 'url(#boil-zoom)' }, SET.papper));   // blomman: bilden och konturen, skumpar och gungar runt foten
 const ritMoln = el('g', {}, ritad);   // teckningen i krita (som 006:s kritan-ritar, Sanna 2026-11-09: "more similar to other drawing scenes for färgsånger such as orange")
 const konturG = el('g', { filter: 'url(#vax)' }, ritad);
 const kontur = el('path', { fill: 'none', stroke: '#E3789F', 'stroke-width': 15, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, konturG);
@@ -83,7 +89,7 @@ const blad = [[0.385, -1], [0.615, 1]].map(([u, sd]) => { const cx = RX(u), cy =
   p.L = p.getTotalLength(); p.setAttribute('stroke-dasharray', p.L); return p; });
 const STL = stam.getTotalLength(); stam.setAttribute('stroke-dasharray', STL);
 // kritan: 007:s form med vit kant och vaxfilter, i rosa
-const nyKrita = (fyll, band, linje) => { const g = el('g', {}, el('g', { filter: 'url(#boil)' }, SET.papper));
+const nyKrita = (fyll, band, linje) => { const g = el('g', {}, el('g', { filter: 'url(#boil-zoom)' }, SET.papper));
   g.innerHTML = `<use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/><g transform="rotate(-28)"><g filter="url(#vax)"><g transform="rotate(28)">
   <use href="#krita-form" fill="${fyll}"/><path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${band}"/>
   <path d="M-19 -92 Q0 -98 19 -92 M-19 -218 Q0 -224 19 -218" stroke="${linje}" stroke-width="4" fill="none"/></g></g></g>`; return g; };

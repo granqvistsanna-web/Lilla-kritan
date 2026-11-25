@@ -71,7 +71,8 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [2.9, 'vinka', { sag: [['jul/05v2-gris-hej', 'Nämen, hej grisen!', 0.5]], ljud: [['noff-gullig', 2.45, 7, 1.5, 1.5]] }],
     [3.8, 'stilla', { nick: [1.8], sag: [['jul/05v2-ute-i-snon', 'Är du ute och leker i snön?', 0.0]] }],   // 11-19: grisen nickar ja
     // 11-18 kväll: grisen skuttar uppför backen åt sidan (HOPPA nedan) så att kritan ritar pulkan bredvid den, inte över den, och skuttar sedan ner på den; bilden zoomar ut lite
-    [7.8, 'sak', { rit: [[2.0, 'pulka', 3.6]], kamTill: [900, 470, 1.05, 0.3, 1.6], sag: [['jul/05v2-kritan-ritar', 'Titta! Kritan ritar något…', 1.2], ['jul/05v2-en-pulka', 'En pulka!', 6.6]] }],
+    [7.8, 'sak', { rit: [[2.0, 'pulka', 3.6]], kamTill: [900, 470, 1.05, 0.3, 1.6], sag: [['jul/05v2-kritan-ritar', 'Titta! Kritan ritar något…', 1.2], ['jul/05v2-en-pulka', 'En pulka!', 6.6]],
+      ljud: [['hopp-mjuk', 0.45, 1, 1.0], ['hopp-mjuk', 1.05, 1, 1.0], ['hopp-mjuk', 1.65, 1, 1.0], ['landa-mjuk', 6.75, 1]] }],   // 11-25 (QA J04 0:14,9, 3,4 s tyst): grisens skutt hörs
     [4.0, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, nick: [1.5], sag: [['jul/05v2-ska-du-aka', 'Ska du åka pulka?', 0.3], ['jul/05v2-vad-kul', 'Ja, vad kul!', 2.0]], ljud: [['noff-gullig', 3.3, 2, 1.5, 1.2]] }],
     // 11-19 (feedback J04 1:19, "make it make more sense"): grisen tar sats medan Malin säger det, åker ut till höger och biten slutar där, så att den
     // fortsätter nerför kullen (förut kom den in från vänster igen, sedan kullarna, sedan backen och ett åk till ut och in)
@@ -104,7 +105,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [2.8, 'vinka', { bas: KW, ser: [-60, 0], sag: [['jul/05v2-bjorn-hej', 'Hej björnen!', 0.5]], ljud: [['brum-gullig', 1.7, '1c'], ['noff-gullig', 2.3, 2, 1.5, 1.0]] }],
     // 11-18 natt (manus v2): Malin frågar björnen, björnen nickar och brummar ja
     [4.4, 'stilla', { armar: ARM, ser: [-60, 0], med: { 0: 'nicka' }, sag: [['jul/05v2-hjalpa-grisen', 'Björnen, kan du hjälpa grisen?', 0.2], ['jul/05v2-vill-hjalpa', 'Björnen vill hjälpa!', 2.9]], ljud: [['brum-gullig', 2.35, 2]] }],
-    [2.8, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, sag: [['jul/05v2-gris-glad', 'Grisen blir så glad!', 0.5]], ljud: [['noff-fniss', 2.1, 1, 1.5, 0.7]] }],
+    [2.8, 'stilla', { armar: ARM, uttryck: 'jatteglad', nara: true, naraDx: 230, sag: [['jul/05v2-gris-glad', 'Grisen blir så glad!', 0.5]], ljud: [['noff-fniss', 2.1, 1, 1.5, 0.7]] }],
     [3.9, 'stilla', { armar: ARM, med: { 0: ['knuffa', { gang: [[0, 0]], knuff: [[1.9, 1e9]] }] }, sag: [['jul/05v2-stark', 'Björnen är stark.', 0.3], ['jul/05v2-kan-knuffa', 'Björnen kan knuffa!', 2.3]] }],
     [7.0, 'stilla', { armar: ARM, med: { 0: ['knuffa', { gang: [[0, 0]], knuff: [[-1, 6.45]] }] }, sag: [['jul/05v2-hjalpa-till', 'Kan du hjälpa till?', 0.4], ['jul/05v2-heja', 'Kan du heja? Heja, grisen!', 1.8]] }],
     // F: tre heja, och för varje heja knuffar björnen pulkan ett stycke; kameran följer lugnt med
@@ -124,7 +125,7 @@ const KOR = julDjur.kor({ kamBas: KE, ritIn: 1.4,
     [D2, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { ak: R2 }, med: MED({ uttryck: 'jatteglad' }), sag: wiii(R2), ljud: [...R2.ner.map(v => glid(v)), ['brum-gullig', R2.ner[1] + 1.6, 1]] }],
     [3.0, 'stilla', { armar: ARM, uttryck: 'glad', kullar: { vila: 3 * KULL.P, zoom: ZV, in: true }, med: MED(), sag: [['jul/05v2-saga-wiii', 'Kan du säga wiii?', 0.9]] }],
     [D3, 'stilla', { armar: ARM, uttryck: 'stolt', kullar: { ak: R3 }, med: MED({ uttryck: 'jatteglad' }), sag: wiii(R3), ljud: [...R3.ner.map(v => glid(v)), ['noff-fniss', R3.ner[1] + 1.6, 2, 1.5, 1.2]] }],
-    [3.4, 'stilla', { armar: ARM, uttryck: 'stolt', nara: [1.6, 3.4], nick: [1.65], kullar: { vila: 6 * KULL.P, zoom: ZV, in: true }, med: MED(), sag: [['jul/05v2-roligt', 'Vad roligt det var.', 0.3]], ljud: [['noff-gullig', 1.9, 3, 1.5, 1.0], ['brum-gullig', 2.4, 1]] }],
+    [3.4, 'stilla', { armar: ARM, uttryck: 'stolt', nara: [1.6, 3.4], naraDx: -100, nick: [1.65], kullar: { vila: 6 * KULL.P, zoom: ZV, in: true }, med: MED(), sag: [['jul/05v2-roligt', 'Vad roligt det var.', 0.3]], ljud: [['noff-gullig', 1.9, 3, 1.5, 1.0], ['brum-gullig', 2.4, 1]] }],
     [2.4, 'stilla', { armar: ARM, kullar: { vila: 6 * KULL.P, zoom: ZV }, med: MED(), sag: [['jul/05v2-tack-bjornen', 'Tack, björnen!', 0.4]] }],
     [1.6, 'stilla', { armar: ARM, uttryck: 'jatteglad', kullar: { vila: 6 * KULL.P, zoom: ZV }, med: MED({ uttryck: 'jatteglad' }), ljud: [['brum-gullig', 0.3, 2]] }],   // 11-18 natt: björnen svarar på tacket
     // H: hej då, båda sitter kvar i pulkan i dalen
@@ -198,6 +199,8 @@ KOR.then(async () => {
   const mark = x => (plY(S.e + S.a * x) + OFF - S.f) / S.a;   // backens höjd i scenens mått
   const tal = (s, n) => { const m = s?.match(new RegExp(n + '\\(([^)]*)\\)')); return m ? m[1].trim().split(/[\s,]+/).map(Number) : null; };
   const mx = m => `matrix(${[m.a, m.b, m.c, m.d, m.e, m.f].map(v => +v.toFixed(5)).join(' ')})`;
+  // naraDx (11-25, QA J04 1:34 och 2:41): närbildens mittpunkt flyttas i sidled (bildens pixlar), så att björnen bredvid antingen är helt utanför bild
+  // (+) eller syns med hela ansiktet (−); förut var den halvt avskuren vid vänsterkanten med ett öga borta
   const naraNu = (b, tl) => b.nara === true || (Array.isArray(b.nara) && tl >= b.nara[0] && tl < b.nara[1]);
   // kameran kring en punkt (bildens pixlar) med zoom Z, punkten på (VW/2, hojd · VH), utan att bildens kant syns
   const kamPa = (pt, Z, hojd = 0.56) => [Math.min(0, Math.max(VW - VW * Z, VW / 2 - pt[0] * Z)), Math.min(0, Math.max(VH - VH * Z, hojd * VH - pt[1] * Z)), Z];
@@ -216,7 +219,7 @@ KOR.then(async () => {
   // ritar, så att kritan följer konturen där den syns
   const pulkaR = svg.querySelector('#sak-a > .ritbar'), pulkaG = document.createElementNS(svg.namespaceURI, 'g'), PSK = 90 / S.a;
   if (pulkaR) { pulkaR.before(pulkaG); pulkaG.append(pulkaR); }
-  const rita = window.seek;
+  const rita = window.seek, boilD = svg.querySelector('#boil feDisplacementMap'), boilB = svg.querySelector('#boil-brus');
   window.seek = window.render = t => {
     const pu = SAKB ? t - SAKB.t0 : -1; pulkaG.setAttribute('transform', pu > 0 && pu < SAKB.d ? `translate(${(PSK * (1 - mjuk(kl((pu - 5.95) / 0.85)))).toFixed(1)} 0)` : '');
     rita(t); djurG.removeAttribute('transform');
@@ -261,18 +264,48 @@ KOR.then(async () => {
       bakG.setAttribute('transform', `translate(${lx.toFixed(1)} ${ly.toFixed(1)}) rotate(${rot.toFixed(2)})`); }
     // kameran
     if (!ute) {
-      if (naraNu(b, tl) && !STA) { kamera.removeAttribute('transform'); const [tx, ty, Z] = kamPa(ansikte(), 1.7); kamera.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); }
+      if (naraNu(b, tl) && !STA) { kamera.removeAttribute('transform'); const [fx, fy] = ansikte(), [tx, ty, Z] = kamPa([fx + (b.naraDx ?? 0), fy], 1.7); kamera.setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${Z})`); }
       // inåkning (dolly) bara i närbilderna: nara och egna kam-bilder (inte grundbilden, inte när kameran glider med kamTill)
       const kt = kamera.getAttribute('transform');
       if (kt && (naraNu(b, tl) || (b.kam && !b.kamTill))) { const z = 1 + 0.06 * Math.min(1, tl / b.d); kamera.setAttribute('transform', `translate(${VW / 2} ${VH * 0.5}) scale(${z.toFixed(4)}) translate(${-VW / 2} ${-VH * 0.5}) ${kt}`); }
     } else {
       kamera.removeAttribute('transform');
-      if (!k.ak) { const nu = naraNu(b, tl), f = ansikte(), Z = nu ? ZV * 1.7 : ZV, [tx, ty] = kamPa(nu ? f : [x - cam - 40, yF(x)], Z, nu ? 0.5 : 0.88);   // 0,88 (11-18 kväll): luvans topp syns
+      if (!k.ak) { const nu = naraNu(b, tl), f = (([fx, fy]) => [fx + (b.naraDx ?? 0), fy])(ansikte()), Z = nu ? ZV * 1.7 : ZV, [tx, ty] = kamPa(nu ? f : [x - cam - 40, yF(x)], Z, nu ? 0.5 : 0.88);   // 0,88 (11-18 kväll): luvans topp syns
         const e = k.in && !nu ? mjuk(kl(tl / 1.8)) : 1, z = nu ? 1 + 0.06 * Math.min(1, (tl - b.nara[0]) / (b.d - b.nara[0])) : 1;
         kamera.setAttribute('transform', `translate(${VW / 2} ${VH * 0.5}) scale(${z.toFixed(4)}) translate(${-VW / 2} ${-VH * 0.5}) translate(${(tx * e).toFixed(1)} ${(ty * e).toFixed(1)}) scale(${lerp(1, Z, e).toFixed(4)})`); }
     }
+    kasta(t);
+    // 11-25 (QA J04, boil median 5,0 px/s): line boil 2,5 px i bild, alltså skalan delad med kamerazoomen och satt varje bildruta, och ny brusbild
+    // 6 gånger/s (CLAUDE.md). djur.js har en fast skala 3 och 8 byten/s; här skrivs den över, djur.js är orörd. WebGL-ritaren läser samma värden
+    boilD?.setAttribute('scale', (2.5 / (kamera.transform.baseVal.consolidate()?.matrix.a ?? 1)).toFixed(3));
+    boilB?.setAttribute('seed', 1 + Math.floor(t * 6) % 4);
     window.TRE?.();   // three.js (djur.js tre): tecknas om när allt står på plats
   };
+  // 11-25 (QA J04 2:06, säcken åkte bakom och genom grisen och björnen rörde den inte): björnens tass närmast grisen ligger på säckens axel
+  // och säcken följer den när armarna lyfts (KG till KS) och kastar den i en hög båge över grisens luva, så att den landar vid pulkans nos (KL, dunk 2,45).
+  // Räknas i bildens pixlar (kameran står still på biten) och läggs på säckens translate i det lager den ligger i
+  const KAST = sackG && B.find(q => q.sag?.some(s => s[0] === 'jul/05v2-tillsammans')), [KG, KS, KL] = [0.3, 0.9, 2.45];
+  const vis = e => { for (let a = e; a && a !== svg; a = a.parentElement) if (a.getAttribute('display') === 'none' || a.style.display === 'none' || a.getAttribute('opacity') === '0') return false; return true; };
+  const pa = (e, x, y) => new DOMPoint(x, y).matrixTransform(e.getScreenCTM());
+  // björnens tass närmast grisen (högra armbilden, handen spegelvänd mot HANDV i djur.js) i bildens pixlar
+  const tass = () => { const im = [...svg.querySelectorAll('#gaster > * image.arm-r')].find(vis); if (!im) return null;
+    const w = +im.getAttribute('width') / 1024, h = +im.getAttribute('height') / 1024; return pa(im, +(im.getAttribute('x') ?? 0) + 844 * w, +(im.getAttribute('y') ?? 0) + 618 * h); };
+  let KM = null;   // mätt en gång: säckens fot vid start och landning, tassen vid greppet, där kastet släpper och luvans topp
+  function kasta(t) {
+    const u = KAST ? t - KAST.t0 : -1; if (!KM || u <= KG || u >= KL + 0.1) return;
+    let p;
+    if (u < KS) { const q = tass() ?? KM.T0; p = [KM.S[0] + q.x - KM.T0.x, KM.S[1] + q.y - KM.T0.y]; }   // tassen ligger på säckens axel: säcken följer den
+    else if (u < KL) { const v = (u - KS) / (KL - KS), H = lerp(KM.R[1], KM.F[1], 0.5) - KM.topp;   // först rakt upp, sedan över luvan och ner
+      p = [lerp(KM.R[0], KM.F[0], mjuk(kl((v - 0.15) / 0.65))), lerp(KM.R[1], KM.F[1], v) - H * Math.sin(Math.PI * v)]; }
+    else p = KM.F;
+    const q = new DOMPoint(...p).matrixTransform(sackG.parentNode.getScreenCTM().inverse());
+    sackG.setAttribute('transform', sackG.getAttribute('transform').replace(/translate\([^)]*\)/, `translate(${q.x.toFixed(1)} ${q.y.toFixed(1)})`)); }
+  if (KAST) { const fot = () => { const q = pa(sackG, 0, 0); return [q.x, q.y]; };
+    window.seek(KAST.t0 + 0.2); const S0 = fot();
+    window.seek(KAST.t0 + KL + 0.3); const F0 = fot(), lu = [...svg.querySelectorAll('#djur image')].find(i => /tomteluva/.test(i.getAttribute('href')) && vis(i)).getBoundingClientRect();
+    window.seek(KAST.t0 + KG); const T0 = tass();
+    window.seek(KAST.t0 + KS); const r = tass();
+    KM = { S: S0, F: F0, T0, R: [S0[0] + r.x - T0.x, S0[1] + r.y - T0.y], topp: lu.top + 0.15 * lu.height }; }
   // tre: WebGL-ritaren laddar en bild första gången den syns, och kullarna lades till efter att ritaren skapades. Visa kullarna en gång
   // och vänta in granarna, annars saknas de i kullarnas första bildruta (och i första rutan av en renderingsbit som börjar där)
   svg.querySelectorAll('.flinga2').forEach(e => e.setAttribute('display', 'none'));

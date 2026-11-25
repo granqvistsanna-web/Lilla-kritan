@@ -18,7 +18,7 @@
     </filter>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
-      <feDisplacementMap in="SourceGraphic" scale="5"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -67,7 +67,7 @@ const mo = (i = 0) => CUR.malin[i][1], lo = (i = 0) => CUR.ljud[i][1], LN = n =>
 function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / zoom).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2)); $('brus').setAttribute('seed', 1 + Math.floor(TT * 6) % 50);   // line boil 2,5 px i bild, ny brusbild 6 gånger/s (CLAUDE.md)
 }
 
 // --- Effekter -----------------------------------------------------------------------------------------------------------------
@@ -117,6 +117,7 @@ function gard({ spar = 0, fron = 0, sno = 0 } = {}) {
 const SNO_BAS = 0.3;
 // julkärven: foten (stångens nederkant, bildens 243, 890) i (x, y), skala 0,5
 const KARV = [1250, 884, 0.5], KTOPP = [KARV[0], KARV[1] - 870 * KARV[2]];
+const vaj = () => 0.8 * Math.sin(TT * 1.1) + 0.3 * Math.sin(TT * 2.3);   // kärven i vinden, grader
 const karveT = () => `translate(${KARV[0] - 243 * KARV[2]} ${KARV[1] - 890 * KARV[2]}) scale(${KARV[2]})`;
 // snön på kärven (Sanna 2026-11-20: mer snö): en tjock mössa som rinner ner över axen och klumpar på kärven, som skakas av
 function snoKarve(x, t, sp) {
@@ -214,10 +215,11 @@ const HEL = () => kamera(1), HALV = () => kamera(1.9, 980, 640),   // HALV 1.6 �
   HALVT = () => kamera(1.4, 960, 600),   // HALVT: halvbild där kärvens tak (topp y 217) får plats
   ANS = () => kamera(2.4, GRIS[0], iFig([512, 430])[1]),
   KARVN = () => kamera(2.3, KARV[0], KTOPP[1] + 120), PASEN_K = () => kamera(2.4, ...iFig([780, 560])), GRANN = () => kamera(2.6, HOLK[0] - 60, HOLK[1]),
+  KARVN_P = () => { const k = del(RR['11c'].s, RR['12'].s + RR['12'].d, TT); kamera(2.3 + 0.25 * k, KARV[0], KTOPP[1] + 120 + 20 * k); },
   HALVH = () => kamera(1.35, 1240, 640),   // större gris men holken kvar i bild när en fågel flyger ut (Sanna 2026-11-20: "bigger pig")
   LUVAN = () => kamera(2.4, GRIS[0] + 20, iFig([512, 330])[1]),   // närbild: ansiktet och luvan med fågeln (J16 2:30)
   HOLKN = () => kamera(2.6, 1820, 500),   // närbild på fågelholkens tak med fåglarna (Sanna 2026-11-20, J16 0:53)
-  FAGLAR_N = () => kamera(2.6, 1000, 830), KARVG = () => kamera(1.9, 1120, 650);   // närbild på fåglarna vid fröna · nära grisen och kärven (Sanna 2026-11-20)
+  FAGLAR_N = () => kamera(2.0, 940, 730), KARVG = () => kamera(1.9, 1120, 650);   // fåglarna vid fröna med hela grisen (QA 25/11: 2,6 kapade grisen halvt vid vänsterkanten), samma bild som rad 6 · nära grisen och kärven (Sanna 2026-11-20)
 
 // --- Ritintrot: kritan ritar den lilla blå fågeln -------------------------------------------------------------------------------
 const PF = [960, 760, 0.62];
@@ -284,7 +286,7 @@ const S = {
   // det närmaste fröet, som krymper bort på 0,35 s. Mellan picken hoppar fåglarna lite.
   '6': (tl, d) => { const P6 = CUR.ljud.filter(([f]) => /^pick/.test(f)).map(([, o]) => o);
     const vem = P6.map((_, i) => i < 3 ? 'bada' : i % 2 ? 'rod' : 'gul'), tR = P6.filter((_, i) => vem[i] !== 'gul'), tG = P6.filter((_, i) => vem[i] !== 'rod').map(t => t + 0.12);
-    gard({ spar: 8 }); kamera(2.0, 940, 760); PASEN = { v: 30 }; gris(F('glad', { titt: [16, 10] }), {});
+    gard({ spar: 8 }); FAGLAR_N(); PASEN = { v: 30 }; gris(F('glad', { titt: [16, 10] }), {});
     const kvar = FRON.map(() => 1), tagen = [];
     P6.forEach((a, i) => { const ff = vem[i] === 'gul' ? ['gul'] : vem[i] === 'rod' ? ['rod'] : ['rod', 'gul'];
       ff.forEach(f => { const [bx, by] = VID_FRON[f]; let j = -1, b = 1e9; FRON.forEach(([x, y], k) => { const dd = Math.hypot(x - (bx - 40), y - by); if (!tagen.includes(k) && dd < b) { b = dd; j = k; } });
@@ -317,9 +319,10 @@ const S = {
     const sp = kontur('karve', karveT(), k, 9 / KARV[2]); krita(sp[0], sp[1], 125, 0.33); },
   '11b': (tl, d) => { gard({ spar: 8 }); kamera(1.5, 1000, 620); rPase(PASE_SNO); gris(F('nyfiken', { titt: [16, -2] }), {}); alla(VID_FRON);
     const sp = kontur('karve', karveT(), 1, 9 / KARV[2]); kritaSvaj(KARV[0] + 190, KTOPP[1] - 60, 0.33, tl, d, sp); },
-  '11c': tl => { gard(); KARVN(); karve({ fyll: del(0, 0.9, tl) }); if (tl < 0.9) kontur('karve', karveT(), 1, 9 / KARV[2]);
+  // QA 25/11 (bilden stod helt still 4,6 s): närbilden på kärven 11c–12 trycker in sakta och kärven vajar lite i vinden
+  '11c': tl => { gard(); KARVN_P(); karve({ fyll: del(0, 0.9, tl), v: vaj() * del(0.9, 1.6, tl) }); if (tl < 0.9) kontur('karve', karveT(), 1, 9 / KARV[2]);
     krita(lerp(KARV[0] + 190, 2100, del(0.4, 1.4, tl)), lerp(KTOPP[1] - 60, 100, del(0.4, 1.4, tl)), 140, 0.33); skimmer(KARV[0], KTOPP[1] + 180, 0.8 * bump(0.3, 2.0, tl), 2.2); },
-  '12': tl => { gard(); KARVN(); karve(); [[-60, 60], [40, 30], [80, 120], [-30, 170], [20, 110]].forEach(([dx, dy], i) => {
+  '12': tl => { gard(); KARVN_P(); karve({ v: vaj() }); [[-60, 60], [40, 30], [80, 120], [-30, 170], [20, 110]].forEach(([dx, dy], i) => {
     const o = 0.5 + 0.5 * Math.sin(tl * 4 + i * 1.7); lagg('fram', glans(KARV[0] + dx, KTOPP[1] + dy, 9 + 6 * o, o)); }); },
   '13': tl => { gard(); HALV(); karve(); rPase(PASE_SNO); alla(VID_FRON); const u = del(0.2, 1.0, tl);
     gris(F('kawaii', { titt: [16, -6 * u] }), { oron: [-10 * u, -10 * u], upp: 0.3 * u }); },

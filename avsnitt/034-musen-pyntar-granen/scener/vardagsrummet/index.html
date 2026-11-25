@@ -56,7 +56,7 @@ const KG = { rod: [1331, 884], gul: [1403, 880], bla: [1468, 884] };   // nere i
 // i handen hela vägen och hänger kvar precis där tassen släpper den
 const KT_ = { rod: [1333, 600], gul: [1405, 555], bla: [1470, 650] }, KTH = { ...KT_ };
 // från pallen når handen nästan samma ställe varje gång, så på "pling!" glider kulan 0,35 s från tassen till sin egen gren (KT_ = KTH + KT_UT)
-const KT_UT = { rod: [-45, 70], gul: [15, -55], bla: [105, 45] };
+const KT_UT = { rod: [-55, 70], gul: [23, -55], bla: [155, 74] };   // QA 2026-11-25: x ökat med lika mycket som NAR.dx minskade, så kulorna hänger kvar på samma grenar
 const GOMD = [1556, 928];                                                 // den blå bakom julgransfotens högra ben, en bit syns
 const TON = { rod: 0, gul: 48, bla: 205 };                                // hue-rotate ur den röda
 const STJ_GOLV = [1015, 824];   // på pallens låga steg till höger, intill musens hand (feedback 22/11)
@@ -64,7 +64,10 @@ const STJ_GOLV = [1015, 824];   // på pallens låga steg till höger, intill mu
 // och lådan. Musen backar till STA2 först och står där resten av filmen, så att pallen syns. Stegens ovansida uppmätt i bilden.
 const PALL = { bild: A + 'rekvisita/pall/cut/pall-tunn.png', w: 781, h: 551, fot: [390, 524], s: 0.42, x: 1105 };
 const iPall = ([ix, iy]) => [PALL.x + (ix - PALL.fot[0]) * PALL.s, GOLV + (iy - PALL.fot[1]) * PALL.s];
-const PALL_LAG = iPall([200, 250]), PALL_HOG = iPall([565, 42]);   // där musens fötter står på låga och höga steget (lite ner i kanten)
+// QA 2026-11-25: riggens fötter slutar ca 10 px ovanför pos, så med 250/42 svävade musen över stegen. Nu står tassarna på stegens
+// ovansida (överkanten y 228 och 21 i bilden), och skuggan ligger på steget i stället för på väggen (se ritaRum).
+const PALL_LAG = iPall([200, 282]), PALL_HOG = iPall([565, 76]);   // där musens fötter står på låga och höga steget
+const PALL_YTA = { lag: [iPall([47, 228]), iPall([379, 228])], hog: [iPall([379, 21]), iPall([742, 21])] };   // stegens ovansidor [vänster, höger]
 const STA2 = [790, GOLV];
 // Inredningen (Sanna 2026-11-21 kväll: "lite mer inredning på väggar och i rummet"): två tavlor på väggen, två ljus på spiselhyllan
 // och ett litet bord med ett ljus till höger om granen. Rekvisita som redan finns, ljusens lågor i kod.
@@ -109,7 +112,7 @@ let KAM = K.HEL, TT = 0, L, G, BLINKA;
 function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
   KAM = [z, tx, ty]; $('kamera').setAttribute('transform', `translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${z.toFixed(4)})`);
-  $('brus').nextElementSibling.setAttribute('scale', (5 / z).toFixed(2));
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(2));   // line boil 2,5 px i bild (CLAUDE.md; QA 2026-11-25, var 5)
 }
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 
@@ -220,7 +223,7 @@ function mus([x, fot], f, p, { s = MS, skugga = true, lager = 'figurer' } = {}) 
   G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s}) translate(-512 -925)`);
   L.rita(G, f, p.andas === false ? p : { ...p, strack: (p.strack || 0) + 0.012 * Math.sin(2 * Math.PI * TT / 3.4) });   // andas lugnt
   G.querySelector('.figuren').setAttribute('opacity', 1);
-  if (!skugga) G.querySelector('.skugga')?.setAttribute('opacity', 0);
+  const sk = G.querySelector('.skugga'); if (sk) { sk.dataset.o ??= sk.getAttribute('opacity') ?? '1'; sk.setAttribute('opacity', skugga ? sk.dataset.o : 0); }
 }
 // Tassen framför en sak i handen: armen ligger bakom kroppen, så saken ritas framför kroppen och en kopia av handen (bara
 // tassen, en cirkel kring spetsen i armbildens ruta) läggs ovanpå i samma lager.
@@ -384,7 +387,8 @@ const NYCKEL = n => [['vila', { arm: 0, luta: 0, boj: 0, upp: 0, sank: 0, strack
   ['sida', { arm: -2, luta: 2, boj: 2, upp: 0.1, sank: 0, strack: 0 }],          // håller kulan vid sidan och tittar upp
   ['nar', { arm: NAR[n].arm, luta: NAR[n].luta, boj: 3, upp: 0.3, sank: -4, strack: 0.04 }]];   // på tå, lutar sig in mot granen, armen upp mot grenen
 // från pallen når musen samma ställe varje gång: varje kula får egen arm, lutning och plats på steget, så att de sprids i granen
-const NAR = { rod: { arm: 62, luta: 6, dx: -18 }, gul: { arm: 108, luta: 8, dx: 4 }, bla: { arm: 84, luta: 13, dx: 26 } };
+// QA 2026-11-25: dx nära 0, så att musen står mitt på det höga steget (fötterna är bredare än steget; med dx 26 stod högra foten i luften)
+const NAR = { rod: { arm: 62, luta: 6, dx: -8 }, gul: { arm: 108, luta: 8, dx: -4 }, bla: { arm: 84, luta: 5, dx: 4 } };   // luta 13 → 5 (QA 2026-11-25): med 13 sjönk högra foten under stegets kant
 const tripp = (tl, a, b) => { const amp = bump(a, b, tl), f = Math.sin((tl - a) / (b - a) * 2 * Math.PI) * amp;   // två små steg
   return { ben: [14 * f, 14 * f], benY: [-30 * Math.max(0, -f), -30 * Math.max(0, f)], lyft: -Math.abs(f) * 6 }; };
 const hoppa = (tl, t0, t1, A, B, h) => { const k = mjuk((tl - t0) / (t1 - t0)); return [lerp(A[0], B[0], k), lerp(A[1], B[1], k) - h * Math.sin(Math.PI * k)]; };
@@ -428,7 +432,10 @@ const upp = (id, n, malinNr) => tl => { const m = M(malinNr, id), pl = m + ord(m
   const u = m + ord(malinNr, 'Upp'), u2 = m + ord(malinNr, 'upp2');
   const T = n === 'bla' ? { a: -9, g: -8, u, u2, pl } : { a: 0.0, g: n === 'gul' ? 1.25 : 1.15, u, u2, pl };
   const y = pynta(tl, n, T);
-  return RUM(id, { kam: K.STA, f: y.f, p: y.p, pos: y.pos, kulor: { ...FORE(id), [n]: y.kula }, glimt: tl > pl ? bump(pl, pl + 0.8, tl) : 0, glimtVar: n }); };
+  // QA 2026-11-25: kameran följer med upp på pallen (öronen och huvudet kapades i överkant): glider ut och upp under klivet och
+  // tillbaka när musen kliver ner, så att hela musen är med uppe på det höga steget
+  const NER = T.pl + 1.4, hk = del(T.u - 0.1, T.u2 + 0.55, tl) * (1 - del(NER, NER + 1.2, tl));
+  return RUM(id, { kam: [lerp(K.STA[0], K.PALL[0], hk), lerp(K.STA[1], K.PALL[1], hk), lerp(K.STA[2], K.PALL[2], hk)], f: y.f, p: y.p, pos: y.pos, kulor: { ...FORE(id), [n]: y.kula }, glimt: tl > pl ? bump(pl, pl + 0.8, tl) : 0, glimtVar: n }); };
 const S = {
   '01a': tl => ({ plats: 'papper', kam: K.HEL, kontur: (tl - 2.5) / KT, fyll: 0, inn: tl < 2.5 ? tl : null }),
   '01b': tl => ({ plats: 'papper', kam: K.HEL, kontur: (6.0 + tl - 2.5) / KT, fyll: 0, vanta: 6.0 + tl - 2.5 - KT }),
@@ -533,6 +540,7 @@ const S = {
   '29': (tl, d) => RUM('29', { kam: K.STA, f: ANS('glad'), p: POS(), iris: tl }),
 };
 K.GOLV2 = [1.3, 900, 700];
+K.PALL = [PROV.pz ?? 1.2, PROV.px ?? 1150, PROV.py ?? 580];   // musen uppe på pallens höga steg, hela musen i bild (QA 2026-11-25)
 K.LADA = [2.3, 1390, 850];   // rad 3: "En låda med julpynt" (2026-11-22)
 K.KULOR = [PROV.kz ?? 3.4, PROV.kx ?? 1405, PROV.ky ?? 860];   // lådan med de tre kulorna fyller bilden   // QA 2026-11-21: hela musen i bild (1,65 skar huvudet)
 // böj ner mot den röda kulan i lådan (b 0–1): lutar åt höger och tittar ner
@@ -588,7 +596,7 @@ function borja(t) {
 function slut(t) {
   if (VARM) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect x="0" y="0" width="1920" height="1080" fill="url(#vinjett)" opacity="0.12"/>');
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
-  $('brus').setAttribute('seed', (Math.floor(Math.round(t * 30) / 3) % 50) + 1);
+  $('brus').setAttribute('seed', (Math.floor(t * 6 + 1e-6) % 50) + 1);   // ny brusbild 6 gånger/s (var 10)
 }
 let HAND25 = null, P25B_HAND = [1400, 560];
 // Granens glitter och ljusslinga, i kod. Glimtarna kommer när den första kulan hänger (rad 14); slingan ritar sig uppifrån
@@ -651,7 +659,11 @@ function ritaRum(st, t) {
   if (t > Rd['13b'].s + 6.8) lagg('pall', markskugga(PALL.x + 20, GOLV, 300, 0.2) + `<g transform="translate(${f1(PALL.x - PALL.fot[0] * PALL.s)} ${f1(GOLV - PALL.fot[1] * PALL.s)}) scale(${PALL.s})"><image href="${PALL.bild}" width="${PALL.w}" height="${PALL.h}"/></g>`);
   // musen
   const pos = st.pos || STA;
-  mus(pos, BLINKA(st.f, t), st.p);
+  // på pallen (QA 2026-11-25): skuggan på stegets ovansida under musen, inte riggens golvskugga som hamnade på väggen
+  const yta = pos[1] < GOLV - 1 && t > Rd['13b'].s + 6.8 ? ['hog', 'lag'].map(k => PALL_YTA[k]).find(([a, b]) => pos[0] > a[0] - 20 && pos[0] < b[0] + 20) : null;
+  mus(pos, BLINKA(st.f, t), st.p, { skugga: !yta });
+  if (yta) { const x = Math.max(yta[0][0] + 60, Math.min(yta[1][0] - 60, pos[0])), w = Math.min(150, yta[1][0] - yta[0][0]), o = 0.2 * kl(1 - (yta[0][1] + 14 - pos[1]) / 60, 0.3);
+    lagg('pall', `<ellipse cx="${f1(x)}" cy="${f1(yta[0][1] + 6)}" rx="${f1(w * 0.48)}" ry="5" fill="#5a3e2a" opacity="${o.toFixed(3)}" filter="url(#mjukskugga)"/>`); }
   if (st.girlangHand) { const h = hand(); lagg('gomd', girlangSnurr(h[0], h[1] - 10, 0.9, -20)); tass(); }
   { const u = (t - KAST()) / 0.7; if (u > 0 && u < 1) { const h0 = [P25B_HAND[0], P25B_HAND[1]], m = [GRAN.x, 330], k = mjuk(u);
     lagg('fram', girlangSnurr(lerp(h0[0], m[0], k), lerp(h0[1], m[1], k) - 140 * Math.sin(Math.PI * k), lerp(0.9, 1.3, k), -20 + 200 * k)); skimmer(lerp(h0[0], m[0], k), lerp(h0[1], m[1], k) - 140 * Math.sin(Math.PI * k), 0.5, t, 1); } }
