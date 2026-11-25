@@ -160,15 +160,15 @@ const BORSTE = '../../../rekvisita/tandborsten/cut/tandborsten.png', BORSTARM = 
 
 function figur(x, y, skala) {                 // en räv med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
-  const del = (n, fil = n) => `<image class="${n}" href="cut/rut-${fil}.png" width="1024" height="1024"/>`;
+  const del = (n, fil = n) => `<image class="${n}" href="cut-tunn/rut-${fil}.png" width="1024" height="1024"/>`;
   g.setAttribute('transform', `translate(${x} ${y}) scale(${skala}) translate(-512 ${-FOTTER})`);
   // arm-l2/arm-r2: kopior av armarna för riktningsposen (båda armarna ut på samma sida, den ena under den andra).
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 18}" rx="300" ry="34" fill="#000" opacity="0.1"/>
     <g class="figuren">${['ear-l', 'ear-r', 'tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
-    <g class="kropp"><image href="cut/rut-body-tom.png" width="1024" height="1024"/>
-    <image class="mage" href="cut/rut-mage.png" width="1024" height="1024"/>
-    <g mask="url(#ansiktsmask)"><g class="drag"><image href="cut/rut-nos.png" width="1024" height="1024"/>
+    <g class="kropp"><image href="cut-tunn/rut-body-tom.png" width="1024" height="1024"/>
+    <image class="mage" href="cut-tunn/rut-mage.png" width="1024" height="1024"/>
+    <g mask="url(#ansiktsmask)"><g class="drag"><image href="cut-tunn/rut-nos.png" width="1024" height="1024"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="29" ry="18" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>

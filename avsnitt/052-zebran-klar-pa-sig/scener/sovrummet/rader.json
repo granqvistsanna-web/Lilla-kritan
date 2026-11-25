@@ -89,15 +89,15 @@
   },
   {
    "id": "2",
-   "d": 7.84,
+   "d": 6.84,
    "malin": [
     [
      7,
-     2
+     0.6
     ],
     [
      8,
-     4.86
+     3.8600000000000003
     ]
    ],
    "ljud": [
@@ -107,7 +107,7 @@
     ],
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust-b",
-     3.66
+     2.7600000000000002
     ]
    ],
    "bild": "närbild fönstret med snön, klipp till zebran"
@@ -152,7 +152,7 @@
   },
   {
    "id": "5",
-   "d": 5.62,
+   "d": 6.92,
    "malin": [
     [
      11,
@@ -173,7 +173,7 @@
   },
   {
    "id": "6",
-   "d": 5.99,
+   "d": 6.39,
    "malin": [
     [
      12,
@@ -414,7 +414,7 @@
   },
   {
    "id": "17",
-   "d": 8.44,
+   "d": 9.04,
    "malin": [
     [
      30,
@@ -422,7 +422,7 @@
     ],
     [
      31,
-     4.75
+     5.35
     ]
    ],
    "ljud": [
@@ -554,7 +554,7 @@
   },
   {
    "id": "24",
-   "d": 8.47,
+   "d": 9.37,
    "malin": [
     [
      39,
@@ -562,7 +562,7 @@
     ],
     [
      40,
-     5.42
+     6.32
     ]
    ],
    "ljud": [
@@ -678,238 +678,238 @@
  "ROST": [
   [
    "01-kritan-ritar",
-   "Kritan ritar …",
-   1.75
+   1.75,
+   "Kritan ritar …"
   ],
   [
    "02-vad-blir-det",
-   "Hm … vad blir det nu?",
-   2.25
+   2.25,
+   "Hm … vad blir det nu?"
   ],
   [
    "03-rod-halsduk",
-   "Oj! En röd halsduk!",
-   1.71
+   1.71,
+   "Oj! En röd halsduk!"
   ],
   [
    "04-hej-zebran-hej",
-   "Hej, zebran! Hej, hej!",
-   1.92
+   1.92,
+   "Hej, zebran! Hej, hej!"
   ],
   [
    "05-sovit-gott",
-   "Har du sovit gott?",
-   1.64
+   1.64,
+   "Har du sovit gott?"
   ],
   [
    "06-vad-bra",
-   "Mm, vad bra!",
-   1.21
+   1.21,
+   "Mm, vad bra!"
   ],
   [
    "07-titta-snoar",
-   "Titta! Det snöar!",
-   1.56
+   1.56,
+   "Titta! Det snöar!"
   ],
   [
    "08-vad-fint",
-   "Åh, vad fint!",
-   1.28
+   1.28,
+   "Åh, vad fint!"
   ],
   [
    "09-ga-ut-snon-leka",
-   "Vill du gå ut i snön och leka? Ja, vad kul!",
-   3.42
+   3.42,
+   "Vill du gå ut i snön och leka? Ja, vad kul!"
   ],
   [
    "10-kla-pa-kroken-strumporna",
-   "Då ska vi klä på oss. Kläderna hänger på kroken. Ja, vad ska vi ta på först? Ja, strumporna, bra idé! Först strumporna.",
-   8.85
+   8.85,
+   "Då ska vi klä på oss. Kläderna hänger på kroken. Ja, vad ska vi ta på först? Ja, strumporna, bra idé! Först strumporna."
   ],
   [
    "11-bla-strumpan-pa",
-   "Den blå strumpan … på!",
-   2.32
+   2.32,
+   "Den blå strumpan … på!"
   ],
   [
    "12-var-andra-strumpan",
-   "Oj! Var är den andra strumpan?",
-   2.49
+   2.49,
+   "Oj! Var är den andra strumpan?"
   ],
   [
    "13-under-sangen",
-   "Under sängen?",
-   1.28
+   1.28,
+   "Under sängen?"
   ],
   [
    "14-nej",
-   "Nej!",
-   0.64
+   0.64,
+   "Nej!"
   ],
   [
    "15-i-korgen",
-   "I korgen?",
-   0.99
+   0.99,
+   "I korgen?"
   ],
   [
    "16-nej",
-   "Nej!",
-   0.64
+   0.64,
+   "Nej!"
   ],
   [
    "17-lite-ledsen",
-   "Åh. Zebran blir lite ledsen.",
-   2.35
+   2.35,
+   "Åh. Zebran blir lite ledsen."
   ],
   [
    "18-jag-forstar-letar",
-   "Mm. Jag förstår. Vi letar tillsammans.",
-   3.06
+   3.06,
+   "Mm. Jag förstår. Vi letar tillsammans."
   ],
   [
    "19-vad-gor",
-   "Hm … vad gör vi nu?",
-   2.11
+   2.11,
+   "Hm … vad gör vi nu?"
   ],
   [
    "20-titta-kritan-ritar",
-   "Titta! Kritan ritar något.",
-   2.21
+   2.21,
+   "Titta! Kritan ritar något."
   ],
   [
    "21-en-mossa",
-   "En mössa!",
-   0.99
+   0.99,
+   "En mössa!"
   ],
   [
    "22-for-liten",
-   "Oj! För liten!",
-   1.35
+   1.35,
+   "Oj! För liten!"
   ],
   [
    "23-en-gang-till",
-   "En gång till …",
-   1.75
+   1.75,
+   "En gång till …"
   ],
   [
    "24-for-stor",
-   "Oj, oj! För stor!",
-   1.56
+   1.56,
+   "Oj, oj! För stor!"
   ],
   [
    "25-ar-du-dar-inne",
-   "Hallå? Är du där inne?",
-   1.92
+   1.92,
+   "Hallå? Är du där inne?"
   ],
   [
    "26-en-gang-till",
-   "En gång till …",
-   1.75
+   1.75,
+   "En gång till …"
   ],
   [
    "27-lagom-varsagod",
-   "Lagom! Varsågod, zebran.",
-   2.06
+   2.06,
+   "Lagom! Varsågod, zebran."
   ],
   [
    "28-saga-tack",
-   "Ska vi säga tack?",
-   1.56
+   1.56,
+   "Ska vi säga tack?"
   ],
   [
    "29-tack",
-   "Tack!",
-   0.71
+   0.71,
+   "Tack!"
   ],
   [
    "30-gula-mossan-pa",
-   "Den gula mössan … på!",
-   2.25
+   2.25,
+   "Den gula mössan … på!"
   ],
   [
    "31-tycker-du-om",
-   "Jaså, den tycker du om!",
-   1.99
+   1.99,
+   "Jaså, den tycker du om!"
   ],
   [
    "32-dar-ar-halsduken",
-   "Och där är halsduken!",
-   1.85
+   1.85,
+   "Och där är halsduken!"
   ],
   [
    "33-roda-halsduken-pa",
-   "Den röda halsduken … på!",
-   2.46
+   2.46,
+   "Den röda halsduken … på!"
   ],
   [
    "34-varm-och-mjuk",
-   "Mmm … varm och mjuk.",
-   2.18
+   2.18,
+   "Mmm … varm och mjuk."
   ],
   [
    "35-jag-ocksa",
-   "Mm, jag också.",
-   1.35
+   1.35,
+   "Mm, jag också."
   ],
   [
    "36-strumpan-da",
-   "Men strumpan då? Zebran vet inte var.",
-   2.99
+   2.99,
+   "Men strumpan då? Zebran vet inte var."
   ],
   [
    "37-hjalpa-zebran-se",
-   "Kan du hjälpa zebran? Ser du den blå strumpan?",
-   3.64
+   3.64,
+   "Kan du hjälpa zebran? Ser du den blå strumpan?"
   ],
   [
    "38-dar-bakom-kudden",
-   "Ja, där! Bakom kudden!",
-   1.92
+   1.92,
+   "Ja, där! Bakom kudden!"
   ],
   [
    "39-bla-strumpan-pa",
-   "Den blå strumpan … på!",
-   2.32
+   2.32,
+   "Den blå strumpan … på!"
   ],
   [
    "40-vad-skont",
-   "Ja, vad skönt!",
-   1.35
+   1.35,
+   "Ja, vad skönt!"
   ],
   [
    "41-rod-gul-bla",
-   "Röd, gul … och blå!",
-   2.11
+   2.11,
+   "Röd, gul … och blå!"
   ],
   [
    "42-sa-fin",
-   "Oj, så fin du är!",
-   1.56
+   1.56,
+   "Oj, så fin du är!"
   ],
   [
    "43-ar-du-fardig",
-   "Är du färdig nu?",
-   1.49
+   1.49,
+   "Är du färdig nu?"
   ],
   [
    "44-ga-ut-i-snon",
-   "Nu kan zebran gå ut i snön!",
-   2.28
+   2.28,
+   "Nu kan zebran gå ut i snön!"
   ],
   [
    "45-hej-da-zebran",
-   "Hej då, zebran! Hej då, mössan!",
-   2.56
+   2.56,
+   "Hej då, zebran! Hej då, mössan!"
   ],
   [
    "46-roligt-i-snon",
-   "Ha det så roligt i snön!",
-   2.06
+   2.06,
+   "Ha det så roligt i snön!"
   ],
   [
    "47-hej-da-ses-snart",
-   "Hej då! Vi ses snart!",
-   1.85
+   1.85,
+   "Hej då! Vi ses snart!"
   ]
  ],
  "PA": {

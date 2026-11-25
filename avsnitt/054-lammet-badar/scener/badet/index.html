@@ -74,7 +74,7 @@ let FOT = 930, GS = 0.572;
 
 let L, G, BLINKA, TT = 0, ZOOM = 1, RAD = [], RR = {}, IDX = {}, ROSTER = [], BORTA = {}, DURATION = 0;
 const SVART = 0.6;
-const LN = n => ROSTER.find(r => +r[0].slice(0, 2) === n)[2];
+const LN = n => ROSTER.find(r => +r[0].slice(0, 2) === n).at(-1);   // rader.json: [namn, längd]
 const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];        // när repliken n börjar i raden
 const fran = (id, n) => IDX[id] >= IDX[n];
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - FOT) * s];
@@ -251,7 +251,7 @@ const S = {
   '6a': (tl, d) => BAD({ f: F('glad'), p: P({}), sjunk: 520 * del(0.2, 1.1, tl), anka: IKAR_ANKA() }),
   // kommer upp med skumhatten
   '6b': (tl, d) => { const f0 = 1.0 + LN(14);
-    return BAD({ f: F(tl > f0 ? 'fnissig' : 'forvanad', { titt: [0, -10] }), p: P({}), sjunk: 520 * (1 - del(0.1, 0.7, tl)), hatt: 1, anka: IKAR_ANKA() }); },
+    return BAD({ f: F(tl > f0 ? 'fnissig' : 'forvanad', { titt: [0, -10], ...(tl > f0 ? {} : { ogonS: [1.15, 1.15] }) }), p: P({}), sjunk: 520 * (1 - del(0.1, 0.7, tl)), hatt: 1, anka: IKAR_ANKA() }); },
   // öronen vippar, skumhatten glider av, nickar
   '7': (tl, d) => { const v = bump(0.3, 0.9, tl), g = del(0.5, 1.4, tl), [f, p] = nick(F('glad'), P({ oron: [-14 * v, -14 * v] }), tl - (1.0 + LN(15)));
     return BAD({ kam: [2.0, IKAR()[0] - 60, KANT - 100], f, p, hatt: 1 - del(1.1, 1.5, tl), hattX: 160 * g, anka: IKAR_ANKA() }); },
@@ -264,7 +264,7 @@ const S = {
 
   // ullen är platt och blöt, droppar; lammet tittar ner på sig själv
   '9': (tl, d) => { const ner = del(0.3, 0.8, tl) * (1 - del(d - 1.0, d - 0.4, tl)), h = del(0.1, 0.6, tl);
-    return RUM({ kam: K_NARA(), pol: lerp(0.3, 0.6, del(0, d, tl)), blot: 1, f: F('forvanad', { titt: [0, 14 * ner] }), p: P({ oron: [16 * h, 16 * h] }) }); },
+    return RUM({ kam: K_NARA(), pol: lerp(0.3, 0.6, del(0, d, tl)), blot: 1, f: F('forvanad', { titt: [0, 14 * ner], ogonS: [1.15, 1.15] }), p: P({ oron: [16 * h, 16 * h] }) }); },
   // huttrar, nickar i pausen, pölen växer
   '10': (tl, d) => { const h = huttra(tl, 0.4 + LN(18) + 0.2), [f, p] = nick(F('ledsen'), P({ oron: [16, 16], luta: -3 }), tl - (0.5 + LN(18) + 1.0 + LN(19) + 0.1));
     return RUM({ kam: K_NARA(), pos: [STA[0] + h, GOLV], pol: lerp(0.6, 1, del(0, d, tl)), blot: 1, f, p }); },
@@ -318,10 +318,11 @@ const S = {
     return tl < c ? { plats: 'bad', kam: K_ANKA(), hdKrok: 1, anka: A, ankaPip: bump(0.15, 0.5, tl), ankaDroppar: tl }
       : RUM({ kam: K_NARA(1.8), hdKrok: 1, oron: 1, mage: 1, moln: 1, f: F('glad'), p: P({}), anka: A }); },
   // skakar på sig, en ulltuss flyger och landar på ankans huvud, ankan piper, lammet fnissar
-  '26': (tl, d) => { const A = lerp2([ANKA_GOMD[0] - 150, ANKA_GOMD[1]], [ANKA_GOMD[0] - 300, ANKA_GOMD[1]], del(0, 0.6, tl)), sk = 5 * Math.sin(2 * Math.PI * 2.2 * (tl - 0.3)) * bump(0.3, 1.1, tl);
-    const fl = kl((tl - 1.1) / 0.9), f0 = 1.9 + LN(37);
-    return RUM({ kam: K_LAMM_KAR, hdKrok: 1, oron: 1, mage: 1, moln: 1, f: F(tl > f0 ? 'fnissig' : 'glad', { titt: [12 * del(1.1, 1.5, tl), -4] }), p: P({ luta: sk, rikt: 0.3 * del(1.1, 1.5, tl) }),
-      anka: A, ankaHatt: del(1.95, 2.25, tl), ankaPip: bump(1.6 + LN(37), 2.0 + LN(37), tl), flyg: tl > 1.1 && fl < 1 ? fl : null }); },
+  '26': (tl, d) => { const A = lerp2([ANKA_GOMD[0] - 150, ANKA_GOMD[1]], [ANKA_GOMD[0] - 300, ANKA_GOMD[1]], del(0, 0.6, tl)), sk = 5 * Math.sin(2 * Math.PI * 2.2 * (tl - 0.1)) * bump(0.1, 0.6, tl);
+    // tussen landar (1,1) före Malins "Nu har ankan också en hatt!" (1,5); närbild på ankan med hatten medan hon säger det och ankan piper
+    const fl = kl((tl - 0.5) / 0.6), f0 = 1.9 + LN(37), nara = tl > 1.2 && tl < 1.8 + LN(37);
+    return RUM({ kam: nara ? [2.6, A[0] - 10, A[1] - 70] : K_LAMM_KAR, hdKrok: 1, oron: 1, mage: 1, moln: 1, f: F(tl > f0 ? 'fnissig' : 'glad', { titt: [12 * del(0.5, 0.9, tl), -4] }), p: P({ luta: sk, rikt: 0.3 * del(0.5, 0.9, tl) }),
+      anka: A, ankaHatt: del(1.05, 1.3, tl), ankaPip: bump(1.6 + LN(37), 2.0 + LN(37), tl), flyg: tl > 0.5 && fl < 1 ? fl : null }); },
   // nickar i pausen, ankan guppar med ullhatten
   '26b': (tl, d) => { const [f, p] = nick(F('jatteglad'), P({}), tl - (0.3 + LN(39) + 0.2));
     return RUM({ kam: K_LAMM_KAR, hdKrok: 1, oron: 1, mage: 1, moln: 1, f, p, anka: [ANKA_GOMD[0] - 300, ANKA_GOMD[1]], ankaHatt: 1 }); },

@@ -13,14 +13,14 @@ export const ROST = [
   ['03-oj-en-pensel', 2.16, 'Oj! En pensel!'],
   ['04-hej-katten', 1.66, 'Hej, katten! Hej, hej!'],
   ['05-hur-ar-det', 1.09, 'Hur är det, katten?'],
-  ['06-glad-i-dag', 1.53, 'Jaså, du är glad i dag!'],
-  ['07-rod-tass-gul-tass', 5.24, 'Oj, oj, oj! En röd tass … och en gul tass!'],
+  ['06-glad-i-dag', 1.75, 'Jaså, du är glad i dag!'],
+  ['07-rod-tass-gul-tass', 5.02, 'Oj, oj, oj! En röd tass … och en gul tass!'],
   ['08-har-du-malat', 1.60, 'Har du målat, katten?'],
   ['09-ja-vad-kul', 1.07, 'Ja, vad kul!'],
   ['10-tassar-pa-golvet', 4.10, 'Titta, röda och gula tassar på golvet!'],
   ['11-ska-vi-tvatta', 1.52, 'Ska vi tvätta bort färgen?'],
-  ['12-ja-bra-ide', 1.01, 'Ja, bra idé!'],
-  ['13-bara-vatten', 4.01, 'Bara vatten. Plask, plask …'],
+  ['12-ja-bra-ide', 1.35, 'Ja, bra idé!'],
+  ['13-bara-vatten', 3.67, 'Bara vatten. Plask, plask …'],
   ['14-fargen-sitter-kvar', 1.99, 'Hm. Färgen sitter kvar.'],
   ['15-sitter-fast', 3.42, 'Oj då. Färgen sitter visst fast.'],
   ['16-inte-roligt', 1.58, 'Mm, det är inte roligt.'],
@@ -57,8 +57,9 @@ export const ROST = [
 export const L = n => ROST[n - 1][1];
 // ordtider i replikerna (silencedetect −35 dB + whisper, tagning A): färgen är borta på "borta", bubblorna spricker och
 // avtrycken fylls i på färgorden. Mät om om tagningen byts.
+// 06/07 och 12/13 omklippta 2026-11-25 (grind 6, qa-scen: slutet av "dag" och "idé" låg i nästa fil); FARG[7] −0,22 s
 export const BORTA = { 26: 4.04, 27: 3.93, 33: 2.16 };
-export const FARG = { 7: [2.2, 4.3], 35: [0.95, 2.6, 4.1], 40: [1.7, 3.1, 4.6] };
+export const FARG = { 7: [1.98, 4.08], 35: [0.95, 2.6, 4.1], 40: [1.7, 3.1, 4.6] };
 
 const MJAU = (n, o, v) => [`mjau-gullig/mjau-gullig-${n}`, o, v];   // 1 hej, 2 förtjust/glatt svar, 3 fniss, 4 mysig suck, 5 nyfiken, 6 trumpen, 7 pratar, 8 hej då
 const BADRUM = ['badrumsljud/badrumsljud-2', 0, 0.25];

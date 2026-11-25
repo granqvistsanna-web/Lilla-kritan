@@ -1,0 +1,30 @@
+   0.0 s  spinn-gullig-1         ett , hej
+   4.0 s  spinn-gullig-1b        ett b, hej
+   8.0 s  spinn-gullig-1c        ett c, hej
+  11.5 s  spinn-gullig-1d        ett d, hej
+  14.9 s  spinn-gullig-1e        ett e, hej
+  18.4 s  spinn-gullig-1f        ett f, hej
+  21.9 s  spinn-gullig-2         två , förtjust
+  26.1 s  spinn-gullig-2b        två b, förtjust
+  30.7 s  spinn-gullig-3         tre , fniss
+  34.9 s  spinn-gullig-3b        tre b, fniss
+  39.3 s  spinn-gullig-4         fyra , mysig suck
+  43.6 s  spinn-gullig-4b        fyra b, mysig suck
+  48.5 s  spinn-gullig-5         fem , nyfiken
+  52.8 s  spinn-gullig-5b        fem b, nyfiken
+  57.5 s  spinn-gullig-6         sex , trumpen
+  61.9 s  spinn-gullig-6b        sex b, trumpen
+  66.4 s  spinn-gullig-7         sju , pratar
+  71.4 s  spinn-gullig-7b        sju b, pratar
+  76.9 s  spinn-gullig-8         åtta , hej då
+  81.4 s  spinn-gullig-8b        åtta b, hej då
+  86.2 s  spinn-gullig-8c        åtta c, hej då
+  90.3 s  spinn-gullig-8d        åtta d, hej då
+  94.2 s  spinn-gullig-8e        åtta e, hej då
+  98.0 s  spinn-gullig-8f        åtta f, hej då
+ 102.0 s  spinn-fniss-1          fniss ett
+ 105.9 s  spinn-fniss-2          fniss två
+ 109.8 s  spinn-fniss-3          fniss tre
+ 113.8 s  spinn-fniss-4          fniss fyra
+ 117.9 s  spinn-fniss-5          fniss fem
+ 121.8 s  spinn-fniss-6          fniss sex

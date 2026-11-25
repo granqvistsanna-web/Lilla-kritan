@@ -9,11 +9,14 @@ import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, extname } from 'node:path';
 import { homedir, tmpdir } from 'node:os';
-import { RADER, ROST, UPPSKATTAD } from './rader.mjs';
+import { RADER, ROST, UPPSKATTAD, RAKNA, PLUTT } from './rader.mjs';
 const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 
 const HÄR = new URL('./', import.meta.url).pathname, ROT = new URL('../../../', import.meta.url).pathname;
 const EFF = ROT + 'assets/ljud/effekter/', RÖST = ROT + 'assets/ljud/roster/raven-borstar-tanderna/';
+// scenens tider (grind 6): scener/badet/rader.json
+await mkdir(HÄR + '../scener/badet', { recursive: true });
+await writeFile(HÄR + '../scener/badet/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud }) => ({ id, d, malin, ljud })), ROST, RAKNA, PLUTT }));
 let t = 0; for (const r of RADER) { r.t = t; t += r.d; }
 const LANGD = t, tid = s => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
 

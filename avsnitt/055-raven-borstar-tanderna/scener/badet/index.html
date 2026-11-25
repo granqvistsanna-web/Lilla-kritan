@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Räven borstar tänderna</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- 055 Räven borstar tänderna: hela kodscenen (grind 6). Mått och utsnitt som storyboarden (../../storyboard/scen.html), ramverket
+     som 057:s scen (premium-finputs: varm ton, vinjett 0,14, ny brusbild 6 gånger/s, line boil 2,5 px delat med zoomen, kant.js),
+     borstningen, tandkrämen, muggen och tandglimten som 030/031:s badet-kod (se "Lösningar från förlagorna" i manus.md).
+     Räven är riggen raven-rut (cut-tunn, gapar, borstar). Tiderna ur rader.json (skrivs av storyboard/bygg.mjs).
+     Rendera: node avsnitt/055-raven-borstar-tanderna/scener/render.mjs avsnitt/055-raven-borstar-tanderna/scener/badet [--snabb].
+     Bara hårda klipp; den enda åkningen är zoomen in i teckningen. Kritan är liten, utan ansikte, knackar aldrig. -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <filter id="smakrita" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2 0 0 0 1.2"/>
+      <feComposite in="SourceGraphic" operator="in"/>
+    </filter>
+    <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
+    <!-- tandkrämstuben (rekvisita/tandkramen, 386 × 741, står på korken): korken är bilden under y 594 -->
+    <clipPath id="tubkork"><rect x="0" y="594" width="386" height="160"/></clipPath>
+    <clipPath id="tubkropp"><rect x="0" y="-10" width="386" height="604"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g id="pall"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g id="kar"></g>
+    <g id="kanten" filter="url(#boil)"></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="krita"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', R = A + 'rekvisita/', SAK = '/avsnitt/055-raven-borstar-tanderna/saker/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => (+v).toFixed(1);
+const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) => a + (b - a) * k;
+const mjuk = k => (k = kl(k), k * k * (3 - 2 * k)), del = (a, b, t) => mjuk((t - a) / (b - a));
+const bump = (a, b, t) => (t <= a || t >= b) ? 0 : Math.sin(Math.PI * (t - a) / (b - a));
+
+// --- Filer och mått (som storyboarden) -------------------------------------------------------------------------------------
+const PLATTA = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
+const HK = 0.68, HANDFAT = { bild: R + 'handfatet/cut/handfatet.png', W: 802 * HK, H: (772 - 177) * HK, kantY: 177 * HK };
+const PALL = R + 'pall/cut/pall.png', PALL_LAG = [190, 272], PALL_HOG = [555, 66];
+const MUGG = R + 'tandborstmuggen/cut/tandborstmuggen.png', MUGG_WH = [758, 768], MK = 0.17;
+const LITEN = SAK + 'tandborsten-tunn.png', STOR = R + 'tandborste-stor/cut/tandborste-stor.png', BW = [877, 238];
+const TUB = SAK + 'tandkramen-tunn.png', TUB_WH = [386, 741], TK = 0.13;
+const KONTUR = '/avsnitt/055-raven-borstar-tanderna/storyboard/tandborste-kontur.json';
+const LK = 0.15, SK = 0.27, GREPP = [800, 120], HUVUD = [90, 119];   // borstarnas skala (den stora 1,8 ×), skaftets ände och borsthuvudet i bilden
+const GOLV = 905, GS = 0.59;
+const HX = 1100, RIM = GOLV - HANDFAT.H, FATKANT = 700, BX = HX - 30;
+const STA = [520, GOLV];
+const MUGGX = HX - 205, MW = MUGG_WH[0] * MK, MH = MUGG_WH[1] * MK, TUBX0 = HX - 120, TW = TUB_WH[0] * TK, TH = TUB_WH[1] * TK;
+const LIGG = [HX + 100, RIM - 4, 0, SK];                                  // den stora borsten liggande på läppen: [greppets x, y, vinkel, skala]
+const I_MUGG = [MUGGX + 8, RIM - 62, 100, LK];                            // den lilla i muggen (bakom muggens framsida)
+const STOR_MUGG = [MUGGX + 18, RIM - 112, 98, SK];                        // den stora vilar i muggen: skaftet når botten, huvudet högt över kanten
+const BAKOM = [MUGGX + MW / 2 - TW / 2 + 18, RIM + 4, -8];                 // tuben bakom muggen: korken sticker fram vid högra sidan
+const TASS_L = [168, 655], HA = 125;   // HA: vänstra armen lyft ut förbi kroppens kant (som vinkningen), så att tassen och saken syns                                                 // vänstra tassen i riggens ruta (där en sak hålls)
+let VID, PALL_KS, PALL_X0, PALL_Y0, STEG1;
+
+let L, G, SAKG, BLINKA, PK, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], RAKNA = {}, PLUTT = 0, DURATION = 0;
+const SVART = 0.6;
+const LN = n => ROSTER[n - 1][1];
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+
+function kamera([zoom, cx, cy]) {
+  ZOOM = zoom;
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));   // line boil 2,5 px i bild
+}
+
+// --- Kameror [zoom, cx, cy] (storyboardens utsnitt) ---------------------------------------------------------------------
+const K_HEL = [1, 960, 540];
+const K_HALV = [1.6, HX - 40, 470];
+const K_ANS = () => [2.6, BX, VID[1] - (L.FOTTER - 440) * GS];
+const K_MUN = () => [3.6, BX, VID[1] - (L.FOTTER - 485) * GS];
+const K_MUGG = [3.2, MUGGX + 20, RIM - 60];
+const K_KLAM = [3.6, LIGG[0] - SK * (GREPP[0] - HUVUD[0]) + 20, RIM - 40];   // tätt på borsthuvudet (030:s K_KLAM)
+const K_LUFT = [1.6, HX + 60, RIM - 170];                                    // kritan ritar den stora borsten bredvid räven
+
+// --- Badrummet med den omritade kranen (som 030–033 och 038) -------------------------------------------------------------
+const KRAN_D = 'M698 168 L698 72 C698 30 672 14 646 14 C619 14 600 31 600 58 L600 72';
+const KRANBILD = `<g id="kran"><rect x="664" y="156" width="68" height="24" rx="11" fill="#a9bfcf"/>
+  <path d="${KRAN_D}" fill="none" stroke="#9fb6c8" stroke-width="40" stroke-linecap="round"/>
+  <path d="${KRAN_D}" fill="none" stroke="#d6e4ee" stroke-width="31" stroke-linecap="round"/>
+  <path d="M687 158 L687 74 C687 42 668 27 646 26" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+  <rect x="585" y="64" width="30" height="20" rx="7" fill="#9fb6c8"/><rect x="589" y="67" width="22" height="13" rx="5" fill="#c3d5e2"/>
+  ${[[660, 150], [736, 150]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="24" fill="#e0705a"/><circle cx="${x}" cy="${y}" r="20" fill="#f08e76"/><circle cx="${x - 8}" cy="${y - 8}" r="6" fill="#fff" opacity="0.75"/>`).join('')}</g>`;
+function badrum() {
+  const { W, kantY } = HANDFAT;
+  $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  $('pall').innerHTML = `<image href="${PALL}" x="${f1(PALL_X0)}" y="${f1(PALL_Y0)}" width="${f1(781 * PALL_KS)}" height="${f1(551 * PALL_KS)}"/>`;
+  lagg('bak', `<ellipse cx="${HX}" cy="${GOLV + 4}" rx="${f1(W * 0.3)}" ry="14" fill="#000" opacity="0.07"/>`);
+  $('kar').innerHTML = `<defs><mask id="utan-kran" maskUnits="userSpaceOnUse" x="-50" y="-50" width="900" height="900"><rect x="-50" y="-50" width="900" height="900" fill="#fff"/><rect x="560" y="-50" width="300" height="218" fill="#000"/></mask></defs>
+    <g transform="translate(${f1(HX - W / 2)} ${f1(RIM - kantY)}) scale(${HK})"><image href="${HANDFAT.bild}" width="802" height="775" mask="url(#utan-kran)"/>${KRANBILD}</g>`;
+}
+
+// --- Borstarna, tuben, tandkrämen --------------------------------------------------------------------------------------------
+// borste(href, [x, y, v, s]): skaftets ände (GREPP) i (x, y), vriden v grader (0 = liggande, huvudet till vänster; 90 = huvudet upp)
+const borste = (href, [x, y, v, s], pasta = 0) => `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-GREPP[0]} ${-GREPP[1]})">
+  <image href="${href}" width="${BW[0]}" height="${BW[1]}"/>${PASTA(pasta)}</g>`;
+// Tandkrämen (031, Sanna 2026-11-15: "toothpaste placement not consistent"): EN rand i borstbildens egna pixlar, samma plats på borsten överallt
+const PASTA = (r = 1) => r > 0.01 ? `<path d="M48 4 q24 -22 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round" stroke-dasharray="${r.toFixed(3)} 2"/>
+  <path d="M48 4 q24 -22 48 0 t48 0 t48 0" pathLength="1" fill="none" stroke="#a8e6a0" stroke-width="10" stroke-linecap="round" stroke-dasharray="${r.toFixed(3)} 2"/>` : '';
+// tuben: hel (står på korken i x, y) eller öppen utan kork (x, y = öppningen, v = lutning, sx = klämd)
+const tub = ([x, y, v = 0], { oppen = false, sx = 1 } = {}) => oppen
+  ? `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${(TK * sx).toFixed(4)} ${TK}) translate(-193 -${594 + 44})"><rect x="152" y="586" width="82" height="52" rx="14" fill="#efe6d2"/><g clip-path="url(#tubkropp)"><image href="${TUB}" width="386" height="741"/></g></g>`
+  : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${TK}) translate(-193 -738)"><image href="${TUB}" width="386" height="741"/></g>`;
+// in i muggen (031:s koppBana): en båge till en punkt rakt ovanför platsen, sedan glider den rakt ner bakom muggens framsida
+function koppBana(fran, till, u, over = 112) {
+  const ovan = [till[0], till[1] - over, till[2], till[3]], DROPP = 0.62;
+  if (u < DROPP) { const k = mjuk(u / DROPP); return [lerp(fran[0], ovan[0], k), lerp(fran[1], ovan[1], k) - 80 * Math.sin(Math.PI * k), lerp(fran[2], ovan[2], k), lerp(fran[3], ovan[3], k)]; }
+  const k = mjuk((u - DROPP) / (1 - DROPP)); return [ovan[0], lerp(ovan[1], till[1], k), till[2], till[3]];
+}
+// ur muggen (031:s urKopp): rakt upp först, sedan bågen
+function urKopp(fran, till, u, over = 112) {
+  const UPP = 0.3, ovan = [fran[0], fran[1] - over, fran[2], fran[3]];
+  if (u < UPP) { const k = mjuk(u / UPP); return [fran[0], lerp(fran[1], ovan[1], k), fran[2], fran[3]]; }
+  const k = mjuk((u - UPP) / (1 - UPP)); return [lerp(ovan[0], till[0], k), lerp(ovan[1], till[1], k) - 80 * Math.sin(Math.PI * k), lerp(ovan[2], till[2], k), lerp(ovan[3], till[3], k)];
+}
+const bana = (a, b, u, h = 70) => { const k = mjuk(u); return [lerp(a[0], b[0], k), lerp(a[1], b[1], k) - h * Math.sin(Math.PI * kl(u)), lerp(a[2], b[2], k), lerp(a[3], b[3], k)]; };
+
+// kanten: muggen med den lilla borsten (liten), tuben, den stora borsten (stor = [x, y, v, s]; storBak = i muggen, bakom framsidan)
+function kanten({ liten = true, tub: tp = 'bredvid', stor = null, storBak = false, litenFri = null, litenBak = null, pasta = 0 } = {}) {
+  let h = '';
+  const tubPos = tp === 'bredvid' ? [TUBX0, RIM + 4, 0] : tp === 'bakom' ? BAKOM : Array.isArray(tp) ? tp : null;
+  const bakomMugg = tubPos && tubPos[0] < MUGGX + MW / 2 + TW / 2 - 4;   // tuben i muggens höjd ritas bakom den (rullar, ligger bakom)
+  if (tubPos && bakomMugg) h += tub(tubPos);
+  if (liten) h += borste(LITEN, I_MUGG);
+  if (litenBak) h += borste(LITEN, litenBak);
+  if (stor && storBak) h += borste(STOR, stor, pasta);
+  h += `<image href="${MUGG}" x="${f1(MUGGX - MW / 2)}" y="${f1(RIM + 6 - MH)}" width="${f1(MW)}" height="${f1(MH)}"/>`;
+  if (tubPos && !bakomMugg) h += tub(tubPos);
+  if (stor && !storBak) h += borste(STOR, stor, pasta);
+  if (litenFri) h += borste(LITEN, litenFri);
+  lagg('kanten', h);
+}
+
+// --- Skimmer, krit-gnistor, tandglimt (031) -----------------------------------------------------------------------------------
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" opacity="${kl(o).toFixed(2)}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k, vidd = 1) { if (k <= 0.01) return;
+  lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s], i) => stjarna(x + dx * 40 * vidd, y + dy * 34 * vidd, 16 * s * k * vidd * (0.75 + 0.25 * Math.sin(TT * 3 + i * 1.7)), 0.4 + k)).join('')); }
+const kritGnista = (x, y, r) => { if (r < 0.8) return ''; const d = `M0 -1 Q.16 -.16 1 0 Q.16 .16 0 1 Q-.16 .16 -1 0 Q-.16 -.16 0 -1Z`, g = `transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})"`;
+  return `<g ${g} stroke-linejoin="round"><path d="${d}" fill="#fff" stroke="#fff" stroke-width="${(0.5 + 3 / r).toFixed(3)}"/><path d="${d}" fill="#9fd3f2"/><path d="${d}" fill="#d4ecfa" filter="url(#smakrita)"/><path d="${d}" transform="scale(.5)" fill="#fff"/></g>`; };
+const GLIMT_P = 1.15, GLIMT_ORD = [1, 3, 0, 2];
+function tandglimt(t) { const inv = $('kamera').getScreenCTM().inverse(), u = t / GLIMT_P, j = GLIMT_ORD[Math.floor(u) % 4], g = Math.sin(Math.PI * kl((u % 1) / 0.78));
+  const tander = [...G.querySelectorAll('.tand')].slice(0, 4).filter(e => e.getBoundingClientRect().width > 1);
+  if (!tander.length || g < 0.05) return; const b = tander[j % tander.length].getBoundingClientRect(), a = new DOMPoint(b.left, b.top).matrixTransform(inv), c = new DOMPoint(b.right, b.bottom).matrixTransform(inv);
+  lagg('fram', kritGnista(lerp(a.x, c.x, 0.7), lerp(a.y, c.y, 0.3), 1.3 * (c.x - a.x) * g)); }
+
+// --- Räven ------------------------------------------------------------------------------------------------------------------
+// Blåbären: på tänderna 0, 1, 3 (övre raden) och 4, 6, 7 (nedre). "Uppe" tar 0 och 3, "nere" 4 och 7, "längst fram" 1 och 6,
+// alla borta på "tre" (RENT = [rad, tänder]). Tänderna (tander 0 matt … 1 blank) blir blanka på samma ord.
+const BLA = [1, 1, 0, 1, 1, 0, 1, 1], RENT = { '17': [0, 3], '18': [4, 7], '19': [1, 2, 5, 6] };
+const ISCEN = el => { const inv = $('kamera').getScreenCTM().inverse(), r = el.getBoundingClientRect(); return new DOMPoint(r.x + r.width / 2, r.y + r.height / 2).matrixTransform(inv); };
+function rav([x, fot], f, p, { bakom = false, bar = null, hall = null } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${GS}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+  if (bakom) G.querySelectorAll('.leg-l,.leg-r,.skugga').forEach(e => e.setAttribute('opacity', 0));
+  // en sak i vänstra tassen: ligger mellan kroppen och armen, så att tassen är framför skaftet; följer armens transform
+  const arm = [...G.querySelectorAll('.arm-l')].find(e => e.getAttribute('opacity') !== '0');
+  if (hall && arm) { arm.parentNode.insertBefore(SAKG, arm); SAKG.setAttribute('transform', arm.getAttribute('transform') || '');
+    const m = SAKG.getCTM(), g = G.getCTM(), vr = (Math.atan2(m.b, m.a) - Math.atan2(g.b, g.a)) * 180 / Math.PI;   // vinkeln i bilden, inte armens
+    SAKG.innerHTML = borste(hall.href, [TASS_L[0], TASS_L[1], hall.v - vr, hall.s / GS], hall.pasta || 0); }
+  else SAKG.innerHTML = '';
+  // blåbären (bar[8] 0–1 per tand) på tänderna som syns
+  if (bar) G.querySelectorAll('.tand').forEach((e, j) => { if (!(bar[j] > 0.02) || +e.getAttribute('opacity') < 0.5) return;
+    const c = ISCEN(e), r = e.getBoundingClientRect().width / $('kamera').getScreenCTM().a * 0.2 * (0.6 + 0.4 * bar[j]);
+    lagg('fram', `<g opacity="${kl(bar[j] * 1.5).toFixed(2)}">` + [[0, 0, 1], [0.9, 0.5, 0.7], [-0.6, 0.7, 0.55]].map(([dx, dy, k]) =>
+      `<circle cx="${f1(c.x + dx * r)}" cy="${f1(c.y + dy * r)}" r="${f1(k * r)}" fill="${j % 2 ? '#3B4A8C' : '#6A4C93'}"/>`).join('') + '</g>'); });
+}
+// riggens borste (posen borstar): den lilla eller den stora (1,45 × kring borsthuvudet), med tandkrämen i samma pixlar
+function riggBorste(stor, pasta = 0) {
+  const e = G.querySelector('.borste'), i = e?.querySelector('image'); if (!i) return;
+  const tr = stor ? `translate(${HUVUD[0]} ${HUVUD[1]}) scale(1.45) translate(${-HUVUD[0]} ${-HUVUD[1]})` : '';
+  i.setAttribute('href', stor ? STOR : LITEN); i.setAttribute('transform', tr);
+  let pg = e.querySelector('.pasta'); if (!pg) { i.insertAdjacentHTML('afterend', '<g class="pasta"></g>'); pg = e.querySelector('.pasta'); }
+  pg.setAttribute('transform', tr); pg.innerHTML = PASTA(pasta);
+}
+// var riggens borste är i scenen: [greppets x, y, vinkel, skala] (för flygturen in i tassen, 031:s handMal)
+function riggBorstPos() {
+  const i = G.querySelector('.borste image'), inv = $('kamera').getScreenCTM().inverse(), m = inv.multiply(i.getScreenCTM());
+  const g = new DOMPoint(...GREPP).matrixTransform(m); return [g.x, g.y, Math.atan2(m.b, m.a) * 180 / Math.PI, Math.hypot(m.a, m.b)];
+}
+const P = o => ({ ...L.POSE0, ...o });
+const GLADA = ['glad', 'jatteglad', 'fnissig', 'stolt', 'flinar'];
+const F = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(GLADA.includes(n) ? { glad: [0, 0] } : {}), ...o });   // glada ögon öppna
+const GAP = (o = {}) => F('gapar', o);
+const BORST = (x, y, o = {}) => P({ ...L.POSER.borstar, borstX: x, borstY: y, ...o });
+const vink = (tl, v, o = {}) => P({ luta: -3 * v, armar: [0, v * (86 + 14 * Math.sin(2 * Math.PI * 1.1 * tl))], ...o });   // högra armen bakom kroppen, snett ut förbi kanten
+const nick = (f, p, tl, d = 1.2) => tl > 0 && tl < d ? L.nicka(f, p, tl, d, 2) : [f, p];
+const skaka = (f, p, tl, d = 1.4) => tl > 0 && tl < d && L.skakaHuvud ? L.skakaHuvud(f, p, tl, d) : [f, p];
+const vipp = (tl, a, d = 1.4) => 12 * Math.sin(2 * Math.PI * (tl - a) / 0.8) * bump(a, a + d, tl);   // svansen viftar lugnt
+const liv = (p, t) => { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2;   // andas, öronen lever lite
+  return { ...p, strack: (p.strack || 0) + 0.012 * a, oron: (p.oron || [0, 0]).map((o, i) => o - 1.5 * a + (i ? -1 : 1) * 1.2 * Math.sin(t * 1.3 + 2 * i)) }; };
+const oronUpp = (tl, a, b, h = 12) => -h * del(a, a + 0.3, tl) * (1 - del(b, b + 0.4, tl));
+function skutt(p, tl, t0, d = 0.45) {
+  const huk = bump(t0 - 0.18, t0 + 0.02, tl), u = kl((tl - t0) / d), land = bump(t0 + d - 0.02, t0 + d + 0.28, tl);
+  return { ...p, lyft: (p.lyft || 0) - 30 * Math.sin(Math.PI * u) * (tl > t0 && tl < t0 + d ? 1 : 0), strack: (p.strack || 0) - 0.06 * huk + 0.04 * Math.sin(Math.PI * u) - 0.05 * land };
+}
+const hoppVag = (tl, a, d, P0, P1, h) => { const u = kl((tl - a) / d); return [lerp(P0[0], P1[0], mjuk(u)), lerp(P0[1], P1[1], u) - h * Math.sin(Math.PI * u)]; };
+const GANG = tl => lerp(-160, STA[0], 1 - (1 - kl(tl / 2.0)) ** 1.6);
+// borstningen per rad (17–19): tre lugna drag på räkneorden, en lätt gnuggning däremellan
+function drag(id, tl) {
+  const n = { '17': 31, '18': 32, '19': 33 }[id], r = RAKNA[n].map(o => 0.5 + o), bas = { '17': -0.5, '18': -0.5, '19': -0.2 }[id];
+  let x = bas + 0.04 * Math.sin(2 * Math.PI * 2.6 * tl) * del(0.3, 0.6, tl);
+  r.forEach(t0 => { x += 0.32 * Math.sin(Math.PI * kl((tl - t0 + 0.05) / 0.4)); });
+  return [x, r[2]];
+}
+
+// --- Ritintrot: kritan ritar den lilla tandborsten (kritan-ritar.js) -------------------------------------------------------
+const PS = 1.5, PX0 = 960 - BW[0] * PS / 2, PY0 = 540 - BW[1] * PS / 2;
+const iPapper = ([x, y]) => [PX0 + x * PS, PY0 + y * PS];
+// den stora borsten som kritan ritar i luften bredvid räven (rad 7a–7b)
+const LUFT = [HX + 300, RIM - 175, -25, SK];   // borstens mitt [x, y], vinkel, skala
+const iLuft = ([x, y]) => { const [cx, cy, v, s] = LUFT, a = v * Math.PI / 180, dx = (x - BW[0] / 2) * s, dy = (y - BW[1] / 2) * s;
+  return [cx + dx * Math.cos(a) - dy * Math.sin(a), cy + dx * Math.sin(a) + dy * Math.cos(a)]; };
+const luftGrepp = () => { const [x, y] = iLuft(GREPP); return [x, y, LUFT[2], SK]; };
+
+// --- Raderna: vad som syns per rad, tl = tid in i raden, d = radens längd -------------------------------------------------
+const BAD = o => ({ plats: 'bad', kam: K_HALV, pos: VID, bakom: true, kant: {}, ...o });
+const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];
+const S = {
+  // ritintrot på tomt papper: kontur, gisspaus med svajande krita, borsten fylls inifrån och gungar, zoom in
+  '01a': tl => ({ plats: 'papper' }),
+  '01b': (tl, d) => ({ plats: 'papper', kryp: del(0, d, tl) }),
+  '01c': (tl, d) => ({ plats: 'papper', kryp: 1 + 0.3 * del(0, d, tl), gung: tl, fyll: del(0, 0.7, tl), zoom: lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), vit: del(d - 0.45, d, tl) }),
+
+  // trippar in från vänster, två lugna skutt upp på pallen bakom handfatet, vinkar
+  '1': (tl, d) => { const g = kl(tl / 2.0), [fw, pw] = L.ROR.ga(0.25 + 1.5 * g), stopp = del(1.8, 2.1, tl), t1 = 2.15, t2 = 2.75;
+    let pos = [GANG(tl), GOLV]; if (tl >= t1) pos = hoppVag(tl, t1, 0.45, STA, STEG1, 70); if (tl >= t2) pos = hoppVag(tl, t2, 0.45, STEG1, VID, 60);
+    const uppe = tl > t2 + 0.45, v = del(3.1, 3.5, tl) - del(d - 0.9, d - 0.3, tl);
+    let p = L.blandaPose({ ...pw, x: 0, rikt: 0.6 }, P({ rikt: 0.5 * (1 - del(t2 + 0.45, t2 + 0.9, tl)) }), stopp);
+    p = skutt(skutt(p, tl, t1), tl, t2); if (v > 0) p = L.blandaPose(p, vink(tl, 1), v);
+    return BAD({ kam: K_HEL, pos, bakom: uppe, vitIn: 1 - del(0, 0.4, tl), f: L.blanda({ ...fw, titt: [8, 0] }, F(uppe ? 'jatteglad' : 'glad'), stopp), p: { ...p, svans: vipp(tl, 3.2) } }); },
+  // tittar på oss, öronen vippar; svarar glatt i pausen
+  '1b': (tl, d) => { const sv = 0.3 + LN(5), up = oronUpp(tl, sv, sv + 1.4);
+    return BAD({ f: F(tl > sv ? 'jatteglad' : 'nyfiken'), p: P({ oron: [up, up], svans: vipp(tl, sv) }) }); },
+  // ler stort: blåbär på tänderna; slickar sig om nosen efter repliken
+  '2': (tl, d) => { const s = 0.8 + LN(7);
+    return BAD({ kam: K_ANS(), f: F('flinar', { tunga: bump(s, s + 1.0, tl), ...(tl > s ? { glad: [0.6, 0.6] } : {}) }), p: P({ oron: [-4, -4] }), bar: BLA }); },
+  // nickar och "pratar" i pausen
+  '2b': (tl, d) => { const [f, p] = nick(F('glad', { mun: [16, 12, 1, 458] }), P(), tl - (0.3 + LN(8)));
+    return BAD({ kam: K_ANS(), f, p }); },
+  // tittar på tandborsten i muggen, nickar i pausen
+  '3': (tl, d) => { const k = del(0.1, 0.5, tl), [f, p] = nick(F('glad', { titt: [-14 * k, 8 * k] }), P({ rikt: -0.4 * k, svans: vipp(tl, 0.3 + LN(10)) }), tl - (0.3 + LN(10)));
+    return BAD({ f, p }); },
+  // tar den lilla borsten ur muggen (rakt upp, sedan bågen till tassen) och håller upp den: pytteliten
+  '4': (tl, d) => { const u = kl((tl - 0.2) / 0.7), arm = del(0.2, 0.8, tl), hal = [0, 0, 90, LK];
+    return BAD({ f: F(tl > 1.0 ? 'forvanad' : 'nyfiken', { titt: [-10 * (1 - arm), 6 * (1 - arm) - 4 * arm], oron: [-12 * del(0.9, 1.2, tl), -12 * del(0.9, 1.2, tl)] }),
+      p: P({ armar: [HA * arm, 0] }), kant: { liten: false }, litenFlyg: u < 1 ? u : null, hall: u >= 1 ? { href: LITEN, v: 95, s: LK } : null }); },
+  // den lilla borsten mot den långa raden tänder: ett försiktigt drag, når bara två
+  '5': (tl, d) => { const x = -0.6 + 0.18 * Math.sin(Math.PI * kl((tl - 0.2) / 0.7));
+    return BAD({ kam: K_MUN(), f: GAP({ ogonS: [1.15, 1.15], titt: [0, -2] }), p: BORST(x, 0), riggB: { stor: false }, kant: { liten: false }, bar: BLA }); },
+  // tittar på oss, öronen sjunker, skakar lugnt på huvudet i pausen
+  '5b': (tl, d) => { const sv = 0.3 + LN(14), ner = del(sv, sv + 0.4, tl), [f, p] = skaka(F('ledsen', { le: -0.3 }), P({ oron: [10 + 6 * ner, 10 + 6 * ner] }), tl - sv);
+    return BAD({ kam: K_ANS(), f, p, kant: { liten: false } }); },
+  // lägger tillbaka den lilla borsten i muggen (bakom framsidan) och tittar på oss
+  '6': (tl, d) => { const u = kl((tl - 0.1) / 0.8), arm = 1 - del(0.3, 0.9, tl);
+    return BAD({ f: F('nyfiken', { titt: [-8 * (1 - del(0.9, 1.3, tl)), 4 * (1 - del(0.9, 1.3, tl))] }), p: P({ armar: [HA * arm, 0] }), kant: { liten: u >= 1 }, litenIn: u > 0 && u < 1 ? u : null,
+      hall: u <= 0 ? { href: LITEN, v: 95, s: LK } : null }); },
+  // kritan ritar en stor tandborste i luften bredvid räven, gisspaus med svajande krita; räven tittar dit
+  '7a': (tl, d) => BAD({ kam: K_LUFT, f: F('nyfiken', { titt: [14, -6] }), p: P({ rikt: 0.4, oron: [-6, -6] }), luftRit: true }),
+  // borsten fylls inifrån, kritan flyger ut; den sjunker lugnt till rävens tass. Varsågod
+  '7b': (tl, d) => { const sj = kl((tl - 0.9) / 0.8), arm = del(0.8, 1.6, tl);
+    return BAD({ kam: K_LUFT, f: F('kawaii', { glad: [0, 0], titt: [10 * (1 - sj), -4] }), p: P({ rikt: 0.4 * (1 - arm), armar: [HA * arm, 0], oron: [-10, -10], svans: vipp(tl, 0.6) }),
+      luftRit: tl < 0.9, luftFyll: del(0, 0.7, tl), storFlyg: tl >= 0.9 && sj < 1 ? sj : null, hall: sj >= 1 ? { href: STOR, v: 92, s: SK } : null, skimLuft: 0.8 * bump(0.2, 1.4, tl) }); },
+  // med den stora borsten; paus för tack; nickar glatt på "Tack!"
+  '8': (tl, d) => { const t = M('8', 20), [f, p] = nick(F(tl > t ? 'jatteglad' : 'nyfiken'), P({ armar: [HA, 0], oron: [-8 * del(t, t + 0.3, tl), -8 * del(t, t + 0.3, tl)], svans: vipp(tl, t) }), tl - t);
+    return BAD({ f, p, hall: { href: STOR, v: 92, s: SK } }); },
+  // håller den stora borsten framför nosen: den räcker över hela raden tänder
+  '8b': (tl, d) => { const sv = 0.6 + LN(21), [f, p] = nick(F('glad'), BORST(0.1 + 0.05 * Math.sin(tl * 2), -0.2, { borstNer: 0 }), tl - sv);
+    return BAD({ kam: K_ANS(), f, p, riggB: { stor: true } }); },
+  // den stora borsten upprätt bredvid muggen med den lilla: en liten och en stor
+  '9': (tl, d) => BAD({ f: F('glad', { titt: [-12, 4] }), p: P({ armar: [HA - 14, 0], rikt: -0.3 }), hall: { href: STOR, v: 90, s: SK } }),
+  // borsten kittlar på nosen två gånger, räven blundar och fnissar; skaftet stöter till tuben, som glider bakom muggen;
+  // sedan läggs borsten på läppen
+  '10': (tl, d) => { const kit = bump(0.2, 0.8, tl) + bump(0.9, 1.5, tl), r = kl((tl - 1.6) / 0.8), ner = kl((tl - (d - 1.4)) / 0.9);
+    const tubP = r <= 0 ? 'bredvid' : [lerp(TUBX0, BAKOM[0], mjuk(r)), RIM + 4, lerp(0, BAKOM[2], mjuk(r)) + 14 * Math.sin(Math.PI * 3 * r) * (1 - r)];
+    return BAD({ f: F('fnissig', { glad: [1, 1] }), p: P({ armar: [HA + 10 * kit, 0], luta: -3 * kit, oron: [8 * kit, 8 * kit], svans: vipp(tl, 0.2, 1.8) }),
+      kant: { tub: tubP }, hall: ner <= 0 ? { href: STOR, v: 92 + 45 * kit - 35 * del(1.5, 1.7, tl) * (1 - del(1.9, 2.3, tl)), s: SK } : null, storLagg: ner > 0 ? ner : null }); },
+  // tittar ner på kanten där tuben stod: tomt; klipp till närbild på den förvånade minen
+  '11': (tl, d) => { const c = 0.3 + LN(25) + 0.4, k = del(0.1, 0.5, tl);
+    return BAD({ kam: tl < c ? K_HALV : K_ANS(), f: F(tl < c ? 'nyfiken' : 'forvanad', { titt: [-6 * k, 12 * k] }), p: P({ oron: tl < c ? [0, 0] : [-14, -14] }), kant: { tub: 'bakom', stor: LIGG } }); },
+  // tittar åt vänster, sedan åt höger (ögonen, huvudet vänds inte)
+  '12': (tl, d) => { const v = del(0.5, 0.9, tl) - 2 * del(1.5, 2.0, tl) + del(d - 0.8, d - 0.3, tl);
+    return BAD({ f: F('nyfiken', { titt: [-16 * v, 4] }), p: P({ svans: vipp(tl, 1.0) }), kant: { tub: 'bakom', stor: LIGG } }); },
+  // frågan i bred bild, efter 1,5 s klipp till närbild på muggen: korken sticker fram; efter 3 s skimrar den svagt
+  '13': (tl, d) => { const g = tl - (0.3 + LN(28) + 3.0);
+    return BAD({ kam: tl < 1.5 ? K_HALV : K_MUGG, f: F('nyfiken', { titt: [-10, 8] }), p: P(), kant: { tub: 'bakom', stor: LIGG }, korkSkim: 0.4 * del(0, 0.6, g) }); },
+  // korken skimrar tydligt; klipp ut: tuben glider fram bakom muggen till tassen, ett litet glatt skutt; reaktionen i närbild
+  '14': (tl, d) => { const c1 = 0.6, c2 = d - 1.0, u = kl((tl - 0.8) / 0.7), arm = del(0.7, 1.3, tl);
+    const kam = tl < c1 ? K_MUGG : tl < c2 ? K_HALV : K_ANS();
+    const p = skutt(P({ armar: [HA * arm, 0], oron: [-12, -12], svans: vipp(tl, 1.4, 2) }), tl, 1.6);
+    return BAD({ kam, f: F(tl < c1 ? 'nyfiken' : 'jatteglad'), p, kant: { tub: u <= 0 ? 'bakom' : null, stor: LIGG }, korkSkim: tl < c1 ? 0.4 + 0.5 * del(0, 0.3, tl) : 0,
+      tubFlyg: u > 0 && u < 1 ? u : null, tubHall: u >= 1 }); },
+  // tätt på borsthuvudet: tuben lutar och kläms, en rand tandkräm växer på borsten på "plutt!"; sedan lyfts tuben ur bild
+  '15': (tl, d) => { const p = 0.3 + PLUTT;
+    return BAD({ kam: K_KLAM, f: F('glad'), p: P(), kant: { tub: null, stor: LIGG, pasta: del(p - 0.25, p + 0.35, tl) }, klam: [del(0.0, 0.6, tl), bump(p - 0.4, p + 0.5, tl), del(p + 0.7, p + 1.2, tl)] }); },
+  // tar den stora borsten (den flyger från läppen till tassen vid munnen) och gapar, ingen säger åt den
+  '16': (tl, d) => { const u = kl((tl - 0.1) / 0.6), gap = del(0.5, 0.9, tl);
+    return BAD({ f: L.blanda(F('glad'), GAP({ titt: [0, -2] }), gap), p: BORST(-0.9, 0, { borstNer: 0 }), riggB: { stor: true, pasta: 1, syns: u >= 1 }, kant: { tub: 'bakom', stor: u <= 0 ? LIGG : null, pasta: 1 },
+      storTillRigg: u > 0 && u < 1 ? u : null, bar: BLA.map(b => b * (u >= 1 ? 1 : 0)), tander: 0 }); },
+  // munnen: tre lugna drag per del på räkneorden, blåbären borta på "tre" (uppe, nere, längst fram)
+  '17': (tl, d) => S.borsta('17', tl, d, -1),
+  '18': (tl, d) => S.borsta('18', tl, d, 1),
+  '19': (tl, d) => S.borsta('19', tl, d, 0),
+  borsta: (id, tl, d, y) => { const [x, tre] = drag(id, tl), rent = del(tre - 0.05, tre + 0.25, tl), ids = ['17', '18', '19'], i = ids.indexOf(id);
+    const fore = new Set(ids.slice(0, i).flatMap(k => RENT[k]));
+    const bar = BLA.map((b, j) => fore.has(j) ? 0 : RENT[id].includes(j) ? b * (1 - rent) : b), tander = Array(8).fill(0).map((_, j) => fore.has(j) ? 1 : RENT[id].includes(j) ? rent : 0);
+    return BAD({ kam: K_MUN(), f: GAP({ glad: [1, 1], tander, titt: [3 * x, y < 0 ? -2 : 3] }), p: BORST(x, y, { skum: 0.6, bubblor: { k: 1, t: tl + 3 * i }, borstNer: 0 }),
+      riggB: { stor: true, pasta: id === '17' ? 1 - del(0.3, 1.6, tl) : 0 }, kant: { tub: 'bakom' }, bar, rentSkim: [RENT[id], 0.9 * bump(tre, tre + 1.1, tl)] }); },
+  // stort leende, glansen sveper över de vita tänderna (tandglimt)
+  '20': (tl, d) => BAD({ kam: K_ANS(), f: F('flinar', { tander: Array(8).fill(1), glimt: del(0.2, 0.9, tl) }), p: P({ oron: [-8, -8], svans: vipp(tl, 0.4, 2) }), kant: { tub: 'bakom' }, glimt: true }),
+  // blundar nöjt och slickar sig om nosen
+  '20b': (tl, d) => { const sv = 0.3 + LN(35);
+    return BAD({ kam: K_ANS(), f: F('glad', { glad: [1, 1], tunga: bump(sv, sv + 1.1, tl) }), p: P({ luta: 3 * del(0.2, 0.8, tl), svans: vipp(tl, sv) }), kant: { tub: 'bakom' } }); },
+  // sätter den stora borsten i muggen: den vilar på kanten och vickar; klipp till fnisset; sedan bredvid muggen på läppen
+  '21': (tl, d) => { const u = kl((tl - 0.1) / 0.45), vick = 6 * Math.exp(-2.5 * Math.max(0, tl - 0.55)) * Math.sin(10 * Math.max(0, tl - 0.55)) * (tl > 0.55 ? 1 : 0);
+    const c1 = 1.2 + LN(37), c2 = c1 + 1.5, l = kl((tl - (c2 + 0.2)) / 0.9);
+    const STA_H = [MUGGX - 60, RIM - 150, 90, SK];
+    let stor = u <= 0 ? null : u < 1 ? koppBana(STA_H, STOR_MUGG, u, 60) : [STOR_MUGG[0], STOR_MUGG[1], STOR_MUGG[2] + vick, SK];
+    if (l > 0) stor = urKopp(STOR_MUGG, LIGG, l, 60);
+    const kam = tl >= c1 && tl < c2 ? K_ANS() : K_HALV;
+    return BAD({ kam, f: F(tl >= c1 && tl < c2 ? 'fnissig' : 'forvanad', tl >= c1 && tl < c2 ? { glad: [1, 1] } : { titt: [-12, -6] }), p: P({ armar: [HA * (1 - del(0.1, 0.5, tl)), 0], oron: [tl >= c1 && tl < c2 ? 6 * Math.sin(tl * 9) : -10, tl >= c1 && tl < c2 ? -6 * Math.sin(tl * 9) : -10] }),
+      kant: { tub: 'bakom', stor, storBak: l <= 0.3 && u > 0.62 }, hall: u <= 0 ? { href: STOR, v: 90, s: SK } : null }); },
+  // tittar åt vänster mot dörren och tillbaka, öronen upp, ett lugnt glatt skutt
+  '21b': (tl, d) => { const v = del(0.3 + LN(39) + 0.2, 0.3 + LN(39) + 0.6, tl) * (1 - del(0.3 + LN(39) + 1.3, 0.3 + LN(39) + 1.7, tl)), s = M('21b', 40) + LN(40) * 0.4;
+    return BAD({ f: F('jatteglad', { titt: [-16 * v, 0] }), p: skutt(P({ oron: [-12, -12], svans: vipp(tl, s, 1.6) }), tl, s), kant: { tub: 'bakom', stor: LIGG } }); },
+  // vinkar hej då, armen bakom kroppen snett ut förbi kanten
+  '22': (tl, d) => BAD({ f: F('jatteglad'), p: L.blandaPose(P({ svans: vipp(tl, 0.5, 3) }), vink(tl, 1), del(0.2, 0.7, tl)), kant: { tub: 'bakom', stor: LIGG } }),
+  '23': (tl, d) => BAD({ f: F('glad'), p: L.blandaPose(P(), vink(tl + 7, 1), 1 - del(d - 1.0, d - 0.4, tl)), kant: { tub: 'bakom', stor: LIGG } }),
+  // kritirisen runt räven och den stora tandborsten
+  '24': (tl, d) => BAD({ f: F('glad'), p: P(), kant: { tub: 'bakom', stor: LIGG }, iris: tl }),
+};
+
+function lage(t) {
+  let i = RAD.findIndex(r => t < r.s + r.d); if (i < 0) i = RAD.length - 1;
+  const r = RAD[i], tl = t - r.s, st = S[r.id](tl, r.d);
+  if (i > 0) {   // ansikte och pose blandas mjukt in från förra radens slut (0,45 s)
+    const fr = RAD[i - 1], f0 = S[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
+    if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
+  }
+  return { ...st, id: r.id, tl, d: r.d };
+}
+
+// --- Bildrutan ---------------------------------------------------------------------------------------------------------------
+const LAGER = ['platta', 'bak', 'pall', 'kar', 'kanten', 'fram', 'krita', 'ram'];
+let T_RIT, T_LUFT;
+const kritaRita = kr => { if (kr) lagg('krita', kritaBild(kr.x, kr.y, kr)); };
+function ritaPapper(st, t) {
+  $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`;
+  const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
+  kamera([z, 960, 540]);
+  const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
+  const Rb = ritBana([PK], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
+  if (f > 0) { const g = st.gung ?? 0, v = 2 * Math.sin(g * 1.7) * del(0.5, 1.2, g), dy = 8 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // borsten gungar lugnt
+    lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyP', BW[0] / 2, BW[1] / 2, 520, f) : ''}<image href="${LITEN}" width="${BW[0]}" height="${BW[1]}"${f < 1 ? ' clip-path="url(#fyP)"' : ''}/></g></g>`); }
+  if (k > 0 && f < 1) lagg('krita', `<g transform="${tr}">${Rb.html}</g>`);
+  kritaRita(kritaFas(t, T_RIT, { start: iPapper(Rb.start), spets: iPapper(Rb.spets), slut: iPapper(Rb.slut), vanta: [960 + 520, 540 - 230], s: KRITAN.SKALA_PAPPER / kryp }));
+  if (f > 0) lagg('krita', gnistor(960, 540, 420, t - T_RIT.ut[0]));
+}
+function ritaBad(st, t) {
+  badrum();
+  kamera(typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL);
+  // räven (riggens borste: den lilla eller den stora, med tandkrämen)
+  if (st.riggB) riggBorste(st.riggB.stor, st.riggB.pasta || 0);
+  rav(st.pos, BLINKA(st.f, t), liv(st.p, t), { bakom: st.bakom, bar: st.bar, hall: st.hall });
+  if (st.riggB && st.riggB.syns === false) G.querySelector('.borste').setAttribute('opacity', 0);
+  // kanten: muggen, tuben, borstarna
+  const kt = { ...st.kant };
+  if (st.litenFlyg != null) kt.litenFri = urKopp(I_MUGG, riggTass(LK, 95), st.litenFlyg, 70);
+  if (st.litenIn != null) { const q = koppBana(riggTass(LK, 95), I_MUGG, st.litenIn, 70); if (st.litenIn > 0.62) kt.litenBak = q; else kt.litenFri = q; }
+  if (st.storLagg != null) kt.stor = bana(riggTass(SK, 92), LIGG, st.storLagg, 50);
+  if (st.storFlyg != null) kt.stor = bana(luftGrepp(), riggTass(SK, 92), st.storFlyg, -40);
+  if (st.storTillRigg != null) kt.stor = bana(LIGG, riggBorstPos(), st.storTillRigg, 60), kt.pasta = 1;
+  if (st.tubFlyg != null) kt.tub = bana(BAKOM, [...riggTassTub(), 0], st.tubFlyg, 60);
+  kanten(kt);
+  if (st.tubHall) { const [x, y] = riggTassTub(); lagg('fram', tub([x, y, 0])); }
+  // tuben kläms över borsthuvudet (rad 15): den kommer in, lutar, kläms, lyfts ur bild
+  if (st.klam) { const [in_, klam, ut] = st.klam, hx = LIGG[0] - SK * (GREPP[0] - HUVUD[0]) + 52 * SK, hy = RIM - 4 - 20;
+    lagg('kanten', tub([hx + 30 + 60 * (1 - in_) + 40 * ut, hy - 26 - 120 * (1 - in_) - 260 * ut, 150 - 20 * in_], { oppen: true, sx: 1 - 0.18 * klam })); }
+  // kritan ritar den stora borsten i luften (7a) och den fylls inifrån (7b)
+  if (st.luftRit || st.luftFyll) {
+    const k = ritfart((t - T_LUFT.rit[0]) / (T_LUFT.rit[1] - T_LUFT.rit[0])), f = st.luftFyll || 0, [cx, cy, v, s] = LUFT;
+    const tr = `translate(${f1(cx)} ${f1(cy)}) rotate(${v}) scale(${s}) translate(${-BW[0] / 2} ${-BW[1] / 2})`;
+    const Rb = ritBana([PK], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+    if (f > 0 && st.storFlyg == null && !st.hall) lagg('fram', `<g transform="${tr}">${f < 1 ? fyllMask('fyL', BW[0] / 2, BW[1] / 2, 520, f) : ''}<image href="${STOR}" width="${BW[0]}" height="${BW[1]}"${f < 1 ? ' clip-path="url(#fyL)"' : ''}/></g>`);
+    if (k > 0 && f < 1) lagg('krita', `<g transform="${tr}">${Rb.html}</g>`);
+    kritaRita(kritaFas(t, T_LUFT, { start: iLuft(Rb.start), spets: iLuft(Rb.spets), slut: iLuft(Rb.slut), vanta: [LUFT[0] + 130, LUFT[1] - 140], s: kritaSkala(ZOOM) * 0.7 }));
+    if (f > 0) lagg('krita', gnistor(LUFT[0], LUFT[1], 160, t - T_LUFT.ut[0]));
+  }
+  if (st.skimLuft) skimmer(LUFT[0], LUFT[1], st.skimLuft, 1.2);
+  // skimmer på korken, på de rena tänderna, tandglimten
+  if (st.korkSkim) skimmer(BAKOM[0] + TW / 2 + 6, RIM - 12, st.korkSkim, 0.4);
+  if (st.rentSkim && st.rentSkim[1] > 0.02) { const tander = [...G.querySelectorAll('.tand')];
+    st.rentSkim[0].forEach(j => { const e = tander[j]; if (e && +e.getAttribute('opacity') >= 0.5) { const c = ISCEN(e); lagg('fram', kritGnista(c.x, c.y - 4, 8 * st.rentSkim[1])); } }); }
+  if (st.glimt) tandglimt(t);
+  // kritirisen: radien 1400 → 300 på 1,5 s, står 0,4 s, → 0 på 0,6 s; sedan svart
+  if (st.iris != null) { const [cx, cy] = [HX - 60, RIM - 150], tl = st.iris;
+    const r = tl < 1.5 ? lerp(1400, 300, mjuk(tl / 1.5)) : tl < 1.9 ? 300 : lerp(300, 0, mjuk((tl - 1.9) / 0.6));
+    const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.07 * Math.sin(9 * a + t * 0.8)); return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+    lagg('krita', `<path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4).toFixed(1)}" filter="url(#boil)"/>` : ''}`); }
+}
+// var vänstra tassen håller en borste i scenen (för flygturerna): räknas ur armens transform som i rav()
+function riggTass(s, v) {
+  const arm = [...G.querySelectorAll('.arm-l')].find(e => e.getAttribute('opacity') !== '0'), inv = $('kamera').getScreenCTM().inverse();
+  const m = inv.multiply((arm || G.querySelector('.figuren')).getScreenCTM()), q = new DOMPoint(...TASS_L).matrixTransform(m);
+  return [q.x, q.y, v, s];
+}
+const riggTassTub = () => { const [x, y] = riggTass(TK, 0); return [x, y + TH * 0.45]; };
+function rita(t) {
+  LAGER.forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G);
+  TT = t; const st = lage(t);
+  if (st.plats === 'papper') ritaPapper(st, t); else ritaBad(st, t);
+  lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/>');
+  if (st.vit) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vit.toFixed(3)}"/>`);
+  if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vitIn.toFixed(3)}"/>`);
+  if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
+  $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);   // ny brusbild 6 gånger/s
+  window.kant?.uppdatera();
+}
+
+// --- Ljudet -----------------------------------------------------------------------------------------------------------------
+const E = 'assets/ljud/effekter/';
+const VOL = f => /^rav-gullig\/rav-gullig-8/.test(f) ? 0.7 : /^rav-/.test(f) ? 0.85 : /^(glitter|tindra|glimt)/.test(f) ? 0.85 :
+  /^(tass|smasteg)/.test(f) ? 0.7 : /^borsta/.test(f) ? 0.9 : /^(rull|plupp|swoosh|slick)/.test(f) ? 0.9 : 1.0;
+function ljud() {
+  const ut = [];
+  for (const r of RAD) {
+    for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/raven-borstar-tanderna/${ROSTER[n - 1][0]}.m4a`, vol: 2.5 });
+    for (const [f, o, v] of r.ljud || []) if (f && !/^(krita-ritar|skogsljud|badrumsljud)\//.test(f))
+      ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f) * (v != null ? v / 0.7 : 1) });
+  }
+  const rit = (T, n) => ut.push({ t: T.rit[0], fil: E + `krita-ritar/krita-ritar-${n}.m4a`, vol: 1.2, langd: T.rit[1] - T.rit[0] + 0.3, loop: true, fade: 0.4 });
+  rit(T_RIT, 1); rit(T_LUFT, 2);
+  ut.push({ t: 0.2, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.4, langd: RR['1'].s + 1.2, loop: true, fadeIn: 1.0, fade: 1.2 });
+  const b0 = RR['1'].s;
+  ut.push({ t: b0, fil: E + 'badrumsljud/badrumsljud-2.m4a', vol: 0.45, langd: DURATION - SVART - b0, loop: true, fadeIn: 0.6, fade: 1.5 });
+  return ut.filter(c => c.t < DURATION);
+}
+
+window.seek = t => { window.stilla = true; rita(t); };
+window.ready = (async () => {
+  const J = await (await fetch('/avsnitt/055-raven-borstar-tanderna/scener/badet/rader.json')).json();
+  ROSTER = J.ROST; RAKNA = J.RAKNA; PLUTT = J.PLUTT; let acc = 0;
+  RAD = J.RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
+  RR = Object.fromEntries(RAD.map(r => [r.id, r]));
+  DURATION = acc + SVART; window.DURATION = DURATION;
+  const a = RR['01a'].s, b = RR['01b'].s, c = RR['01c'].s;
+  T_RIT = { in: [a + 0.1, a + 0.5], rit: [a + 0.5, a + 3.3], vanta: [b + 0.1, b + 0.9], ut: [c, c + 0.8] };   // konturen ca 2,8 s
+  const r7 = RR['7a'].s + 0.3 + LN(17) + 0.3, r7b = RR['7b'].s;
+  T_LUFT = { in: [r7 - 0.5, r7], rit: [r7, r7 + 3.0], vanta: [r7 + 3.1, r7 + 3.7], ut: [r7b + 0.5, r7b + 1.2] };
+  L = await v2rigg('raven-rut');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  SAKG = document.createElementNS('http://www.w3.org/2000/svg', 'g'); SAKG.setAttribute('class', 'sak'); G.querySelector('.figuren').appendChild(SAKG);
+  PK = (await (await fetch(KONTUR)).json()).d;
+  VID = [BX, RIM + (L.FOTTER - FATKANT) * GS];
+  PALL_KS = (GOLV - VID[1]) / (551 - PALL_HOG[1]); PALL_X0 = BX - PALL_HOG[0] * PALL_KS; PALL_Y0 = GOLV - 548 * PALL_KS;
+  STEG1 = [PALL_X0 + PALL_LAG[0] * PALL_KS, PALL_Y0 + PALL_LAG[1] * PALL_KS];
+  BLINKA = skapaBlinka(55);
+  window.kant?.lagg(G); window.kant?.lagg($('kar')); window.kant?.lagg($('kanten')); window.kant?.lagg($('pall'));
+  await Promise.all([PLATTA, HANDFAT.bild, PALL, MUGG, LITEN, STOR, TUB, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.LJUD = ljud();
+  rita(Number(new URLSearchParams(location.search).get('t') || 0));
+  return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && window.LJUD) rita(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

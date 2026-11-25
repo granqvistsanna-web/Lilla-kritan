@@ -129,6 +129,32 @@ Alla ljud finns, inga krediter. `plask` 1–4, `droppar-1`, `tass` 1–6, `huttr
 - Ankan gömmer sig bakom skumtussen vid kranen med näbben framme (närbilderna 23a–24).
 - **Scenen (grind 6, snabb förhandsvisning) byggs först när animatiken är godkänd.**
 
+## Omgång 2: förslag (Sanna 2026-11-25, väntar på ja)
+
+Sannas feedback på förhandsvisningen: *"maybe needs a brush to make ull flat. dont throw hatt on anka. needs some polish and faster pace"*, *"something a bit more engaging maybe something getting lost in bathtub"* (valde: **borsten försvinner i badet**), *"maybe play with boat toy in bath and kritan ritar"*, *"better rigs walking in and jumping in bath more reactions, close crops and face expressions"*.
+
+**Ny gång** (det som står kvar är godkänt och redan inspelat; 🆕 = ny replik, ♻️ = befintlig fil):
+
+| Del | Vad händer | Malin |
+|---|---|---|
+| Ritintro, hej, badet, skumhatten | Som förut. **Borsten ligger på karets kant** från början, så att barnet har sett den. Lammet **går in** med riggens gång (inte små skutt) och **hoppar ner i badet** med en tydlig huk, ett plask och en närbild på det glada ansiktet | ♻️ 1–15 |
+| **Kritan ritar en båt** (ny, mitt i badet) | Kritan kommer in över badet och ritar båten (041:s `badbat`, kontur finns). Lammet tittar förvånat (närbild), sedan stora glada ögon. Lammet knuffar båten med nosen, båten glider bort till ankan och tillbaka. Vågen från båten får **borsten att glida ner i skummet**, *plopp*, ingen märker det (barnet kanske) | ♻️ 22 *"Titta! Kritan ritar något."* ♻️ 2 *"Hm … vad blir det nu?"* 🆕 *"En båt! En liten båt i badet!"* 🆕 *"Tut, tut! Båten åker till ankan."* |
+| Upp ur badet, blött, handduken ×3, ullmolnet | Som förut, snabbare | ♻️ 15–32 |
+| **Borsten är borta** (ersätter ankans gömlek och hatten) | Ullmolnet är jättefluffigt, ullen står åt alla håll (närbild). Lammet tittar på kanten där borsten låg: tom (närbild). Paus 4–5 s på badet: **skaftet sticker upp ur skummet** och skimrar efter 3 s | 🆕 *"Oj, vad fluffigt! Nu behöver vi borsten."* 🆕 *"Men … var är borsten?"* 🆕 *"Kan du hjälpa lammet? Ser du borsten?"* ♻️ 35 *"Ja, där! I skummet!"* |
+| Ankan hjälper | Ankan glider fram och knuffar borsten till kanten, lammet tar den (tassen framför skaftet) | 🆕 *"Ankan hjälper till! Tack, ankan!"* |
+| **Borsta tre gånger** | Borsten går lugnt över öronen, magen, hela lammet; ullen blir slät och fin för varje drag (närbild på ansiktet efter varje gång) | 🆕 *"Borsta … borsta … så fint!"* (×3, en tagning per gång) |
+| Hej då | Som förut | ♻️ 38 *"Oj, så fint!"*, 39–42 |
+
+Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
+
+**Tempo och puts (gäller hela filmen):** kortare luft (0,7 → 0,35 s per rad), lammets svarspaus 1,3 → 1,0 s, kortare väntan i ritintrot och handdukens gisspaus; fler reaktionsslag med närbild på ansiktet (förvånad, glad, frusen, stolt) och tydligare uttryck i öronen. Krit-gnistor som klistermärken, små såpbubblor som stiger ur skummet.
+
+**Kameran (Sanna: *"maybe some traveling camera from learnings?"*):** i stället för stillastående utsnitt får varje vy en rörelse som i 3D-scenerna (`verktyg/kamera3d.mjs`): **glid** (mjuk start och stopp), **push** (långsam inåkning på reaktioner, t.ex. 1,7 → 1,9 på ansiktet), **settle** (kommer in och landar efter ett klipp), högst 3 s **hold**. Kameran **följer** lammet när det går in och hoppar upp på pallen, och **parallax**: förgrunden (skummet, karets kant) rör sig ca 12 % mer än kameran när den åker, golvplattan står still. Klippen mellan vyerna är kvar (zoomar mellan platser blir inte långa åkningar).
+
+**Rörelsen (Sanna: *"better rigs walking in and jumping in bath"*):** lammet går in med riggens gångcykel (`lk-figur`), hoppar upp på pallen och ner i badet med tydlig huk, uppskjut och landning (plask och skumstänk), lugnt men tydligt.
+
+**Behövs:** borsten (ny sak, 4 bilder i Flow som du väljer bland, gratis) och ca 7 nya repliker i en kort ElevenLabs-tagning (krediter). Båten finns redan.
+
 ## Lösningar från förlagorna (020, 023, 041), 2026-11-25
 
 Gått igenom scenkoden, `rader.mjs`, manusens anteckningar och `git log` för 020 Grisen badar, 023 (handduken) och 041 Kaninen badar varmt. Feedbacksidan har inga poster för dem.
@@ -150,6 +176,18 @@ Gått igenom scenkoden, `rader.mjs`, manusens anteckningar och `git log` för 02
 **Inget går genom något:** kontrolleras i förhandsvisningen med täta bilder runt skutten, handduken och ulltussen som flyger till ankan.
 
 **Handduksljudet:** Openverse-klippet var tyst. Ljudkarta-sessionen gjorde nya tagningar i ElevenLabs (`handduk-gnugg-1…4`); nr 4 (jämnast, ca −29 dB RMS, topp −9,8 dBFS) används för alla tre torkningar, kortat till 1,4 s, vol 1,3.
+
+## Kontroll mot regler (052–057, Sanna 2026-11-25)
+
+| Punkt | Ok | Rättat |
+|---|---|---|
+| 1. Rigg | Lammets senaste v2-rigg (`v2rigg('lammet-ludde')`) med dess uttryck, poser, nick och blinkningar. Inga kodarmar, ingen figur snurrar, ingen sover. Glada ansikten har öppna ögon (`F()`) | Vinkningen: armen 100° bakom kroppen så att den syns utanför ullmolnet (150 hamnade bakom huvudet). Ullmolnet ligger längst bak i riggen, så att armarna syns framför det |
+| 2. Effekter | Line boil 2,5/zoom varje bildruta, ny brusbild 6 gånger/s. Vita kanter via `kant.js`. Kritan via `kritan-ritar.js` (`qa-scen`: tomt). Krit-gnistor på ankan och handduken. Varm ton 0,07, vinjett 0,14. Lammets markskugga ur riggen, papperskornet på ritpapperet | Parallax används inte: alla utsnitt står stilla (hårda klipp), så det finns ingen kameraåkning att ge djup |
+| 3. Regler | 1 figur, 1 plats. Inga djurnamn. *"Ska vi säga tack?"*, aldrig *"Vad kan det vara?"*. Ritintrot ritar badankan, inte lammet. Barnet letar efter ankan. Inget går genom något: kontrollerat med täta bilder (6/s) vid skutten in och ut, handduken och ulltussen | **Malin efter handlingen:** ulltussen till ankans huvud landade efter *"Nu har ankan också en hatt!"*. Nu skakar lammet först, tussen landar 1,1 s in och repliken kommer 0,4 s efter |
+| 4. Starka reaktioner | Reaktionsslag med närbild: skumhatten (6b, 7), den blöta ullen (9), handduken (13), öronen (17), ullmolnet (20), ankan i skummet (24) | **Ny närbild** på ankan med ullhatten medan Malin säger repliken och ankan piper (rad 26). Förvånade ansikten har större ögon (6b, 9, 20). **Felet `LN()`** (läste fel fält i `rader.json`) gjorde att nickar, uttrycksbyten och klipp som räknas från replikernas längd inte kom i förra förhandsvisningen; rättat |
+| 5. Lärdomar | Se *Lösningar från förlagorna*: skutt per steg, lager vid karets kant, saker på huvudet utan flygtur, handduken i båge från och till kroken | Torkningen är en lugn gungning (041), handduken över hjässan så att ansiktet syns (023) |
+
+`python3 verktyg/qa-scen.py`: boil, krit-kod och röst tomma.
 
 ## Malins repliker (ElevenLabs, en tagning)
 

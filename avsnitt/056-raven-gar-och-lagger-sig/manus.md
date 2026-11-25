@@ -1,6 +1,6 @@
 # Avsnitt 056 – Räven går och lägger sig (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-25 ("Ja, vidare till saker"). **Räven i stället för grisen** (Sanna 2026-11-25). **Samtalsrepliker tillagda 2026-11-25** (10 nya, märkta 🆕), ✅ godkända 2026-11-25 ("Ja, de är bra"). Grind 2 (saker): täcket mintgrönt nr 1 ✅ valt 2026-11-25; sovbilden nr 4 ✅ vald 2026-11-25 (Sanna: "Keep nr 4"), urklippt till `saker/sovbild/cut/rav-sover.png` med 7 px kant (ca 1 %); de första fyra (lång fyrbent räv) kasserade. Nattlampan väntar. Nattlampan: Flow gjorde den men den gick inte att hämta, görs om. **Grind 3 (rösten) 2026-11-25:** ElevenLabs, Malin, v3, två varianter (`produktion/ljud-original/roster/raven-gar-och-lagger-sig/malin-tagning-1a.mp3` 2:16 och `-1b.mp3` 2:03). 1a delad i 44 filer i `assets/ljud/roster/raven-gar-och-lagger-sig/`, alla stämmer mot manuset med whisper; 43 klipptes om för hand (slutade tvärt), alla normaliserade till −3 dBFS, längderna i `rost-langder.txt` (95 s tal). **Väntar på Sannas lyssning.** Inget är byggt, mappen har bara det här manuset. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlagor: [026 Zebran går och lägger sig](../026-zebran-gar-och-lagger-sig/manus.md) (sovrummet, sängen, nallen som letas fram) och [040 Leoparden går och lägger sig](../040-leoparden-gar-och-lagger-sig/manus.md) (kritan ritar ett ljus som får lysa hela natten). **Det som är nytt:** problemet är att **det är för mörkt**, och kritan ritar en nattlampa tre gånger: **för liten, för stor, lagom** ([`format/berattelse.md`](../../format/berattelse.md), "Fel först, sedan rätt"). Inget *"Gäsp … god natt!"* tre gånger, ingen gäspa-med, ingen tittut.
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-25 ("Ja, vidare till saker"). **Räven i stället för grisen** (Sanna 2026-11-25). **Samtalsrepliker tillagda 2026-11-25** (10 nya, märkta 🆕), ✅ godkända 2026-11-25 ("Ja, de är bra"). Grind 2 (saker): täcket mintgrönt nr 1 ✅ valt 2026-11-25; sovbilden nr 4 ✅ vald 2026-11-25 (Sanna: "Keep nr 4"), urklippt till `saker/sovbild/cut/rav-sover.png` med 7 px kant (ca 1 %); de första fyra (lång fyrbent räv) kasserade. Nattlampan nr 4 ✅ vald 2026-11-25, urklippt till `saker/nattlampa/cut/nattlampa.png`. **Grind 2 klar.** Nattlampan: Flow gjorde den men den gick inte att hämta, görs om. **Grind 3 (rösten) 2026-11-25:** ElevenLabs, Malin, v3, två varianter (`produktion/ljud-original/roster/raven-gar-och-lagger-sig/malin-tagning-1a.mp3` 2:16 och `-1b.mp3` 2:03). 1a delad i 44 filer i `assets/ljud/roster/raven-gar-och-lagger-sig/`, alla stämmer mot manuset med whisper; 43 klipptes om för hand (slutade tvärt), alla normaliserade till −3 dBFS, längderna i `rost-langder.txt` (95 s tal). ✅ **Godkänd 2026-11-25** (Sanna: alla 44 repliker är bra). **Grind 4:** alla ljud finns, provlyssning i `ljud/provlyssna-rav.m4a`, väntar på Sannas val. Inget är byggt, mappen har bara det här manuset. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlagor: [026 Zebran går och lägger sig](../026-zebran-gar-och-lagger-sig/manus.md) (sovrummet, sängen, nallen som letas fram) och [040 Leoparden går och lägger sig](../040-leoparden-gar-och-lagger-sig/manus.md) (kritan ritar ett ljus som får lysa hela natten). **Det som är nytt:** problemet är att **det är för mörkt**, och kritan ritar en nattlampa tre gånger: **för liten, för stor, lagom** ([`format/berattelse.md`](../../format/berattelse.md), "Fel först, sedan rätt"). Inget *"Gäsp … god natt!"* tre gånger, ingen gäspa-med, ingen tittut.
 
 **Reglerna för den här omgången (Sanna 2026-11-25):** inga uppmaningar till barnet att göra något med kroppen; barnets del är att **leta** (nallen under täcket). Lärotemat **stor och liten** ligger i nattlamporna, skuggan på väggen och den lilla lampan som nallen får på slutet, aldrig som lektion. Ritintrot ritar **nallen**, inte räven.
 
@@ -218,6 +218,27 @@ Inga nya saker eller bilder är gjorda. **Förslag till nattlampan** (Sanna best
 - [x] Lärotemat (stor, liten, lagom) ligger i handlingen, ingen förklaring
 - [x] Inget läskigt: se Öppet 1
 - [x] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt. Fler än 2 nya bilder? Nej: nattlampan och sovbilden
+
+## Grind 4: ljuden (2026-11-25)
+
+Alla ljud som 056 använder finns redan i `assets/ljud/effekter/`: rävens familj `rav-gullig` (30 tagningar) och `rav-fniss` (4) är gjorda av ljudkarta-sessionen och delas med 055; `lampa-klick`, `krita-ritar`, `glitter`, `hopp-mjuk`, `puff`, `nalle-hopp`, `tindra`, `prassel-tyg`, `lysmask`, `glimt`, `gaspning`, `snark-pip`, `godnatt-pling` och `tass` fanns före. Inget nytt behöver göras och inga krediter går åt.
+
+**Provlyssning:** [`ljud/provlyssna-rav.m4a`](ljud/provlyssna-rav.m4a), 1:30. Tagningarna i ordning, 0,7 s mellan tagningar och 1,8 s mellan känslor:
+
+| Känsla | Tagningar (start) | Används på rad |
+|---|---|---|
+| 1 hej (svenskt "Hej!") | 1 (0:00) · 1b (0:01) | 1 |
+| 2 förtjust | 2 (0:04) · 2b (0:05) · 2c (0:07) · 2d (0:08) | 1b, 3, 15, 16, 22, 24 |
+| 3 kort fniss | 3 (0:11) · 3b (0:13) · 3c (0:14) · 3d (0:16) | (reserv) |
+| 4 mysig suck | 4 (0:18) · 4b (0:21) · 4c (0:23) · 4d (0:26) | 5, 23, 25 |
+| 5 nyfiken | 5 (0:30) · 5b (0:32) · 5c (0:35) · 5d (0:37) | 2, 7, 10, 16, 17, 20 |
+| 6 trumpen | 6 (0:41) · 6b (0:44) · 6c (0:46) · 6d (0:49) | 8 |
+| 7 pratar | 7 (0:52) · 7b (0:55) · 7c (0:58) · 7d (1:00) | 3b, 18, 19b |
+| 8 hej då (svenskt "Hej då!") | 8 (1:04) · 8b (1:06) · 8c (1:08) · 8d (1:10) | 26 |
+| långt fniss `rav-fniss` | 1 (1:14) · 2 (1:16, kan låta som "hej hej") · 3 (1:19) · 4 (1:22) | 12, 19 |
+| `lampa-klick` | 1 (1:25) · 2 (1:26) · 3 (1:27) · 4 (1:28) · 5 (1:29) | 6, 10, 12, 15 |
+
+**Väntar på Sannas val:** vilken tagning per känsla (samma val gäller 055, som delar familjen), vilka två långa fniss, och vilket klick.
 
 ## Reaktionsslag och uttryck (Sanna 2026-11-25: starka reaktioner)
 

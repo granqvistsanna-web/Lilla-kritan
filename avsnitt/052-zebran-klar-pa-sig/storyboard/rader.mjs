@@ -33,13 +33,13 @@ export const RADER = [
   // --- Sovrummet: hej, snön ---
   { id: '1', d: 2.6 + L(4) + 1.4, malin: [[4, 2.6]], ljud: [['trav/trav-1', 0.2], [HEJ, 2.8 + L(4)]], bild: 'helbild, zebran trippar in och vinkar' },
   { id: '1b', d: 0.3 + L(5) + SVAR + L(6) + 1.0, malin: [[5, 0.3], [6, 0.3 + L(5) + SVAR]], ljud: [[Z('fortjust'), 0.4 + L(5)]], bild: 'halvnära, nickar i pausen' },
-  { id: '2', d: 2.0 + L(7) + SVAR + L(8) + 1.0, malin: [[7, 2.0], [8, 2.0 + L(7) + SVAR]], ljud: [['glimt/glimt-1', 0.3], [Z('fortjust', 'b'), 2.1 + L(7)]], bild: 'närbild fönstret med snön, klipp till zebran' },
+  { id: '2', d: 0.6 + L(7) + 0.4 + SVAR + L(8) + 1.0, malin: [[7, 0.6], [8, 0.6 + L(7) + 0.4 + SVAR]], ljud: [['glimt/glimt-1', 0.3], [Z('fortjust', 'b'), 0.8 + L(7) + 0.4]], bild: 'närbild fönstret med snön, klipp till zebran' },
   { id: '3', d: 0.4 + L(9) + 1.2, malin: [[9, 0.4]], ljud: [[Z('fortjust'), 0.4 + L(9) - 0.6]], bild: 'halvnära, nickar, glatt skutt på "Ja, vad kul!"' },
   { id: '4', d: 0.4 + L(10) + 2.0 + 1.0, malin: [[10, 0.4]], ljud: [[Z('nyfiken'), 2.4], [Z('fortjust', 'b'), 0.4 + L(10) - 1.6]], bild: 'helbild → närbild kroken → den blå strumpan' },
 
   // --- Strumpan, och den andra är borta ---
-  { id: '5', d: 1.4 + L(11) + 1.2, malin: [[11, 1.4]], ljud: [['strumpa/strumpa-1', 1.4 + PA(11) - 0.3], [Z('fortjust'), 1.6 + L(11)]], bild: 'närbild benen, strumpan glider på' },
-  { id: '6', d: 1.6 + L(12) + 1.2, malin: [[12, 1.6]], ljud: [[Z('nyfiken', 'b'), 1.8 + L(12)]], bild: 'lyfter andra benet: ingen strumpa, förvånad' },
+  { id: '5', d: 1.4 + L(11) + 2.5, malin: [[11, 1.4]], ljud: [['strumpa/strumpa-1', 1.4 + PA(11) - 0.3], [Z('fortjust'), 1.6 + L(11)]], bild: 'närbild benen, strumpan glider på' },
+  { id: '6', d: 1.6 + L(12) + 1.6, malin: [[12, 1.6]], ljud: [[Z('nyfiken', 'b'), 1.8 + L(12)]], bild: 'lyfter andra benet: ingen strumpa, förvånad' },
   { id: '7', d: 0.3 + L(13) + 1.5 + L(14) + 1.0, malin: [[13, 0.3], [14, 0.3 + L(13) + 1.5]], ljud: [[NEJ, 0.5 + L(13) + 1.5 + L(14)]], bild: 'närbild under sängen: bara golv' },
   { id: '8', d: 0.3 + L(15) + 1.5 + L(16) + 1.0, malin: [[15, 0.3], [16, 0.3 + L(15) + 1.5]], ljud: [['gnagg-nej/gnagg-nej-4', 0.5 + L(15) + 1.5 + L(16)]], bild: 'närbild i korgen: tom' },
   { id: '9', d: 2.0 + L(17) + SVAR + L(18) + 1.0, malin: [[17, 2.0], [18, 2.0 + L(17) + SVAR]], ljud: [[Z('trumpen'), 2.1 + L(17)]], bild: 'närbild, öronen faller, lite ledsen' },
@@ -57,7 +57,7 @@ export const RADER = [
     bild: 'den stora glider av, kritan ritar en tredje, lagom, fylls i' },
   { id: '15', d: 0.3 + L(28) + TACK, malin: [[28, 0.3]], ljud: [[Z('nyfiken', 'b'), 0.5 + L(28)]], bild: 'zebran tittar på mössan, öronen reser sig' },
   { id: '16', d: 0.2 + L(29) + 1.2, malin: [[29, 0.2]], ljud: [[Z('fortjust', 'b'), 0.4 + L(29)]], bild: 'nickar' },
-  { id: '17', d: 1.2 + L(30) + SVAR + L(31) + 1.0, malin: [[30, 1.2], [31, 1.2 + L(30) + SVAR]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(30) - 0.6], [Z('fortjust'), 1.3 + L(30)]],
+  { id: '17', d: 1.2 + L(30) + SVAR + 0.6 + L(31) + 1.0, malin: [[30, 1.2], [31, 1.2 + L(30) + SVAR + 0.6]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(30) - 0.6], [Z('fortjust'), 1.3 + L(30)]],
     bild: 'mössan glider ner på huvudet, kritan flyger ut' },
 
   // --- Halsduken ---
@@ -70,7 +70,7 @@ export const RADER = [
   { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild av sängen med kudden' },
   { id: '22b', d: HJALP - 2.0 + 0.4, ljud: [['lysmask/lysmask-1', 1.2]], bild: 'närbild kudden, tån skimrar efter 3 s' },
   { id: '23', d: 0.6 + L(38) + 1.2, malin: [[38, 0.6]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.8 + L(38)]], bild: 'tån skimrar tydligt, zebran skuttar' },
-  { id: '24', d: 1.8 + L(39) + SVAR + L(40) + 1.0, malin: [[39, 1.8], [40, 1.8 + L(39) + SVAR]], ljud: [['strumpa/strumpa-2', 1.8 + PA(39) - 0.3], [Z('fortjust', 'b'), 1.9 + L(39)]],
+  { id: '24', d: 1.8 + L(39) + SVAR + 0.9 + L(40) + 1.0, malin: [[39, 1.8], [40, 1.8 + L(39) + SVAR + 0.9]], ljud: [['strumpa/strumpa-2', 1.8 + PA(39) - 0.3], [Z('fortjust', 'b'), 1.9 + L(39)]],
     bild: 'kudden lutar, strumpan glider fram och på hoven' },
 
   // --- Färdig, hej då ---
@@ -83,12 +83,13 @@ export const RADER = [
 ];
 
 // Receptets luft: 0,7 s extra på varje rad med en replik (inte under ritintrots kontur och gisspaus).
+// Reaktionsslagen (Sanna 2026-11-25, "strong reactions and expressions"): rad 5, 6, 17 och 24 har en närbild på zebrans känsla efter händelsen.
 export const GLES = 0.7;
 for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;
 for (const r of RADER) r.d = +r.d.toFixed(2);
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
-  writeFileSync(HAR + '../scener/sovrummet/rader.json', JSON.stringify({ RADER, ROST, PA: Object.fromEntries([11, 30, 33, 39].map(n => [n, +PA(n).toFixed(2)])), UPPSKATTAD }, null, 1));
+  writeFileSync(HAR + '../scener/sovrummet/rader.json', JSON.stringify({ RADER, ROST: ROST.map(([n, t, l]) => [n, l, t]), PA: Object.fromEntries([11, 30, 33, 39].map(n => [n, +PA(n).toFixed(2)])), UPPSKATTAD }, null, 1));
   const tot = RADER.reduce((a, r) => a + r.d, 0);
   console.log(`${RADER.length} rader, ${tot.toFixed(1)} s (${Math.floor(tot / 60)}:${String(Math.round(tot % 60)).padStart(2, '0')})${UPPSKATTAD.length ? `, ${UPPSKATTAD.length} repliker uppskattade` : ''}`);
 }
