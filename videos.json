@@ -1358,11 +1358,11 @@
   "file": "avsnitt/035-katten-hittar-julklappar/film/avsnitt-035.mp4"
  },
  "J03": {
-  "status": "klar",
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1120-1417.mp4",
+  "status": "granska",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1125-1307.mp4",
   "duration": 234.2,
-  "rendered": "2026-11-20 14:17 (runda 8: båda tassarna på nallen i kramen (2:29); förhandsvisning (--snabb))",
-  "file": "avsnitt/040-leoparden-gar-och-lagger-sig/film/avsnitt-040.mp4"
+  "rendered": "2026-11-25 13:09 (QA 25/11 (förhandsvisning, 040-filmen utan luckram): tandborsten hålls av hela armen i ärmen, ingen lös tass (1:22–1:36); svagare line boil)",
+  "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/c6cecf9b-6bc3-439b-b92f-5f5249d9e37b/scratchpad/avsnitt-040-snabb.mp4"
  },
  "J12": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1119-0929.mp4",
