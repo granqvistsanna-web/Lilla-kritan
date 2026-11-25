@@ -9316,9 +9316,10 @@
   "sec": 39,
   "tags": [],
   "note": "say du ska vi sitta i den hör... before byúnny gets nervous",
-  "fixed": false,
+  "fixed": true,
   "at": 1795593260178,
-  "render": "2026-11-25 08:39 (feedback 5: kameran glider in på stolen, inget hopp 5→6a, tydligare röd tandborste, ny replik 'Elefanten får också en!')"
+  "render": "2026-11-25 08:39 (feedback 5: kameran glider in på stolen, inget hopp 5→6a, tydligare röd tandborste, ny replik 'Elefanten får också en!')",
+  "fixedAt": 1795635516403
  },
  "k7xjit6me7mwvtx4su": {
   "ep": "ABC-e3",
