@@ -9488,9 +9488,10 @@
   "sec": 25,
   "tags": [],
   "note": "no cloud outside window just snow",
-  "fixed": false,
+  "fixed": true,
   "at": 1795634925452,
-  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)",
+  "fixedAt": 1795636337020
  },
  "0fwc26uj0nmwwiooeg": {
   "ep": "052",
