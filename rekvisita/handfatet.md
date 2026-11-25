@@ -6,7 +6,7 @@ Ett lågt handfat sett rakt framifrån: en bred, rundad skål i himmelsblått (`
 
 **Storlek i bild:** skålens kant ungefär i höjd med figurens mage. Skalan sätts i scenen.
 
-Används i: 023 Björnen tvättar händerna, 025 Katten borstar tänderna.
+Används i: 023 Björnen tvättar händerna, 025 Katten borstar tänderna, 055 Räven borstar tänderna.
 
 **Bilder (2026-11-11, Google Flow, Nano Banana 2.1, 0 krediter, stilreferens blå badkaret med kran och pallen):** fyra tagningar i `assets/rekvisita/handfatet/original/handfatet-1…4.jpeg`, sida vid sida i `original/jamforelse.jpg`. Vald nr 4 (Sanna). Kopierad till `assets/rekvisita/handfatet/handfatet.jpeg` och utklippt med `verktyg/egen_kant.py` till `cut/handfatet.png` (802×775). **Kanten tunnad (2026-11-11, Sanna: för tjock):** `cut/handfatet.png` har nu en vit kant på ca 1 % av höjden (ca 8 px, regeln i skillen `vita-kanter`); det tjocka klippet ligger kvar i `original/handfatet-cut-tjock-kant.png`.
 

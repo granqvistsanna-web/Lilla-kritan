@@ -21,8 +21,16 @@ Raderna (tomt efter kolon = inget fel):
  röst tvärt vid klipp: tal (300–3000 Hz) som faller TVART_DB dB på 10 ms från minst −30 dB (utan avklingning) högst 0,2 s från
    ett bildklipp, som när en scen klipps mitt i en replik. Utan kravet på klipp gav ElevenLabs tvära stopp och effekter falsklarm.
    Prov 2026-11-22: repliker klippta mitt i ett ord i 051 hittades; 051 och 045 utan klippta repliker gav 2 falsklarm var utan klippkravet.
+ röst filer: röstfilerna själva (felet sitter i filen, inte i filmen, så det syns inte vid klipp). "slutar tvärt" = sista 20 ms nästan
+   lika starka som talet (ordets slut klipptes bort). "börjar mitt i ljud" = första 10 ms lika starka som talet: filen börjar inne i ett
+   ord, oftast resten av förra repliken (whisper hör inte ett halvt ord, så det här är huvudkollen för det felet). "börjar med … ur" = filen börjar med förra replikens sista ord (enligt rost*.txt),
+   "slutar med … ur" = filen slutar med nästa replikens första ord: en tagning delad på fel ställe. Bara grannarnas ord
+   jämförs, för whisper hör fel på enstaka ord ("vad fin" blev "vad fan"; att jämföra med hela manus gav bara falsklarm).
+   Whisper på varje fil, fyra åt gången (ca 30 s för 50 repliker). Prov 2026-11-25 på alla 3185 röstfiler: 103 börjar mitt i ljud (mest
+   tätt klippta i jul/ och en/), 25 slutar tvärt; en konstgjord delning 0,45 s för tidigt i 036 rad 10/11 flaggades på båda.
+   Går också att köra på en mapp: --rost assets/ljud/roster/<namn> [avsnittsmapp med rost*.txt].
 """
-import glob, json, os, re, subprocess, sys
+import difflib, glob, json, os, re, subprocess, sys, tempfile
 from fractions import Fraction
 import numpy as np
 
@@ -32,6 +40,9 @@ BOIL_FILM = 4.5     # px/s, hela filmens median av boilsteget (se ovan)
 BOIL_SPANN = 15     # px/s, 5 s-median för en del av filmen (ritningar och kritiris med 2,5/zoom upp till 14)
 KRITA_FRAN = 52     # första avsnittet där kritan måste gå genom kritan-ritar.js
 TVART_DB = 15       # dB fall på 10 ms (en klippt replik över musik föll 19 dB)
+START_DB = 10       # röstfil vars första 10 ms ligger högst så här under talets nivå börjar mitt i ett ord (delad för tidigt)
+SLUT_DB = 12        # röstfil vars sista 20 ms ligger högst så här under talets nivå (90:e percentilen) slutar mitt i ett ljud
+MODELL = os.path.expanduser('~/.flow-mcp/models/ggml-large-v3-turbo-q5_0.bin')
 
 
 # ---------- boil i koden ----------
@@ -159,6 +170,58 @@ def rost_rader(rj):
     over = [f'{rid}({rad} +{o + dur - d:.1f}s)' for s, dur, rid, rad, d, o in rep if o + dur > d + 0.05]
     return fel, over
 
+ord_ = lambda s: re.findall(r'[a-zåäöé]+', re.sub(r'\[[^\]]*\]', '', s.lower()))
+lika = lambda a, b: difflib.SequenceMatcher(None, a, b).ratio() >= 0.7
+
+def manus_texter(avs):
+    """namn -> alla texter repliken har i avsnittets rost*.txt (omtagningar kan ändra texten)."""
+    t = {}
+    for f in sorted(glob.glob(f'{avs}/rost*.txt')):
+        for r in open(f, encoding='utf-8'):
+            m = re.match(r'\s*(\S+)\s+([^\d\s].*)', r)
+            if m and ord_(m[2]): t.setdefault(m[1], []).append(m[2])
+    return t
+
+def ljud16(f, sr=16000):
+    return np.frombuffer(subprocess.run(['ffmpeg', '-v', 'error', '-i', f, '-ac', '1', '-ar', str(sr), '-f', 'f32le', '-'],
+                                        capture_output=True).stdout, np.float32)
+
+LATEN = {'hm', 'hmm', 'mm', 'mmm', 'åh', 'ah', 'aha', 'oh', 'haha', 'hihi', 'ha', 'hi', 'oj', 'sniff'}   # läten först räknas inte
+utan_laten = lambda w: w[next((i for i, x in enumerate(w) if x not in LATEN), len(w) - 1):]
+
+def hor(f, sr=16000):
+    wav = tempfile.mktemp(suffix='.wav')
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f, '-ac', '1', '-ar', str(sr), wav], check=True)
+    ut = subprocess.run(['whisper-cli', '-m', MODELL, '-l', 'sv', '-nt', '-t', '2', '-f', wav], capture_output=True, text=True).stdout
+    os.remove(wav)
+    return ord_(ut)
+
+def rost_filer(filer, texter, sr=16000):
+    """filer: [(namn, sökväg)]. Fel i själva röstfilerna, se 'röst filer' överst."""
+    fel = []
+    for namn, f in filer:
+        x = ljud16(f); v = sr // 200
+        db = 10 * np.log10((x[:len(x) // v * v].reshape(-1, v) ** 2).mean(1) + 1e-12)
+        if len(db) <= 20: continue
+        if db[:2].max() > np.percentile(db, 90) - START_DB: fel.append(f'{namn} börjar mitt i ljud')
+        if db[-4:].max() > np.percentile(db, 90) - SLUT_DB: fel.append(f'{namn} slutar tvärt')
+    filer = [(n, f) for n, f in filer if n in texter]
+    if not (filer and os.path.exists(MODELL)): return fel
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(4) as ex: hort = list(ex.map(hor, [f for _, f in filer]))
+    m = [[utan_laten(ord_(t)) for t in texter[n]] for n, _ in filer]   # manus, alla varianter
+    h = [utan_laten(x) for x in hort]
+    i_ = lambda w, ms, k: any(lika(w, x) for v in ms for x in (v[:k] if k > 0 else v[k:]))
+    for i in range(len(filer) - 1):
+        a, b = filer[i][0], filer[i + 1][0]
+        # B börjar med A:s sista ord: tagningen delad före A:s sista ord, A:s slut spelas i början av B
+        if h[i + 1] and i_(h[i + 1][0], m[i], -2) and not i_(h[i + 1][0], m[i + 1], 2):
+            fel.append(f'{b} börjar med "{h[i + 1][0]}" ur {a} (hörs: {" ".join(h[i + 1])})')
+        # A slutar med B:s första ord: delad efter B:s första ord
+        if h[i] and i_(h[i][-1], m[i + 1], 2) and not i_(h[i][-1], m[i], -2):
+            fel.append(f'{a} slutar med "{h[i][-1]}" ur {b} (hörs: {" ".join(h[i])})')
+    return fel
+
 def tvara_slut(film, sr=16000):
     """Tider där talet faller tvärt utan avklingning."""
     r = subprocess.run(['ffmpeg', '-v', 'error', '-i', film, '-af', 'highpass=f=300,lowpass=f=3000', '-ac', '1', '-ar', str(sr),
@@ -196,6 +259,9 @@ def pussel(namn):
 
 def main(a):
     if a and a[0] == '--pussel': return pussel(a[1:])
+    if a and a[0] == '--rost':
+        filer = [(os.path.basename(f)[:-4], f) for f in sorted(glob.glob(f'{a[1]}/*.m4a'))]
+        return print(f' röst filer {a[1]}: ' + '; '.join(rost_filer(filer, manus_texter(a[2]) if len(a) > 2 else {})))
     if not a: return print(__doc__)
     film = a[0] if a[0].endswith('.mp4') else None
     m = re.search(r'(.*/avsnitt/[^/]+)', os.path.abspath(a[0]))
@@ -214,6 +280,9 @@ def main(a):
         for rj in sorted(glob.glob(f'{avs}/scener/**/rader.json', recursive=True)):
             f2, over = rost_rader(rj)
             print(f' röst rader {os.path.relpath(rj, avs)}: ' + '; '.join(f2) + (f'  (över raden, info: {" ".join(over)})' if over else ''))
+            mapp = rostmapp(rj)
+            filer = [(r[0], f) for r in json.load(open(rj)).get('ROST') or [] if mapp and os.path.exists(f := os.path.join(mapp, r[0] + '.m4a'))]
+            print(f' röst filer {os.path.relpath(rj, avs)}: ' + '; '.join(rost_filer(filer, manus_texter(avs))))
     if film:
         b = boil_film(film); med = float(np.median(b)) if b.size else 0
         if not b.size: print(' boil film: (mäts bara i 30 fps, inte --snabb)')

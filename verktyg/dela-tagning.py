@@ -6,7 +6,7 @@
 lista.txt: en rad per replik i samma ordning som i tagningen, "filnamn  [tagg] Text"
 (samma format som kodblocken i manus.md). Raderna utan text hoppas över.
 Utmapp är assets/ljud/roster/tittut om inget annat anges. Befintliga filer skrivs inte över.
-Kräver ffmpeg och whisper-cli med modellen nedan. Skriver ut vad varje fil säger, så att det går att kontrollera.
+Kräver ffmpeg och whisper-cli med modellen nedan. Skriver ut vad varje fil säger och kör QA:s koll av röstfilerna (börjar/slutar mitt i ett ord).
 """
 import re, subprocess, sys, tempfile, os, difflib
 
@@ -42,7 +42,9 @@ def main(tagning, lista, utmapp='assets/ljud/roster/tittut'):
         mal += len(bokst(text))
         i = vem[hordPos(mal - 1)]
         a, b = ord_[i][1], ord_[min(i + 1, len(ord_) - 1)][0]
-        nara = [p for p in tyst if p[1] > a - 0.45 and p[0] < b + 0.05]   # längsta pausen vid gränsen
+        # längsta pausen vid gränsen, men bara pauser som slutar efter sista ordets slut: förut kunde pausen FÖRE
+        # sista ordet vinna, så att repliken slutade för tidigt och ordet hamnade i början av nästa fil (Sanna 2026-11-25)
+        nara = [p for p in tyst if p[1] > a + 0.03 and p[0] < b + 0.05]
         p = max(nara, key=lambda p: p[1] - p[0]) if nara else (a, b)
         snitt.append(round((p[0] + p[1]) / 2, 3))
     snitt.append(slut)
@@ -64,6 +66,12 @@ def main(tagning, lista, utmapp='assets/ljud/roster/tittut'):
                         '-c:a', 'aac', '-b:a', '128k', fil], check=True)
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', fil, '-ar', '16000', '-ac', '1', wav], check=True)
         print(f'{namn:18} {b - a:4.1f} s  manus: {text:32} hörs: {whisper(wav, False)}')
+    # samma koll som QA (qa-scen.py, "röst filer"): filer som börjar eller slutar mitt i ett ord
+    import importlib.util as u
+    sp = u.spec_from_file_location('qa', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'qa-scen.py'))
+    qa = u.module_from_spec(sp); sp.loader.exec_module(qa)
+    fel = qa.rost_filer([(n, f'{utmapp}/{n}.m4a') for n, _ in rader], {n: [t] for n, t in rader})
+    print('KONTROLLERA (lyssna, dela om):\n  ' + '\n  '.join(fel) if fel else 'Inga filer börjar eller slutar mitt i ett ord.')
 
 if __name__ == '__main__':
     main(*sys.argv[1:])

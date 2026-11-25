@@ -105,9 +105,10 @@ const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 
   'M50 75 C10 60 15 10 50 10 C85 10 90 60 50 75 C5 92 8 150 50 150 C92 150 95 92 50 75 Z', 'M86 60 C80 100 14 95 14 52 C14 0 86 5 86 60 C88 100 75 140 30 150'];
 function dorrBild(n, luckIm, CW) {   // som lucka.js dorrBild (liggande), i en canvas CW × CW·9/16
   const c = canvas(CW, CW * 9 / 16), x = c.getContext('2d'), k = CW / 1920;
-  x.drawImage(luckIm, -6 * k, -3.4 * k, (1920 + 12) * k, (1080 + 6.8) * k);
+  // spegelvänd (Sanna 25/11): gångjärnet sitter till höger, så det gula handtaget ska sitta till vänster, mitt emot. Bara bilden, inte siffran.
+  x.save(); x.translate(CW, 0); x.scale(-1, 1); x.drawImage(luckIm, -6 * k, -3.4 * k, (1920 + 12) * k, (1080 + 6.8) * k); x.restore();
   const s = String(n), sk = (n > 9 ? 3 : 3.3) * k;
-  x.save(); x.translate(1920 * 0.44 * k, 1080 * 0.5 * k); x.scale(sk, sk); x.translate(-(s.length * 130 - 30) / 2, -80);
+  x.save(); x.translate(1920 * 0.56 * k, 1080 * 0.5 * k); x.scale(sk, sk); x.translate(-(s.length * 130 - 30) / 2, -80);
   x.strokeStyle = '#FBF7EE'; x.lineWidth = 28; x.lineCap = x.lineJoin = 'round';
   [...s].forEach((d, i) => { x.save(); x.translate(i * 130, 0); x.stroke(new Path2D(SIFFRA[d])); x.restore(); });
   x.restore(); return c;

@@ -136,7 +136,8 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Tygpåsen | [tygpase.md](tygpase.md) | 024 |
 | Väggklockan | [klocka.md](klocka.md) | 024 |
 | Tandläkarstolen | [tandlakarstolen.md](tandlakarstolen.md) | 049 |
-| Tandborsten | [tandborsten.md](tandborsten.md) | 025 |
+| Tandborsten | [tandborsten.md](tandborsten.md) | 025, 055 |
+| Den stora tandborsten | [tandborste-stor.md](tandborste-stor.md) | 055 |
 | Muggen | [muggen.md](muggen.md) | 025 |
 | Stegen | [stege.md](stege.md) | 021 |
 | Röda kritan | [krita-rod.md](krita-rod.md) | 013 |

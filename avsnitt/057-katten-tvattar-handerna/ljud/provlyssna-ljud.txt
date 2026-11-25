@@ -1,0 +1,34 @@
+Provlyssna 057, grind 4. Varje ljud satt till -6 dBFS bara för lyssningen.
+
+0:00.0  mjau-gullig-1    katten: 1 hej (rad 1)
+0:01.8  mjau-gullig-2    katten: 2 förtjust (2, 12, 28) och glatt svar (1b, 5, 14b, 28b)
+0:03.7  mjau-gullig-3    katten: 3 fniss (4, 14, 23)
+0:05.6  mjau-gullig-4    katten: 4 mysig suck med spinn (10b, 24)
+0:08.4  mjau-gullig-5    katten: 5 nyfiken, frågande (7, 11, 18)
+0:09.9  mjau-gullig-6    katten: 6 trumpen (8)
+0:11.3  mjau-gullig-7    katten: 7 pratar, tre mjau (25)
+0:13.6  mjau-gullig-8    katten: 8 hej då (29, 30)
+0:15.4  mjau-trill-1     katten: stolt trill, kort (3)
+0:16.8  mjau-trill-2     katten: glad dubbeltrill (alternativ till glatt svar, 1b/5)
+0:18.9  mjau-ooo-1       katten: förtjust 'mrrooo' (10, 27)
+0:20.5  mjau-oj-1        katten: förvånat 'mew?' (20, örat)
+0:22.0  mjau-spinn-1     katten: spinner nöjt (17, rena tassar)
+0:24.7  tass-1           tass, ett steg (1, 5b)
+0:25.6  tass-2           tass, ett steg
+0:26.6  kran-1           kranen rinner (5b, 6, 13), 3 s av 13
+0:30.4  plask-1          plask, mjukt (6)
+0:32.3  droppar-1        droppe ×3 (8, 24)
+0:33.4  droppar-1        droppe
+0:34.5  droppar-1        droppe
+0:35.6  skrubb-1         skrubb, 1,5 s (13, 15, 16, 21)
+0:37.9  tindra-3         tindra-3: på 'borta' (15, 16, 21)
+0:39.7  tindra-4         tindra-4: på 'borta', alternativ
+0:41.4  glimt-1          glimt-1: 'Ja, där!' och fylls i (10, 20, 27)
+0:44.3  glimt-2          glimt-2: skimret på örat i frågans paus (19), i stället för lysmask (platshållare)
+0:47.3  pop-1            pop: röd bubbla (23)
+0:48.6  pop-2            pop: gul bubbla
+0:49.9  pop-4            pop: blå bubbla (pop-3 är tyst)
+0:51.2  glitter-1        glitter: penseln, tvålen, målningen fylls i (01, 10, 27)
+0:52.8  krita-ritar-1    kritan ritar (01, 9, 26), 3 s
+0:56.6  skogsljud-1      skogsljud under ritintrot, 4 s
+1:01.4  badrumsljud-2    badrumsljud, lågt under hela scenen, 5 s

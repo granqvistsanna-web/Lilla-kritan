@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>052 prov: kläderna på zebran</title>
+<style>html, body { margin:0; background:#000; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Grind 2-prov för 052 Zebran klär på sig: plaggen på Zebbes v2-rigg i sovrummet (026:s rum.js, oförändrad).
+     render(t): t = provbildens nummer (0–11), se PROV nedan. Stillbilder:
+     node .claude/skills/lk-figur/scripts/stills.mjs avsnitt/052-zebran-klar-pa-sig/scener/prov/index.html <ut.jpg> 0 1 2 …
+     Lösningarna kommer från förlagorna (manus.md, "Lösningar från förlagorna"): strumpan målas i benets form (039 strumpaBen),
+     mössan och halsduken ligger i .kropp, stela urklipp som aldrig skalas om (024 lamm, 038 pynta). -->
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module">
+import * as R from '/avsnitt/026-zebran-gar-och-lagger-sig/scener/sovrummet/rum.js';
+const NS = 'http://www.w3.org/2000/svg', S = '/avsnitt/052-zebran-klar-pa-sig/saker/';
+const MOSSA = { bild: S + 'mossa-gul/cut/mossa-gul.png', w: 887, h: 870, brim: [443, 856] };   // brättets nederkant, mitt (urklippets px)
+const HALSDUK = { bild: S + 'halsduk-rod/halsduk-rod.png', w: 1024, h: 1024, mitt: [523, 470] };
+const STRUMPA = { bild: [S + 'strumpor-klarbla/cut/strumpa-klarbla-1.png', S + 'strumpor-klarbla/cut/strumpa-klarbla-2.png'], w: 510, h: 767 };
+const BLA = ['#2F7FD8', '#1F66B8'];
+const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) => a + (b - a) * k, f1 = v => v.toFixed(1);
+
+// --- strumpan på benet: målad i benets form (039 strumpaBen), från hoven upp till mudden. Ramen [x, y]: muddens mitt i riggens ruta.
+const STRUMP_RAM = { l: [432, 846], r: [606, 842] };
+const strumpaBen = n => { const [x, y] = STRUMP_RAM[n];
+  return `<g class="pl-strumpa" mask="url(#strumpmask-${n})"><g transform="translate(${x} ${y})">
+    <g class="st-fot"><rect x="-200" y="0" width="400" height="200" fill="${BLA[0]}"/><rect x="-200" y="0" width="400" height="200" fill="${BLA[1]}" opacity="0.4" filter="url(#strumpkrita)"/></g>
+    <g class="st-band"><rect x="-200" y="0" width="400" height="16" fill="#EAF3FF"/></g></g></g>`; };
+function strumpPa(n, pa) {   // pa 0–1: strumpan glider upp från hoven, mudden sist
+  const topp = f1(lerp(80, 0, kl(pa / 0.85)));
+  G.querySelectorAll('.leg-' + n + ' .st-fot, .leg-' + n + ' .st-band').forEach(e => e.setAttribute('transform', `translate(0 ${topp})`));
+  G.querySelectorAll('.leg-' + n + ' .pl-strumpa').forEach(e => e.setAttribute('display', pa > 0.01 ? 'inline' : 'none'));
+  G.querySelectorAll('.leg-' + n + ' .st-band').forEach(e => e.setAttribute('display', pa > 0.6 ? 'inline' : 'none')); }
+
+let G, L;
+function kladerIn(g) {
+  document.querySelector('defs').insertAdjacentHTML('beforeend', `
+    <filter id="strumpkrita" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.16" numOctaves="2" seed="3" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.6 0 0 0 1.62" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>
+    <filter id="delsiluett" x="0" y="0" width="1" height="1"><feMorphology in="SourceAlpha" operator="erode" radius="8"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>`);
+  g.querySelectorAll('image.leg-l, image.leg-r').forEach(img => {
+    const klass = img.getAttribute('class'), sida = klass.at(-1), grupp = document.createElementNS(NS, 'g');
+    grupp.setAttribute('class', klass); img.setAttribute('class', 'pl-rigg'); img.replaceWith(grupp); grupp.appendChild(img);
+    if (!document.getElementById('strumpmask-' + sida)) document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="strumpmask-${sida}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
+      <image href="${img.getAttribute('href')}" width="1024" height="1024" filter="url(#delsiluett)"/></mask>`);
+    grupp.insertAdjacentHTML('beforeend', strumpaBen(sida));
+  });
+  // halsduken och mössan i .kropp (följer gungningen); öronkopior framför mössan för variant "genom"
+  g.querySelector('.drag').insertAdjacentHTML('afterend', `<g class="pl-halsduk"></g><g class="pl-mossa"></g><g class="pl-oron"></g>`);
+}
+// mössan: brättets nederkant (mitt) i (x, y) i riggens ruta, bredd w (brättet), vinkel v
+const mossaSvg = ([x, y], w, v = 0) => { const s = w / 820;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-MOSSA.brim[0]} ${-MOSSA.brim[1]})"><image href="${MOSSA.bild}" width="${MOSSA.w}" height="${MOSSA.h}"/></g>`; };
+const halsdukSvg = ([x, y], w) => { const s = w / 787;
+  return `<g transform="translate(${x} ${y}) scale(${s.toFixed(4)}) translate(${-HALSDUK.mitt[0]} ${-HALSDUK.mitt[1]})"><image href="${HALSDUK.bild}" width="1024" height="1024"/></g>`; };
+
+const ANS = n => ({ ...L.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'stolt'].includes(n) ? { glad: [0, 0] } : {}) });
+const P = o => ({ ...L.POSE0, ...o });
+const ZF = [1150, 1030];
+// Provbilderna: [kamera, ansikte, pose, plagg]
+// plagg: { str: [v, h] 0–1, mossa: 'lagom'|'liten'|'stor'|null, oron: 'bakom'|'genom', halsduk, kudde: true = gömda strumpan bakom kudden }
+const KH = [1.5, 1150, 760], KN = [2.6, 1150, 760], KB = [3.2, 1150, 970];
+const PROV = [
+  ['hel',     [1, 960, 540], 'glad', {}, {}],
+  ['lyft v',  KB, 'nyfiken', { benY: [-34, 0], ben: [6, 0] }, { str: [0.5, 0] }],
+  ['på v',    KB, 'glad', { benY: [-34, 0], ben: [6, 0] }, { str: [1, 0] }],
+  ['båda',    KB, 'glad', {}, { str: [1, 1] }],
+  ['mössa bakom', KN, 'glad', {}, { mossa: 'lagom', oron: 'bakom' }],
+  ['mössa genom', KN, 'glad', {}, { mossa: 'lagom', oron: 'genom' }],
+  ['för liten', KN, 'forvanad', {}, { mossa: 'liten' }],
+  ['för stor',  KN, 'glad', {}, { mossa: 'stor' }],
+  ['halsduk',   KN, 'glad', {}, { halsduk: 1 }],
+  ['allt på',   KH, 'stolt', {}, { str: [1, 1], mossa: 'lagom', oron: 'bakom', halsduk: 1 }],
+  ['allt genom', KH, 'stolt', {}, { str: [1, 1], mossa: 'lagom', oron: 'genom', halsduk: 1 }],
+  ['kudden',    [2.2, 800, 700], 'neutral', {}, { kudde: true }],
+];
+
+const VAGG = new URLSearchParams(location.search).get('vagg');   // orange | teal: sovrummets vägg omfärgad (saker/sovrum-farg)
+const KUDDE_KRAM = S + 'kudde-kram/kudde-kram.png';   // krämvit variant av kudde-v1-zebbe (#F6ECD6), saker/kudde-kram
+function render(t) {
+  const [namn, kam, ans, pose, pl] = PROV[Math.max(0, Math.min(PROV.length - 1, Math.round(t)))];
+  R.borja(3.3 * t); R.rum({ dag: true }); R.kamera(kam);
+  if (VAGG) document.querySelector('#platta image')?.setAttribute('href', S + 'sovrum-farg/sovrummet-' + VAGG + '.jpeg');
+  R.zebra(ZF, ANS(ans), P(pose), { fram: true });
+  strumpPa('l', (pl.str || [0, 0])[0]); strumpPa('r', (pl.str || [0, 0])[1]);
+  const m = G.querySelector('.pl-mossa'), o = G.querySelector('.pl-oron'), h = G.querySelector('.pl-halsduk');
+  m.innerHTML = pl.mossa === 'lagom' ? mossaSvg([512, 300], 470) : pl.mossa === 'liten' ? mossaSvg([660, 176], 96, 18) : pl.mossa === 'stor' ? mossaSvg([512, 470], 640) : '';
+  o.innerHTML = '';
+  if (pl.oron === 'genom') G.querySelectorAll('image.ear-l, image.ear-r').forEach(e => o.appendChild(e.cloneNode()));
+  h.innerHTML = pl.halsduk ? halsdukSvg([516, 658], 600) : '';
+  // kudden på madrassen, krämvit; den gömda strumpan bakom med bara tån ute vid vänstra hörnet, på madrassens vita
+  const kx = R.KUDDE_POS[0], ky = R.KUDDE_POS[1], ks = R.KUDDE.s * 1.3;
+  document.getElementById('kudde').innerHTML = pl.kudde || true ? `
+    ${pl.kudde ? `<g transform="translate(${kx + 128} ${ky - 14}) rotate(90) scale(0.16) translate(-255 -383)"><image href="${STRUMPA.bild[1]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>` : ''}
+    <g transform="translate(${kx} ${ky}) scale(${ks}) translate(-512 -${1024 - 91})"><image href="${KUDDE_KRAM}" width="1024" height="1024"/></g>` : '';
+  document.getElementById('_namn').textContent = namn;
+}
+window.render = render;
+window.ready = (async () => {
+  ({ L, G } = await R.starta([KUDDE_KRAM, MOSSA.bild, HALSDUK.bild, ...STRUMPA.bild]));
+  kladerIn(G);
+  document.querySelector('svg').insertAdjacentHTML('beforeend', '<text id="_namn" x="30" y="1050" font-size="34" font-family="sans-serif" fill="#fff" stroke="#000" stroke-width="5" paint-order="stroke"></text>');
+  render(Number(new URLSearchParams(location.search).get('t') || 0));
+  return true;
+})();
+</script>
+</body>
+</html>

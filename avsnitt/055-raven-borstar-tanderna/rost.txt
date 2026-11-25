@@ -1,0 +1,42 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-tandborste  [happy] Oj! En tandborste!
+04-hej-raven  [happy] Hej, räven! Hej, hej!
+05-hur-mar-du  [warmly] Hur mår du i dag?
+06-vad-roligt  [happy] Bra? Vad roligt!
+07-bla-bar  [laughs] Oj, oj, oj! Blåbär på tänderna!
+08-atit-blabar  [curious] Har du ätit blåbär?
+09-vad-gott  [warmly] Mm, vad gott!
+10-ska-vi-borsta  [cheerfully] Ska vi borsta tänderna?
+11-bra-ide  [happy] Ja, bra idé!
+12-for-liten  [surprised] Oj! Tandborsten är för liten!
+13-sa-manga-tander  [chuckles] Så liten … och så många tänder.
+14-gar-inte-bra  [warmly] Det går inte så bra, va?
+15-nej-det-gor  [warmly] Nej, det gör det inte.
+16-vad-gor-vi  [curious] Hm … vad gör vi nu?
+17-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
+18-stor-tandborste  [happy] En stor tandborste! Varsågod, räven.
+19-saga-tack  [warmly] Ska vi säga tack?
+20-tack  [happy] Tack!
+21-lagom-nu  [curious] Är den lagom nu?
+22-ja-lagom  [happy] Ja, nu är den lagom!
+23-liten-och-stor  [warmly] En liten … och en stor.
+24-kittlar  [giggles] Ha ha! Den kittlar på nosen!
+25-behovs-tandkram  [cheerfully] Nu behövs lite tandkräm.
+26-var-ar-tandkramen  [surprised] Oj! Var är tandkrämen?
+27-vet-inte-var  [curious] Räven vet inte var.
+28-kan-du-hjalpa  [warmly] Kan du hjälpa räven? Ser du tandkrämen?
+29-ja-dar  [happy] Ja, där! Bakom muggen!
+30-plutt  [playfully] Lite tandkräm … plutt!
+31-forst-uppe  [happy] Först uppe. Borsta, borsta … ett, två, tre!
+32-och-nere  [happy] Och nere. Borsta, borsta … ett, två, tre!
+33-langst-fram  [happy] Och längst fram. Borsta, borsta … ett, två, tre!
+34-blanka-tander  [happy] Titta! Blanka tänder!
+35-hur-kanns  [warmly] Hur känns det nu?
+36-rena-tander  [happy sigh] Åh, så rena tänder!
+37-far-inte-plats  [laughs] Oj! Den stora får inte plats!
+38-bredvid  [warmly] Där. Bredvid den lilla.
+39-ga-och-leka  [cheerfully] Ska du gå och leka nu?
+40-vad-kul  [happy] Ja, vad kul!
+41-hej-da-raven  [happy] Hej då, räven! Hej då, stora tandborsten!
+42-vi-ses-snart  [warmly] Hej då! Vi ses snart!

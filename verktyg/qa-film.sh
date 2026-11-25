@@ -3,8 +3,8 @@
 #   bash verktyg/qa-film.sh avsnitt/NNN-namn/film/avsnitt-NNN.mp4 [utmapp]     (utmapp: där kontaktarket hamnar, annars filmens mapp)
 # Läs så här: längden ska stämma med förhandsvisningen + introt, "fryst" ska vara tomt (bilden får aldrig stå helt still,
 # inte heller i gissa-pauserna), svart bara sista sekunden, I ca −14 LUFS och Peak högst −1,5 dBFS.
-# Sedan verktyg/qa-scen.py (ca 1 min): line boil i koden och i filmen, egen krit-kod (ska gå genom kritan-ritar.js), Malins repliker i rader.json och tvärt avklippt tal vid
-# bildklipp. Gränser och kalibrering står i qa-scen.py. Alla rader ska vara tomma efter kolon (utom "info").
+# Sedan verktyg/qa-scen.py (ca 2–3 min): line boil i koden och i filmen, egen krit-kod (ska gå genom kritan-ritar.js), Malins repliker i rader.json, röstfiler som börjar eller
+# slutar mitt i ett ord (whisper, ca 1 min) och tvärt avklippt tal vid bildklipp. Gränser och kalibrering står i qa-scen.py. Alla rader ska vara tomma efter kolon (utom "info").
 f=$1; U=${2:-$(dirname "$f")}; n=$(basename "$f" .mp4); T=$(mktemp -d)
 D=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f")
 echo "$n längd $D  $(ffmpeg -hide_banner -i "$f" -af ebur128=peak=true -f null - 2>&1 | grep -E ' I:|Peak:' | tail -2 | tr -s ' ' | tr '\n' ' ')"

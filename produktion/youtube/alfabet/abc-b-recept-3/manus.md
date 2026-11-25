@@ -96,9 +96,21 @@ Förd in från ABC-c3 (Sanna 2026-11-22: *"i like this new direction"*, se recep
 - 2:35 och 2:37, skuggorna: markskuggan ligger på golvet i scenens px sedan 21/11 och stannar där när saken hoppar eller ballongen flyger (den krymper och ljusnar). Nu också E:s mjukare skuggor: ca 60 % av förra styrkan, klossarnas skugga lite bredare.
 - 2:45 och 3:47, klossar som överlappar: klossarna har fasta platser 350 px isär, och varje flytt sker i en båge (lyft, flytta, sätt ner), så att en kloss aldrig glider in i en granne (klosskrockar 2026-11-22). `node produktion/youtube/alfabet/krock.mjs produktion/youtube/alfabet/abc-b-recept-3` testar alla klossar mot varandra som lådor i 3D var 1/30 s: inga krockar.
 
+## E:s riktning 2026-11-25 (Sanna: "Bring E's direction into abc-b-recept-3")
+
+Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`). Scenen före ändringen ligger i git, filmen i `aldre/abc-b-recept-3-fore-e-riktning.mp4`.
+
+- **Introt är ett samtal:** *"Titta, kritan ritar en bokstav."* → *"Bokstaven B."* → B puffar upp (`x-glad`) → *"Hej, B!"* → `x-halsar` (B vickar) → *"Ska vi leka, B?"* → `x-ja` (två hopp) → *"Ja! Vad kul!"* → B flyger till hörnet medan Malin säger *"Vad ritar kritan nu?"*. *"Det blev ett B!"*, *"Hur låter B?"*, *"Hej! B! B!"* och *"b, b, B!"* går bort.
+- **B säger bara B, i fem toner**, och tycker till före Malin: `x-ja` efter björnen, bollen och ballongen (märkets *"b, b, björn!"* och Malins *"Hur låter B i björn?"* / *"Och i boll?"* går bort), `x-undrar` + `x-nej` efter *"En ko!"*, `x-nej` efter hunden i muren, `x-ja` i slutet och `x-halsar` samtidigt som Malins *"Hej då! Vi ses!"*.
+- **B:s ansikte är större:** `HUVUD` [-15, -150, 54, 68] (var [-15, -160, 30, 42]), rosa kinder, större mun.
+- **Snabbare teckningar:** björnen `tempo` 0,4 (konturen 2,6 s), kon 0,42, ballongen 0,5. Gissningspausen 4 → 3,3 s, efter *"Hopp, hopp, hopp!"* 1,0 → 0,6 s.
+- **Lugnare gömlek:** vändningen 0,9 s, varje byte 1,6 s med 0,7 s vila, båda klossarna snurrar ett varv medan de byter, pausen 2,8 s (`VANDSEK`, `BYTSEK`). `krock.mjs`: inga krockar.
+- **Musiken** i introt och berättelsen 0,5 → 0,38.
+- **Röster (inspelade 2026-11-25):** `produktion/ljud-original/roster/abc-b-intro-2026-11-25/`. B:s toner är **Olivia** (*Bright, Youthful and Engaging*, Eleven v3, svenska; samma röst som E), klippta efter tonhöjden: `x-glad` olivia-1 0,00–0,50 (fallande), `x-halsar` 1,48–2,56 (hög–fallande), `x-ja` 3,25–3,70 + 4,42–4,90 med 0,12 s emellan, `x-nej` 5,82–6,17 + 6,70–7,13 (lågt, fallande), `x-undrar` ur olivia-2 6,53–7,00 (stiger; olivia-1 saknade frågan). *"Ska vi leka, B?"* är Malin, `malin-1.mp3` (malin-2 sa "bi"). `n-ja-vad-kul` och `n-vad-ritar-nu` är E:s klipp. Platshållarna ligger kvar i `platshallare/`. Ingen har lyssnat på tonerna; whisper hör intot rätt (*"Hej B."*, *"Ska vi leka B?"*, *"Ja, vad kul!"*).
+
 ## Öppet
 
 - Bollen och ballongen är båda röda. Plattorna har olika färg, men en blå boll skulle skilja dem bättre (det finns ingen `boll-bla` i dag).
-- Ingen tagning än: scenen använder datorrösten tills Sanna sagt ja till krediterna. Byt sedan `ROST` i `index.html` till `assets/ljud/roster/alfabet/abc-b-recept-3` (dela med `verktyg/dela-tagning.py`).
+- Ingen har lyssnat på B:s toner i blandningen (se E:s riktning ovan).
 - Ballongen svävar bara upp till ca y 20 (överkanten); den kan få flyga högre, ut ur bild, om Sanna vill.
 - `delEl` i scenen tar nu också delar med hela filnamnet (kons `ko-ben1`–`4`); förlagan klarar bara `…-body`. Kan föras in i E om fler bokstäver använder Gissa teckningens djur.

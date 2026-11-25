@@ -6,7 +6,7 @@ En tjock, barnslig tandkrämstub sedd rakt från sidan, stående på sin kork: e
 
 **Storlek i bild:** ungefär hälften så hög som tandborsten är lång. Skalan sätts i scenen.
 
-Används i: 030 Borsta, borsta (gulliga djur).
+Används i: 030 Borsta, borsta (gulliga djur), 055 Räven borstar tänderna.
 
 **Bilder (2026-11-11, Google Flow, Nano Banana 2.1, 0 krediter, stilreferens tandborsten och muggen):** fyra tagningar i `assets/rekvisita/tandkramen/original/tandkramen-1…4.jpeg`, sida vid sida i `original/jamforelse.jpg`. Vald nr 2 (Claudes val, veckad ände; byt om Sanna vill ha en annan). Utklippt med `verktyg/egen_kant.py` (`original/tandkramen-cut-tjock-kant.png`, ritad kant 20 px). Kanten tunnad till 8 px (ca 1 %) genom att krympa klippets ytterkant: `tunn_kant.py` räknar den gräddvita tuben som vit och gav bandet utstickande hörn. Tanden och stjärnan på bandet är ritade i kod ovanpå (`original/tandkramen-cut-utan-tand.png` är klippet utan dem). Färdig: `cut/tandkramen.png` (386×741).
 

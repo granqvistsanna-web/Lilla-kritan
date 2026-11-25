@@ -1,10 +1,10 @@
 # Kritans ABC – recept 3: Kompisen vill något
 
-**Status:** Sanna gillar formen (2026-11-20: *"i like this"*). **Kopiera E** (`produktion/youtube/alfabet/abc-e-recept-3/`, uppdaterad 2026-11-25): den har allt nedan – lärdomarna från A, B, D och E (21–22/11), C:s riktning och *E:s riktning* (24–25/11: samtalet med bokstaven i introt, bokstaven säger bara sin bokstav i toner, snabbare teckningar, mjukare skuggor, lugnare gömlek). Scenen `index.html`, manuset `manus.md`, Malins repliker `malin-e-recept-3.txt`, filmen `abc-e-recept-3.mp4` (snabb förhandsvisning, 4:14). B har samma skuggor men inte E:s intro och toner. Ta med B:s `delEl` (delar med hela filnamnet) om bokstaven har djur ur Gissa teckningen.
+**Status:** Sanna gillar formen (2026-11-20: *"i like this"*). **Kopiera E** (`produktion/youtube/alfabet/abc-e-recept-3/`, uppdaterad 2026-11-25): den har allt nedan – lärdomarna från A, B, D och E (21–22/11), C:s riktning och *E:s riktning* (24–25/11: samtalet med bokstaven i introt, bokstaven säger bara sin bokstav i toner, snabbare teckningar, mjukare skuggor, lugnare gömlek). Scenen `index.html`, manuset `manus.md`, Malins repliker `malin-e-recept-3.txt`, filmen `abc-e-recept-3.mp4` (snabb förhandsvisning, 4:14). B har E:s riktning sedan 2026-11-25. Ta med B:s `delEl` (delar med hela filnamnet) om bokstaven har djur ur Gissa teckningen.
 
 **Ny riktning från C (Sanna 2026-11-22: *"i like this new direction"*):** kritan börjar rita på *"Titta"*, kompisens skiss har alla kännetecken, armarna är lägre och gömleken har ledtrådar. Se *C:s riktning* nedan. Det C:s märke säger (*"Hej! C! C!"*, *"k, k, clown!"*) ersätts av *E:s riktning*: bokstaven säger bara sin bokstav.
 
-**E:s riktning (Sanna 2026-11-24–25):** introt är ett samtal mellan Malin och bokstaven, bokstaven säger bara sin bokstav i fem toner och tycker till om varje ord, och kritan ritar på ca 6 s. Se *E:s riktning* nedan. Den gäller alla bokstäver; A–D har den inte än.
+**E:s riktning (Sanna 2026-11-24–25):** introt är ett samtal mellan Malin och bokstaven, bokstaven säger bara sin bokstav i fem toner och tycker till om varje ord, och kritan ritar på ca 6 s. Se *E:s riktning* nedan. Den gäller alla bokstäver; B har den sedan 2026-11-25, A, C och D inte än.
 
 **Sannas ändringar 2026-11-20, med i alla:** kritan ritar bara konturen och bilden fylls i inifrån, introt är ca 4 s kortare, introts kloss har rundare kanter, och katten och ekorren är nya bilder ur Flow: vanliga små djur från sidan, inte figurer på två ben.
 
@@ -209,7 +209,7 @@ Förlagan är `produktion/youtube/alfabet/abc-e-recept-3/` (se *Förslag 2026-11
 
 Bokstavens röst är **Olivia** (*Bright, Youthful and Engaging*, ElevenLabs v4; Sanna 2026-11-24: *"use olivia instead"*), en tagning med alla fem toner som klipps efter tonhöjden. E:s klipp och tider står i E:s `manus.md` (*Byggt*).
 
-**Introt är ett samtal** (ersätter *"Hej hej!"*, *"Det är ju E!"*, *"Hur låter E?"* och *"Kritan ritar något på bokstaven E."*):
+**Introt är ett samtal** efter *"Hej hej!"* (ersätter *"Det är ju E!"*, *"Hur låter E?"* och *"Kritan ritar något på bokstaven E."*):
 
 | Bild | Vem | Replik |
 |---|---|---|
@@ -257,7 +257,7 @@ Barnet hör ett glatt *E! E!* för rätt och ett mjukt *E-e.* för fel. I muren 
 - Tredje rundan (Sanna 2026-11-18, *"lite svårare"*) och andra rundan är borta ur den långa filmen. De kan bli Shorts, ca 25 s var.
 - Elefanten och dinon låter fortfarande som björnen (`brum-glad`). Sök egna läten på Openverse.
 - Hunden i leken är kvar i den gamla, ritade stilen. Den bör få en ny bild som katten och ekorren.
-- A–D har inte *E:s riktning* (introsamtalet, tonerna, de snabbare teckningarna, den lugnare gömleken). B har E:s skuggor.
+- A, C och D har inte *E:s riktning* (introsamtalet, tonerna, de snabbare teckningarna, den lugnare gömleken). B har den sedan 2026-11-25.
 - Muren står fortfarande still ca 12 s medan Malin säger orden. Bokstaven kan titta mot varje kloss när Malin säger ordet, utan ljud.
 - Ingen har lyssnat på E:s blandning. Båda rösterna sa *ekorre* med kort e (nästan "äckorre").
 - Flow-verktyget fastnade 2026-11-20 på en knapp det inte hittade. Det är rättat (C, 2026-11-21), men kolla först att knappen finns om Flow ändras igen.

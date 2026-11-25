@@ -6,7 +6,7 @@ En kort, bred tandborstmugg utan handtag, sedd rakt från sidan: raka, svagt avs
 
 **Storlek i bild:** ungefär lika bred som den är hög, ca 130 px bred i helbilden. Skalan sätts i scenen.
 
-Används i: 030 Borsta, borsta (gulliga djur).
+Används i: 030 Borsta, borsta (gulliga djur), 055 Räven borstar tänderna.
 
 **Bilder (2026-11-12, Google Flow, Nano Banana 2.1, 0 krediter, stilreferens muggen och pallen):** fyra tagningar i `assets/rekvisita/tandborstmuggen/original/tandborstmuggen-1…4.jpeg`, sida vid sida i `original/jamforelse.jpg`. Vald nr 4 (Claudes val: renast form, jämnast rand och bredast öppning; byt om Sanna vill ha en annan). Kopierad till `assets/rekvisita/tandborstmuggen/tandborstmuggen.jpeg`, utklippt med `verktyg/egen_kant.py` (`original/tandborstmuggen-cut-tjock-kant.png`) och kanten tunnad med `verktyg/tunn_kant.py 1`. Färdig: `cut/tandborstmuggen.png` (758×768).
 

@@ -6,7 +6,7 @@ En tjock, barnslig tandborste sedd rakt från sidan, liggande: ett långt, runda
 
 **Storlek i bild:** skaftet ca 220 px i riggens ruta (se `avsnitt/025-katten-borstar-tanderna/plan.md`). Skalan sätts i scenen.
 
-Används i: 025 Katten borstar tänderna.
+Används i: 025 Katten borstar tänderna, 055 Räven borstar tänderna.
 
 **Bilder (2026-11-11, Google Flow, Nano Banana 2.1, 0 krediter, stilreferens pallen och badbåten):** fyra tagningar i `assets/rekvisita/tandborsten/original/tandborsten-1…4.jpeg`, sida vid sida i `original/jamforelse.jpg`. Vald nr 3 (Sanna). Kopierad till `assets/rekvisita/tandborsten/tandborsten.jpeg` och utklippt med `verktyg/egen_kant.py` till `cut/tandborsten.png` (877×238). Den vita kanten är kvar i klippet.
 

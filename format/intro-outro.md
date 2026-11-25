@@ -47,3 +47,16 @@ Glassbussen
 | `intro.mov` / `outro.mov` | Färdiga intro och outro med genomskinlig ruta för titeln |
 | `kritsvep.mov` | Övergången (se overgangar-och-maner.md) |
 | `jingel-intro.wav` / `jingel-outro.wav` | Jinglarna |
+
+## Prenumerera (standard i alla videor, från 2026-11-25)
+
+**I bild:** `produktion/youtube/prenumerera/prenumerera.mp4` (6,7 s, engelska `prenumerera-en.mp4`) läggs precis **före outrot**, efter avsnittets kritiris och svart i varje avsnitt och en gång på slutet av varje mix. Inte i Shorts. Kritirisen öppnar sig ur svart, kritan klottrar fram en röd "Prenumerera"-knapp, Fia landar på den och klockan ringer, och kritirisen sluter sig runt Fias ansikte. Bara ordet "Prenumerera", ingen fråga och ingen röst. Se `produktion/youtube/prenumerera/README.md`.
+
+**I beskrivningen:** sista stycket före hashtaggarna i varje YouTube-beskrivning (avsnitt, mixar och Shorts):
+```
+Prenumerera gärna på lilla kritan, så hittar ni nya sånger och små berättelser för de minsta.
+```
+Engelska:
+```
+Subscribe to tiny crayon tv to find new songs and little stories for the youngest ones.
+```

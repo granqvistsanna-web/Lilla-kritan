@@ -18,3 +18,19 @@ De andra färgerna: byt `deep sky-blue wall (#3F6EA6)` mot `soft lavender wall (
 ## Sovrummet v2: rosa med trägolv (julkalendern)
 
 `assets/bakgrunder/sovrummet/sovrummet-v2.jpeg` är v1 med rosa vägg (#EE6FA0, ny nyans i kod med samma kritstruktur) och trägolvet från vardagsrummet-v4 (högra halvan, speglad). Fönstret, nattduksbordet och golvlinjen (rad 582 av 768) ligger exakt kvar. Julgirlangen ritas i `djur.js`. Används av julkalendern sedan 2026-11-16 (lucka 7 och 20). v1 gäller fortfarande för övriga avsnitt.
+
+## Färgsovrummen: mörk turkos, orange, himmelsblå (2026-11-25)
+
+Nya sovrum med kraftig vägg och tapet, samma upplägg som de röda och rosa sovrummen: välvd dörr till vänster, runt fönster med tom vit insida (himlen läggs i kod), nattduksbord med lampa till höger, varmt trägolv, tomt i mitten för sängen. Google Flow, Nano Banana 2.1, 0 krediter, `rosa-sovrummet-v2` och `roda-sovrummet-v2` som stil- och layoutreferens. Alla sex tagningar är plattor (Sanna: behåll alla): `assets/bakgrunder/turkosa-sovrummet/`, `orangea-sovrummet/` och `himmelsbla-sovrummet/`, var och en med `<namn>-v1.jpeg` och `-v2.jpeg` (1376×768, tagning 1 och 2) och orörda kopior i `original/`. Alla sex sida vid sida: `turkosa-sovrummet/original/jamforelse-farger.jpg`. Varianter utan dörr: `<namn>-v1|2-utan-dorr.jpeg`.
+
+- **Mörk turkos** `#11564F`: ljusare ränder och små stjärnor (lite guld) som tapet, dörrkarm i honungsträ.
+- **Orange** `#EE7A22`: ljusare ränder och några kritsvep, turkos dörrkarm och turkost nattduksbord.
+- **Himmelsblå** `#3A9FE0`: små moln och prickar som tapet, gul dörrkarm. Tagning 2 har dörren avklippt i vänsterkanten.
+
+Mät golvlinje, fönster och lampa i den platta ett avsnitt använder.
+
+Prompten (mörk turkos; de andra byter väggmeningen, tapeten och dörrkarmens färg):
+
+```prompt
+Images 1 and 2 are STYLE and LAYOUT references only: copy their flat wax-crayon technique, their straight-on composition, their floor line height, the round window in image 1 and the arched door in image 2, not their colours. Background plate for a toddler cartoon bedroom, wide 16:9, completely flat, static straight-on view, no perspective. The top part is one strong, bold, DEEP DARK TEAL wall (#11564F) filled edge to edge with a dense grainy oil-pastel and wax-crayon texture, with a soft hand-drawn WALLPAPER pattern: thin slightly lighter teal vertical crayon stripes about every tenth of the image width, and between them small scattered five-point stars and dots in a muted lighter teal and a little soft gold, low contrast so the wall still reads as one bold calm colour field. At the far left, an arched door in soft cream crayon with a warm honey-wood frame and a small round knob. On the wall, a little left of centre and in the upper half, one simple ROUND window: a thick soft cream-white crayon frame ring, the inside left completely EMPTY as plain flat pure white (#FFFFFF), no sky, no glass lines, no curtains. At the far right, standing on the floor, one small low wooden bedside table in warm honey brown and on it a small table lamp with a round soft pale yellow shade, not glowing. The bottom part is a light, warm honey wooden plank floor drawn flat in crayon with a few soft plank lines, meeting the wall at one straight horizontal line with a slightly rough hand-drawn edge at about 75% of the image height. Lots of empty space in the middle for a bed added later. No bed, no rug, no toys, no characters, no animals, no shadows, no glow, no text, no letters.
+```

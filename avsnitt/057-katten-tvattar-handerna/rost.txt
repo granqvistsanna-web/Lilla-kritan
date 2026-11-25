@@ -1,0 +1,45 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-pensel  [happy] Oj! En pensel!
+04-hej-katten  [happy] Hej, katten! Hej, hej!
+05-hur-ar-det  [warmly] Hur är det, katten?
+06-glad-i-dag  [happy] Jaså, du är glad i dag!
+07-rod-tass-gul-tass  [laughs] Oj, oj, oj! En röd tass … och en gul tass!
+08-har-du-malat  [curious] Har du målat, katten?
+09-ja-vad-kul  [happy] Ja, vad kul!
+10-tassar-pa-golvet  [chuckles] Titta, röda och gula tassar på golvet!
+11-ska-vi-tvatta  [cheerfully] Ska vi tvätta bort färgen?
+12-ja-bra-ide  [happy] Ja, bra idé!
+13-bara-vatten  [warmly] Bara vatten. Plask, plask …
+14-fargen-sitter-kvar  [curious] Hm. Färgen sitter kvar.
+15-sitter-fast  [chuckles] Oj då. Färgen sitter visst fast.
+16-inte-roligt  [warmly] Mm, det är inte roligt.
+17-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+18-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
+19-en-tval  [happy] En tvål! Varsågod, katten.
+20-luktar-gott  [happy sigh] Mm, den luktar gott!
+21-saga-tack  [warmly] Ska vi säga tack?
+22-tack  [happy] Tack!
+23-mycket-skum  [surprised] Oj! Mycket skum!
+24-skumskagg  [laughs] Ha ha! Ett skumskägg!
+25-jasa-roligt  [chuckles] Jaså, det tycker du är roligt?
+26-roda-tassen  [happy] Först den röda tassen. Tvätta, tvätta … borta!
+27-gula-tassen  [happy] Och den gula tassen. Tvätta, tvätta … borta!
+28-rena-tassar  [warmly] Rena tassar!
+29-sa-fina  [happy] Oj, så fina!
+30-lite-blatt-kvar  [curious] Men lite blått är kvar. Katten vet inte var.
+31-kan-du-hjalpa  [warmly] Kan du hjälpa katten? Kan du se den blå fläcken?
+32-ja-dar-pa-orat  [happy] Ja, där! På örat!
+33-tvatta-borta  [happy] Tvätta, tvätta … borta!
+34-bubblor  [surprised] Oj! Bubblor!
+35-rod-gul-bla-plopp  [playfully] En röd … en gul … och en blå. Plopp!
+36-torka-torka  [happy sigh] Torka, torka. Mmm … mjuk handduk.
+37-vad-har-du-malat  [curious] Men vad har du målat, katten?
+38-far-vi-se  [curious] Jaså? Får vi se?
+39-kritan-ritar-igen  [happy] Titta! Kritan ritar igen.
+40-tassar-rod-gul-bla  [happy] Tassar! En röd, en gul … och en blå!
+41-fin-malning  [warmly] Vilken fin målning! Tack, kritan!
+42-roligt-att-tvatta  [warmly] Var det roligt att tvätta tassarna?
+43-jag-ocksa  [happy] Mm, jag tyckte också det!
+44-hej-da-katten  [happy] Hej då, katten! Hej då, tvålen!
+45-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

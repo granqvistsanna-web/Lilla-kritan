@@ -27,6 +27,10 @@ mapp=${1:?"luckmapp saknas (eller --alla)"}; mapp=${mapp%/}
 D=produktion/three-rum/julkalender-intro
 namn=$(basename "$mapp"); LUCKA=$mapp/$namn.mp4; X=$mapp/3d; mkdir -p "$X"
 [[ -f $LUCKA ]] || { echo "hittar inte $LUCKA" >&2; exit 1; }
+# källan är alltid 2D-luckan: en film som redan är skarvad har sin 2D-version i aldre/ (kodluckornas innehåll rör sig, så skarvkontrollen
+# går inte att göra mot en redan skarvad film)
+SRC=$LUCKA
+[[ $(ffprobe -v error -show_entries format_tags=comment -of default=nw=1:nk=1 "$LUCKA") == *3d && -f $mapp/aldre/$namn-2d.mp4 ]] && SRC=$mapp/aldre/$namn-2d.mp4
 [[ $(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=nw=1:nk=1 "$LUCKA") == 1920 ]] || { echo "$namn: inte liggande, ingen 3D-ram"; exit 0; }
 N=$(sed -n "s/.*lucka: *\([0-9]*\).*/\1/p" "$mapp/index.html" | head -1)
 [[ -n $N ]] || N=$(sed -n "s/.*lucka\.bygg([^,]*, *\([0-9]*\).*/\1/p" "$mapp/index.html" | head -1)
@@ -37,13 +41,13 @@ R() { node produktion/three-rum/render.mjs $D "$@"; }
 TID=$(R --tider --fraga "lucka=$N&slut=$SLUTTYP" | tail -1)   # tiderna beror inte på bilden (standardbilden finns alltid)
 j() { python3 -c "import json,sys; print(eval(sys.argv[2], {}, json.loads(sys.argv[1])))" "$TID" "$1"; }
 RUTA=$(j "round(OPPEN*30)"); SLUTRUTOR=$(j slutRutor);
-NB=$(ffprobe -v error -count_packets -select_streams v -show_entries stream=nb_read_packets -of csv=p=0 "$LUCKA" | tr -d ,)
+NB=$(ffprobe -v error -count_packets -select_streams v -show_entries stream=nb_read_packets -of csv=p=0 "$SRC" | tr -d ,)
 S0=$((NB - SLUTRUTOR))
 (( S0 > RUTA + 30 )) || { echo "$namn: filmen är för kort för ramen ($NB rutor)" >&2; exit 1; }
 
 # bilderna bakom dörren ur luckans egen film; skarvkontroll: rutan vid OPPEN ska vara samma bild som nästa (innehållet har börjat),
 # annars är luckans 2D-intro gjort med andra tider (t.ex. renderad som en annan lucka) och måste byggas om först
-ruta() { ffmpeg -loglevel error -y -i "$LUCKA" -vf "select=eq(n\,$1)" -frames:v 1 -fps_mode passthrough "$2"; }
+ruta() { ffmpeg -loglevel error -y -i "$SRC" -vf "select=eq(n\,$1)" -frames:v 1 -fps_mode passthrough "$2"; }
 ruta $RUTA "$X/ny-forst.png"; ruta $((RUTA + 1)) "$X/efter.png"; ruta $((S0 - 1)) "$X/ny-sist.png"; ruta $S0 "$X/fore-stang.png"
 psnr() { ffmpeg -hide_banner -i "$1" -i "$2" -lavfi psnr -f null - 2>&1 | sed -n 's/.*average:\([0-9.inf]*\).*/\1/p'; }
 P1=$(psnr "$X/ny-forst.png" "$X/efter.png"); P2=$(psnr "$X/ny-sist.png" "$X/fore-stang.png"); rm "$X/efter.png" "$X/fore-stang.png"
@@ -71,8 +75,8 @@ IN=(); MIX=""; NAMN="[l]"; i=3
 while read -r t fil vol; do [[ -n $t ]] || continue
   IN+=(-i "$fil"); MIX+="[$i:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=$(python3 -c "print(round($vol*0.4,3))"),adelay=$(ms "$t"):all=1[e$i];"; NAMN+="[e$i]"; i=$((i + 1))
 done <<< "$EFF"
-KOMMENTAR=$(ffprobe -v error -show_entries format_tags=comment -of default=nw=1:nk=1 "$LUCKA"); KOMMENTAR=${KOMMENTAR%-3d}
-ffmpeg -y -loglevel error -i "$X/intro.mp4" -i "$LUCKA" -i "$X/slut.mp4" ${IN[@]+"${IN[@]}"} -filter_complex "
+KOMMENTAR=$(ffprobe -v error -show_entries format_tags=comment -of default=nw=1:nk=1 "$SRC"); KOMMENTAR=${KOMMENTAR%-3d}
+ffmpeg -y -loglevel error -i "$X/intro.mp4" -i "$SRC" -i "$X/slut.mp4" ${IN[@]+"${IN[@]}"} -filter_complex "
   [0:v]trim=end_frame=$RUTA,setpts=PTS-STARTPTS[a];[1:v]trim=start_frame=$RUTA:end_frame=$S0,setpts=PTS-STARTPTS[b];
   [2:v]trim=end_frame=$SLUTRUTOR,setpts=PTS-STARTPTS[c];[a][b][c]concat=n=3:v=1:a=0[v];$MIX
   [1:a]aformat=sample_rates=48000:channel_layouts=stereo[l];${NAMN}amix=inputs=$((i - 2)):normalize=0:duration=first[au]" \

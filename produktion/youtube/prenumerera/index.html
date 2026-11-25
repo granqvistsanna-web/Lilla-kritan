@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prenumerera</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Baloo+2:wght@800&display=block">
+<style>
+  html, body { margin:0; background:#FBF7EE; overflow:hidden; }
+  svg { width:100vw; height:100vh; display:block; }
+</style>
+</head>
+<body>
+<!-- Prenumerera-kortet: se README.md i samma mapp. -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <!-- samma kokning för det som ligger på kortet (kortet är flyttat, så filtret följer gruppen) -->
+    <filter id="boil-kort" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence class="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <!-- samma vaxkrita som i kritan-ritar -->
+    <filter id="vax" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.035 0.55" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.55" k3="0.45" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -7 0 0 0 4.5" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- klistermärket: lätt vaxkorn i färgen, glanskappa överst, lite mörkare nertill, mjuk skugga under -->
+    <filter id="vax-korn" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="3" result="korn"/>
+      <feColorMatrix in="korn" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2 0 0 0 2.15" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter>
+    <!-- Sanna 2026-11-08: "too glossy, we need some crayon feel": vaxdrag (korn + strak som kritan-ritars vax, men tätare),
+         lite ojämn handklippt kant på klistermärket och kritkant på molnen -->
+    <filter id="vax-mjuk" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="3" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.03 0.5" numOctaves="2" seed="8" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.5" k3="0.5" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -5 0 0 0 3.7" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="2" seed="5" result="kant"/>
+      <feDisplacementMap in="fyll" in2="kant" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="handklipp" x="-10%" y="-20%" width="120%" height="150%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="12" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feDropShadow in="d" dx="0" dy="14" stdDeviation="14" flood-color="#1b2a55" flood-opacity="0.2"/>
+    </filter>
+    <filter id="kritmoln" x="-5%" y="-10%" width="110%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="12" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.55 0.9" numOctaves="2" seed="4" result="korn"/>
+      <feColorMatrix in="korn" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.4 0 0 0 2.3" result="tand"/>
+      <feComposite in="d" in2="tand" operator="in"/>
+    </filter>
+    <!-- Fia: ETT jämnt vitt klistermärke runt hela siluetten (vingar + kropp), ritat ur formen; delarna själva är utan kant -->
+    <!-- rund kant (fia-kant-sessionen, alternativ D): två steg oskärpa + tröskel ≈ 16 enheter. Den gamla fyrkantiga dilate gav taggig kant -->
+    <filter id="fiaplatta" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b1"/>
+      <feComponentTransfer in="b1" result="t1"><feFuncA type="linear" slope="12" intercept="-0.12"/></feComponentTransfer>
+      <feGaussianBlur in="t1" stdDeviation="6" result="b2"/>
+      <feComponentTransfer in="b2" result="form"><feFuncA type="linear" slope="14" intercept="-1.4"/></feComponentTransfer>
+      <feFlood flood-color="#fff"/><feComposite in2="form" operator="in"/>
+    </filter>
+    <!-- handtextade versaler: vaxkorn + strak och lite darrig kant, som en tjock krita -->
+    <filter id="krita" filterUnits="userSpaceOnUse" x="-3000" y="-3000" width="6000" height="6000">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="11" result="korn"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.6" numOctaves="2" seed="4" result="strak"/>
+      <feComposite in="korn" in2="strak" operator="arithmetic" k2="0.5" k3="0.5" result="mix"/>
+      <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3.2 0 0 0 2.9" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in" result="fyll"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="vag"/>
+      <feDisplacementMap in="fyll" in2="vag" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <filter id="kantskugga" filterUnits="userSpaceOnUse" x="-3000" y="-3000" width="6000" height="6000"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#1f5a4a" flood-opacity="0.22"/></filter>
+    <filter id="pillkorn" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="5" result="k"/>
+      <feColorMatrix in="k" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -1.4 0.75" result="t"/>
+      <feComposite in="t" in2="SourceGraphic" operator="in"/></filter>
+    <linearGradient id="pillglans" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.38"/><stop offset="0.48" stop-color="#fff" stop-opacity="0.06"/><stop offset="0.5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#7a1208" stop-opacity="0.18"/></linearGradient>
+    <filter id="suddig" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="sakskugga" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#1f5a4a" flood-opacity="0.2"/></filter>
+    <filter id="kroppskugga" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#2a1430" flood-opacity="0.28"/></filter>
+    <filter id="moln-korn" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="6" result="korn"/>
+      <feColorMatrix in="korn" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.2 0 0 0 1.75" result="tand"/>
+      <feComposite in="SourceGraphic" in2="tand" operator="in"/></filter>
+    <linearGradient id="glans" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.32"/><stop offset="0.5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="botten" x1="0" y1="0" x2="0" y2="1"><stop offset="0.62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity="0.16"/></linearGradient>
+    <filter id="skugga" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#1b2a55" flood-opacity="0.22"/></filter>
+    <!-- glansig fasning på bokstäverna: ljus från uppe till vänster, en blank kant runt varje bokstav -->
+    <filter id="blank" x="-10%" y="-10%" width="120%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="hojd"/>
+      <feSpecularLighting in="hojd" surfaceScale="5" specularConstant="0.5" specularExponent="18" lighting-color="#fff" result="ljus">
+        <feDistantLight azimuth="235" elevation="48"/></feSpecularLighting>
+      <feComposite in="ljus" in2="SourceAlpha" operator="in" result="glint"/>
+      <feComposite in="SourceGraphic" in2="glint" operator="arithmetic" k2="1" k3="0.35"/>
+    </filter>
+    <filter id="mjukt" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="korn" x="0" y="0" width="1" height="1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
+    </filter>
+    <!-- kortets rivna kant, och den trasiga kanten på krit-strecken som färglägger fram det -->
+    <filter id="rivkant" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="trasig" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="50" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g id="himmel"></g>
+  <g id="himmel-bak"></g>
+  <g id="kort" filter="url(#boil)">
+    <g id="knapp"></g>
+    <g id="klocka"></g>
+    <g id="gnistor"></g>
+  </g>
+  <g id="golv"></g>
+  <g filter="url(#skugga)"><g id="fia"></g></g>
+  <g id="ram"></g>   <!-- kritirisen: öppnar sig ur svart och sluter sig runt Fias ansikte -->
+</svg>
+<script>
+// Prenumerera-kortet (Sanna 2026-11-25): samma värld som sångintrot (himmel, moln, gräs, kritan, Fia). Kritan klottrar fram
+// en röd knapp, "Prenumerera" poppar fram (ingen fråga ovanför, Sanna 2026-11-25), Fia landar på knappen så att den trycks ner, och klockan bredvid ringer.
+// Ingen röst. ?en ger engelska. 6,7 s. Passar avsnittens slut (Sanna 2026-11-25): avsnittet slutar med kritirisen och svart, kortet öppnar
+// sig ur svart med samma iris runt knappen, och sluter sig på slutet med kritirisen runt Fias ansikte (+ 0,4 s svart), sedan outrot.
+const Q = new URLSearchParams(location.search), EN = Q.has('en');
+const TEXT = EN ? { knapp: 'Subscribe' } : { knapp: 'Prenumerera' };
+const DURATION = 6.7;
+const T = {
+  oppna: [0, 0.7],        // irisen öppnar sig ur svart runt knappen
+  krita: [0.6, 0.95], rita: [0.95, 2.0], vila: [2.0, 2.6],   // kritan glider in, klottrar knappen, lägger sig på gräset
+  knapp: 1.75,            // knapptexten, ett tecken i taget
+  klocka: 2.35,           // klockan poppar fram
+  fia: [2.2, 3.15],       // Fia flyger in från höger och landar på knappen
+  tryck: 3.15,            // knappen trycks ner, klockan ringer
+  iris: [4.3, 5.4, 5.75, 6.25],   // kritirisen runt Fias ansikte: 1400 → 240, står, → 0; sedan svart
+  lyft: [99, 99.1], ut: [99, 99.1],   // Fia stannar kvar och inget krymper (irisen avslutar)
+};
+const KNAPP_Y = 580, FARG = '#e2402f', TURKOS = '#2FB5A8', GUL = '#f6b81f';
+
+const $ = id => document.getElementById(id);
+const clamp = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k));
+const lerp = (a, b, k) => a + (b - a) * k;
+const inUt = k => (k = clamp(k), k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+const utEase = k => (k = clamp(k), 1 - Math.pow(1 - k, 3));
+const inEase = k => (k = clamp(k), k * k * k);
+const del = ([a, b], t) => clamp((t - a) / (b - a));
+const NS = 'http://www.w3.org/2000/svg', A = '../../../assets/';
+const el = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent && parent.appendChild(e); return e; };
+
+// ---------- klistermärkes-pop (samma som introt) ----------
+function klister(tau, over = 1.15, vrid = 0) {
+  if (tau <= 0) return { s: 0, sx: 1, sy: 1, rot: vrid, dy: 0 };
+  const W = 22, Aa = W / Math.PI * Math.log(0.85 / (over - 1));
+  const e = Math.exp(-Aa * tau), s = 1 - 0.85 * e * Math.cos(W * tau);
+  const q = (over - 1) * 0.6 * e * Math.sin(W * tau);
+  return { s, sx: 1 + q, sy: 1 - q, rot: vrid * (1 - utEase(tau / 0.35)), dy: -12 * (over - 1) / 0.15 * e * Math.sin(W * tau) };
+}
+function poppa(g, tau, mittY = 0, over = 1.07, vrid = 0, ut = 1) {
+  const p = klister(tau, over, vrid);
+  g.setAttribute('transform', `translate(0 ${(mittY + p.dy).toFixed(2)}) rotate(${p.rot.toFixed(2)}) scale(${(p.s * p.sx * ut).toFixed(4)} ${(p.s * p.sy * ut).toFixed(4)}) translate(0 ${-mittY})`);
+}
+
+// ---------- text i Fredoka som poppar fram ett tecken i taget (som introts titel) ----------
+const matt = document.createElement('canvas').getContext('2d');
+function skrivText(parent, text, { cx, bas, storlek, farg, kant }) {
+  matt.font = `600 ${storlek}px Fredoka`;
+  const br = [...text].map(c => matt.measureText(c).width * (c === ' ' ? 1.1 : 1));
+  let x = cx - br.reduce((a, b) => a + b, 0) / 2, ord = 0, plats = 0;
+  const tecken = [];
+  [...text].forEach((c, i) => {
+    if (c === ' ') { x += br[i]; ord++; plats = 0; return; }
+    const g = el('g', { transform: `translate(${x + br[i] / 2} ${bas})` }, parent), inre = el('g', {}, g);
+    const attr = { x: 0, y: 0, 'text-anchor': 'middle', 'font-size': storlek, 'font-family': 'Fredoka', 'font-weight': 600 };
+    if (kant) el('text', { ...attr, fill: kant, stroke: kant, 'stroke-width': storlek * 0.2, 'stroke-linejoin': 'round', filter: 'url(#kantskugga)' }, inre).textContent = c;
+    el('text', { ...attr, fill: farg }, inre).textContent = c;
+    tecken.push({ inre, mitt: -storlek * 0.32, ord, plats: plats++ });
+    x += br[i];
+  });
+  return tecken;
+}
+
+// ---------- himmel, moln och gräs (samma som sångintrot) ----------
+const MOLN = [];
+function byggHimmel() {
+  const g = $('himmel'), H = 840;
+  const lg = el('linearGradient', { id: 'himmelton', x1: 0, y1: 0, x2: 0, y2: 1 }, document.querySelector('defs'));
+  el('stop', { offset: 0, 'stop-color': '#5cb8ec' }, lg); el('stop', { offset: 1, 'stop-color': '#a9dcf6' }, lg);
+  el('rect', { x: 0, y: 0, width: 1920, height: 1080, fill: 'url(#himmelton)' }, g);
+  [['stor', 641, 366, -40, 30, 0.6, 9], ['mellan', 514, 292, 1380, 40, 0.5, 12], ['lang', 677, 260, 1480, 620, 0.5, 6], ['liten', 404, 234, -60, 600, 0.55, 8]].forEach(([n, w, h, x, y, sk, v]) => {
+    const m = el('g', {}, g);
+    el('image', { href: A + `rekvisita/moln/cut/moln-${n}.png`, x: 0, y: 0, width: w * sk, height: h * sk, filter: 'url(#kantskugga)' }, m);
+    MOLN.push({ m, x, y, v, w: w * sk, h: h * sk, t0: 0.3 + MOLN.length * 0.12 });
+  });
+  let kant = `M-20 ${H}`; for (let x = 0; x <= 1960; x += 10) kant += ` L${x} ${(H + 5 * Math.sin(x * 0.011) + 2 * Math.sin(x * 0.043)).toFixed(1)}`;
+  el('path', { d: kant + ' L1960 1100 L-20 1100Z', fill: '#6dbf6a' }, g);
+  el('path', { d: kant, fill: 'none', stroke: '#4fa152', 'stroke-width': 10, 'stroke-linecap': 'round', filter: 'url(#krita)' }, g);
+  el('rect', { x: 0, y: H + 30, width: 1920, height: 260, fill: '#000', filter: 'url(#pillkorn)', opacity: 0.05 }, g);
+}
+function himmel(t) {
+  $('himmel-bak').innerHTML = [[230, 150], [1640, 300], [1800, 520], [120, 470]].map(([x, y], i) => {
+    const k = 0.5 + 0.5 * Math.sin(t * 2.4 + i * 1.9), r = 6 + 6 * k;
+    return `<path d="M${x} ${y - r * 1.6} Q${x} ${y} ${x + r * 1.6} ${y} Q${x} ${y} ${x} ${y + r * 1.6} Q${x} ${y} ${x - r * 1.6} ${y} Q${x} ${y} ${x} ${y - r * 1.6}Z" fill="#fff" opacity="${(0.35 + 0.5 * k).toFixed(2)}"/>`;
+  }).join('');
+}
+
+// ---------- frågan, knappen (klottrad kritfläck som introts titel) och klockan ----------
+let KNAPPTEXT = [], FLACK = [], KLOTT = null, KW = 0, KLOCKA = null, KLOCKA_X = 0;
+function bygg() {
+  byggHimmel();
+  matt.font = '600 92px Fredoka';
+  KW = matt.measureText(TEXT.knapp).width + 130;
+  const knapp = el('g', { transform: `translate(960 ${KNAPP_Y})` }, $('knapp'));
+  KNAPP.g = knapp;
+  // kritfläcken: fram-och-tillbaka-drag, rundade ändar, vit kant under
+  const P = [], x0 = -KW / 2, x1 = KW / 2, steg = 13, n = Math.ceil((x1 - x0) / steg);
+  for (let i = 0; i <= n; i++) {
+    const x = x0 + i * steg, j = Math.sin(i * 2.3) * 5, kant = clamp(Math.min(x - x0, x1 - x) / 55);
+    const topp = -46 + 20 * (1 - Math.sqrt(kant)) + Math.sin(i * 0.9) * 3, botten = 46 - 20 * (1 - Math.sqrt(kant)) + Math.cos(i * 0.7) * 3;
+    P.push(i % 2 ? [x + j * 0.5, botten] : [x + j * 0.5 - 16, topp]);
+  }
+  const d = 'M' + P.map(p => p.map(v => v.toFixed(1)).join(' ')).join(' L');
+  const streck = { d, fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round', pathLength: 1, 'stroke-dasharray': '1.02 2', 'stroke-dashoffset': 1.02 };
+  KNAPP.inre = el('g', {}, knapp);
+  FLACK.push(el('path', { ...streck, stroke: '#fff', 'stroke-width': 54, filter: 'url(#kantskugga)' }, KNAPP.inre));
+  KLOTT = el('path', { ...streck, stroke: FARG, 'stroke-width': 40, filter: 'url(#krita)' }, KNAPP.inre);
+  FLACK.push(KLOTT);
+  KNAPPTEXT = [...skrivText(el('g', { opacity: 0.4 }, KNAPP.inre), TEXT.knapp, { cx: 0, bas: 35, storlek: 92, farg: '#7a1208' }),
+    ...skrivText(KNAPP.inre, TEXT.knapp, { cx: 0, bas: 31, storlek: 92, farg: '#fff' })];
+  KNAPPTEXT.forEach((c, i) => c.start = T.knapp + (i % (KNAPPTEXT.length / 2)) * 0.035);
+  // klockan: gul klistermärkesklocka med vit kant, hänger i knoppen så att den kan svänga
+  KLOCKA_X = 960 + KW / 2 + 120;
+  const kg = el('g', { transform: `translate(${KLOCKA_X} ${KNAPP_Y - 70})` }, $('klocka'));
+  KLOCKA = { g: kg, pop: el('g', {}, kg) };
+  KLOCKA.sving = el('g', {}, KLOCKA.pop);
+  const kropp = 'M-50 98 Q-52 20 -40 -2 Q-24 -28 0 -30 Q24 -28 40 -2 Q52 20 50 98 Q66 104 66 116 L-66 116 Q-66 104 -50 98Z';
+  const kl = el('g', { filter: 'url(#kantskugga)' }, KLOCKA.sving);
+  el('circle', { cx: 0, cy: -38, r: 14, fill: '#fff' }, kl); el('circle', { cx: 0, cy: 126, r: 22, fill: '#fff' }, kl);
+  el('path', { d: kropp, fill: '#fff', stroke: '#fff', 'stroke-width': 22, 'stroke-linejoin': 'round' }, kl);
+  KLOCKA.kolv = el('circle', { cx: 0, cy: 124, r: 15, fill: '#d98a12', filter: 'url(#krita)' }, KLOCKA.sving);
+  const fg = el('g', { filter: 'url(#krita)' }, KLOCKA.sving);
+  el('circle', { cx: 0, cy: -38, r: 9, fill: '#d98a12' }, fg);
+  el('path', { d: kropp, fill: GUL }, fg);
+  el('path', { d: 'M-66 104 L66 104 L66 116 L-66 116Z', fill: '#d98a12', opacity: 0.8 }, fg);
+  el('path', { d: 'M-26 70 Q-30 20 -12 -6', fill: 'none', stroke: '#fff', 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 0.55 }, KLOCKA.sving);
+  // gnistor runt klockan när den ringer: fyruddiga stjärnor och små ringsvängar
+  GNISTOR = [[-120, -40, 18], [110, -70, 22], [-90, 120, 14], [130, 90, 16], [0, -120, 15]].map(([x, y, r], i) => {
+    const g = el('g', { transform: `translate(${KLOCKA_X + x} ${KNAPP_Y - 70 + y})` }, $('gnistor')), inre = el('g', {}, g);
+    const p = `M0 ${-r * 1.6} Q0 0 ${r * 1.6} 0 Q0 0 0 ${r * 1.6} Q0 0 ${-r * 1.6} 0 Q0 0 0 ${-r * 1.6}Z`;
+    el('path', { d: p, fill: '#fff', stroke: '#fff', 'stroke-width': 8, 'stroke-linejoin': 'round', filter: 'url(#kantskugga)' }, inre);
+    el('path', { d: p, fill: i % 2 ? GUL : FARG }, inre);
+    return { inre, start: T.tryck + 0.05 + i * 0.07 };
+  });
+  byggKritan();
+}
+const KNAPP = {};
+let GNISTOR = [];
+
+// ---------- kritan (röd, samma bild som introts) ----------
+const KRITA = {};
+function byggKritan() {
+  const w = 300, h = 105, g = el('g', {}, $('golv')), inre = el('g', {}, g);
+  el('ellipse', { cx: 0, cy: 4, rx: 150, ry: 24, fill: '#1f5a4a', opacity: 0.2, filter: 'url(#suddig)' }, KRITA.skugga = el('g', {}, g));
+  el('image', { href: A + 'rekvisita/krita-rod/cut/krita-rod.png', x: -w / 2, y: -h, width: w, height: h, filter: 'url(#sakskugga)' }, KRITA.bild = el('g', {}, inre));
+  Object.assign(KRITA, { g, inre, w, h, vila: [360, 990], L: KLOTT.getTotalLength() });
+}
+const lugn = k => 0.15 * inUt(k) + 0.85 * k;
+function kritan(t, ut) {
+  const { g, inre, bild, skugga, w, h, vila } = KRITA, k = del(T.rita, t);
+  FLACK.forEach(f => f.setAttribute('stroke-dashoffset', (1.02 * (1 - lugn(k))).toFixed(4)));
+  const q = KLOTT.getPointAtLength(lugn(k) * KRITA.L), spets = [960 + q.x, KNAPP_Y + q.y];
+  const r = 22 * Math.PI / 180, ritX = spets[0] - w / 2 * Math.cos(r), ritY = spets[1] + h / 2 - w / 2 * Math.sin(r);
+  let x, y, rot, lyft;
+  if (t < T.rita[0]) { const e = utEase(del(T.krita, t)); x = lerp(-260, ritX, e); y = lerp(ritY + 160, ritY, e); rot = 22; lyft = 1; }
+  else if (t < T.rita[1]) { x = ritX; y = ritY - 3 * Math.abs(Math.sin(t * 11)); rot = 22; lyft = 1; }
+  else { const e = inUt(del(T.vila, t)); x = lerp(ritX, vila[0], e); y = lerp(ritY, vila[1], e) - 60 * Math.sin(e * Math.PI); rot = lerp(22, -4, e); lyft = 1 - e; }
+  g.style.display = t > T.krita[0] && ut > 0.001 ? '' : 'none';
+  g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+  bild.setAttribute('transform', `rotate(${rot.toFixed(2)} 0 ${-h / 2})`);
+  skugga.setAttribute('opacity', (1 - lyft).toFixed(2));   // skuggan bara när kritan ligger på gräset
+  inre.setAttribute('transform', `scale(${ut.toFixed(4)})`);
+}
+
+// ---------- Fia (samma rigg som sångintrot) ----------
+const FIA = (() => {
+  const g = $('fia'), inre = el('g', {}, g);
+  const delar = el('g', { id: 'fia-delar' });
+  el('use', { href: '#fia-delar', filter: 'url(#fiaplatta)' }, inre); inre.appendChild(delar);
+  const vg = el('g', {}, delar), vbild = fil => el('image', { href: A + 'karaktarer/fjarilen-fia/premium/' + fil, x: 0, y: 0, width: 1024, height: 1024 }, vg);
+  const vingar = [['wing-l', 385, 547], ['wing-r', 643, 541]].map(([n, px, py]) => ({ px, py, e: vbild(`cut/fia-tonad-${n}-fyll.png`) }));
+  el('image', { href: A + 'karaktarer/fjarilen-fia/premium/cut/fia-tonad-body-fyll.png', x: 0, y: 0, width: 1024, height: 1024, filter: 'url(#kroppskugga)' }, delar);
+  for (const [x, y] of [[436, 453], [587, 452]]) el('ellipse', { cx: x, cy: y, rx: 24, ry: 15, fill: '#ec8f96' }, inre);
+  const ogon = [[457, 411], [566, 410]].map(([x, y]) => {
+    const pos = el('g', { transform: `translate(${x} ${y})` }, inre), oppen = el('g', {}, pos);
+    el('ellipse', { rx: 16, ry: 22, fill: '#2a1d1a' }, oppen); el('circle', { cx: -5, cy: -9, r: 5.5, fill: '#fff' }, oppen);
+    const glad = el('path', { d: 'M-17 6 Q0 -16 17 6', fill: 'none', stroke: '#2a1d1a', 'stroke-width': 7, 'stroke-linecap': 'round' }, pos);
+    return { oppen, glad };
+  });
+  el('path', { d: 'M496 446 Q514 464 532 446', fill: 'none', stroke: '#2a1d1a', 'stroke-width': 6, 'stroke-linecap': 'round' }, inre);
+  return ({ x, y, s = 0.36, tilt = 0, flax = 1, lage = 'open', blink = 0, titt = 0, tittY = 0 }) => {
+    g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${tilt.toFixed(2)}) scale(${s}) translate(-512 -500)`);
+    for (const v of vingar) v.e.setAttribute('transform', `translate(${v.px} ${v.py}) scale(${flax.toFixed(3)} ${(1 - 0.05 * (1 - flax)).toFixed(3)}) translate(${-v.px} ${-v.py})`);
+    for (const o of ogon) {
+      o.oppen.style.display = lage === 'happy' ? 'none' : '';
+      o.glad.style.display = lage === 'happy' ? '' : 'none';
+      o.oppen.setAttribute('transform', `translate(${(clamp(titt, -1, 1) * 6).toFixed(2)} ${(clamp(tittY, -1, 1) * 5).toFixed(2)}) scale(1 ${1 - 0.92 * blink})`);
+    }
+  };
+})();
+const flaxa = (t, hz = 3.4) => 0.6 + 0.4 * Math.cos(t * 2 * Math.PI * hz);
+const svava = (t, a = 9) => a * Math.sin(t * 2 * Math.PI * 1.7);
+function bana(P, u) {
+  const n = P.length - 1, f = clamp(u) * n, i = Math.min(Math.floor(f), n - 1), k = f - i;
+  const p0 = P[Math.max(i - 1, 0)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(i + 2, n)];
+  return [0, 1].map(j => 0.5 * (2 * p1[j] + (-p0[j] + p2[j]) * k + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * k * k + (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * k * k * k));
+}
+
+// ---------- kritirisen (samma som avsnittens slut, ur 020/034): svart utanför, krämvit vinglig ring ----------
+function kritiris(r, [cx, cy], t) {
+  const g = $('ram'); if (r >= 1400) { g.innerHTML = ''; return; }
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+    return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+  g.innerHTML = `<path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>
+    ${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4)}" stroke-linejoin="round" filter="url(#boil)"/>` : ''}`;
+}
+const mjuk = k => (k = clamp(k), k * k * (3 - 2 * k));
+
+// ---------- en bildruta ----------
+let byggd = false;
+function render(t) {
+  if (!byggd) return;
+  const ut = k => 1 - inEase(del([T.ut[0] + k * 0.12, T.ut[1] + k * 0.12], t));
+  for (const o of MOLN) {
+    const k = clamp((t - o.t0) / 0.45), sk = k ? 1 + 2.4 * (k - 1) ** 3 + 1.4 * (k - 1) ** 2 : 0;
+    o.m.setAttribute('transform', `translate(${(o.x + o.v * t + o.w / 2).toFixed(1)} ${(o.y + o.h / 2).toFixed(1)}) scale(${sk.toFixed(4)}) translate(${(-o.w / 2).toFixed(1)} ${(-o.h / 2).toFixed(1)})`);
+  }
+  himmel(t);
+  for (const c of KNAPPTEXT) poppa(c.inre, t - c.start, c.mitt, 1.1, -4);
+  kritan(t, ut(0));
+
+  // knappen: trycks ner när Fia landar (squash, 8 px ner) och fjädrar tillbaka
+  const e = t - T.tryck, tryck = e > 0 ? Math.exp(-e * 6) * Math.cos(e * 14) : 0;
+  KNAPP.inre.setAttribute('transform', `translate(0 ${(8 * tryck).toFixed(2)}) scale(${(1 + 0.03 * tryck).toFixed(4)} ${(1 - 0.07 * tryck).toFixed(4)})`);
+  KNAPP.g.setAttribute('transform', `translate(960 ${KNAPP_Y}) scale(${ut(0.1).toFixed(4)})`);
+
+  // klockan: poppar fram, svänger när knappen trycks (dämpad pendel runt knoppen)
+  poppa(KLOCKA.pop, t - T.klocka, 40, 1.15, 8, ut(0.2));
+  const sv = e > 0 ? 22 * Math.exp(-e * 2.6) * Math.sin(e * 15) : 0;
+  KLOCKA.sving.setAttribute('transform', `translate(0 -38) rotate(${sv.toFixed(2)}) translate(0 38)`);
+  KLOCKA.kolv.setAttribute('cx', (-0.9 * sv).toFixed(2));
+  for (const g of GNISTOR) {
+    const u = (t - g.start) / 0.9;
+    g.inre.style.display = u > 0 && u < 1 ? '' : 'none';
+    if (u > 0 && u < 1) g.inre.setAttribute('transform', `scale(${(Math.sin(u * Math.PI) * (1 + 0.15 * Math.sin(u * 20))).toFixed(3)}) rotate(${(u * 40).toFixed(1)})`);
+  }
+
+  // Fia: flyger in från höger i en båge, landar på knappen, tittar på klockan och flyger iväg
+  const LANDA = [960 - KW * 0.12, KNAPP_Y - 150];
+  const IN = [[2200, 260], [1650, 140], [1250, 300], [LANDA[0] + 60, LANDA[1] - 90], LANDA];
+  let x, y, tilt = 0, flax = flaxa(t), lage = 'open', blink = 0, titt = -0.6, tittY = 0.3;
+  if (t < T.tryck) {
+    const k = inUt(del(T.fia, t)), [x0, y0] = bana(IN, k), [x1] = bana(IN, Math.min(k + 0.01, 1));
+    x = x0; y = y0 + svava(t) * (1 - k); tilt = clamp((x1 - x0) / 6, -14, 14);
+  } else if (t < T.lyft[0]) {
+    [x, y] = LANDA; y += 8 * tryck;
+    flax = 0.78 + 0.22 * Math.cos(e * 4.2);
+    titt = e < 0.9 ? 1 : 0; tittY = e < 0.9 ? 0.2 : 0;           // tittar på klockan som ringer, sedan på tittaren
+    if ((e > 0.15 && e < 0.9) || t > T.iris[1]) lage = 'happy';   // glad igen när irisen stannar runt ansiktet
+    blink = e > 1.25 && e < 1.37 ? 1 : 0;
+  } else {
+    const k = inEase(del(T.lyft, t));
+    x = LANDA[0] + 260 * k; y = lerp(LANDA[1], -280, k) + svava(t, 7); tilt = 12 * k; titt = 0.5; tittY = -1;
+  }
+  FIA({ x, y, tilt, flax, lage, blink, titt, tittY });
+
+  // irisen: öppnar sig runt knappen i början, sluter sig runt Fias ansikte på slutet
+  const [i0, i1, i2, i3] = T.iris;
+  const ir = t < T.oppna[1] ? lerp(0, 1400, mjuk(del(T.oppna, t)))
+    : t < i0 ? 1400 : t < i2 ? lerp(1400, 240, mjuk(del([i0, i1], t))) : lerp(240, 0, mjuk(del([i2, i3], t)));
+  kritiris(ir, t < T.oppna[1] ? [960, KNAPP_Y] : [LANDA[0], LANDA[1] - 25], t);
+
+  const ruta = Math.floor(Math.round(t * 30) / 5);   // ny brusbild 6 gånger/s
+  for (const b of document.querySelectorAll('.brus')) b.setAttribute('seed', (ruta % 50) + 1);
+}
+
+window.render = render;
+window.seek = t => { window.stilla = true; render(t); };
+window.DURATION = DURATION;
+const E = 'assets/ljud/effekter/';
+Object.defineProperty(window, 'LJUD', { get: () => [
+  ...MOLN.map((o, i) => ({ t: o.t0 + 0.05, fil: E + 'plopp/plopp-1.m4a', vol: 0.6 - i * 0.08 })),
+  { t: T.krita[0], fil: E + 'swoosh/swoosh-1.m4a', vol: 0.6, langd: 0.5, fade: 0.2 },
+  { t: T.rita[0], fil: E + 'skrrrrt-lang/skrrrrt-lang-1.m4a', vol: 0.85, langd: T.rita[1] - T.rita[0], fade: 0.2, loop: true },
+  { t: T.vila[1] - 0.05, fil: E + 'landa-mjuk/landa-mjuk-2.m4a', vol: 0.8 },
+  { t: T.klocka, fil: E + 'pop/pop-2.m4a', vol: 0.6 },
+  { t: T.fia[0], fil: E + 'vingflax/vingflax-1.m4a', vol: 0.5, langd: 0.9, fade: 0.3 },
+  { t: T.tryck, fil: E + 'ringklocka/ringklocka-1.m4a', vol: 0.55, langd: 1.2, fade: 0.4 },
+  { t: T.tryck + 0.05, fil: E + 'glitter/glitter-1.m4a', vol: 0.45 },
+] });
+window.ready = document.fonts.load('600 100px Fredoka', TEXT.knapp).then(() => document.fonts.ready)
+  .then(() => Promise.all([...document.querySelectorAll('image')].map(i => new Promise(r => { const b = new Image(); b.onload = b.onerror = r; b.src = i.href.baseVal; }))))
+  .then(() => { bygg(); byggd = true; render(0); });
+const start = performance.now();
+(function loop() { if (!window.stilla) render(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

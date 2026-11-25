@@ -1,0 +1,47 @@
+01-kritan-ritar             [warmly] Kritan ritar …
+02-vad-blir-det             [curious] Hm … vad blir det nu?
+03-rod-halsduk              [happy] Oj! En röd halsduk!
+04-hej-zebran-hej           [happy] Hej, zebran! Hej, hej!
+05-sovit-gott               [warmly] Har du sovit gott?
+06-vad-bra                  [happy] Mm, vad bra!
+07-titta-snoar              [happy] Titta! Det snöar!
+08-vad-fint                 [happy] Åh, vad fint!
+09-ga-ut-snon-leka          [cheerfully] Vill du gå ut i snön och leka? Ja, vad kul!
+10-kla-pa-kroken-strumporna [cheerfully] Då ska vi klä på oss. Kläderna hänger på kroken. Ja, vad ska vi ta på först? Ja, strumporna, bra idé! Först strumporna.
+11-bla-strumpan-pa          [happy] Den blå strumpan … på!
+12-var-andra-strumpan       [surprised] Oj! Var är den andra strumpan?
+13-under-sangen             [curious] Under sängen?
+14-nej                      [playfully] Nej!
+15-i-korgen                 [curious] I korgen?
+16-nej                      [playfully] Nej!
+17-lite-ledsen              [gently] Åh. Zebran blir lite ledsen.
+18-jag-forstar-letar        [warmly] Mm. Jag förstår. Vi letar tillsammans.
+19-vad-gor                  [curious] Hm … vad gör vi nu?
+20-titta-kritan-ritar       [happy] Titta! Kritan ritar något.
+21-en-mossa                 [happy] En mössa!
+22-for-liten                [chuckles] Oj! För liten!
+23-en-gang-till             [playfully] En gång till …
+24-for-stor                 [laughs] Oj, oj! För stor!
+25-ar-du-dar-inne           [playfully] Hallå? Är du där inne?
+26-en-gang-till             [playfully] En gång till …
+27-lagom-varsagod           [happy] Lagom! Varsågod, zebran.
+28-saga-tack                [warmly] Ska vi säga tack?
+29-tack                     [happy] Tack!
+30-gula-mossan-pa           [happy] Den gula mössan … på!
+31-tycker-du-om             [happy] Jaså, den tycker du om!
+32-dar-ar-halsduken         [happy] Och där är halsduken!
+33-roda-halsduken-pa        [happy] Den röda halsduken … på!
+34-varm-och-mjuk            [happy sigh] Mmm … varm och mjuk.
+35-jag-ocksa                [warmly] Mm, jag också.
+36-strumpan-da              [curious] Men strumpan då? Zebran vet inte var.
+37-hjalpa-zebran-se         [warmly] Kan du hjälpa zebran? Ser du den blå strumpan?
+38-dar-bakom-kudden         [happy] Ja, där! Bakom kudden!
+39-bla-strumpan-pa          [happy] Den blå strumpan … på!
+40-vad-skont                [happy] Ja, vad skönt!
+41-rod-gul-bla              [happy] Röd, gul … och blå!
+42-sa-fin                   [happy] Oj, så fin du är!
+43-ar-du-fardig             [cheerfully] Är du färdig nu?
+44-ga-ut-i-snon             [happy] Nu kan zebran gå ut i snön!
+45-hej-da-zebran            [warmly] Hej då, zebran! Hej då, mössan!
+46-roligt-i-snon            [warmly] Ha det så roligt i snön!
+47-hej-da-ses-snart         [warmly] Hej då! Vi ses snart!

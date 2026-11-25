@@ -13,6 +13,7 @@ Känslorna och numren följer `format/bilderbok.md` (`<djur>-gullig-N`: 1 hej, 2
 | zebran | `gnagg-mjuk-hej`, `gnagg-gullig-1` | `gnagg-mjuk-hejda`, `gnagg-gullig-8` | `gnagg-mjuk-nyfiken`, `gnagg-gullig-5` | `gnagg-mjuk-fniss`, `gnagg-fniss` | **saknas** | **saknas** | `gnagg-mjuk-fortjust`, `gnagg-gullig-2` | `gnagg-mjuk-trumpen`, `gnagg-nej` |
 | leoparden | `spinn-gullig-1` | `spinn-gullig-8` | `spinn-gullig-5` | `spinn-gullig-3`, `spinn-fniss` | **saknas** | **saknas** | `spinn-gullig-2` | `spinn-gullig-6` |
 | katten | `mjau-gullig-1`, `mjau-glad-3` | `mjau-gullig-8` | `mjau-gullig-5`, `mjau-fraga` | `mjau-gullig-3`, `mjau-glad-2`, `mjau-glad-4` | `mjau-oj`, `mjau-ooo` | **saknas** | `mjau-gullig-2`, `mjau-aah`, `mjau-trill` | `mjau-gullig-6` |
+| räven (055, 056) | `rav-gullig-1`, `-1b` (svenskt "hej!") | `rav-gullig-8`..`8d` (svenskt "hej då!") | `rav-gullig-5`..`5d` | `rav-gullig-3`..`3d`, `rav-fniss-1..4` (långt) | **saknas** | **saknas** | `rav-gullig-2`..`2d` | `rav-gullig-6`..`6d` |
 | musen | `mus-hej` | `mus-hejda` | `mus-nyfiken-3` | `mus-fniss-kort-1`, `mus-fniss` | **saknas** | **saknas** | `mus-fortjust-3` | `mus-trumpen` |
 | grisen | `noff-gullig-1` | `noff-gullig-8` | `noff-gullig-5`, `noff-kolla` | `noff-fniss`, `noff-gullig-3` | `noff-ooo` | `noff-mums` | `noff-aah`, `noff-glad` | `noff-gullig-6` |
 | hunden (valpen) | `vov-hej` | `vov-hejda` | `vov-gullig-5` | `vov-fniss` | **saknas** | **saknas** | `vov-pip`, `flamt-valp`, `vov-ja` | `vov-gullig-6` |
