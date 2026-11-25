@@ -91,7 +91,7 @@ const ruta = n => { const [k, r, s] = MUR[n], w = s * MW + (s - 1) * MG, x = MX 
   const [x0, y1] = varld(x, y), [x1, y0] = varld(x + w, y + w * 9 / 16); return { x0, x1, y0, y1, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 }; };
 const BAR = [[1791, 297], [1434, 310], [630, 316], [236, 338], [1002, 337], [2188, 343], [471, 383], [2029, 383], [1276, 387]];   // girlangens bär (mätta)
 const DJ = 0.30;   // plattans tjocklek (Sanna 25/11: lite tjockare, var 16 cm)
-const ZF = 0.022, DT = 0.008, E = 0.006, OPPEN_V = 100 * Math.PI / 180;   // dörrens baksida 22 mm framför tavlan, 8 mm tjock, 6 mm över karmen; öppen 100°
+const ZF = 0.022, DT = 0.008, E = 0.006, OPPEN_V = 100 * Math.PI / 180, TIDIGARE_V = 140 * Math.PI / 180;   // de tidigare dagarnas dörrar vikta längre bak (Sanna 25/11: inget staket av dörrar)   // dörrens baksida 22 mm framför tavlan, 8 mm tjock, 6 mm över karmen; öppen 100°
 const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 90 80 C90 40 85 10 50 10 Z', 'M30 42 L60 10 L60 150',
   'M15 45 C15 0 85 0 85 45 C85 80 30 110 12 150 L90 150', 'M15 30 C30 0 85 5 82 42 C80 70 50 75 40 76 C60 76 90 85 88 115 C85 155 25 158 12 125',
   'M70 150 L70 10 L10 105 L92 105', 'M82 10 L25 10 L18 70 C40 55 88 60 88 105 C88 155 30 160 12 128',
@@ -106,16 +106,26 @@ function dorrBild(n, luckIm, CW) {   // som lucka.js dorrBild (liggande), i en c
   [...s].forEach((d, i) => { x.save(); x.translate(i * 130, 0); x.stroke(new Path2D(SIFFRA[d])); x.restore(); });
   x.restore(); return c;
 }
-function inreBild(w, h) {   // insidan bakom en öppnad lucka: papper med mjuk skugga mot kanterna
-  const c = canvas(w, h), x = c.getContext('2d'); x.fillStyle = '#F1E7D2'; x.fillRect(0, 0, w, h); kornPa(x, w, h, 128);
+function inreBild(w, h, im) {   // insidan bakom en öppnad lucka: papper (eller dagens bild, Sanna 25/11) med mjuk skugga mot kanterna
+  const c = canvas(w, h), x = c.getContext('2d'); x.fillStyle = '#F1E7D2'; x.fillRect(0, 0, w, h);
+  if (im) x.drawImage(im, 0, 0, w, h); else kornPa(x, w, h, 128);
   for (const [a, b, c2, d] of [[0, 0, 0, 1], [0, 0, 1, 0], [w, 0, -1, 0], [0, h, 0, -1]]) {
     const g = x.createLinearGradient(a, b, a + c2 * w * 0.18, b + d * h * 0.3); g.addColorStop(0, 'rgba(120,80,50,0.28)'); g.addColorStop(1, 'rgba(120,80,50,0)');
     x.fillStyle = g; x.fillRect(0, 0, w, h); }
   return c;
 }
+function bakBild() {   // dörrens baksida: varm gräddvit kartong med kritkorn, en tunn mörkare kant och en liten guldstjärna i mitten
+  const w = 256, h = 144, c = canvas(w, h), x = c.getContext('2d'); x.fillStyle = '#F6E7C8'; x.fillRect(0, 0, w, h); kornPa(x, w, h, 128);
+  x.strokeStyle = 'rgba(190,140,80,0.35)'; x.lineWidth = 6; x.strokeRect(3, 3, w - 6, h - 6);
+  x.translate(w / 2, h / 2); x.beginPath();
+  for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5 - Math.PI / 2, r = i % 2 ? 9 : 22; x.lineTo(r * Math.cos(a), r * Math.sin(a)); }
+  x.closePath(); x.fillStyle = '#E8B23A'; x.fill(); return c;
+}
 let tavla, DORR = {}, ramM, ramG, ramIM, ramI, inneM, inneMesh, sistM, pappM, glodM, varmLjus, lampor = [];
 async function byggTavla() {
   const [tim, lim, iim, sim] = await Promise.all([bild(TAVLA), bild(LUCKA), bild(INNE), bild(SIST)]);
+  // bakom de tidigare luckorna: en bild ur den dagens film (luckor/NN.jpg), så att kalendern ser öppnad ut dag för dag
+  const dagar = await Promise.all([...Array(N - 1).keys()].map(i => bild(`luckor/${String(i + 1).padStart(2, '0')}.jpg`).catch(() => null)));
   // framsidan: tavlans bild, lite eget ljus så att färgerna blir som i plattan
   const tt = new THREE.Texture(tim); tt.colorSpace = THREE.SRGBColorSpace; tt.anisotropy = 8; tt.needsUpdate = true;
   const plan = new THREE.PlaneGeometry(BW, BH).translate(0, BH / 2 - SANK, 0);
@@ -136,13 +146,14 @@ async function byggTavla() {
   kropp.position.z = -DJ + RB - 0.002; kropp.castShadow = kropp.receiveShadow = true; scen.add(kropp);
   snoTak(tim);
   // luckorna
-  const sidaM = platt('#b3261a', { egen: 0.2 }), bakM = platt('#efe2c8', { egen: 0.2 }), karmM = platt('#e2c79c', { egen: 0.2 });   // dörrens baksida är kartong, som en riktig kalender
+  const sidaM = platt('#b3261a', { egen: 0.2 }), bakM = (() => { const t = tex(bakBild()); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.42, 0.42, 0.42) }); })(), karmM = platt('#e2c79c', { egen: 0.2 });   // dörrens baksida är kartong, som en riktig kalender
   for (let n = 1; n <= 24; n++) {
     const r = ruta(n), idag = n === N;
     // insidan och karmen (fyra smala lister runt öppningen, i springan mellan luckorna)
     const inne = new THREE.Mesh(new THREE.PlaneGeometry(r.w, r.h), idag
       ? (inneM = new THREE.MeshBasicMaterial({ map: Object.assign(new THREE.Texture(iim), { colorSpace: THREE.SRGBColorSpace, needsUpdate: true, anisotropy: 8 }), toneMapped: false }))
-      : new THREE.MeshLambertMaterial({ map: tex(inreBild(256, 144)), emissive: new THREE.Color(0.12, 0.12, 0.12) }));
+      : (() => { const t = tex(inreBild(512, 288, dagar[n - 1])); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+          return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.38, 0.38, 0.38) }); })());
     inne.position.set(r.cx, r.cy, 0.003); inne.receiveShadow = !idag; scen.add(inne);
     if (idag) { inneMesh = inne; const st = Object.assign(new THREE.Texture(sim), { colorSpace: THREE.SRGBColorSpace, needsUpdate: true, anisotropy: 8 });
       sistM = new THREE.MeshBasicMaterial({ map: st, toneMapped: false }); pappM = new THREE.MeshLambertMaterial({ map: tex(inreBild(512, 288)), emissive: new THREE.Color(0.12, 0.12, 0.12) }); }
@@ -154,7 +165,7 @@ async function byggTavla() {
     const g = new RoundedBoxGeometry(r.w + 2 * E, r.h + 2 * E, DT, 2, 0.0025).translate((r.w + 2 * E) / 2, 0, DT / 2);
     const m = new THREE.Mesh(g, [sidaM, sidaM, sidaM, sidaM, framM, bakM]); m.castShadow = m.receiveShadow = true;
     const ga = new THREE.Group(); ga.position.set(r.x0 - E, r.cy, ZF); ga.add(m); scen.add(ga);
-    ga.rotation.y = n < N ? -OPPEN_V : 0;
+    ga.rotation.y = n < N ? -TIDIGARE_V : 0;
     DORR[n] = { ga, r };
   }
   // guldramen (Sanna 24/11: inget går genom något): framför tavlan rörde den öppna lucka 13:s hörn. Nu två ramar som ligger PÅ
@@ -203,6 +214,24 @@ function snoTak(tim) {
   const m = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.3, 0.3, 0.32) }));
   m.position.z = -DJ + 0.03;   // från bakom plattans baksida till ca 4 cm framför framsidan
   m.castShadow = m.receiveShadow = true; scen.add(m);
+  // Sanna 25/11: snön ska se naturlig ut, inte som en jämn list. Mjuka klumpar (tillplattade klot) ovanpå i tre rader bakåt ger en
+  // ojämn, pösig ovansida, en rad mindre klumpar längs framkanten gör att snön rullar över kanten, och några små droppar hänger ner.
+  const klumpar = [], kl3 = (x, y, z, r, sy, sz = 1) => klumpar.push([x, y, z, r, sy, sz]);
+  topp.forEach(([x, y], i) => { if (i % 5) return;   // få, stora och platta kuddar som flyter ihop (små klot såg ut som popcorn)
+    [-DJ * 0.62, -0.06].forEach((z, j) => { const r = 0.13 + 0.05 * slumpF(i, 50 + j);
+      kl3(x + 0.04 * (slumpF(i, 53 + j) - 0.5), y - r * 0.32 * 0.85 + 0.008 * slumpF(i, 56 + j), z, r, 0.32, 0.75); }); });
+  botten.forEach(([x, y], i) => { if (i % 3) return; const r = 0.06 + 0.015 * slumpF(i, 60);   // framkanten: en jämn, rundad läpp
+    kl3(x, y + r * 0.42, 0.03, r, 0.5, 0.6); });
+  [0.22, 0.58, 0.83].forEach((u, j) => { const [x, y] = botten[Math.round(u * (botten.length - 1))];   // tre mjuka droppar, inga tänder
+    kl3(x, y - 0.006, 0.035, 0.028 + 0.008 * j % 2, 1.25, 0.8); });
+  // Sanna 25/11: snö som glidit ner över högra sidan (den kameran ser): en avsmalnande tunga över sidokanten, tjockast upptill
+  const xr = varld(2475, 0)[0], yb = botten.at(-1)[1];
+  for (let k = 0; k < 18; k++) { const u = k / 17, r = 0.06 * (1 - u) ** 0.7 + 0.018;   // tätt och avlångt, så att det blir en slät tunga
+    [-DJ * 0.62, -0.05].forEach((z, j) => { if (u > 0.55 && j) return;
+      kl3(xr + 0.002, yb + 0.02 - 0.22 * u ** 1.15, z, r, 1.6, 1.2 - 0.3 * u); }); }
+  const km = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 28, 16), Object.assign(m.material.clone(), { emissive: new THREE.Color(0.5, 0.5, 0.53) }), klumpar.length), M4 = new THREE.Matrix4(), q = new THREE.Quaternion();
+  klumpar.forEach(([x, y, z, r, sy, sz], i) => km.setMatrixAt(i, M4.compose(new THREE.Vector3(x, y, z), q, new THREE.Vector3(r, r * sy, r * sz))));
+  km.receiveShadow = true; scen.add(km);   // inga egna skuggor mellan klumparna (gav små gropar runt varje klot)
 }
 function glodBild() {
   const c = canvas(256, 256), x = c.getContext('2d'), g = x.createRadialGradient(128, 128, 0, 128, 128, 128);
