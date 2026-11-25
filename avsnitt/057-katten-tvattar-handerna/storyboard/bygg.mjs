@@ -14,6 +14,10 @@ const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/s
 const HÄR = new URL('./', import.meta.url).pathname, ROT = new URL('../../../', import.meta.url).pathname;
 const EFF = ROT + 'assets/ljud/effekter/', RÖST = ROT + 'assets/ljud/roster/katten-tvattar-handerna/';
 let t = 0; for (const r of RADER) { r.t = t; t += r.d; }
+// scenens rader (grind 6): scener/badet/index.html läser tiderna härifrån
+import { BORTA, FARG } from './rader.mjs';
+await mkdir(HÄR + '../scener/badet', { recursive: true });
+await writeFile(HÄR + '../scener/badet/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud }) => ({ id, d, malin, ljud })), ROST, BORTA, FARG }));
 const LANGD = t, tid = s => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
 
 // --- stillbilderna ---------------------------------------------------------------------------------------------------------
@@ -38,7 +42,7 @@ const rad = r => `| [${r.id}](frames/${r.id}.jpg) | ${tid(r.t)} | ${r.d.toFixed(
 const tabell = ['| Bild | Tid | Längd | Plats, kamera | Malin säger (start) | I bild | Katten, ljud | Ansikte |', '|---|---|---|---|---|---|---|---|', ...RADER.map(rad)].join('\n');
 const md = await readFile(HÄR + 'storyboard.md', 'utf8');
 await writeFile(HÄR + 'storyboard.md', md.replace(/<!-- tabell -->[\s\S]*<!-- \/tabell -->/, `<!-- tabell -->\n${tabell}\n<!-- /tabell -->`)
-  .replace(/\*\*Längd:\*\*[^\n]*/, `**Längd:** ${tid(LANGD)} med 1 s logotyp-intro, utan outro (räknat av bygg.mjs ur raderna${UPPSKATTAD ? '; ⚠ repliklängderna är uppskattade' : ''}).`));
+  .replace(/\*\*Längd:\*\*[^\n]*/, `**Längd:** ${tid(LANGD)} med 3,3 s intro (*Djuren hittar på!*), utan outro (räknat av bygg.mjs ur raderna${UPPSKATTAD ? '; ⚠ repliklängderna är uppskattade' : ''}).`));
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>').replace(/`(.+?)`/g, '<code>$1</code>');
 const kort = r => `<figure class="frame"><img src="frames/${r.id}.jpg" alt="Bild ${r.id}" loading="lazy"><figcaption>
@@ -65,7 +69,7 @@ figcaption { padding:12px 14px 14px; display:grid; gap:6px; font-size:14px } fig
 .ans { color:var(--muted); font-size:13px }
 </style></head><body><div class="wrap">
 <h1>Katten tvättar händerna <span>storyboard</span></h1>
-<p class="lede">Avsnitt 057, ${tid(LANGD)} med 1 s logotyp-intro. En stillbild per rad i <code>storyboard.md</code>. ${UPPSKATTAD ? '⚠ Malin är inte inspelad: repliklängderna är uppskattade (0,075 s per tecken), pauserna är manusets. ' : ''}Badrummet v1, handfatet, pallen och handduken, katten ur sin v2-rigg; färgen, tvålen, skummet, bubblorna och målningen i kod, penseln i ritintrot. Röda streckade pilar visar rörelsen. ${RADER.length} bilder.</p>
+<p class="lede">Avsnitt 057, ${tid(LANGD)} med 3,3 s intro (*Djuren hittar på!*). En stillbild per rad i <code>storyboard.md</code>. ${UPPSKATTAD ? '⚠ Malin är inte inspelad: repliklängderna är uppskattade (0,075 s per tecken), pauserna är manusets. ' : ''}Badrummet v1, handfatet, pallen och handduken, katten ur sin v2-rigg; färgen, tvålen, skummet, bubblorna och målningen i kod, penseln i ritintrot. Röda streckade pilar visar rörelsen. ${RADER.length} bilder.</p>
 <div class="frames">${RADER.map(kort).join('\n')}</div>
 </div></body></html>
 `);

@@ -1,0 +1,94 @@
+// Raderna för 052 Zebran klär på sig: ett uppslag per rad (manus.md). Scenen läser rader.json, som den här filen skriver:
+//   node avsnitt/052-zebran-klar-pa-sig/storyboard/rader.mjs     -> ../scener/sovrummet/rader.json
+// d = radens längd i s. malin = [[replikens nr i ../rost.txt, sekunder in i raden]]. ljud = [[fil under assets/ljud/effekter/ utan .m4a,
+// sekunder in i raden]]. Längderna mäts med ffprobe på assets/ljud/roster/zebran-klar-pa-sig/<namn>.m4a. Tills rösten är inspelad
+// (grind 3) uppskattas de ur texten (UPPSKATTAD), så en ny tagning räknar om tiderna av sig själv.
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+
+const HAR = new URL('./', import.meta.url).pathname, ROSTER = new URL('../../../assets/ljud/roster/zebran-klar-pa-sig/', import.meta.url).pathname;
+const rader = readFileSync(HAR + '../rost.txt', 'utf8').trim().split('\n').map(l => l.match(/^(\S+)\s+(?:\[[^\]]*\]\s*)?(.+)$/).slice(1));
+// ponytail: uppskattning ca 14 tecken/s + 0,4 s per "…", byts mot ffprobe så fort filen finns
+const gissa = text => +(0.35 + text.length / 14 + 0.4 * (text.match(/…/g) || []).length).toFixed(2);
+const UPPSKATTAD = [];
+const langd = (namn, text) => existsSync(ROSTER + namn + '.m4a')
+  ? +(+execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', ROSTER + namn + '.m4a'])).toFixed(2)
+  : (UPPSKATTAD.push(namn), gissa(text));
+export const ROST = rader.map(([namn, text]) => [namn, text, langd(namn, text)]);
+const L = n => ROST[n - 1][2];
+const PA = n => L(n) - 0.35;   // "på!" är sista ordet: plagget sitter där (mäts med whisper när rösten finns)
+
+// Zebrans röst: gnagg-mjuk (027, Sannas mjukare tagningar), hej/hej då på svenska ur gnagg-gullig, nej ur gnagg-nej.
+const Z = (k, b = '') => `gnagg-mjuk/gnagg-mjuk-${k}${b ? '-' + b : ''}`;
+const HEJ = 'gnagg-gullig/gnagg-gullig-1c', HEJDA = 'gnagg-gullig/gnagg-gullig-8c', NEJ = 'gnagg-nej/gnagg-nej-3';
+const SVAR = 1.3;   // pausen där zebran svarar innan Malin reagerar
+export const VANTA = 4.0, HJALP = 5.0, TACK = 2.5;   // gisspausen i ritintrot, frågan till barnet, "Ska vi säga tack?"
+
+export const RADER = [
+  // --- Kritan ritar halsduken på papperet ---
+  { id: '01a', d: 3.6, malin: [[1, 0.5]], ljud: [['krita-ritar/krita-ritar-1', 0.3]], bild: 'kritan ritar halsdukens kontur, maskorna och tofsarna' },
+  { id: '01b', d: 1.0 + L(2) + VANTA, malin: [[2, 1.0]], bild: 'konturen står, kritan svajar: barnet gissar' },
+  { id: '01c', d: 0.9 + L(3) + 1.2, malin: [[3, 0.9]], ljud: [['glitter/glitter-1', 0.1]], bild: 'den riktiga halsduken fylls i, zoom in' },
+
+  // --- Sovrummet: hej, snön ---
+  { id: '1', d: 2.6 + L(4) + 1.4, malin: [[4, 2.6]], ljud: [['trav/trav-1', 0.2], [HEJ, 2.8 + L(4)]], bild: 'helbild, zebran trippar in och vinkar' },
+  { id: '1b', d: 0.3 + L(5) + SVAR + L(6) + 1.0, malin: [[5, 0.3], [6, 0.3 + L(5) + SVAR]], ljud: [[Z('fortjust'), 0.4 + L(5)]], bild: 'halvnära, nickar i pausen' },
+  { id: '2', d: 2.0 + L(7) + SVAR + L(8) + 1.0, malin: [[7, 2.0], [8, 2.0 + L(7) + SVAR]], ljud: [['glimt/glimt-1', 0.3], [Z('fortjust', 'b'), 2.1 + L(7)]], bild: 'närbild fönstret med snön, klipp till zebran' },
+  { id: '3', d: 0.4 + L(9) + 1.2, malin: [[9, 0.4]], ljud: [[Z('fortjust'), 0.4 + L(9) - 0.6]], bild: 'halvnära, nickar, glatt skutt på "Ja, vad kul!"' },
+  { id: '4', d: 0.4 + L(10) + 2.0 + 1.0, malin: [[10, 0.4]], ljud: [[Z('nyfiken'), 2.4], [Z('fortjust', 'b'), 0.4 + L(10) - 1.6]], bild: 'helbild → närbild kroken → den blå strumpan' },
+
+  // --- Strumpan, och den andra är borta ---
+  { id: '5', d: 1.4 + L(11) + 1.2, malin: [[11, 1.4]], ljud: [['strumpa/strumpa-1', 1.4 + PA(11) - 0.3], [Z('fortjust'), 1.6 + L(11)]], bild: 'närbild benen, strumpan glider på' },
+  { id: '6', d: 1.6 + L(12) + 1.2, malin: [[12, 1.6]], ljud: [[Z('nyfiken', 'b'), 1.8 + L(12)]], bild: 'lyfter andra benet: ingen strumpa, förvånad' },
+  { id: '7', d: 0.3 + L(13) + 1.5 + L(14) + 1.0, malin: [[13, 0.3], [14, 0.3 + L(13) + 1.5]], ljud: [[NEJ, 0.5 + L(13) + 1.5 + L(14)]], bild: 'närbild under sängen: bara golv' },
+  { id: '8', d: 0.3 + L(15) + 1.5 + L(16) + 1.0, malin: [[15, 0.3], [16, 0.3 + L(15) + 1.5]], ljud: [['gnagg-nej/gnagg-nej-4', 0.5 + L(15) + 1.5 + L(16)]], bild: 'närbild i korgen: tom' },
+  { id: '9', d: 2.0 + L(17) + SVAR + L(18) + 1.0, malin: [[17, 2.0], [18, 2.0 + L(17) + SVAR]], ljud: [[Z('trumpen'), 2.1 + L(17)]], bild: 'närbild, öronen faller, lite ledsen' },
+
+  // --- Kritan ritar mössan, för liten, för stor, lagom ---
+  { id: '10', d: 0.4 + L(19) + 0.6, malin: [[19, 0.4]], bild: 'halvnära, kritan flyger in' },
+  { id: '11', d: 0.3 + L(20) + 3.0 + 3.0 + L(21) + 0.8, malin: [[20, 0.3], [21, 0.3 + L(20) + 6.0]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(20)], ['glitter/glitter-2', 0.3 + L(20) + 6.0], [Z('nyfiken'), 0.6 + L(20) + 6.0 + L(21)]],
+    bild: 'kritan ritar en mössa i luften, gisspaus, den fylls i pytteliten' },
+  { id: '12', d: 1.6 + L(22) + 1.4, malin: [[22, 1.6]], ljud: [['prassel-tyg/prassel-tyg-1', 0.3], [Z('fniss'), 1.8 + L(22)]], bild: 'den lilla mössan sitter på örat' },
+  { id: '13', d: 0.3 + L(23) + 2.4 + L(24) + 1.0 + L(25) + SVAR + 0.6, malin: [[23, 0.3], [24, 0.3 + L(23) + 2.4], [25, 0.3 + L(23) + 2.4 + L(24) + 1.0]],
+    ljud: [['krita-ritar/krita-ritar-3', 0.3 + L(23)], ['prassel-tyg/prassel-tyg-1', 0.3 + L(23) + 2.0], [Z('fniss', 'b'), 0.4 + L(23) + 2.4 + L(24) + 1.0 + L(25)]],
+    bild: 'kritan ritar en jättestor, den glider ner över ögonen; "där inne": kanten lyfts' },
+  { id: '14', d: 0.3 + L(26) + 3.0 + L(27) + 1.2, malin: [[26, 0.3], [27, 0.3 + L(26) + 3.0]],
+    ljud: [['prassel-tyg/prassel-tyg-1', 0.2], ['krita-ritar/krita-ritar-4', 0.3 + L(26)], ['glitter/glitter-3', 0.3 + L(26) + 2.9], [Z('fortjust'), 0.5 + L(26) + 3.0 + L(27)]],
+    bild: 'den stora glider av, kritan ritar en tredje, lagom, fylls i' },
+  { id: '15', d: 0.3 + L(28) + TACK, malin: [[28, 0.3]], ljud: [[Z('nyfiken', 'b'), 0.5 + L(28)]], bild: 'zebran tittar på mössan, öronen reser sig' },
+  { id: '16', d: 0.2 + L(29) + 1.2, malin: [[29, 0.2]], ljud: [[Z('fortjust', 'b'), 0.4 + L(29)]], bild: 'nickar' },
+  { id: '17', d: 1.2 + L(30) + SVAR + L(31) + 1.0, malin: [[30, 1.2], [31, 1.2 + L(30) + SVAR]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(30) - 0.6], [Z('fortjust'), 1.3 + L(30)]],
+    bild: 'mössan glider ner på huvudet, kritan flyger ut' },
+
+  // --- Halsduken ---
+  { id: '18', d: 1.0 + L(32) + 1.2, malin: [[32, 1.0]], ljud: [['glimt/glimt-2', 0.4]], bild: 'närbild halsduken på kroken, den glimtar' },
+  { id: '19', d: 1.4 + L(33) + 1.0, malin: [[33, 1.4]], ljud: [['prassel-tyg/prassel-tyg-1', 1.4 + PA(33) - 0.8]], bild: 'halsduken glider från kroken runt halsen' },
+  { id: '20', d: 0.6 + L(34) + SVAR + L(35) + 1.0, malin: [[34, 0.6], [35, 0.6 + L(34) + SVAR]], ljud: [[Z('mysig-suck'), 0.7 + L(34)]], bild: 'närbild, gosar in mulen i halsduken' },
+
+  // --- Var är strumpan? Barnet hittar den ---
+  { id: '21', d: 1.0 + L(36) + 1.6, malin: [[36, 1.0]], ljud: [[Z('nyfiken'), 1.2 + L(36)]], bild: 'tittar på foten, åt vänster och höger' },
+  { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild av sängen med kudden' },
+  { id: '22b', d: HJALP - 2.0 + 0.4, ljud: [['lysmask/lysmask-1', 1.2]], bild: 'närbild kudden, tån skimrar efter 3 s' },
+  { id: '23', d: 0.6 + L(38) + 1.2, malin: [[38, 0.6]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.8 + L(38)]], bild: 'tån skimrar tydligt, zebran skuttar' },
+  { id: '24', d: 1.8 + L(39) + SVAR + L(40) + 1.0, malin: [[39, 1.8], [40, 1.8 + L(39) + SVAR]], ljud: [['strumpa/strumpa-2', 1.8 + PA(39) - 0.3], [Z('fortjust', 'b'), 1.9 + L(39)]],
+    bild: 'kudden lutar, strumpan glider fram och på hoven' },
+
+  // --- Färdig, hej då ---
+  { id: '25', d: 0.8 + L(41) + 0.4 + L(42) + 1.4, malin: [[41, 0.8], [42, 0.8 + L(41) + 0.4]], ljud: [['glimt/glimt-1', 0.8 + 0.2], ['glimt/glimt-2', 0.8 + L(41) * 0.45], ['glimt/glimt-1', 0.8 + L(41) - 0.4], [Z('fortjust'), 1.4 + L(41) + 0.4 + L(42)]],
+    bild: 'helbild, allt på, plaggen glimtar på färgerna' },
+  { id: '26', d: 0.4 + L(43) + SVAR + L(44) + 1.6, malin: [[43, 0.4], [44, 0.4 + L(43) + SVAR]], ljud: [[Z('langt-fniss'), 0.5 + L(43) + SVAR + L(44)]], bild: 'tittar mot snön, nickar' },
+  { id: '27', d: 0.8 + L(45) + SVAR + L(46) + 0.8, malin: [[45, 0.8], [46, 0.8 + L(45) + SVAR]], ljud: [[HEJDA, 0.9 + L(45)]], bild: 'vinkar' },
+  { id: '28', d: 0.3 + L(47) + 2.0, malin: [[47, 0.3]], ljud: [['gnagg-gullig/gnagg-gullig-8d', 0.5 + L(47)]], bild: 'vinkar klart' },
+  { id: '29', d: 2.5 + 0.6, bild: 'kritirisen runt zebran' },
+];
+
+// Receptets luft: 0,7 s extra på varje rad med en replik (inte under ritintrots kontur och gisspaus).
+export const GLES = 0.7;
+for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;
+for (const r of RADER) r.d = +r.d.toFixed(2);
+
+if (process.argv[1] === new URL(import.meta.url).pathname) {
+  writeFileSync(HAR + '../scener/sovrummet/rader.json', JSON.stringify({ RADER, ROST, PA: Object.fromEntries([11, 30, 33, 39].map(n => [n, +PA(n).toFixed(2)])), UPPSKATTAD }, null, 1));
+  const tot = RADER.reduce((a, r) => a + r.d, 0);
+  console.log(`${RADER.length} rader, ${tot.toFixed(1)} s (${Math.floor(tot / 60)}:${String(Math.round(tot % 60)).padStart(2, '0')})${UPPSKATTAD.length ? `, ${UPPSKATTAD.length} repliker uppskattade` : ''}`);
+}

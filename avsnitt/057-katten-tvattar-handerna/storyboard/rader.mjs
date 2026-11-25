@@ -64,7 +64,7 @@ const MJAU = (n, o, v) => [`mjau-gullig/mjau-gullig-${n}`, o, v];   // 1 hej, 2 
 const BADRUM = ['badrumsljud/badrumsljud-2', 0, 0.25];
 
 export const RADER = [
-  { id: '00', d: 1.0, plats: 'Intro', bild: 'Lilla Kritans logotyp i 1 s, ingen jingel, inget titelkort. ⚠ Platshållare: logotypen läggs in i filmen', ljudtext: 'tyst', ansikte: '–' },
+  { id: '00', d: 3.3, plats: 'Intro', bild: 'Seriens standardintro *Djuren hittar på!* (`produktion/youtube/bilderbok-intro/`, 3,3 s, som 023). ⚠ Platshållare i storyboarden: introt läggs in i filmen', ljudtext: 'introts jingel och röst', ansikte: '–' },
 
   { id: '01a', d: 6.0, plats: 'Papperet, helbild', malin: [[1, 3.0]], ljud: [['skogsljud/skogsljud-1', 0, 0.35], ['krita-ritar/krita-ritar-1', 0.3]],
     bild: 'Kritan ritar penselns kontur i ett lugnt drag runt hela penseln (ca 2,8 s), sedan två korta streck vid hylsans kanter', ljudtext: 'kritan ritar, skogsljud under', ansikte: '–' },

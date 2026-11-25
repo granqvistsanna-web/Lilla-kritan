@@ -72,7 +72,7 @@ Kritan ritar **trekanten**, inte leoparden (Sanna 2026-11-25). Konturen i ett lu
 | 8 | Närbild. Öronen faller, huvudet lutar | *(efter reaktionen)* 🆕 Nej, det är inte så lätt. | `spinn-gullig-6` (trumpen) före repliken |
 | 9 | Halvbild. Leoparden tittar på kameran | Hm … vad gör vi nu? | – |
 | 10 | Klipp till golvet bredvid leoparden. Kritan kommer in och ritar lådans kontur (4 s), gisspaus 3 s, lådan fylls i inifrån | Titta! Kritan ritar något. *(gisspaus 3 s)* En låda! Med tre hål. | krita-ritar, `glitter` |
-| 11 | Halvbild. Leoparden med kawaii-ögon, öronen reser sig | Varsågod, leoparden. | `spinn-gullig-2b` |
+| 11 | **Närbild.** Leoparden med kawaii-ögon (`kawaii`), öronen reser sig, svansen vippar | Varsågod, leoparden. | `spinn-gullig-2b` |
 | 11b | Närbild. Leoparden tittar in i hålen, sedan på kameran, öronen reser sig | 🆕 Tycker du om lådan? *(paus: leoparden svarar)* 🆕 Ja, den är så fin! | `spinn-gullig-7` (pratar) i pausen |
 | 12 | Leoparden tittar på lådan, sedan på kameran | Ska vi säga tack? *(paus 2,5 s)* | `spinn-gullig-5` (nyfiken) |
 | 13 | Leoparden nickar direkt. Kritan flyger ut | Tack, kritan! | `spinn-gullig-2` |
@@ -83,21 +83,21 @@ Kritan ritar **trekanten**, inte leoparden (Sanna 2026-11-25). Konturen i ett lu
 | 18 | Halvbild. Leoparden vänder sig mot lådan (riktningsposen, inte runt) | Nu städar vi. Först cirkeln. | musiken börjar lågt |
 | 19 | Helbild. Leoparden puffar cirkeln. Den glider upp och stannar på det trekantiga hålet, vickar | Hm … inte där. | `spinn-gullig-5` |
 | 20 | Närbild på lådan. Cirkeln glider till det runda hålet och sjunker ner | Ner i hålet … plopp! | `plopp`, `glitter` |
-| 20b | Halvbild. Leoparden gör ett litet glatt skutt | *(när den landat)* 🆕 Ja, där passade den! | `spinn-gullig-2` före repliken |
+| 20b | **Närbild.** Leoparden ser stolt ut (`stolt`), svansen vippar, ett litet glatt skutt | *(när den landat)* 🆕 Ja, där passade den! | `spinn-gullig-2` före repliken |
 | 21 | Närbild på fyrkanten när den nämns, sedan helbild: puff, fyrkanten glider rakt till sitt hål | Och fyrkanten. | `glimt` |
 | 22 | Närbild på lådan, fyrkanten sjunker ner | Ner i hålet … plopp! | `plopp`, `glitter`, `spinn-gullig-3` |
 | 23 | Närbild på det tomma trekantiga hålet, sedan halvbild: leoparden tar tassen till huvudet, hatten är borta. Förvånad min | Och nu trekanten … Oj! Var är trekanten? | `spinn-gullig-5b` |
 | 24 | Leoparden tittar åt vänster, sedan åt höger | Leoparden vet inte var. | `spinn-gullig-7` (frågande prat) |
 | 25 | Helbild för frågan, sedan klipp till närbild under sängen där hörnet sticker fram. Efter 3 s skimrar det svagt | Kan du hjälpa leoparden? Kan du se var trekanten är? *(paus 5 s)* | tyst, musiken nedtonad |
 | 26 | Närbild, hörnet skimrar tydligt | Ja, där! Under sängen! | `tindra`, `spinn-gullig-2` |
-| 27 | Helbild. Leoparden sträcker tassen, trekanten glider fram och i en båge till lådan, sjunker ner | Ner i hålet … plopp! | `glid`, `plopp`, `glitter` |
+| 27 | Helbild. Leoparden sträcker tassen, trekanten glider fram och i en båge till lådan, sjunker ner. Klipp till **närbild** på leoparden: `jatteglad`, öronen upp, svansen vippar (1,5 s reaktion) | Ner i hålet … plopp! | `glid`, `plopp`, `glitter` |
 | 28 | Helbild. Golvet är tomt, lådan står med alla klossar. Glatt skutt | Nu är det städat! | `spinn-gullig-2b` |
 | 29 | Närbild på lådan, de tre hålen glimtar ett i taget | Cirkeln, fyrkanten och trekanten. Alla i lådan. | `glimt` ×3 |
-| 30 | Halvbild. Leoparden puffar lådan två gånger, den skramlar (2–3 s innan Malin) | Hör du? Det skramlar! | `skrammel` ×2, `spinn-fniss` |
+| 30 | Halvbild. Leoparden puffar lådan två gånger, den skramlar (2–3 s innan Malin). Sedan **närbild** på leoparden: `fnissig` | Hör du? Det skramlar! | `skrammel` ×2, `spinn-fniss` |
 | 30b | Halvbild. Leoparden tittar på kameran och nickar | 🆕 Var det kul att städa? *(paus: leoparden svarar)* 🆕 Ja, det tyckte jag också! | `spinn-gullig-3b` (kort fniss) i pausen |
 | 31 | Halvbild, leoparden vinkar | Hej då, leoparden! Hej då, klossarna! | `spinn-gullig-8` (hej då) |
 | 32 | Samma, leoparden vinkar klart | Hej då! Vi ses snart! | `spinn-gullig-8b` |
-| 33 | Kritirisen runt leoparden och lådan | – | musiken tonar ut |
+| 33 | Kritirisen runt leoparden och lådan, sedan prenumerera-kortet (`produktion/youtube/prenumerera/`) och outrot | – | musiken tonar ut |
 
 **Kamera:** bara hårda klipp mellan stillastående utsnitt. Helbild på rummet, halvbild på leoparden, närbild på varje kloss när den nämns (3a–3c, 21), på korgen (6), på lådan när klossarna går ner (20, 22, 29) och på hörnet under sängen (25–26). Zoomen in i teckningen efter ritintrot är den enda zoomen.
 
@@ -200,6 +200,43 @@ Allt utom klossens ljud finns i `assets/ljud/effekter/`: `spinn-gullig` (8 käns
 | **Klossarna** | ✅ **ny, nr 2 vald** (`rekvisita/klossar.md`, `assets/rekvisita/klossar/cut/kloss-cirkel.png`, `kloss-fyrkant.png`, `kloss-trekant.png`), med tjocklek och skuggning. Trekantens kontur görs vid bygget |
 
 Trekanten är grön och inte gul, så att den syns mot leopardens gula päls när den sitter på huvudet.
+
+## Kontroll mot regler (2026-11-25)
+
+Det finns bara manus och saker än: ingen storyboard, ingen scenkod. Därför finns inga scener att köra `qa-scen.py` på. Kör den när scenen byggs (`python3 verktyg/qa-scen.py avsnitt/053-leoparden-stadar/scener/<scen>`), och `qa-film.sh` på filmen. Rättelserna nedan ändrar bara bildbeskrivningar och kamera, inga repliker, och Sanna har inte godkänt några bilder ännu.
+
+| Punkt | Läge | Rättat |
+|---|---|---|
+| **1. Rigg** | Leopardens v2-rigg `leoparden-lova` (`premium/uttryck.html` + `verktyg/rigg-motor.js` via `v2-rigg.js`). Manuset använder bara riggens raka armar (`rack`, `sakPa`, `ARMROR.vinka`), inga kodarmar. Ingen figur snurrar: vändningen i rad 18 är riktningsposen. Ingen sover. Svans och öron bakom kroppen har långa rötter i riggen. | Uttrycken är nu riggens namn i stället för fria ord (se tabellen nedan) |
+| **2. Effekter** | Sätts i scenen: mjuka skuggor (`R.markskugga`, mindre och blekare när något lyfter), tussar och krit-gnistor där kritan ritar och på *"plopp!"*, svag parallax mellan väggen och golvet/sängen i helbild, varm ton, vinjett högst 0,14. `#boil` 2,5 px delat med kamerazoomen, ny brusbild 6 gånger/s. Vita kanter med `verktyg/kant.js` (urklippen har redan tunna kanter, ca 1 %). Kritan går alltid genom `verktyg/kritan-ritar.js` (ritintrot och lådan), ingen egen kritkod. | Inget att rätta i manuset. Punkterna står här så att scenen följer dem |
+| **3. Regler** | 1 figur, 1 plats, inga djurnamn, *"Ska vi säga tack?"*, ingen *"Vad kan det vara?"*, ritintrot ritar trekanten, barnet letar efter trekanten och uppmanas aldrig att göra något med kroppen. Malin kommer efter handlingen (rad 5, 15, 17, 20b). Inget går genom något: se *Lösningar från förlagorna*. Bildutsnitten tas ur `format/bildutsnitt.md` (helbild, halvnära, närbild, detalj; kroppshöjd 430 px). | **Prenumerera-kortet** lagt före outrot (rad 33, ny regel i CLAUDE.md) |
+| **4. Reaktioner och uttryck** | Varje händelse hade ett reaktionsslag, men några låg i halvbild. | Närbild på reaktionen i rad 11 (lådan), 20b (första ploppet), 27 (trekanten i lådan) och 30 (skramlet). Starkt uttryck i ansikte, öron och svans, men lugn rörelse: inga studsar, skutten är högst 20 px |
+| **5. Lärdomar** | *Lösningar från förlagorna* (ovan) är skriven: 026:s `rum.js`, 027:s korg och gömställe, 028:s hatt, 050:s sak i handen. | – |
+
+### Uttryck och reaktioner per händelse
+
+Uttrycken är namnen i leopardens `UTTRYCK` och blandas med `L.blanda` (0,45 s). Ögonen är öppna vid glädje, utom vid fniss.
+
+| Rad | Händelse | Uttryck | Öron och svans | Bild |
+|---|---|---|---|---|
+| 1 | hej | `glad` + vinkning | öronen vippar | helbild |
+| 1b, 4 | svarar ja | `glad` → `ivrig`, nickar | svansen vippar | halvbild |
+| 2 | klossar överallt | `fnissig` | öronen vippar | halvbild |
+| 5–7 | korgen är full | `forvanad` (0,3 s stillhet) | öronen upp | helbild → närbild korgen |
+| 8 | får inte plats | `ledsen` | öronen faller 12°, svansen hänger | närbild |
+| 9 | vad gör vi nu? | `tanker` | – | halvbild |
+| 10–11 | lådan ritas | `nyfiken` → `kawaii` | öronen reser sig, svansen vippar | närbild |
+| 11b, 12 | tycker om lådan, tack | `glad`, nickar | – | närbild, halvbild |
+| 15–16 | hatten | `skrattar` → `stolt` | öronen vippar runt hatten | närbild |
+| 17 | hatten åker av | `fnissig` (blundar) | – | helbild |
+| 19 | fel hål | `nyfiken`, lutar huvudet | ena örat ner | helbild |
+| 20b, 22 | plopp | `stolt` | svansen vippar | närbild |
+| 23 | trekanten är borta | `forvanad`, tassen till huvudet | öronen upp | närbild |
+| 24 | vet inte var | `nyfiken`, `rikt ±0,3` | – | halvbild |
+| 26–27 | hittad, plopp | `jatteglad` | öronen upp, svansen vippar | närbild |
+| 28–29 | städat | `stolt` | – | helbild, närbild lådan |
+| 30 | skramlar | `fnissig` | öronen vippar | närbild |
+| 31–32 | hej då | `glad` + vinkning | – | halvbild |
 
 ## Lösningar från förlagorna (2026-11-25)
 

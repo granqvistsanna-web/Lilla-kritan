@@ -1,0 +1,46 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-trekant  [happy] Oj! En trekant!
+04-hej-leoparden  [happy] Hej, leoparden! Hej, hej!
+05-lekt-med-klossarna  [curious] Har du lekt med klossarna?
+06-ja-vad-kul  [happy] Ja, vad kul!
+07-oj-klossar-overallt  [laughs] Oj, oj, oj! Klossar överallt!
+08-en-cirkel  [warmly] En cirkel …
+09-en-fyrkant  [warmly] en fyrkant …
+10-och-en-trekant  [happy] och en trekant!
+11-ska-vi-stada  [cheerfully] Ska vi städa, leoparden?
+12-ja-bra-ide  [happy] Ja, bra idé!
+13-oj-da  [surprised] Oj då!
+14-korgen-ar-full  [curious] Korgen är full.
+15-far-inte-plats  [warmly] Klossarna får inte plats.
+16-inte-sa-latt  [gently] Nej, det är inte så lätt.
+17-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+18-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
+19-en-lada  [happy] En låda! Med tre hål.
+20-varsagod  [warmly] Varsågod, leoparden.
+21-tycker-du-om-ladan  [curious] Tycker du om lådan?
+22-den-ar-sa-fin  [happy] Ja, den är så fin!
+23-ska-vi-saga-tack  [warmly] Ska vi säga tack?
+24-tack-kritan  [happy] Tack, kritan!
+25-vad-ska-du-gora  [curious] Vad ska du göra med trekanten?
+26-oj-en-hatt  [laughs] Oj! En hatt!
+27-en-spetsig-hatt  [happy] En spetsig hatt!
+28-hoppsan  [chuckles] Hoppsan!
+29-forst-cirkeln  [cheerfully] Nu städar vi. Först cirkeln.
+30-inte-dar  [curious] Hm … inte där.
+31-ner-i-halet-1  [playfully] Ner i hålet … plopp!
+32-dar-passade-den  [happy] Ja, där passade den!
+33-och-fyrkanten  [cheerfully] Och fyrkanten.
+34-ner-i-halet-2  [playfully] Ner i hålet … plopp!
+35-var-ar-trekanten  [surprised] Och nu trekanten … Oj! Var är trekanten?
+36-vet-inte-var  [curious] Leoparden vet inte var.
+37-kan-du-hjalpa  [warmly] Kan du hjälpa leoparden? Kan du se var trekanten är?
+38-ja-dar  [happy] Ja, där! Under sängen!
+39-ner-i-halet-3  [playfully] Ner i hålet … plopp!
+40-nu-ar-det-statat  [happy] Nu är det städat!
+41-alla-i-ladan  [happy sigh] Cirkeln, fyrkanten och trekanten. Alla i lådan.
+42-det-skramlar  [laughs] Hör du? Det skramlar!
+43-kul-att-stada  [warmly] Var det kul att städa?
+44-tyckte-jag-ocksa  [happy] Ja, det tyckte jag också!
+45-hej-da-leoparden  [happy] Hej då, leoparden! Hej då, klossarna!
+46-vi-ses-snart  [warmly] Hej då! Vi ses snart!

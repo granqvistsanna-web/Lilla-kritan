@@ -112,15 +112,15 @@ export const RADER = [
   { id: '9', d: 0.6 + L(23) + 2.2, plats: 'Badrummet, halvbild', malin: [[23, 0.6]], ljud: [RAV('7b', 0.9 + L(23))],
     bild: 'Den stora borsten bredvid muggen med den lilla', ljudtext: 'rav-gullig-7b (pratar)', ansikte: 'glad' },
   { id: '10', d: 3.4 + L(24) + 1.2, plats: 'Samma', malin: [[24, 3.4]], ljud: [RAVFNISS(0.3), ['rull/rull-1', 1.6, 0.5]],
-    bild: 'Borsten kittlar på nosen två gånger, räven blundar och fnissar. Skaftet stöter till tuben, som rullar bakom muggen: korken sticker fram. Fnisset först, sedan Malin. **Shorten börjar här**', ljudtext: 'rav-fniss (långt), rull lågt', ansikte: 'fnissig, blundar' },
-  { id: '11', d: 0.3 + L(25) + 1.0 + L(26) + 1.6, plats: 'Samma', malin: [[25, 0.3], [26, 0.3 + L(25) + 1.0]], ljud: [RAV('5c', 0.6 + L(25) + 1.0 + L(26))],
-    bild: 'Räven tittar ner på kanten där tuben stod: tomt. Förvånad min (stora ögon, liten rund mun, öronen upp)', ljudtext: 'rav-gullig-5c', ansikte: 'förvånad' },
+    bild: 'Borsten kittlar på nosen två gånger, räven blundar och fnissar. Skaftet stöter till tuben, som rullar bakom muggen: korken sticker fram. Fnisset först (blundar, öronen bakåt, svansen viftar lugnt), sedan Malin. **Shorten börjar här**', ljudtext: 'rav-fniss (långt), rull lågt', ansikte: 'fnissig, blundar' },
+  { id: '11', d: 0.3 + L(25) + 1.0 + L(26) + 1.6, plats: 'Halvbild → närbild ansiktet (klipp)', malin: [[25, 0.3], [26, 0.3 + L(25) + 1.0]], ljud: [RAV('5c', 0.6 + L(25) + 1.0 + L(26))],
+    bild: 'Räven tittar ner på kanten där tuben stod: tomt (halvbild). Klipp till närbild på reaktionen: förvånad min (stora ögon, liten rund mun, öronen rakt upp, svansen stilla)', ljudtext: 'rav-gullig-5c', ansikte: 'förvånad' },
   { id: '12', d: 0.6 + L(27) + 2.0, plats: 'Samma', malin: [[27, 0.6]], ljud: [RAV('5d', 0.9 + L(27))],
     bild: 'Räven tittar åt vänster, sedan åt höger (ögonen, huvudet vänds inte)', ljudtext: 'rav-gullig-5d (frågande)', ansikte: 'nyfiken' },
   { id: '13', d: 0.3 + L(28) + 3.9,   /* + GLES 0,7 + rad 14:s 0,4 = paus 5,0 s */ plats: 'Bred → närbild muggen (klipp)', malin: [[28, 0.3]], ljud: [['tindra/tindra-4', 0.3 + L(28) + 3.0, 0.4]],
     bild: 'Frågan i bred bild, efter 1,5 s klipp till närbild på muggen: korken sticker fram vid sidan. Efter 3 s skimrar den svagt. Paus 5 s', ljudtext: 'tyst, svagt skimmer efter 3 s', ansikte: 'nyfiken' },
   { id: '14', d: 0.4 + L(29) + 1.6, plats: 'Närbild muggen → halvbild', malin: [[29, 0.4]], ljud: [['glimt/glimt-1', 0.2], RAV('2b', 0.7 + L(29))],
-    bild: 'Korken skimrar tydligt. Klipp ut: räven tar fram tuben (glider ut bakom muggen), ett litet glatt skutt', ljudtext: 'glimt, rav-gullig-2b', ansikte: 'jätteglad' },
+    bild: 'Korken skimrar tydligt. Klipp ut: räven tar fram tuben (glider ut bakom muggen), ett litet glatt skutt. Reaktionen i närbild ansiktet 0,8 s (jätteglad, öronen upp, svansen viftar)', ljudtext: 'glimt, rav-gullig-2b', ansikte: 'jätteglad' },
 
   // --- Borsta: ett, två, tre ---
   { id: '15', d: 0.3 + L(30) + 1.0, plats: 'Närbild borsthuvudet', malin: [[30, 0.3]], ljud: [['plupp/plupp-1', 0.3 + PLUTT]],
@@ -140,7 +140,7 @@ export const RADER = [
 
   // --- Den stora får inte plats, hej då ---
   { id: '21', d: 1.2 + L(37) + 1.6 + L(38) + 1.0, plats: 'Badrummet, halvbild', malin: [[37, 1.2], [38, 1.2 + L(37) + 1.6]], ljud: [['plupp/plupp-2', 0.5, 0.5], RAV('3', 1.4 + L(37))],
-    bild: 'Räven sätter den stora borsten i muggen: den vilar på kanten och vickar. Sedan lägger räven den på kanten bredvid muggen. Vicket först, sedan Malin', ljudtext: 'plupp när den vickar, rav-gullig-3 (kort fniss)', ansikte: 'fnissig → glad' },
+    bild: 'Räven sätter den stora borsten i muggen: den vilar på kanten och vickar. Sedan lägger räven den på kanten bredvid muggen. Vicket först, klipp till närbild ansiktet på det korta fnisset (blundar, öronen vippar), sedan Malin', ljudtext: 'plupp när den vickar, rav-gullig-3 (kort fniss)', ansikte: 'fnissig → glad' },
   { id: '21b', d: 0.3 + L(39) + SVAR + L(40) + 1.2, plats: 'Samma', malin: [[39, 0.3], [40, 0.3 + L(39) + SVAR]], ljud: [RAV('2d', 0.6 + L(39))],
     bild: 'Räven tittar åt vänster mot dörren och tillbaka, öronen upp, ett lugnt glatt skutt', ljudtext: 'rav-gullig-2d', ansikte: 'jätteglad' },
   { id: '22', d: 0.7 + L(41) + 2.0, plats: 'Samma', malin: [[41, 0.7]], ljud: [RAV('8', 1.0 + L(41))],

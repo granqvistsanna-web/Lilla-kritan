@@ -1,0 +1,970 @@
+{
+ "RADER": [
+  {
+   "id": "01a",
+   "d": 3.6,
+   "malin": [
+    [
+     1,
+     0.5
+    ]
+   ],
+   "ljud": [
+    [
+     "krita-ritar/krita-ritar-1",
+     0.3
+    ]
+   ],
+   "bild": "kritan ritar halsdukens kontur, maskorna och tofsarna"
+  },
+  {
+   "id": "01b",
+   "d": 7.25,
+   "malin": [
+    [
+     2,
+     1
+    ]
+   ],
+   "bild": "konturen står, kritan svajar: barnet gissar"
+  },
+  {
+   "id": "01c",
+   "d": 4.51,
+   "malin": [
+    [
+     3,
+     0.9
+    ]
+   ],
+   "ljud": [
+    [
+     "glitter/glitter-1",
+     0.1
+    ]
+   ],
+   "bild": "den riktiga halsduken fylls i, zoom in"
+  },
+  {
+   "id": "1",
+   "d": 6.62,
+   "malin": [
+    [
+     4,
+     2.6
+    ]
+   ],
+   "ljud": [
+    [
+     "trav/trav-1",
+     0.2
+    ],
+    [
+     "gnagg-gullig/gnagg-gullig-1c",
+     4.72
+    ]
+   ],
+   "bild": "helbild, zebran trippar in och vinkar"
+  },
+  {
+   "id": "1b",
+   "d": 6.15,
+   "malin": [
+    [
+     5,
+     0.3
+    ],
+    [
+     6,
+     3.24
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     2.04
+    ]
+   ],
+   "bild": "halvnära, nickar i pausen"
+  },
+  {
+   "id": "2",
+   "d": 7.84,
+   "malin": [
+    [
+     7,
+     2
+    ],
+    [
+     8,
+     4.86
+    ]
+   ],
+   "ljud": [
+    [
+     "glimt/glimt-1",
+     0.3
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     3.66
+    ]
+   ],
+   "bild": "närbild fönstret med snön, klipp till zebran"
+  },
+  {
+   "id": "3",
+   "d": 5.72,
+   "malin": [
+    [
+     9,
+     0.4
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     3.2199999999999998
+    ]
+   ],
+   "bild": "halvnära, nickar, glatt skutt på \"Ja, vad kul!\""
+  },
+  {
+   "id": "4",
+   "d": 12.95,
+   "malin": [
+    [
+     10,
+     0.4
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken",
+     2.4
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     7.65
+    ]
+   ],
+   "bild": "helbild → närbild kroken → den blå strumpan"
+  },
+  {
+   "id": "5",
+   "d": 5.62,
+   "malin": [
+    [
+     11,
+     1.4
+    ]
+   ],
+   "ljud": [
+    [
+     "strumpa/strumpa-1",
+     3.07
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     3.92
+    ]
+   ],
+   "bild": "närbild benen, strumpan glider på"
+  },
+  {
+   "id": "6",
+   "d": 5.99,
+   "malin": [
+    [
+     12,
+     1.6
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken-b",
+     4.29
+    ]
+   ],
+   "bild": "lyfter andra benet: ingen strumpa, förvånad"
+  },
+  {
+   "id": "7",
+   "d": 5.42,
+   "malin": [
+    [
+     13,
+     0.3
+    ],
+    [
+     14,
+     3.08
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-nej/gnagg-nej-3",
+     3.9200000000000004
+    ]
+   ],
+   "bild": "närbild under sängen: bara golv"
+  },
+  {
+   "id": "8",
+   "d": 5.13,
+   "malin": [
+    [
+     15,
+     0.3
+    ],
+    [
+     16,
+     2.79
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-nej/gnagg-nej-4",
+     3.6300000000000003
+    ]
+   ],
+   "bild": "närbild i korgen: tom"
+  },
+  {
+   "id": "9",
+   "d": 10.41,
+   "malin": [
+    [
+     17,
+     2
+    ],
+    [
+     18,
+     5.6499999999999995
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-trumpen",
+     4.45
+    ]
+   ],
+   "bild": "närbild, öronen faller, lite ledsen"
+  },
+  {
+   "id": "10",
+   "d": 3.81,
+   "malin": [
+    [
+     19,
+     0.4
+    ]
+   ],
+   "bild": "halvnära, kritan flyger in"
+  },
+  {
+   "id": "11",
+   "d": 11,
+   "malin": [
+    [
+     20,
+     0.3
+    ],
+    [
+     21,
+     8.51
+    ]
+   ],
+   "ljud": [
+    [
+     "krita-ritar/krita-ritar-2",
+     2.51
+    ],
+    [
+     "glitter/glitter-2",
+     8.51
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken",
+     9.8
+    ]
+   ],
+   "bild": "kritan ritar en mössa i luften, gisspaus, den fylls i pytteliten"
+  },
+  {
+   "id": "12",
+   "d": 5.05,
+   "malin": [
+    [
+     22,
+     1.6
+    ]
+   ],
+   "ljud": [
+    [
+     "prassel-tyg/prassel-tyg-1",
+     0.3
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fniss",
+     3.1500000000000004
+    ]
+   ],
+   "bild": "den lilla mössan sitter på örat"
+  },
+  {
+   "id": "13",
+   "d": 11.53,
+   "malin": [
+    [
+     23,
+     0.3
+    ],
+    [
+     24,
+     4.449999999999999
+    ],
+    [
+     25,
+     7.01
+    ]
+   ],
+   "ljud": [
+    [
+     "krita-ritar/krita-ritar-3",
+     2.05
+    ],
+    [
+     "prassel-tyg/prassel-tyg-1",
+     4.05
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fniss-b",
+     9.03
+    ]
+   ],
+   "bild": "kritan ritar en jättestor, den glider ner över ögonen; \"där inne\": kanten lyfts"
+  },
+  {
+   "id": "14",
+   "d": 9.01,
+   "malin": [
+    [
+     26,
+     0.3
+    ],
+    [
+     27,
+     5.05
+    ]
+   ],
+   "ljud": [
+    [
+     "prassel-tyg/prassel-tyg-1",
+     0.2
+    ],
+    [
+     "krita-ritar/krita-ritar-4",
+     2.05
+    ],
+    [
+     "glitter/glitter-3",
+     4.949999999999999
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     7.3100000000000005
+    ]
+   ],
+   "bild": "den stora glider av, kritan ritar en tredje, lagom, fylls i"
+  },
+  {
+   "id": "15",
+   "d": 5.06,
+   "malin": [
+    [
+     28,
+     0.3
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken-b",
+     2.06
+    ]
+   ],
+   "bild": "zebran tittar på mössan, öronen reser sig"
+  },
+  {
+   "id": "16",
+   "d": 2.81,
+   "malin": [
+    [
+     29,
+     0.2
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     1.1099999999999999
+    ]
+   ],
+   "bild": "nickar"
+  },
+  {
+   "id": "17",
+   "d": 8.44,
+   "malin": [
+    [
+     30,
+     1.2
+    ],
+    [
+     31,
+     4.75
+    ]
+   ],
+   "ljud": [
+    [
+     "prassel-tyg/prassel-tyg-1",
+     2.4999999999999996
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     3.55
+    ]
+   ],
+   "bild": "mössan glider ner på huvudet, kritan flyger ut"
+  },
+  {
+   "id": "18",
+   "d": 4.75,
+   "malin": [
+    [
+     32,
+     1
+    ]
+   ],
+   "ljud": [
+    [
+     "glimt/glimt-2",
+     0.4
+    ]
+   ],
+   "bild": "närbild halsduken på kroken, den glimtar"
+  },
+  {
+   "id": "19",
+   "d": 5.56,
+   "malin": [
+    [
+     33,
+     1.4
+    ]
+   ],
+   "ljud": [
+    [
+     "prassel-tyg/prassel-tyg-1",
+     2.71
+    ]
+   ],
+   "bild": "halsduken glider från kroken runt halsen"
+  },
+  {
+   "id": "20",
+   "d": 7.13,
+   "malin": [
+    [
+     34,
+     0.6
+    ],
+    [
+     35,
+     4.08
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-mysig-suck",
+     2.88
+    ]
+   ],
+   "bild": "närbild, gosar in mulen i halsduken"
+  },
+  {
+   "id": "21",
+   "d": 6.29,
+   "malin": [
+    [
+     36,
+     1
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken",
+     4.19
+    ]
+   ],
+   "bild": "tittar på foten, åt vänster och höger"
+  },
+  {
+   "id": "22a",
+   "d": 6.64,
+   "malin": [
+    [
+     37,
+     0.3
+    ]
+   ],
+   "bild": "bred bild av sängen med kudden"
+  },
+  {
+   "id": "22b",
+   "d": 3.4,
+   "ljud": [
+    [
+     "lysmask/lysmask-1",
+     1.2
+    ]
+   ],
+   "bild": "närbild kudden, tån skimrar efter 3 s"
+  },
+  {
+   "id": "23",
+   "d": 4.42,
+   "malin": [
+    [
+     38,
+     0.6
+    ]
+   ],
+   "ljud": [
+    [
+     "tindra/tindra-1",
+     0.5
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     2.7199999999999998
+    ]
+   ],
+   "bild": "tån skimrar tydligt, zebran skuttar"
+  },
+  {
+   "id": "24",
+   "d": 8.47,
+   "malin": [
+    [
+     39,
+     1.8
+    ],
+    [
+     40,
+     5.42
+    ]
+   ],
+   "ljud": [
+    [
+     "strumpa/strumpa-2",
+     3.4699999999999998
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     4.22
+    ]
+   ],
+   "bild": "kudden lutar, strumpan glider fram och på hoven"
+  },
+  {
+   "id": "25",
+   "d": 6.97,
+   "malin": [
+    [
+     41,
+     0.8
+    ],
+    [
+     42,
+     3.31
+    ]
+   ],
+   "ljud": [
+    [
+     "glimt/glimt-1",
+     1
+    ],
+    [
+     "glimt/glimt-2",
+     1.7495
+    ],
+    [
+     "glimt/glimt-1",
+     2.5100000000000002
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     5.47
+    ]
+   ],
+   "bild": "helbild, allt på, plaggen glimtar på färgerna"
+  },
+  {
+   "id": "26",
+   "d": 7.77,
+   "malin": [
+    [
+     43,
+     0.4
+    ],
+    [
+     44,
+     3.1900000000000004
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-langt-fniss",
+     5.57
+    ]
+   ],
+   "bild": "tittar mot snön, nickar"
+  },
+  {
+   "id": "27",
+   "d": 8.22,
+   "malin": [
+    [
+     45,
+     0.8
+    ],
+    [
+     46,
+     4.66
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-gullig/gnagg-gullig-8c",
+     3.46
+    ]
+   ],
+   "bild": "vinkar"
+  },
+  {
+   "id": "28",
+   "d": 4.85,
+   "malin": [
+    [
+     47,
+     0.3
+    ]
+   ],
+   "ljud": [
+    [
+     "gnagg-gullig/gnagg-gullig-8d",
+     2.35
+    ]
+   ],
+   "bild": "vinkar klart"
+  },
+  {
+   "id": "29",
+   "d": 3.1,
+   "bild": "kritirisen runt zebran"
+  }
+ ],
+ "ROST": [
+  [
+   "01-kritan-ritar",
+   "Kritan ritar …",
+   1.75
+  ],
+  [
+   "02-vad-blir-det",
+   "Hm … vad blir det nu?",
+   2.25
+  ],
+  [
+   "03-rod-halsduk",
+   "Oj! En röd halsduk!",
+   1.71
+  ],
+  [
+   "04-hej-zebran-hej",
+   "Hej, zebran! Hej, hej!",
+   1.92
+  ],
+  [
+   "05-sovit-gott",
+   "Har du sovit gott?",
+   1.64
+  ],
+  [
+   "06-vad-bra",
+   "Mm, vad bra!",
+   1.21
+  ],
+  [
+   "07-titta-snoar",
+   "Titta! Det snöar!",
+   1.56
+  ],
+  [
+   "08-vad-fint",
+   "Åh, vad fint!",
+   1.28
+  ],
+  [
+   "09-ga-ut-snon-leka",
+   "Vill du gå ut i snön och leka? Ja, vad kul!",
+   3.42
+  ],
+  [
+   "10-kla-pa-kroken-strumporna",
+   "Då ska vi klä på oss. Kläderna hänger på kroken. Ja, vad ska vi ta på först? Ja, strumporna, bra idé! Först strumporna.",
+   8.85
+  ],
+  [
+   "11-bla-strumpan-pa",
+   "Den blå strumpan … på!",
+   2.32
+  ],
+  [
+   "12-var-andra-strumpan",
+   "Oj! Var är den andra strumpan?",
+   2.49
+  ],
+  [
+   "13-under-sangen",
+   "Under sängen?",
+   1.28
+  ],
+  [
+   "14-nej",
+   "Nej!",
+   0.64
+  ],
+  [
+   "15-i-korgen",
+   "I korgen?",
+   0.99
+  ],
+  [
+   "16-nej",
+   "Nej!",
+   0.64
+  ],
+  [
+   "17-lite-ledsen",
+   "Åh. Zebran blir lite ledsen.",
+   2.35
+  ],
+  [
+   "18-jag-forstar-letar",
+   "Mm. Jag förstår. Vi letar tillsammans.",
+   3.06
+  ],
+  [
+   "19-vad-gor",
+   "Hm … vad gör vi nu?",
+   2.11
+  ],
+  [
+   "20-titta-kritan-ritar",
+   "Titta! Kritan ritar något.",
+   2.21
+  ],
+  [
+   "21-en-mossa",
+   "En mössa!",
+   0.99
+  ],
+  [
+   "22-for-liten",
+   "Oj! För liten!",
+   1.35
+  ],
+  [
+   "23-en-gang-till",
+   "En gång till …",
+   1.75
+  ],
+  [
+   "24-for-stor",
+   "Oj, oj! För stor!",
+   1.56
+  ],
+  [
+   "25-ar-du-dar-inne",
+   "Hallå? Är du där inne?",
+   1.92
+  ],
+  [
+   "26-en-gang-till",
+   "En gång till …",
+   1.75
+  ],
+  [
+   "27-lagom-varsagod",
+   "Lagom! Varsågod, zebran.",
+   2.06
+  ],
+  [
+   "28-saga-tack",
+   "Ska vi säga tack?",
+   1.56
+  ],
+  [
+   "29-tack",
+   "Tack!",
+   0.71
+  ],
+  [
+   "30-gula-mossan-pa",
+   "Den gula mössan … på!",
+   2.25
+  ],
+  [
+   "31-tycker-du-om",
+   "Jaså, den tycker du om!",
+   1.99
+  ],
+  [
+   "32-dar-ar-halsduken",
+   "Och där är halsduken!",
+   1.85
+  ],
+  [
+   "33-roda-halsduken-pa",
+   "Den röda halsduken … på!",
+   2.46
+  ],
+  [
+   "34-varm-och-mjuk",
+   "Mmm … varm och mjuk.",
+   2.18
+  ],
+  [
+   "35-jag-ocksa",
+   "Mm, jag också.",
+   1.35
+  ],
+  [
+   "36-strumpan-da",
+   "Men strumpan då? Zebran vet inte var.",
+   2.99
+  ],
+  [
+   "37-hjalpa-zebran-se",
+   "Kan du hjälpa zebran? Ser du den blå strumpan?",
+   3.64
+  ],
+  [
+   "38-dar-bakom-kudden",
+   "Ja, där! Bakom kudden!",
+   1.92
+  ],
+  [
+   "39-bla-strumpan-pa",
+   "Den blå strumpan … på!",
+   2.32
+  ],
+  [
+   "40-vad-skont",
+   "Ja, vad skönt!",
+   1.35
+  ],
+  [
+   "41-rod-gul-bla",
+   "Röd, gul … och blå!",
+   2.11
+  ],
+  [
+   "42-sa-fin",
+   "Oj, så fin du är!",
+   1.56
+  ],
+  [
+   "43-ar-du-fardig",
+   "Är du färdig nu?",
+   1.49
+  ],
+  [
+   "44-ga-ut-i-snon",
+   "Nu kan zebran gå ut i snön!",
+   2.28
+  ],
+  [
+   "45-hej-da-zebran",
+   "Hej då, zebran! Hej då, mössan!",
+   2.56
+  ],
+  [
+   "46-roligt-i-snon",
+   "Ha det så roligt i snön!",
+   2.06
+  ],
+  [
+   "47-hej-da-ses-snart",
+   "Hej då! Vi ses snart!",
+   1.85
+  ]
+ ],
+ "PA": {
+  "11": 1.97,
+  "30": 1.9,
+  "33": 2.11,
+  "39": 1.97
+ },
+ "UPPSKATTAD": [
+  "01-kritan-ritar",
+  "02-vad-blir-det",
+  "03-rod-halsduk",
+  "04-hej-zebran-hej",
+  "05-sovit-gott",
+  "06-vad-bra",
+  "07-titta-snoar",
+  "08-vad-fint",
+  "09-ga-ut-snon-leka",
+  "10-kla-pa-kroken-strumporna",
+  "11-bla-strumpan-pa",
+  "12-var-andra-strumpan",
+  "13-under-sangen",
+  "14-nej",
+  "15-i-korgen",
+  "16-nej",
+  "17-lite-ledsen",
+  "18-jag-forstar-letar",
+  "19-vad-gor",
+  "20-titta-kritan-ritar",
+  "21-en-mossa",
+  "22-for-liten",
+  "23-en-gang-till",
+  "24-for-stor",
+  "25-ar-du-dar-inne",
+  "26-en-gang-till",
+  "27-lagom-varsagod",
+  "28-saga-tack",
+  "29-tack",
+  "30-gula-mossan-pa",
+  "31-tycker-du-om",
+  "32-dar-ar-halsduken",
+  "33-roda-halsduken-pa",
+  "34-varm-och-mjuk",
+  "35-jag-ocksa",
+  "36-strumpan-da",
+  "37-hjalpa-zebran-se",
+  "38-dar-bakom-kudden",
+  "39-bla-strumpan-pa",
+  "40-vad-skont",
+  "41-rod-gul-bla",
+  "42-sa-fin",
+  "43-ar-du-fardig",
+  "44-ga-ut-i-snon",
+  "45-hej-da-zebran",
+  "46-roligt-i-snon",
+  "47-hej-da-ses-snart"
+ ]
+}

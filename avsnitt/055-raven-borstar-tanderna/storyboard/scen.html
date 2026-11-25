@@ -8,8 +8,8 @@
 <body>
 <!-- 055 Räven borstar tänderna: kodscenerna för storyboarden (förlaga: 023 storyboard/scen.html).
      window.rad(id) ritar radens stillbild (id som i rader.mjs). Serveras från repots rot (bygg.mjs).
-     Räven laddas live ur sitt uttryck.html via v2-rigg.js (med rigg-motor.js). Riggen har ingen gapar/borstar än:
-     gapet är flinar med båda raderna och större mun, och borsten ritas här i scenen (⚠ i storyboarden).
+     Räven laddas live ur sitt uttryck.html via v2-rigg.js (med rigg-motor.js). Gapet och borsten kommer ur riggens gapar och borstar (2026-11-25).
+     Den stora borsten är riggens borstbild utbytt (borstBild).
      I kod: blåbären på tänderna, tandkrämsklicken, glansen, skimret, pilarna. -->
 <svg viewBox="0 0 1920 1080">
   <defs>
@@ -35,6 +35,7 @@
 </svg>
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -116,8 +117,7 @@ function kanten({ liten = true, tub = 'bredvid', stor = false, tubX } = {}) {
 const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
   <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
 const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
-const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
-  transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', kritaBild(x, y, { v, s }));   // den delade kritan (verktyg/kritan-ritar.js, tunn kant)
 const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
 const skimmer = (x, y, k, v = 1) => lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
   .map(([dx, dy, s]) => stjarna(x + dx * 46 * v, y + dy * 40 * v, 18 * s * k * v, Math.min(1, 0.4 + k))).join(''));
@@ -142,8 +142,13 @@ const munMitt = () => iScen(G.querySelector('.mun'));
 const P = o => ({ ...L.POSE0, ...o });
 const F = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'fnissig', 'stolt', 'flinar'].includes(n) ? { glad: [0, 0] } : {}), ...o });
 const ALLA = [1, 1, 1, 1, 1, 1, 1, 1], BLA = [1, 0, 1, 1, 0, 1, 1, 0];
-// gapet (riggen har inget gapar än): båda raderna, munnen öppen
-const GAP = (o = {}) => F('flinar', { mun: [52, 40, 0.55, 462], tandNere: 1, tunga: 1, glad: [0, 0], ...o });
+// gapet och borstposen ur riggen (gapar och borstar, Sanna 2026-11-25): borsten leds av munnen, vänstra armen följer i ett stycke.
+// BORST(x, y): borstX −1 mungipan … 1, borstY −1 överraden … 1 underraden. stor: den lila borsten, 1,45 × riggens lilla kring borsthuvudet (lika stor i bild som 1,8 × i storyboardens skala),
+// så att tassen håller mitt på skaftet (riggens bild byts, inget eget i kod).
+const GAP = (o = {}) => F('gapar', o);
+const BORST = (x, y, o = {}) => P({ ...L.POSER.borstar, borstX: x, borstY: y, ...o });
+const borstBild = stor => { const i = G.querySelector('.borste image'); if (!i) return;
+  i.setAttribute('href', stor ? STOR : LITEN); i.setAttribute('transform', stor ? 'translate(90 119) scale(1.45) translate(-90 -119)' : ''); };
 const VINK = { armar: [0, 95] };
 
 // --- Ritintrot: kritan ritar den lilla tandborsten på papperet -------------------------------------------------------------
@@ -171,8 +176,6 @@ const iris = () => { const [cx, cy] = [HX - 60, RIM - 150], r = 330;
   lagg('kamera', `<g id="iris"><path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/></g>`); };
 // den stora borsten i högra tassen; v = vinkel, huvud = borsthuvudet i munnen (närbilderna)
 const storITass = (v = 60) => { const t = tass('r'); lagg('fram', borste(STOR, t.x, t.y, v, SK)); };
-const borstarMun = (dy = 0, v = 0) => { const m = munMitt(); lagg('fram', borste(STOR, m.x + 30 + SK * (GREPP[0] - 70), m.y + dy, v, SK));
-  varning(m.x, m.y + 120, '⚠ borsten i kod, riggen saknar borstar', 12); };
 
 const RAD = {
   '00': () => kort(),
@@ -190,9 +193,8 @@ const RAD = {
   '3': () => { badrum(); HALV(); kanten(); rav(VID, F('glad', { titt: [-14, 8] }), P({ rikt: -0.4 }), { bakom: true }); },
   '4': () => { badrum(); HALV(); kanten({ liten: false }); rav(VID, F('forvanad'), P({ armar: [0, 95] }), { bakom: true });
     const t = tass('r'); lagg('fram', borste(LITEN, t.x, t.y, -70, LK)); lagg('pilar', rakpil(MUGGX + 20, RIM - 120, t.x - 60, t.y - 40, 4)); },
-  '5': () => { badrum(); NARA_MUN(); kanten({ liten: false }); rav(VID, GAP({ ogonS: [1.15, 1.15] }), P({}), { bakom: true, blabar: BLA });
-    const m = munMitt(); lagg('fram', borste(LITEN, m.x + 10 + LK * (GREPP[0] - 70), m.y - 6, 0, LK));
-    lagg('pilar', rakpil(m.x - 20, m.y + 60, m.x + 30, m.y + 60, 2)); varning(m.x, m.y + 110, '⚠ borsten i kod, riggen saknar borstar', 12); },
+  '5': () => { badrum(); NARA_MUN(); kanten({ liten: false }); borstBild(false); rav(VID, GAP({ ogonS: [1.15, 1.15] }), BORST(-0.6, 0), { bakom: true, blabar: BLA });
+    const m = munMitt(); lagg('pilar', rakpil(m.x - 20, m.y + 60, m.x + 30, m.y + 60, 2)); },
   '5b': () => { badrum(); NARA_ANS(); kanten({ liten: false }); rav(VID, F('ledsen', { le: -0.3, oron: [10, 10] }), P({}), { bakom: true });
     const [x, y] = iFig(VID, [512, 170]); lagg('pilar', pil(`M${x - 50} ${y} Q${x} ${y - 20} ${x + 50} ${y}`, x + 50, y, 0.4, 3) + pil(`M${x + 50} ${y + 16} Q${x} ${y - 4} ${x - 50} ${y + 16}`, x - 50, y + 16, Math.PI - 0.4, 3)); },
   '6': () => { badrum(); HALV(); kanten(); rav(VID, F('nyfiken', { titt: [0, 0] }), P({}), { bakom: true });
@@ -210,7 +212,7 @@ const RAD = {
     lagg('fram', borste(STOR, HX + 100, RIM - 4, 0, SK)); },
   '10': () => { badrum(); HALV(); kanten({ tub: 'bredvid', tubX: TUBX0 - 40 }); rav(VID, F('fnissig', { glad: [1, 1] }), P({ armar: [0, 40] }), { bakom: true }); storITass(35);
     lagg('pilar', pil(`M${TUBX0 - 20} ${RIM - 60} Q${TUBX0 - 70} ${RIM - 110} ${MUGGX + 50} ${RIM - 50}`, MUGGX + 50, RIM - 50, 2.6, 4)); },
-  '11': () => { badrum(); HALV(); kanten({ tub: 'bakom' }); rav(VID, F('forvanad', { titt: [-6, 12], oron: [-10, -10] }), P({}), { bakom: true });
+  '11': () => { badrum(); NARA_ANS(); kanten({ tub: 'bakom' }); rav(VID, F('forvanad', { titt: [-6, 12], oron: [-14, -14] }), P({}), { bakom: true });
     lagg('fram', borste(STOR, HX + 100, RIM - 4, 0, SK)); lagg('pilar', `<ellipse cx="${TUBX0}" cy="${RIM - 20}" rx="40" ry="28" fill="none" stroke="#c0392b" stroke-width="4" stroke-dasharray="10 8"/>`); },
   '12': () => { badrum(); HALV(); kanten({ tub: 'bakom' }); rav(VID, F('nyfiken', { titt: [-16, 4] }), P({}), { bakom: true });
     lagg('fram', borste(STOR, HX + 100, RIM - 4, 0, SK)); const [x, y] = iFig(VID, [510, 400]);
@@ -223,12 +225,12 @@ const RAD = {
   '15': () => { badrum(); kamera(3.6, HX - 40, RIM - 40); kanten({ tub: null });
     lagg('fram', borste(STOR, HX + 100, RIM - 4, 0, SK)); const hx = HX + 100 - SK * (GREPP[0] - 80), hy = RIM - 4 - 8;
     lagg('fram', `<g transform="translate(${hx - 20} ${hy - 20}) scale(${SK})"><path d="M48 4 q24 -22 48 0 t48 0 t48 0" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round"/><path d="M48 4 q24 -22 48 0 t48 0 t48 0" fill="none" stroke="#a8e6a0" stroke-width="10" stroke-linecap="round"/></g>`); },
-  '16': () => { badrum(); HALV(); kanten({ tub: 'bredvid' }); rav(VID, GAP(), P({ armar: [0, 40] }), { bakom: true, blabar: BLA }); borstarMun(40, 20); },
-  '17': () => { badrum(); NARA_MUN(); kanten(); rav(VID, GAP({ glad: [1, 1] }), P({}), { bakom: true, blabar: [0, 0, 0, 0, 0, 1, 1, 0] }); borstarMun(-16);
+  '16': () => { badrum(); HALV(); kanten({ tub: 'bredvid' }); borstBild(true); rav(VID, GAP(), BORST(-1, 0), { bakom: true, blabar: BLA }); },
+  '17': () => { badrum(); NARA_MUN(); kanten(); borstBild(true); rav(VID, GAP({ glad: [1, 1] }), BORST(-0.5, -1), { bakom: true, blabar: [0, 0, 0, 0, 0, 1, 1, 0] });
     const m = munMitt(); lagg('pilar', rakpil(m.x - 40, m.y - 60, m.x + 40, m.y - 60, 2)); },
-  '18': () => { badrum(); NARA_MUN(); kanten(); rav(VID, GAP({ glad: [1, 1] }), P({}), { bakom: true, blabar: [0, 0, 0, 0, 0, 0, 0, 0] }); borstarMun(22);
+  '18': () => { badrum(); NARA_MUN(); kanten(); borstBild(true); rav(VID, GAP({ glad: [1, 1] }), BORST(-0.5, 1), { bakom: true, blabar: [0, 0, 0, 0, 0, 0, 0, 0] });
     const m = munMitt(); lagg('pilar', rakpil(m.x + 40, m.y + 60, m.x - 40, m.y + 60, 2)); },
-  '19': () => { badrum(); NARA_MUN(); kanten(); rav(VID, GAP({ glad: [1, 1] }), P({}), { bakom: true }); borstarMun(0);
+  '19': () => { badrum(); NARA_MUN(); kanten(); borstBild(true); rav(VID, GAP({ glad: [1, 1] }), BORST(-0.2, 0), { bakom: true });
     const m = munMitt(); skimmer(m.x, m.y - 10, 0.5, 0.35); },
   '20': () => { badrum(); NARA_ANS(); kanten(); rav(VID, F('flinar', { tander: ALLA, glimt: 0.5 }), P({}), { bakom: true }); const m = munMitt(); skimmer(m.x, m.y, 0.7, 0.5); },
   '20b': () => { badrum(); NARA_ANS(); kanten(); rav(VID, F('glad', { glad: [1, 1] }), P({}), { bakom: true }); },
