@@ -1,0 +1,9 @@
+43-en-bat  [happy] En båt! En liten båt i badet!
+44-tut-tut  [cheerfully] Tut, tut! Båten åker till ankan.
+45-vad-fluffigt  [laughs] Oj, vad fluffigt! Nu behöver vi borsten.
+46-var-ar-borsten  [curious] Men … var är borsten?
+47-ser-du-borsten  [warmly] Kan du hjälpa lammet? Ser du borsten?
+48-ankan-hjalper  [happy] Ankan hjälper till! Tack, ankan!
+49-borsta-fint  [warmly] Borsta … borsta … så fint!
+50-borsta-mjukt  [warmly] Borsta … borsta … så mjukt!
+51-och-sist-borsta  [warmly] Och sist … borsta … borsta … så fint!

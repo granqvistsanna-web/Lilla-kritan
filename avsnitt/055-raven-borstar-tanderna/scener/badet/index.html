@@ -301,7 +301,7 @@ const S = {
   '10': (tl, d) => { const kit = bump(0.2, 0.8, tl) + bump(0.9, 1.5, tl), r = kl((tl - 1.6) / 0.8), ner = kl((tl - (d - 1.4)) / 0.9);
     const tubP = r <= 0 ? 'bredvid' : [lerp(TUBX0, BAKOM[0], mjuk(r)), RIM + 4, lerp(0, BAKOM[2], mjuk(r)) + 14 * Math.sin(Math.PI * 3 * r) * (1 - r)];
     return BAD({ f: F('fnissig', { glad: [1, 1] }), p: P({ armar: [HA + 10 * kit, 0], luta: -3 * kit, oron: [8 * kit, 8 * kit], svans: vipp(tl, 0.2, 1.8) }),
-      kant: { tub: tubP }, hall: ner <= 0 ? { href: STOR, v: 92 + 45 * kit - 35 * del(1.5, 1.7, tl) * (1 - del(1.9, 2.3, tl)), s: SK } : null, storLagg: ner > 0 ? ner : null }); },
+      kant: { tub: tubP }, hall: ner <= 0 ? { href: STOR, v: 92 - 40 * kit + 35 * del(1.5, 1.7, tl) * (1 - del(1.9, 2.3, tl)), s: SK } : null, storLagg: ner > 0 ? ner : null }); },
   // tittar ner på kanten där tuben stod: tomt; klipp till närbild på den förvånade minen
   '11': (tl, d) => { const c = 0.3 + LN(25) + 0.4, k = del(0.1, 0.5, tl);
     return BAD({ kam: tl < c ? K_HALV : K_ANS(), f: F(tl < c ? 'nyfiken' : 'forvanad', { titt: [-6 * k, 12 * k] }), p: P({ oron: tl < c ? [0, 0] : [-14, -14] }), kant: { tub: 'bakom', stor: LIGG } }); },
@@ -321,7 +321,7 @@ const S = {
   '15': (tl, d) => { const p = 0.3 + PLUTT;
     return BAD({ kam: K_KLAM, f: F('glad'), p: P(), kant: { tub: null, stor: LIGG, pasta: del(p - 0.25, p + 0.35, tl) }, klam: [del(0.0, 0.6, tl), bump(p - 0.4, p + 0.5, tl), del(p + 0.7, p + 1.2, tl)] }); },
   // tar den stora borsten (den flyger från läppen till tassen vid munnen) och gapar, ingen säger åt den
-  '16': (tl, d) => { const u = kl((tl - 0.1) / 0.6), gap = del(0.5, 0.9, tl);
+  '16': (tl, d) => { const u = kl((tl - 0.1) / 0.9), gap = del(0.8, 1.2, tl);
     return BAD({ f: L.blanda(F('glad'), GAP({ titt: [0, -2] }), gap), p: BORST(-0.9, 0, { borstNer: 0 }), riggB: { stor: true, pasta: 1, syns: u >= 1 }, kant: { tub: 'bakom', stor: u <= 0 ? LIGG : null, pasta: 1 },
       storTillRigg: u > 0 && u < 1 ? u : null, bar: BLA.map(b => b * (u >= 1 ? 1 : 0)), tander: 0 }); },
   // munnen: tre lugna drag per del på räkneorden, blåbären borta på "tre" (uppe, nere, längst fram)
@@ -397,13 +397,14 @@ function ritaBad(st, t) {
   if (st.litenIn != null) { const q = koppBana(riggTass(LK, 95), I_MUGG, st.litenIn, 70); if (st.litenIn > 0.62) kt.litenBak = q; else kt.litenFri = q; }
   if (st.storLagg != null) kt.stor = bana(riggTass(SK, 92), LIGG, st.storLagg, 50);
   if (st.storFlyg != null) kt.stor = bana(luftGrepp(), riggTass(SK, 92), st.storFlyg, -40);
-  if (st.storTillRigg != null) kt.stor = bana(LIGG, riggBorstPos(), st.storTillRigg, 60), kt.pasta = 1;
+  if (st.storTillRigg != null) { const m = riggBorstPos(); m[2] = ((m[2] % 360) + 360) % 360; const q = bana(LIGG, m, st.storTillRigg, 90);   // vrids över toppen (huvudet upp), aldrig ner i handfatet
+    q[1] = Math.min(q[1], RIM - 8); kt.stor = q; kt.pasta = 1; }   // aldrig under läppen
   if (st.tubFlyg != null) kt.tub = bana(BAKOM, [...riggTassTub(), 0], st.tubFlyg, 60);
   kanten(kt);
   if (st.tubHall) { const [x, y] = riggTassTub(); lagg('fram', tub([x, y, 0])); }
   // tuben kläms över borsthuvudet (rad 15): den kommer in, lutar, kläms, lyfts ur bild
-  if (st.klam) { const [in_, klam, ut] = st.klam, hx = LIGG[0] - SK * (GREPP[0] - HUVUD[0]) + 52 * SK, hy = RIM - 4 - 20;
-    lagg('kanten', tub([hx + 30 + 60 * (1 - in_) + 40 * ut, hy - 26 - 120 * (1 - in_) - 260 * ut, 150 - 20 * in_], { oppen: true, sx: 1 - 0.18 * klam })); }
+  if (st.klam) { const [in_, klam, ut] = st.klam, hx = LIGG[0] - SK * (GREPP[0] - HUVUD[0]);   // öppningen strax över borsthuvudet, tuben snett upp åt höger
+    lagg('kanten', tub([hx + 10 + 60 * (1 - in_) + 40 * ut, RIM - 50 - 120 * (1 - in_) - 260 * ut, 60 - 12 * in_], { oppen: true, sx: 1 - 0.18 * klam })); }
   // kritan ritar den stora borsten i luften (7a) och den fylls inifrån (7b)
   if (st.luftRit || st.luftFyll) {
     const k = ritfart((t - T_LUFT.rit[0]) / (T_LUFT.rit[1] - T_LUFT.rit[0])), f = st.luftFyll || 0, [cx, cy, v, s] = LUFT;

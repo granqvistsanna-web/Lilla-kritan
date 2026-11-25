@@ -100,35 +100,35 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [laughs] Oj, oj, oj! Blåbär på tänderna!
 [curious] Har du ätit blåbär?
 [warmly] Mm, vad gott!
-[cheerfully] Ska vi borsta tänderna?
+[cheerfully] Ska du borsta tänderna med tandborsten?
 [happy] Ja, bra idé!
 [surprised] Oj! Tandborsten är för liten!
 [chuckles] Så liten … och så många tänder.
-[warmly] Det går inte så bra, va?
-[warmly] Nej, det gör det inte.
-[curious] Hm … vad gör vi nu?
+[warmly] Tandborsten når inte alla tänderna, va?
+[warmly] Nej, den är för liten.
+[curious] Hm … hur ska räven borsta alla tänderna?
 [happy] Titta! Kritan ritar något.
 [happy] En stor tandborste! Varsågod, räven.
 [warmly] Ska vi säga tack?
 [happy] Tack!
-[curious] Är den lagom nu?
-[happy] Ja, nu är den lagom!
-[warmly] En liten … och en stor.
-[giggles] Ha ha! Den kittlar på nosen!
-[cheerfully] Nu behövs lite tandkräm.
+[curious] Är den stora tandborsten lagom nu?
+[happy] Ja, den når alla tänderna!
+[warmly] En liten tandborste … och en stor.
+[giggles] Ha ha! Tandborsten kittlar på nosen!
+[cheerfully] Nu ska vi ha tandkräm på tandborsten.
 [surprised] Oj! Var är tandkrämen?
 [curious] Räven vet inte var.
 [warmly] Kan du hjälpa räven? Ser du tandkrämen?
 [happy] Ja, där! Bakom muggen!
-[playfully] Lite tandkräm … plutt!
-[happy] Först uppe. Borsta, borsta … ett, två, tre!
-[happy] Och nere. Borsta, borsta … ett, två, tre!
-[happy] Och längst fram. Borsta, borsta … ett, två, tre!
+[playfully] Lite tandkräm på tandborsten … plutt!
+[happy] Först tänderna uppe. Borsta, borsta … ett, två, tre!
+[happy] Och tänderna nere. Borsta, borsta … ett, två, tre!
+[happy] Och tänderna längst fram. Borsta, borsta … ett, två, tre!
 [happy] Titta! Blanka tänder!
-[warmly] Hur känns det nu?
+[warmly] Hur känns tänderna nu?
 [happy sigh] Åh, så rena tänder!
-[laughs] Oj! Den stora får inte plats!
-[warmly] Där. Bredvid den lilla.
+[laughs] Oj! Den stora tandborsten får inte plats i muggen!
+[warmly] Där. Den stora ligger bredvid muggen.
 [cheerfully] Ska du gå och leka nu?
 [happy] Ja, vad kul!
 [happy] Hej då, räven! Hej då, stora tandborsten!
@@ -265,3 +265,28 @@ Scenen finns i `scener/badet/index.html` (render `scener/render.mjs`, tiderna i 
 - **Borstningen (17–19):** riggens `borstar` med den stora borsten, tre lugna drag på räkneorden (`RAKNA`), blåbären borta och tänderna blanka på "tre" med krit-gnistor, blundar glatt, skum och bubblor.
 - **Saker i tassen:** vänstra armen lyfts ut förbi kroppens kant (som vinkningen), och saken ligger mellan kroppen och armen, så att tassen är framför skaftet. Borsten håller sin vinkel i bilden.
 - **Kvar att titta på i förhandsvisningen:** täta bilder (6/s) runt varje kontakt (borsten in i muggen, tuben som glider bakom muggen, tuben över borsthuvudet, borsten till tassen).
+
+## Tydligare repliker (förslag 2026-11-25, inte inspelat)
+
+Sannas instruktion för 052–057: *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Varje replik nedan säger nu rakt ut vad som händer: handlingen, saken och kroppsdelen. Taggarna och reglerna är oförändrade. Rösten är redan inspelad (grind 3), så de nya tagningarna (16 repliker) kostar ElevenLabs-krediter. Spelas in först efter Sannas ja. `RAKNA` och `PLUTT` (whisper) mäts om för 30–33.
+
+| Nr | Gammal | Ny |
+|---|---|---|
+| 10 | [cheerfully] Ska vi borsta tänderna? | [cheerfully] Ska du borsta tänderna med tandborsten? |
+| 14 | [warmly] Det går inte så bra, va? | [warmly] Tandborsten når inte alla tänderna, va? |
+| 15 | [warmly] Nej, det gör det inte. | [warmly] Nej, den är för liten. |
+| 16 | [curious] Hm … vad gör vi nu? | [curious] Hm … hur ska räven borsta alla tänderna? |
+| 21 | [curious] Är den lagom nu? | [curious] Är den stora tandborsten lagom nu? |
+| 22 | [happy] Ja, nu är den lagom! | [happy] Ja, den når alla tänderna! |
+| 23 | [warmly] En liten … och en stor. | [warmly] En liten tandborste … och en stor. |
+| 24 | [giggles] Ha ha! Den kittlar på nosen! | [giggles] Ha ha! Tandborsten kittlar på nosen! |
+| 25 | [cheerfully] Nu behövs lite tandkräm. | [cheerfully] Nu ska vi ha tandkräm på tandborsten. |
+| 30 | [playfully] Lite tandkräm … plutt! | [playfully] Lite tandkräm på tandborsten … plutt! |
+| 31 | [happy] Först uppe. Borsta, borsta … ett, två, tre! | [happy] Först tänderna uppe. Borsta, borsta … ett, två, tre! |
+| 32 | [happy] Och nere. Borsta, borsta … ett, två, tre! | [happy] Och tänderna nere. Borsta, borsta … ett, två, tre! |
+| 33 | [happy] Och längst fram. Borsta, borsta … ett, två, tre! | [happy] Och tänderna längst fram. Borsta, borsta … ett, två, tre! |
+| 35 | [warmly] Hur känns det nu? | [warmly] Hur känns tänderna nu? |
+| 37 | [laughs] Oj! Den stora får inte plats! | [laughs] Oj! Den stora tandborsten får inte plats i muggen! |
+| 38 | [warmly] Där. Bredvid den lilla. | [warmly] Där. Den stora ligger bredvid muggen. |
+
+Oförändrade, eftersom de redan är tydliga eller är seriens fasta repliker: 01–09, 11–13, 17–20 (ritintrot och gissningen *"Titta! Kritan ritar något."* ska inte avslöja saken), 26–29, 34, 36, 39–42.

@@ -358,9 +358,10 @@ const S = {
   '12': (tl, d) => { const [f, p] = nick(F('jatteglad'), A20({ oron: UPP(del(0.1, 0.4, tl)) }), tl - 0.15);
     return BAD({ f, p, tval: TVAL }); },
   // kranen rinner, tvålen till tassarna (klappen), skummet växer i tre steg
-  '13': (tl, d) => { const ta = del(0.1, 0.6, tl), gn = del(0.7, 1.0, tl);
+  // tvålen skummar lite medan Malin säger handlingen, det stora skummet kommer på "Oj!" (whisper: 2,46 s in i replik 23)
+  '13': (tl, d) => { const OJ13 = 1.2 + 2.42, ta = del(0.1, 0.6, tl), gn = del(0.7, 1.0, tl);
     return BAD({ f: F('glad'), p: klapp(lerp(1.2, 1.12, ta) + 0.05 * Math.sin(2 * Math.PI * tl / 1.6) * gn), kran: del(0, 0.4, tl) + del(d - 0.7, d - 0.1, tl),
-      tvalTass: ta, skum: 0.35 * del(1.0, 1.5, tl) + 0.3 * del(2.0, 2.5, tl) + 0.35 * del(3.0, 3.5, tl), tusser: del(1.0, 3.5, tl) }); },
+      tvalTass: ta, skum: 0.25 * del(1.3, 1.8, tl) + 0.25 * del(2.3, 2.8, tl) + 0.5 * del(OJ13, OJ13 + 0.5, tl), tusser: del(1.3, OJ13 + 0.5, tl) }); },
   // en skumtuss flyger upp och landar under hakan: skumskägg, fniss i pausen
   '14': (tl, d) => { const fl = kl((tl - 0.3) / 0.6);
     return BAD({ kam: K_NARA_ANS(), f: F(tl > 1.2 + LN(24) - 0.2 ? 'fnissig' : 'forvanad', { titt: [0, 12] }), p: klapp(1.12), tvalTass: 1, skum: 1, skagg: fl }); },

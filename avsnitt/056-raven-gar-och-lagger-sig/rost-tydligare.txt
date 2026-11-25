@@ -1,0 +1,15 @@
+11-upp-i-sangen  [cheerfully] Räven hoppar upp i sängen!
+13-vad-mjuk  [warmly] Åh, vad mjuk nallen är!
+18-vad-gor-vi-nu  [curious] Hm … räven vill ha lite ljus.
+21-for-liten  [chuckles] Klick … oj, lampan är för liten!
+22-ritar-igen  [cheerfully] Kritan ritar en ny lampa.
+23-for-stor  [laughs] Klick … oj, lampan är för stor! Så ljust!
+24-bort-med-den  [playfully] Kritan suddar bort den stora lampan.
+25-en-gang-till  [curious] Kritan ritar en lampa till …
+26-lagom  [happy] Klick … nu är lampan lagom!
+28-sa-fint  [happy] Oj, vad fint lampan lyser!
+31-titta-pa-vaggen  [surprised] Oj! Titta, en skugga på väggen!
+32-stor-rav  [happy] En stor räv på väggen!
+33-liten-rav  [giggles] Och en liten räv på väggen!
+34-tycker-du  [warmly] Jaså, tycker du att skuggan är rolig? Mm, jag också.
+42-det-horde-jag  [warmly] Ja, räven gäspar! Det hörde jag!

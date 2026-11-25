@@ -1,0 +1,16 @@
+10-ska-vi-borsta  [cheerfully] Ska du borsta tänderna med tandborsten?
+14-gar-inte-bra  [warmly] Tandborsten når inte alla tänderna, va?
+15-nej-det-gor  [warmly] Nej, den är för liten.
+16-vad-gor-vi  [curious] Hm … hur ska räven borsta alla tänderna?
+21-lagom-nu  [curious] Är den stora tandborsten lagom nu?
+22-ja-lagom  [happy] Ja, den når alla tänderna!
+23-liten-och-stor  [warmly] En liten tandborste … och en stor.
+24-kittlar  [giggles] Ha ha! Tandborsten kittlar på nosen!
+25-behovs-tandkram  [cheerfully] Nu ska vi ha tandkräm på tandborsten.
+30-plutt  [playfully] Lite tandkräm på tandborsten … plutt!
+31-forst-uppe  [happy] Först tänderna uppe. Borsta, borsta … ett, två, tre!
+32-och-nere  [happy] Och tänderna nere. Borsta, borsta … ett, två, tre!
+33-langst-fram  [happy] Och tänderna längst fram. Borsta, borsta … ett, två, tre!
+35-hur-kanns  [warmly] Hur känns tänderna nu?
+37-far-inte-plats  [laughs] Oj! Den stora tandborsten får inte plats i muggen!
+38-bredvid  [warmly] Där. Den stora ligger bredvid muggen.

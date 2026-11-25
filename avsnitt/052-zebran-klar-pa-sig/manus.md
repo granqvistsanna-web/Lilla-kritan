@@ -1,6 +1,6 @@
 # Avsnitt 052 – Zebran klär på sig (plan)
 
-**Status:** plan 2026-11-25. Samtalsreplikerna (🆕) godkända av Sanna 2026-11-25 ("Ja, de är bra"). Hjälpsaken vald 2026-11-25: den gula mössan (Öppet 1, A). ✅ **Grind 1 (manus) godkänd av Sanna 2026-11-25** ("Ja, gå till sakerna"). ✅ **Grind 2 (saker och rörelseprovet) godkänd av Sanna 2026-11-25** ("Grind 2 godkänd. Bygg scenen i himmelsblå 1 med de närmare utsnitten"). ✅ **Provet godkänt av Sanna 2026-11-25** ("det himmelsblå rummet är bra"). Nästa grind: 3, Malins röst. **Scenen byggd 2026-11-25:** `scener/sovrummet/index.html` (026:s rum.js, provets plagg, kritan via `verktyg/kritan-ritar.js`), raderna i `storyboard/rader.mjs` → `scener/sovrummet/rader.json`. **Rösten är inte inspelad än (grind 3):** replikernas längder är uppskattade ur texten och byts av sig själva mot ffprobe när filerna finns i `assets/ljud/roster/zebran-klar-pa-sig/`. Hängaren sitter till vänster om fönstret (knopparna y 445), korgen under den, halsduken hänger på längden från fjärde knoppen. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlaga: [024 Lammet klär på sig](../024-lammet-klar-pa-sig/manus.md), men med ett annat problem (en sak fattas, inte "vill inte") och en annan vändning (kritan ritar fel storlek två gånger). 
+**Status:** plan 2026-11-25. Samtalsreplikerna (🆕) godkända av Sanna 2026-11-25 ("Ja, de är bra"). Hjälpsaken vald 2026-11-25: den gula mössan (Öppet 1, A). ✅ **Grind 1 (manus) godkänd av Sanna 2026-11-25** ("Ja, gå till sakerna"). ✅ **Grind 2 (saker och rörelseprovet) godkänd av Sanna 2026-11-25** ("Grind 2 godkänd. Bygg scenen i himmelsblå 1 med de närmare utsnitten"). ✅ **Provet godkänt av Sanna 2026-11-25** ("det himmelsblå rummet är bra"). ✅ **Rösten inspelad 2026-11-25 (grind 3, väntar på Sannas lyssning):** Malin, Eleven v3, stability 0,5, två tagningar (`produktion/ljud-original/roster/zebran-klar-pa-sig/malin-tagning-1a.mp3`, `-1b.mp3`). Tagning 1b används, utom 14, 15, 29, 30 och 35 ur 1a (i 1b gick gränserna fel: *"Nej, i korgen"*, *"Tack! Den gula …"*). Replik 10 har fått 2 s tystnad efter *"… först?"* (7,0 s in), där zebran svarar. Normaliserade till −3 dBFS i `assets/ljud/roster/zebran-klar-pa-sig/`. *"på!"* mätt i 11, 30, 33, 39 (`PA` i `rader.mjs`). **Tagning 2 (2026-11-25, de 18 tydligare replikerna):** `malin-tagning-2a.mp3`/`-2b.mp3`; 2b används, utom 08 och 20 ur 2a. De gamla filerna ligger i `produktion/ljud-original/roster/zebran-klar-pa-sig/tagning-1/`. `PA` mätt om (början av *"på foten / på huvudet / runt halsen"*). Filmen blir 4:03. **Scenen byggd 2026-11-25:** `scener/sovrummet/index.html` (026:s rum.js, provets plagg, kritan via `verktyg/kritan-ritar.js`), raderna i `storyboard/rader.mjs` → `scener/sovrummet/rader.json`. Hängaren sitter till vänster om fönstret (knopparna y 445), korgen under den, halsduken hänger på längden från fjärde knoppen. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlaga: [024 Lammet klär på sig](../024-lammet-klar-pa-sig/manus.md), men med ett annat problem (en sak fattas, inte "vill inte") och en annan vändning (kritan ritar fel storlek två gånger). 
 
 **Enkel animation.** Kläderna är egna urklipp som läggs ovanpå riggen i kod. Zebran tar aldrig i dem: han lyfter ett ben eller sträcker på halsen, och plagget glider på plats **på ordet *"på!"***. Zebran står på golvet **framför sängen**, så att hela kroppen och hovarna syns (som i 027).
 
@@ -111,42 +111,42 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Har du sovit gott?   🆕
 [happy] Mm, vad bra!   🆕
 [happy] Titta! Det snöar!
-[happy] Åh, vad fint!   🆕
+[happy] Åh, vad fin snö!   🆕
 [cheerfully] Vill du gå ut i snön och leka? Ja, vad kul!
 [cheerfully] Då ska vi klä på oss. Kläderna hänger på kroken. Ja, vad ska vi ta på först? Ja, strumporna, bra idé! Först strumporna.
-[happy] Den blå strumpan … på!
+[happy] Den blå strumpan … på foten!
 [surprised] Oj! Var är den andra strumpan?
-[curious] Under sängen?
+[curious] Är strumpan under sängen?
 [playfully] Nej!
-[curious] I korgen?
+[curious] Är strumpan i korgen?
 [playfully] Nej!
 [gently] Åh. Zebran blir lite ledsen.
 [warmly] Mm. Jag förstår. Vi letar tillsammans.   🆕
-[curious] Hm … vad gör vi nu?
-[happy] Titta! Kritan ritar något.
+[curious] Hm … vad ska zebran ha på huvudet?
+[happy] Titta! Kritan ritar något till zebran.
 [happy] En mössa!
-[chuckles] Oj! För liten!
-[playfully] En gång till …
-[laughs] Oj, oj! För stor!
+[chuckles] Oj! Mössan är för liten!
+[playfully] Kritan ritar en gång till …
+[laughs] Oj, oj! Mössan är för stor!
 [playfully] Hallå? Är du där inne?   🆕
-[playfully] En gång till …
-[happy] Lagom! Varsågod, zebran.
+[playfully] Kritan ritar en gång till …
+[happy] Mössan är lagom! Varsågod, zebran.
 [warmly] Ska vi säga tack?
 [happy] Tack!
-[happy] Den gula mössan … på!
-[happy] Jaså, den tycker du om!   🆕
+[happy] Den gula mössan … på huvudet!
+[happy] Jaså, du tycker om mössan!   🆕
 [happy] Och där är halsduken!
-[happy] Den röda halsduken … på!
-[happy sigh] Mmm … varm och mjuk.
-[warmly] Mm, jag också.   🆕
+[happy] Den röda halsduken … runt halsen!
+[happy sigh] Mmm … halsduken är varm och mjuk.
+[warmly] Mm, du tycker om halsduken.   🆕
 [curious] Men strumpan då? Zebran vet inte var.
 [warmly] Kan du hjälpa zebran? Ser du den blå strumpan?
 [happy] Ja, där! Bakom kudden!
-[happy] Den blå strumpan … på!
+[happy] Den blå strumpan … på foten!
 [happy] Ja, vad skönt!   🆕
 [happy] Röd, gul … och blå!
 [happy] Oj, så fin du är!   🆕
-[cheerfully] Är du färdig nu?   🆕
+[cheerfully] Har du alla kläderna på dig nu?   🆕
 [happy] Nu kan zebran gå ut i snön!
 [warmly] Hej då, zebran! Hej då, mössan!
 [warmly] Ha det så roligt i snön!   🆕
@@ -221,6 +221,33 @@ Genomgång 2026-11-25 (Sanna: *"study the similar videos and how they solve thin
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt
 - [ ] **Avsteg från receptet:** kritan ritar halsduken bara i ritintrot och mössan tre gånger (fel storlek) i rummet, i stället för två olika saker i rummet. Fel storlek ger samma "ritar igen"-ögonblick två gånger. Säg till om du vill ha en andra sak
 - [ ] **Lilla bilen** (`berattelse.md` 4) är inte med, som i de senaste bilderböckerna. Den kan gömmas under sängen om du vill
+
+## Tydligare repliker (godkända av Sanna 2026-11-25, "Yes, all 18")
+
+Sanna 2026-11-25: *"make sure all manus are clear and malin says things like ska du torka dig med handduken"*. Varje replik ska säga vad som händer: saken, handlingen och gärna kroppsdelen. Rösten är redan inspelad (tagning 1), så bara de ändrade replikerna spelas in igen i en kort tagning och behåller sina filnamn. De andra 31 är tydliga som de är.
+
+| # | Gammal replik | Ny replik | Varför |
+|---|---|---|---|
+| 08 | [happy] Åh, vad fint! | [happy] Åh, vad fin snö! | säger vad som är fint |
+| 11 | [happy] Den blå strumpan … på! | [happy] Den blå strumpan … på foten! | kroppsdelen; bilden landar på *"foten"* |
+| 13 | [curious] Under sängen? | [curious] Är strumpan under sängen? | säger vad vi letar efter |
+| 15 | [curious] I korgen? | [curious] Är strumpan i korgen? | samma |
+| 19 | [curious] Hm … vad gör vi nu? | [curious] Hm … vad ska zebran ha på huvudet? | vag fråga, nu pekar den mot mössan |
+| 20 | [happy] Titta! Kritan ritar något. | [happy] Titta! Kritan ritar något till zebran. | vem det är till |
+| 22 | [chuckles] Oj! För liten! | [chuckles] Oj! Mössan är för liten! | saken |
+| 23 | [playfully] En gång till … | [playfully] Kritan ritar en gång till … | vem som gör vad |
+| 24 | [laughs] Oj, oj! För stor! | [laughs] Oj, oj! Mössan är för stor! | saken |
+| 26 | [playfully] En gång till … | [playfully] Kritan ritar en gång till … | samma som 23 |
+| 27 | [happy] Lagom! Varsågod, zebran. | [happy] Mössan är lagom! Varsågod, zebran. | saken |
+| 30 | [happy] Den gula mössan … på! | [happy] Den gula mössan … på huvudet! | kroppsdelen |
+| 31 | [happy] Jaså, den tycker du om! | [happy] Jaså, du tycker om mössan! | saken |
+| 33 | [happy] Den röda halsduken … på! | [happy] Den röda halsduken … runt halsen! | kroppsdelen |
+| 34 | [happy sigh] Mmm … varm och mjuk. | [happy sigh] Mmm … halsduken är varm och mjuk. | saken |
+| 35 | [warmly] Mm, jag också. | [warmly] Mm, du tycker om halsduken. | *"jag också"* sa inte vad |
+| 39 | [happy] Den blå strumpan … på! | [happy] Den blå strumpan … på foten! | som 11 |
+| 43 | [cheerfully] Är du färdig nu? | [cheerfully] Har du alla kläderna på dig nu? | vad som är färdigt |
+
+**Obs:** 11, 30, 33 och 39 ändrar den upprepade frasen *"Den … på!"* som Sanna godkände i grind 1. Den blir *"Den … på foten / på huvudet / runt halsen!"*, fortfarande samma mönster. Säg till om du hellre behåller *"… på!"*.
 
 ## Kontroll mot regler (052–057, Sanna 2026-11-25)
 

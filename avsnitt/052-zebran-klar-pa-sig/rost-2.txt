@@ -1,0 +1,18 @@
+08-vad-fint                 [happy] Åh, vad fin snö!
+11-bla-strumpan-pa          [happy] Den blå strumpan … på foten!
+13-under-sangen             [curious] Är strumpan under sängen?
+15-i-korgen                 [curious] Är strumpan i korgen?
+19-vad-gor                  [curious] Hm … vad ska zebran ha på huvudet?
+20-titta-kritan-ritar       [happy] Titta! Kritan ritar något till zebran.
+22-for-liten                [chuckles] Oj! Mössan är för liten!
+23-en-gang-till             [playfully] Kritan ritar en gång till …
+24-for-stor                 [laughs] Oj, oj! Mössan är för stor!
+26-en-gang-till             [playfully] Kritan ritar en gång till …
+27-lagom-varsagod           [happy] Mössan är lagom! Varsågod, zebran.
+30-gula-mossan-pa           [happy] Den gula mössan … på huvudet!
+31-tycker-du-om             [happy] Jaså, du tycker om mössan!
+33-roda-halsduken-pa        [happy] Den röda halsduken … runt halsen!
+34-varm-och-mjuk            [happy sigh] Mmm … halsduken är varm och mjuk.
+35-jag-ocksa                [warmly] Mm, du tycker om halsduken.
+39-bla-strumpan-pa          [happy] Den blå strumpan … på foten!
+43-ar-du-fardig             [cheerfully] Har du alla kläderna på dig nu?

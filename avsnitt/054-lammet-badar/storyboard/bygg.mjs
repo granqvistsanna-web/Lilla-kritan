@@ -22,16 +22,20 @@ const srv = createServer(async (q, r) => { try { const f = join(ROT, decodeURICo
   const d = await readFile(f); r.writeHead(200, { 'Content-Type': TYP[extname(f)] || 'application/octet-stream' }); r.end(d); } catch { r.writeHead(404); r.end(); } }).listen(0);
 const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
 p.on('pageerror', e => console.error('sidfel:', e.message));
-await p.goto(`http://localhost:${srv.address().port}/avsnitt/054-lammet-badar/storyboard/scen.html`);
-await p.evaluate(() => window.klar);
 await mkdir(HÄR + 'frames', { recursive: true });
 // raderna som json åt kodscenen (rader.mjs läser filer med node och går inte att importera i webbläsaren)
 await mkdir(HÄR + '../scener/badet', { recursive: true });
 await writeFile(HÄR + '../scener/badet/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud }) => ({ id, d, malin, ljud })), ROST: ROST.map(r => [r[0], r[2]]), BORTA_T }));
 const bara = process.argv.find(a => a.startsWith('--rader='))?.slice(8).split(',');   // --rader=14,15: bara de stillbilderna
+// stillbilderna tas ur kodscenen själv (omgång 2, 2026-11-25): mitt i varje rad (60 %), så att storyboarden alltid visar filmen
+await p.goto(`http://localhost:${srv.address().port}/avsnitt/054-lammet-badar/scener/badet/index.html`);
+await p.evaluate(() => window.ready);
+let acc = 0;
 for (const r of RADER) {
+  if (r.id === '00') continue;
+  const s0 = acc; acc += r.d;
   if (bara && !bara.includes(r.id)) continue;
-  await p.evaluate(id => window.rad(id), r.id); await p.waitForTimeout(150);
+  await p.evaluate(t => window.seek(t), s0 + 0.6 * r.d); await p.waitForTimeout(150);
   await (await p.$('svg')).screenshot({ path: `${HÄR}frames/${r.id}.jpg`, type: 'jpeg', quality: 86 });
 }
 await b.close(); srv.close();

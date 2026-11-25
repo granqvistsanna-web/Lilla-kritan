@@ -8,30 +8,30 @@
 08-dar-ar-nallen  [happy] Och där är nallen!
 09-ska-nallen-sova  [curious] Ska nallen också sova?
 10-ja-sa-klart  [warmly] Ja, så klart!
-11-upp-i-sangen  [cheerfully] Upp i sängen!
+11-upp-i-sangen  [cheerfully] Räven hoppar upp i sängen!
 12-kramar-nallen  [happy sigh] Mmm … räven kramar nallen.
-13-vad-mjuk  [warmly] Åh, vad mjuk!
+13-vad-mjuk  [warmly] Åh, vad mjuk nallen är!
 14-slacker-lampan  [warmly] Nu släcker vi lampan.
 15-sa-morkt  [surprised] Oj! Så mörkt! Räven ser ingenting.
 16-tycker-inte-om  [softly] Räven tycker inte om när det är så mörkt.
 17-det-forstar-jag  [softly] Nej, det förstår jag.
-18-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+18-vad-gor-vi-nu  [curious] Hm … räven vill ha lite ljus.
 19-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
 20-en-lampa  [happy] En lampa!
-21-for-liten  [chuckles] Klick … oj, för liten!
-22-ritar-igen  [cheerfully] Kritan ritar igen.
-23-for-stor  [laughs] Klick … oj, för stor! Så ljust!
-24-bort-med-den  [playfully] Bort med den stora.
-25-en-gang-till  [curious] En gång till …
-26-lagom  [happy] Klick … lagom!
+21-for-liten  [chuckles] Klick … oj, lampan är för liten!
+22-ritar-igen  [cheerfully] Kritan ritar en ny lampa.
+23-for-stor  [laughs] Klick … oj, lampan är för stor! Så ljust!
+24-bort-med-den  [playfully] Kritan suddar bort den stora lampan.
+25-en-gang-till  [curious] Kritan ritar en lampa till …
+26-lagom  [happy] Klick … nu är lampan lagom!
 27-varsagod  [warmly] Varsågod, räven.
-28-sa-fint  [happy] Oj, så fint!
+28-sa-fint  [happy] Oj, vad fint lampan lyser!
 29-ska-vi-saga-tack  [warmly] Ska vi säga tack?
 30-tack  [happy] Tack!
-31-titta-pa-vaggen  [surprised] Oj! Titta på väggen!
-32-stor-rav  [happy] En stor räv!
-33-liten-rav  [giggles] Och en liten räv!
-34-tycker-du  [warmly] Jaså, det tycker du? Mm, jag också.
+31-titta-pa-vaggen  [surprised] Oj! Titta, en skugga på väggen!
+32-stor-rav  [happy] En stor räv på väggen!
+33-liten-rav  [giggles] Och en liten räv på väggen!
+34-tycker-du  [warmly] Jaså, tycker du att skuggan är rolig? Mm, jag också.
 35-var-ar-nallen  [curious] Oj, var är nallen? Räven vet inte var.
 36-ser-du-nallen  [warmly] Kan du hjälpa räven? Ser du nallen?
 37-ja-dar  [happy] Ja, där! Under täcket!
@@ -39,6 +39,6 @@
 39-lilla-lampan  [warmly] Och den lilla lampan … den får nallen!
 40-lysa-hela-natten  [softly] Lampan får lysa hela natten.
 41-ar-du-somnig  [softly] Är du sömnig nu?
-42-det-horde-jag  [warmly] Ja, det hörde jag!
+42-det-horde-jag  [warmly] Ja, räven gäspar! Det hörde jag!
 43-hej-da-raven  [happy] Hej då, räven! Hej då, nallen!
 44-vi-ses-snart  [warmly] Hej då! Vi ses snart!

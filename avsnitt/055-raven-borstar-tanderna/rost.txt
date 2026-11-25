@@ -7,35 +7,35 @@
 07-bla-bar  [laughs] Oj, oj, oj! Blåbär på tänderna!
 08-atit-blabar  [curious] Har du ätit blåbär?
 09-vad-gott  [warmly] Mm, vad gott!
-10-ska-vi-borsta  [cheerfully] Ska vi borsta tänderna?
+10-ska-vi-borsta  [cheerfully] Ska du borsta tänderna med tandborsten?
 11-bra-ide  [happy] Ja, bra idé!
 12-for-liten  [surprised] Oj! Tandborsten är för liten!
 13-sa-manga-tander  [chuckles] Så liten … och så många tänder.
-14-gar-inte-bra  [warmly] Det går inte så bra, va?
-15-nej-det-gor  [warmly] Nej, det gör det inte.
-16-vad-gor-vi  [curious] Hm … vad gör vi nu?
+14-gar-inte-bra  [warmly] Tandborsten når inte alla tänderna, va?
+15-nej-det-gor  [warmly] Nej, den är för liten.
+16-vad-gor-vi  [curious] Hm … hur ska räven borsta alla tänderna?
 17-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
 18-stor-tandborste  [happy] En stor tandborste! Varsågod, räven.
 19-saga-tack  [warmly] Ska vi säga tack?
 20-tack  [happy] Tack!
-21-lagom-nu  [curious] Är den lagom nu?
-22-ja-lagom  [happy] Ja, nu är den lagom!
-23-liten-och-stor  [warmly] En liten … och en stor.
-24-kittlar  [giggles] Ha ha! Den kittlar på nosen!
-25-behovs-tandkram  [cheerfully] Nu behövs lite tandkräm.
+21-lagom-nu  [curious] Är den stora tandborsten lagom nu?
+22-ja-lagom  [happy] Ja, den når alla tänderna!
+23-liten-och-stor  [warmly] En liten tandborste … och en stor.
+24-kittlar  [giggles] Ha ha! Tandborsten kittlar på nosen!
+25-behovs-tandkram  [cheerfully] Nu ska vi ha tandkräm på tandborsten.
 26-var-ar-tandkramen  [surprised] Oj! Var är tandkrämen?
 27-vet-inte-var  [curious] Räven vet inte var.
 28-kan-du-hjalpa  [warmly] Kan du hjälpa räven? Ser du tandkrämen?
 29-ja-dar  [happy] Ja, där! Bakom muggen!
-30-plutt  [playfully] Lite tandkräm … plutt!
-31-forst-uppe  [happy] Först uppe. Borsta, borsta … ett, två, tre!
-32-och-nere  [happy] Och nere. Borsta, borsta … ett, två, tre!
-33-langst-fram  [happy] Och längst fram. Borsta, borsta … ett, två, tre!
+30-plutt  [playfully] Lite tandkräm på tandborsten … plutt!
+31-forst-uppe  [happy] Först tänderna uppe. Borsta, borsta … ett, två, tre!
+32-och-nere  [happy] Och tänderna nere. Borsta, borsta … ett, två, tre!
+33-langst-fram  [happy] Och tänderna längst fram. Borsta, borsta … ett, två, tre!
 34-blanka-tander  [happy] Titta! Blanka tänder!
-35-hur-kanns  [warmly] Hur känns det nu?
+35-hur-kanns  [warmly] Hur känns tänderna nu?
 36-rena-tander  [happy sigh] Åh, så rena tänder!
-37-far-inte-plats  [laughs] Oj! Den stora får inte plats!
-38-bredvid  [warmly] Där. Bredvid den lilla.
+37-far-inte-plats  [laughs] Oj! Den stora tandborsten får inte plats i muggen!
+38-bredvid  [warmly] Där. Den stora ligger bredvid muggen.
 39-ga-och-leka  [cheerfully] Ska du gå och leka nu?
 40-vad-kul  [happy] Ja, vad kul!
 41-hej-da-raven  [happy] Hej då, räven! Hej då, stora tandborsten!

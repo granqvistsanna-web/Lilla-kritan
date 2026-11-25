@@ -15,22 +15,22 @@ export const ROST = [
   ['05-hur-ar-det', 1.09, 'Hur är det, katten?'],
   ['06-glad-i-dag', 1.75, 'Jaså, du är glad i dag!'],
   ['07-rod-tass-gul-tass', 5.02, 'Oj, oj, oj! En röd tass … och en gul tass!'],
-  ['08-har-du-malat', 1.60, 'Har du målat, katten?'],
+  ['08-har-du-malat', 2.19, 'Har du målat med tassarna, katten?'],
   ['09-ja-vad-kul', 1.07, 'Ja, vad kul!'],
   ['10-tassar-pa-golvet', 4.10, 'Titta, röda och gula tassar på golvet!'],
-  ['11-ska-vi-tvatta', 1.52, 'Ska vi tvätta bort färgen?'],
+  ['11-ska-vi-tvatta', 2.09, 'Ska du tvätta bort färgen från tassarna?'],
   ['12-ja-bra-ide', 1.35, 'Ja, bra idé!'],
-  ['13-bara-vatten', 3.67, 'Bara vatten. Plask, plask …'],
-  ['14-fargen-sitter-kvar', 1.99, 'Hm. Färgen sitter kvar.'],
+  ['13-bara-vatten', 3.56, 'Nu tvättar du tassarna med vatten. Plask, plask …'],
+  ['14-fargen-sitter-kvar', 2.61, 'Hm. Färgen sitter kvar på tassarna.'],
   ['15-sitter-fast', 3.42, 'Oj då. Färgen sitter visst fast.'],
   ['16-inte-roligt', 1.58, 'Mm, det är inte roligt.'],
-  ['17-vad-gor-vi-nu', 2.65, 'Hm … vad gör vi nu?'],
-  ['18-kritan-ritar-nagot', 2.27, 'Titta! Kritan ritar något.'],
+  ['17-vad-gor-vi-nu', 2.28, 'Hm … hur får vi bort färgen?'],
+  ['18-kritan-ritar-nagot', 3.29, 'Titta! Kritan ritar något på handfatet.'],
   ['19-en-tval', 3.98, 'En tvål! Varsågod, katten.'],
   ['20-luktar-gott', 2.24, 'Mm, den luktar gott!'],
   ['21-saga-tack', 1.19, 'Ska vi säga tack?'],
   ['22-tack', 0.65, 'Tack!'],
-  ['23-mycket-skum', 2.24, 'Oj! Mycket skum!'],
+  ['23-mycket-skum', 4.44, 'Du tvättar tassarna med tvål. Oj! Mycket skum!'],
   ['24-skumskagg', 2.33, 'Ha ha! Ett skumskägg!'],
   ['25-jasa-roligt', 2.42, 'Jaså, det tycker du är roligt?'],
   ['26-roda-tassen', 4.70, 'Först den röda tassen. Tvätta, tvätta … borta!'],
@@ -40,13 +40,13 @@ export const ROST = [
   ['30-lite-blatt-kvar', 3.47, 'Men lite blått är kvar. Katten vet inte var.'],
   ['31-kan-du-hjalpa', 3.61, 'Kan du hjälpa katten? Kan du se den blå fläcken?'],
   ['32-ja-dar-pa-orat', 1.96, 'Ja, där! På örat!'],
-  ['33-tvatta-borta', 2.86, 'Tvätta, tvätta … borta!'],
+  ['33-tvatta-borta', 5.02, 'Nu tvättar du örat. Tvätta, tvätta … borta!'],
   ['34-bubblor', 1.70, 'Oj! Bubblor!'],
   ['35-rod-gul-bla-plopp', 5.45, 'En röd … en gul … och en blå. Plopp!'],
-  ['36-torka-torka', 4.84, 'Torka, torka. Mmm … mjuk handduk.'],
+  ['36-torka-torka', 4.24, 'Nu torkar du tassarna med handduken. Torka, torka.'],
   ['37-vad-har-du-malat', 1.80, 'Men vad har du målat, katten?'],
-  ['38-far-vi-se', 1.80, 'Jaså? Får vi se?'],
-  ['39-kritan-ritar-igen', 2.67, 'Titta! Kritan ritar igen.'],
+  ['38-far-vi-se', 2.33, 'Jaså? Får vi se din målning?'],
+  ['39-kritan-ritar-igen', 3.39, 'Titta! Kritan ritar din målning på väggen.'],
   ['40-tassar-rod-gul-bla', 5.15, 'Tassar! En röd, en gul … och en blå!'],
   ['41-fin-malning', 3.65, 'Vilken fin målning! Tack, kritan!'],
   ['42-roligt-att-tvatta', 1.83, 'Var det roligt att tvätta tassarna?'],
@@ -58,7 +58,8 @@ export const L = n => ROST[n - 1][1];
 // ordtider i replikerna (silencedetect −35 dB + whisper, tagning A): färgen är borta på "borta", bubblorna spricker och
 // avtrycken fylls i på färgorden. Mät om om tagningen byts.
 // 06/07 och 12/13 omklippta 2026-11-25 (grind 6, qa-scen: slutet av "dag" och "idé" låg i nästa fil); FARG[7] −0,22 s
-export const BORTA = { 26: 4.04, 27: 3.93, 33: 2.16 };
+// 08 11 13 14 17 18 23 33 36 38 39: tydligare repliker, tagning 2 generation 2 (2b) 2026-11-25; BORTA[33] mätt med whisper
+export const BORTA = { 26: 4.04, 27: 3.93, 33: 4.20 };
 export const FARG = { 7: [1.98, 4.08], 35: [0.95, 2.6, 4.1], 40: [1.7, 3.1, 4.6] };
 
 const MJAU = (n, o, v) => [`mjau-gullig/mjau-gullig-${n}`, o, v];   // 1 hej, 2 förtjust/glatt svar, 3 fniss, 4 mysig suck, 5 nyfiken, 6 trumpen, 7 pratar, 8 hej då

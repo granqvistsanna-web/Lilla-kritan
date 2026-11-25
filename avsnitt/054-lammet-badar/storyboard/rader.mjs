@@ -21,7 +21,7 @@ const B = (n, b = '') => `ba-gullig/ba-gullig-${n}${b}`, FNISS = n => `ba-fniss/
 export const BORTA_T = { 27: 4.25, 28: 4.52, 29: 5.67 };
 const TORRT = n => BORTA_T[n];
 const SKUTT = { 8: [0.38, 1.33, 1.80], 16: [0.37, 1.56, 2.40] };
-const SVAR = 1.3;   // pausen där lammet svarar innan Malin reagerar
+const SVAR = 1.0;   // pausen där lammet svarar innan Malin reagerar
 
 export const RADER = [
   { id: '00', d: 1.0, plats: 'Intro (fast)', bild: 'Lilla Kritan-logotypen, 1 s. Platshållare i storyboarden', ljudtext: '–', ansikte: '–' },
@@ -29,7 +29,7 @@ export const RADER = [
   // --- Kritan ritar (papperet): badankan ---
   { id: '01a', d: 3.6, plats: 'Papperet, helbild', malin: [[1, 0.5]], ljud: [['krita-ritar/krita-ritar-1', 0.3]],
     bild: 'Kritan ritar badankans kontur i ett drag (ca 2,8 s): kroppen, huvudet, näbben som eget drag, stjärten', ljudtext: 'kritan ritar', ansikte: '–' },
-  { id: '01b', d: 1.0 + L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 1.0]],
+  { id: '01b', d: 1.0 + L(2) + 3.2, plats: 'Papperet, helbild', malin: [[2, 1.0]],
     bild: 'Konturen står kvar, kritan väntar bredvid och svajar (ingen knackning): barnet gissar', ljudtext: 'skogsljud', ansikte: '–' },
   { id: '01c', d: 0.9 + L(3) + 1.2, plats: 'Papperet → zoom in', malin: [[3, 0.9]], ljud: [['glitter/glitter-1', 0.1]],
     bild: 'Den riktiga badankan fylls i inifrån, ögat blinkar. Sista 0,8 s: zoom in i teckningen, vitt över', ljudtext: '`glitter`', ansikte: '–' },
@@ -37,14 +37,14 @@ export const RADER = [
   // --- Badrummet: hej, badet ---
   { id: '1', d: 2.4 + L(4) + 1.4, plats: 'Badrummet, helbild', malin: [[4, 2.4]],
     ljud: [['tass/tass-1', 0.6], ['tass/tass-2', 1.2], ['tass/tass-3', 1.8], [B(1), 2.6 + L(4)]],
-    bild: 'Ankan guppar i karet. Lammet trippar in från vänster, stannar och vinkar', ljudtext: '`tass`, hej (1)', ansikte: 'glad' },
+    bild: 'Ankan guppar i karet, borsten ligger på skumhögen vid kranen. Lammet går in från vänster (gångcykel, kameran följer), stannar och vinkar', ljudtext: '`tass`, hej (1)', ansikte: 'glad' },
   { id: '1b', d: 0.3 + L(5) + SVAR + L(6) + 1.0, plats: 'Halvnära lammet', malin: [[5, 0.3], [6, 0.3 + L(5) + SVAR]], ljud: [[B(2), 0.4 + L(5)]],
     bild: 'Lammet tittar mot karet och tillbaka, nickar i pausen, öronen vippar', ljudtext: 'förtjust (2) i pausen', ansikte: 'nyfiken → jätteglad' },
   { id: '2', d: 2.0 + L(7) + 1.6, plats: 'Närbild ankan (1,8 s) → lammet', malin: [[7, 2.0]], ljud: [[PIP(1), 0.5], [B(2, 'b'), 2.2 + L(7)]],
     bild: 'Klipp till ankan i karet, den piper. Tillbaka till lammet: stora glada ögon, öronen reser sig', ljudtext: '`badanka-pip`, förtjust (2b)', ansikte: 'jätteglad' },
   { id: '3', d: 0.4 + L(8) + 1.0, plats: 'Badrummet, helbild', malin: [[8, 0.4]],
     ljud: [['tass/tass-4', 0.4 + SKUTT[8][0] + 0.2], ['tass/tass-5', 0.4 + SKUTT[8][1] + 0.2], ['plask/plask-1', 0.4 + SKUTT[8][2] + 0.2]],
-    bild: 'Ett skutt upp på pallens nedre steg ("skutt"), ett på det övre ("två skutt"), ett ner i karet ("plask")', ljudtext: '`tass`, `tass`, `plask`', ansikte: 'jätteglad' },
+    bild: 'Ett skutt upp på pallens nedre steg ("skutt"), ett på det övre ("två skutt"), ett tydligt hopp ner i karet med huk och skumstänk ("plask")', ljudtext: '`tass`, `tass`, `plask`', ansikte: 'jätteglad' },
   { id: '4', d: 0.5 + L(9) + SVAR + L(10) + 1.2, plats: 'Badet', malin: [[9, 0.5], [10, 0.5 + L(9) + SVAR]], ljud: [[B(4), 0.6 + L(9)]],
     bild: 'Bara huvudet ovanför kanten, skummet runt om. I pausen blundar lammet en stund', ljudtext: 'mysig suck (4) i pausen', ansikte: 'blundar' },
   { id: '5', d: 2.2 + L(11) + 0.4 + L(12) + SVAR + L(13) + 1.0, plats: 'Badet',
@@ -57,9 +57,20 @@ export const RADER = [
     bild: 'Lammet kommer upp med en stor skumtuss mellan öronen: skumhatten', ljudtext: '`plask`, fniss 1 (`ba-fniss`)', ansikte: 'förvånad → fnissig' },
   { id: '7', d: 0.9 + L(15) + 1.2, plats: 'Halvnära badet', malin: [[15, 0.9]], ljud: [['plask/plask-4', 0.3], [B(2, 'b'), 1.0 + L(15)]],
     bild: 'Öronen vippar och skumhatten glider av åt sidan. Lammet nickar', ljudtext: '`plask`, förtjust (2b)', ansikte: 'glad' },
+
+  // --- Kritan ritar en båt (omgång 2) ---
+  { id: 'b1', d: 0.3 + L(22) + 0.3, plats: 'Halvnära badet', malin: [[22, 0.3]],
+    bild: 'Kritan kommer in uppe till höger, över badet. Lammet tittar upp', ljudtext: '–', ansikte: 'nyfiken' },
+  { id: 'b2', d: 3.0 + L(2) + 2.0, plats: 'Badet', malin: [[2, 3.0]], ljud: [['krita-ritar/krita-ritar-3', 0.0]],
+    bild: 'Kritan ritar en liten båt på skummet (ca 2,8 s). Konturen står kvar, kritan svävar: barnet gissar', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: 'b3', d: 1.0 + L(43) + 1.0, plats: 'Badet → närbild lammet', malin: [[43, 1.0]], ljud: [['glitter/glitter-3', 0.1], [B(2), 1.2 + L(43)]],
+    bild: 'Båten fylls i inifrån och guppar. Kritan flyger ut. Närbild: lammet förvånat, sedan stora glada ögon', ljudtext: '`glitter`, förtjust (2)', ansikte: 'förvånad → jätteglad' },
+  { id: 'b4', d: 1.2 + L(44) + 2.6, plats: 'Badet', malin: [[44, 1.2]],
+    ljud: [['bat-tut/bat-tut-1', 0.3], [PIP(1), 3.9], ['vagor/vagor-2', 4.1], ['plopp/plopp-1', 4.95]],
+    bild: 'Lammet knuffar båten med nosen, båten glider till ankan och tillbaka. Vågen får borsten på skumhögen vid kranen att glida ner i skummet, plopp, ingen ser det', ljudtext: '`bat-tut`, `badanka-pip`, `plopp`', ansikte: 'glad' },
   { id: '8', d: 1.0 + L(16) + 1.6, plats: 'Badrummet, helbild', malin: [[16, 1.0]],
     ljud: [['plask/plask-1', 0.3], ['tass/tass-6', 1.0 + SKUTT[16][0] + 0.2], ['tass/tass-1', 1.0 + SKUTT[16][1] + 0.2], ['tass/tass-2', 1.0 + SKUTT[16][2] + 0.2], ['droppar/droppar-1', 1.4 + L(16)]],
-    bild: 'Lammet stiger upp bakom kanten, skuttar till pallens övre steg, nedre och ner på golvet. Samtidigt glider ankan bort till karets bortre ände och in bakom den stora skumtussen, bara näbben syns', ljudtext: '`plask`, `tass` × 3, `droppar`', ansikte: 'glad' },
+    bild: 'Lammet stiger upp bakom kanten, skuttar till pallens övre steg, nedre och ner på golvet. Ankan och båten guppar kvar i badet', ljudtext: '`plask`, `tass` × 3, `droppar`', ansikte: 'glad' },
 
   // --- Problemet: blöt och platt ull, fryser ---
   { id: '9', d: 1.6 + L(17) + 1.4, plats: 'Närbild lammet', malin: [[17, 1.6]],
@@ -75,12 +86,12 @@ export const RADER = [
   // --- Kritan ritar handduken ---
   { id: '12a', d: 0.3 + L(22) + 0.3, plats: 'Badrummet', malin: [[22, 0.3]],
     bild: 'Kritan kommer in uppe till höger, mot kroken', ljudtext: '–', ansikte: 'nyfiken' },
-  { id: '12b', d: 6.5, plats: 'Krokens utsnitt', ljud: [['krita-ritar/krita-ritar-2', 0.0]],
-    bild: 'Kritan ritar en stor handduk på kroken: hängöglan, kanterna, rutorna (ca 3,5 s). Konturen står kvar, kritan svävar: barnet gissar (3 s)', ljudtext: 'kritan ritar', ansikte: '–' },
+  { id: '12b', d: 5.5, plats: 'Krokens utsnitt', ljud: [['krita-ritar/krita-ritar-2', 0.0]],
+    bild: 'Kritan ritar en stor handduk på kroken: hängöglan, kanterna, rutorna (ca 3 s). Konturen står kvar, kritan svävar: barnet gissar (2,5 s)', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '13', d: 1.0 + L(23) + 1.2, plats: 'Krokens utsnitt', malin: [[23, 1.0]], ljud: [['glitter/glitter-2', 0.1], [B(2), 1.2 + L(23)]],
     bild: 'Den riktiga handduken fylls i inifrån. Kritan flyger ut uppe till höger', ljudtext: '`glitter`, förtjust (2)', ansikte: 'jätteglad' },
-  { id: '14', d: 0.3 + L(24) + 2.5, plats: 'Halvnära lammet och handduken', malin: [[24, 0.3]], ljud: [[B(5, 'b'), 0.5 + L(24)]],
-    bild: 'Lammet tittar på handduken, öronen reser sig lite. Paus 2,5 s', ljudtext: 'nyfiken (5b)', ansikte: 'nyfiken' },
+  { id: '14', d: 0.3 + L(24) + 2.0, plats: 'Halvnära lammet och handduken', malin: [[24, 0.3]], ljud: [[B(5, 'b'), 0.5 + L(24)]],
+    bild: 'Lammet tittar på handduken, öronen reser sig lite. Paus 2 s', ljudtext: 'nyfiken (5b)', ansikte: 'nyfiken' },
   { id: '15', d: 0.2 + L(25) + 1.2, plats: 'Halvnära', malin: [[25, 0.2]], ljud: [[B(2, 'b'), 0.4 + L(25)]],
     bild: 'Lammet nickar direkt', ljudtext: 'förtjust (2b)', ansikte: 'jätteglad' },
 
@@ -102,31 +113,38 @@ export const RADER = [
   { id: '21', d: 1.4 + L(31) + SVAR + L(32) + 1.2, plats: 'Halvnära', malin: [[31, 1.4], [32, 1.4 + L(31) + SVAR]], ljud: [['puff/puff-3', 0.6], [B(4, 'b'), 1.5 + L(31)]],
     bild: 'Lammet gör ett lugnt glatt skutt, ullen gungar mjukt efter. Mysig suck i pausen', ljudtext: '`puff`, mysig suck (4b)', ansikte: 'mysig' },
 
-  // --- Var är ankan? ---
-  { id: '22', d: 1.2 + L(33) + 1.4, plats: 'Badrummet, helbild', malin: [[33, 1.2]], ljud: [[B(7, 'b'), 1.4 + L(33)]],
-    bild: 'Lammet vänder sig mot karet och tittar åt vänster, sedan åt höger. Näbben sticker fram ur skumtussen i bortre änden', ljudtext: 'frågande (7b)', ansikte: 'nyfiken' },
-  { id: '23a', d: 0.3 + L(34) + 1.8, plats: 'Badrummet, bred', malin: [[34, 0.3]],
+  // --- Borsten är borta (omgång 2) ---
+  { id: '22', d: 0.5 + L(45) + 1.0, plats: 'Närbild lammet', malin: [[45, 0.5]], ljud: [[B(3), 0.6 + L(45)]],
+    bild: 'Ullmolnet är jättefluffigt, ullen står åt alla håll. Lammet fnissar', ljudtext: 'fniss (3)', ansikte: 'fnissig' },
+  { id: '23a', d: 0.4 + L(46) + 1.2, plats: 'Närbild karets kant → lammet', malin: [[46, 0.4]], ljud: [[B(7, 'b'), 0.6 + L(46)]],
+    bild: 'Lammet tittar på kanten där borsten låg: tom (närbild). Tillbaka till lammet, frågande', ljudtext: 'frågande (7b)', ansikte: 'nyfiken' },
+  { id: '23b', d: 0.3 + L(47) + 1.6, plats: 'Badrummet, bred', malin: [[47, 0.3]],
     bild: 'Frågan till barnet, och de första sekunderna av pausen i den breda bilden', ljudtext: '–', ansikte: 'nyfiken' },
-  { id: '23b', d: 3.4, plats: 'Närbild skumtussen med näbben', ljud: [['glimt/glimt-1', 1.4]],
-    bild: 'Bara skumtussen och den orange näbben. Näbben skimrar svagt efter ca 3 s av pausen, skummet andas', ljudtext: 'tyst, `glimt`', ansikte: '–' },
-  { id: '24', d: 1.0 + L(35) + 1.2, plats: 'Närbild skumtussen', malin: [[35, 1.0]], ljud: [[PIP(1), 0.6], [B(2), 1.2 + L(35)]],
-    bild: 'Ankan glider fram ur skummet och piper', ljudtext: '`badanka-pip`, förtjust (2)', ansikte: 'jätteglad' },
-  { id: '25', d: 0.3 + L(36) + 1.2, plats: 'Närbild ankan → lammet', malin: [[36, 0.3]], ljud: [[PIP(2), 0.2], [B(1, 'b'), 0.5 + L(36)]],
-    bild: 'Ankan med droppar, sedan (mitt i raden, på "och lammet") klipp till det fluffiga lammet', ljudtext: '`badanka-pip`, nöjd (1b)', ansikte: 'glad' },
-  { id: '26', d: 1.5 + L(37) + 1.6 + L(38) + 1.0, plats: 'Halvnära lammet och karet', malin: [[37, 1.5], [38, 1.5 + L(37) + 1.6]],
-    ljud: [['puff/puff-2', 0.3], ['puff/puff-1', 1.1], [PIP(1), 1.6 + L(37)], [B(3), 1.9 + L(37)]],
-    bild: 'Lammet skakar lite på sig, en ulltuss flyger i en båge och landar på ankans huvud. Ankan piper, lammet fnissar', ljudtext: '`puff`, `badanka-pip`, fniss 3 (3)', ansikte: 'fnissig' },
-  { id: '26b', d: 0.3 + L(39) + SVAR + L(40) + 1.0, plats: 'Halvnära', malin: [[39, 0.3], [40, 0.3 + L(39) + SVAR]], ljud: [[B(2, 'b'), 0.5 + L(39)]],
-    bild: 'Lammet tittar på Malin och nickar i pausen, ankan guppar bredvid med ullhatten', ljudtext: 'förtjust (2b) i pausen', ansikte: 'jätteglad' },
+  { id: '23c', d: 3.0, plats: 'Närbild skummet', ljud: [['glimt/glimt-1', 1.4]],
+    bild: 'Bara skummet. Skaftet sticker upp och skimrar efter ca 1,4 s, skummet andas', ljudtext: 'tyst, `glimt`', ansikte: '–' },
+  { id: '24', d: 1.0 + L(35) + 1.0, plats: 'Närbild skummet → lammet', malin: [[35, 1.0]], ljud: [[B(2), 1.2 + L(35)]],
+    bild: 'Skaftet skimrar. Klipp till lammet: stora glada ögon', ljudtext: 'förtjust (2)', ansikte: 'jätteglad' },
+  { id: '25', d: 3.4 + L(48) + 1.0, plats: 'Badrummet, helbild', malin: [[48, 3.4]],
+    ljud: [['vagor/vagor-1', 0.3], [PIP(1), 1.6], ['plopp/plopp-1', 2.1], [B(2, 'b'), 3.6 + L(48)]],
+    bild: 'Ankan glider genom skummet till borsten och knuffar den till kanten. Borsten hoppar upp och glider i en båge till lammet (som handduken)', ljudtext: '`vagor`, `badanka-pip`, `plopp`, förtjust (2b)', ansikte: 'nyfiken → jätteglad' },
+  { id: '26a', d: 0.6 + L(49) + 0.8, plats: 'Halvnära', malin: [[49, 0.6]], ljud: [['borsta/borsta-1', 0.8]],
+    bild: 'Borsten går lugnt över öronen, ulltussarna blir släta och runda', ljudtext: '`borsta`', ansikte: 'blundar nöjt' },
+  { id: '26b', d: 0.6 + L(50) + 0.8, plats: 'Närbild magen → ansiktet', malin: [[50, 0.6]], ljud: [['borsta/borsta-2', 0.8], [B(4), 0.8 + L(50)]],
+    bild: 'Borsten går över magen, ullen blir slät. Närbild på det nöjda ansiktet', ljudtext: '`borsta`, mysig suck (4)', ansikte: 'mysig' },
+  { id: '26c', d: 0.6 + L(51) + 1.2, plats: 'Halvnära', malin: [[51, 0.6]], ljud: [['borsta/borsta-3', 1.2], ['tindra/tindra-3', 0.6 + L(51) - 0.3]],
+    bild: 'Borsten går runt hela lammet: ullmolnet blir slätt, runt och fint. Krit-gnistor', ljudtext: '`borsta`, `tindra`', ansikte: 'jätteglad' },
+  { id: '26d', d: 0.3 + L(38) + 0.6 + L(39) + SVAR + L(40) + 1.0, plats: 'Halvnära → närbild', malin: [[38, 0.3], [39, 0.3 + L(38) + 0.6], [40, 0.3 + L(38) + 0.6 + L(39) + SVAR]],
+    ljud: [[B(2, 'b'), 0.5 + L(38) + 0.6 + L(39)]],
+    bild: 'Lammet lägger borsten på kanten, tittar på Malin och nickar i pausen', ljudtext: 'förtjust (2b) i pausen', ansikte: 'jätteglad' },
 
   // --- Hej då ---
   { id: '27', d: 1.0 + L(41) + 1.8, plats: 'Badrummet, helbild', malin: [[41, 1.0]], ljud: [[B(8), 1.2 + L(41)], [PIP(2), 2.4 + L(41)]],
-    bild: 'Lammet vinkar (armen bakom kroppen, hela armen syns), ankan guppar med ullhatten', ljudtext: 'hej då (8), `badanka-pip`', ansikte: 'jätteglad' },
+    bild: 'Lammet vinkar (armen bakom kroppen, hela armen syns), ankan och båten guppar', ljudtext: 'hej då (8), `badanka-pip`', ansikte: 'jätteglad' },
   { id: '28', d: 0.3 + L(42) + 2.0, plats: 'Badrummet, helbild', malin: [[42, 0.3]], ljud: [[B(8, 'b'), 0.5 + L(42)]],
     bild: 'Lammet vinkar lugnt vidare', ljudtext: 'hej då (8b)', ansikte: 'glad' },
   { id: '29', d: 2.5 + 0.6, plats: 'Kritirisen', bild: 'Kritirisen drar ihop sig runt lammet och ankan, 0,6 s svart', ljudtext: 'mattan klingar ut', ansikte: 'glad' },
 ];
 
 // Receptets luft: 0,7 s extra på varje rad med en replik (inte under ritintrots kontur och gisspaus).
-export const GLES = 0.7;
+export const GLES = 0.35;
 for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLES;

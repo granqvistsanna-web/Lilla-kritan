@@ -16,7 +16,7 @@ const langd = (namn, text) => existsSync(ROSTER + namn + '.m4a')
   : (UPPSKATTAD.push(namn), gissa(text));
 export const ROST = rader.map(([namn, text]) => [namn, text, langd(namn, text)]);
 const L = n => ROST[n - 1][2];
-const PA = n => L(n) - 0.35;   // "på!" är sista ordet: plagget sitter där (mäts med whisper när rösten finns)
+const PA = n => ({ 11: 1.99, 30: 1.86, 33: 1.97, 39: 1.97 })[n];   // "på foten / på huvudet / runt halsen" börjar här i tagning 2 (tystnaden efter "…" slutar, mätt 2026-11-25)
 
 // Zebrans röst: gnagg-mjuk (027, Sannas mjukare tagningar), hej/hej då på svenska ur gnagg-gullig, nej ur gnagg-nej.
 const Z = (k, b = '') => `gnagg-mjuk/gnagg-mjuk-${k}${b ? '-' + b : ''}`;
@@ -35,7 +35,7 @@ export const RADER = [
   { id: '1b', d: 0.3 + L(5) + SVAR + L(6) + 1.0, malin: [[5, 0.3], [6, 0.3 + L(5) + SVAR]], ljud: [[Z('fortjust'), 0.4 + L(5)]], bild: 'halvnära, nickar i pausen' },
   { id: '2', d: 0.6 + L(7) + 0.4 + SVAR + L(8) + 1.0, malin: [[7, 0.6], [8, 0.6 + L(7) + 0.4 + SVAR]], ljud: [['glimt/glimt-1', 0.3], [Z('fortjust', 'b'), 0.8 + L(7) + 0.4]], bild: 'närbild fönstret med snön, klipp till zebran' },
   { id: '3', d: 0.4 + L(9) + 1.2, malin: [[9, 0.4]], ljud: [[Z('fortjust'), 0.4 + L(9) - 0.6]], bild: 'halvnära, nickar, glatt skutt på "Ja, vad kul!"' },
-  { id: '4', d: 0.4 + L(10) + 2.0 + 1.0, malin: [[10, 0.4]], ljud: [[Z('nyfiken'), 2.4], [Z('fortjust', 'b'), 0.4 + L(10) - 1.6]], bild: 'helbild → närbild kroken → den blå strumpan' },
+  { id: '4', d: 0.4 + L(10) + 1.0, malin: [[10, 0.4]], ljud: [[Z('nyfiken'), 2.4], [Z('fortjust', 'b'), 0.4 + 7.3]], bild: 'helbild → närbild kroken → den blå strumpan' },   // replik 10 har 2 s paus efter "… först?" (7,0 s in i filen): zebran svarar där
 
   // --- Strumpan, och den andra är borta ---
   { id: '5', d: 1.4 + L(11) + 2.5, malin: [[11, 1.4]], ljud: [['strumpa/strumpa-1', 1.4 + PA(11) - 0.3], [Z('fortjust'), 1.6 + L(11)]], bild: 'närbild benen, strumpan glider på' },

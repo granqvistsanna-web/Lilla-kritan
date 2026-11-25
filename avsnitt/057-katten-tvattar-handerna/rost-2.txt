@@ -1,0 +1,11 @@
+08-har-du-malat  [curious] Har du målat med tassarna, katten?
+11-ska-vi-tvatta  [cheerfully] Ska du tvätta bort färgen från tassarna?
+13-bara-vatten  [warmly] Nu tvättar du tassarna med vatten. Plask, plask …
+14-fargen-sitter-kvar  [curious] Hm. Färgen sitter kvar på tassarna.
+17-vad-gor-vi-nu  [curious] Hm … hur får vi bort färgen?
+18-kritan-ritar-nagot  [happy] Titta! Kritan ritar något på handfatet.
+23-mycket-skum  [happy] Du tvättar tassarna med tvål. Oj! Mycket skum!
+33-tvatta-borta  [happy] Nu tvättar du örat. Tvätta, tvätta … borta!
+36-torka-torka  [happy sigh] Nu torkar du tassarna med handduken. Torka, torka.
+38-far-vi-se  [curious] Jaså? Får vi se din målning?
+39-kritan-ritar-igen  [happy] Titta! Kritan ritar din målning på väggen.

@@ -129,7 +129,7 @@ Alla ljud finns, inga krediter. `plask` 1–4, `droppar-1`, `tass` 1–6, `huttr
 - Ankan gömmer sig bakom skumtussen vid kranen med näbben framme (närbilderna 23a–24).
 - **Scenen (grind 6, snabb förhandsvisning) byggs först när animatiken är godkänd.**
 
-## Omgång 2: förslag (Sanna 2026-11-25, väntar på ja)
+## Omgång 2 (Sanna 2026-11-25: "Yes, go ahead"; byggd samma dag)
 
 Sannas feedback på förhandsvisningen: *"maybe needs a brush to make ull flat. dont throw hatt on anka. needs some polish and faster pace"*, *"something a bit more engaging maybe something getting lost in bathtub"* (valde: **borsten försvinner i badet**), *"maybe play with boat toy in bath and kritan ritar"*, *"better rigs walking in and jumping in bath more reactions, close crops and face expressions"*.
 
@@ -154,6 +154,54 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 **Rörelsen (Sanna: *"better rigs walking in and jumping in bath"*):** lammet går in med riggens gångcykel (`lk-figur`), hoppar upp på pallen och ner i badet med tydlig huk, uppskjut och landning (plask och skumstänk), lugnt men tydligt.
 
 **Behövs:** borsten (ny sak, 4 bilder i Flow som du väljer bland, gratis) och ca 7 nya repliker i en kort ElevenLabs-tagning (krediter). Båten finns redan.
+
+### Så blev det (2026-11-25)
+
+- **Repliker 43–51** inspelade i en tagning (`rost-2.txt`, 373 krediter, tagning a använd, b sparad i `produktion/ljud-original/roster/054-lammet-badar/malin-tagning-2b.mp3`). Ordtiderna för borstdragen mätta med whisper.
+- **Tempo:** luft 0,7 → 0,35 s, svarspaus 1,3 → 1,0 s, ritintrots gisspaus 4,0 → 3,2 s, handdukens rad 6,5 → 5,5 s. Filmen blir ändå längre (4:18) eftersom båten och borsten kom till.
+- **Gången:** lammet går in med riggens stegcykel (`L.steg`, som 045) och kameran glider ut från lammet till hela badrummet. Hoppet ner i badet är högre, med plask (droppar och skumbitar). Hoppet ur badet är ett långt hopp till pallen.
+- **Båten:** lammet glider lite åt höger, kritan ritar båten mellan ankan och lammet (041:s kontur och bild). Lammet knuffar båten med nosen på "tut, tut", båten glider till ankan, *bonk*, ankan gungar och piper. Lammet knuffar, inte blåser.
+- **Borsten** ligger på skumhögen vid kranen från början (inte på vänstra kanten: där satt ankan och båten). Vågen får den att glida ner bakom skumhögen, *plopp*. Skaftet sticker upp ur skummet till vänster om högen och skimrar.
+- **Ankan hjälper:** ankan skjuter båten framför sig till skaftet (annars hade den åkt genom båten), båten knuffar borsten, borsten hoppar upp och glider i en båge till lammet, som handduken gör.
+- **Borsta tre gånger:** ett drag på varje "borsta". Ullen är tovig efter torkningen (tussarna lite huller om buller, små tussar står ut) och blir slät tuss för tuss där borsten går: öronen, magen, hela ullmolnet. Krit-gnistor efter sista draget. Sedan glider borsten tillbaka till skumhögen.
+- **Ullen när den torkar** (Sanna: *"better animation for lammets ull on dry"*): tussarna poppar ut en och en med en liten mjuk översväng (öronen, magen), och ullmolnet kommer i tre puffar som ljuden: toppen, sidorna, nertill. Kroppen sväller lite på varje puff.
+- **Kameran:** efter varje klipp glider den långsamt in (högst 4,5 %, mjuk start, som `push` i kamera3d). Inga sidoåkningar med parallax: badrummets platta har golvet i sig, så fötterna hade glidit på golvet.
+- **Såpbubblor** stiger ur skummet hela tiden i badrummet.
+- Storyboardens stillbilder tas nu ur kodscenen själv (`bygg.mjs`), mitt i varje rad.
+
+### Tydligare repliker (förslag, väntar på Sannas ja)
+
+Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").
+
+| Nr | Nu | Förslag |
+|---|---|---|
+| 05 | [cheerfully] Vill du bada? | [cheerfully] Vill du bada i badkaret? |
+| 08 | [cheerfully] Ett skutt … två skutt … plask! | [cheerfully] Upp på pallen … ett skutt … två skutt … plask, ner i badet! |
+| 09 | [curious] Är det varmt? | [curious] Är vattnet varmt? |
+| 10 | [happy sigh] Mm … varmt och skönt. | [happy sigh] Mm … varmt och skönt vatten. |
+| 11 | [giggles] Ni pratar visst med varandra. | [giggles] Lammet och ankan pratar med varandra. |
+| 14 | [laughs] Oj! En skumhatt! | [laughs] Oj! Skum på huvudet! En skumhatt! |
+| 15 | [cheerfully] Nu är du ren! Nu går vi upp. | [cheerfully] Nu är du ren! Nu kliver vi upp ur badet. |
+| 16 | [cheerfully] Ett skutt … två skutt … ner! | [cheerfully] Ett skutt … två skutt … ner på golvet! |
+| 18 | [gently] Och platt. | [gently] Och ullen är platt. |
+| 21 | [curious] Hm … vad gör vi nu? | [curious] Hm … hur blir ullen torr? |
+| 26 | [happy sigh] Åh, vad mjuk! | [happy sigh] Åh, vad mjuk handduken är! |
+| 27 | [warmly] Först öronen. Blött … blött … torrt! | [warmly] Först torkar vi öronen. Blött … blött … torrt! |
+| 28 | [warmly] Och magen. Blött … blött … torrt! | [warmly] Nu torkar vi magen. Blött … blött … torrt! |
+| 29 | [playfully] Och sist … hela lammet! Blött … blött … torrt! | [playfully] Och sist torkar vi hela lammet! Blött … blött … torrt! |
+| 30 | [surprised] Oj! Ett ullmoln! | [surprised] Oj! Ullen är torr och fluffig! Ett ullmoln! |
+| 31 | [warmly] Är det skönt nu? | [warmly] Är det skönt att vara torr? |
+| 35 | [happy] Ja, där! I skummet! | [happy] Ja, där är borsten! I skummet! |
+| 38 | [happy] Oj, så fint! | [happy] Oj, vilken fin och slät ull! |
+| 45 | [laughs] Oj, vad fluffigt! Nu behöver vi borsten. | [laughs] Oj, ullen står åt alla håll! Nu behöver vi borsten. |
+| 48 | [happy] Ankan hjälper till! Tack, ankan! | [happy] Ankan hittade borsten! Tack, ankan! |
+| 49 | [warmly] Borsta … borsta … så fint! | [warmly] Vi borstar öronen. Borsta … borsta … så fint! |
+| 50 | [warmly] Borsta … borsta … så mjukt! | [warmly] Nu borstar vi magen. Borsta … borsta … så mjukt! |
+| 51 | [warmly] Och sist … borsta … borsta … så fint! | [warmly] Och sist borstar vi hela ullen. Borsta … borsta … så fint! |
+
+**Behålls som de är:** 01–03 och 22 (*"Kritan ritar …"*, *"Hm … vad blir det nu?"*, *"Titta! Kritan ritar något."*) eftersom barnet ska gissa vad kritan ritar, och att säga saken förstör gissningen. 07, 17, 19, 23, 24, 32, 39–44, 46, 47 säger redan vad som händer. 06, 13, 20, 25, 40 är svar och reaktioner (*"Ja, vad kul!"*, *"Tack!"*), och 12 är frågan till barnet om ankans pip.
+
+**Kostnad:** 23 repliker, ca 1 100 tecken, alltså ca 1 100 krediter i en tagning. Replik 49–51 spelades in i dag och skulle spelas in igen. Raderna i `rader.mjs` räknar om sina tider av sig själva. Skuttens ordtider i 08 och 16 och "torrt!" i 27–29 mäts om med whisper.
 
 ## Lösningar från förlagorna (020, 023, 041), 2026-11-25
 

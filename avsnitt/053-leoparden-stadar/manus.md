@@ -58,39 +58,39 @@ Kritan ritar **trekanten**, inte leoparden (Sanna 2026-11-25). Konturen i ett lu
 
 | # | Bild (en rörelse) | Malin säger | Leoparden svarar, ljud |
 |---|---|---|---|
-| 01 | Papperet: kritan ritar trekantens kontur | Kritan ritar … *(paus)* Hm … vad blir det nu? *(gisspaus)* Oj! En trekant! | krita-ritar, skogsljud, `glitter` |
+| 01 | Papperet: kritan ritar trekantens kontur | Kritan ritar … *(paus)* Hm … vad ritar kritan? *(gisspaus)* Oj! En trekant! | krita-ritar, skogsljud, `glitter` |
 | 1 | Helbild. Klossarna ligger på golvet: cirkeln vid fönstret, fyrkanten mitt på golvet, trekanten framför sängen. Korgen full vid väggen. Leoparden kommer in från vänster, stannar och vinkar | Hej, leoparden! Hej, hej! | `smasteg`, `spinn-gullig-1` (hej) |
 | 1b | Halvbild. Leoparden tittar på klossarna, sedan på kameran, och nickar | 🆕 Har du lekt med klossarna? *(paus: leoparden svarar)* 🆕 Ja, vad kul! | `spinn-gullig-2` (förtjust) i pausen |
 | 2 | Leoparden tittar ner på golvet, sedan på kameran | Oj, oj, oj! Klossar överallt! | `spinn-gullig-3` (kort fniss) |
 | 3a | Närbild på cirkeln, den glimtar | En cirkel … | `glimt` |
 | 3b | Närbild på fyrkanten, den glimtar | en fyrkant … | `glimt` |
 | 3c | Närbild på trekanten, den glimtar | och en trekant! | `glimt` |
-| 4 | Halvbild. Leoparden nickar två gånger | ✏️ Ska vi städa, leoparden? *(paus: leoparden svarar)* 🆕 Ja, bra idé! | `spinn-gullig-2b` (förtjust) i pausen |
-| 5 | Helbild. Leoparden puffar cirkeln mot korgen. Cirkeln glider upp på leksakshögen, vickar och glider ner igen framför korgen | *(när den landat)* Oj då! | `duns` lågt |
+| 4 | Halvbild. Leoparden nickar två gånger | ✏️ Ska vi städa undan klossarna? *(paus: leoparden svarar)* 🆕 Ja, bra idé! | `spinn-gullig-2b` (förtjust) i pausen |
+| 5 | Helbild. Leoparden puffar cirkeln mot korgen. Cirkeln glider upp på leksakshögen, vickar och glider ner igen framför korgen | *(när den landat)* Oj då! Cirkeln trillade ner. | `duns` lågt |
 | 6 | Närbild på korgen: nallen, bollen, bilen, hinken och båten ligger i en hög | Korgen är full. | – |
-| 7 | Helbild. Leoparden puffar fyrkanten. Samma sak: upp, vickar, ner igen | Klossarna får inte plats. | `duns` lågt |
-| 8 | Närbild. Öronen faller, huvudet lutar | *(efter reaktionen)* 🆕 Nej, det är inte så lätt. | `spinn-gullig-6` (trumpen) före repliken |
-| 9 | Halvbild. Leoparden tittar på kameran | Hm … vad gör vi nu? | – |
-| 10 | Klipp till golvet bredvid leoparden. Kritan kommer in och ritar lådans kontur (4 s), gisspaus 3 s, lådan fylls i inifrån | Titta! Kritan ritar något. *(gisspaus 3 s)* En låda! Med tre hål. | krita-ritar, `glitter` |
-| 11 | **Närbild.** Leoparden med kawaii-ögon (`kawaii`), öronen reser sig, svansen vippar | Varsågod, leoparden. | `spinn-gullig-2b` |
+| 7 | Helbild. Leoparden puffar fyrkanten. Samma sak: upp, vickar, ner igen | Klossarna får inte plats i korgen. | `duns` lågt |
+| 8 | Närbild. Öronen faller, huvudet lutar | *(efter reaktionen)* 🆕 Nej, fyrkanten trillade också ner. | `spinn-gullig-6` (trumpen) före repliken |
+| 9 | Halvbild. Leoparden tittar på kameran | Hm … var ska klossarna vara? | – |
+| 10 | Klipp till golvet bredvid leoparden. Kritan kommer in och ritar lådans kontur (4 s), gisspaus 3 s, lådan fylls i inifrån | Titta! Kritan ritar något till klossarna. *(gisspaus 3 s)* En låda! Med tre hål. | krita-ritar, `glitter` |
+| 11 | **Närbild.** Leoparden med kawaii-ögon (`kawaii`), öronen reser sig, svansen vippar | Varsågod, leoparden. Lådan är till klossarna. | `spinn-gullig-2b` |
 | 11b | Närbild. Leoparden tittar in i hålen, sedan på kameran, öronen reser sig | 🆕 Tycker du om lådan? *(paus: leoparden svarar)* 🆕 Ja, den är så fin! | `spinn-gullig-7` (pratar) i pausen |
 | 12 | Leoparden tittar på lådan, sedan på kameran | Ska vi säga tack? *(paus 2,5 s)* | `spinn-gullig-5` (nyfiken) |
 | 13 | Leoparden nickar direkt. Kritan flyger ut | Tack, kritan! | `spinn-gullig-2` |
 | 14 | Helbild. Leoparden tittar ner på trekanten framför sig och sänker tassen mot den | 🆕 Vad ska du göra med trekanten? *(paus: leoparden svarar)* | `spinn-gullig-5b` (nyfiken) i pausen |
-| 15 | Trekanten följer med tassen upp och lägger sig på huvudet som en hatt | *(när den sitter)* Oj! En hatt! | `spinn-fniss` |
+| 15 | Trekanten följer med tassen upp och lägger sig på huvudet som en hatt | *(när den sitter)* Oj! Trekanten blev en hatt! | `spinn-fniss` |
 | 16 | Närbild. Leoparden med hatten, blinkar, öronen vippar | En spetsig hatt! | `spinn-gullig-4` (mysig suck) |
-| 17 | Helbild. Glatt skutt med blundande ögon. Hatten glider av, över golvet och in under täcket. Ett grönt hörn sticker fram | *(när den stannat)* Hoppsan! | `spinn-fniss` (annan tagning), `glid` |
+| 17 | Helbild. Glatt skutt med blundande ögon. Hatten glider av, över golvet och in under sängen. Ett grönt hörn sticker fram | *(när den stannat)* Hoppsan! Hatten ramlade av. | `spinn-fniss` (annan tagning), `glid` |
 | 18 | Halvbild. Leoparden vänder sig mot lådan (riktningsposen, inte runt) | Nu städar vi. Först cirkeln. | musiken börjar lågt |
-| 19 | Helbild. Leoparden puffar cirkeln. Den glider upp och stannar på det trekantiga hålet, vickar | Hm … inte där. | `spinn-gullig-5` |
-| 20 | Närbild på lådan. Cirkeln glider till det runda hålet och sjunker ner | Ner i hålet … plopp! | `plopp`, `glitter` |
-| 20b | **Närbild.** Leoparden ser stolt ut (`stolt`), svansen vippar, ett litet glatt skutt | *(när den landat)* 🆕 Ja, där passade den! | `spinn-gullig-2` före repliken |
-| 21 | Närbild på fyrkanten när den nämns, sedan helbild: puff, fyrkanten glider rakt till sitt hål | Och fyrkanten. | `glimt` |
-| 22 | Närbild på lådan, fyrkanten sjunker ner | Ner i hålet … plopp! | `plopp`, `glitter`, `spinn-gullig-3` |
+| 19 | Helbild. Leoparden puffar cirkeln. Den glider upp och stannar på det trekantiga hålet, vickar | Hm … cirkeln passar inte där. | `spinn-gullig-5` |
+| 20 | Närbild på lådan. Cirkeln glider till det runda hålet och sjunker ner | Cirkeln ner i det runda hålet … plopp! | `plopp`, `glitter` |
+| 20b | **Närbild.** Leoparden ser stolt ut (`stolt`), svansen vippar, ett litet glatt skutt | *(när den landat)* 🆕 Ja, cirkeln passade! | `spinn-gullig-2` före repliken |
+| 21 | Närbild på fyrkanten när den nämns, sedan helbild: puff, fyrkanten glider rakt till sitt hål | Nu tar du fyrkanten. | `glimt` |
+| 22 | Närbild på lådan, fyrkanten sjunker ner | Fyrkanten ner i det fyrkantiga hålet … plopp! | `plopp`, `glitter`, `spinn-gullig-3` |
 | 23 | Närbild på det tomma trekantiga hålet, sedan halvbild: leoparden tar tassen till huvudet, hatten är borta. Förvånad min | Och nu trekanten … Oj! Var är trekanten? | `spinn-gullig-5b` |
 | 24 | Leoparden tittar åt vänster, sedan åt höger | Leoparden vet inte var. | `spinn-gullig-7` (frågande prat) |
 | 25 | Helbild för frågan, sedan klipp till närbild under sängen där hörnet sticker fram. Efter 3 s skimrar det svagt | Kan du hjälpa leoparden? Kan du se var trekanten är? *(paus 5 s)* | tyst, musiken nedtonad |
 | 26 | Närbild, hörnet skimrar tydligt | Ja, där! Under sängen! | `tindra`, `spinn-gullig-2` |
-| 27 | Helbild. Leoparden sträcker tassen, trekanten glider fram och i en båge till lådan, sjunker ner. Klipp till **närbild** på leoparden: `jatteglad`, öronen upp, svansen vippar (1,5 s reaktion) | Ner i hålet … plopp! | `glid`, `plopp`, `glitter` |
+| 27 | Helbild. Leoparden sträcker tassen, trekanten glider fram och i en båge till lådan, sjunker ner. Klipp till **närbild** på leoparden: `jatteglad`, öronen upp, svansen vippar (1,5 s reaktion) | Trekanten ner i det trekantiga hålet … plopp! | `glid`, `plopp`, `glitter` |
 | 28 | Helbild. Golvet är tomt, lådan står med alla klossar. Glatt skutt | Nu är det städat! | `spinn-gullig-2b` |
 | 29 | Närbild på lådan, de tre hålen glimtar ett i taget | Cirkeln, fyrkanten och trekanten. Alla i lådan. | `glimt` ×3 |
 | 30 | Halvbild. Leoparden puffar lådan två gånger, den skramlar (2–3 s innan Malin). Sedan **närbild** på leoparden: `fnissig` | Hör du? Det skramlar! | `skrammel` ×2, `spinn-fniss` |
@@ -109,7 +109,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 ```
 [warmly] Kritan ritar …
-[curious] Hm … vad blir det nu?
+[curious] Hm … vad ritar kritan?
 [happy] Oj! En trekant!
 [happy] Hej, leoparden! Hej, hej!
 [curious] Har du lekt med klossarna?
@@ -118,35 +118,35 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] En cirkel …
 [warmly] en fyrkant …
 [happy] och en trekant!
-[cheerfully] Ska vi städa, leoparden?
+[cheerfully] Ska vi städa undan klossarna?
 [happy] Ja, bra idé!
-[surprised] Oj då!
+[surprised] Oj då! Cirkeln trillade ner.
 [curious] Korgen är full.
-[warmly] Klossarna får inte plats.
-[gently] Nej, det är inte så lätt.
-[curious] Hm … vad gör vi nu?
-[happy] Titta! Kritan ritar något.
+[warmly] Klossarna får inte plats i korgen.
+[gently] Nej, fyrkanten trillade också ner.
+[curious] Hm … var ska klossarna vara?
+[happy] Titta! Kritan ritar något till klossarna.
 [happy] En låda! Med tre hål.
-[warmly] Varsågod, leoparden.
+[warmly] Varsågod, leoparden. Lådan är till klossarna.
 [curious] Tycker du om lådan?
 [happy] Ja, den är så fin!
 [warmly] Ska vi säga tack?
 [happy] Tack, kritan!
 [curious] Vad ska du göra med trekanten?
-[laughs] Oj! En hatt!
+[laughs] Oj! Trekanten blev en hatt!
 [happy] En spetsig hatt!
-[chuckles] Hoppsan!
+[chuckles] Hoppsan! Hatten ramlade av.
 [cheerfully] Nu städar vi. Först cirkeln.
-[curious] Hm … inte där.
-[playfully] Ner i hålet … plopp!
-[happy] Ja, där passade den!
-[cheerfully] Och fyrkanten.
-[playfully] Ner i hålet … plopp!
+[curious] Hm … cirkeln passar inte där.
+[playfully] Cirkeln ner i det runda hålet … plopp!
+[happy] Ja, cirkeln passade!
+[cheerfully] Nu tar du fyrkanten.
+[playfully] Fyrkanten ner i det fyrkantiga hålet … plopp!
 [surprised] Och nu trekanten … Oj! Var är trekanten?
 [curious] Leoparden vet inte var.
 [warmly] Kan du hjälpa leoparden? Kan du se var trekanten är?
 [happy] Ja, där! Under sängen!
-[playfully] Ner i hålet … plopp!
+[playfully] Trekanten ner i det trekantiga hålet … plopp!
 [happy] Nu är det städat!
 [happy sigh] Cirkeln, fyrkanten och trekanten. Alla i lådan.
 [laughs] Hör du? Det skramlar!
@@ -254,6 +254,33 @@ Genomgång av 027 (huvudförlagan), 037, 026, 040, 028 och 050 innan scenen bygg
 | **Vinka** | – | `R.vink`, med armen bakom kroppen snett ut. |
 
 **Övrigt:** mät de vita kanterna på varje urklipp (ca 1 % av höjden, `-tunn.png`, skillen `vita-kanter`). Utsnitten tas ur `format/bildutsnitt.md`. Det som leoparden håller syns alltid helt i bild. Varje händelse får sitt reaktionsslag innan nästa klipp.
+
+## Tydligare repliker (inspelade, tagning 2b, godkända av Sanna 2026-11-25)
+
+Sannas instruktion: Malin säger rakt ut vad som händer, med handlingen och saken. Taggarna står kvar. De 16 ändrade replikerna spelas in igen när Sanna har godkänt listan. De andra 30 är redan tydliga och står kvar.
+
+| Fil | Rad | Gammal | Ny |
+|---|---|---|---|
+| 02 | 01 | [curious] Hm … vad blir det nu? | [curious] Hm … vad ritar kritan? |
+| 11 | 4 | [cheerfully] Ska vi städa, leoparden? | [cheerfully] Ska vi städa undan klossarna? |
+| 13 | 5 | [surprised] Oj då! | [surprised] Oj då! Cirkeln trillade ner. |
+| 15 | 7 | [warmly] Klossarna får inte plats. | [warmly] Klossarna får inte plats i korgen. |
+| 16 | 8 | [gently] Nej, det är inte så lätt. | [gently] Nej, fyrkanten trillade också ner. |
+| 17 | 9 | [curious] Hm … vad gör vi nu? | [curious] Hm … var ska klossarna vara? |
+| 18 | 10 | [happy] Titta! Kritan ritar något. | [happy] Titta! Kritan ritar något till klossarna. |
+| 20 | 11 | [warmly] Varsågod, leoparden. | [warmly] Varsågod, leoparden. Lådan är till klossarna. |
+| 26 | 15 | [laughs] Oj! En hatt! | [laughs] Oj! Trekanten blev en hatt! |
+| 28 | 17 | [chuckles] Hoppsan! | [chuckles] Hoppsan! Hatten ramlade av. |
+| 30 | 19 | [curious] Hm … inte där. | [curious] Hm … cirkeln passar inte där. |
+| 31 | 20 | [playfully] Ner i hålet … plopp! | [playfully] Cirkeln ner i det runda hålet … plopp! |
+| 32 | 20b | [happy] Ja, där passade den! | [happy] Ja, cirkeln passade! |
+| 33 | 21 | [cheerfully] Och fyrkanten. | [cheerfully] Nu tar du fyrkanten. |
+| 34 | 22 | [playfully] Ner i hålet … plopp! | [playfully] Fyrkanten ner i det fyrkantiga hålet … plopp! |
+| 39 | 27 | [playfully] Ner i hålet … plopp! | [playfully] Trekanten ner i det trekantiga hålet … plopp! |
+
+"Hoppsan! Hatten ramlade av." säger inte var hatten tar vägen, så barnet får fortfarande leta i rad 25.
+
+**Att rätta oavsett:** rad 17 säger att hatten glider "in under täcket", men rad 25–26 och Malins replik säger "under sängen". Förslag: hatten glider in under sängen (under sängkanten, `BED.under`), så att bilden och repliken säger samma sak.
 
 ## Öppet
 

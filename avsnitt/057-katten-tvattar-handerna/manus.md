@@ -1,6 +1,6 @@
 # Avsnitt 057 – Katten tvättar händerna (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-25 (Sanna: *"Ja, kör grind 2"*). ✅ De 10 samtalsreplikerna (✱) godkända 2026-11-25 (Sanna via planeringssessionen: *"godkänn de nya replikerna i alla sex manus"*). ✅ Grind 2: penseln tagning 3 (Sanna), `assets/rekvisita/pensel/cut/pensel.png` med tunn kant och `pensel-kontur.json`; tvålen finns redan (i kod, `rekvisita/tval.md`) och `rekvisita/malningen.md` (i kod). README-raderna i `rekvisita/README.md` läggs till när sakerna är valda (delad fil). Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med katten, katten svarar med mjau, öron och svans. Förlaga: 023 Björnen tvättar händerna (handfatet, katten bakom det, skumtussen), men med ett annat problem och en annan vändning. Grind 3: tagning 1 (ElevenLabs 2026-11-25, `produktion/ljud-original/roster/katten-tvattar-handerna/malin-tagning-1.mp3`, generation 2 sparad som `-1b.mp3`) delad till `assets/ljud/roster/katten-tvattar-handerna/` (45 filer, gränserna 01/02, 09/10, 27/28 och 35/36 rättade för hand), normaliserad till −3 dBFS, längderna i `rost-langder.txt`. Generation 2 delad till `produktion/ljud-original/roster/katten-tvattar-handerna/tagning-1b/` (45 filer, rena gränser), också −3 dBFS. Provlyssna A (generation 1) mot B (generation 2) rad för rad: `ljud/provlyssna-malin-a-b.m4a` med tiderna i `ljud/provlyssna-malin-a-b.txt`. ✅ Grind 3: Sanna valde **A rakt igenom** (2026-11-25). Filerna i `assets/ljud/roster/katten-tvattar-handerna/` är generation 1, längderna i `rost-langder.txt` gäller. ✅ Grind 4 (ljuden, se *Kattens röst och ljuden*). ✅ Grind 5 godkänd 2026-11-25 (Sanna: *"animatiken är bra"*): `storyboard/animatik.mp4`, 4:18, 46 bilder, med rad 6, 7 och 9 rättade efter förlagorna (strålen slutar på tassen, tvålen ritas i närbild). Grind 6: scenen `scener/badet/index.html` byggd 2026-11-25 (standardintrot, standardritintrot, kranen omritad i kod), kontrollerad mot reglerna (se *Kontroll mot regler*), förhandsvisning `film/avsnitt-057.mp4` (`--snabb`). Nästa: Sannas godkännande av rörelser och klipp, sedan slutrendering.
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-25 (Sanna: *"Ja, kör grind 2"*). ✅ De 10 samtalsreplikerna (✱) godkända 2026-11-25 (Sanna via planeringssessionen: *"godkänn de nya replikerna i alla sex manus"*). ✅ Grind 2: penseln tagning 3 (Sanna), `assets/rekvisita/pensel/cut/pensel.png` med tunn kant och `pensel-kontur.json`; tvålen finns redan (i kod, `rekvisita/tval.md`) och `rekvisita/malningen.md` (i kod). README-raderna i `rekvisita/README.md` läggs till när sakerna är valda (delad fil). Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med katten, katten svarar med mjau, öron och svans. Förlaga: 023 Björnen tvättar händerna (handfatet, katten bakom det, skumtussen), men med ett annat problem och en annan vändning. Grind 3: tagning 1 (ElevenLabs 2026-11-25, `produktion/ljud-original/roster/katten-tvattar-handerna/malin-tagning-1.mp3`, generation 2 sparad som `-1b.mp3`) delad till `assets/ljud/roster/katten-tvattar-handerna/` (45 filer, gränserna 01/02, 09/10, 27/28 och 35/36 rättade för hand), normaliserad till −3 dBFS, längderna i `rost-langder.txt`. Generation 2 delad till `produktion/ljud-original/roster/katten-tvattar-handerna/tagning-1b/` (45 filer, rena gränser), också −3 dBFS. Provlyssna A (generation 1) mot B (generation 2) rad för rad: `ljud/provlyssna-malin-a-b.m4a` med tiderna i `ljud/provlyssna-malin-a-b.txt`. ✅ Grind 3: Sanna valde **A rakt igenom** (2026-11-25). Filerna i `assets/ljud/roster/katten-tvattar-handerna/` är generation 1, längderna i `rost-langder.txt` gäller. ✅ Grind 4 (ljuden, se *Kattens röst och ljuden*). ✅ Grind 5 godkänd 2026-11-25 (Sanna: *"animatiken är bra"*): `storyboard/animatik.mp4`, 4:18, 46 bilder, med rad 6, 7 och 9 rättade efter förlagorna (strålen slutar på tassen, tvålen ritas i närbild). Grind 6: scenen `scener/badet/index.html` byggd 2026-11-25 (standardintrot, standardritintrot, kranen omritad i kod), kontrollerad mot reglerna (se *Kontroll mot regler*), förhandsvisning `film/avsnitt-057.mp4` (`--snabb`), ombyggd med de 11 tydligare replikerna (tagning 2b, se *Tydligare repliker*). Nästa: Sannas godkännande av rörelser och klipp, sedan slutrendering.
 
 **Skillnaden mot 023:** björnen *ville inte* och gömde tassarna. Katten *vill*, men **färgen sitter fast**: bara vatten hjälper inte. Kritan ritar tvålen, och skummet blir rött och gult när tassarna tvättas. Ingen hal tvål, ingen klapp, ingen ritad handduk. I stället ett skumskägg, färgade bubblor, och på slutet visar kritan vad katten har målat.
 
@@ -55,21 +55,21 @@ Kritan ritar **en pensel**, inte katten (Sanna 2026-11-25): skaftet (två långa
 | 1 | Helbild, badrummet. Katten trippar in, röda och gula tassavtryck efter sig, stannar och vinkar | Hej, katten! Hej, hej! | `tass`, mjau hej |
 | 1b ✱ | Halvbild, katten tittar på oss, svansen vippar. **Pausen:** glatt mjau, öronen upp | Hur är det, katten? *(paus: glatt mjau)* Jaså, du är glad i dag! | glatt mjau |
 | 2 | Närbild, katten håller upp tassarna: en röd, en gul | Oj, oj, oj! En röd tass … och en gul tass! | förtjust mjau |
-| 3 | Halvbild, katten nickar stolt, svansen vippar | Har du målat, katten? *(paus: stolt trill, nick)* | `mjau-trill` (stolt) |
+| 3 | Halvbild, katten nickar stolt, svansen vippar | Har du målat med tassarna, katten? *(paus: stolt trill, nick)* | `mjau-trill` (stolt) |
 | 3b ✱ | Samma, katten håller upp tassarna lite igen | Ja, vad kul! | – |
 | 4 | Helbild, avtrycken på golvet, katten tittar ner på dem | Titta, röda och gula tassar på golvet! | fniss-mjau |
-| 5 | Katten tittar mot handfatet | Ska vi tvätta bort färgen? *(paus: glatt mjau, nick)* | glatt mjau |
+| 5 | Katten tittar mot handfatet | Ska du tvätta bort färgen från tassarna? *(paus: glatt mjau, nick)* | glatt mjau |
 | 5b ✱ | Katten kliver upp på pallen bakom handfatet, kranen börjar rinna | Ja, bra idé! | `tass`, `kran` |
-| 6 | Närbild, tassarna under vattnet, droppar. Färgen sitter kvar | Bara vatten. Plask, plask … | `kran`, `plask` mjukt |
-| 7 | Samma, katten tittar på tassarna, öronen sjunker | Hm. Färgen sitter kvar. | frågande mjau |
+| 6 | Närbild, tassarna under vattnet, droppar. Färgen sitter kvar | Nu tvättar du tassarna med vatten. Plask, plask … | `kran`, `plask` mjukt |
+| 7 | Samma, katten tittar på tassarna, öronen sjunker | Hm. Färgen sitter kvar på tassarna. | frågande mjau |
 | 8 | Katten skakar tassarna, droppar flyger, färgen kvar. Kranen stängs | Oj då. Färgen sitter visst fast. *(paus: trumpet mjau, öronen ner)* | `plupp` ×3, trumpet mjau |
-| 8b ✱ | Närbild, katten tittar ner på tassarna, sedan på oss | Mm, det är inte roligt. *(paus 1 s)* Hm … vad gör vi nu? | – |
-| 9 | Kritan kommer in och ritar en tvål på handfatets kant: konturen, gisspaus 3 s | Titta! Kritan ritar något. | krita-ritar |
+| 8b ✱ | Närbild, katten tittar ner på tassarna, sedan på oss | Mm, det är inte roligt. *(paus 1 s)* Hm … hur får vi bort färgen? | – |
+| 9 | Kritan kommer in och ritar en tvål på handfatets kant: konturen, gisspaus 3 s | Titta! Kritan ritar något på handfatet. | krita-ritar |
 | 10 | Tvålen fylls i, glimt. Katten tittar, öronen upp | En tvål! Varsågod, katten. | `glitter`, `mjau-ooo` |
 | 10b ✱ | Närbild, katten lutar sig mot tvålen och nosar (nosen puffar), blundar. **Pausen:** mysig suck | Mm, den luktar gott! | mysig suck med spinn |
 | 11 | Katten tittar på tvålen | Ska vi säga tack? *(paus 2,5 s)* | nyfiket mjau |
 | 12 | Katten nickar direkt | Tack! | förtjust mjau |
-| 13 | Halvbild, kranen rinner, tvålen mellan tassarna, skummet växer i tre steg | Oj! Mycket skum! | `skrubb`, `kran` |
+| 13 | Halvbild, kranen rinner, tvålen mellan tassarna, skummet växer i tre steg | Du tvättar tassarna med tvål. Oj! Mycket skum! | `skrubb`, `kran` |
 | 14 | Närbild ansiktet: en skumtuss landar under hakan. Katten tittar ner på den | Ha ha! Ett skumskägg! *(paus: fniss-mjau)* | fniss-mjau |
 | 14b ✱ | Samma, katten tittar upp på oss med skägget kvar | Jaså, det tycker du är roligt? | glatt mjau |
 | 15 | Närbild röda tassen, skummet blir rosa-rött | Först den röda tassen. Tvätta, tvätta … borta! | `skrubb`, `tindra-3` på "borta" |
@@ -79,13 +79,13 @@ Kritan ritar **en pensel**, inte katten (Sanna 2026-11-25): skaftet (två långa
 | 18 | Samma, katten tittar på tassarna, sedan åt vänster och höger. Fläcken på örat syns lite | Men lite blått är kvar. Katten vet inte var. | frågande mjau |
 | 19 | Halvbild (örat syns), sedan efter ca 2 s klipp till närbild på örat: den blå fläcken. Skimrar svagt efter 3 s | Kan du hjälpa katten? Kan du se den blå fläcken? *(paus 5 s)* | tyst, `glimt-2` svagt när skimret börjar |
 | 20 | Fläcken skimrar tydligt, örat vippar | Ja, där! På örat! | `mjau-oj`, `glimt` |
-| 21 | Skumtussen svävar upp och snurrar över örat, katten blundar | Tvätta, tvätta … borta! | `skrubb`, `tindra-3` på "borta" |
+| 21 | Skumtussen svävar upp och snurrar över örat, katten blundar | Nu tvättar du örat. Tvätta, tvätta … borta! | `skrubb`, `tindra-3` på "borta" |
 | 22 | Halvbild, en röd bubbla stiger ur handfatet, sedan en gul, sedan en blå | Oj! Bubblor! | – |
 | 23 | Bubblorna spricker en i taget på orden, katten tittar efter varje | En röd … en gul … och en blå. Plopp! | `pop` ×3, fniss-mjau |
-| 24 | Droppar från tassarna. Handduken glider ner framför tassarna och upp | Torka, torka. Mmm … mjuk handduk. | `droppar`, mysig suck med spinn |
+| 24 | Droppar från tassarna. Handduken glider ner framför tassarna och upp | Nu torkar du tassarna med handduken. Torka, torka. | `droppar`, mysig suck med spinn |
 | 25 | Katten tittar mot den tomma väggen bredvid handfatet | Men vad har du målat, katten? *(paus: tre mjau)* | `mjau-gullig-7` (tre mjau) |
-| 25b ✱ | Samma, katten tittar på väggen igen | Jaså? Får vi se? | – |
-| 26 | Kritan flyger in och ritar ett papper på väggen, sedan tre tassavtryck | Titta! Kritan ritar igen. | krita-ritar |
+| 25b ✱ | Samma, katten tittar på väggen igen | Jaså? Får vi se din målning? | – |
+| 26 | Kritan flyger in och ritar ett papper på väggen, sedan tre tassavtryck | Titta! Kritan ritar din målning på väggen. | krita-ritar |
 | 27 | Papperet fylls i, avtrycken röd, gul, blå, glimt | Tassar! En röd, en gul … och en blå! | `glitter`, `mjau-ooo` |
 | 28 | Halvbild, katten och målningen, katten nickar stolt, svansen vippar | Vilken fin målning! Tack, kritan! | förtjust mjau |
 | 28b ✱ | Halvbild, katten tittar på oss | Var det roligt att tvätta tassarna? *(paus: glatt mjau, nick)* | glatt mjau |
@@ -108,22 +108,22 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hur är det, katten?
 [happy] Jaså, du är glad i dag!
 [laughs] Oj, oj, oj! En röd tass … och en gul tass!
-[curious] Har du målat, katten?
+[curious] Har du målat med tassarna, katten?
 [happy] Ja, vad kul!
 [chuckles] Titta, röda och gula tassar på golvet!
-[cheerfully] Ska vi tvätta bort färgen?
+[cheerfully] Ska du tvätta bort färgen från tassarna?
 [happy] Ja, bra idé!
-[warmly] Bara vatten. Plask, plask …
-[curious] Hm. Färgen sitter kvar.
+[warmly] Nu tvättar du tassarna med vatten. Plask, plask …
+[curious] Hm. Färgen sitter kvar på tassarna.
 [chuckles] Oj då. Färgen sitter visst fast.
 [warmly] Mm, det är inte roligt.
-[curious] Hm … vad gör vi nu?
-[happy] Titta! Kritan ritar något.
+[curious] Hm … hur får vi bort färgen?
+[happy] Titta! Kritan ritar något på handfatet.
 [happy] En tvål! Varsågod, katten.
 [happy sigh] Mm, den luktar gott!
 [warmly] Ska vi säga tack?
 [happy] Tack!
-[surprised] Oj! Mycket skum!
+[happy] Du tvättar tassarna med tvål. Oj! Mycket skum!
 [laughs] Ha ha! Ett skumskägg!
 [chuckles] Jaså, det tycker du är roligt?
 [happy] Först den röda tassen. Tvätta, tvätta … borta!
@@ -133,13 +133,13 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [curious] Men lite blått är kvar. Katten vet inte var.
 [warmly] Kan du hjälpa katten? Kan du se den blå fläcken?
 [happy] Ja, där! På örat!
-[happy] Tvätta, tvätta … borta!
+[happy] Nu tvättar du örat. Tvätta, tvätta … borta!
 [surprised] Oj! Bubblor!
 [playfully] En röd … en gul … och en blå. Plopp!
-[happy sigh] Torka, torka. Mmm … mjuk handduk.
+[happy sigh] Nu torkar du tassarna med handduken. Torka, torka.
 [curious] Men vad har du målat, katten?
-[curious] Jaså? Får vi se?
-[happy] Titta! Kritan ritar igen.
+[curious] Jaså? Får vi se din målning?
+[happy] Titta! Kritan ritar din målning på väggen.
 [happy] Tassar! En röd, en gul … och en blå!
 [warmly] Vilken fin målning! Tack, kritan!
 [warmly] Var det roligt att tvätta tassarna?
@@ -222,6 +222,26 @@ Gjord på Sannas instruktion för 052–057 (*"make sure all videos follow new r
 | **5. Lärdomar** | *Lösningar från förlagorna* följs: fläckarna följer armen, borta på ordet, riggens klapp i stället för kodarm, skummet ligger kvar, tvålen ritas i egen närbild med liten krita, kranen bara medan tassarna tvättas, handduken i båge och tillbaka, droppar från tassarna | – |
 
 **Ändrat mot den godkända animatiken:** rad 23 och 27 klipper till en närbild på reaktionen i slutet av raden (samma tider och ljud). Före och efter: `scener/badet/stills/` (23 och 27) mot `storyboard/frames/23.jpg` och `27.jpg`.
+
+## Tydligare repliker (2026-11-25, inspelade)
+
+Sanna: *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Varje replik ska säga rakt ut handlingen, saken och gärna kroppsdelen. 11 av 45 repliker ändras, v3-taggarna är kvar. De övriga 34 är redan tydliga i bilden, eller är serieregler eller reaktioner (*"Ska vi säga tack?"*, *"Ja, vad kul!"*, *"Hm … vad blir det nu?"*).
+
+| Nr | Gammal replik | Ny replik |
+|---|---|---|
+| 08 | [curious] Har du målat, katten? | [curious] Har du målat med tassarna, katten? |
+| 11 | [cheerfully] Ska vi tvätta bort färgen? | [cheerfully] Ska du tvätta bort färgen från tassarna? |
+| 13 | [warmly] Bara vatten. Plask, plask … | [warmly] Nu tvättar du tassarna med vatten. Plask, plask … |
+| 14 | [curious] Hm. Färgen sitter kvar. | [curious] Hm. Färgen sitter kvar på tassarna. |
+| 17 | [curious] Hm … vad gör vi nu? | [curious] Hm … hur får vi bort färgen? |
+| 18 | [happy] Titta! Kritan ritar något. | [happy] Titta! Kritan ritar något på handfatet. |
+| 23 | [surprised] Oj! Mycket skum! | [happy] Du tvättar tassarna med tvål. Oj! Mycket skum! |
+| 33 | [happy] Tvätta, tvätta … borta! | [happy] Nu tvättar du örat. Tvätta, tvätta … borta! |
+| 36 | [happy sigh] Torka, torka. Mmm … mjuk handduk. | [happy sigh] Nu torkar du tassarna med handduken. Torka, torka. |
+| 38 | [curious] Jaså? Får vi se? | [curious] Jaså? Får vi se din målning? |
+| 39 | [happy] Titta! Kritan ritar igen. | [happy] Titta! Kritan ritar din målning på väggen. |
+
+**Inspelat 2026-11-25** (Sanna sa ja till krediterna): tagning 2 i ElevenLabs (`rost-2.txt`). Generation 1 (`produktion/ljud-original/roster/katten-tvattar-handerna/malin-tagning-2.mp3`) klipptes av i slutet, så generation 2 (`malin-tagning-2b.mp3`, delad i `tagning-2b/`) används för alla 11. Filerna i `assets/ljud/roster/katten-tvattar-handerna/` har bytts (samma filnamn, −3 dBFS), de gamla ligger i `tagning-1-ersatta/`. Längderna står i `rost-langder.txt`, och *"borta"* i 33 ligger nu på 4,20 s (`BORTA`). Raderna, animatiken och förhandsvisningen är ombyggda. Bilderna är oförändrade, bara radernas längd har ändrats.
 
 ## Öppet
 
