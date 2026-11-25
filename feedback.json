@@ -9322,9 +9322,10 @@
   "sec": 33,
   "tags": [],
   "note": "lower music a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795593351054,
-  "render": "2026-11-25 08:18 (elefantklossens kant, katten med spetsiga öron och morrhår, mjukare skuggor, kortare pauser)"
+  "render": "2026-11-25 08:18 (elefantklossens kant, katten med spetsiga öron och morrhår, mjukare skuggor, kortare pauser)",
+  "fixedAt": 1795614370911
  },
  "6s48wkzj1bmwvu0hw1": {
   "ep": "ABC-e3",
