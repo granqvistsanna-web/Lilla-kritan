@@ -91,7 +91,7 @@ const ruta = n => { const [k, r, s] = MUR[n], w = s * MW + (s - 1) * MG, x = MX 
   const [x0, y1] = varld(x, y), [x1, y0] = varld(x + w, y + w * 9 / 16); return { x0, x1, y0, y1, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 }; };
 const BAR = [[1791, 297], [1434, 310], [630, 316], [236, 338], [1002, 337], [2188, 343], [471, 383], [2029, 383], [1276, 387]];   // girlangens bär (mätta)
 const DJ = 0.30;   // plattans tjocklek (Sanna 25/11: lite tjockare, var 16 cm)
-const ZF = 0.022, DT = 0.008, E = 0.006, OPPEN_V = 100 * Math.PI / 180, TIDIGARE_V = 140 * Math.PI / 180;   // de tidigare dagarnas dörrar vikta längre bak (Sanna 25/11: inget staket av dörrar)   // dörrens baksida 22 mm framför tavlan, 8 mm tjock, 6 mm över karmen; öppen 100°
+const ZF = 0.022, DT = 0.008, E = 0.006, OPPEN_V = 100 * Math.PI / 180, TIDIGARE_V = 105 * Math.PI / 180;   // de tidigare dagarnas dörrar vikta längre bak (Sanna 25/11: inget staket av dörrar)   // dörrens baksida 22 mm framför tavlan, 8 mm tjock, 6 mm över karmen; öppen 100°
 const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 90 80 C90 40 85 10 50 10 Z', 'M30 42 L60 10 L60 150',
   'M15 45 C15 0 85 0 85 45 C85 80 30 110 12 150 L90 150', 'M15 30 C30 0 85 5 82 42 C80 70 50 75 40 76 C60 76 90 85 88 115 C85 155 25 158 12 125',
   'M70 150 L70 10 L10 105 L92 105', 'M82 10 L25 10 L18 70 C40 55 88 60 88 105 C88 155 30 160 12 128',
@@ -106,9 +106,15 @@ function dorrBild(n, luckIm, CW) {   // som lucka.js dorrBild (liggande), i en c
   [...s].forEach((d, i) => { x.save(); x.translate(i * 130, 0); x.stroke(new Path2D(SIFFRA[d])); x.restore(); });
   x.restore(); return c;
 }
-function inreBild(w, h, im) {   // insidan bakom en öppnad lucka: papper (eller dagens bild, Sanna 25/11) med mjuk skugga mot kanterna
-  const c = canvas(w, h), x = c.getContext('2d'); x.fillStyle = '#F1E7D2'; x.fillRect(0, 0, w, h);
-  if (im) x.drawImage(im, 0, 0, w, h); else kornPa(x, w, h, 128);
+// Bakom de tidigare luckorna (Sanna 25/11, skiss 3): en kvällsfärg och dagens sak som vit kritsiluett, så att 23 luckor läser lugnt
+// och bara dagens röda lucka lyser. Ikonerna är husets urklipp ur assets/rekvisita (ikoner/NN.png).
+const KVALL = ['#2c4a8c', '#3b5ea8', '#5a4a92', '#7a3f6e', '#2f6b5f', '#3d4f7a'];
+function inreBild(w, h, im, n) {   // insidan bakom en öppnad lucka: papper, eller kvällsfärg med dagens ikon, med mjuk skugga mot kanterna
+  const c = canvas(w, h), x = c.getContext('2d'); x.fillStyle = im ? KVALL[(n * 5) % 6] : '#F1E7D2'; x.fillRect(0, 0, w, h); kornPa(x, w, h, 128);
+  if (im) { const s = Math.min(w * 0.62 / im.width, h * 0.66 / im.height), iw = im.width * s, ih = im.height * s, v = canvas(w, h), vx = v.getContext('2d');
+    vx.drawImage(im, (w - iw) / 2, (h - ih) / 2, iw, ih); vx.globalCompositeOperation = 'source-in'; vx.fillStyle = '#fdf8ee'; vx.fillRect(0, 0, w, h);
+    kornPa(vx, w, h, 128); vx.globalCompositeOperation = 'destination-in'; vx.drawImage(im, (w - iw) / 2, (h - ih) / 2, iw, ih);
+    x.globalAlpha = 0.93; x.drawImage(v, 0, 0); x.globalAlpha = 1; }
   for (const [a, b, c2, d] of [[0, 0, 0, 1], [0, 0, 1, 0], [w, 0, -1, 0], [0, h, 0, -1]]) {
     const g = x.createLinearGradient(a, b, a + c2 * w * 0.18, b + d * h * 0.3); g.addColorStop(0, 'rgba(120,80,50,0.28)'); g.addColorStop(1, 'rgba(120,80,50,0)');
     x.fillStyle = g; x.fillRect(0, 0, w, h); }
@@ -124,10 +130,20 @@ function bakBild() {   // dörrens baksida: varm gräddvit kartong med kritkorn,
 let tavla, DORR = {}, ramM, ramG, ramIM, ramI, inneM, inneMesh, sistM, pappM, glodM, varmLjus, lampor = [];
 async function byggTavla() {
   const [tim, lim, iim, sim] = await Promise.all([bild(TAVLA), bild(LUCKA), bild(INNE), bild(SIST)]);
-  // bakom de tidigare luckorna: en bild ur den dagens film (luckor/NN.jpg), så att kalendern ser öppnad ut dag för dag
-  const dagar = await Promise.all([...Array(N - 1).keys()].map(i => bild(`luckor/${String(i + 1).padStart(2, '0')}.jpg`).catch(() => null)));
+  // bakom de tidigare luckorna: dagens sak (ikoner/NN.png) som vit siluett på kvällsfärg, se inreBild
+  const dagar = await Promise.all([...Array(N - 1).keys()].map(i => bild(`ikoner/${String(i + 1).padStart(2, '0')}.png`).catch(() => null)));
   // framsidan: tavlans bild, lite eget ljus så att färgerna blir som i plattan
-  const tt = new THREE.Texture(tim); tt.colorSpace = THREE.SRGBColorSpace; tt.anisotropy = 8; tt.needsUpdate = true;
+  // girlangen får en mjuk skugga på pepparkakan (Sanna 25/11: mer premium), så att den ser ut att ligga ovanpå i stället för målad
+  const tc = canvas(tim.width, tim.height), tx = tc.getContext('2d'); tx.drawImage(tim, 0, 0);
+  { const d = tx.getImageData(0, 0, tc.width, tc.height), mc = canvas(tc.width, tc.height), mx = mc.getContext('2d'), md = mx.createImageData(tc.width, tc.height);
+    for (let j = 0; j < d.data.length; j += 4) { const y = (j / 4 / tc.width) | 0, r = d.data[j], g = d.data[j + 1], b = d.data[j + 2];
+      if (y > 220 && y < 470 && d.data[j + 3] > 200 && g > r + 25 && g > b + 5) { md.data[j + 3] = 255; } }
+    mx.putImageData(md, 0, 0);
+    const sc = canvas(tc.width, tc.height), sx = sc.getContext('2d'); sx.filter = 'blur(7px)'; sx.drawImage(mc, 5, 11); sx.filter = 'none';
+    sx.globalCompositeOperation = 'source-in'; sx.fillStyle = 'rgba(110,55,20,0.42)'; sx.fillRect(0, 0, sc.width, sc.height);
+    sx.globalCompositeOperation = 'destination-out'; sx.drawImage(mc, 0, 0);
+    tx.drawImage(sc, 0, 0); }
+  const tt = new THREE.Texture(tc); tt.colorSpace = THREE.SRGBColorSpace; tt.anisotropy = 8; tt.needsUpdate = true;
   const plan = new THREE.PlaneGeometry(BW, BH).translate(0, BH / 2 - SANK, 0);
   tavla = new THREE.Mesh(plan, new THREE.MeshLambertMaterial({ map: tt, emissiveMap: tt, emissive: new THREE.Color(0.2, 0.2, 0.2), alphaTest: 0.5 }));
   tavla.castShadow = tavla.receiveShadow = true;
@@ -139,7 +155,14 @@ async function byggTavla() {
   const platta = new THREE.Shape(), a0 = kx0 + RB, a1 = kx1 - RB, b0 = ky1 + RB, b1 = ky0 - RB;
   platta.moveTo(a0 + rn, b0); platta.lineTo(a1 - rn, b0); platta.quadraticCurveTo(a1, b0, a1, b0 + rn); platta.lineTo(a1, b1 - ru);
   platta.quadraticCurveTo(a1, b1, a1 - ru, b1); platta.lineTo(a0 + ru, b1); platta.quadraticCurveTo(a0, b1, a0, b1 - ru); platta.lineTo(a0, b0 + rn); platta.quadraticCurveTo(a0, b0, a0 + rn, b0);
-  const sidaC = canvas(512, 512), scx = sidaC.getContext('2d'); scx.fillStyle = '#b97440'; scx.fillRect(0, 0, 512, 512); kornPa(scx, 512, 512);
+  // kanten: bakad pepparkaka (Sanna 25/11), varm brun med lösa kritdrag i ljusare och mörkare ton och små kryddprickar
+  const sidaC = canvas(512, 512), scx = sidaC.getContext('2d'); scx.fillStyle = '#bf7a43'; scx.fillRect(0, 0, 512, 512); scx.lineCap = 'round';
+  for (let i = 0; i < 260; i++) { const px = slumpF(i, 80) * 512, py = slumpF(i, 81) * 512, l = 20 + 40 * slumpF(i, 82), a = -0.5 + 0.3 * slumpF(i, 83);
+    scx.strokeStyle = slumpF(i, 84) < 0.5 ? 'rgba(225,160,100,0.16)' : 'rgba(130,70,30,0.14)'; scx.lineWidth = 4 + 6 * slumpF(i, 85);
+    scx.beginPath(); scx.moveTo(px, py); scx.lineTo(px + l * Math.cos(a), py + l * Math.sin(a)); scx.stroke(); }
+  for (let i = 0; i < 140; i++) { scx.fillStyle = `rgba(95,50,22,${0.25 + 0.3 * slumpF(i, 86)})`; scx.beginPath();
+    scx.arc(slumpF(i, 87) * 512, slumpF(i, 88) * 512, 1 + 1.6 * slumpF(i, 89), 0, 7); scx.fill(); }
+  kornPa(scx, 512, 512);
   const sidaT = tex(sidaC, [6, 6]);
   const kropp = new THREE.Mesh(new THREE.ExtrudeGeometry(platta, { depth: DJ - 2 * RB, bevelEnabled: true, bevelThickness: RB, bevelSize: RB, bevelSegments: 5, curveSegments: 16 }),
     new THREE.MeshLambertMaterial({ map: sidaT, emissiveMap: sidaT, emissive: new THREE.Color(0.2, 0.2, 0.2) }));
@@ -147,13 +170,17 @@ async function byggTavla() {
   snoTak(tim);
   // luckorna
   const sidaM = platt('#b3261a', { egen: 0.2 }), bakM = (() => { const t = tex(bakBild()); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.42, 0.42, 0.42) }); })(), karmM = platt('#e2c79c', { egen: 0.2 });   // dörrens baksida är kartong, som en riktig kalender
+  // Alla luckor har gångjärnet till höger (Sanna 25/11: luckorna öppnades åt olika håll). Kameran står till höger och ser de öppna
+  // dörrarna nästan från kanten. Kaninen står 20 cm längre ut åt höger, så att dagens dörr inte slår upp mot den.
+  // rader: om två luckor delar någon rad.
+  const rader = (a, b) => { const [, ra, sa] = MUR[a], [, rb, sb] = MUR[b]; return ra <= rb + sb - 1 && rb <= ra + sa - 1; };
   for (let n = 1; n <= 24; n++) {
     const r = ruta(n), idag = n === N;
     // insidan och karmen (fyra smala lister runt öppningen, i springan mellan luckorna)
     const inne = new THREE.Mesh(new THREE.PlaneGeometry(r.w, r.h), idag
       ? (inneM = new THREE.MeshBasicMaterial({ map: Object.assign(new THREE.Texture(iim), { colorSpace: THREE.SRGBColorSpace, needsUpdate: true, anisotropy: 8 }), toneMapped: false }))
-      : (() => { const t = tex(inreBild(512, 288, dagar[n - 1])); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
-          return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.38, 0.38, 0.38) }); })());
+      : (() => { const t = tex(inreBild(512, 288, dagar[n - 1], n)); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+          return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.32, 0.32, 0.32) }); })());
     inne.position.set(r.cx, r.cy, 0.003); inne.receiveShadow = !idag; scen.add(inne);
     if (idag) { inneMesh = inne; const st = Object.assign(new THREE.Texture(sim), { colorSpace: THREE.SRGBColorSpace, needsUpdate: true, anisotropy: 8 });
       sistM = new THREE.MeshBasicMaterial({ map: st, toneMapped: false }); pappM = new THREE.MeshLambertMaterial({ map: tex(inreBild(512, 288)), emissive: new THREE.Color(0.12, 0.12, 0.12) }); }
@@ -162,10 +189,13 @@ async function byggTavla() {
     // dörren: gångjärnet i vänstra bakre kanten, öppnas mot kameran åt vänster
     const fram = tex(dorrBild(n, lim, idag ? 1920 : 768)); fram.wrapS = fram.wrapT = THREE.ClampToEdgeWrapping; fram.repeat.set(1, 1);
     const framM = new THREE.MeshLambertMaterial({ map: fram, emissiveMap: fram, emissive: new THREE.Color(0.2, 0.2, 0.2) });
-    const g = new RoundedBoxGeometry(r.w + 2 * E, r.h + 2 * E, DT, 2, 0.0025).translate((r.w + 2 * E) / 2, 0, DT / 2);
+    const hoger = true, g = new RoundedBoxGeometry(r.w + 2 * E, r.h + 2 * E, DT, 2, 0.0025).translate((hoger ? -1 : 1) * (r.w + 2 * E) / 2, 0, DT / 2);
     const m = new THREE.Mesh(g, [sidaM, sidaM, sidaM, sidaM, framM, bakM]); m.castShadow = m.receiveShadow = true;
-    const ga = new THREE.Group(); ga.position.set(r.x0 - E, r.cy, ZF); ga.add(m); scen.add(ga);
-    ga.rotation.y = n < N ? -TIDIGARE_V : 0;
+    const ga = new THREE.Group(); ga.position.set(hoger ? r.x1 + E : r.x0 - E, r.cy, ZF); ga.add(m); scen.add(ga);
+    // inget går genom något: grannarna precis till vänster om dagens lucka (samma rader) står rakt ut i 85° i stället för att luta
+    // in över den, så att dagens dörr kan svepa fritt (lucka 24: 16 och 23)
+    const granne = n < N && Math.abs(ruta(N).x0 - r.x1) < 0.03 && rader(N, n);
+    ga.rotation.y = n >= N ? 0 : granne ? 85 * Math.PI / 180 : TIDIGARE_V;
     DORR[n] = { ga, r };
   }
   // guldramen (Sanna 24/11: inget går genom något): framför tavlan rörde den öppna lucka 13:s hörn. Nu två ramar som ligger PÅ
@@ -175,7 +205,7 @@ async function byggTavla() {
     s.lineTo(x + rad, y + h); s.quadraticCurveTo(x, y + h, x, y + h - rad); s.lineTo(x, y + rad); s.quadraticCurveTo(x, y, x + rad, y); return s; };
   const ring = (w, h) => { const yt = form(w, h, rr); yt.holes.push(form(w - 2 * b, h - 2 * b, rr - b * 0.6)); return new THREE.ShapeGeometry(yt, 12); };
   const guld = () => new THREE.MeshBasicMaterial({ color: new THREE.Color('#F6C531').multiplyScalar(1.35), transparent: true, opacity: 0, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -2 });
-  ramM = guld(); ramG = new THREE.Mesh(ring(r.w + 2 * E - 0.008, r.h + 2 * E - 0.008), ramM); ramG.position.set(r.w / 2 + E, 0, DT + 0.0012); DORR[N].ga.add(ramG);
+  ramM = guld(); ramG = new THREE.Mesh(ring(r.w + 2 * E - 0.008, r.h + 2 * E - 0.008), ramM); ramG.position.set(-(r.w / 2 + E), 0, DT + 0.0012); DORR[N].ga.add(ramG);
   ramIM = guld(); ramI = new THREE.Mesh(ring(r.w - 0.006, r.h - 0.006), ramIM); ramI.position.set(r.cx, r.cy, 0.0045); scen.add(ramI);
   // ljuset inifrån: en varm glöd framför öppningen (adderas) och ett punktljus som lyser på dörrens insida och tavlan
   glodM = new THREE.MeshBasicMaterial({ map: tex(glodBild()), color: new THREE.Color('#ffc46a'), transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
@@ -293,6 +323,16 @@ async function byggVarld() {
   klot(1, [-4.2, -1.4, -7.5], [4.2, 1.9, 2.4], kulle); klot(1, [4.6, -1.2, -9], [5, 1.85, 2.6], kulle); klot(1, [0.6, -2.2, -12], [7, 2.5, 2.5], kulle);
   klot(1, [0, -0.02, 0.06], [1.45, 0.09, 0.22], snoM([4, 1]));
   klot(1, [-2.0, -0.05, 2.0], [0.7, 0.3, 0.45], snoM([2, 1]));   // förgrunden till vänster, suddig
+  // Marken (Sanna 25/11): några låga, breda snöhögar så att golvet inte är platt, och kaninens fotspår in från höger till där den står
+  for (const [x, z, sx, sy, sz] of [[2.6, -0.9, 1.1, 0.07, 0.6], [-1.6, -1.2, 1.3, 0.08, 0.5], [3.4, 1.4, 0.9, 0.09, 0.6], [1.0, 1.6, 1.0, 0.05, 0.5]])
+    klot(1, [x, -0.01, z], [sx, sy, sz], snoM([2, 1]));
+  { const c = canvas(64, 64), x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 4, 32, 32, 30);
+    g.addColorStop(0, 'rgba(165,175,215,0.5)'); g.addColorStop(0.7, 'rgba(180,190,225,0.25)'); g.addColorStop(1, 'rgba(170,185,225,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 64, 64);
+    const spM = new THREE.MeshBasicMaterial({ map: tex(c), transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4 });
+    for (let k = 0; k < 9; k++) { const u = k / 8, px = -0.5 + 1.95 * u, pz = 0.5 - 0.06 * u + 0.03 * Math.sin(u * 5);   // par av små tassavtryck längs tavlan fram till där den står (marken som syns)
+      for (const d of [-0.035, 0.035]) { const f = new THREE.Mesh(new THREE.PlaneGeometry(0.075, 0.13), spM); f.rotation.x = -Math.PI / 2; f.rotation.z = -0.25;
+        f.position.set(px + d * 0.4, 0.003, pz + d * 1.4); scen.add(f); } } }
   // snön som faller: tre djup, samma flingor varje gång; inte där tavlan, luckorna och Kanel står (inget går genom något)
   const pos = [], fas_ = [], str = [];
   for (let i = 0; pos.length / 3 < 900 && i < 5000; i++) {
@@ -343,7 +383,7 @@ const SOLRIKT = new THREE.Vector3().subVectors(sol.position, sol.target.position
 
 // ---------- Kanel som kort (som lekrummet) ----------
 const VB = { x: -150, y: -200, w: 1324, h: 1200 }, FOT = 947, ENHET = 1 / FOT, LYFT = 0.014;
-const KANEL = new THREE.Vector3(1.45, 0, 0.42);
+const KANEL = new THREE.Vector3(1.65, 0, 0.42);   // 20 cm längre ut (förut 1,45), fri från dagens dörr
 let L, G, BL, kortCanvas, kortCtx, kortTex, kort, kantF;
 const KU = { uSol: { value: new THREE.Vector2(-1, 0) }, uSida: { value: 0.0 }, uFigC: { value: (512 - VB.x) / VB.w }, uHalv: { value: 330 / VB.w },
   uEnhUv: { value: new THREE.Vector2(1 / VB.w, 1 / VB.h) }, uSteg: { value: 1.5 }, uVit: { value: 12 }, uBand: { value: 5 }, uKant: { value: 0.0 }, uVol: { value: 1.0 }, uVolR: { value: 110 } };
@@ -478,7 +518,7 @@ function dagens(t) {
   const vk = [[PEK + 0.35, 4], [PEK + 0.95, 3]].reduce((s, [a, g]) => s + g * Math.sin(Math.PI * kl(0, 1, (t - a) / 0.42)) ** 2, 0);
   const opp = t < T0 ? 1 - (1 - fas([OPP0, OPP1], t)) ** 2.5   // snabbt först: dörren är förbi kamerans väg innan kameran kommer nära
     : 1 - lugn(fas([STANG[0] + 0.15, STANG[1]], t)) + lugn(fas(IGEN, t));   // stängs medan kameran backar, öppnas igen ute på kalendern
-  ga.rotation.y = -(vk * Math.PI / 180 + OPPEN_V * opp);
+  ga.rotation.y = vk * Math.PI / 180 + OPPEN_V * opp;
   // ljuset: tänds när luckan börjar öppnas, starkast i mitten av öppningen, borta när öppningen fyller bilden
   const lj = mjuk(fas([OPP0 - 0.05, OPP0 + 0.35], t)) * (1 - mjuk(fas([OPP1 - 0.35, OPP1 - 0.02], t)));
   glodM.opacity = 0.2 * lj; varmLjus.intensity = 1.1 * lj;   // varmt, men ingen vit blixt (små barn)
@@ -500,14 +540,14 @@ function dagens(t) {
 // Helbild som glider långsamt in, en liten knuff mot dagens lucka när kaninen pekar, och sist åker kameran rakt in i öppningen
 // så att insidan fyller bilden precis när luckan är helt öppen (som lucka.js zoom). Kameran stannar framför dörrens svep.
 function kamera(t) {
-  const r = ruta(N), A = [new THREE.Vector3(1.45, 1.0, 3.3), new THREE.Vector3(0.33, 0.69, 0)], B = [new THREE.Vector3(0.95, 0.92, 3.5), new THREE.Vector3(0.34, 0.68, 0)];   // närmare (Sanna 24/11)
+  const r = ruta(N), A = [new THREE.Vector3(1.55, 1.0, 3.3), new THREE.Vector3(0.43, 0.69, 0)], B = [new THREE.Vector3(1.05, 0.92, 3.5), new THREE.Vector3(0.44, 0.68, 0)];   // närmare (Sanna 24/11)
   // A snett från höger, så att bara plattans högra kant syns (Sanna 25/11); driver lugnt till nästan rakt fram (Sanna 25/11: mindre kameraåkning)
   const dorr = new THREE.Vector3(r.cx, r.cy, 0.003), fyll = 0.985 * (r.h / 2) / Math.tan(cam.fov * Math.PI / 360);   // 1,5 % för nära: ingen karmkant i sista rutorna
   const C = [B[0].clone().lerp(new THREE.Vector3(r.cx, r.cy + 0.25, 2.6), 0.1), B[1].clone().lerp(dorr, 0.15)];
   const D = [dorr.clone().add(new THREE.Vector3(0, 0, fyll)), dorr], P = [dorr.clone().add(new THREE.Vector3(0, 0.02, fyll * 2.1)), dorr];
   let p, m;
   if (t >= T0) {   // stängningen: backar från öppningen medan dörren stängs (så att den inte slår mot kameran), ut till helbild, sedan en lugn knuff in
-    const Eu = [new THREE.Vector3(0.5, 0.95, 3.6), new THREE.Vector3(0.34, 0.68, 0)], F = [new THREE.Vector3(0.38, 0.92, 3.3), new THREE.Vector3(0.32, 0.67, 0)];
+    const Eu = [new THREE.Vector3(0.68, 0.95, 3.7), new THREE.Vector3(0.48, 0.68, 0)], F = [new THREE.Vector3(0.58, 0.92, 3.45), new THREE.Vector3(0.46, 0.67, 0)];   // 0,15 åt höger: kaninen står längre ut
     if (t < UT[1]) { const k = lugn(fas([T0, UT[1]], t)); p = D[0].clone().lerp(Eu[0], k); m = D[1].clone().lerp(Eu[1], mjuk(fas([T0 + 0.3, UT[1]], t))); }
     else { const k = lugn(fas([UT[1], SLUT], t)); p = Eu[0].clone().lerp(F[0], k); m = Eu[1].clone().lerp(F[1], k); }
   } else if (t < PEK) { const k = lugn(t / PEK); p = A[0].clone().lerp(B[0], k); m = A[1].clone().lerp(B[1], k); }
@@ -607,7 +647,7 @@ window.ready = (async () => {
   // QA: kameran mot dörrens svep (inget går genom något): minsta avstånd från kameran till dagens dörr, var 1/120 s
   window.koll = () => { let min = 9; const { ga, r } = DORR[N];
     for (const t of [...Array(Math.ceil((OPP1 - Z0) * 120) + 1).keys()].map(i => Z0 + i / 120).concat([...Array(241).keys()].map(i => T0 + i / 120))) { kamera(t); dagens(t); ga.updateMatrixWorld();
-      const lok = ga.worldToLocal(cam.position.clone()), x = kl(0, r.w + 2 * E, lok.x), y = kl(-r.h / 2 - E, r.h / 2 + E, lok.y), z = kl(0, DT, lok.z);
+      const lok = ga.worldToLocal(cam.position.clone()), x = kl(-r.w - 2 * E, 0, lok.x), y = kl(-r.h / 2 - E, r.h / 2 + E, lok.y), z = kl(0, DT, lok.z);
       min = Math.min(min, Math.hypot(lok.x - x, lok.y - y, lok.z - z)); }
     return min; };
   await seek(+(Q.get('t') || 0));
