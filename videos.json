@@ -1019,9 +1019,9 @@
  },
  "J01": {
   "duration": 277.4,
-  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka-qa2511.mp4",
-  "rendered": "2026-11-25 13:09 (QA 25/11 (förhandsvisning, --snabb): korgnärbilden 3:07 utan kaninen vid kanten, kaninen hoppar nu upp i pulkan över nosen 3:50 (inte genom), line boil 2,5/zoom 6 ggr/s. Slutrendering efter ditt ja.)",
-  "status": "klar",
+  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka.mp4",
+  "rendered": "2026-11-25 15:26 (nytt 3D-intro och 3D-outro)",
+  "status": "granska",
   "stills": [
    {
     "label": "0:38",
@@ -1048,7 +1048,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1125-1307.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1125-1526.mp4",
   "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
   "name": "Lucka 1: Kaninen ska åka pulka"
  },
