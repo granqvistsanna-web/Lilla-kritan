@@ -1365,11 +1365,11 @@
   "file": "../../../../private/tmp/claude-501/-Users-sannagranqvist-Documents-Lilla-kritan/c6cecf9b-6bc3-439b-b92f-5f5249d9e37b/scratchpad/avsnitt-040-snabb.mp4"
  },
  "J12": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1119-0929.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1125-1346.mp4",
   "duration": 179.2,
-  "rendered": "2026-11-19 09:29 (Malin 0,5 s efter rörelsen genom hela filmen, och förra förhandsvisningen hade bilden 4 s före rösten (15 fps-fel i luckbygget, fixat); större gran med toppen tydligt utanför bild; inget vindljud; 179 s)",
+  "rendered": "2026-11-25 13:47 (QA 25/11: grisen smalnar inte längre till en vänd profil vid granen (1:02 och 1:07) – kiken visar hela ansiktet och grisen ploppar fram förbi grenkanten)",
   "file": "produktion/youtube/shorts/jul/12-tittut-grisen/12-tittut-grisen.mp4",
-  "status": "klar",
+  "status": "granska",
   "name": "Tittut grisen"
  },
  "J07": {
