@@ -9444,9 +9444,10 @@
   "sec": 4,
   "tags": [],
   "note": "use real intro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795633646356,
-  "render": "2026-11-25 20:03 (Provlyssning: Malins 44 repliker (15 nya, tydligare) över stillbild med sovbilden, lampan och täcket. Ingen animatik än.)"
+  "render": "2026-11-25 20:03 (Provlyssning: Malins 44 repliker (15 nya, tydligare) över stillbild med sovbilden, lampan och täcket. Ingen animatik än.)",
+  "fixedAt": 1795635939696
  },
  "x9kzq36f0umwwhxz5y": {
   "ep": "054",
