@@ -1,0 +1,20 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/citron-body.png",
+  "delar": {
+    "fot-l": {
+      "fil": "cut/citron-fot-l.png",
+      "vridpunkt": [
+        442,
+        784
+      ]
+    },
+    "fot-r": {
+      "fil": "cut/citron-fot-r.png",
+      "vridpunkt": [
+        581,
+        780
+      ]
+    }
+  }
+}

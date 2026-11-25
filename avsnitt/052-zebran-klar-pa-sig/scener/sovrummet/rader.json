@@ -556,14 +556,14 @@
   },
   {
    "id": "22b",
-   "d": 3.4,
+   "d": 1.6,
    "ljud": [
     [
      "lysmask/lysmask-1",
-     1.2
+     0.2
     ]
    ],
-   "bild": "närbild stöveln, strumpan skimrar efter 3 s"
+   "bild": "närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: \"find sock earlier when they are looking\")"
   },
   {
    "id": "23",

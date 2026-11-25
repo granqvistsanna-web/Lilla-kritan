@@ -28,11 +28,12 @@
       <feComposite in="SourceGraphic" operator="in"/>
     </filter>
     <filter id="silhuett" x="-20%" y="-20%" width="140%" height="140%">
-      <feFlood flood-color="#9C8CC8"/><feComposite in2="SourceAlpha" operator="in"/><feGaussianBlur stdDeviation="6"/>
+      <feFlood flood-color="#15203F"/><feComposite in2="SourceAlpha" operator="in"/><feGaussianBlur stdDeviation="6"/>
     </filter>
     <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
     <filter id="mjukkant" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="28"/></filter>
     <radialGradient id="sken"><stop offset="0" stop-color="#FFE7A3" stop-opacity="0.8"/><stop offset="0.45" stop-color="#FFD57A" stop-opacity="0.3"/><stop offset="1" stop-color="#FFD57A" stop-opacity="0"/></radialGradient>
+    <radialGradient id="maneglod"><stop offset="0.35" stop-color="#FFF3C4" stop-opacity="0.35"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
     <radialGradient id="hal"><stop offset="0" stop-color="#000"/><stop offset="0.55" stop-color="#000" stop-opacity="0.85"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
     <clipPath id="tackeklipp" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-400" width="2400" height="1251"/></clipPath>
@@ -41,9 +42,9 @@
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
-    <g id="platta"></g>
-    <g id="himmel"></g>
-    <g id="skugga"></g>
+    <g id="platta" data-djup-ramp="811:-0.1 905:0 1080:0.18"></g>
+    <g id="himmel" data-djup="-0.1"></g>
+    <g id="skugga" data-djup="-0.1"></g>
     <g id="bak"></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
     <g id="sov"></g>
@@ -62,6 +63,7 @@
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
 <script src="/verktyg/kritan-ritar.js"></script>
+<script src="/verktyg/djup3d.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -79,7 +81,7 @@ const SANG = A + 'rekvisita/sangen/cut/sangen.png';
 const KUDDE = A + 'rekvisita/kudde/cut/kudde-v1-zebbe.png';
 const NALLE = { bild: A + 'rekvisita/nalle/cut/nalle-v2-ljus-tunn.png', w: 848, h: 856, fot: [424, 816], s: 0.196 };
 const TACKE = { bild: S + 'tacke/cut/tacke-mint.png', w: 1312, h: 534 };
-const LAMPBILD = { bild: S + 'nattlampa/cut/nattlampa.png', w: 615, h: 776, fot: [300, 770], skarm: [300, 250] };
+const LAMPBILD = { bild: S + 'nattlampa/cut/nattlampa.png', w: 615, h: 776, fot: [272, 676], skarm: [272, 250], hojd: 662 };   // utan sladd (Sanna 2026-11-25: "no sladd for lampa"): foten är fotens underkant
 const SOVBILD = { bild: S + 'sovbild/cut/rav-sover.png', w: 1278, h: 656 };
 const GOLV = 905, GS = 0.59, BX = 1000, FATKANT = 700, RIM = 772;
 const SANG_BILD = { s: 0.6, x: 1000 - 0.6 * 636, y: RIM - 0.6 * 288, w: 1273, h: 667 };
@@ -118,39 +120,55 @@ const K_SANG = [1.6, BX - 60, 640];
 const K_MYS = [2.2, BX + 60, RIM - 120];
 const K_RUMSLAMPA = [3.0, RUMSLAMPA[0] - 60, RUMSLAMPA[1] + 20];
 const K_LAMPA = [2.2, LAMPFOT[0] + 40, LAMPFOT[1] - 110];
-const K_LAGOM = [1.5, 760, 620];
+const K_LAGOM = [1.9, 720, 660];   // närmare (Sanna 2026-11-25: "more close crops"; förut 1,5)
+const K_LAMP_RIT = [2.0, 480, 760];   // kritan ritar den lagom lampan, nära
 const K_TACKE = [2.8, 1210, RIM - 70];
 const K_NALLE = [2.6, NALLE_BREDVID[0] + 40, RIM - 90];
 const K_SOV = [1.5, BX - 40, 640];
 
 // --- Rummet --------------------------------------------------------------------------------------------------------------
-// regnet utanför fönstret (Sanna 2026-11-25: "rain outside window"): två mjuka moln och lugna, ljusa streck som faller snett,
-// samma mönster hela filmen (deterministiskt på TT), inga blixtar, inget läskigt
+// regnet och månen utanför fönstret (Sanna 2026-11-25: "rain outside window", sedan "polish rain more natural", "slow rain", "moon outside window"):
+// en mjuk måne bakom molnen, en tunn molnslinga som glider förbi framför den, och lugnt regn i två djup (långt bort: tunt, svagt, långsamt;
+// nära: lite tydligare). Varje droppe har egen plats, längd och fart, alla faller lite snett. Deterministiskt på TT, inga blixtar, inget läskigt.
+const hash = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
 function regn(cx, cy, r) {
-  const moln = [[-90, -120, 120, 46], [80, -140, 140, 50], [0, -175, 160, 48]].map(([dx, dy, rx, ry]) => `<ellipse cx="${cx + dx}" cy="${cy + dy}" rx="${rx}" ry="${ry}" fill="#4E5F9C" opacity="0.85"/>`).join('');
-  const streck = Array.from({ length: 26 }, (_, i) => { const fart = 0.55 + 0.25 * ((i * 7) % 5) / 4, f = (TT * fart + i * 0.381) % 1;
-    const x = cx - r + ((i * 53.7) % (2 * r)) - 30 * f, y = cy - r - 30 + f * (2 * r + 60);
-    return `<line x1="${f1(x)}" y1="${f1(y)}" x2="${f1(x - 7)}" y2="${f1(y + 26)}" stroke="#C9D8F2" stroke-width="4" stroke-linecap="round" opacity="0.7"/>`; }).join('');
-  return moln + streck;
+  const drift = 14 * Math.sin(TT * 0.12);
+  const [mx, my, mr] = [cx + 58, cy - 52, 46];
+  const mane = `<circle cx="${mx}" cy="${my}" r="${mr * 2.4}" fill="url(#maneglod)"/>
+    <circle cx="${mx}" cy="${my}" r="${mr}" fill="#FFF1C2"/><circle cx="${mx - 14}" cy="${my - 8}" r="9" fill="#F3E0A6" opacity="0.6"/><circle cx="${mx + 12}" cy="${my + 14}" r="6" fill="#F3E0A6" opacity="0.5"/>`;
+  // mjuka, runda moln (några cirklar på en platt botten), som kritmoln i en bilderbok
+  const puff = (x, y, w, fill, o) => `<g opacity="${o}" fill="${fill}"><ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(w * 0.5)}" ry="${f1(w * 0.16)}"/>`
+    + [[-0.28, -0.08, 0.17], [-0.05, -0.17, 0.23], [0.22, -0.09, 0.16]].map(([dx, dy, rr]) => `<circle cx="${f1(x + dx * w)}" cy="${f1(y + dy * w)}" r="${f1(rr * w)}"/>`).join('') + '</g>';
+  const moln = puff(cx - 105 + drift, cy - 95, 190, '#5A6BA6', 1) + puff(cx - 10 + drift, cy - 150, 230, '#5A6BA6', 1);
+  const slinga = puff(mx - 40 + 3 * drift, my + 44, 120, '#6F7FB6', 1);   // ett litet moln som glider förbi månens nederkant
+  const fall = 2 * r + 80;
+  const droppar = (n, bas, { fart, lang, bred, o }) => Array.from({ length: n }, (_, j) => { const i = bas + j, h1 = hash(i), h2 = hash(i + 50), h3 = hash(i + 99);
+    const v = fart * (0.8 + 0.4 * h2), L = lang * (0.75 + 0.5 * h3), y = cy - r - 40 + ((TT * v + h1 * fall) % fall), x = cx - r + h3 * 2 * r + 60 - 0.2 * (y - cy + r);
+    return `<line x1="${f1(x)}" y1="${f1(y)}" x2="${f1(x - 0.2 * L)}" y2="${f1(y + L)}" stroke="#D3E0F5" stroke-width="${bred}" stroke-linecap="round" opacity="${(o * (0.75 + 0.25 * h2)).toFixed(2)}"/>`; }).join('');
+  // djup-kit (Sanna 2026-11-25 "Ja, lägg in i alla"): månen och molnen längst bort, regnet i tre lager som glider olika mycket bakom karmen;
+  // farten sänkt till ca 40 % av modulens (Sanna: "slow rain"), droppar rinner sakta nerför rutan
+  const lager = [{ p: -0.8, n: 26, l: 12, b: 2, fart: 90, o: 0.3, mjuk: true }, { p: -0.45, n: 18, l: 18, b: 3, fart: 125, o: 0.5 }, { p: -0.25, n: 10, l: 24, b: 3.8, fart: 160, o: 0.65 }];
+  const tr = djup.lagerTr(-0.8 + 0.1);
+  return `<g${tr ? ` transform="${tr}"` : ''}>${mane + moln + slinga}</g>` + djup.regn({ ruta: [cx - r, cy - r, 2 * r, 2 * r], vard: -0.1, lager, t: TT });
 }
 // natt 0–1: varmt kvällsblått (högst 0,42, aldrig svart); rumslampa 0–1; ljus [[x, y, R, styrka]] ger hål i mörkret och ett sken
 function rum({ natt = 0, rumslampa = 1, ljus = [], ljust = 0 }) {
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   $('sang').innerHTML = `<image href="${SANG}" x="${f1(SANG_BILD.x)}" y="${f1(SANG_BILD.y)}" width="${f1(SANG_BILD.w * SANG_BILD.s)}" height="${f1(SANG_BILD.h * SANG_BILD.s)}"/>`;
   const { cx, cy, r } = FONSTER;
-  $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#3A4C8A"/>
+  $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r - 200}" y="${cy - r - 200}" width="${2 * r + 400}" height="${2 * r + 400}" fill="#3A4C8A"/>
     ${regn(cx, cy, r)}</g>`;
   $('haal').innerHTML = ljus.map(([x, y, R, k = 1]) => `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(R)}" ry="${f1(R * 0.8)}" fill="url(#hal)" opacity="${kl(k).toFixed(2)}"/>`).join('');
   $('natt').innerHTML = (natt > 0.005 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${(0.42 * natt).toFixed(3)}" mask="url(#morkmask)"/>` : '')
-    + (rumslampa > 0.005 ? `<ellipse cx="${RUMSLAMPA[0]}" cy="${RUMSLAMPA[1] + 10}" rx="320" ry="240" fill="url(#sken)" opacity="${rumslampa.toFixed(3)}"/>` : '')
-    + ljus.map(([x, y, R, k = 1]) => `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(R * 0.9)}" ry="${f1(R * 0.72)}" fill="url(#sken)" opacity="${(kl(k) * (0.82 + 0.18 * Math.sin(TT * 2.3 + x))).toFixed(3)}"/>`).join('')
+    + djup.lampsken({ x: RUMSLAMPA[0], y: RUMSLAMPA[1] - 50, r: 360, k: rumslampa, golv: 870, p: -0.1, t: TT })   // djup-kit: varmt sken som sprider sig i rummet
+    + ljus.map(([x, y, R, k = 1, spr = k]) => djup.lampsken({ x, y, r: R * 1.1, k: Math.min(kl(k), kl(spr)), golv: y + R * 0.55, t: TT })).join('')
     + (ljust > 0.005 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#FFB347" opacity="${(0.75 * ljust).toFixed(3)}" style="mix-blend-mode:soft-light"/><rect x="-200" y="-200" width="2400" height="1500" fill="#FFE6B0" opacity="${(0.16 * ljust).toFixed(3)}"/>` : '');   // varmt, inte blekt grågrönt (QA 2026-11-25)
 }
-const iLampa = ([x, y], h) => { const s = h / 760; return ([px, py]) => [x + (px - LAMPBILD.fot[0]) * s, y + (py - LAMPBILD.fot[1]) * s]; };
-const lampSkarm = ([x, y], h) => [x, y - h * (770 - 250) / 760];
+const iLampa = ([x, y], h) => { const s = h / LAMPBILD.hojd; return ([px, py]) => [x + (px - LAMPBILD.fot[0]) * s, y + (py - LAMPBILD.fot[1]) * s]; };
+const lampSkarm = ([x, y], h) => [x, y - h * (LAMPBILD.fot[1] - LAMPBILD.skarm[1]) / LAMPBILD.hojd];
 // nattlampan med foten i (x, y) och höjden h: kontur k (0–1, kritan ritar), fyll f (0–1, fylls inifrån), tand 0–1
 function lampa(id, [x, y], h, { k = 1, f = 1, tand = 0, lager = 'golv', skugga = true } = {}) {
-  const s = h / 760, { w, h: ih, fot, skarm } = LAMPBILD;
+  const s = h / LAMPBILD.hojd, { w, h: ih, fot, skarm } = LAMPBILD;
   const tr = `translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(4)}) translate(${-fot[0]} ${-fot[1]})`;
   if (skugga && f > 0.5) lagg('golvskugga', `<ellipse cx="${f1(x + 4)}" cy="${f1(y + 2)}" rx="${f1(h * 0.3)}" ry="${f1(h * 0.05)}" fill="#5a3e2a" opacity="0.18" filter="url(#mjukskugga)"/>`);
   let html = '';
@@ -207,12 +225,12 @@ function rav([x, fot], f, p, { bakom = false, luft = false, o = 1 } = {}) {
   G.setAttribute('opacity', o.toFixed(3));
   if (luft) G.querySelector('.skugga')?.setAttribute('opacity', 0);   // i hoppet: ingen skugga som svävar i luften (QA 2026-11-25)
 }
-// skuggan på väggen: en kopia av räven, mjuk och ljust lila, k gånger större kring fötterna
+// skuggan på väggen: en kopia av räven, mjuk och mörk (Sanna 2026-11-25: "shadow looks lighter should look darker"; förut ljust lila), k gånger större kring fötterna
 function vaggskugga(k, dx, o, dy = 0) {
   if (o < 0.01) return;
   const c = G.cloneNode(true); c.removeAttribute('id');
   c.setAttribute('transform', `translate(${f1(BX + dx)} ${f1(VID[1] - 40 + dy)}) scale(${(GS * k).toFixed(4)}) translate(-512 ${-L.FOTTER})`);
-  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'); g.setAttribute('filter', 'url(#silhuett)'); g.setAttribute('opacity', (0.55 * o).toFixed(3));
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'); g.setAttribute('filter', 'url(#silhuett)'); g.setAttribute('opacity', (0.5 * o).toFixed(3));
   g.appendChild(c); $('skugga').appendChild(g);
 }
 const P = o => ({ ...L.POSE0, ...o });
@@ -387,16 +405,17 @@ const RS = {
   '13': (tl, d) => { const s = TID.s13, lt = lagen(s + tl).lit;
     return SOV({ kam: K_HEL, f: F('nyfiken', { titt: tl < 1.7 ? [-14, -8 + 8 * del(0.6, 1.7, tl)] : [lerp(-14, 14, del(1.7, 3.0, tl)), 4 + 6 * del(1.7, 2.4, tl)] }), p: P({ rikt: tl < 1.7 ? -0.4 : lerp(-0.4, 0.4, del(1.7, 3.0, tl)) }) }); },
   // kritan ritar en lagom lampa
-  '14': (tl, d) => SOV({ kam: K_LAGOM, f: F('nyfiken', { titt: [-14, 0] }), p: P({ rikt: -0.4 }) }),
+  '14': (tl, d) => SOV({ kam: K_LAMP_RIT, f: F('nyfiken', { titt: [-14, 0] }), p: P({ rikt: -0.4 }) }),
   // klick: ett mjukt varmt sken; lättad; Varsågod; kawaii efter sucken
   '15': (tl, d) => { const sk = M('15', 28) + LN(28) + 0.3;
     const f = tl < 0.6 ? F('nyfiken', { titt: [-14, 0] }) : tl < sk ? LATTAD({ titt: [-8, 0] }) : F('kawaii', { glad: [0, 0], titt: [-10, 0] });
-    return SOV({ kam: K_LAGOM, f, p: P({ rikt: -0.4 * (1 - del(0.6, 1.2, tl)) - 0.2, oron: [-6 * del(0.6, 1.0, tl), -6 * del(0.6, 1.0, tl)], svans: vipp(tl, 0.8, 2) }) }); },
+    const vs = M('15', 27) - 0.2, fi = M('15', 28) - 0.2;   // klipp: närbild på räven på "Varsågod", tillbaka till lampan på "så fint"
+    return SOV({ kam: tl >= vs && tl < fi ? K_ANS() : K_LAGOM, f, p: P({ rikt: -0.4 * (1 - del(0.6, 1.2, tl)) - 0.2, oron: [-6 * del(0.6, 1.0, tl), -6 * del(0.6, 1.0, tl)], svans: vipp(tl, 0.8, 2) }) }); },
   // reaktion: kawaii i lampans sken, öronen reser sig
   '15r': (tl, d) => SOV({ kam: K_ANS(), f: F('kawaii', { glad: [0, 0], titt: [-12, 0] }), p: P({ oron: [-12 * del(0, 0.4, tl), -12 * del(0, 0.4, tl)], rikt: -0.3 }) }),
   // ska vi säga tack? paus; nickar på "Tack!", stolt
   '16': (tl, d) => { const t = M('16', 30), [f, p] = nick(F(tl > t ? 'stolt' : 'nyfiken'), P({ oron: [-8 * del(t, t + 0.3, tl), -8 * del(t, t + 0.3, tl)], svans: vipp(tl, t, 1.6) }), tl - t);
-    return SOV({ f, p }); },
+    return SOV({ kam: K_MYS, f, p }); },
   // skuggan på väggen
   '17': (tl, d) => SOV({ kam: K_HEL, f: F('forvanad', { titt: [10, -10 * del(0.4, 1.0, tl)] }), p: P({ upp: 0.5 * del(0.4, 1.0, tl), rikt: 0.2 }) }),
   '18': (tl, d) => SOV({ kam: K_HEL, f: prata(F('glad', { titt: [10, -10] }), tl, M('18', 32) + LN(32) + 0.1, d), p: P({ upp: 0.6, svans: vipp(tl, 0.6, 1.6) }) }),
@@ -447,12 +466,12 @@ function lage(t) {
 const LAGER = ['platta', 'himmel', 'skugga', 'bak', 'sov', 'sang', 'tacke', 'patacke', 'golvskugga', 'golv', 'natt', 'fram', 'krita', 'ram', 'haal'];
 function ritaRum(st, t) {
   const z = lagen(t);
-  kamera(typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL);
+  kamera(djup.kamera(typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL, t));   // djup-kit: lugn push/glid/settle per skott
   // ljusen: den lilla lampan (när den är tänd), den lagom lampan
   const ljus = [];
   const litSk = lampSkarm(z.lit, LAMPH.liten);
-  if (z.litTand > 0) ljus.push([litSk[0], litSk[1], z.litR, z.litTand]);
-  if (z.lagomTand > 0) { const [x, y] = lampSkarm(z.lagom, LAMPH.lagom); ljus.push([x, y, LAMPH.lagom * 2.2, z.lagomTand]); }
+  if (z.litTand > 0) ljus.push([litSk[0], litSk[1], z.litR, z.litTand, del(TID.klick10, TID.klick10 + 1.1, t)]);   // skenet växer ut på 1,1 s
+  if (z.lagomTand > 0) { const [x, y] = lampSkarm(z.lagom, LAMPH.lagom); ljus.push([x, y, LAMPH.lagom * 2.2, z.lagomTand, del(TID.klick15, TID.klick15 + 1.1, t)]); }
   // i det mörkaste (rad 27): skenet sjunker en kort stund medan räven byts mot sovbilden
   const dipp = st.dipp || 0;
   rum({ natt: z.natt * (1 + 0.6 * dipp), rumslampa: z.rums, ljus: ljus.map(([x, y, R, k]) => [x, y, R, k * (1 - 0.5 * dipp)]), ljust: z.ljust });
@@ -480,7 +499,7 @@ function ritaRum(st, t) {
       const b = lampa('l2', LAMPFOT, LAMPH.stor, { k: kk, f: ff, tand: z.stor, lager: 'bak' });
       const ut = del(s13 + 2.4, s13 + 3.0, t), [vx, vy] = T_L2.vanta;
       const sp = t < s13 + 0.8 ? lerp2([2100, 60], b ? b.slut : [vx, vy], del(s13 + 0.1, s13 + 0.6, t)) : b ? b.spets : [vx, vy];
-      if (ut < 1 && t > s13 + 0.1) kritaRita({ x: lerp(sp[0], 2100, ut), y: lerp(sp[1], 60, ut), v: KRITAN.VINKEL_RITAR, s: kritaSkala(ZOOM) });
+      if (ut < 1 && t > s13 + 0.1) kritaRita({ x: lerp(sp[0], 2100, ut), y: lerp(sp[1], 60, ut), v: KRITAN.VINKEL_RITAR, s: kritaSkala(ZOOM), bak: true });   // suddar med baksidan (Sanna 2026-11-25)
     }
   }
   // den lilla lampan efter den stora: den står framför den på golvet
@@ -513,6 +532,7 @@ function rita(t) {
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
   $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);   // ny brusbild 6 gånger/s
+  if (st.plats !== 'papper') djup.ram(t);
   window.kant?.uppdatera();
 }
 
@@ -558,6 +578,8 @@ window.ready = (async () => {
   const kt = (id, n) => RR[id].s + RR[id].ljud.find(x => x[0] === 'lampa-klick/lampa-klick-1')[1];
   TID = { klick6: kt('6') + 0.05, klick10: kt('10') + 0.05, klick12: kt('12') + 0.05, s13: RR['13'].s, klick15: kt('15') + 0.05 };
   BLINKA = skapaBlinka(56);
+  djup.init(document.querySelector('svg'));
+  djup.skott(t => { const st = lage(t); return st.plats === 'papper' ? null : typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL; }, DURATION);
   ['bak', 'sov', 'tacke', 'patacke', 'golv'].forEach(n => window.kant?.lagg($(n)));
   window.kant?.lagg(G);
   await Promise.all([PLATTA, SANG, KUDDE, NALLE.bild, TACKE.bild, LAMPBILD.bild, SOVBILD.bild, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));

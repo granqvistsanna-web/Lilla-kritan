@@ -38,9 +38,11 @@ Förslagen ur receptet, med vad som saknas. Sanna väljer eller ändrar meningen
 | **B** | björnen `bjornen-bulle` | vill leka | kon | bollen studsar, björnen hoppar med | ballongen flyger upp | kontroll av kons bild |
 | **A** | apan `apan-alfons` | är hungrig | bilen | apelsinen, mums | ananasen: bladen kittlar, atjo! | inget nytt, bara konturer |
 | **D** | dinon `dinon-disa` (bestämt 2026-11-21; v2-rigg med uttryck och poser finns) | vill veta vem som bor bakom dörren | grisen | dörren (`dorr-abc`): dinon knackar, knack knack | dockan tittar fram | grisen från sidan. Dinon är stor (SKALA 0,5), mät `KOMPIS`-skalan mot dörren |
-| **C** | clownen, en mjuk tygclown (ny rigg) | vill cykla men har ingen cykel | bollen | cykeln | cirkeln blir hjulet som fattas | **ny rigg** med `lk-figur`, som Sanna godkänner innan scenen byggs |
+| **C** | citronen, en stående citron utan armar (ny rigg `citronen-cilla`, 2026-11-25; var clownen) | vill cykla men har ingen cykel | bollen | cykeln | cirkeln blir hjulet som fattas | riggen gjord ur Sannas två Flow-bilder |
 
-**Bestämt 2026-11-21: C:s kompis är clownen.** Alternativen som vägdes: Svenska djur på C som små barn känner finns knappt (cikada; schimpans och chinchilla låter sj). Två vägar:
+**Ändrat 2026-11-25: C:s kompis är citronen, och clownen går bort.** Med *E:s riktning* säger bokstaven bara sin bokstav, så C kan inte visa det hårda k:et i *clown*. Sanna valde orden **citron, cykel, cirkel**, så att C bara har s-ljudet, och citronen som kompis utan armar (stående, med två korta fötter; riggen `assets/karaktarer/citronen-cilla/`, `karaktarer/citronen-cilla.md`). Berättelsen är densamma: citronen vill cykla, bollen blir fel, cykeln saknar ett hjul och cirkeln blir hjulet. Muren: citron, cykel, cirkel, med bollen som den udda.
+
+~~Bestämt 2026-11-21: C:s kompis är clownen.~~ (historik) Alternativen som vägdes: Svenska djur på C som små barn känner finns knappt (cikada; schimpans och chinchilla låter sj). Två vägar:
 
 - **Kaninen vill cykla (förslaget).** Kompisen är kaninen (`kaninen-kanel`, riggad i v2) och börjar inte på C. Orden är fortfarande tre C-ord: kaninen vill cykla men har ingen cykel. Kritan ritar fel (bollen, hej då!), sedan cykeln (ord 1). Cykeln saknar ett hjul, och kritan ritar en cirkel som blir hjulet (ord 2). Citronen rullar in (ord 3). Kaninen sitter inte på cykeln (receptets *"aldrig sitta i något"*), den hoppar bredvid och cykeln rullar. Muren: cykel, cirkel, citron.
 - **Cikadan.** Kompisen börjar på C, men det kräver en ny rigg, och ordet är svårt för små barn.

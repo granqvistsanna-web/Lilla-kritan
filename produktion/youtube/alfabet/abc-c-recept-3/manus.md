@@ -1,4 +1,81 @@
-# Kritans ABC C – recept 3: Clownen vill cykla
+# Kritans ABC C – recept 3: Citronen vill cykla
+
+## Beslut 2026-11-25: C har bara s-ljudet
+
+Med *E:s riktning* får bokstaven bara säga sin bokstav, så C kan inte visa det hårda k:et i *clown*. Sanna valde 2026-11-25 att byta orden så att C bara har ett ljud, s: **citron, cykel, cirkel**. Clownen går bort. Kompisen är **citronen utan armar** (Sannas val B): dagens `citron`-bild (`rekvisita/citron.md`) med ögon, kinder och mun i kod och ev. två små fötter. Den hoppar, vickar, lutar sig fram och har uttryck, men vinkar inte och gör ingen `hurra`. Ingen ny rigg och ingen ny bild ur Flow. Cykeln (`cykel-v2`), cirkeln och bollen är desamma som förut.
+
+**Meningen:** Citronen vill cykla men har inget att åka på. Kritan ritar fel (bollen, hej då!). Kritan ritar cykeln, men ett hjul fattas. Kritan ritar en cirkel, som rullar dit och blir hjulet. Cykeln rullar och citronen hoppar med. Den udda i muren är bollen.
+
+**Kopierat från E och B:** introsamtalet, C säger bara *C* (uttalat *se*) i fem toner och tycker till före Malin, större ansikte på märket, snabbare teckningar, lugnare gömlek, musiken 0,38.
+
+### Uppslaget med citronen (2026-11-25; Sanna spelade in raderna samma dag)
+
+Rörelsen först, Malin efteråt. **Fet** = ny replik som spelas in. C:s toner står som `c-…`.
+
+| Del | Bild (en rörelse) | Vem: replik | Ljud |
+|---|---|---|---|
+| 1 | Klossen snurrar in | Malin: Hej hej! | swoosh, pop |
+| 1 | Kritan ritar C:ets kontur (börjar på *"Titta"*) | Malin: Titta, kritan ritar en bokstav. | krita |
+| 1 | Bilden fylls i inifrån | Malin: Bokstaven C. | pling |
+| 1 | C puffar upp, ögon och mun poppar fram | C: `c-glad` *C!* | pop |
+| 1 | C tittar på oss | Malin: Hej, C! | – |
+| 1 | C vickar | C: `c-halsar` *C-c!* | – |
+| 1 | – | Malin: **Ska vi leka, C?** | – |
+| 1 | Två lugna hopp | C: `c-ja` *C! C!* | dunk, dunk |
+| 1 | – | Malin: Ja! Vad kul! *(E:s klipp)* | – |
+| 1 | C krymper och flyger till hörnet | Malin: Vad ritar kritan nu? *(E:s klipp)* | swoosh |
+| 2 | Kritan ritar citronens kontur, sedan bladet, ögonen och munnen (ca 6 s) | Malin: Hmm … · Vem är det? *(paus 3,3 s)* | krita |
+| 2 | Bilden fylls i, citronen studsar | Malin: **Citron!** · **C, c, citron!** | pop, pling, fniss |
+| 2 | – | C: `c-ja` · Malin: **Ja! Citron börjar på bokstaven C.** | – |
+| 2 | Citronen skuttar åt vänster och vickar hej | Malin: **Hej, citronen!** | dunk, dunk |
+| 3 | Närbild: citronen tittar ner (ledsen, blyg) | Malin: **Citronen vill cykla.** · **Men citronen har inget att åka på.** | – |
+| 3 | Kritan kommer in i bild | Malin: Kritan! Kan du rita något att åka på? | – |
+| 3 | Citronen lutar sig fram och "viskar" (babbel), sedan hoppar den till: ja! | Malin: **Vad sa du, citronen?** · Måste det börja på bokstaven C? | babbel, fniss |
+| 3 | Kritan nickar (fniss) och går till att rita | Malin: Klarar du det, kritan? · Nu ritar kritan. | fniss |
+| 4 | Kritan ritar bollens kontur | Malin: Hmm … · Vad blir det? *(paus 3,3 s)* | krita |
+| 4 | Bilden fylls i: en boll, den studsar till | Malin: Boll? · En boll! | pop, studs |
+| 4 | – | C: `c-undrar`, sedan `c-nej` | – |
+| 4 | Närbild: citronen blir förvånad, sedan skrattar den | Malin: Ha ha! Busiga kritan! · Boll börjar inte på C. | fniss |
+| 4 | Bollen rullar ut åt höger, citronen vickar hej då | Malin: Hej då, bollen! | rull |
+| 5 | Kritan ritar cykeln (bara bakhjulet), citronen tittar nyfiket | Malin: En gång till! · Något att åka på, som börjar på C! · Hmm … · Vad blir det? *(paus 3,3 s)* | krita |
+| 5 | Bilden fylls i: cykeln. Citronen jublar | Malin: Cykel! · C, c, cykel! | pop, pling, ringklocka, jippi |
+| 5 | – | C: `c-ja` · Malin: Cykel börjar också på C! | – |
+| 5 | Cykeln står bredvid citronen | Malin: Hej, cykeln! | – |
+| 5 | Cykeln tippar framåt där framhjulet fattas, citronen blir förvånad | Malin: Oj! Cykeln har bara ett hjul. · Vad fattas? *(paus 2 s)* | duns |
+| 6 | Citronen tittar upp, nyfiken | Malin: Ett hjul till! · Kritan, rita något runt! | – |
+| 6 | Kritan ritar cirkeln till höger om cykeln | Malin: Hmm … · Vad blir det? *(paus 3,3 s)* | krita |
+| 6 | Bilden fylls i: cirkeln. Citronen jublar | Malin: Cirkel! · En cirkel! | pop, pling, jippi |
+| 6 | – | C: `c-ja` · Malin: Cirkel börjar också på C! | – |
+| 6 | Cirkeln rullar till cykeln och blir framhjulet | Malin: Titta! Cirkeln rullar dit. · Nu blir cirkeln ett hjul! | rull, klick, pling |
+| 6 | Cykeln rullar fram och tillbaka, citronen hoppar bredvid | Malin: Cykeln rullar! · **Citronen hoppar med!** · Hopp, hopp, hopp! | ringklocka, dunk, jippi |
+| 6 | Närbild: citronen jublar (studsar, glada ögon) | – | fniss |
+| 7 | Tre klossar poppar fram, vänder ryggen till och byts lugnt | Malin: Kom, nu leker vi! · **Titta noga. Var är citronen?** *(paus 2,8 s, citronen fnissar inifrån och klossen vickar)* | duns, swoosh |
+| 7 | Citronens kloss vänder sig först | Malin: Där är den ju! | pling |
+| 7 | Muren, bollens kloss dunsar ner | Malin: Titta! En till. · Citron! · Cykel! · Cirkel! · Boll? · Vilken ska bort? · Vilken börjar inte på C? *(paus)* | studs |
+| 7 | – | C: `c-nej` · Malin: En boll! · Boll börjar inte på C. · Hej då, bollen! | studs, rull |
+| 8 | Klossarna på rad, var och en hoppar på sitt ord | Malin: **Citron, cykel, cirkel.** · Alla börjar på bokstaven C. | – |
+| 8 | Discot: citronen hoppar ur klossen och dansar stor, de andra snurrar | Malin: Nu dansar vi! · **Citronen dansar!** · Cykeln snurrar! · Cirkeln snurrar! | disco |
+| 8 | Märket i mitten | C: `c-ja` (stolt) | – |
+| 8 | Citronen vickar hej då | Malin: Nu är vi klara för i dag. · Tack för att du lekte med C! · Hej då! Vi ses! + C: `c-halsar` samtidigt | – |
+
+**Nya Malin-rader (12, ElevenLabs):** `n-ska-vi-leka`, `p-citron`, `p-c-c-citron`, `p-citron-c`, `n-hej-citronen`, `n-vill-cykla`, `n-inget-att-aka`, `n-vad-sa-du`, `n-citronen-hoppar`, `n-titta-noga` (delas i `n-titta-noga-1` + `n-var-ar-citronen`), `n-tre-pa-c`, `n-citronen-dansar`. Resten är C:s tagning 4 och E:s `n-ja-vad-kul`, `n-vad-ritar-nu`.
+
+**C:s toner (Olivia, en tagning, klipps efter tonhöjden):** `[happy] C! ... [warm] C-c! ... [happy] C! C! ... [gently] C-c. ... [curious] C?` (uttalas *se*).
+
+**Går bort:** `p-det-ar-c`, `n-hur-later`, `n-ibland-hart`, `p-kritan-ritar-nagot`, alla clown-rader (`p-clown`, `p-en-clown`, `p-clown-c`, `n-hur-clown`, `n-hej-clownen`, `n-clownen-hoppar`, `n-clownen-dansar`, `n-var-ar-clownen`), `n-och-cykel`, märkets `c-hej`, `c-kk`, `c-k-clown`, `c-s-cykel`, `c-s-cirkel`, `c-ljud-1…3`. Hunden användes inte i C (bollen är den udda), så `p-hund*` går också bort.
+
+**Regelkoll:** inga djurnamn (citronen är en sak), *"Vem är det?"* för citronen eftersom den har ansikte och är kompisen, *"Vad blir det?"* för bollen, cykeln och cirkeln, inga utdragna ord, en v3-tagg per rad, *"Hej hej!"* `[warm]`. Citronen sitter aldrig på cykeln.
+
+### Byggt 2026-11-25
+
+- **Citronen:** Sannas två Flow-bilder (stående med fötter, och utan fötter) i `assets/karaktarer/citronen-cilla/premium/original/` (kopia i `assets/rekvisita/citron-kompis/`). Fötterna klippta med `delar_diff.py`, kant 11 px (`tunn_kant.py 11`), riggen `uttryck.html` (clownens sida, armarna är en tom bild), `karaktarer/citronen-cilla.md`. I scenen ritas den i skala `CS` 0,82 (riggarna annars 0,66), och `vinka` blir ett vick med kroppen (`utanArmar`).
+- **Skissen:** konturen (spårad ur `cilla-faceless.png`), stjälken, bladet, fyra par prickar i skalet, ögonen, munnen och kinderna; `tempo` 0,42. Bollen, cykeln och cirkeln `tempo` 0,5.
+- **E:s riktning som i B:** introsamtalet, `eTon()` (`x-ja` efter citronen, cykeln och cirkeln; `x-undrar` + `x-nej` efter bollen; `x-nej` i muren; `x-ja` i slutet; `x-halsar` med *"Hej då! Vi ses!"*), större ansikte på C (`HUVUD` [-30, -215, 48, 66], kinder, större mun), `PAUS` 3,3, lugnare gömlek (`VANDSEK` 0,9, `BYTSEK` 1,6, paus 2,8), mjukare skuggor, introts musik 0,38.
+- **Röster:** Malin `produktion/ljud-original/roster/abc-c-intro-2026-11-25/malin-1.mp3` (Eleven v4, 50/75; `[excited]` byttes mot `[happy]`), delad med `dela-tagning.py`: alla 13 klipp hörs rätt, inga avklippta ord. C:s toner: Olivia `olivia-1.mp3` där, klippta efter tonhöjden: `x-glad` 0,00–0,64, `x-halsar` 1,00–1,76 (hög–lägre), `x-ja` 2,09–2,64 + 2,69–3,25 (två *C!* med 0,12 s emellan), `x-nej` 3,68–4,34 (lågt, fallande), `x-undrar` 5,75–6,20 (stiger). Biten 4,91–5,29 används inte. Clownens gamla klipp ligger i `assets/ljud/roster/alfabet/abc-c-recept-3/clown/`.
+- **Kontroll:** `krock.mjs`: inga krockar. Clownfilmen och dess stillbilder ligger i `aldre/`.
+
+## Historik: clownversionen (2026-11-21–22)
+
 
 Påbörjad 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur `../abc-b-recept-3/` (så att B:s rättelser från feedbacken 21/11 följer med: större klossen i introt, ansiktsdetaljer i kompisens skiss, kritan i bild med `KVISA`, `KNICK`, `KFRAM`). Den gamla C-filmen (recept 1) står kvar orörd i `../abc-c/` tills den här är godkänd.
 

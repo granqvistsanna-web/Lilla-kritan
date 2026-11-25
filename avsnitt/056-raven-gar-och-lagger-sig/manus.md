@@ -77,8 +77,8 @@ Kritan ritar **nallen** (Sanna 2026-11-25: en sak ur berättelsen, inte figuren)
 | 2 | Halvbild, räven vid sängen. **Närbild på fönstret på *"kväll"*** (kvällshimmel), sedan tillbaka | Det är kväll nu. Snart ska räven sova. | `rav-gullig-5` (nyfiken) |
 | 3 | **Närbild på nallen på fotänden på *"nallen"***, räven tittar dit | Och där är nallen! | `rav-gullig-3` (kort fniss) |
 | 3b 🆕 | Halvbild, räven tittar på nallen och sedan på sängen, öronen vippar i pausen | Ska nallen också sova? *(paus: räven svarar)* Ja, så klart! | `rav-gullig-7` (pratar) i pausen |
-| 4 | Halvbild på sängen, räven hoppar upp bakom madrassen, nallen glider upp bredvid kudden | Räven hoppar upp i sängen! | `hopp-mjuk`, `puff`, `nalle-hopp` |
-| 5 | Halvbild, räven lutar sig mot nallen och sluter ögonen | Mmm … räven kramar nallen. *(paus: räven myser)* 🆕 Åh, vad mjuk nallen är! | `rav-gullig-4` (mysig suck) i pausen |
+| 4 | Halvbild på sängen, räven hoppar upp bakom madrassen, nallen glider upp bredvid kudden | Hopp! Upp i sängen! (feedback 25/11) | `hopp-mjuk`, `puff`, `nalle-hopp` |
+| 5 | Halvbild, räven lutar sig mot nallen och sluter ögonen | Mmm … ja, krama nallen! Så mysigt. *(paus: räven myser)* 🆕 Åh, vad mjuk nallen är! | `rav-gullig-4` (mysig suck) i pausen |
 | 6 | **Närbild på lampan på *"lampan"***, skenet släcks, rummet blir kvällsblått | Nu släcker vi lampan. | `lampa-klick` |
 | 7 | Närbild i mörkret (reaktionsslaget), rävens ögon blir stora, tittar åt sidorna | Oj! Så mörkt! Räven ser ingenting. | `rav-gullig-5` (nyfiken) |
 | 8 | Närbild, öronen faller | Räven tycker inte om när det är så mörkt. *(paus: räven svarar)* 🆕 Nej, det förstår jag. *(paus 1 s)* Hm … räven vill ha lite ljus. | `rav-gullig-6` (trumpen) i pausen |
@@ -94,7 +94,7 @@ Kritan ritar **nallen** (Sanna 2026-11-25: en sak ur berättelsen, inte figuren)
 | 18 | Lampan glider närmare, skuggan växer nästan till taket | En stor räv på väggen! | `rav-gullig-7` (pratar) |
 | 19 | Lampan glider tillbaka, skuggan blir liten. Räven vickar på öronen, skuggan vickar med | Och en liten räv på väggen! | `rav-fniss-3` |
 | 19b 🆕 | Halvbild, räven tittar på Malin (tittaren) och "pratar" om skuggorna, öronen vippar | *(paus: räven pratar)* Jaså, tycker du att skuggan är rolig? Mm, jag också. | `rav-gullig-7` (pratar) före repliken |
-| 20 | Halvbild, räven vänder sig mot nallens plats: den är tom. Räven tittar åt vänster, sedan åt höger | Oj, var är nallen? Räven vet inte var. | `rav-gullig-5` (nyfiken) |
+| 20 | Halvbild, räven vänder sig mot nallens plats: den är tom. Räven tittar åt vänster, sedan åt höger | Oj, var är nallen? Räven vet inte var nallen tog vägen. | `rav-gullig-5` (nyfiken) |
 | 21 | Halvnära över sängen för frågan, sedan **klipp till närbild på täcket**: bulan och ett öra som sticker fram. Örat skimrar efter 3 s | Kan du hjälpa räven? Ser du nallen? *(paus 5,5 s)* | `lysmask-1` lågt |
 | 22 | Örat skimrar tydligt | Ja, där! Under täcket! | `tindra`, `rav-gullig-3` (kort fniss) |
 | 23 | Nallen glider upp ur täcket och sätter sig bredvid räven, räven lutar sig mot den | Där är nallen! | `prassel-tyg`, `nalle-hopp`, `rav-gullig-2` (förtjust) |
@@ -136,8 +136,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Och där är nallen!
 [curious] Ska nallen också sova?
 [warmly] Ja, så klart!
-[cheerfully] Räven hoppar upp i sängen!
-[happy sigh] Mmm … räven kramar nallen.
+[cheerfully] Hopp! Upp i sängen!
+[happy sigh] Mmm … ja, krama nallen! Så mysigt.
 [warmly] Åh, vad mjuk nallen är!
 [warmly] Nu släcker vi lampan.
 [surprised] Oj! Så mörkt! Räven ser ingenting.
@@ -160,7 +160,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] En stor räv på väggen!
 [giggles] Och en liten räv på väggen!
 [warmly] Jaså, tycker du att skuggan är rolig? Mm, jag också.
-[curious] Oj, var är nallen? Räven vet inte var.
+[curious] Oj, var är nallen? Räven vet inte var nallen tog vägen.
 [warmly] Kan du hjälpa räven? Ser du nallen?
 [happy] Ja, där! Under täcket!
 [happy] Där är nallen!

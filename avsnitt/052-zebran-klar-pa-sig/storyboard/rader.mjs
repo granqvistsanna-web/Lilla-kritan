@@ -69,7 +69,7 @@ export const RADER = [
   // --- Var är strumpan? Barnet hittar den ---
   { id: '21', d: 0.8 + L(36) + 1.2, malin: [[36, 0.8]], ljud: [[Z('nyfiken'), 1.0 + L(36)]], bild: 'tittar på foten, åt vänster och höger' },
   { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild mot dörren, stövlarna och pallen' },
-  { id: '22b', d: HJALP - 2.0 + 0.4, ljud: [['lysmask/lysmask-1', 1.2]], bild: 'närbild stöveln, strumpan skimrar efter 3 s' },
+  { id: '22b', d: 1.6, ljud: [['lysmask/lysmask-1', 0.2]], bild: 'närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: "find sock earlier when they are looking")' },
   { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'strumpan i stöveln skimrar tydligt, zebran skuttar' },
   { id: '24', d: 1.6 + L(39) + SVAR + 0.7 + L(40) + 0.8, malin: [[39, 1.6], [40, 1.6 + L(39) + SVAR + 0.7]], ljud: [['strumpa/strumpa-2', 1.6 + PA(39) - 0.3], ['tindra/tindra-3', 1.6 + PA(39) + 0.1], [Z('mysig-suck', 'c'), 1.7 + L(39)]],
     bild: 'kudden lutar, strumpan glider fram och på hoven' },

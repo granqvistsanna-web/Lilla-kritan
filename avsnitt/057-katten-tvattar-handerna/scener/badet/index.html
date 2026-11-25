@@ -35,8 +35,8 @@
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
   <g id="kamera">
-    <g id="platta"></g>
-    <g id="vagg"></g>
+    <g id="platta" data-djup-ramp="816:-0.1 905:0 1080:0.18"></g>
+    <g id="vagg" data-djup="-0.1"></g>
     <g id="bak"></g>
     <g id="pall"></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
@@ -52,6 +52,7 @@
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
 <script src="/verktyg/kritan-ritar.js"></script>
+<script src="/verktyg/djup3d.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -96,13 +97,13 @@ const K_HALV_GOLV = [1.45, 960, 600];
 const K_HALV = [1.6, HX + 10, 500];
 const K_HALV_STA = () => [1.7, STA[0] + 60, STA[1] - (L.FOTTER - 520) * GS];
 const K_NARA_STA = () => [2, STA[0], STA[1] - (L.FOTTER - 470) * GS];
-const K_NARA_TASS = [3.0, BX + 5, RIM - 60];   // tassarna stora i bild, hela kranen med (QA 2026-11-25: tassarna syntes knappt)
+const K_NARA_TASS = [2.85, BX + 5, RIM - 60];   // tassarna stora i bild, hela kranen med (QA 2026-11-25: tassarna syntes knappt)
 const K_NARA_ANS = () => [2.5, BX, VID[1] - (L.FOTTER - 420) * GS];
 const K_TVAL = [3.2, TVAL[0] + 5, TVAL[1] - 45];   // tvålen i mitten, kranen helt utanför bild (förut klipptes den av i högerkanten)
 const K_TVAL_NARA = [2.2, TVAL[0] + 110, TVAL[1] - 110];
 const K_NARA_ORA = () => [2.5, BX + 60, K_NARA_ANS()[2]];   // närbild som K_NARA_ANS, lite mot örat: hela kranen syns (Sanna 2026-11-25: "the sink tap looks cut off")
 const K_TAVLAN = [1.4, 1010, 470];
-const K_NARA_MAL = () => [2.4, 1047, K_NARA_ANS()[2]];   // närbild när målningen hänger på väggen: hela målningen och hela kranen med
+const K_NARA_MAL = () => [2.3, 1047, K_NARA_ANS()[2]];   // närbild när målningen hänger på väggen: hela målningen och hela kranen med
 const K_VINK = () => [2.1, BX - 40, VID[1] - (L.FOTTER - 470) * GS];   // katten nära med vinkande arm
 const K_STRALE = [2.6, KRAN[0] - 90, RIM - 75];   // tassen under strålen, kranen och ansiktet i bild
 const K_SPAR = [1.9, 510, 740];   // avtrycken på golvet och katten, nära
@@ -132,29 +133,12 @@ function badrum({ handduk = true } = {}) {
     <g transform="translate(${f1(HX - W / 2)} ${f1(RIM - kantY)}) scale(${HK})"><image href="${HANDFAT.bild}" width="802" height="775" mask="url(#utan-kran)"/>${KRANBILD}</g>`;
 }
 
-// strålen: k 0 = stängd, 0–1 växer ner till slut (läppen eller tassen), 1–2 tar slut uppifrån. Den går aldrig genom något.
+// strålen (djup-kitet, verktyg/djup3d.js): k 0 = stängd, 0–1 faller ut ur pipen ner till slut (läppen eller tassen), 1–2 slutet
+// faller av när kranen stängs. Den går aldrig genom något: slut är tassens ovansida när tassen är under pipen.
 function kran(k, slut = RIM + 4) {
   if (k <= 0 || k >= 2) return;
-  const [x, y] = KRAN, a0 = y + 8, b0 = slut, a = a0 + (k > 1 ? (b0 - a0) * mjuk(k - 1) : 0), b = a0 + (b0 - a0) * mjuk(Math.min(1, k));
-  if (b <= a + 2) return;
-  // en mjuk, sammanhängande stråle: smalnar lite nedåt, kanterna böljar svagt, ljus kärna, en glansstrimma och strömmande
-  // ljusa streck som visar att vattnet rinner (Sanna 2026-11-25: "improve water flow")
-  const t = TT, hw = yy => lerp(9, 6.5, (yy - a0) / Math.max(1, b0 - a0)) + 0.8 * Math.sin(t * 12 + yy * 0.09);
-  const N = 8, ys = [...Array(N + 1)].map((_, i) => a + (b - a) * i / N), xs = ys.map(yy => x + 1.2 * Math.sin(t * 7 + yy * 0.05));
-  const kant = sd => ys.map((yy, i) => `${f1(xs[i] + sd * hw(yy))} ${f1(yy)}`).join(' L');
-  let h = `<path d="M${kant(-1)} L${ys.map((yy, i) => `${f1(xs[N - i] + hw(ys[N - i]))} ${f1(ys[N - i])}`).join(' L')}Z" fill="#8fd0ea" stroke="#fff" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>`;
-  h += `<path d="M${kant(-0.45)} L${ys.map((yy, i) => `${f1(xs[N - i] + 0.45 * hw(ys[N - i]))} ${f1(ys[N - i])}`).join(' L')}Z" fill="#cfeefa" opacity="0.85"/>`;
-  h += `<path d="M${f1(x - 4.5)} ${f1(a + 3)} V${f1(b - 3)}" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>`;
-  h += `<path d="M${f1(x + 2)} ${f1(a + 6)} V${f1(b - 5)}" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity="0.75" stroke-dasharray="10 22" stroke-dashoffset="${f1(-t * 300)}"/>`;
-  if (b >= b0 - 1 && k <= 1.6) {   // stänket där strålen tar emot
-    const s = k > 1 ? 1 - del(1.0, 1.6, k) : 1;
-    h += `<ellipse cx="${f1(x)}" cy="${f1(b0 - 1)}" rx="${f1((20 + 3 * Math.sin(t * 11)) * s)}" ry="${f1(6.5 * s)}" fill="#e9f8fd" stroke="#fff" stroke-width="1.5" opacity="${(0.85 * s).toFixed(2)}"/>`;
-    [-1, 1].forEach(sd => h += `<path d="M${f1(x + sd * 6 * s)} ${f1(b0 - 2)} Q${f1(x + sd * 16 * s)} ${f1(b0 - 14 * s - 2 * Math.sin(t * 15))} ${f1(x + sd * 22 * s)} ${f1(b0 - 3)}" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity="${(0.8 * s).toFixed(2)}"/>`);
-    for (let i = 0; i < 6; i++) { const fas = ((t * 2.2 + i / 6) % 1), sida = i % 2 ? 1 : -1, sp = 16 + 10 * ((i * 7) % 3);
-      const dx = sida * sp * fas, dy = -34 * Math.sin(Math.PI * fas) * (0.7 + 0.3 * ((i * 5) % 2)), r = 4.4 * (1 - 0.6 * fas) * s;
-      h += `<circle cx="${f1(x + dx)}" cy="${f1(b0 - 3 + dy)}" r="${f1(r)}" fill="#cdeefa" stroke="#fff" stroke-width="1.2" opacity="${(0.9 * (1 - fas * 0.7)).toFixed(2)}"/>`; }
-  }
-  lagg('fram', h);
+  const [x, y] = KRAN;
+  lagg('fram', djup.strale({ x0: x, y0: y + 8, x1: x, y1: slut, bredd: 17, pa: k, zoom: ZOOM, t: TT }));
 }
 // tre sista droppar från pipen när kranen stängs
 function pipDroppar(tl, t0) {
@@ -497,7 +481,7 @@ function ritaPapper(st, t) {
 }
 function ritaBad(st, t) {
   badrum({ handduk: !st.handduk });
-  kamera(st.kam || K_HEL);
+  kamera(djup.kamera(st.kam || K_HEL, t));   // djup-kitet: lugn push/glid/settle i varje skott
   spar(t, st.glans ?? -1);
   // målningen på väggen: kritan ritar (26), fylls (27), hänger kvar
   if (st.malRit) {
@@ -539,6 +523,8 @@ function ritaBad(st, t) {
     lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(lerp(y + 10, RIM - 2, u * u))}" rx="4" ry="5.5" fill="#bfe6f5" stroke="#fff" stroke-width="1.5" opacity="${f1(1 - u * 0.6)}"/>`); });
   // skummet och tussarna
   if (st.skum) skum(st.skum, st.ton ? st.ton[0] : null, st.ton ? st.ton[1] : 0);
+  if (st.tusser > 0.3) { const [x, y] = tassMitt();   // tvålbubblor svävar upp ur skummet och tonas bort (djup-kitet)
+    lagg('fram', `<g opacity="${del(0.3, 0.8, st.tusser).toFixed(2)}">${djup.tvalbubblor({ x: x - 30, y: y - 10, n: 6, hojd: 300, bredd: 200, rmin: 9, rmax: 18, ljus: [x - 500, y - 700], t: TT })}</g>`); }
   if (st.tusser > 0.01) { const k = st.tusser;   // skumtussar på båda tassarna, de växer i tur och ordning och följer tassarna
     lagg('fram', ['l', 'r'].map((n, i) => { const [x, y] = iScen('.farg-' + n), sd = i ? 1 : -1;
       return [[sd * 16, 10, 11, 0], [sd * -6, 16, 10, 0.3], [sd * 6, 20, 12, 0.55]].map(([dx, dy, r, a], j) => { const s = del(a, a + 0.45, k);
@@ -580,6 +566,7 @@ function rita(t) {
   if (st.vitIn) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#FFFFFF" opacity="${st.vitIn.toFixed(3)}"/>`);
   if (t > DURATION - SVART) lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>');
   $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);   // ny brusbild 6 gånger/s
+  if (st.plats !== 'papper') djup.ram(t);
   window.kant?.uppdatera();
 }
 
@@ -627,6 +614,8 @@ window.ready = (async () => {
   for (let tl = 0; tl <= 2.4; tl += 0.005) { const x = GANG(tl);
     while (x >= -160 + k * 72) { if (x > -40) STEG.push({ t: t1 + tl, x: x + 22 * sida, y: GOLV + (sida > 0 ? 6 : 16) }); sida = -sida; k++; } }
   BLINKA = skapaBlinka(57);
+  djup.init(document.querySelector('svg'));
+  djup.skott(t => { const st = lage(t); return st.plats === 'papper' ? null : st.kam || K_HEL; }, DURATION);
   window.kant?.lagg(G); window.kant?.lagg($('kar')); window.kant?.lagg($('tvalen'), { andel: 0.01 }); window.kant?.lagg($('pall')); window.kant?.lagg($('mellan'));
   await Promise.all([PLATTA, HANDFAT.bild, PALL, HANDDUK, KRITAN.BILD, PENSEL].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();

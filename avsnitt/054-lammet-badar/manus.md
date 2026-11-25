@@ -203,6 +203,20 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **Kritirisen (4:15):** en bred ellips mellan lammet och ankan, så att båda är med.
 - **Ljudnivån:** `scener/render.mjs` mäter effekt-wav:en och höjer den till −14 LUFS med en limiter sist (topp ca −1,1 dBFS). Förut −18,4 LUFS.
 
+### Feedback 26/11 (renderingen 25/11 22:06)
+
+- **0:45 "a bit too stressed":** rad 5 (lammet och ankan pratar) har fått luft: ankan glider fram på 1,8 s, pratet och pipen kommer med paus emellan, Malin börjar först när de pratat klart, längre paus efter *"Vad säger ankan?"*. Rad 4 slutar 0,4 s senare. Rad 5 är 2,7 s längre.
+- **1:13 "less bubbles in bath":** 3 såpbubblor i stället för 7, svagare.
+- **1:33 "have malin say bath is over after boat play":** tagning 15 är delad. *"Nu är du ren!"* står kvar efter skumhatten (rad 7); *"Nu kliver vi upp ur badet."* (ny fil 52, samma tagning) kommer efter båtleken i slutet av b4, och lammet nickar. Hela tagningen ligger i `assets/ljud/roster/lammet-badar/aldre/`.
+- **3:16 "other placement closer to bathtub for brush":** borsten ligger från början mellan pallen och badkaret och glider in bakom pallens **högra** kant (mot badkaret) när lammet landar på nedre steget. Bara det rosa huvudet sticker fram. *"Bakom pallen!"* stämmer fortfarande. I rad 25 glider den ut åt höger och flyger i en högre båge över pallen till tassen.
+
+### Djup-kit (Sanna 2026-11-25: "lägg in i alla")
+
+- **Parallax:** `verktyg/djup3d.js` (modulen är oförändrad). Golvet (`#platta`) lutar från −0,1 vid väggfoten till 0,18 längst fram, och väggen ligger på −0,1. Figurerna, karet, pallen och sakerna är platta som förut.
+- **Kameran:** `djup.kamera` ger en lugn glid eller push i varje utsnitt (förut ett eget tau-push). Rad 1 (ritintrot) står still, och pappret har ingen parallax.
+- **Ångan** är `djup.anga` i två lager, en svag bakom lammet och en ännu svagare framför. Den syns fortfarande bara på *"varmt"* (rad 4–5) och tonas in och ut som förut.
+- **Skumbubblorna** längs karkanten är `djup.skum` med ljuset uppe till vänster, så att de glittrar.
+
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").

@@ -2,7 +2,7 @@
 // Bygger på ritintrot (011/045) och 046 Kaninen går till doktorn. Allt är SVG-strängar i scenens 1920×1080-koordinater.
 // Ladda med <script src="/verktyg/kritan-ritar.js"></script>. Kräver att kritans bild finns (KRITAN.BILD).
 //
-//   kritaBild(x, y, {s, v})        kritan med spetsen i (x, y), vriden v grader, skala s
+//   kritaBild(x, y, {s, v, bak})   kritan med spetsen i (x, y), vriden v grader, skala s; bak: vänd, baksidan i (x, y) (kritan suddar)
 //   kritaSkala(zoom)              kritans skala i en scen med kamerazoom (lika stor i bild hur nära kameran än går)
 //   ritBana(drag, k, {vikt, attr}) linjen ritas streck för streck fram till k (0–1); kritan glider mellan strecken i en liten båge.
 //                                 Ger { html, spets, start, slut }. Ett drag (en kontur) = ett streck.
@@ -16,7 +16,7 @@
 // Siffrorna nedan är godkända av Sanna. Ändra dem här, inte i avsnitten.
 
 const KRITAN = {
-  BILD: '/assets/rekvisita/krita-rod/cut/krita-rod-tunn.png', WH: [755, 265], SPETS: [742, 132],   // tunn kant: följer vita-kanter-regeln (Sanna 2026-11-25)
+  BILD: '/assets/rekvisita/krita-rod/cut/krita-rod-tunn.png', WH: [755, 265], SPETS: [742, 132], BAK: [16, 132],   // tunn kant: följer vita-kanter-regeln (Sanna 2026-11-25)
   LINJE: '#3a2c28',          // mörk kritlinje (i färgsångerna: en mörk ton av avsnittets färg)
   BRED: 12,                  // linjens bredd i helbild (ca 3 % av sakens höjd); dela med sakens skala om linjen ritas i bildens pixlar
   VINKEL_RITAR: 125, VINKEL_VANTAR: 140,
@@ -30,8 +30,9 @@ const KRITAN = {
 const _kl = x => Math.max(0, Math.min(1, x)), _lerp = (a, b, t) => a + (b - a) * t, _mjuk = t => (t = _kl(t), t * t * (3 - 2 * t));
 const _f1 = x => (+x).toFixed(1);
 
-function kritaBild(x, y, { s = KRITAN.SKALA_PAPPER, v = KRITAN.VINKEL_RITAR } = {}) {
-  return `<image class="krita" href="${KRITAN.BILD}" width="${KRITAN.WH[0]}" height="${KRITAN.WH[1]}" transform="translate(${_f1(x)} ${_f1(y)}) rotate(${_f1(v)}) scale(${s.toFixed(3)}) translate(${-KRITAN.SPETS[0]} ${-KRITAN.SPETS[1]})"/>`;
+function kritaBild(x, y, { s = KRITAN.SKALA_PAPPER, v = KRITAN.VINKEL_RITAR, bak = false } = {}) {
+  const [ax, ay] = bak ? KRITAN.BAK : KRITAN.SPETS;   // suddar: kritan vänd, baksidan mot linjen (Sanna 2026-11-25: "kritan suddar med baksidan")
+  return `<image class="krita" href="${KRITAN.BILD}" width="${KRITAN.WH[0]}" height="${KRITAN.WH[1]}" transform="translate(${_f1(x)} ${_f1(y)}) rotate(${_f1(bak ? v + 180 : v)}) scale(${s.toFixed(3)}) translate(${-ax} ${-ay})"/>`;
 }
 const kritaSkala = (zoom = 1) => KRITAN.SKALA_SCEN / Math.sqrt(zoom);
 const ritfart = k => (k = _kl(k), 0.6 * k + 0.4 * _mjuk(k));

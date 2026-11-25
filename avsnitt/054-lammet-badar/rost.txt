@@ -12,7 +12,7 @@
 12-vad-sager-ankan  [curious] Vad säger ankan?
 13-jasa-det-tycker-ankan  [chuckles] Jaså, det tycker ankan!
 14-skumhatt  [laughs] Oj! Skum på huvudet! En skumhatt!
-15-nu-ar-du-ren  [cheerfully] Nu är du ren! Nu kliver vi upp ur badet.
+15-nu-ar-du-ren  [cheerfully] Nu är du ren!
 16-ett-skutt-ner  [cheerfully] Ett skutt … två skutt … ner på golvet!
 17-ullen-blot  [surprised] Oj, oj, oj! Ullen är alldeles blöt!
 18-och-platt  [gently] Och ullen är platt.
@@ -48,3 +48,4 @@
 49-borsta-fint  [warmly] Vi borstar öronen. Borsta … borsta … så fint!
 50-borsta-mjukt  [warmly] Nu borstar vi magen. Borsta … borsta … så mjukt!
 51-och-sist-borsta  [warmly] Och sist borstar vi hela ullen. Borsta … borsta … så fint!
+52-nu-kliver-vi-upp  [cheerfully] Nu kliver vi upp ur badet.

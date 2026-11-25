@@ -8,8 +8,8 @@
 08-dar-ar-nallen  [happy] Och där är nallen!
 09-ska-nallen-sova  [curious] Ska nallen också sova?
 10-ja-sa-klart  [warmly] Ja, så klart!
-11-upp-i-sangen  [cheerfully] Räven hoppar upp i sängen!
-12-kramar-nallen  [happy sigh] Mmm … räven kramar nallen.
+11-upp-i-sangen  [cheerfully] Hopp! Upp i sängen!
+12-kramar-nallen  [happy sigh] Mmm … ja, krama nallen! Så mysigt.
 13-vad-mjuk  [warmly] Åh, vad mjuk nallen är!
 14-slacker-lampan  [warmly] Nu släcker vi lampan.
 15-sa-morkt  [surprised] Oj! Så mörkt! Räven ser ingenting.
@@ -32,7 +32,7 @@
 32-stor-rav  [happy] En stor räv på väggen!
 33-liten-rav  [giggles] Och en liten räv på väggen!
 34-tycker-du  [warmly] Jaså, tycker du att skuggan är rolig? Mm, jag också.
-35-var-ar-nallen  [curious] Oj, var är nallen? Räven vet inte var.
+35-var-ar-nallen  [curious] Oj, var är nallen? Räven vet inte var nallen tog vägen.
 36-ser-du-nallen  [warmly] Kan du hjälpa räven? Ser du nallen?
 37-ja-dar  [happy] Ja, där! Under täcket!
 38-dar-ar-nallen-igen  [happy] Där är nallen!

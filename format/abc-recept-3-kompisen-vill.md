@@ -4,7 +4,7 @@
 
 **Ny riktning från C (Sanna 2026-11-22: *"i like this new direction"*):** kritan börjar rita på *"Titta"*, kompisens skiss har alla kännetecken, armarna är lägre och gömleken har ledtrådar. Se *C:s riktning* nedan. Det C:s märke säger (*"Hej! C! C!"*, *"k, k, clown!"*) ersätts av *E:s riktning*: bokstaven säger bara sin bokstav.
 
-**E:s riktning (Sanna 2026-11-24–25):** introt är ett samtal mellan Malin och bokstaven, bokstaven säger bara sin bokstav i fem toner och tycker till om varje ord, och kritan ritar på ca 6 s. Se *E:s riktning* nedan. Den gäller alla bokstäver; B har den sedan 2026-11-25, A, C och D inte än.
+**E:s riktning (Sanna 2026-11-24–25):** introt är ett samtal mellan Malin och bokstaven, bokstaven säger bara sin bokstav i fem toner och tycker till om varje ord, och kritan ritar på ca 6 s. Se *E:s riktning* nedan. Den gäller alla bokstäver; B har den sedan 2026-11-25, C också (med citronen i stället för clownen).
 
 **Sannas ändringar 2026-11-20, med i alla:** kritan ritar bara konturen och bilden fylls i inifrån, introt är ca 4 s kortare, introts kloss har rundare kanter, och katten och ekorren är nya bilder ur Flow: vanliga små djur från sidan, inte figurer på två ben.
 
@@ -81,7 +81,7 @@ Förslag för bokstäverna som finns:
 
 - **A** (gjord): Apan är hungrig. Bil? Nej. Apelsin, mums. Ananasens blad kittlar: atjo!
 - **B** (gjord): Björnen vill leka. Ko? Nej. Bollen studsar och björnen hoppar med. Ballongen flyger upp och ner igen.
-- **C** (bestämt): Clownen, en mjuk tygclown (ny v2-figur), vill cykla men har ingen cykel. Boll? Nej. Cykeln, men ett hjul fattas: kritan ritar en cirkel, och den blir hjulet. Clown uttalas med k, cykel och cirkel med s.
+- **C** (ändrat 2026-11-25): Citronen (stående, utan armar) vill cykla men har ingen cykel. Boll? Nej. Cykeln, men ett hjul fattas: kritan ritar en cirkel, och den blir hjulet. Alla tre orden har s-ljudet.
 - **D** (gjord): Dinon vill veta vem som bor bakom dörren. Gris? Nej. Dinon knackar på dörren, knack knack. Dockan tittar fram.
 - **E:** Elefanten vill leka. Katt? Nej. Ekorren hoppar och elefanten härmar. Ekorren är hungrig, och ekollonet glider dit.
 
@@ -242,7 +242,7 @@ Barnet hör ett glatt *E! E!* för rätt och ett mjukt *E-e.* för fel. I muren 
 
 **Nya Malin-repliker per bokstav:** `n-ska-vi-leka`, `n-ja-vad-kul`, `n-vad-ritar-nu` (samma text i alla bokstäver utom namnet). `n-hur-<ord1>`, `n-och-<ord2>` och märkets ord går bort.
 
-**Öppet:** hur en bokstav med två ljud (C med k i *clown*) visar det hårda ljudet när den bara får säga sin bokstav. Fråga Sanna när C görs om.
+**Bokstäver med två ljud (Sanna 2026-11-25):** bokstaven visar inte det andra ljudet. Orden väljs så att bokstaven bara har ett ljud i filmen: C har citron, cykel och cirkel (s-ljudet), och clownen gick bort. Gör likadant för G och K i liknande fall.
 
 ## Ny bokstav
 

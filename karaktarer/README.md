@@ -56,6 +56,7 @@ För gamla visor som handlar om barn. Sången får säga deras namn, eftersom de
 | Figur | Fil |
 |---|---|
 | Clownen Kalle | [clownen-kalle.md](clownen-kalle.md) (mjuk tygclown, Kritans ABC C; heter "clownen") |
+| Citronen Cilla | [citronen-cilla.md](citronen-cilla.md) (stående citron utan armar, Kritans ABC C sedan 2026-11-25; heter "citronen") |
 
 ## Fordon
 
