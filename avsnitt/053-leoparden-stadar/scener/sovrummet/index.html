@@ -33,8 +33,9 @@ const LEK = [['nalle/cut/nalle-v2-ljus-tunn.png', 848, 856, 0.15, -40, -10], ['b
 const FOT = 1010, LS = 0.56, LX = 560;
 const LADA_POS = { x: 900, fot: 1030, w: 300 };
 const KS = 0.2;
-const GOLVET = { cirkel: [300, 1042], fyrkant: [430, 1058], trekant: [720, 1052] };   // klossarna nära leoparden i början
-const VID_KORG = { cirkel: [175, 985], fyrkant: [318, 994] };                          // där de landar framför korgen
+const GOLVET = { cirkel: [352, 1032], fyrkant: [280, 1026], trekant: [720, 1052] };   // klossarna vid leopardens vänstra tass i början (så att tassen når dem)
+const VID_KORG = { cirkel: [352, 1034], fyrkant: [238, 1024] };                        // där de landar framför korgen när de tippat över kanten
+const VILA = { cirkel: [392, 1040], fyrkant: [280, 1026] };                            // där de blir liggande (cirkeln rullar tillbaka mot leoparden)
 const KORG_TOPP = { cirkel: [KORG.x + 10, KORG.fot - 172], fyrkant: [KORG.x - 10, KORG.fot - 172] };
 const KAKTUS = { bild: A + 'rekvisita/kaktus/cut/kaktus.png', w: 610, h: 850, fot: [305, 838], s: 0.26, x: 1170, y: 992 };   // krukan på golvet (rekvisita/kaktus.md)
 const UNDER = [1232, 978];      // trekanten bakom krukan, ett grönt hörn sticker fram till höger (förut: under sängen)
@@ -55,6 +56,7 @@ const HEL = [1, 960, 540], HB = [1.7, LX + 140, 820], HB_KORG = [1.7, 420, 820],
 const NARA = () => [2.6, LX, FOT + (430 - L.FOTTER) * LS];
 const D = (x, y, z = 3) => [z, x, y];
 const D_LADA = () => D(LADA_POS.x, LADA_POS.fot - 160, 3);
+const LADA_VY = [1.8, 800, 850];   // lådan och hela leoparden: hon syns när klossarna ploppar ner (förut skars hon mitt itu)
 
 // --- Leoparden -------------------------------------------------------------------------------------------------------------------
 const P = o => ({ ...L.POSE0, ...o });
@@ -113,6 +115,42 @@ const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)
 const skimmer = (x, y, k, t, v = 1) => k > 0.01 && lagg('fram', [[-1, -0.7, 1, 0], [1.1, -0.4, 0.8, 1.7], [0.2, 1.1, 0.7, 3.1], [-1.2, 0.8, 0.6, 4.4]]
   .map(([dx, dy, s, fas]) => stjarna(x + dx * 40 * v, y + dy * 34 * v, 15 * s * v * k * (0.8 + 0.2 * Math.sin(t * 5 + fas)), Math.min(1, 0.4 + k))).join(''));
 
+// --- Plocka upp och kasta (rad 5, 7, 19, 21) -------------------------------------------------------------------------------------
+// Riggens egen plockning (rigg-motor.js plockaDel, som 037 och rigg-sidan): blicken först, leoparden böjer sig, tassen läggs PÅ
+// klossens ovansida (greppet i klossens övre del, klossen under tassen), klossen följer med upp vid sidan. Sedan tar den in klossen
+// framför magen (sakFramVag), hukar lite (förberedelsen), kastar med ett litet lyft och släpper; klossen tar en lugn båge till målet.
+// Medan klossen är i tassen ritar riggen den (sakIn); när den släpps tar scenen över från exakt samma punkt (mätt vid start).
+const PD = 1.4, KAST = { mage: [1.4, 1.9], huk: [1.9, 2.25], lyft: [2.25, 2.5], slapp: 2.42 };   // sekunder från plockets start
+let K = {}, SAKNU = null;
+const KSAK = {};
+const sakFor = n => KSAK[n] ??= L.sakBild(KL[n][0], KL[n][1], KL[n][2], { fot: [KL[n][1] / 2, KL[n][2] - 8], grepp: [KL[n][1] / 2, KL[n][2] * 0.16],
+  skala: KS / LS, kant: L.HAND.kant / (KS / LS), folj: 0.25 });
+const iRigg = ([x, y, v = 0]) => [512 + (x - LX) / LS, L.FOTTER + (y - FOT) / LS, v];
+// vilken kloss tassen har just nu (riggen ritar den från plockets start till släppet)
+const iTassen = t => Object.entries(K).find(([, k]) => t >= k.t0 && t < k.t0 + KAST.slapp)?.[1].n ?? null;
+// leopardens pose under ett kast: k = kastet, t global tid → [ansikte-titt, pose]
+function kastPose(k, t) {
+  const u = t - k.t0, [f0, p0] = L.plockaDel('upp', kl(u, 0, PD), PD, { fri: iRigg(k.fran), hand: 0, boj: k.boj });
+  const m = del(KAST.mage[0], KAST.mage[1], u) * (1 - del(KAST.slapp + 0.1, KAST.slapp + 0.75, u)), fv = L.sakFramVag(m);
+  const huk = del(KAST.huk[0], KAST.huk[1], u) * (1 - del(KAST.huk[1], KAST.huk[1] + 0.12, u)), lyft = bump(KAST.lyft[0], KAST.lyft[1] + 0.25, u);
+  const mal = k.mal[0] < LX ? -1 : 1, titt = u < PD ? f0.titt : [10 * mal, u < KAST.slapp ? 4 : -2 - 4 * bump(KAST.slapp, KAST.slapp + k.F, u)];
+  const p = { ...p0, armar: [p0.armar[0] + fv.armar, p0.armar[1]], fram: [fv.fram, 0], hand: m > 0.001 ? 1 : p0.hand, klapp: fv.klapp, sakGrepp: fv.sakGrepp,
+    armY: fv.armY + 18 * huk - 34 * lyft, strack: p0.strack - 0.05 * huk + 0.035 * lyft, bred: (p0.bred || 0) + 0.03 * huk, luta: p0.luta + 2 * mal * lyft,
+    oron: (p0.oron || [0, 0]).map(o => o - 6 * lyft), lyft: (p0.lyft || 0) + 1.5 * p0.luta };   // lutar hon sig står vänsterfoten kvar på golvet (den högra lyfts)
+  return [titt, p];
+}
+// en rad med ett kast: ivrig medan hon kastar, blicken följer klossen; vid korgen förvånad när den tippar ner (öronen upp)
+function kastRad(k, t, kam) {
+  const [titt, p] = kastPose(k, t), l = landar(k), korg = k.mal[0] < LX, ned = korg ? del(l + 0.6, l + 1.3, t) : 0, oj = korg ? del(l + 0.75, l + 1.05, t) : 0;
+  return RUM({ kam, f: F(oj > 0.5 ? 'forvanad' : 'ivrig', { titt: [lerp(titt[0], -12, ned), lerp(titt[1], 10, ned)] }), p: { ...p, oron: p.oron.map((o, i) => o + UPP(oj)[i]) } });
+}
+// var klossen är i luften efter släppet (båge från tassen till målet, lite snurr)
+function iLuften(k, t) {
+  const u = kl((t - k.t0 - KAST.slapp) / k.F), m = 0.5 * mjuk(u) + 0.5 * u;
+  return { p: [lerp(k.ut.p[0], k.mal[0], m), lerp(k.ut.p[1], k.mal[1], m) - k.H * Math.sin(Math.PI * u)], v: lerp(k.ut.v, k.vMal, mjuk(u)), golv: null, fram: true };
+}
+const landar = k => k.t0 + KAST.slapp + k.F;
+
 // --- Klossarnas vägar (globala tider) -----------------------------------------------------------------------------------------------
 // var(t, a, d, P0, P1, h): rakt eller i båge; rull: cirkeln rullar när den glider på golvet
 const bage = (t, a, d, P0, P1, h = 0) => { const u = kl((t - a) / d), m = mjuk(u); return [lerp(P0[0], P1[0], m), lerp(P0[1], P1[1], m) - h * Math.sin(Math.PI * u)]; };
@@ -121,27 +159,42 @@ const sjunk = (t, o) => kl((t - (o - 0.35)) / 0.35);   // sjunker ner i hålet d
 function klossLage(n, t) {
   const r = id => S0(id), dl = (id, a, b) => del(r(id) + a, r(id) + b, t);
   if (n === 'cirkel') {
-    const t5a = r('5a'), t5b = r('5b'), t19 = r('19'), t20 = r('20'), o20 = t20 + 0.4 + LN(31) - 0.45;
-    if (t < t5a + 0.22) return { p: GOLVET.cirkel };
-    if (t < t5b) { const p = bage(t, t5a + 0.22, 0.6, GOLVET.cirkel, [255, 1004]); return { p, v: -(GOLVET.cirkel[0] - p[0]) * 0.9 }; }
-    if (t < t5b + 0.6) return { p: bage(t, t5b, 0.6, [255, 1004], KORG_TOPP.cirkel, 230), v: -45, golv: null };
-    if (t < t5b + 1.2) return { p: KORG_TOPP.cirkel, v: -45 + vick(t, t5b + 0.6, 0.6), golv: null };
-    if (t < t19 + 0.15) { const p = bage(t, t5b + 1.2, 0.3, KORG_TOPP.cirkel, VID_KORG.cirkel); return { p, v: -45 - 30 * del(t5b + 1.2, t5b + 1.5, t), golv: t < t5b + 1.45 ? null : undefined }; }
-    if (t < t19 + 0.65) return { p: bage(t, t19 + 0.15, 0.5, VID_KORG.cirkel, PA_HAL('trekant'), 560), golv: null, fram: true };
-    if (t < t20 + 0.4) return { p: PA_HAL('trekant'), v: vick(t, t19 + 0.65, 0.8), pa: 'trekant' };
-    if (t < o20 - 0.35) return { p: bage(t, t20 + 0.4, o20 - 0.35 - t20 - 0.4, PA_HAL('trekant'), PA_HAL('cirkel'), 14), pa: 'cirkel' };
-    if (t < o20) return { p: PA_HAL('cirkel').map((v, i) => v + i * 80 * mjuk(sjunk(t, o20))), pa: 'cirkel', ner: true };
+    const k5 = K.c5, k19 = K.c19, l5 = landar(k5), l19 = landar(k19), t20 = r('20'), o20 = t20 + 0.4 + LN(31) - 0.45, RR = 40;   // RR: cirkelns radie i bild (rullar)
+    if (t < k5.t0) return { p: GOLVET.cirkel };
+    if (t < k5.t0 + KAST.slapp) return { rigg: true };
+    if (t < l5) return iLuften(k5, t);
+    if (t < l5 + 0.6) return { p: KORG_TOPP.cirkel, v: k5.vMal + vick(t, l5, 0.6), golv: null };   // på leksakshögen, vickar
+    // tippar över korgens framkant (en liten båge upp och ut, aldrig genom kanten), landar och rullar tillbaka mot leoparden
+    if (t < l5 + 1.1) return { p: bage(t, l5 + 0.6, 0.5, KORG_TOPP.cirkel, VID_KORG.cirkel, 45), v: k5.vMal - 80 * mjuk(del(l5 + 0.6, l5 + 1.1, t)), golv: null };
+    const rull = (VILA.cirkel[0] - VID_KORG.cirkel[0]) / RR * 180 / Math.PI;
+    if (t < k19.t0) { const u = kl((t - l5 - 1.1) / 0.9), e = 1 - (1 - u) ** 2;   // rullar och saktar in
+      return { p: [lerp(VID_KORG.cirkel[0], VILA.cirkel[0], e), lerp(VID_KORG.cirkel[1], VILA.cirkel[1], e) - 6 * bump(0, 0.18, u)], v: k5.vMal - 80 + rull * e }; }
+    if (t < k19.t0 + KAST.slapp) return { rigg: true };
+    if (t < l19) return iLuften(k19, t);
+    // på det trekantiga hålet: vickar, passar inte. Sedan rullar den till det runda hålet, med ett litet hopp över det fyrkantiga,
+    // stannar ovanför sitt hål, vickar till, och sjunker ner på "plopp!"
+    if (t < t20 + 0.5) return { p: PA_HAL('trekant'), v: vick(t, l19 + 0.05, 0.8), pa: 'trekant' };
+    const r0 = t20 + 0.5, r1 = o20 - 1.0, dx = PA_HAL('cirkel')[0] - PA_HAL('trekant')[0];
+    if (t < r1) { const u = kl((t - r0) / (r1 - r0)), e = mjuk(u), p = [lerp(PA_HAL('trekant')[0], PA_HAL('cirkel')[0], e), PA_HAL('trekant')[1] - 22 * bump(0.3, 0.7, u)];
+      return { p, v: dx * e / RR * 180 / Math.PI, pa: 'cirkel' }; }
+    const vEnd = dx / RR * 180 / Math.PI;
+    if (t < o20 - 0.35) return { p: PA_HAL('cirkel'), v: vEnd + 0.6 * vick(t, r1 + 0.05, 0.5), pa: 'cirkel' };
+    if (t < o20) return { p: PA_HAL('cirkel').map((v, i) => v + i * 80 * mjuk(sjunk(t, o20))), v: vEnd, pa: 'cirkel', ner: true };
     return null;
   }
   if (n === 'fyrkant') {
-    const t7a = r('7a'), t7b = r('7b'), t21 = r('21'), a21 = t21 + 0.45 + LN(33), o22 = r('22') + 0.4 + LN(34) - 0.45;
-    if (t < t7a + 0.22) return { p: GOLVET.fyrkant };
-    if (t < t7b) return { p: bage(t, t7a + 0.22, 0.5, GOLVET.fyrkant, [330, 1008]), v: -6 * del(t7a + 0.22, t7a + 0.7, t) };
-    if (t < t7b + 0.4) return { p: bage(t, t7b, 0.4, [330, 1008], KORG_TOPP.fyrkant, 230), v: 8, golv: null };
-    if (t < t7b + 1.1) return { p: KORG_TOPP.fyrkant, v: 8 + vick(t, t7b + 0.4, 0.7), golv: null };
-    if (t < a21) { const p = bage(t, t7b + 1.1, 0.3, KORG_TOPP.fyrkant, VID_KORG.fyrkant); return { p, v: 8 - 8 * del(t7b + 1.1, t7b + 1.4, t), golv: t < t7b + 1.35 ? null : undefined }; }
-    if (t < a21 + 0.6) return { p: bage(t, a21, 0.6, VID_KORG.fyrkant, PA_HAL('fyrkant'), 560), golv: null, fram: true };
-    if (t < o22 - 0.35) return { p: PA_HAL('fyrkant'), v: vick(t, a21 + 0.6, 0.4) * 0.5, pa: 'fyrkant' };
+    const k7 = K.f7, k21 = K.f21, l7 = landar(k7), l21 = landar(k21), o22 = r('22') + 0.4 + LN(34) - 0.45;
+    if (t < k7.t0) return { p: GOLVET.fyrkant };
+    if (t < k7.t0 + KAST.slapp) return { rigg: true };
+    if (t < l7) return iLuften(k7, t);
+    if (t < l7 + 0.6) return { p: KORG_TOPP.fyrkant, v: k7.vMal + vick(t, l7, 0.6), golv: null };
+    // tippar över framkanten, landar på ett hörn, lägger sig platt och glider en bit
+    if (t < l7 + 1.1) return { p: bage(t, l7 + 0.6, 0.5, KORG_TOPP.fyrkant, VID_KORG.fyrkant, 40), v: k7.vMal - 28 * mjuk(del(l7 + 0.6, l7 + 1.1, t)), golv: null };
+    if (t < k21.t0) { const u = kl((t - l7 - 1.1) / 0.45), e = 1 - (1 - u) ** 2;
+      return { p: [lerp(VID_KORG.fyrkant[0], VILA.fyrkant[0], e), lerp(VID_KORG.fyrkant[1], VILA.fyrkant[1], e) - 8 * bump(0, 0.35, u)], v: lerp(k7.vMal - 28, 0, mjuk(kl(u / 0.4))) }; }
+    if (t < k21.t0 + KAST.slapp) return { rigg: true };
+    if (t < l21) return iLuften(k21, t);
+    if (t < o22 - 0.35) return { p: PA_HAL('fyrkant'), v: vick(t, l21 + 0.05, 0.4) * 0.5, pa: 'fyrkant' };
     if (t < o22) return { p: PA_HAL('fyrkant').map((v, i) => v + i * 80 * mjuk(sjunk(t, o22))), pa: 'fyrkant', ner: true };
     return null;
   }
@@ -185,15 +238,16 @@ const SR = {
   // nickar två gånger i pausen, öronen upp, svansen vippar
   '4': (tl, d) => { const pa = 0.4 + LN(11), [f, p] = nick(F('ivrig'), P({ oron: UPP(del(pa, pa + 0.3, tl)), svans: vipp(tl, pa) }), tl - pa);
     return RUM({ kam: NARA(), f, p }); },
-  // tassen puffar cirkeln mot korgen
-  '5a': (tl, d) => RUM({ kam: D(LX - 150, FOT - 40, 2.2), f: F('nyfiken', { titt: [-12, 9] }), p: NAR_V(bump(-0.1, 0.75, tl) * 1.2 > 1 ? 1 : bump(-0.1, 0.75, tl) * 1.2) }),
-  '5b': (tl, d) => RUM({ kam: HB_KORG, f: F('nyfiken', { titt: [-12, -2 * del(0, 0.6, tl) + 4 * del(1.2, 1.5, tl)] }), p: P({ rikt: -0.4 }) }),
-  '5c': (tl, d) => RUM({ kam: NARA(), f: F('forvanad'), p: P({ oron: UPP(del(0.05, 0.3, tl)) }) }),
+  // tassen plockar upp cirkeln (närbild på tassen), sedan kastet mot korgen: cirkeln landar på högen, vickar, tippar över kanten
+  // och rullar tillbaka; leoparden följer den med blicken och blir förvånad (reaktionsslaget)
+  '5a': (tl, d) => { const [titt, p] = kastPose(K.c5, S0('5a') + tl); return RUM({ kam: D(LX - 170, FOT - 70, 2.2), f: F('nyfiken', { titt }), p }); },
+  '5b': (tl, d) => kastRad(K.c5, S0('5b') + tl, HB_KORG),
+  '5c': (tl, d) => RUM({ kam: NARA(), f: F('forvanad', { titt: [-8, 6 * (1 - del(0.3, 0.8, tl))] }), p: P({ oron: UPP(1), luta: -3 * del(0.2, 0.6, tl) }) }),
   // korgen i närbild, sedan leoparden som lutar huvudet
   '6': (tl, d) => { const n = tl > 0.4 + LN(14) - 0.2;
     return RUM({ kam: n ? NARA() : D(KORG.x + 20, KORG.fot - 150, 2.6), f: F('tanker', { titt: [-8, 0] }), p: P({ luta: 6 * del(0.4 + LN(14) - 0.2, 0.4 + LN(14) + 0.4, tl) }) }); },
-  '7a': (tl, d) => RUM({ kam: D(LX - 150, FOT - 40, 2.2), f: F('nyfiken', { titt: [-12, 9] }), p: NAR_V(Math.min(1, 1.2 * bump(-0.1, 0.7, tl))) }),
-  '7b': (tl, d) => RUM({ kam: HB_KORG, f: F('nyfiken', { titt: [-12, -2] }), p: P({ rikt: -0.4 }) }),
+  '7a': (tl, d) => { const [titt, p] = kastPose(K.f7, S0('7a') + tl); return RUM({ kam: D(LX - 210, FOT - 70, 2.2), f: F('nyfiken', { titt }), p }); },
+  '7b': (tl, d) => kastRad(K.f7, S0('7b') + tl, HB_KORG),
   // ledsen: öronen faller, huvudet lutar
   '8': (tl, d) => { const ner = del(0.1, 0.7, tl);
     return RUM({ kam: NARA(), f: F('ledsen'), p: P({ luta: -6 * ner, oron: NER(ner) }) }); },
@@ -224,16 +278,21 @@ const SR = {
   '17': (tl, d) => { const re = tl > 1.7 + LN(28);
     return RUM({ kam: re ? NARA() : HEL, lyft: lyft(tl, 0.3, 46), f: F('fnissig', { glad: [1, 1] }), p: skutt(P({ oron: UPP(0.5) }), tl, 0.3) }); },
   '18': (tl, d) => RUM({ kam: HB, f: F('ivrig', { titt: [12, 6] }), p: L.blandaPose(P(), P(L.POSER.hoger), del(0.1, 0.6, tl)) }),
-  // cirkeln på det trekantiga hålet vickar, sedan leoparden som lutar huvudet
-  '19': (tl, d) => { const n = tl > 1.0 + LN(30) - 0.1;
-    return RUM({ kam: n ? NARA() : D_LADA(), f: F('tanker', { titt: [10, 6] }), p: P({ rikt: 0.3, luta: 6 * del(1.0 + LN(30) - 0.1, 1.5 + LN(30), tl) }) }); },
-  '20': (tl, d) => RUM({ kam: D_LADA(), f: F('nyfiken', { titt: [10, 6] }), p: P({ rikt: 0.3 }), skimHal: [0.8 * bump(d - 0.4, d + 0.8, tl), 0, 0] }),
+  // plockar upp cirkeln och kastar den till lådan; den landar på det trekantiga hålet och vickar, sedan leoparden som lutar huvudet
+  '19': (tl, d) => { const t = S0('19') + tl, l = landar(K.c19) - S0('19'), m = 3.75, n = tl > m + LN(30) - 0.1;
+    if (tl < l + 0.1) return kastRad(K.c19, t, HB_LADA);
+    return RUM({ kam: n ? NARA() : LADA_VY, f: F('tanker', { titt: [10, 6] }), p: P({ rikt: 0.3 * (1 - del(0, 0.4, tl - l)), luta: 6 * del(m + LN(30) - 0.1, m + 0.5 + LN(30), tl) }) }); },
+  // cirkeln rullar till det runda hålet (ett litet hopp över det fyrkantiga) och sjunker ner; leoparden följer den med blicken
+  '20': (tl, d) => { const o = 0.4 + LN(31) - 0.45, pl = del(o, o + 0.3, tl);
+    return RUM({ kam: LADA_VY, f: F(pl > 0 ? 'jatteglad' : 'nyfiken', { titt: [12 - 3 * del(0.5, o - 1.0, tl), 7 + 3 * del(o - 0.6, o, tl)] }), p: P({ rikt: 0.3, oron: UPP(pl), luta: 3 * bump(0.5, o - 0.9, tl) }),
+      skimHal: [0.8 * bump(d - 0.4, d + 0.8, tl), 0, 0] }); },
   '20b': (tl, d) => RUM({ kam: NARA(), lyft: lyft(tl, 0.15, 36), f: F('stolt'), p: skutt(P({ oron: UPP(1), svans: vipp(tl, 0.2) }), tl, 0.15) }),
-  // fyrkanten glimtar, tassen puffar, fyrkanten hoppar till sitt hål
-  '21': (tl, d) => { const a = 0.45 + LN(33);
-    return RUM({ kam: [1.9, 420, 890], f: F('ivrig', { titt: [-12, 10] }), p: NAR_V(Math.min(1, 1.3 * bump(a - 0.45, a + 0.5, tl))), skim: [VID_KORG.fyrkant[0], VID_KORG.fyrkant[1] - 40, 0.7 * bump(0.05, a, tl), 0.8] }); },
+  // fyrkanten glimtar, leoparden plockar upp den och kastar den rakt till sitt hål
+  '21': (tl, d) => { const t = S0('21') + tl, sk = [VILA.fyrkant[0], VILA.fyrkant[1] - 40, 0.7 * bump(0.05, 2.0, tl), 0.8];
+    if (t >= K.f21.t0) return { ...kastRad(K.f21, t, HB_LADA), skim: sk };
+    return RUM({ kam: HB_LADA, f: F('ivrig', { titt: [-12, 10] }), p: P({ rikt: -0.2 * del(0.3, 1.0, tl) }), skim: sk }); },
   '22': (tl, d) => { const n = tl > 0.45 + LN(34);
-    return RUM({ kam: n ? NARA() : D_LADA(), f: F('jatteglad'), p: P({ oron: UPP(1), svans: vipp(tl, 0.5 + LN(34)) }), skimHal: [0, 0.8 * bump(d - 0.9 - 0.3, d + 0.4, tl), 0] }); },
+    return RUM({ kam: n ? NARA() : LADA_VY, f: F(n ? 'jatteglad' : 'nyfiken', n ? {} : { titt: [12, 7] }), p: P({ oron: UPP(n ? 1 : 0.4), rikt: n ? 0 : 0.3, svans: vipp(tl, 0.5 + LN(34)) }), skimHal: [0, 0.8 * bump(d - 0.9 - 0.3, d + 0.4, tl), 0] }); },
   // det trekantiga hålet är tomt; tassen till huvudet: hatten är borta
   '23': (tl, d) => { const n = tl > 0.6 + LN(35) * 0.5, h = del(0.6 + LN(35) * 0.5 + 0.1, 0.6 + LN(35) * 0.5 + 0.6, tl);
     return RUM({ kam: n ? NARA() : D_LADA(), f: F('forvanad', { titt: [0, -10 * h] }), p: P({ armar: [0, 140 * h], oron: UPP(0.8) }) }); },
@@ -271,7 +330,7 @@ function lage(t) {
   const r = RAD[i], tl = t - r.s, st = SR[r.id](tl, r.d);
   if (i > 0) {   // ansikte och pose blandas mjukt in från förra radens slut (0,45 s)
     const fr = RAD[i - 1], f0 = SR[fr.id](fr.d, fr.d), gb = del(0, 0.45, tl);
-    if (f0.plats === st.plats && st.f && f0.f && gb < 1) { st.f = L.blanda(f0.f, st.f, gb); st.p = L.blandaPose(f0.p, st.p, gb); }
+    if (f0.plats === st.plats && st.f && f0.f && gb < 1) { const fri = st.p.sakFri; st.f = L.blanda(f0.f, st.f, gb); st.p = { ...L.blandaPose(f0.p, st.p, gb), sakFri: fri }; }   // klossen ligger kvar där den ligger
   }
   return { ...st, id: r.id, tl, d: r.d };
 }
@@ -306,7 +365,8 @@ function ritaRum(st, t) {
   // lådan: kritan ritar den (10a–10c), sedan står den kvar och skramlar i rad 30
   const lt = S0('10a'), fyll = t < S0('10c') ? 0 : t < S0('10c') + 0.7 ? del(S0('10c'), S0('10c') + 0.7, t) : 1;
   // klossarna: först de som ligger bakom lådan (hatten på väg in under sängen), sedan lådan, sedan resten
-  const lagen = ['cirkel', 'fyrkant', 'trekant'].map(n => [n, klossLage(n, t)]).filter(([, k]) => k);
+  const ns = iTassen(t); if (ns !== SAKNU) { L.sakIn(G, ns ? sakFor(ns) : null); SAKNU = ns; }   // klossen i tassen ritas av riggen
+  const lagen = ['cirkel', 'fyrkant', 'trekant'].map(n => [n, klossLage(n, t)]).filter(([, k]) => k && !k.rigg);
   const ritK = ([n, k]) => kloss(n, k.p, { v: k.v || 0, s: k.s || (k.pa ? KS * 0.9 : KS), lager: k.lager || (k.fram ? 'fram' : 'golvsak'), golv: k.golv === null ? null : k.p[1] + (k.golv ?? 0),
     klipp: k.ner ? ladaPunkt(LADA.hal[k.pa])[1] + 10 : null });
   lagen.filter(([, k]) => k.bakLada || k.lager === 'under').forEach(ritK);
@@ -371,6 +431,19 @@ window.ready = (async () => {
   BLINKA = skapaBlinka(53);
   const s = KORG.s, y0 = KORG.fot - 915 * s;   // korgens framkant: leksakerna sjunker ner bakom öppningens nedre båge (inte en rak linje)
   $('kamera').insertAdjacentHTML('beforebegin', `<defs><clipPath id="korgfram" clipPathUnits="userSpaceOnUse"><path d="M-100 ${y0 + 480 * s} H${KORG.x - 295 * s} A${295 * s} ${62 * s} 0 0 0 ${KORG.x + 295 * s} ${y0 + 480 * s} H2000 V2000 H-100Z"/></clipPath></defs>`);
+  // kasten: plockets start, var klossen ligger, målet, flygtid, bågens höjd, vinkeln när den landar
+  const rullV = -45 - 80 + (VILA.cirkel[0] - VID_KORG.cirkel[0]) / 40 * 180 / Math.PI;   // samma som klossLage
+  const BOJ = { luta: -15, boj: -3, strack: -0.08, bred: 0.06, armar: -48 };   // böjer sig ner åt vänster: lutar, hukar, armen rakt ner
+  K = { c5: { n: 'cirkel', t0: S0('5a'), fran: GOLVET.cirkel, mal: KORG_TOPP.cirkel, F: 0.75, H: 150, vMal: -45, boj: BOJ },
+    f7: { n: 'fyrkant', t0: S0('7a'), fran: GOLVET.fyrkant, mal: KORG_TOPP.fyrkant, F: 0.75, H: 150, vMal: 8, boj: { ...BOJ, luta: -15 } },
+    c19: { n: 'cirkel', t0: S0('19') + 0.15, fran: [...VILA.cirkel, rullV], mal: PA_HAL('trekant'), F: 0.8, H: 150, vMal: 0, boj: { ...BOJ, luta: -13 } },
+    f21: { n: 'fyrkant', t0: S0('21') + 2.0, fran: VILA.fyrkant, mal: PA_HAL('fyrkant'), F: 0.8, H: 140, vMal: 0, boj: { ...BOJ, luta: -15 } } };
+  for (const k of Object.values(K)) {   // var tassen släpper klossen: mät i riggen just före släppet
+    rita(k.t0 + KAST.slapp - 0.001);
+    const e = [...G.querySelectorAll('.sak-plats')].find(x => x.getAttribute('display') !== 'none'), [, w, h] = KL[k.n];
+    const M = DOMMatrix.fromMatrix($('golvsak').getCTM()).inverse().multiply(DOMMatrix.fromMatrix(e.querySelector('.sak-ting').getCTM())), q = M.transformPoint(new DOMPoint(w / 2, h - 8));
+    k.ut = { p: [q.x, q.y], v: Math.atan2(M.b, M.a) * 180 / Math.PI };
+  }
   window.LJUD = await R.bara(ljud());
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
