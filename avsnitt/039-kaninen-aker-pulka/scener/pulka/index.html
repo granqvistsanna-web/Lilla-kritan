@@ -63,6 +63,7 @@
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const A = '/assets/', R = A + 'rekvisita/', SB = '/avsnitt/039-kaninen-aker-pulka/storyboard/', KL = '/avsnitt/039-kaninen-aker-pulka/klader-lager/';
@@ -91,7 +92,7 @@ const PULKA = { fil: R + 'pulka/cut/pulka-utan-snore.png', w: 1024, h: 572, mitt
 // Pulkans skala (Sanna 2026-11-18 "kaninen för stor för pulkan"): 0,6 → 0,85, sitsen (x 115–725, ovankant y 243) är nu bredare än kaninen.
 // Kaninen sitter mitt på sitsen; fötternas ankare 71 px under sitsens ovankant som förut.
 const PK = 0.85, PK_SITS = [(420 - PULKA.mitt[0]) * PK - 5, (243 - PULKA.mitt[1]) * PK + 71];
-const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+// kritan: bild, vinklar, skala, svaj, linje och fyllning kommer ur verktyg/kritan-ritar.js (skillen kritan-ritar, QA 25/11)
 let KONTUR = {};                                    // vantarnas och pulkans konturer (json), laddas i klar
 
 let L, G;                                           // riggen och kaninens grupp
@@ -161,15 +162,15 @@ const bagpil = (x0, y0, cx, cy, x1, y1, s) => pil(`M${x0} ${y0} Q${cx} ${cy} ${x
 const pilar = (...p) => lagg('pilar', p.join(''));
 const nickpil = (x, y, s = 5) => pilar(bagpil(x + 40, y - 30, x + 70, y + 10, x + 40, y + 50, s), bagpil(x + 70, y + 50, x + 100, y + 10, x + 70, y - 30, s));
 
-// --- Kritan (röda kritan) med spetsen i (x, y). Liten: 0,33, och 0,7 av det i nära utsnitt ------------------------------------
-const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
+// --- Kritan med spetsen i (x, y): den delade kritaBild (tunn kant) ----------------------------------------------------------
+const krita = (x, y, v = KRITAN.VINKEL_RITAR, s = KRITAN.SKALA_SCEN) => lagg('pilar', kritaBild(x, y, { s, v }));
 // En kontur (json ur verktyg/kontur.py) ritad till andelen k, i bildens pixlar under transformen t. Returnerar kritans spets i scenen.
 // (Sanna 2026-11-18 "kritan ritar a bit jumpy": stigen hämtas nu ur det nyss inlagda elementet, inte via id; två konturer med samma namn
 // i samma bildruta gav förut fel spets.)
-function kontur(namn, t, k, bredd, farg = '#9a8a7a') {
-  lagg('pilar', `<g transform="${t}"><path d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${bredd}"
-    stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
-  const g = $('pilar').lastElementChild, p = g.firstElementChild, q = p.getPointAtLength(p.getTotalLength() * kl(k, 0, 0.999)), m = p.getCTM(), sm = $('kamera').getCTM().inverse().multiply(m);
+function kontur(namn, t, k, bredd, op = 1) {
+  lagg('pilar', `<g transform="${t}" opacity="${op.toFixed(3)}"><path d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${KRITAN.LINJE}" stroke-width="${bredd}"
+    stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritfart(k)} 2"/></g>`);
+  const g = $('pilar').lastElementChild, p = g.firstElementChild, q = p.getPointAtLength(p.getTotalLength() * Math.min(ritfart(k), 0.999)), m = p.getCTM(), sm = $('kamera').getCTM().inverse().multiply(m);
   const pt = new DOMPoint(q.x, q.y).matrixTransform(sm); return [pt.x, pt.y];
 }
 // bara en punkt på konturen (inget ritas)
@@ -291,7 +292,6 @@ const fot = (n, pos = STA) => iFig(pos, n === 'l' ? [374, 950] : [668, 941]);
 const ALLT = { strumpor: [1, 1], overall: 1, stovlar: [1, 1], band: 0 }, ALLT_V = { ...ALLT, vantar: [1, 1] };
 // Sitter med benen fram (som 024): riggens 'sitter' med benen framför kroppen.
 const SITT = { sank: 48, bred: 0.03, benFram: 1, ben: [20, 20], benY: [-28, -28] };
-const VINKA = { armar: [0, 150] };
 
 // --- Kritan ritar tumvantarna i luften (uppslag 19) ----------------------------------------------------------------------
 const TV_S = 0.26;
@@ -411,20 +411,11 @@ const opac = (sel, op) => G.querySelectorAll(sel).forEach(e => e.setAttribute('o
 const zipSkjut = pa => { const k = 1 - kl(pa); G.querySelectorAll('.pl-zipdrag').forEach(e => e.setAttribute('transform', `translate(${f1(OFF.overall[0] * k)} ${f1(OFF.overall[1] * k)}) ${e.getAttribute('transform') || ''}`)); };
 
 // --- Kritan: liten, ingen min, knackar aldrig; väntar svävande och svajande ---------------------------------------------------
-const kritaS = () => 0.33 * (KAM[0] > 1.5 ? 0.7 : 1);
+const kritaS = () => kritaSkala(KAM[0]);
 const slump = x => { const v = Math.sin(x * 127.1 + 311.7) * 43758.5453; return v - Math.floor(v); };
-const kritaVanta = ([x, y], tw) => [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6)], 125 + 4 * Math.sin(tw * 1.3)];
+const kritaVanta = ([x, y], tw) => { const S = KRITAN.SVAJ; return [[x + S.ax * Math.sin(tw * S.fx), y + S.ay * Math.sin(tw * S.fy)], KRITAN.VINKEL_VANTAR + S.av * Math.sin(tw * S.fv)]; };
 const glid = ([p0, v0], [p1, v1], u) => { const m = mjuk(u), dv = ((v1 - v0) % 360 + 540) % 360 - 180; return [[lerp(p0[0], p1[0], m), lerp(p0[1], p1[1], m)], v0 + dv * m]; };
-function gnistor([x, y]) {   // krit-gnistor och smulor under spetsen medan den ritar (036)
-  const e = 1 / Math.sqrt(KAM[0]); let h = '';
-  for (let j = 0; j < 8; j++) { const b = Math.floor(TT * 14) - j, age = TT - b / 14, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7), op = Math.max(0, 0.7 - age * 1.4);
-    if (op > 0) h += `<circle cx="${f1(x + (r - 0.5) * 26 * e)}" cy="${f1(y + (6 + age * 55 + r2 * 8) * e)}" r="${f1((2 + 2.5 * r2) * e)}" fill="#D9503F" opacity="${op.toFixed(2)}"/>`; }
-  for (let j = 0; j < 3; j++) { const b = Math.floor(TT * 3) - j, age = TT - b / 3, r = slump(b * 5.7 + 2), r2 = slump(b * 9.1 + 4), k = bump(0, 0.9, age);
-    if (k <= 0) continue; const X = x + (r - 0.5) * 70 * e, Y = y - (14 + 26 * r2 + 18 * age) * e, Rr = (7 + 4 * r2) * e * k;
-    h += `<path d="M${f1(X)} ${f1(Y - Rr)} Q${f1(X)} ${f1(Y)} ${f1(X + Rr)} ${f1(Y)} Q${f1(X)} ${f1(Y)} ${f1(X)} ${f1(Y + Rr)} Q${f1(X)} ${f1(Y)} ${f1(X - Rr)} ${f1(Y)} Q${f1(X)} ${f1(Y)} ${f1(X)} ${f1(Y - Rr)}Z" fill="#FFF3B8" stroke="#fff" stroke-width="${f1(2.2 * e)}" paint-order="stroke" opacity="${(0.9 * k).toFixed(2)}"/>`; }
-  lagg('fram', h);
-}
-const kritaRita = (a, s = kritaS()) => { if (typeof a === 'function') a = a(); const [p, v, ritar] = a; krita(p[0], p[1], v, s); if (ritar) gnistor(p); };
+const kritaRita = (a, s = kritaS()) => { if (typeof a === 'function') a = a(); const [p, v] = a; krita(p[0], p[1], v, s); };
 
 // --- Kaninen: liv (andas, öronen glider), blinkar, hopp och vink --------------------------------------------------------------
 const GLADA = ['glad', 'jatteglad', 'fnissig', 'skrattar', 'kawaii'];
@@ -438,7 +429,10 @@ function skutt(p, tl, t0, h = 40, d = 0.5) {
 }
 // hopp från a till b (s), sida vid sida på golvet
 const hoppVag = (tl, a, b, A, B) => { const u = kl((tl - a) / (b - a)); return [lerp(A[0], B[0], mjuk(u)), lerp(A[1], B[1], u)]; };
-const vinka = (p, v, tl) => ({ ...p, armar: [p.armar[0], p.armar[1] + v * (150 + 12 * Math.sin(2 * Math.PI * 1.15 * tl))], luta: p.luta - 1.5 * v });
+// vinka med riggens ARMROR (lk-figur/nytt-armar.md, QA 25/11): samma vink som alla figurer, armen bakom kroppen, höjd 30° ± 16°, 1,3 gånger/s.
+// kanin() lägger alltid NER på armarna och sätter uttryckets armar till NEUTRAL, så NER räknas bort här och läggs på igen av kanin().
+const vinkaA = (f, p, tl, k) => { const [f2, p2] = L.ARMROR.vinka({ ...f, armar: L.NEUTRAL.armar }, { ...p, armar: (p.armar || [0, 0]).map(a => a + NER) }, tl, k);
+  return [f2, { ...p2, armar: p2.armar.map(a => a - NER) }]; };
 const nick = (f, p, tl, d = 1.2) => tl > 0 && tl < d ? L.nicka(f, p, tl, d, 2) : [f, p];
 const skaka = (f, p, tl, d = 1.6) => tl > 0 && tl < d ? L.skakaHuvud(f, p, tl, d, 2) : [f, p];
 const sitt = (p, k) => L.blandaPose(p, P({ ...SITT }), mjuk(k));
@@ -452,9 +446,9 @@ function pulkaG(u, { kaninPa = true, fyll = 1, f, p, gung = 0 } = {}) {
   const g = document.createElementNS(NS, 'g'); g.setAttribute('transform', `translate(${f1(x)} ${f1(y + 6)}) rotate(${v.toFixed(2)})`);
   $('figurer').appendChild(g);
   const t = `scale(${PK}) translate(${-PULKA.mitt[0]} ${-PULKA.mitt[1]})`;
-  if (fyll > 0) g.insertAdjacentHTML('beforeend', `<g transform="${t}"><clipPath id="pkf"><circle cx="512" cy="300" r="${fyll >= 1 ? 9999 : f1(700 * fyll)}"/></clipPath>
+  if (fyll > 0) g.insertAdjacentHTML('beforeend', `<g transform="${t}">${fyll >= 1 ? '<clipPath id="pkf"><rect x="-99" y="-99" width="1300" height="800"/></clipPath>' : fyllMask('pkf', 512, 300, 700, fyll)}
     <image href="${PULKA.fil}" width="${PULKA.w}" height="${PULKA.h}" clip-path="url(#pkf)"/></g>`);
-  if (kaninPa) kanin(PK_SITS, f, P({ ...L.POSER.sitter, ...p }), { ...ALLT_V, vand: [0, del(70, 110, ((p && p.armar) || [0, 0])[1])], foralder: g });
+  if (kaninPa) kanin(PK_SITS, f, P({ ...L.POSER.sitter, ...p }), { ...ALLT_V, vand: [0, vandVante(((p && p.armar) || [0, 0])[1])], foralder: g });
   return { x, y, v, t: `translate(${x} ${y + 6}) rotate(${v}) ${t}` };
 }
 const sittPa = (p, t) => liv(P({ ...L.POSER.sitter, ...p }), t);
@@ -607,14 +601,15 @@ function draUpp(tl, t) {
 const TUMME = () => [KORG.x + 214, GOLV - 72];
 const S = {
   // ritintrot: kritan glider in (0,8 s), ritar vantarnas kontur (5 s), väntar svajande, de fylls i inifrån, zoom in i teckningen
-  '01a': tl => ({ plats: 'papper', k: (tl - 0.8) / 5, inn: tl, efter: tl - 5.8 }),
+  '01a': tl => ({ plats: 'papper', k: (tl - 0.8) / 2.8, inn: tl, efter: tl - 3.6 }),
   '01b': tl => ({ plats: 'papper', k: 1, vanta: true, efter: 0.2 + tl }),
   '01c': (tl, d) => ({ plats: 'papper', k: 1, fyll: del(0, 0.9, tl), ut: tl, kam: [lerp(1, 2.4, del(d - 0.8, d, tl) ** 2), 960, 625], vit: del(d - 0.45, d, tl) }),
   // hoppar in från vänster (två lugna hopp), Malin efter landningen, vinkar (armen bakom kroppen)
   '1': (tl, d) => { const A = [-160, GOLV], B = [400, GOLV], i2 = tl >= 0.8, pos = i2 ? hoppVag(tl, 0.8, 1.55, B, STA) : hoppVag(tl, 0.0, 0.75, A, B);
     let p = P({ rikt: 0.5 * (1 - del(1.6, 2.0, tl)) }); p = skutt(p, tl, 0.0, 70, 0.75); p = skutt(p, tl, 0.8, 60, 0.75);
     const v = del(1.8, 2.4, tl) - del(d - 0.9, d - 0.3, tl);
-    return HALL('1', { pos, vitIn: 1 - del(0, 0.4, tl), f: FF('jatteglad'), p: vinka(p, v, tl) }); },
+    const [fv, pv] = vinkaA(FF('jatteglad'), p, tl, v);
+    return HALL('1', { pos, vitIn: 1 - del(0, 0.4, tl), f: fv, p: pv }); },
   '2': (tl, d) => { const t0 = 0.6 + LN(5); const [f, p] = nick(FF(tl < t0 ? 'nyfiken' : 'glad', { titt: [-14, 0] }), P({ rikt: -0.6 * del(0, 0.4, tl) }), tl - t0);
     return HALL('2', { kam: K_HALV, f, p }); },
   '3': (tl, d) => { const t0 = 0.5 + LN(6); const [f, p] = nick(FF('jatteglad', { titt: [-10, 0] }), P({ rikt: -0.6, oron: [-10 * del(0, 0.5, tl), -10 * del(0, 0.5, tl)] }), tl - t0);
@@ -680,7 +675,7 @@ const S = {
   '19a': (tl, d) => { const a = 0.4 + LN(23); return HALL('19a', { dorr: false, kam: K_LUFT, f: FF('nyfiken', { titt: [-14 * del(0.3, 0.8, tl), -4] }), p: P({ rikt: -0.4 * del(0.3, 0.8, tl), upp: 0.3 }), luft: { k: (tl - a) / 4, fyll: 0 }, kritaIn: [tl, a] }); },
   '19b': tl => HALL('19b', { dorr: false, kam: K_LUFT, f: FF('nyfiken', { titt: [-14, -4] }), p: P({ rikt: -0.4, upp: 0.3 }), luft: { k: 1, fyll: 0 }, krita: [...kritaVanta([LUFT[0] + 210, LUFT[1] - 150], TT)] }),
   '19c': (tl, d) => HALL('19c', { dorr: false, kam: K_LUFT, f: FF(tl < 0.5 ? 'nyfiken' : 'forvanad', { titt: [-14, -4] }), p: P({ rikt: -0.4, upp: 0.3 }), luft: { k: 1, fyll: del(0, 0.8, tl) },
-    skimmer: [LUFT, bump(0, 1.4, tl), 110], krita: tl < 1.4 ? glid(kritaVanta([LUFT[0] + 210, LUFT[1] - 150], TT), [[-200, -150], 140], (tl - 0.3) / 1.1) : null }),
+    efter: () => lagg('fram', gnistor(LUFT[0] - 50, LUFT[1], 160, tl)), krita: tl < 1.4 ? glid(kritaVanta([LUFT[0] + 210, LUFT[1] - 150], TT), [[-200, -150], 140], (tl - 0.3) / 1.1) : null }),
   '20': tl => HALL('20', { dorr: false, kam: K_VANT, f: FF('kawaii', { titt: [-14, -4] }), p: skutt(P({ rikt: -0.4, oron: [-10 * del(0, 0.4, tl), -10 * del(0, 0.4, tl)] }), tl, 0.5, 25), luft: { k: 1, fyll: 1, gung: tl } }),
   '21': (tl, d) => { const t0 = 0.3 + LN(26) + 2.5; const [f, p] = nick(FF(tl < t0 ? 'kawaii' : 'jatteglad', { titt: tl < 0.3 + LN(26) ? [-14, -4] : [0, 0] }), P({ rikt: -0.4 * (1 - del(0.3 + LN(26), 0.8 + LN(26), tl)), oron: [-10, -10] }), tl - t0);
     return HALL('21', { dorr: false, kam: K_VANT, f, p, luft: { k: 1, fyll: 1, gung: tl + 9 } }); },
@@ -728,7 +723,7 @@ const S = {
   '33': tl => ({ plats: 'backe', kam: [1.25, 1150, 640], pos: [1400, 930], f: FF('nyfiken', { titt: [-14 * del(0.4, 0.9, tl), -12 * del(0.4, 0.9, tl)] }), p: P({ rikt: -0.5 * del(0.4, 1.0, tl), upp: 0.6 * del(0.4, 1.0, tl) }), svep: 0.5 + 0.3 * del(0, 0.6, tl) }),
   '34a': (tl, d) => { const a = 0.4 + LN(40); return { plats: 'backe', kam: K_HEL, pos: [1400, 930], f: FF('nyfiken', { titt: [-14, -12] }), p: P({ rikt: -0.5, upp: 0.6 }), pk: { k: (tl - a) / 2.4, fyll: 0 }, kritaIn: [tl, a] }; },
   // Sanna 18/11 kl 15 "better animation bunny walking and sitting on pulka" (3:33): efter repliken skuttar kaninen uppför backen och sätter sig på pulkan
-  '34b': (tl, d) => tl >= 0.1 + LN(41) + 0.3 ? { plats: 'backe', kam: K_HEL, ga: tl - (0.1 + LN(41) + 0.3) } : ({ plats: 'backe', kam: K_HEL, pos: [1400, 930], f: FF(tl < 0.4 ? 'forvanad' : 'jatteglad', { titt: [-14, -12] }), p: skutt(P({ rikt: -0.5, upp: 0.6 }), tl, 0.7, 25), pk: { k: 1, fyll: del(0, 0.8, tl) }, pkStjarnor: bump(0, 1.4, tl),
+  '34b': (tl, d) => tl >= 0.1 + LN(41) + 0.3 ? { plats: 'backe', kam: K_HEL, ga: tl - (0.1 + LN(41) + 0.3) } : ({ plats: 'backe', kam: K_HEL, pos: [1400, 930], f: FF(tl < 0.4 ? 'forvanad' : 'jatteglad', { titt: [-14, -12] }), p: skutt(P({ rikt: -0.5, upp: 0.6 }), tl, 0.7, 25), pk: { k: 1, fyll: del(0, 0.8, tl) }, pkGnistor: tl,
     krita: tl < 1.4 ? () => glid(kritaVanta(PK_SPETS(), TT), [[-200, -150], 140], (tl - 0.2) / 1.1) : null }),
   '35': tl => ({ plats: 'backe', pk: { u: KRON, f: FF('jatteglad'), p: {} }, pkKam: [1.3, 260, -160] }),
   '36': (tl, d) => { const c0 = 0.3 + LN(43) + 0.4, g = [0, 1, 2].reduce((s, i) => s + bump(c0 + i * 1.1, c0 + i * 1.1 + 0.5, tl), 0);
@@ -768,10 +763,12 @@ function strumpRad(id, tl, o, n, nr) {
       gnista(rigPunkt('leg-' + n, '.pl-strumpa', n === 'l' ? [400, 880] : [645, 872]), x - o.pa); } });
 }
 const GOMDR = () => bildM('saker', ROSA(2), ROSA_W, ROSA_H, GOMD_M());
-// vinkande arm på pulkan: t = s sedan vinken började, upp 0–1 armen uppe. Svänget tonas in när armen är uppe.
-// (Sanna 18/11 "polish wave"): armen svingar upp med en liten översväng, sedan mjuka vink (1,3 per s, ±20°) och kroppen gungar med
-const VINK_PK = (t, upp) => { const sv = Math.sin(2 * Math.PI * 1.3 * (t - 1.0)) * del(0.9, 1.6, t), a = upp * (150 + 20 * sv) + 12 * bump(0.6, 1.3, t);
-  return { armar: [0, a], luta: -2.5 * upp - 1.8 * sv * upp }; };
+// vinkande arm på pulkan: t = s sedan vinken började, upp 0–1 armen uppe. ARMROR:s vink (QA 25/11; förut en egen vink på 150 ± 20).
+const VINK_PK = (t, upp) => { const [, q] = vinkaA(FF('glad'), P({ ...L.POSER.sitter }), t, upp); return { armar: q.armar, luta: q.luta, fram: q.fram }; };
+// vanten vänds (tummen inåt) när armen är på väg upp: mellan 30 och 70 % av vägen från sittposens arm till vinkens arm
+let VINK_HOJD = null;
+const vandVante = a => { if (!VINK_HOJD) { const r0 = (L.POSER.sitter.armar || [0, 0])[1]; VINK_HOJD = [r0, VINK_PK(0, 1).armar[1]]; }
+  const [r0, w] = VINK_HOJD; return del(r0 + 0.3 * (w - r0), r0 + 0.7 * (w - r0), a); };
 let PK_SPETS_V = [400, 450];
 const PK_SPETS = () => PK_SPETS_V;
 
@@ -809,14 +806,15 @@ function rita(t) {
 const PP_S = 1.15, PP_T = `translate(${f1(960 - 526 * PP_S)} ${f1(585 - 332 * PP_S)}) scale(${PP_S})`;   // Sanna 18/11: pulkan lite lägre (520 → 585)
 function ritaPapper(st, t) {
   papper2(); kam(st.kam || K_HEL);
-  const fyll = st.fyll || 0, KS = 0.4, k = kl(st.k), w = kritaVanta([1560, 260], TT);
-  if (fyll > 0) lagg('saker', `<g transform="${PP_T}"><clipPath id="pp"><circle cx="512" cy="330" r="${fyll >= 1 ? 9999 : f1(700 * fyll)}"/></clipPath>
+  const fyll = st.fyll || 0, KS = KRITAN.SKALA_PAPPER, k = kl(st.k), w = kritaVanta([1560, 260], TT);
+  if (fyll > 0) lagg('saker', `<g transform="${PP_T}">${fyll >= 1 ? '<clipPath id="pp"><rect x="-99" y="-99" width="1300" height="800"/></clipPath>' : fyllMask('pp', 512, 330, 700, fyll)}
     <image href="${PULKA.fil}" width="${PULKA.w}" height="${PULKA.h}" clip-path="url(#pp)"/></g>`);
-  const sp = fyll < 1 && k > 0 ? kontur('pulka', PP_T, k, 11 / PP_S) : null;
+  const sp = fyll < 1 && k > 0 ? kontur('pulka', PP_T, k, KRITAN.BRED / PP_S, linjeOpacitet(fyll)) : null;
+  if (st.ut != null) lagg('fram', gnistor(960, 585, 470, st.ut));
   if (fyll >= 1) return;
-  if (st.k <= 0) { if (st.inn != null) kritaRita(glid([[2100, -120], 150], [konturPunkt('pulka', PP_T, 0), 125], st.inn / 0.8), KS); }
+  if (st.k <= 0) { if (st.inn != null) kritaRita(glid([[2100, 60], KRITAN.VINKEL_RITAR], [konturPunkt('pulka', PP_T, 0), KRITAN.VINKEL_RITAR], st.inn / 0.8), KS); }
   else if (k < 1) kritaRita([sp, 125, true], KS);
-  else { const v = st.efter != null ? glid([konturPunkt('pulka', PP_T, 1), 125], w, st.efter / 0.6) : w; kritaRita(st.ut != null ? glid(v, [[2200, -150], 140], st.ut / 0.9) : v, KS); }
+  else { const v = st.efter != null ? glid([konturPunkt('pulka', PP_T, 1), 125], w, st.efter / 0.6) : w; kritaRita(st.ut != null ? glid(v, [[2100, 60], v[1]], st.ut / 0.8) : v, KS); }
 }
 function ritaHall(st, t) {
   hall(st.dorr ?? true); kam(st.kam);
@@ -846,9 +844,9 @@ function luftVantarG(k, fyll, gung = 0) {
   const { k1, u, k2 } = TVA(k), tr = [], P0 = [];
   [[LUFT[0] - 75, 'tumvante-rosa-1', 1], [LUFT[0] + 75, 'tumvante-rosa-2', 2]].forEach(([x, n, nr], i) => {
     const y = LUFT[1] + (i ? -gung : gung); tr[i] = `translate(${x - 224 * TV_S} ${y - 342 * TV_S}) scale(${TV_S})`; const ki = i ? k2 : k1;
-    if (fyll > 0) lagg('saker', `<g transform="${tr[i]}"><clipPath id="tv${i}"><circle cx="224" cy="380" r="${fyll >= 1 ? 9999 : 560 * fyll}"/></clipPath>
+    if (fyll > 0) lagg('saker', `<g transform="${tr[i]}">${fyll >= 1 ? `<clipPath id="tv${i}"><rect x="-99" y="-99" width="700" height="900"/></clipPath>` : fyllMask('tv' + i, 224, 380, 560, fyll)}
       <image href="${ROSA(nr)}" width="${ROSA_W}" height="${ROSA_H}" clip-path="url(#tv${i})"/></g>`);
-    if (ki > 0 && fyll < 1) P0[i] = kontur(n, tr[i], ki, 9 / TV_S, '#c2185b');
+    if (ki > 0 && fyll < 1) P0[i] = kontur(n, tr[i], ki, KRITAN.BRED / TV_S, linjeOpacitet(fyll));
   });
   const pt = (i, kk) => konturPunkt(i ? 'tumvante-rosa-2' : 'tumvante-rosa-1', tr[i], kk);
   let spets = null, lyft = false;
@@ -862,10 +860,10 @@ function ritaBacke(st, t) {
     kanin(st.pos, BLINKA(st.f, t), liv(st.p, t), { ...ALLT_V });
     const { t: tr } = pulkaG(KRON, { kaninPa: false, fyll: st.pk.fyll });
     const slut = konturPunkt('pulka', tr, 1); PK_SPETS_V = [slut[0] + 160, slut[1] - 120];   // kritans väntplats efter pulkan
-    if (st.pk.fyll < 1) { const sp = st.pk.k > 0 ? kontur('pulka', tr, kl(st.pk.k), 11 / PK, '#9a8a7a') : null;
+    if (st.pk.fyll < 1) { const sp = st.pk.k > 0 ? kontur('pulka', tr, kl(st.pk.k), KRITAN.BRED / PK, linjeOpacitet(st.pk.fyll)) : null;
       if (st.kritaIn) { const [tl, a] = st.kritaIn; if (tl < a) kritaRita(glid([[-200, 150], 140], [konturPunkt('pulka', tr, 0), 125], (tl - 0.2) / (a - 0.2)));
         else if (st.pk.k < 1) kritaRita([sp, 125, true]); else kritaRita(glid([slut, 125], kritaVanta(PK_SPETS_V, TT), (st.pk.k - 1) * 2.4 / 0.6)); } }
-    if (st.pkStjarnor) { const [x, y] = pBacke(KRON); lagg('fram', stjarna(x - 120, y - 120, 18 * st.pkStjarnor) + stjarna(x + 140, y - 90, 14 * st.pkStjarnor) + stjarna(x + 30, y + 40, 11 * st.pkStjarnor)); }
+    if (st.pkGnistor != null) { const [x, y] = pBacke(KRON); lagg('fram', gnistor(x, y - 90, 330, st.pkGnistor)); }   // de delade krit-gnistorna
   } else if (st.ga != null) { kam(st.kam || K_HEL); gaPulka(st.ga, t);
   } else if (st.dra) { kam(st.kam || K_HEL); draUpp(st.dra.tl, t);
   } else if (st.pk) {
@@ -903,7 +901,7 @@ function ljud() {
   [['7', 0.4], ['8', 0.4], ['9', 1.5], ['13', 0.2], ['13', 0.25 + ORD[15].en], ['14', 0.1], ['17', 0.2], ['17', RR['17'].d - 1.4], ['23', 0.1],
    ['25', 0.7], ['26', 0.1], ['30', 0]].forEach(([id, o], i) => ut.push({ t: RR[id].s + o, fil: E + `klad-sus/klad-sus-${i % 4 + 1}.m4a`, vol: 0.45 }));
   const rit = (t, langd, n) => ut.push({ t, fil: E + `krita-ritar/krita-ritar-${n}.m4a`, vol: 1.0, langd, loop: true, fade: 0.3 });
-  rit(RR["01a"].s + 0.8, 5.0, 1);                    // pulkan på papperet
+  rit(RR["01a"].s + 0.8, 2.8, 1);                    // pulkan på papperet
   rit(RR['19a'].s + 0.4 + LN(23), 4.0, 2);           // tumvantarna
   rit(RR['34a'].s + 0.4 + LN(40), 2.4, 3);           // pulkan
   ut.push({ t: 0, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.8, langd: RR['1'].s + 1.2, fadeIn: 1.0, fade: 1.5 });
@@ -942,7 +940,7 @@ window.ready = (async () => {
   await Promise.all([js('vante-gra-1', R + 'vantar-gra/cut/vante-gra-1-kontur.json'), js('vante-gra-2', R + 'vantar-gra/cut/vante-gra-2-kontur.json'),
     js('tumvante-rosa-1', R + 'tumvantar-rosa/cut/tumvante-rosa-1-kontur.json'), js('tumvante-rosa-2', R + 'tumvantar-rosa/cut/tumvante-rosa-2-kontur.json'),
     js('pulka', R + 'pulka/cut/pulka-utan-snore-kontur.json')]);
-  const bilder = [SB + 'plattor/julhallen.jpg', SB + 'plattor/pulkabacken-ny.jpg', HANG.fil, KORG.fil, STOVLAR_DORR.fil, OVERALL.fil, GRA.fil, PULKA.fil, KRITA, STRUMPA(1), STRUMPA(2), ROSA(1), ROSA(2),
+  const bilder = [SB + 'plattor/julhallen.jpg', SB + 'plattor/pulkabacken-ny.jpg', HANG.fil, KORG.fil, STOVLAR_DORR.fil, OVERALL.fil, GRA.fil, PULKA.fil, KRITAN.BILD, STRUMPA(1), STRUMPA(2), ROSA(1), ROSA(2),
     KL + 'pannband.png', R + 'stovlar-gula/cut/stovel-gul-kort-1.png', R + 'vantar-gra/cut/vante-gra-1.png', R + 'vantar-gra/cut/vante-gra-2.png'];
   await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
