@@ -41,7 +41,7 @@
 41-titta-kritan-ritar-igen 1.850544
 42-en-glad-tand-ett 2.446961
 43-till-kaninen 0.929116
-44-och-en-till-elefanten 2.237982
+44-elefanten-far-ocksa-en 2.319116
 45-bra-kaninen-nu-ar 2.240068
 46-ska-vi-saga-tack 1.677438
 47-tack-tandlakaren 1.204331

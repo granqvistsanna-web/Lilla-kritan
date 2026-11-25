@@ -41,7 +41,7 @@
 41-titta-kritan-ritar-igen  [excited] Titta! Kritan ritar igen.
 42-en-glad-tand-ett  [delighted] En glad tand! Ett klistermärke!
 43-till-kaninen  [happy] Till kaninen.
-44-och-en-till-elefanten  [giggles] Och en till elefanten!
+44-elefanten-far-ocksa-en  [giggles] Elefanten får också en!
 45-bra-kaninen-nu-ar  [happy] Bra, kaninen! Nu är det klart.
 46-ska-vi-saga-tack  [warmly] Ska vi säga tack till tandläkaren?
 47-tack-tandlakaren  [happy] Tack, tandläkaren!

@@ -42,3 +42,17 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 - 1:34 Fler reaktioner i 13: kaninen tittar upp mot lampan med öronen upp, gör ett litet hoppande "oj" på klicket och blir sedan glad. Tandläkaren vänder sig mot kaninen (rikt −0,8, blicken åt vänster) och nickar efter klicket, också i 14 och 15. I 14 tittar kaninen ner på elefanten och fnissar.
 - 1:36 Ljuset utgår nu från glödlampan (`STOL.lampa` [282, 98], var [220, 115] utanför skärmen). Lampan blinkar till på klicket och tänds med en liten överglans, andas sedan lugnt. Skenet är smalt vid lampan, mjukt i kanterna, starkast vid lampan, och lägger en ljusfläck på kaninens ansikte (13, 15) och elefanten (14). Kameran i 13 har samma utsnitt som förut.
 - 3:26 Bubblorna: pipen utgår från ovalens kant och är 90 px lång och lätt böjd, så att den syns. Sakerna i bubblorna har en tunn mörk kant och en liten skugga (den vita kanten syntes inte mot den krämvita ytan). Kaninens tandborste i bubblorna är en mörkare mint (`BUBBBORSTE`) och lite större.
+
+## Putsning med riggarnas nya lärdomar (2026-11-25)
+
+- Kaninens vinkning (1, 37, 38) går genom riggens `ARMROR.vinka` (skärmvinklar ur riggens mått). Förut +150 i posens tal, som gömde armen bakom huvudet så att vinkningen knappt syntes.
+- Tandläkarens armar hänger intill sidorna i vila (3D-lärdomen "som en fågelskrämma"): uttryckets armlyft (glad 16, skrattar 30) tas bort när posen inte lyfter armen. Vinkning, räckning, klapp och verktyg är som förut.
+- Skutten (10, 26) har viktflytt: kroppen trycks ihop lite före avfärd och vid landning. Täta bilder (6/s) visar att kaninen inte går genom stolen.
+- 35: kaninen bugar på "Tack, tandläkaren!" (`STUNDER.tack`) i stället för bara en nick.
+
+## Feedback 5 (2026-11-25)
+
+- 0:40 Kameran glider in på stolen och kaninen när Malin säger *"stor stol"* (1,4 s, från slutet av repliken) och står kvar under *"tandläkarstolen"*. Kameran kan nu glida mellan två utsnitt (`kam` → `kam2` med `kk`), inte bara klippa.
+- 0:56 Inget hopp mellan 4, 5 och 6a: samma utsnitt (`kanin`) hela vägen, och kaninen står kvar där den backade (`BAK`, förut flyttade den sig 60 px i klippet till 6a). Den osäkra minen blir nyfiken när kritan kommer, och i 6b tar kaninen ett litet glatt skutt fram till elefanten.
+- 2:56 Den röda tandborsten är större i fickan (0,42 → 0,52), och i 23c glider kameran ner till fickan strax efter frågan (förut ett klipp de sista 2 s), så att den syns länge innan glittret.
+- 4:02 Replik 44 är ny: *"Elefanten får också en!"* [giggles] (förut *"Och en till elefanten!"*, som lät som "en till"). ElevenLabs v3, Malin – Professional Swedish Narration, Natural (0,5), tagning 1 av 2, rådata i `produktion/ljud-original/049/malin-elefanten-ocksa-*.mp3`, −3 dBFS i `44-elefanten-far-ocksa-en.m4a`. Den gamla filen ligger kvar tills Sanna godkänt.
