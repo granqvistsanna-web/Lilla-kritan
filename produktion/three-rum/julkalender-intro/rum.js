@@ -389,8 +389,9 @@ function kanel(t) {
   const pek = mjuk((t - PEK) / 0.4) * (1 - mjuk((t - Z0) / 0.3));
   const hej = mjuk(Math.min((t - VINK) / 0.35, (LATE + 0.85 - t) / 0.35)), vut = mjuk(Math.min((t - VINKUT - 0.1) / 0.35, (SLUT - 0.1 - t) / 0.35));
   const v = Math.max(hej, vut), upp = Math.max(pek, v);   // vut: vinkar hej då med armen mot tavlan på "Hurra!", som lucka.js
-  const arm = mjuk((upp - 0.3) / 0.4) * (v > 0 ? 60 : sikte) + v * 14 * Math.sin(t * 2 * Math.PI / 1.2), gom = Math.sin(Math.PI * upp) * (upp < 1 ? 1 : 0);
-  const par = x => hej > 0 ? [0, x] : [x, 0], s = -1, skutt = Math.sin(Math.PI * kl(0, 1, (t - PEK - 0.2) / 0.5)) * pek;
+  // Vinkningen (Sanna 25/11: bättre vinka) är husets ARMROR.vinka längre ner: armen bakom kroppen, snett ut förbi kanten. Här bara pekandet.
+  const arm = mjuk((pek - 0.3) / 0.4) * sikte, gom = Math.sin(Math.PI * pek) * (pek < 1 ? 1 : 0);
+  const par = x => [x, 0], s = -1, skutt = Math.sin(Math.PI * kl(0, 1, (t - PEK - 0.2) / 0.5)) * pek;
   const soker = mjuk((t - FRAGA - 0.3) / 0.4) * (1 - mjuk((t - PEK + 0.2) / 0.3)), u = mjuk((t - FRAGA - dD) / 1.5);
   const r1 = ruta(1), r24 = ruta(24), dit0 = iKortet(512, FOT - 355, new THREE.Vector3(lerp(r1.cx, r24.cx, u), lerp(r1.cy, r24.cy, u), 0));
   const dit = dit0.map(d => 7 * d / Math.hypot(...dit0));
@@ -398,17 +399,29 @@ function kanel(t) {
   // tavlan och luckan. Lutningen går genom riggens delar (boj från fötterna, huvudet lutar emot med skak), inte genom att hela
   // kortet vrids (luta). Uttryckens egna armar tas bort, och armarna hänger 22° lägre intill sidorna när de inte används.
   // Viktflytt i lugn takt (4,7 s): kroppen, huvudet 0,25 s efter, öronen 0,45 s efter, armarna 0,35 s efter.
-  const f0 = { ...L.blanda('neutral', 'glad', Math.max(upp, soker)), armar: L.NEUTRAL.armar, titt: blick.map((b, j) => b * pek + dit[j] * soker) };
+  // Uttrycken (Sanna 25/11): vänligt glad i vila, jätteglad med öppen mun på "Hej!", nyfiken medan den letar, ett kort "oj!"
+  // (förvånad) när den hittar luckan som blir jätteglatt, och jätteglad på "Hurra!".
+  const aha = pek * (1 - mjuk((t - PEK - 0.25) / 0.35)), hittad = pek * mjuk((t - PEK - 0.25) / 0.35);
+  let fa = L.blanda('neutral', 'glad', 0.5);
+  fa = L.blanda(fa, 'jatteglad', hej); fa = L.blanda(fa, 'nyfiken', soker); fa = L.blanda(fa, 'forvanad', aha);
+  fa = L.blanda(fa, 'jatteglad', Math.max(hittad * 0.8, vut));
+  const f0 = { ...fa, armar: L.NEUTRAL.armar, titt: blick.map((b, j) => b * pek + dit[j] * soker) };
   const S = d => Math.sin(2 * Math.PI * (t - d) / 4.7), s0 = S(0), sH = S(0.25), sO = S(0.45), sA = S(0.35), ner = s0 ** 4, lugnK = 1 - 0.7 * upp;
   const aktiv = par(1), armar = par(arm).map((a, i) => a - 22 * (1 - aktiv[i] * mjuk(upp / 0.6)) + (i ? 2 : -2) * sA * lugnK);
   const lutar = s * (1.5 * pek + soker);   // förut luta (hela kortet): nu böjer kroppen sig och huvudet lutar
-  const p0 = { ...L.POSE0, armar, gom: par(gom), rikt: 0.7 * s * soker,
+  const p1 = { ...L.POSE0, armar, gom: par(gom), rikt: 0.7 * s * soker,
     boj: s * (4 * pek + 2.5 * soker) + 0.8 * lutar + 2 * Math.sin(t * 7) * v + 2.2 * s0 * lugnK, luta: 0.3 * s0 * lugnK,
     skak: [0.12 * lutar - 0.12 * sH * lugnK, 0.1 * lutar - 0.12 * sO * lugnK], oron: [2.4 * sO * lugnK, -2.4 * sO * lugnK],
     strack: -0.008 * ner * lugnK, bred: 0.004 * ner * lugnK, lyft: -16 * skutt };   // skuttet lugnare (förut 26)
+  // vinkar med armen mot tavlan (vänster): den yttre armen hamnar utanför bild när kameran står till höger
+  let [fv, p0] = hej > 0 ? L.ARMROR.vinka(f0, p1, t - VINK, hej, { hand: 0 }) : vut > 0 ? L.ARMROR.vinka(f0, p1, t - VINKUT, vut, { hand: 0 }) : [f0, p1];
+  // ett glatt hopp på sista "Hurra!" (Sanna 25/11): riggens hoppa (huk 0,35 s, 1 s i luften, landning 0,3 s), lägre och lugnt
+  const hl = t - (RA[2] - 0.35);
+  if (hl > 0 && hl < 1.65) { const [, hp] = L.ROR.hoppa(hl);
+    p0 = { ...p0, lyft: p0.lyft + 0.45 * hp.lyft, strack: p0.strack + 0.7 * hp.strack, bred: p0.bred + 0.7 * hp.bred, benY: hp.benY }; }
   // ingen blinkning ovanpå en ändring (inom 0,45 s från hej, frågan, pekandet och åkningen)
   const nara = [VINK, LATE + 0.85, FRAGA, PEK, Z0, VINKUT, ...RA].some(c => Math.abs(t - c) < 0.45);
-  L.rita(G, nara ? f0 : BL(f0, t), p0);
+  L.rita(G, nara ? fv : BL(fv, t), p0);
 }
 
 // ---------- dagens lucka: guldram, vick, gnistor, öppning och ljus ----------
