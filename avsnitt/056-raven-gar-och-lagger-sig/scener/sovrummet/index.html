@@ -36,7 +36,7 @@
     <radialGradient id="hal"><stop offset="0" stop-color="#000"/><stop offset="0.55" stop-color="#000" stop-opacity="0.85"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
     <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
     <clipPath id="tackeklipp" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-400" width="2400" height="1251"/></clipPath>
-    <clipPath id="fonsterklipp"><circle cx="556" cy="321" r="159"/></clipPath>
+    <clipPath id="fonsterklipp"><circle cx="781" cy="345" r="171"/></clipPath>
     <mask id="morkmask" maskUnits="userSpaceOnUse" x="-200" y="-200" width="2400" height="1500"><rect x="-200" y="-200" width="2400" height="1500" fill="#fff"/><g id="haal"></g></mask>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -47,8 +47,9 @@
     <g id="bak"></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
     <g id="sov"></g>
-    <g clip-path="url(#tackeklipp)"><g id="tacke"></g></g>
     <g id="sang"></g>
+    <g clip-path="url(#tackeklipp)"><g id="tacke"></g></g>
+    <g id="patacke"></g>
     <g id="golvskugga"></g>
     <g id="golv" filter="url(#boil)"></g>
     <g id="natt"></g>
@@ -73,7 +74,7 @@ const bump = (a, b, t) => (t <= a || t >= b) ? 0 : Math.sin(Math.PI * (t - a) / 
 const lerp2 = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k)];
 
 // --- Bilderna och måtten (som storyboarden, sovrummet som 026) --------------------------------------------------------------
-const PLATTA = A + 'bakgrunder/sovrummet/sovrummet-v1.jpeg';
+const PLATTA = A + 'bakgrunder/turkosa-sovrummet/turkosa-sovrummet-v1-utan-dorr.jpeg';   // turkosa sovrummet utan dörr (Sanna 2026-11-25: "new bedroom with teal bg"); slice ×1,406, x −7
 const SANG = A + 'rekvisita/sangen/cut/sangen.png';
 const KUDDE = A + 'rekvisita/kudde/cut/kudde-v1-zebbe.png';
 const NALLE = { bild: A + 'rekvisita/nalle/cut/nalle-v2-ljus-tunn.png', w: 848, h: 856, fot: [424, 816], s: 0.196 };
@@ -83,8 +84,8 @@ const SOVBILD = { bild: S + 'sovbild/cut/rav-sover.png', w: 1278, h: 656 };
 const GOLV = 905, GS = 0.59, BX = 1000, FATKANT = 700, RIM = 772;
 const SANG_BILD = { s: 0.6, x: 1000 - 0.6 * 636, y: RIM - 0.6 * 288, w: 1273, h: 667 };
 const BED = { x0: 663, x1: 1338, sida: 851, gavelV: 614 };
-const FONSTER = { cx: 556, cy: 321, r: 173 };
-const RUMSLAMPA = [1798, 640];
+const FONSTER = { cx: 781, cy: 345, r: 185 };   // uppmätt som 052:s prov (r = inre vita + 15)
+const RUMSLAMPA = [1772, 605];   // nattduksbordets lampa i plattan (skärmen i (1772, 555))
 const KUDDE_POS = [770, RIM + 2], NALLE_FOT = [1250, RIM + 14], NALLE_BREDVID = [1170, RIM + 10];
 const LAMPFOT = [400, 930], LAMP_NARA = [540, 910];
 const LAMPH = { liten: 70, stor: 820, lagom: 300 };
@@ -123,13 +124,22 @@ const K_NALLE = [2.6, NALLE_BREDVID[0] + 40, RIM - 90];
 const K_SOV = [1.5, BX - 40, 640];
 
 // --- Rummet --------------------------------------------------------------------------------------------------------------
+// regnet utanför fönstret (Sanna 2026-11-25: "rain outside window"): två mjuka moln och lugna, ljusa streck som faller snett,
+// samma mönster hela filmen (deterministiskt på TT), inga blixtar, inget läskigt
+function regn(cx, cy, r) {
+  const moln = [[-90, -120, 120, 46], [80, -140, 140, 50], [0, -175, 160, 48]].map(([dx, dy, rx, ry]) => `<ellipse cx="${cx + dx}" cy="${cy + dy}" rx="${rx}" ry="${ry}" fill="#4E5F9C" opacity="0.85"/>`).join('');
+  const streck = Array.from({ length: 26 }, (_, i) => { const fart = 0.55 + 0.25 * ((i * 7) % 5) / 4, f = (TT * fart + i * 0.381) % 1;
+    const x = cx - r + ((i * 53.7) % (2 * r)) - 30 * f, y = cy - r - 30 + f * (2 * r + 60);
+    return `<line x1="${f1(x)}" y1="${f1(y)}" x2="${f1(x - 7)}" y2="${f1(y + 26)}" stroke="#C9D8F2" stroke-width="4" stroke-linecap="round" opacity="0.7"/>`; }).join('');
+  return moln + streck;
+}
 // natt 0–1: varmt kvällsblått (högst 0,42, aldrig svart); rumslampa 0–1; ljus [[x, y, R, styrka]] ger hål i mörkret och ett sken
 function rum({ natt = 0, rumslampa = 1, ljus = [], ljust = 0 }) {
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   $('sang').innerHTML = `<image href="${SANG}" x="${f1(SANG_BILD.x)}" y="${f1(SANG_BILD.y)}" width="${f1(SANG_BILD.w * SANG_BILD.s)}" height="${f1(SANG_BILD.h * SANG_BILD.s)}"/>`;
   const { cx, cy, r } = FONSTER;
   $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#3A4C8A"/>
-    ${[[-80, -60], [70, -90], [-40, 80], [90, 60], [-100, 20], [20, -30]].map(([dx, dy], i) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${f1((4 + (i % 2) * 2) * (0.7 + 0.45 * Math.sin(TT * 2.2 + i * 2.1)))}" fill="#FFF3C4"/>`).join('')}</g>`;
+    ${regn(cx, cy, r)}</g>`;
   $('haal').innerHTML = ljus.map(([x, y, R, k = 1]) => `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(R)}" ry="${f1(R * 0.8)}" fill="url(#hal)" opacity="${kl(k).toFixed(2)}"/>`).join('');
   $('natt').innerHTML = (natt > 0.005 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${(0.42 * natt).toFixed(3)}" mask="url(#morkmask)"/>` : '')
     + (rumslampa > 0.005 ? `<ellipse cx="${RUMSLAMPA[0]}" cy="${RUMSLAMPA[1] + 10}" rx="320" ry="240" fill="url(#sken)" opacity="${rumslampa.toFixed(3)}"/>` : '')
@@ -154,13 +164,20 @@ function lampa(id, [x, y], h, { k = 1, f = 1, tand = 0, lager = 'golv', skugga =
   return Rb ? { spets: i(Rb.spets), start: i(Rb.start), slut: i(Rb.slut) } : null;
 }
 // nallen (x, y) = underkanten mitt; ansiktet i kod som 026 nalleBild; dold 0–1 = hur långt under täcket (klipps vid täckets kant)
-function nalle([x, y], { blund = 0, lager = 'bak', v = 0 } = {}) {
-  const NV = { ogon: [[352, 246], [498, 246]], kinder: [[306, 304], [544, 304]], nos: [425, 300], mun: [425, 338] }, [nx, ny] = NV.nos, [mx, my] = NV.mun;
-  const ans = `<ellipse cx="${nx}" cy="${ny + 14}" rx="70" ry="52" fill="#F1DFC1"/><ellipse cx="${nx}" cy="${ny}" rx="20" ry="14" fill="#3a1d12"/>`
+const NV = { ogon: [[352, 246], [498, 246]], kinder: [[306, 304], [544, 304]], nos: [425, 300], mun: [425, 338] };
+function nalleAns(blund = 0) {
+  const [nx, ny] = NV.nos, [mx, my] = NV.mun;
+  return `<ellipse cx="${nx}" cy="${ny + 14}" rx="70" ry="52" fill="#F1DFC1"/><ellipse cx="${nx}" cy="${ny}" rx="20" ry="14" fill="#3a1d12"/>`
     + NV.kinder.map(([kx, ky]) => `<ellipse cx="${kx}" cy="${ky}" rx="28" ry="17" fill="#ec8f96" opacity=".8"/>`).join('')
     + NV.ogon.map(([ox, oy]) => blund > 0.5 ? `<path d="M${ox - 19} ${oy} Q${ox} ${oy + 15} ${ox + 19} ${oy}" fill="none" stroke="#140c08" stroke-width="7" stroke-linecap="round"/>`
       : `<ellipse cx="${ox}" cy="${oy}" rx="19" ry="26" fill="#140c08" stroke="#f3e6d6" stroke-width="3"/><circle cx="${ox - 6}" cy="${oy - 10}" r="7" fill="#fff"/>`).join('')
     + `<path d="M${mx - 22} ${my - 6} Q${mx - 11} ${my + 6} ${mx} ${my - 4} Q${mx + 11} ${my + 6} ${mx + 22} ${my - 6}" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`;
+}
+// nallens ögon och nos som kritstreck i ritintrot (Sanna 2026-11-25: "teddy needs eyes"), samma ställen som i bilden
+const NALLE_ANS_DRAG = [...NV.ogon.map(([ox, oy]) => `M${ox} ${oy - 22} C${ox + 16} ${oy - 22} ${ox + 16} ${oy + 22} ${ox} ${oy + 22} C${ox - 16} ${oy + 22} ${ox - 16} ${oy - 22} ${ox} ${oy - 20}`),
+  `M${NV.nos[0] - 18} ${NV.nos[1] - 4} C${NV.nos[0] - 10} ${NV.nos[1] + 12} ${NV.nos[0] + 10} ${NV.nos[1] + 12} ${NV.nos[0] + 18} ${NV.nos[1] - 4}`];
+function nalle([x, y], { blund = 0, lager = 'bak', v = 0 } = {}) {
+  const ans = nalleAns(blund);
   lagg(lager, `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${NALLE.s}) translate(${-NALLE.fot[0]} ${-NALLE.fot[1]})"><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${ans}</g>`);
 }
 const kudde = () => lagg('bak', `<g transform="translate(${KUDDE_POS[0]} ${KUDDE_POS[1]}) scale(0.2) translate(-512 -930)"><image href="${KUDDE}" width="1024" height="1024"/></g>`);
@@ -282,10 +299,10 @@ function ritaPapper(st, t) {
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   kamera([z, 960, 540]);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([KN.d], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([KN.d, ...NALLE_ANS_DRAG], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
   if (f > 0) { const g = st.gung ?? 0, v = 2 * Math.sin(g * 1.7) * del(0.5, 1.2, g), dy = 8 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // nallen gungar lugnt
-    lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyP', 424, 430, 620, f) : ''}<image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"${f < 1 ? ' clip-path="url(#fyP)"' : ''}/></g></g>`); }
+    lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyP', 424, 430, 620, f) : ''}<g${f < 1 ? ' clip-path="url(#fyP)"' : ''}><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${nalleAns()}</g></g></g>`); }
   if (k > 0 && f < 1) lagg('krita', `<g transform="${tr}">${Rb.html}</g>`);
   kritaRita(kritaFas(t, T_RIT, { start: iPapper(Rb.start), spets: iPapper(Rb.spets), slut: iPapper(Rb.slut), vanta: [960 + 470, 560 - 260], s: KRITAN.SKALA_PAPPER / kryp }));
   if (f > 0) lagg('krita', gnistor(960, 560, 400, t - T_RIT.ut[0]));
@@ -309,8 +326,8 @@ const RS = {
   '1b': (tl, d) => { const sv = 0.3 + LN(5), ja = M('1b', 6), up = oronUpp(tl, sv, d);
     const f = tl < sv ? F('nyfiken') : tl < ja + 0.3 ? F('flinar') : F('stolt');
     return GOLVET({ f, p: P({ oron: [up, up], upp: 0.4 * del(ja + 0.3, ja + 0.8, tl), svans: vipp(tl, sv, 1.6) }) }); },
-  // kvällshimlen: stjärnorna tindrar
-  '2': (tl, d) => ({ plats: 'rum', kam: K_FONSTER, skim: [[70, -90, 0.3], [-80, -60, 1.3], [90, 60, 2.3], [-40, 80, 3.2]].map(([dx, dy, a]) => [FONSTER.cx + dx, FONSTER.cy + dy, 0.8 * bump(a, a + 1.6, tl), 0.6]) }),   // stjärnorna tänds en i taget
+  // kvällshimlen: regnet utanför
+  '2': (tl, d) => ({ plats: 'rum', kam: K_FONSTER }),   // kvällen: det regnar lugnt utanför fönstret
   // nallen på fotänden, skimmer på "nallen"
   '3': (tl, d) => ({ plats: 'rum', kam: K_NALLE_FOT, skim: [[NALLE_FOT[0] + 70, NALLE_FOT[1] - 140, 0.7 * bump(0.05, d + 0.3, tl), 0.5]] }),
   // reaktion: jätteglad, öronen upp, svansen viftar
@@ -410,7 +427,7 @@ function lage(t) {
 }
 
 // --- Bildrutan ---------------------------------------------------------------------------------------------------------------
-const LAGER = ['platta', 'himmel', 'skugga', 'bak', 'sov', 'tacke', 'sang', 'golvskugga', 'golv', 'natt', 'fram', 'krita', 'ram', 'haal'];
+const LAGER = ['platta', 'himmel', 'skugga', 'bak', 'sov', 'sang', 'tacke', 'patacke', 'golvskugga', 'golv', 'natt', 'fram', 'krita', 'ram', 'haal'];
 function ritaRum(st, t) {
   const z = lagen(t);
   kamera(typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL);
@@ -425,7 +442,7 @@ function ritaRum(st, t) {
   // sängen: kudden, nallen, täcket
   if (!st.sovNu) kudde();
   const sov = st.sovNu;
-  if (z.nalleSyns && !sov) nalle(z.np);
+  if (z.nalleSyns && !sov) nalle(z.np, { lager: 'patacke' });   // sitter ovanpå det bäddade täcket
   tacke(sov ? [980, RIM - 50] : z.tk, { bula: z.bula, orat: st.orat || 0 });
   if (sov) { sovbild(); nalle([NALLE_BREDVID[0] + 40, RIM + 12], { blund: 1, lager: 'sov', v: -6 }); }   // nallen sover tätt intill, framför sovbilden
   // räven
@@ -495,7 +512,7 @@ function ljud() {
   ut.push({ t: 0.2, fil: E + 'skogsljud/skogsljud-1.m4a', vol: 0.4, langd: RR['1'].s + 1.2, loop: true, fadeIn: 1.0, fade: 1.2 });
   const b0 = RR['1'].s, n0 = TID.klick6;
   ut.push({ t: b0, fil: E + 'hemmaljud/hemmaljud-1.m4a', vol: 0.18, langd: n0 + 3 - b0, loop: true, fadeIn: 1.0, fade: 2.5 });
-  ut.push({ t: n0, fil: E + 'syrsor/syrsor-1.m4a', vol: 0.3, langd: DURATION - SVART - n0, loop: true, fadeIn: 3.0, fade: 2.0 });   // syrsor mycket lågt i kvällsmörkret
+  ut.push({ t: b0, fil: E + 'regn/regn-1.m4a', vol: 0.9, langd: DURATION - SVART - b0, loop: true, fadeIn: 2.0, fade: 2.0 });   // lugnt regn utanför fönstret, lågt (regn-1 är svagt, ca −47 dB)
   return ut.filter(c => c.t < DURATION);
 }
 
@@ -521,7 +538,7 @@ window.ready = (async () => {
   const kt = (id, n) => RR[id].s + RR[id].ljud.find(x => x[0] === 'lampa-klick/lampa-klick-1')[1];
   TID = { klick6: kt('6') + 0.05, klick10: kt('10') + 0.05, klick12: kt('12') + 0.05, s13: RR['13'].s, klick15: kt('15') + 0.05 };
   BLINKA = skapaBlinka(56);
-  ['bak', 'sov', 'tacke', 'golv'].forEach(n => window.kant?.lagg($(n)));
+  ['bak', 'sov', 'tacke', 'patacke', 'golv'].forEach(n => window.kant?.lagg($(n)));
   window.kant?.lagg(G);
   await Promise.all([PLATTA, SANG, KUDDE, NALLE.bild, TACKE.bild, LAMPBILD.bild, SOVBILD.bild, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();

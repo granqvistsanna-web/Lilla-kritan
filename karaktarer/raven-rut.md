@@ -37,6 +37,8 @@ body without arms and legs, left arm, right arm, left leg, right leg, left ear, 
 
 > **Tänder och tandborstning (055, 2026-11-25, Sannas ja), som Gretas i 031:** gapet `gapar` (`mun: [54, 42, 0.55, 461]`, överkant strax under nosen) med båda tandraderna och tungan, och posen `borstar` med den turkosa tandborsten i vänstra tassen (`BORSTARM = { axel: 129, L: 124, lut: -4 }`, uppmätt ur rut-arm-l.png). Inga befintliga uttryck eller poser ändrade. **Godkänt av Sanna 2026-11-25** ("Ja, bra"). `?prov=borsta&zoom=mun&rorelse=borsta` spelar borstningen i badrummet; stillbilder i `avsnitt/055-raven-borstar-tanderna/provbild/`.
 
+> **Öronen utan hack (2026-11-25, 056, Sannas ja):** öronen hade ett trappsteg på utsidan (den gamla äggkanten) som syntes i närbild. `premium/skript/rut_oron.py` fyller öronens kritfyllning ut till sitt konvexa hölje (nya pixlar får närmaste kritfärg) och lägger samma vita kant runt: `cut-tunn/` 6,5 px, `cut/` 10 px. Samma konst, spets och vridpunkter. De gamla ligger i `premium/aldre/`. Jämförelse: `avsnitt/056-raven-gar-och-lagger-sig/provbild/rav-oron-forslag.jpg`.
+
 > **Tunna kanter (2026-11-25, inför 055):** `premium/cut-tunn/` ur `verktyg/rigg_tunn.py` (kanten 1 % av kroppens höjd: 10 px → 6,5 px), och `uttryck.html` pekar dit. Bilderna i `cut/` är orörda. `rut-kropp-mask.png` och sovbilden används fortfarande ur `cut/`, eftersom sovbilden redan har sin kant från tunn_kant.py.
 
 ## Prompt
