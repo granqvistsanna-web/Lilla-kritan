@@ -9195,9 +9195,10 @@
   "sec": 56,
   "tags": [],
   "note": "abrubpt cut and change of position, make more semaless",
-  "fixed": false,
+  "fixed": true,
   "at": 1795591077598,
-  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)",
+  "fixedAt": 1795592306421
  },
  "4dukbe1wsymwvsldve": {
   "ep": "049",
@@ -9205,9 +9206,10 @@
   "sec": 40,
   "tags": [],
   "note": "commen stor stol after mention of stol. when mention stol zoom in on stol too",
-  "fixed": false,
+  "fixed": true,
   "at": 1795591123322,
-  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)",
+  "fixedAt": 1795592306421
  },
  "46k58n4maymwvsm1dp": {
   "ep": "049",
@@ -9215,9 +9217,10 @@
   "sec": 176,
   "tags": [],
   "note": "be more clear röd tandborste",
-  "fixed": false,
+  "fixed": true,
   "at": 1795591153789,
-  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)",
+  "fixedAt": 1795592306421
  },
  "wmlh2qm2hjmwvsnff3": {
   "ep": "049",
@@ -9225,8 +9228,9 @@
   "sec": 242,
   "tags": [],
   "note": "malin vo poor, should be och en till elefanten as in elefanten får en också now it sounds like and another for the elephant",
-  "fixed": false,
+  "fixed": true,
   "at": 1795591218639,
-  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)"
+  "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)",
+  "fixedAt": 1795592306421
  }
 }
