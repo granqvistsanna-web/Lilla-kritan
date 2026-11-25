@@ -9132,5 +9132,65 @@
   "at": 1795387516282,
   "render": "2026-11-22 15:27 (Förhandsvisning: nattduksbord i kod, moln när leoparden hoppar upp, vinkning snett ut, strumpor i kod som glider på, bredare halsduk, inga bjällror vid 2:32, plats för repliken 'Oj, haha! Leoparden vill leka.' (inte inspelad än). Utan julkalenderns ram.)",
   "fixedAt": 1795413568230
+ },
+ "guqm95mdhgmwrq8644": {
+  "ep": "ABC-e3",
+  "time": "2:02",
+  "sec": 122,
+  "tags": [],
+  "note": "make shadows softer. make drawings of cat easier to guess",
+  "fixed": false,
+  "at": 1795345282804,
+  "render": "2026-11-22 11:53 (fast slut och ljudkarta som B, skuggor på golvet, raka klossar i discot)"
+ },
+ "g8tnfl4m9zmwrq8u3r": {
+  "ep": "ABC-e3",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "a bit faster pace overall",
+  "fixed": false,
+  "at": 1795345313895,
+  "render": "2026-11-22 11:53 (fast slut och ljudkarta som B, skuggor på golvet, raka klossar i discot)"
+ },
+ "639lwtd9ohmwrwil1t": {
+  "ep": "ABC-e3",
+  "time": "0:06",
+  "sec": 6,
+  "tags": [],
+  "note": "kanske lägga till hej E hur låter e ? e e e just det",
+  "fixed": false,
+  "at": 1795355846417,
+  "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)"
+ },
+ "dqew64bxk5mwrwjg2z": {
+  "ep": "ABC-e3",
+  "time": "0:44",
+  "sec": 44,
+  "tags": [],
+  "note": "kanske make it e e saying so to participate in conversionen and reactions but sometimes eee and Eh",
+  "fixed": false,
+  "at": 1795355886635,
+  "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)"
+ },
+ "7jasv9vh9dmwrwjq73": {
+  "ep": "ABC-e3",
+  "time": "1:14",
+  "sec": 74,
+  "tags": [],
+  "note": "polish cat drawing",
+  "fixed": false,
+  "at": 1795355899743,
+  "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)"
+ },
+ "1lxlq6xtkgmwrwk7y3": {
+  "ep": "ABC-e3",
+  "time": "3:07",
+  "sec": 187,
+  "tags": [],
+  "note": "missing edge of elefant block here, a bug",
+  "fixed": false,
+  "at": 1795355922747,
+  "render": "2026-11-22 14:19 (gummibokstav och pärlögon i bokstavens huvud)"
  }
 }
