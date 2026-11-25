@@ -218,6 +218,16 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **Skumbubblorna** längs karkanten är `djup.skum` med ljuset uppe till vänster, så att de glittrar.
 - **QA:** rad 23a är 0,6 s längre, så att bräkandet efter *"Men … var är borsten?"* klingar ut före klippet (det klipptes av tvärt). Borstens flygtur i rad 25 är kontrollerad i täta bilder: den lyfter framför karet och flyger över pallen till tassen utan att gå genom något.
 
+### Djup QA av djup-kit-renderingen (Sanna 25/11: "fixa alla fynd")
+
+- **Svarta slutet saknades:** renderingen 22:38 gjordes medan rad 23a blev längre. En ny rendering har hela DURATION med 0,6 s svart.
+- **Hoppet i karet (0:33):** lammet ritas bakom karets framsida så fort fötterna når karets vänstra kant (efter läge, inte tid), så att benen aldrig syns framför kanten. Samma regel gäller hoppet upp ur karet (rad 8).
+- **Kontaktskuggan** tonas bort när lammet är över karet, i båda hoppen.
+- **Ankan** står 30 px längre till höger i början, så att tassen inte ligger över näbben.
+- **Borsten bakom pallen** ligger 18 px högre och lite längre in, och foten är ovanför pallens fot. Närbilden i 23c–24 visar mindre golv.
+- **Närbilden i rad 25:** när lammet bräker flyttas närbilden lite åt höger, så att borsten är med och inte nuddar ramen.
+- **Kritirisen** sluts runt lammets ansikte i stället för på väggen mellan lammet och ankan.
+
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").

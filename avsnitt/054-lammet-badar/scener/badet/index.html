@@ -72,7 +72,9 @@ const PALL_X0 = KX - KAR_W / 2 + 25 - 778 * PALL_KS, PALL_Y0 = GOLV - 548 * PALL
 // pallens två steg (pall.png 781 × 551): nedre stegets ovansida y 212, x 40–330; övre y 4, x 360–760
 const STEG1 = [PALL_X0 + 185 * PALL_KS, PALL_Y0 + 238 * PALL_KS], STEG2 = [PALL_X0 + 565 * PALL_KS, PALL_Y0 + 32 * PALL_KS];
 const KROK = [150, 300];
-const ANKA_VID = [KX - 260, KANT - 12];
+const ANKA_VID = [KX - 230, KANT - 12];   // QA 26/11: 30 px till höger, så att tassen inte ligger över näbben när lammet står på pallen
+const OVER_KANT = x => x > KX - KAR_W / 2 - 46;   // fötterna når karets vänstra kant: lammet ritas bakom karets framsida
+const SKUGGA_KANT = x => kl((KX - KAR_W / 2 - x) / 70);   // kontaktskuggan tonas bort när lammet är över karet
 const ANKA_GOMD = [KX + 250, KANT + 22];
 const GOMSTUSS = [KX + 330, KANT - 4, 78];
 let FOT = 930, GS = 0.572;
@@ -85,7 +87,7 @@ const BO_GOLV = [STA[0] + 150, GOLV - 18];   // ligger platt på golvet framför
 // så att barnet känner igen borsten (QA 25/11: syns tydligt från "Ser du borsten?" till "Där är borsten! Bakom pallen!")
 // omgång 3 (Sanna 26/11 "other placement closer to bathtub for brush"): borsten ligger mellan pallen och badkaret och glider in bakom pallens högra kant,
 // bara det rosa huvudet sticker fram mot badkaret
-const BO_START = [1098, GOLV - 18], BO_PALL = [1012, GOLV - 50], BO_SKAFTET = [BO_PALL[0] + 5, GOLV - 52];   // bakom pallen ligger den längre bak på golvet (högre upp), helt ovanför pallens fot   // skaftets ände, sticker fram vid pallens vänstra kant
+const BO_START = [1098, GOLV - 18], BO_PALL = [996, GOLV - 88], BO_SKAFTET = [BO_PALL[0] + 5, GOLV - 90];   // QA 26/11: 18 px högre, så att foten är ovanför pallens fot och borsten läses som bakom   // bakom pallen ligger den längre bak på golvet (högre upp), helt ovanför pallens fot   // skaftets ände, sticker fram vid pallens vänstra kant
 const boGolv = x => { const u = kl((x - BO_START[0]) / (BO_PALL[0] - BO_START[0])); return [[x, lerp(BO_START[1], BO_PALL[1], u)], 0, x - 105 < PALL_X0 + 386 ? 'vagg' : 'fram', true]; };   // bakom pallen när skaftets ände når pallens högra kant
 
 let L, G, BLINKA, TT = 0, ZOOM = 1, RAD = [], RR = {}, IDX = {}, ROSTER = [], BORTA = {}, DURATION = 0;
@@ -266,7 +268,7 @@ function puffa(sel, k, cx, cy, vag, slat) {
     g.setAttribute('opacity', k > 0 ? 1 : 0); });
 }
 const tussVag = (s, u) => kl((s - 0.8 * u) / 0.2);   // borstens drag s 0–1 har nått tussen vid u 0–1
-function lamm(pos, f, p, { blot = 0, oron = 0, mage = 0, moln = 0, hatt = 0, hattX = 0, ikar = false, framfor = false, slat = {} } = {}) {
+function lamm(pos, f, p, { blot = 0, oron = 0, mage = 0, moln = 0, hatt = 0, hattX = 0, ikar = false, framfor = false, skugga = 1, slat = {} } = {}) {
   $(framfor ? 'figurerFram' : 'figurer').appendChild(G);
   G.setAttribute('transform', `translate(${f1(pos[0])} ${f1(pos[1])}) scale(${GS}) translate(-512 ${-FOT})`);
   L.rita(G, f, p);
@@ -278,6 +280,7 @@ function lamm(pos, f, p, { blot = 0, oron = 0, mage = 0, moln = 0, hatt = 0, hat
   puffa('.ull-moln', moln, 508, 500, MOLN_VAG, (x, y) => tussVag(x < 508 ? h1 : h2, (y - 150) / 720));
   const h = G.querySelector('.skumhatt'); h.setAttribute('opacity', kl(hatt).toFixed(2)); h.setAttribute('transform', `translate(${f1(hattX)} ${f1(Math.abs(hattX) * 0.3)}) rotate(${f1(hattX * 0.08)} 512 200)`);
   G.querySelectorAll('.arm-l,.arm-r,.arm-l2,.arm-r2,.leg-l,.leg-r,.tail,.skugga').forEach(e => e.setAttribute('display', ikar ? 'none' : 'inline'));
+  G.querySelectorAll('.skugga').forEach(e => { e.dataset.o ??= e.getAttribute('opacity') ?? '1'; e.setAttribute('opacity', (+e.dataset.o * kl(skugga)).toFixed(3)); });
   if (blot > 0.3 && !ikar) {   // droppar från öronspetsarna och magen faller och tonas bort
     [[200, 380], [826, 378], [478, 840], [548, 846]].forEach(([px, py], i) => { const age = (TT * 0.7 + i * 0.29) % 1, [x, y] = iFig(pos, [px, py]);
       lagg('fram', droppe(x, y + 10 + 70 * age * age, 1, (1 - age) * kl((blot - 0.3) / 0.4))); });
@@ -326,7 +329,7 @@ const S = {
     // landar på nedre steget: golvet skakar till och borsten glider in bakom pallen (lammet märker inget); bara skaftet sticker fram
     const gl = t1 + 0.42, sx = lerp(BO_START[0], BO_PALL[0], 1 - (1 - kl((tl - gl) / 0.7)) ** 2.4), bo = boGolv(sx);
     bo[0][1] -= 6 * bump(gl, gl + 0.2, tl);
-    return RUM({ pos, ikar: tl > t3 + d3 - 0.05, framfor: tl < t3 + 0.22, f: F('jatteglad', { titt: [10 * bl, -4 * Math.abs(bl)] }), p: { ...p0, rikt: 0.35 * bl }, anka: ANKA_VID, plask: [IKAR()[0], w[2] - 0.05], bo }); },
+    return RUM({ pos, ikar: tl > t3 + d3 - 0.05, framfor: !OVER_KANT(pos[0]), skugga: SKUGGA_KANT(pos[0]), f: F('jatteglad', { titt: [10 * bl, -4 * Math.abs(bl)] }), p: { ...p0, rikt: 0.35 * bl }, anka: ANKA_VID, plask: [IKAR()[0], w[2] - 0.05], bo }); },
   // bara huvudet ovanför kanten, blundar i pausen
   '4': (tl, d) => { const a = 0.5 + LN(9) + 0.3, b = a + SVAR + 0.6;
     return BAD({ kam: [2.1, IKAR()[0] - 40, KANT - 110], f: F('glad', tl > a && tl < b ? { lock: [1, 1] } : {}), p: P({ oron: [6, 6] }), anka: ANKA_VID }); },
@@ -365,7 +368,7 @@ const S = {
   '8': (tl, d) => { const w = SK(16).map(x => 1.0 + x + 0.2), t1 = w[0] - 0.7, t2 = w[1] - 0.42, t3 = w[2] - 0.42;
     const [pos, p0, bl] = skuttar(tl, [IKAR()[0] + LDX, IKAR()[1]], [[t1, 0.7, STEG2, 110], [t2, 0.42, STEG1, 24], [t3, 0.42, STA, 24]], P({}));
     const ute = tl > t1 + 0.12;   // blot: den blöta tonen tonas in i hoppet (QA 25/11: bytte på en bildruta)
-    return RUM({ pos, ldx: LDX, ikar: !ute, framfor: tl > t1 + 0.3, blot: del(t1, t1 + 0.45, tl), f: F('glad', { titt: [10 * bl, 0] }), p: { ...p0, rikt: 0.35 * bl * (1 - del(w[2], w[2] + 0.4, tl)) },
+    return RUM({ pos, ldx: LDX, ikar: !ute, framfor: !OVER_KANT(pos[0]), skugga: SKUGGA_KANT(pos[0]), blot: del(t1, t1 + 0.45, tl), f: F('glad', { titt: [10 * bl, 0] }), p: { ...p0, rikt: 0.35 * bl * (1 - del(w[2], w[2] + 0.4, tl)) },
       plask: [IKAR()[0] + LDX, t1 + 0.05] }); },
 
   // ullen är platt och blöt, droppar; lammet tittar ner på sig själv
@@ -420,9 +423,9 @@ const S = {
   '23b': (tl, d) => { const a = 0.3 + LN(47) + 0.4;   // i pausen skimrar borsten mjukt vid pallens fot
     return RUM({ oron: 1, mage: 1, moln: 1, f: F('nyfiken', { titt: [16 * Math.sin(tl * 1.4), 0] }), p: P({ rikt: 0.4 * Math.sin(tl * 1.4) }), skim: [BO_SKAFTET, 0.7 * del(a, a + 0.5, tl), 0.8] }); },
   // närbild pallens fot: skaftet sticker fram bakom pallen och skimrar
-  '23c': (tl, d) => ({ plats: 'bad', kam: [2.8, BO_SKAFTET[0], GOLV - 70], skim: [BO_SKAFTET, 0.6 * del(1.3, 1.8, tl), 0.5] }),
+  '23c': (tl, d) => ({ plats: 'bad', kam: [2.8, BO_SKAFTET[0], GOLV - 125], skim: [BO_SKAFTET, 0.6 * del(1.3, 1.8, tl), 0.5] }),
   '24': (tl, d) => { const c = 1.0 + LN(35);
-    return tl < c ? { plats: 'bad', kam: [2.8, BO_SKAFTET[0], GOLV - 70], skim: [BO_SKAFTET, 0.9 * bump(0, c + 0.6, tl), 0.6] }
+    return tl < c ? { plats: 'bad', kam: [2.8, BO_SKAFTET[0], GOLV - 125], skim: [BO_SKAFTET, 0.9 * bump(0, c + 0.6, tl), 0.6] }
       : RUM({ kam: K_NARA(2.1, -40), oron: 1, mage: 1, moln: 1, f: F('jatteglad', { ogonS: [1.1, 1.1], titt: [14, 8] }), p: P({ rikt: 0.35, oron: [-12 * del(c, c + 0.3, tl), -12 * del(c, c + 0.3, tl)] }) }); },
   // lammet sträcker sig mot pallen; borsten glider ut bakom pallen, hoppar upp och glider i en båge till lammets tass (som handduken)
   '25': (tl, d) => { const ut = del(0.4, 1.1, tl), x = lerp(BO_PALL[0], BO_START[0] - 6, ut);
@@ -430,7 +433,7 @@ const S = {
     if (tl > 1.2) { [bp, r] = vag(tl, [bp, 0], [[1.2, 0.5, [BO_START[0] - 10, 560], -30, 0], [1.7, 1.1, BO_HALL(), -90, 80]]); lag = 'saker'; sp = tl < 2.2; }   // lyfter rakt upp först, så att den aldrig nuddar pallens hörn   // vänds mitt i flygturen, där den går fortast
     const mot = del(0.2, 0.6, tl) * (1 - del(2.2, 2.7, tl));
     return RUM({ kam: K_HALV, oron: 1, mage: 1, moln: 1, f: F(tl > 2.5 ? 'jatteglad' : 'nyfiken', { titt: [14 * mot, 10 * mot - 6 * bump(1.2, 2.5, tl)] }), p: P({ rikt: 0.4 * mot, luta: 4 * mot }),
-      bo: [bp, r, lag, sp] }); },
+      bo: [bp, r, lag, sp], reaktDx: 110 }); },   // QA 26/11: borsten nuddade ramen i närbilden
   // borsta tre gånger, ett drag på varje "borsta" (whisper, 2026-11-25): öronen, magen, hela lammet. Ullen blir slät där borsten går
   '26a': (tl, d) => { const m = M('26a', 49) + 1.87, s1 = del(m + 0.05, m + 0.9, tl), s2 = del(m + 1.16, m + 2.01, tl), oga = tl > m + 0.2 && tl < m + 2.16;   // m = första "Borsta"
     const [bp, r] = vag(tl, [BO_HALL(), -90], [[m - 0.45, 0.45, iFig(STA, [230 + 85 * Math.cos(Math.PI * 190 / 180), 300 + 85 * Math.sin(Math.PI * 190 / 180)]), 100, 60],
@@ -459,7 +462,7 @@ const S = {
   '28': (tl, d) => RUM({ oron: 1, mage: 1, moln: 1, slat: SLAT1, ...vinka(F('glad'), P({}), 1 - del(d - 1.0, d - 0.4, tl), tl + 5.8) }),
   // kritirisen runt lammet
   // kritirisen runt lammet och ankan (manus rad 29): en bred ellips mellan dem
-  '29': (tl, d) => RUM({ oron: 1, mage: 1, moln: 1, slat: SLAT1, f: F('glad'), p: P({}), iris: kl(tl / (d - SVART)), irisC: [(STA[0] + 40 + ANKA3[0]) / 2, (GOLV - 230 + ANKA3[1] - 50) / 2], irisB: 1.75 }),
+  '29': (tl, d) => RUM({ oron: 1, mage: 1, moln: 1, slat: SLAT1, f: F('glad'), p: P({}), iris: kl(tl / (d - SVART)), irisC: lerp2([(STA[0] + 40 + ANKA3[0]) / 2, (GOLV - 230 + ANKA3[1] - 50) / 2], [STA[0] - 30, GOLV - 265], mjuk(kl(tl / (d - SVART)))), irisB: lerp(1.75, 1, mjuk(kl(tl / (d - SVART)))) }),   // QA 26/11: sluts runt lammet, inte på tom vägg
 };
 const SVAR = 1.0;
 let SKUTT = {};
@@ -512,7 +515,7 @@ function reaktion(st, r, tl) {
     const z = (st.kam || K_HEL)[0];
     if (z < 2.3) {
       const pos = st.ikar ? [IKAR(st.sjunk || 0)[0] + (st.ldx || 0), IKAR(st.sjunk || 0)[1]] : st.pos;
-      st.kam = st.ikar ? [2.8, pos[0] - 20, KANT - 120] : [3.0, pos[0], pos[1] - 300];
+      st.kam = st.ikar ? [2.8, pos[0] - 20, KANT - 120] : [3.0, pos[0] + (st.reaktDx || 0), pos[1] - 300];   // reaktDx: flytta närbilden åt sidan när en sak ska med (rad 25: borsten i tassen)
     }
     return;
   }
@@ -575,7 +578,7 @@ function ritaBad(st, t) {
   // lammet
   if (st.f && st.pos) {
     const pos = st.ikar ? [IKAR(st.sjunk || 0)[0] + (st.ldx || 0), IKAR(st.sjunk || 0)[1]] : st.pos;
-    lamm(pos, BLINKA(st.f, t), liv(st.p, t), { blot: st.blot || 0, oron: st.oron || 0, mage: st.mage || 0, moln: st.moln || 0, hatt: st.hatt || 0, hattX: st.hattX || 0, ikar: st.ikar, framfor: st.framfor, slat: st.slat });
+    lamm(pos, BLINKA(st.f, t), liv(st.p, t), { blot: st.blot || 0, oron: st.oron || 0, mage: st.mage || 0, moln: st.moln || 0, hatt: st.hatt || 0, hattX: st.hattX || 0, ikar: st.ikar, framfor: st.framfor, skugga: st.skugga ?? 1, slat: st.slat });
   }
   if (st.skim) skimmer(st.skim[0][0], st.skim[0][1], st.skim[1], st.skim[2] || 1);
   if (fran(st.id, '1')) bubblor(t);
