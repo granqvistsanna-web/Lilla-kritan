@@ -123,7 +123,7 @@ function klossLage(n, t) {
     const t5a = r('5a'), t5b = r('5b'), t19 = r('19'), t20 = r('20'), o20 = t20 + 0.4 + LN(31) - 0.45;
     if (t < t5a + 0.22) return { p: GOLVET.cirkel };
     if (t < t5b) { const p = bage(t, t5a + 0.22, 0.6, GOLVET.cirkel, [255, 1004]); return { p, v: -(GOLVET.cirkel[0] - p[0]) * 0.9 }; }
-    if (t < t5b + 0.6) return { p: bage(t, t5b, 0.6, [255, 1004], KORG_TOPP.cirkel, 70), v: -45, golv: null };
+    if (t < t5b + 0.6) return { p: bage(t, t5b, 0.6, [255, 1004], KORG_TOPP.cirkel, 230), v: -45, golv: null };
     if (t < t5b + 1.2) return { p: KORG_TOPP.cirkel, v: -45 + vick(t, t5b + 0.6, 0.6), golv: null };
     if (t < t19 + 0.15) { const p = bage(t, t5b + 1.2, 0.3, KORG_TOPP.cirkel, VID_KORG.cirkel); return { p, v: -45 - 30 * del(t5b + 1.2, t5b + 1.5, t), golv: t < t5b + 1.45 ? null : undefined }; }
     if (t < t19 + 0.65) return { p: bage(t, t19 + 0.15, 0.5, VID_KORG.cirkel, PA_HAL('trekant'), 560), golv: null, fram: true };
@@ -136,7 +136,7 @@ function klossLage(n, t) {
     const t7a = r('7a'), t7b = r('7b'), t21 = r('21'), a21 = t21 + 0.45 + LN(33), o22 = r('22') + 0.4 + LN(34) - 0.45;
     if (t < t7a + 0.22) return { p: GOLVET.fyrkant };
     if (t < t7b) return { p: bage(t, t7a + 0.22, 0.5, GOLVET.fyrkant, [330, 1008]), v: -6 * del(t7a + 0.22, t7a + 0.7, t) };
-    if (t < t7b + 0.4) return { p: bage(t, t7b, 0.4, [330, 1008], KORG_TOPP.fyrkant, 70), v: 8, golv: null };
+    if (t < t7b + 0.4) return { p: bage(t, t7b, 0.4, [330, 1008], KORG_TOPP.fyrkant, 230), v: 8, golv: null };
     if (t < t7b + 1.1) return { p: KORG_TOPP.fyrkant, v: 8 + vick(t, t7b + 0.4, 0.7), golv: null };
     if (t < a21) { const p = bage(t, t7b + 1.1, 0.3, KORG_TOPP.fyrkant, VID_KORG.fyrkant); return { p, v: 8 - 8 * del(t7b + 1.1, t7b + 1.4, t), golv: t < t7b + 1.35 ? null : undefined }; }
     if (t < a21 + 0.6) return { p: bage(t, a21, 0.6, VID_KORG.fyrkant, PA_HAL('fyrkant'), 560), golv: null, fram: true };
@@ -176,7 +176,7 @@ const SR = {
   '1b': (tl, d) => { const m6 = 0.3 + LN(5) + 1.4, pr = 0.5 + LN(5), up = del(pr, pr + 0.3, tl);
     return RUM({ kam: NARA(), f: F(tl > m6 + LN(6) ? 'jatteglad' : 'nyfiken', tl < pr ? { titt: [-10, 9] } : {}), p: P({ luta: 4 * (1 - up), oron: UPP(up * (tl < pr + 1.6 ? 1 : 0.5)), svans: vipp(tl, pr) }) }); },
   // klossarna på golvet, sedan fnisset i närbild
-  '2': (tl, d) => { const fn = tl > 0.5 + LN(7);
+  '2': (tl, d) => { const fn = tl > 0.7 + LN(7);
     return RUM({ kam: fn ? NARA() : D(500, 1010, 1.6), f: F(fn ? 'fnissig' : 'nyfiken', fn ? {} : { titt: [-6, 10] }), p: P({ oron: UPP(fn ? 0.7 : 0), svans: vipp(tl, 0.4 + LN(7)) }) }); },
   '3a': (tl, d) => RUM({ kam: D(GOLVET.cirkel[0], GOLVET.cirkel[1] - 40), f: F('nyfiken', { titt: [-10, 9] }), p: P(), skim: [GOLVET.cirkel[0], GOLVET.cirkel[1] - 40, 0.8 * bump(0.05, d + 0.3, tl), 0.8] }),
   '3b': (tl, d) => RUM({ kam: D(GOLVET.fyrkant[0], GOLVET.fyrkant[1] - 40), f: F('nyfiken', { titt: [-6, 10] }), p: P(), skim: [GOLVET.fyrkant[0], GOLVET.fyrkant[1] - 40, 0.8 * bump(0.05, d + 0.3, tl), 0.8] }),

@@ -27,9 +27,11 @@ const ZF = [1150, 1030], GS = R.GS;                        // zebran på golvet 
 const HANG = { x: 180, y: 400, s: 0.38, w: 986, h: 282, fil: A + 'rekvisita/kladhangare/cut/kladhangare.png' };   // till vänster om fönstret
 const KROK = [162, 382, 603, 823].map(kx => [HANG.x + kx * HANG.s, HANG.y + 118 * HANG.s]);                   // knopparnas mitt
 const KORG = { fil: A + 'rekvisita/korg/cut/korg-v3-natt-tunn.png', s: 0.24, x: 300, botten: 930 };            // under hängaren, tom
-const KUDDE_KRAM = S + 'kudde-kram/kudde-kram.png';
+const KUDDE_NY = { bild: S + 'kudde-ny/cut/kudde-ny.png', w: 944, h: 458, s: 0.2 };   // kudde-ny 1, ligger platt (Sanna 2026-11-25)
+const KP = [765, R.RIM + 30];   // kuddens underkant, mitt: på madrassen mellan gaveln och täcket
+const SANG_NY = { bild: S + 'sang-baddad/cut/sang-baddad.png', s: 0.565, w: 1320, h: 698, mitt: 659.5, madrass: 298 };   // bäddad säng 4 med mintgrönt täcke (Sanna 2026-11-25)
 const MOSSA = { bild: S + 'mossa-gul/cut/mossa-gul.png', w: 887, h: 870, brim: [443, 856] };
-const HALSDUK = { bild: S + 'halsduk-rod/halsduk-rod.png', w: 1024, h: 1024, mitt: [523, 470], bredd: 787 };   // mitt = bandets mitt, bredd = bandets bredd i bilden
+const HALSDUK = { bild: S + 'halsduk-ny/cut/halsduk-ny-8.png', w: 856, h: 699, mitt: [428, 250], bredd: 832 };   // halsduk 8 (Sanna 2026-11-25)   // mitt = bandets mitt, bredd = bandets bredd i bilden
 const STRUMPA = { bild: [S + 'strumpor-klarbla/cut/strumpa-klarbla-1.png', S + 'strumpor-klarbla/cut/strumpa-klarbla-2.png'], w: 510, h: 767, s: 0.12 };   // provet hade 0,16; mindre så att den fria strumpan inte hänger framför magen vid hoven
 const BLA = ['#2F7FD8', '#1F66B8'];
 
@@ -80,11 +82,10 @@ const MS = { liten: { w: 96, pa: [660, 176, 18] }, stor: { w: 640, pa: [512, 470
 const LUFT = [880, 700];                                   // där kritan ritar mössan, i luften till vänster om zebran (brättets nederkant)
 const iZ = p => iFig(ZF, p);                               // riggens ruta → scenen (zebran står still när plaggen landar)
 // halsduken hänger på längden från fjärde knoppen (vriden 90°, tofsarna nedtill), vrids tillbaka medan den glider: storleken ändras aldrig
-const HD_HANG = [KROK[3][0], KROK[3][1] + 150], HD_HANG_V = 90, HD_PA = [516, 658], HD_W = 600;
+const HD_HANG = [KROK[3][0], KROK[3][1] + 150], HD_HANG_V = 90, HD_PA = [516, 690], HD_W = 520;   // halsduk 8 som i pa-zebran.jpg: bandet lika brett som kroppen, under nosen
 const S_HANG = [KROK[0][0], KROK[0][1] + 40];
 const HOV = { l: iZ([432, 860]), r: iZ([606, 860]) };
-const TACKE_PA = false, BED_TACKE = [1110, R.BED.rim - 52];   // täckets övre mitt
-const GOMD = () => [R.KUDDE_POS[0] + 72, R.KUDDE_POS[1] - 14];   // kudden ligger framför sängen nu: bara tån sticker ut till höger om kudden   // tån sticker ut lika långt som i provet (strumpan 0,12 i stället för 0,16)   // den gömda strumpan bakom kudden (provet)
+const GOMD = () => [KP[0] + 70, R.RIM - 12];   // kudden ligger framför sängen nu: bara tån sticker ut till höger om kudden   // tån sticker ut lika långt som i provet (strumpan 0,12 i stället för 0,16)   // den gömda strumpan bakom kudden (provet)
 const glid = (k, tl, n) => [k[0] * (1 + 0.03 * mjuk(kl(tl / n))), k[1], k[2]];   // tomma platser kryper 3 % närmare
 const bage = (A, B, u, h) => { const m = mjuk(u); return [lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h * Math.sin(Math.PI * kl(u))]; };
 
@@ -92,9 +93,9 @@ const bage = (A, B, u, h) => { const m = mjuk(u); return [lerp(A[0], B[0], m), l
 let HD_KONT, MS_KONT;
 const flytta = (d, f) => d.replace(/(-?\d+(?:\.\d+)?)[ ,](-?\d+(?:\.\d+)?)/g, (_, x, y) => { const [X, Y] = f(+x, +y); return `${f1(X)} ${f1(Y)}`; });
 const linje = (pts, f) => 'M' + pts.map(([x, y]) => f(x, y).map(f1).join(' ')).join(' L');
-// halsduken (halsduk-rod.png): konturen, tre maskor och de tre tofsarna, så att den går att gissa
-const HD_DRAG_BILD = [[[300, 372], [300, 576]], [[475, 390], [475, 597]], [[660, 366], [664, 560]], [[702, 692], [700, 744]], [[762, 690], [765, 742]], [[826, 672], [832, 724]]];
-const hdDrag = ([X, Y], k) => { const f = (x, y) => [X + (x - 523) * k, Y + (y - 470) * k]; return [flytta(HD_KONT, f), ...HD_DRAG_BILD.map(p => linje(p, f))]; };
+// halsduken (halsduk-ny-8.png): konturen, tre räfflor i bandet, knuten och två räfflor i snibbarna, så att den går att gissa
+const HD_DRAG_BILD = [[[150, 120], [200, 300]], [[330, 158], [345, 390]], [[690, 140], [650, 330]], [[599,350], [585,383], [551,396], [517,383], [503,350], [517,317], [551,304], [585,317], [599,350]], [[525, 425], [508, 640]], [[612, 430], [680, 585]]];
+const hdDrag = ([X, Y], k) => { const f = (x, y) => [X + (x - HALSDUK.mitt[0]) * k, Y + (y - HALSDUK.mitt[1]) * k]; return [flytta(HD_KONT, f), ...HD_DRAG_BILD.map(p => linje(p, f))]; };
 // mössan (mossa-gul.png): konturen med tofsen, brättets linje och fyra räfflor
 const MS_DRAG_BILD = [[[65, 628], [445, 608], [850, 625]], [[190, 610], [240, 420], [350, 255]], [[360, 605], [395, 285]], [[545, 605], [500, 285]], [[725, 610], [690, 420], [560, 250]]];
 const msDrag = ([X, Y], wScen) => { const k = wScen / 820, f = (x, y) => [X + (x - MOSSA.brim[0]) * k, Y + (y - MOSSA.brim[1]) * k]; return [flytta(MS_KONT, f), ...MS_DRAG_BILD.map(p => linje(p, f))]; };
@@ -275,15 +276,15 @@ function kritanRum(t, z) {
 }
 
 // --- Bildrutan ---------------------------------------------------------------------------------------------------------------
-const PA_X = 960, PA_Y = 560, PA_K = 1100 / 787;   // halsduken på papperet: 1100 px bred
+const PA_X = 960, PA_Y = 470, PA_W = 900, PA_K = PA_W / HALSDUK.bredd;   // halsduken på papperet: bandet 900 px brett, snibbarna ryms i bild
 function ritaPapper(st, t) {
   R.papper();
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   R.kamera([z, PA_X, PA_Y]); boil(z);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana(hdDrag([PA_X, PA_Y], PA_K), k, { vikt: [3, 0.5, 0.5, 0.5, 0.25, 0.25, 0.25], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana(hdDrag([PA_X, PA_Y], PA_K), k, { vikt: [3, 0.4, 0.4, 0.4, 0.6, 0.3, 0.3], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   if (f > 0) { const g = st.gung ?? 0, bob = 6 * Math.sin(g * 2.0) * del(0.5, 1.2, g);   // halsduken andas lite, bilden står aldrig stilla
-    lagg('fram', fyllMask('fyH', PA_X, PA_Y, 760, f) + halsdukSvg([PA_X, PA_Y + bob], 1100, f < 1 ? 'clip-path="url(#fyH)"' : '')); }
+    lagg('fram', fyllMask('fyH', PA_X, PA_Y, 760, f) + halsdukSvg([PA_X, PA_Y + bob], PA_W, f < 1 ? 'clip-path="url(#fyH)"' : '')); }
   if (k > 0 && f < 1) lagg('kontur', Rb.html);
   const kr = kritaFas(t, T_RIT, { start: Rb.start, spets: Rb.spets, slut: Rb.slut, vanta: [PA_X + 520, PA_Y - 330], s: KRITAN.SKALA_PAPPER / kryp });
   if (kr) lagg('krita', kritaBild(kr.x, kr.y, kr));
@@ -299,6 +300,9 @@ function snoflingor(t) {   // lugna flingor i fönstret, hela filmen
 }
 function ritaRum(st, t) {
   R.rum({ dag: true }); R.kamera(st.kam); boil(st.kam[0]);
+  const sb = SANG_NY.s, si = document.querySelector('#sang image');
+  [['href', SANG_NY.bild], ['x', f1(1000 - sb * SANG_NY.mitt)], ['y', f1(R.RIM - sb * SANG_NY.madrass)], ['width', f1(SANG_NY.w * sb)], ['height', f1(SANG_NY.h * sb)]].forEach(([k, v]) => si.setAttribute(k, v));
+  lagg('under', R.nalleBild([900, R.BED.under - 46], 0.12, { v: -90 }));   // nallen från 026 ligger på golvet under sängen (Sanna 2026-11-25)
   document.querySelector('#platta image')?.setAttribute('href', PLATTA);
   const z = st.kam[0], sd = z > 1.5 ? Math.min(1.1, 0.6 * (z - 1.5) + 0.4) / z : 0;   // premium: väggen lite mjuk i de nära bilderna (högst 1,1 px i bild)
   $('mjukbak').firstElementChild.setAttribute('stdDeviation', sd.toFixed(3)); $('platta').setAttribute('filter', sd ? 'url(#mjukbak)' : '');
@@ -310,12 +314,10 @@ function ritaRum(st, t) {
   if (st.hangH) lagg('bak', halsdukSvg(HD_HANG, HD_W * GS, '', HD_HANG_V + 1.5 * Math.sin(t * 0.8)));
   lagg('bak', R.markskugga(KORG.x, KORG.botten, 220) + `<image href="${KORG.fil}" x="${f1(KORG.x - 512 * KORG.s)}" y="${f1(KORG.botten - 916 * KORG.s)}" width="${f1(1024 * KORG.s)}" height="${f1(1024 * KORG.s)}"/>`);
   // kudden på madrassen, framför sänggaveln (lagret 'sang' efter sängbilden, Sanna 2026-11-25), den gömda strumpan bakom med tån ute; kudden lutar kring nedre högra hörnet
-  const [kx, ky] = R.KUDDE_POS, ks = R.KUDDE.s * 1.3, hx = kx + 418 * ks, G0 = GOMD();
+  const [kx, ky] = KP, ks = KUDDE_NY.s, hx = kx + 0.45 * KUDDE_NY.w * ks, G0 = GOMD();
   const vick = st.vick || 0;
-  // täcket (026:s tacket.png, korall) på sängens fotände, så att kudden och den gömda strumpan syns (Sanna 2026-11-25 "bedding on bed")
-  if (TACKE_PA) lagg('sang', `<g transform="translate(${BED_TACKE[0]} ${BED_TACKE[1]})">${R.tackeBild()}</g>`);
   if (st.gomd) lagg('sang', `<g transform="translate(${f1(G0[0] + (st.gomdX || 0))} ${f1(G0[1])}) rotate(${f1(90 + vick)}) scale(${STRUMPA.s}) translate(-255 -383)"><image href="${STRUMPA.bild[1]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`);
-  lagg('sang', `<g transform="rotate(${f1(st.kuddeV || 0)} ${f1(hx)} ${ky})"><g transform="translate(${kx} ${ky}) scale(${ks}) translate(-512 -${1024 - 91})"><image href="${KUDDE_KRAM}" width="1024" height="1024"/></g></g>`);
+  lagg('sang', `<g transform="rotate(${f1(st.kuddeV || 0)} ${f1(hx)} ${ky})"><g transform="translate(${kx} ${ky}) scale(${ks}) translate(${-KUDDE_NY.w / 2} ${-KUDDE_NY.h})"><image href="${KUDDE_NY.bild}" width="${KUDDE_NY.w}" height="${KUDDE_NY.h}"/></g></g>`);
 
   // zebran med plaggen
   if (st.zebra !== false) {
@@ -387,7 +389,7 @@ window.ready = (async () => {
       attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(Math.min(10 / Math.sqrt(z), 0.035 * MS[typ].w * GS + 1.5))}" stroke-linecap="round" stroke-linejoin="round" opacity="${op.toFixed(2)}"` }) }; };
   const r11 = RR['11'].s + 0.3 + LN(20), r13 = RR['13'].s + 0.3 + LN(23), r14 = RR['14'].s + 0.3 + LN(26);
   RITN = [ny('liten', [r11, r11 + 2.5], RR['11'].s + M('11', 21) - 0.2, [RR['10'].s + 0.3, r11 - 0.1]), ny('stor', [r13, r13 + 2.0], r13 + 2.0, null), ny('lagom', [r14, r14 + 2.5], r14 + 2.5, null)];
-  ({ L, G } = await R.starta([PLATTA, KUDDE_KRAM, MOSSA.bild, HALSDUK.bild, HANG.fil, KORG.fil, ...STRUMPA.bild, KRITAN.BILD]));
+  ({ L, G } = await R.starta([PLATTA, KUDDE_NY.bild, SANG_NY.bild, MOSSA.bild, HALSDUK.bild, HANG.fil, KORG.fil, ...STRUMPA.bild, KRITAN.BILD]));
   kladerIn(G);
   document.querySelector('defs').insertAdjacentHTML('beforeend', '<filter id="mjukbak" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="0"/></filter>');
   window.LJUD = LJUD = await ljud();
