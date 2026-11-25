@@ -9342,9 +9342,10 @@
   "sec": 36,
   "tags": [],
   "note": "a bit of flashing going on an white lines going in and out changing shape",
-  "fixed": false,
+  "fixed": true,
   "at": 1795607395332,
-  "render": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)"
+  "render": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)",
+  "fixedAt": 1795614326289
  },
  "3n0hqn7u9nmww2bcy3": {
   "ep": "J15",
@@ -9352,9 +9353,10 @@
   "sec": 79,
   "tags": [],
   "note": "maybe more sound effects for lamm to use, current ones are a bit annoying",
-  "fixed": false,
+  "fixed": true,
   "at": 1795607451723,
-  "render": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)"
+  "render": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)",
+  "fixedAt": 1795614326290
  },
  "fqgz0v3urpmww2c9fa": {
   "ep": "J24",
