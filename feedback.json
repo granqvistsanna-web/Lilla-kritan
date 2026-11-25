@@ -9679,9 +9679,10 @@
   "sec": 31,
   "tags": [],
   "note": "soften steam and only show when hot is mentioned",
-  "fixed": false,
+  "fixed": true,
   "at": 1795639192307,
-  "render": "2026-11-25 21:36 (omgång 2c: ånga, ull som borstas tillbaka, ullen följer lammets rörelser)"
+  "render": "2026-11-25 21:36 (omgång 2c: ånga, ull som borstas tillbaka, ullen följer lammets rörelser)",
+  "fixedAt": 1795640804041
  },
  "q4detnmkb3mwwl8puu": {
   "ep": "054",
@@ -9689,9 +9690,10 @@
   "sec": 151,
   "tags": [],
   "note": "a bit faster pace",
-  "fixed": false,
+  "fixed": true,
   "at": 1795639241190,
-  "render": "2026-11-25 21:36 (omgång 2c: ånga, ull som borstas tillbaka, ullen följer lammets rörelser)"
+  "render": "2026-11-25 21:36 (omgång 2c: ånga, ull som borstas tillbaka, ullen följer lammets rörelser)",
+  "fixedAt": 1795640804041
  },
  "m1yior6bokmwwl990s": {
   "ep": "054",
@@ -9699,8 +9701,9 @@
   "sec": 182,
   "tags": [],
   "note": "place brush on the floor and lamm dont bring it in to tub",
-  "fixed": false,
+  "fixed": true,
   "at": 1795639266028,
-  "render": "2026-11-25 21:36 (omgång 2c: ånga, ull som borstas tillbaka, ullen följer lammets rörelser)"
+  "render": "2026-11-25 21:36 (omgång 2c: ånga, ull som borstas tillbaka, ullen följer lammets rörelser)",
+  "fixedAt": 1795640804041
  }
 }
