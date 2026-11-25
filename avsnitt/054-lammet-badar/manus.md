@@ -187,6 +187,22 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **3:07 "make ull less dramatic and looking better, point of brushing should be restoring ull to default state":** ullmolnet är nu en smal, jämn ullkant som följer kroppens kontur (uppmätt i `ludde-body.png`) och tittar fram ca 25 px, i stället för en stor ring med utstående tussar. Tussarna på öronen och magen är mindre, och ullen har en varmare krämton. Varje borstdrag drar tillbaka tussarna där borsten går, in i kroppen tills de är borta: efter öronen, magen och de två dragen runt kroppen ser lammet ut precis som vanligt (standardläget), inget nytt utseende. Borsten i 26c följer den smalare kanten.
 - **"also the ull should follow movement of lamm" (Sanna 25/11, via 057):** ullkanten ligger nu inne i figuren (längst bak) och får kroppens transform varje bildruta, så den följer med i skutt, lutning, nickar och andning i stället för att stå kvar.
 
+### Feedback 21:36 (Sanna 2026-11-25, omgång 2c)
+
+- **0:31 "soften steam and only show when hot is mentioned":** ångan syns bara när Malin pratar om det varma vattnet: den tonas in på *"Är vattnet varmt?"* (rad 4) och bort i början av rad 5. Den är svagare och mjukare (lägre opacitet, mer oskärpa).
+- **2:31 "a bit faster pace":** torkningen (rad 16–20) är 3,6 s kortare: pauserna före och efter Malins repliker kortare, handduken kommer tidigare. Replikerna är orörda.
+- **3:02 "place brush on the floor and lamm dont bring it in to tub":** Sanna valde **A, bakom pallen**. Borsten ligger på golvet framför pallen (skaftet åt vänster). När lammet landar på nedre steget (rad 3) skakar golvet till och borsten glider in bakom pallen, *glid*. Lammet märker inget, men skaftets ände sticker fram vid pallens fot hela tiden, så barnet kan hitta den. Ingen borste i badet längre (b4 utan plopp). 23a: lammet tittar ner på golvet där borsten låg, sedan åt andra hållet. 23c–24: närbild på pallens fot, skaftet skimrar. Replik 35 är ny: *"Där är borsten! Bakom pallen!"*. Replik 48 (*"Ankan hittade borsten! Tack, ankan!"*) är struken. 25: lammet sträcker sig mot pallen, borsten glider ut och flyger i en båge till tassen (som handduken). Efter borstningen läggs den på golvet framför pallen (26d), som förut.
+
+### Djup QA av 21:35-renderingen (Sanna 25/11: "fixa alla fynd")
+
+- **Borsten syns att hitta:** skaftet och en bit av det rosa huvudet sticker fram vid pallens fot hela tiden (från rad 3), och i pausen efter *"Ser du borsten?"* skimrar den mjukt. Närbilden 23c–24 visar borsten tydligt.
+- **Borsten genom kranen (1:28):** borta, borsten är aldrig i badet. Vägen golvet → bakom pallen (rad 3) och bakom pallen → tassen (rad 25) är fri: den glider bakom pallen, inte genom den, och flyger framför lammet.
+- **Grått på en bildruta (1:30,6):** den blöta tonen tonas in under hoppet ur karet (0,45 s).
+- **"Oj, skum på huvudet!" (0:56,7):** repliken kommer 0,7 s efter att lammet är uppe.
+- **"Ullen står åt alla håll" (3:05):** var tredje tuss står ut lite mer innan borstningen (fortfarande en smal kant). Rad 22 är närmare (zoom 2,15) så att ankan inte klipps uppe till höger.
+- **Kritirisen (4:15):** en bred ellips mellan lammet och ankan, så att båda är med.
+- **Ljudnivån:** `scener/render.mjs` mäter effekt-wav:en och höjer den till −14 LUFS med en limiter sist (topp ca −1,1 dBFS). Förut −18,4 LUFS.
+
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").
@@ -209,10 +225,10 @@ Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin say
 | 29 | [playfully] Och sist … hela lammet! Blött … blött … torrt! | [playfully] Och sist torkar vi hela lammet! Blött … blött … torrt! |
 | 30 | [surprised] Oj! Ett ullmoln! | [surprised] Oj! Ullen är torr och fluffig! Ett ullmoln! |
 | 31 | [warmly] Är det skönt nu? | [warmly] Är det skönt att vara torr? |
-| 35 | [happy] Ja, där! I skummet! | [happy] Ja, där är borsten! I skummet! |
+| 35 | [happy] Ja, där! I skummet! | [happy] Ja, där är borsten! I skummet! → omgång 2c: [happy] Där är borsten! Bakom pallen! |
 | 38 | [happy] Oj, så fint! | [happy] Oj, vilken fin och slät ull! |
 | 45 | [laughs] Oj, vad fluffigt! Nu behöver vi borsten. | [laughs] Oj, ullen står åt alla håll! Nu behöver vi borsten. |
-| 48 | [happy] Ankan hjälper till! Tack, ankan! | [happy] Ankan hittade borsten! Tack, ankan! |
+| 48 | [happy] Ankan hjälper till! Tack, ankan! | [happy] Ankan hittade borsten! Tack, ankan! → struken i omgång 2c |
 | 49 | [warmly] Borsta … borsta … så fint! | [warmly] Vi borstar öronen. Borsta … borsta … så fint! |
 | 50 | [warmly] Borsta … borsta … så mjukt! | [warmly] Nu borstar vi magen. Borsta … borsta … så mjukt! |
 | 51 | [warmly] Och sist … borsta … borsta … så fint! | [warmly] Och sist borstar vi hela ullen. Borsta … borsta … så fint! |

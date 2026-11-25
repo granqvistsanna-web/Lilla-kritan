@@ -10,7 +10,8 @@
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
-import { spawn, execFileSync } from 'node:child_process';
+import { rmSync } from 'node:fs';
+import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { resolve, join, relative, basename, extname, dirname } from 'node:path';
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -86,10 +87,15 @@ if (ts.length) {
   const effektWav = () => {
     const ing = ['-f', 'lavfi', '-t', till - fran, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
     effektKedja(ing, ked, nmn, 0);
-    const wav = join(dir, `${basename(dir)}${X}-effekter.wav`);
+    const wav = join(dir, `${basename(dir)}${X}-effekter.wav`), ra = join(dir, `${basename(dir)}${X}-effekter-ra.wav`);
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ing, '-filter_complex',
       [...ked, `${nmn.join('')}amix=inputs=${nmn.length}:normalize=0:duration=first,alimiter=limit=0.95[a]`].join(';'),
-      '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', wav].map(String));
+      '-map', '[a]', '-t', till - fran, '-c:a', 'pcm_s16le', ra].map(String));
+    // mastring (QA 25/11: −18,4 LUFS var för tyst): mät, höj till −14 LUFS, limiter sist så att toppen hamnar under −1 dBFS
+    const fel = spawnSync('ffmpeg', ['-hide_banner', '-i', ra, '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json', '-f', 'null', '-'], { encoding: 'utf8' }).stderr;
+    const I = +fel.match(/"input_i"\s*:\s*"(-?[\d.]+)"/)[1];
+    execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', ra, '-af', `volume=${(-14 - I).toFixed(2)}dB,alimiter=limit=0.85:level=false`, '-c:a', 'pcm_s16le', wav]);
+    rmSync(ra);
     console.log(wav);
   };
   if (baraLjud) { effektWav(); await b.close(); server.close(); process.exit(0); }

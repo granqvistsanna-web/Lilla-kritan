@@ -33,7 +33,7 @@
   ['32-mjukt-och-varmt', 2.33],
   ['33-var-ar-ankan', 2.11],
   ['34-ser-du-ankan', 3.12],
-  ['35-ja-dar', 2.42],
+  ['35-bakom-pallen', 2.36],
   ['36-blot-och-torrt', 3.00],
   ['37-ankan-hatt', 2.15],
   ['38-sa-fint', 1.27],
