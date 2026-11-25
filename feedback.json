@@ -9290,9 +9290,10 @@
   "sec": 26,
   "tags": [],
   "note": "add snooring sound remove bää",
-  "fixed": false,
+  "fixed": true,
   "at": 1795503184494,
-  "render": "2026-11-23 06:59 (Förhandsvisning: Malins nya repliker inspelade (Vill du leka, leoparden? / Oj, haha! Leoparden vill leka. / Leoparden är borta! Var är leoparden? / Röda strumpor!), öronen tittar upp och fnissar bakom sängen, långsammare påklädning med fler ljud, halsduken högre med tunn kant och följer rörelsen, röda strumpor, locket och elefanten på orden, krukan längst till höger, avslut på turkos med snö. Utan julkalenderns ram.)"
+  "render": "2026-11-23 06:59 (Förhandsvisning: Malins nya repliker inspelade (Vill du leka, leoparden? / Oj, haha! Leoparden vill leka. / Leoparden är borta! Var är leoparden? / Röda strumpor!), öronen tittar upp och fnissar bakom sängen, långsammare påklädning med fler ljud, halsduken högre med tunn kant och följer rörelsen, röda strumpor, locket och elefanten på orden, krukan längst till höger, avslut på turkos med snö. Utan julkalenderns ram.)",
+  "fixedAt": 1795614148469
  },
  "0fngtuszc3mwuc9qos": {
   "ep": "J24",
@@ -9300,9 +9301,10 @@
   "sec": 69,
   "tags": [],
   "note": "gäspa sound a bit slower pacing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795503240028,
-  "render": "2026-11-23 06:59 (Förhandsvisning: Malins nya repliker inspelade (Vill du leka, leoparden? / Oj, haha! Leoparden vill leka. / Leoparden är borta! Var är leoparden? / Röda strumpor!), öronen tittar upp och fnissar bakom sängen, långsammare påklädning med fler ljud, halsduken högre med tunn kant och följer rörelsen, röda strumpor, locket och elefanten på orden, krukan längst till höger, avslut på turkos med snö. Utan julkalenderns ram.)"
+  "render": "2026-11-23 06:59 (Förhandsvisning: Malins nya repliker inspelade (Vill du leka, leoparden? / Oj, haha! Leoparden vill leka. / Leoparden är borta! Var är leoparden? / Röda strumpor!), öronen tittar upp och fnissar bakom sängen, långsammare påklädning med fler ljud, halsduken högre med tunn kant och följer rörelsen, röda strumpor, locket och elefanten på orden, krukan längst till höger, avslut på turkos med snö. Utan julkalenderns ram.)",
+  "fixedAt": 1795614148469
  },
  "ud9aconwrkmwvtv6oi": {
   "ep": "049",
@@ -9360,9 +9362,10 @@
   "sec": 75,
   "tags": [],
   "note": "remove kan du cokså gäspa",
-  "fixed": false,
+  "fixed": true,
   "at": 1795607493814,
-  "render": "2026-11-25 12:42 (Förhandsvisning 25/11 (QA): leoparden hoppar i högre båge över nattduksbordet och klockan (0:53, 1:23, 1:39), kameran följer med uppåt så att huvudet stannar i bild. Utan julkalenderns ram.)"
+  "render": "2026-11-25 12:42 (Förhandsvisning 25/11 (QA): leoparden hoppar i högre båge över nattduksbordet och klockan (0:53, 1:23, 1:39), kameran följer med uppåt så att huvudet stannar i bild. Utan julkalenderns ram.)",
+  "fixedAt": 1795614148469
  },
  "12pu2aac0omww4y55d": {
   "ep": "J06",
