@@ -35,7 +35,7 @@
 35-var-ar-trekanten  [surprised] Och nu trekanten … Oj! Var är trekanten?
 36-vet-inte-var  [curious] Leoparden vet inte var.
 37-kan-du-hjalpa  [warmly] Kan du hjälpa leoparden? Kan du se var trekanten är?
-38-ja-dar  [happy] Ja, där! Under sängen!
+38-ja-dar  [happy] Ja, där! Bakom kaktusen!
 39-ner-i-halet-3  [playfully] Trekanten ner i det trekantiga hålet … plopp!
 40-nu-ar-det-statat  [happy] Nu är det städat!
 41-alla-i-ladan  [happy sigh] Cirkeln, fyrkanten och trekanten. Alla i lådan.

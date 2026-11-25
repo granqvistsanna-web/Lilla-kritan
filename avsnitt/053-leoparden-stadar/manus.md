@@ -1,6 +1,8 @@
 # Avsnitt 053 – Leoparden städar (plan)
 
-**Status:** grind 1 (manus) godkänd av Sanna 2026-11-25 (korgen som är full, fel hål en gång, en teckning i berättelsen). **Samma dag: mer samtal och reaktioner** (Sannas mönster från 052: Malin frågar, leoparden svarar i pausen, Malin reagerar). 10 nya repliker (🆕) och en ändrad (✏️), **godkända av Sanna 2026-11-25**. **Grind 2 (saker) klar 2026-11-25:** formlådan nr 2 och klossarna nr 2 (med tjocklek och skuggning, grön trekant) är valda av Sanna, urklippta med tunnade kanter (ca 1 %) och beskrivna i `rekvisita/formlada.md` och `rekvisita/klossar.md`. **Grind 3 (rösten) inspelad 2026-11-25:** Malins tagning i ElevenLabs (Malin, Eleven v3, Natural, generation 1 av 2), `produktion/ljud-original/roster/053-leoparden-stadar/malin-tagning-1a.mp3`, 1b sparad bredvid. `dela-tagning.py` hittade inte gränserna där repliker sägs i ett svep (*"En cirkel, en fyrkant och en trekant"*, *"Oj då, korgen är full"*), så de 46 replikerna klipptes vid tagningens pauser och kontrollerades en och en med whisper. Filerna ligger i `assets/ljud/roster/leoparden-stadar/` med toppen på −3 dBFS och längderna i `rost-langder.txt`. Provlyssning: `ljud/provlyssna-rost.m4a`. **Godkänd av Sanna 2026-11-25** (alla rader); 16 repliker gjordes tydligare och spelades in igen samma dag (tagning 2b, godkänd). **Grind 4 (ljuden) godkänd 2026-11-25:** spinn-ljuden som de är, nytt `klonk` (CC BY, credit i YouTube-texten). **Storyboarden omgjord 2026-11-25 efter Sannas feedback** (fler reaktioner, närmare utsnitt, fler uttryck, varierade ljudsvar och lite snabbare tempo). **Grind 5 (animatiken) byggd 2026-11-25:** `storyboard/` (rader.mjs, scen.html, bygg.mjs, 51 stillbilder, `animatik.mp4` 3:22), **godkänd av Sanna 2026-11-25**. **Grind 6 (scenen) byggd 2026-11-25:** `scener/sovrummet/index.html` (rum.js, Lovas v2-rigg, kritan genom `kritan-ritar.js`, boil 2,5/zoom, brus 6/s), `film/satt-ihop.sh` → `film/avsnitt-053.mp4` (3:24, snabb förhandsvisning, QA ren utom boil-info vid ritintrot, zoomen, rad 11b/12 och irisen). Rad 24 förlängd 1,4 s så att spinnet hörs klart. På feedbacksidan (granska); slutrendering efter Sannas feedback. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med leoparden, leoparden svarar med spinn-ljud, öron och ansikte. Ca 3:45.
+**Status:** grind 1 (manus) godkänd av Sanna 2026-11-25 (korgen som är full, fel hål en gång, en teckning i berättelsen). **Samma dag: mer samtal och reaktioner** (Sannas mönster från 052: Malin frågar, leoparden svarar i pausen, Malin reagerar). 10 nya repliker (🆕) och en ändrad (✏️), **godkända av Sanna 2026-11-25**. **Grind 2 (saker) klar 2026-11-25:** formlådan nr 2 och klossarna nr 2 (med tjocklek och skuggning, grön trekant) är valda av Sanna, urklippta med tunnade kanter (ca 1 %) och beskrivna i `rekvisita/formlada.md` och `rekvisita/klossar.md`. **Grind 3 (rösten) inspelad 2026-11-25:** Malins tagning i ElevenLabs (Malin, Eleven v3, Natural, generation 1 av 2), `produktion/ljud-original/roster/053-leoparden-stadar/malin-tagning-1a.mp3`, 1b sparad bredvid. `dela-tagning.py` hittade inte gränserna där repliker sägs i ett svep (*"En cirkel, en fyrkant och en trekant"*, *"Oj då, korgen är full"*), så de 46 replikerna klipptes vid tagningens pauser och kontrollerades en och en med whisper. Filerna ligger i `assets/ljud/roster/leoparden-stadar/` med toppen på −3 dBFS och längderna i `rost-langder.txt`. Provlyssning: `ljud/provlyssna-rost.m4a`. **Godkänd av Sanna 2026-11-25** (alla rader); 16 repliker gjordes tydligare och spelades in igen samma dag (tagning 2b, godkänd). **Grind 4 (ljuden) godkänd 2026-11-25:** spinn-ljuden som de är, nytt `klonk` (CC BY, credit i YouTube-texten). **Storyboarden omgjord 2026-11-25 efter Sannas feedback** (fler reaktioner, närmare utsnitt, fler uttryck, varierade ljudsvar och lite snabbare tempo). **Grind 5 (animatiken) byggd 2026-11-25:** `storyboard/` (rader.mjs, scen.html, bygg.mjs, 51 stillbilder, `animatik.mp4` 3:22), **godkänd av Sanna 2026-11-25**. **Grind 6 (scenen) byggd 2026-11-25:** `scener/sovrummet/index.html` (rum.js, Lovas v2-rigg, kritan genom `kritan-ritar.js`, boil 2,5/zoom, brus 6/s), `film/satt-ihop.sh` → `film/avsnitt-053.mp4` (3:24, snabb förhandsvisning, QA ren utom boil-info vid ritintrot, zoomen, rad 11b/12 och irisen). Rad 24 förlängd 1,4 s så att spinnet hörs klart. På feedbacksidan (granska); slutrendering efter Sannas feedback. **Feedback 2026-11-25 kväll (Sanna):** platsen är nu **gröna lekrummet v2** (`assets/bakgrunder/lekrummet/lekrummet-v2.jpeg`), utan säng: trekanten gömmer sig **bakom kaktusen** (ny sak, `rekvisita/kaktus.md`) och rad 38 blir *"Ja, där! Bakom kaktusen!"*. Korgen är `korg-v3-natt-tunn.png` med leksakerna inom öppningen bakom framkantens båge, nallen har ansikte i kod (`R.nalleBild`). Tabellerna nedan om sovrummet och sängen gäller den förra versionen.
+
+Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med leoparden, leoparden svarar med spinn-ljud, öron och ansikte. Ca 3:45.
 
 **Förlaga:** 037 Kaninen städar (korgen full av leksaker). Likt men inte identiskt: här är problemet att **klossarna inte får plats** (korgen är redan full), och vändningen är att kritan ritar en **formlåda** där varje kloss har sitt eget hål. Barnet letar efter **trekanten**, som har åkt in under sängen.
 
@@ -19,7 +21,7 @@
 | **Musik** | ingen ny musik. Förslag: `stada-radion-slinga.m4a` (027:s städlåt) lågt (ca 0,10) från *"Nu städar vi"* (rad 18) till och med skramlet (rad 30), sänkt i frågepausen. Platsmatta `hemmaljud` lågt |
 | **Favoriter** | 🐆 leopard · 🧱 klossar · 📦 låda |
 | **Kärna** | Leoparden har lekt, och klossarna ligger överallt: en cirkel, en fyrkant och en trekant. Leoparden vill städa, men korgen är redan full och klossarna glider ner igen. Kritan ritar en låda med tre hål: *"Varsågod!"* – *"Tack, kritan!"* Leken: trekanten blir en spetsig hatt, men när leoparden skuttar glider den av och in under sängen (bara ett grönt hörn syns). Tre gånger *"Ner i hålet … plopp!"*: cirkeln (som först provar fel hål), fyrkanten, och trekanten, som är borta. Barnet hittar den under sängen. Städat! Lådan skramlar. Hej då! |
-| **Barnet övar på** | gissa vad kritan ritar · se vilken kloss som passar i vilket hål · hitta trekanten under sängen · säga tack |
+| **Barnet övar på** | gissa vad kritan ritar · se vilken kloss som passar i vilket hål · hitta trekanten bakom kaktusen · säga tack |
 | **Leken** | **trekanten blir en hatt** (uppslag 15–17) och **lådan skramlar** (uppslag 30) |
 | **Lärotemat** | former, subtilt: Malin säger formens namn när klossen nämns, cirkeln stannar en gång på fel hål (*"Hm … inte där."*) och glider vidare till det runda, och ritintrot ritar trekanten. Ingen fråga om formerna, ingen lektion |
 
@@ -81,7 +83,7 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 | 14 | **D** på tassen som sänks mot trekanten | Vad ska du göra med trekanten? *(paus: leoparden svarar)* | – | `spinn-gullig-5b` i pausen |
 | 15 | **HB.** Trekanten följer tassen upp och lägger sig på huvudet som en hatt, sedan **N** | *(när den sitter)* Oj! Trekanten blev en hatt! | `skrattar`, öronen vippar | `pop` lågt, `spinn-fniss-2` |
 | 16 | **N.** Leoparden med hatten blinkar | En spetsig hatt! | `stolt`, svansen vippar | `spinn-gullig-4` (mysig suck) |
-| 17 | **H.** Ett glatt skutt med blundande ögon. Hatten glider av, över golvet och in under sängen, och ett grönt hörn sticker fram. Sedan **N** | *(när den stannat)* Hoppsan! Hatten ramlade av. | `fnissig`, leoparden ser inte vart hatten tog vägen | `glid`, `spinn-fniss-3` |
+| 17 | **H.** Ett glatt skutt med blundande ögon. Hatten glider av, över golvet och in bakom kaktusen, och ett grönt hörn sticker fram vid krukan. Sedan **N** | *(när den stannat)* Hoppsan! Hatten ramlade av. | `fnissig`, leoparden ser inte vart hatten tog vägen | `glid`, `spinn-fniss-3` |
 | 18 | **HB.** Leoparden vänder sig mot lådan (riktningsposen, vänds inte runt) | Nu städar vi. Först cirkeln. | `ivrig` | `spinn-gullig-2`, musiken börjar lågt |
 | 19 | **D** på tassen som puffar, cirkeln stannar på det trekantiga hålet och vickar, sedan **N** | Hm … cirkeln passar inte där. | `tanker`, huvudet lutar | `tass`, `vick`, `spinn-gullig-5` |
 | 20 | **D** på lådan. Cirkeln glider till det runda hålet och sjunker ner | Cirkeln ner i det runda hålet … plopp! | – | `plopp`, `klonk` lågt, `glitter` |
@@ -90,8 +92,8 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 | 22 | **D** på lådan, fyrkanten sjunker ner, sedan **N** | Fyrkanten ner i det fyrkantiga hålet … plopp! | `jatteglad`, öronen upp | `plopp`, `klonk` lågt, `glitter`, `spinn-gullig-3` |
 | 23 | **D** på det tomma trekantiga hålet, sedan **N:** tassen till huvudet, och hatten är borta | Och nu trekanten … Oj! Var är trekanten? | `forvanad`, stora ögon, liten rund mun | `spinn-gullig-5b` |
 | 24 | **N.** Leoparden tittar åt vänster, sedan åt höger | Leoparden vet inte var. | `tanker`, öronen åt sidan | `spinn-gullig-7` (frågande prat) |
-| 25 | **H** för frågan, sedan klipp till **D** under sängen där hörnet sticker fram. Efter 3 s skimrar det svagt | Kan du hjälpa leoparden? Kan du se var trekanten är? *(paus 5 s)* | – | tyst, musiken nedtonad |
-| 26 | **D:** hörnet skimrar tydligt, sedan **N** | Ja, där! Under sängen! | `ivrig`, öronen reser sig | `tindra`, `spinn-gullig-2` |
+| 25 | **H** för frågan, sedan klipp till **D** på kaktusen där hörnet sticker fram bakom krukan. Efter 3 s skimrar det svagt | Kan du hjälpa leoparden? Kan du se var trekanten är? *(paus 5 s)* | – | tyst, musiken nedtonad |
+| 26 | **D:** hörnet skimrar tydligt, sedan **N** | Ja, där! Bakom kaktusen! | `ivrig`, öronen reser sig | `tindra`, `spinn-gullig-2` |
 | 27 | **HB.** Leoparden sträcker tassen, och trekanten glider fram och i en båge till lådan. **D:** trekanten sjunker ner. **N** (1 s) | Trekanten ner i det trekantiga hålet … plopp! | `jatteglad`, öronen upp, svansen vippar | `glid`, `plopp`, `klonk` lågt, `glitter`, `spinn-gullig-3b` |
 | 28 | **H.** Golvet är tomt och lådan står med alla klossar. Glatt skutt | Nu är det städat! | `glad` | `spinn-gullig-2b` |
 | 29 | **D** på lådan, där de tre hålen glimtar ett i taget, sedan **N** | Cirkeln, fyrkanten och trekanten. Alla i lådan. | `stolt` | `glimt` ×3, `spinn-gullig-4b` |
@@ -103,7 +105,7 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 
 **Kamera:** bara hårda klipp mellan stillastående utsnitt, och ett nytt utsnitt vid varje händelse och varje reaktion. Helbild bara i rad 1, 17, 25 och 28. Zoomen in i teckningen efter ritintrot är den enda zoomen. Klippen kommer tätare än förut, men varje bild står kvar minst 0,6 s.
 
-**Short:** uppslag 18–29 (ner i hålet tre gånger, hitta trekanten under sängen), ca 55 s.
+**Short:** uppslag 18–29 (ner i hålet tre gånger, hitta trekanten bakom kaktusen), ca 55 s.
 
 ## Malins repliker att klistra in (ElevenLabs)
 
@@ -147,7 +149,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [surprised] Och nu trekanten … Oj! Var är trekanten?
 [curious] Leoparden vet inte var.
 [warmly] Kan du hjälpa leoparden? Kan du se var trekanten är?
-[happy] Ja, där! Under sängen!
+[happy] Ja, där! Bakom kaktusen!
 [playfully] Trekanten ner i det trekantiga hålet … plopp!
 [happy] Nu är det städat!
 [happy sigh] Cirkeln, fyrkanten och trekanten. Alla i lådan.
@@ -172,7 +174,7 @@ Alla ljud finns i `assets/ljud/effekter/`: `spinn-gullig` (8 känslor, N och Nb,
 - [x] Inga uppmaningar till barnet att göra något med kroppen. Barnets frågor: gissa teckningen (ritintrot, lådan), säga tack, var är trekanten
 - [x] Nytt slags problem: något får inte plats (korgen är full), inte "vill inte". Leoparden vill städa hela tiden
 - [x] Kritan ritar en sak ur berättelsen i ritintrot (trekanten), inte leoparden. Leoparden kommer in i rad 1
-- [x] Barnet letar efter en sak som är borta: trekanten under sängen. Hörnet syns från rad 17, och barnet har sett den åka dit
+- [x] Barnet letar efter en sak som är borta: trekanten bakom kaktusen. Hörnet syns från rad 17, och barnet har sett den åka dit
 - [x] Samma fras tre gånger: *"Ner i hålet … plopp!"* (cirkeln, fyrkanten, trekanten), och klossen är borta på *"plopp!"*
 - [x] Formerna subtilt: Malin säger namnen när klossarna syns, ingen fråga och ingen förklaring
 - [x] Varsågod och tack
@@ -193,7 +195,7 @@ Alla ljud finns i `assets/ljud/effekter/`: `spinn-gullig` (8 känslor, N och Nb,
 | Sak | Läge |
 |---|---|
 | Sovrummet | ✅ finns (`bakgrunder/sovrummet.md`, plattan som 027 använde) |
-| Sängen | ✅ finns (`sangen`, luft under) |
+| Kaktusen | ✅ ny 2026-11-25 (`rekvisita/kaktus.md`, Flow nr 2, vald av Sanna), står på golvet till höger om lådan; ersätter sängen |
 | Täcket | ✅ finns (`tacket`), hänger ner över sängkanten så att trekanten kan gömma sig under kanten |
 | Kudden | ✅ finns (`kudde`) |
 | Korgen | ✅ finns (`korg`, `cut/korg-v3.png`) |

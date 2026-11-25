@@ -24,6 +24,7 @@ const KRITAN = {
   SKALA_SCEN: 0.33,          // i en scen, delas med √zoom
   SVAJ: { ax: 5, ay: 4, fx: 1.2, fy: 1.7, av: 1.5, fv: 1.0 },   // lugnt (Sanna 2026-11-21: "a bit less wobbly crayon")
   RESA: { bas: 0.25, perPx: 1 / 900, bage: 40 },   // glidningen mellan två streck: vikt och båge
+  MJUK: { rund: 0.045, darr: 0.006 },   // varje drag rundas (hörnradie ≈ rund × kortsidan) och darrar lite (darr × långsidan), så att linjen ser handritad ut
 };
 
 const _kl = x => Math.max(0, Math.min(1, x)), _lerp = (a, b, t) => a + (b - a) * t, _mjuk = t => (t = _kl(t), t * t * (3 - 2 * t));
@@ -35,14 +36,37 @@ function kritaBild(x, y, { s = KRITAN.SKALA_PAPPER, v = KRITAN.VINKEL_RITAR } = 
 const kritaSkala = (zoom = 1) => KRITAN.SKALA_SCEN / Math.sqrt(zoom);
 const ritfart = k => (k = _kl(k), 0.6 * k + 0.4 * _mjuk(k));
 
+// Ett drag görs handritat: lagt om i jämna punkter, hörnen rundade (glättning längs linjen), en svag buktning,
+// och skrivet som en mjuk kurva. Slutna drag (start = slut) förblir slutna, öppna behåller sina ändpunkter.
+function _mjukD(e, L) {
+  const n = Math.max(16, Math.round(L / 4)), slut = (() => { const a = e.getPointAtLength(0), b = e.getPointAtLength(L); return Math.hypot(a.x - b.x, a.y - b.y) < 2; })();
+  const P = Array.from({ length: slut ? n : n + 1 }, (_, i) => { const q = e.getPointAtLength(L * i / n); return [q.x, q.y]; });
+  const xs = P.map(p => p[0]), ys = P.map(p => p[1]), kort = Math.min(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)),
+    lang = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)), m = P.length;
+  const sig = Math.max(1, (slut ? kort : Math.min(kort || lang, lang) ) * KRITAN.MJUK.rund / (L / n)), R = Math.ceil(3 * sig);
+  const at = i => slut ? P[((i % m) + m) % m] : P[Math.max(0, Math.min(m - 1, i))];
+  let Q = P.map((_, i) => { if (!slut && (i === 0 || i === m - 1)) return P[i]; let sx = 0, sy = 0, sw = 0;
+    for (let j = -R; j <= R; j++) { const w = Math.exp(-j * j / (2 * sig * sig)), p = at(i + j); sx += w * p[0]; sy += w * p[1]; sw += w; } return [sx / sw, sy / sw]; });
+  const A = lang * KRITAN.MJUK.darr;
+  Q = Q.map((p, i) => { const a = Q[slut ? (i + 1) % m : Math.min(m - 1, i + 1)], b = Q[slut ? (i - 1 + m) % m : Math.max(0, i - 1)], tx = a[0] - b[0], ty = a[1] - b[1], tl = Math.hypot(tx, ty) || 1, u = i / (slut ? m : m - 1);
+    const o = slut ? A * (0.65 * Math.sin(6 * Math.PI * u + 1.3) + 0.35 * Math.sin(14 * Math.PI * u + 4.1)) : A * Math.sin(Math.PI * u) * (0.8 + 0.2 * Math.sin(5 * Math.PI * u));
+    return [p[0] + o * ty / tl, p[1] - o * tx / tl]; });
+  const pt = i => slut ? Q[((i % m) + m) % m] : Q[Math.max(0, Math.min(m - 1, i))];
+  let d = `M${_f1(Q[0][0])} ${_f1(Q[0][1])}`;
+  for (let i = 0; i < (slut ? m : m - 1); i++) { const p0 = pt(i - 1), p1 = pt(i), p2 = pt(i + 1), p3 = pt(i + 2);
+    d += ` C${_f1(p1[0] + (p2[0] - p0[0]) / 6)} ${_f1(p1[1] + (p2[1] - p0[1]) / 6)} ${_f1(p2[0] - (p3[0] - p1[0]) / 6)} ${_f1(p2[1] - (p3[1] - p1[1]) / 6)} ${_f1(p2[0])} ${_f1(p2[1])}`; }
+  return slut ? d + 'Z' : d;
+}
+
 // Streckens längd, start och slut mäts en gång per uppsättning drag (kräver en <svg> i dokumentet).
 const _matt = new Map();
 function _mat(drag) {
   const key = drag.join('|'); if (_matt.has(key)) return _matt.get(key);
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('style', 'position:absolute;width:0;height:0');
   document.body.appendChild(svg);
-  const m = drag.map(d => { const e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', d); svg.appendChild(e);
-    const L = e.getTotalLength(), a = e.getPointAtLength(0), b = e.getPointAtLength(L); return { e, L, a: [a.x, a.y], b: [b.x, b.y] }; });
+  const m = drag.map(d0 => { const e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', d0); svg.appendChild(e);
+    const d = _mjukD(e, e.getTotalLength()); e.setAttribute('d', d);
+    const L = e.getTotalLength(), a = e.getPointAtLength(0), b = e.getPointAtLength(L); return { e, d, L, a: [a.x, a.y], b: [b.x, b.y] }; });
   _matt.set(key, m); return m;
 }
 
@@ -56,7 +80,7 @@ function ritBana(drag, k, { vikt = null, attr = '' } = {}) {
   const sum = steg.reduce((a, x) => a + x.w, 0); let acc = 0, html = '', spets = M.at(-1).b;
   for (const s of steg) {
     const a = acc / sum, b = (acc += s.w) / sum, u = _kl((k - a) / (b - a));
-    if (s.rita != null && u > 0) html += `<path d="${drag[s.rita]}" pathLength="1" ${st} stroke-dasharray="1 1" stroke-dashoffset="${(1 - u).toFixed(4)}"/>`;
+    if (s.rita != null && u > 0) html += `<path d="${M[s.rita].d}" pathLength="1" ${st} stroke-dasharray="1 1" stroke-dashoffset="${(1 - u).toFixed(4)}"/>`;
     if (k >= a && k < b) {
       if (s.rita != null) { const q = M[s.rita].e.getPointAtLength(M[s.rita].L * u); spets = [q.x, q.y]; }
       else { const P0 = M[s.resa - 1].b, P1 = M[s.resa].a, m = _mjuk(u); spets = [_lerp(P0[0], P1[0], m), _lerp(P0[1], P1[1], m) - R.bage * Math.sin(Math.PI * m)]; }

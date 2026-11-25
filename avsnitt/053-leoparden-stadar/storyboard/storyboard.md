@@ -48,7 +48,7 @@ Tempot följer Sannas feedback 2026-11-25: fler reaktioner i närbild, närmare 
 | [24](frames/24.jpg) | 2:27.6 | 3.2 s | N | *"Leoparden vet inte var."* (2:27.9) | Leoparden tittar åt vänster, sedan åt höger | spinn 7 | tänker |
 | [25a](frames/25a.jpg) | 2:30.8 | 2.0 s | H | *"Kan du hjälpa leoparden? Kan du se var trekanten är?"* (2:31.1) | *Kan du hjälpa leoparden?* Klipp efter 2 s | tyst | nyfiken |
 | [25b](frames/25b.jpg) | 2:32.8 | 7.6 s | D under sängen | – | Det gröna hörnet under sängen. Paus 5 s, efter 3 s skimrar det svagt | tyst, `glimt` svagt | – |
-| [26](frames/26.jpg) | 2:40.4 | 3.7 s | D hörnet → N | *"Ja, där! Under sängen!"* (2:40.7) | Hörnet skimrar tydligt, sedan leoparden | `tindra`, spinn 2 | ivrig |
+| [26](frames/26.jpg) | 2:40.4 | 3.7 s | D hörnet → N | *"Ja, där! Bakom kaktusen!"* (2:40.7) | Hörnet skimrar tydligt, sedan leoparden | `tindra`, spinn 2 | ivrig |
 | [27a](frames/27a.jpg) | 2:44.1 | 1.6 s | HB | – | Leoparden sträcker tassen, trekanten glider fram och i en båge mot lådan | `glid` lågt | ivrig |
 | [27b](frames/27b.jpg) | 2:45.7 | 5.1 s | D lådan | *"Trekanten ner i det trekantiga hålet … plopp!"* (2:46.0) | Trekanten sjunker ner på *plopp* | `plopp`, `klonk`, `glitter` | – |
 | [27c](frames/27c.jpg) | 2:50.8 | 1.0 s | N | – | Öronen upp, svansen vippar | spinn 3b | jätteglad |

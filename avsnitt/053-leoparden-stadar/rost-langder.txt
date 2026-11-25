@@ -35,7 +35,7 @@
 35-var-ar-trekanten 5.98
 36-vet-inte-var 1.77
 37-kan-du-hjalpa 4.26
-38-ja-dar 2.49
+38-ja-dar 2.45
 39-ner-i-halet-3 4.40
 40-nu-ar-det-statat 1.36
 41-alla-i-ladan 5.33
