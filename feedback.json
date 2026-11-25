@@ -9712,9 +9712,10 @@
   "sec": 45,
   "tags": [],
   "note": "a bit too stressed, review pacing and see where it should be slowed",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641149765,
-  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)"
+  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)",
+  "fixedAt": 1795642985034
  },
  "sq7l3bucbdmwwme9sm": {
   "ep": "054",
@@ -9722,9 +9723,10 @@
   "sec": 73,
   "tags": [],
   "note": "less bubbles in bath please",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641179926,
-  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)"
+  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)",
+  "fixedAt": 1795642985034
  },
  "i1qbyf3lsxmwwmf2in": {
   "ep": "054",
@@ -9732,9 +9734,10 @@
   "sec": 93,
   "tags": [],
   "note": "have malin say bath is over after boat play",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641217151,
-  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)"
+  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)",
+  "fixedAt": 1795642985034
  },
  "wtjo6ib15bmwwmgkv5": {
   "ep": "054",
@@ -9742,9 +9745,10 @@
   "sec": 196,
   "tags": [],
   "note": "other placement closer to bathtub f brush",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641287585,
-  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)"
+  "render": "2026-11-25 22:06 (omgång 2d: borsten bakom pallen (ny replik 35), ånga bara vid varmt, snabbare torkning, QA-fynden fixade, −14 LUFS)",
+  "fixedAt": 1795642985034
  },
  "9x8fk15e2wmwwmlcng": {
   "ep": "052",
