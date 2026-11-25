@@ -16,7 +16,7 @@
 // Siffrorna nedan är godkända av Sanna. Ändra dem här, inte i avsnitten.
 
 const KRITAN = {
-  BILD: '/assets/rekvisita/krita-rod/cut/krita-rod.png', WH: [755, 265], SPETS: [742, 132],
+  BILD: '/assets/rekvisita/krita-rod/cut/krita-rod-tunn.png', WH: [755, 265], SPETS: [742, 132],   // tunn kant: följer vita-kanter-regeln (Sanna 2026-11-25)
   LINJE: '#3a2c28',          // mörk kritlinje (i färgsångerna: en mörk ton av avsnittets färg)
   BRED: 12,                  // linjens bredd i helbild (ca 3 % av sakens höjd); dela med sakens skala om linjen ritas i bildens pixlar
   VINKEL_RITAR: 125, VINKEL_VANTAR: 140,

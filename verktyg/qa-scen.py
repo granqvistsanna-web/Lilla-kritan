@@ -14,6 +14,9 @@ Raderna (tomt efter kolon = inget fel):
    051 median 2,9, 035 3,2, 045 julköket 3,6 (alla 2,5/zoom, 6/s; delar upp till 10, 045:s slut 14). Prov på 035, 3 s:
    2,5/zoom 2,1–4,2 per sekund, 5/zoom 4,2–5,5. Boil som byter bild i varje ruta (045 före 22/11) går inte att se i filmen
    (ingen fas sticker ut, 045 då 3,2): koll på takten hör hemma i koden. Måttet är inte px i absoluta tal. Ca 1 min per 4 min film.
+ krita kod: kritan ritas med verktyg/kritan-ritar.js (skillen kritan-ritar) och dess bild krita-rod.png. Flaggar scener och
+   intron som visar krit-bilden utan att ladda kritan-ritar.js (egen krita: egna vinklar, egen fart). Beslut 2026-11-25: gäller nya avsnitt från KRITA_FRAN; äldre rättas när de ändå renderas om, så ett
+   enskilt avsnitt flaggas alltid, men --alla listar bara nya avsnitt och räknar de äldre.
  röst rader: en replik (längden ur m4a-filen) som går in i nästa replik eller förbi filmens slut; "över raden" är bara info.
  röst tvärt vid klipp: tal (300–3000 Hz) som faller TVART_DB dB på 10 ms från minst −30 dB (utan avklingning) högst 0,2 s från
    ett bildklipp, som när en scen klipps mitt i en replik. Utan kravet på klipp gav ElevenLabs tvära stopp och effekter falsklarm.
@@ -27,6 +30,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOIL_MAX = 2.5      # px i bild, CLAUDE.md
 BOIL_FILM = 4.5     # px/s, hela filmens median av boilsteget (se ovan)
 BOIL_SPANN = 15     # px/s, 5 s-median för en del av filmen (ritningar och kritiris med 2,5/zoom upp till 14)
+KRITA_FRAN = 52     # första avsnittet där kritan måste gå genom kritan-ritar.js
 TVART_DB = 15       # dB fall på 10 ms (en klippt replik över musik föll 19 dB)
 
 
@@ -59,6 +63,18 @@ def boil_kod(fil):
 def kodfiler(avsnitt=None):
     if avsnitt: m = [f'{avsnitt}/scener/**/index.html']
     else: m = ['avsnitt/*/scener/**/index.html', 'verktyg/*.js', 'produktion/youtube/**/*.html', 'produktion/youtube/**/*.js']
+    filer = {f for p in m for f in glob.glob(os.path.join(REPO, p), recursive=True)}
+    return sorted(f for f in filer if not re.search(r'/(aldre|gamla[^/]*|node_modules)/', f))
+
+
+# ---------- kritan ----------
+def krita_kod(fil):
+    s = open(fil, encoding='utf-8', errors='ignore').read()
+    if 'krita-rod' not in s: return []
+    return [] if 'kritan-ritar.js' in s else ['egen krita (ladda kritan-ritar.js)']
+
+def kritfiler(avsnitt=None):
+    m = [f'{avsnitt or "avsnitt/*"}/{d}/**/index.html' for d in ('scener', 'intro')]
     filer = {f for p in m for f in glob.glob(os.path.join(REPO, p), recursive=True)}
     return sorted(f for f in filer if not re.search(r'/(aldre|gamla[^/]*|node_modules)/', f))
 
@@ -188,6 +204,12 @@ def main(a):
         filer = kodfiler(avs)
         fel = [f'{os.path.relpath(f, REPO)}: {", ".join(e)}' for f in filer if (e := boil_kod(f))]
         print(f' boil kod ({len(filer)} filer): ' + ('\n   ' + '\n   '.join(fel) if fel else ''))
+        nr = lambda f: int(re.search(r'avsnitt/(\d+)', f).group(1))
+        kf = [(f, e) for f in kritfiler(avs) if (e := krita_kod(f))]
+        aldre = 0 if avs else len({nr(f) for f, e in kf if nr(f) < KRITA_FRAN})
+        kf = [(f, e) for f, e in kf if avs or nr(f) >= KRITA_FRAN]
+        print(f' krita kod: ' + ('\n   ' + '\n   '.join(f'{os.path.relpath(f, REPO)}: {", ".join(e)}' for f, e in kf) if kf else '')
+              + (f'  (info: {aldre} äldre avsnitt med egen krita, rättas när de renderas om)' if aldre else ''))
     if avs:
         for rj in sorted(glob.glob(f'{avs}/scener/**/rader.json', recursive=True)):
             f2, over = rost_rader(rj)

@@ -2,7 +2,7 @@
 //   node render.mjs <scenmapp>                         -> <scenmapp>/<scen>.mp4
 //   node render.mjs <scenmapp> 0 5 9.5                  -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
 //   node render.mjs <scenmapp> --snabb                  -> förhandsvisning 960×540, 15 fps
-//   node render.mjs <scenmapp> --fran 2 --till 4 [--ut fil.mp4] [--langd] [--bara-ljud]   (för verktyg/render-delat.mjs)
+//   node render.mjs <scenmapp> --fran 2 --till 4 [--ut fil.mp4] [--langd] [--bara-ljud] [--tider] [--fraga 'lucka=5&del=slut']   (för verktyg/render-delat.mjs)
 // Sidan sätter window.ready (promise), window.seek(t) (promise, ritar bildrutan för tiden t) och window.DURATION.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -16,7 +16,7 @@ const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../..')
 const args = process.argv.slice(2), dir = resolve(args.shift());
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const ta = n => args.includes(n) && !!args.splice(args.indexOf(n), 1);
-const baraLjud = ta('--bara-ljud'), snabb = ta('--snabb'), LANGD = ta('--langd');
+const baraLjud = ta('--bara-ljud'), snabb = ta('--snabb'), LANGD = ta('--langd'), TIDER = ta('--tider');   // --tider: sidans window.TIDER som json
 const UT = args.includes('--ut') ? resolve(args.splice(args.indexOf('--ut'), 2)[1]) : undefined;
 const FRAGA = args.includes('--fraga') ? args.splice(args.indexOf('--fraga'), 2)[1] : '';   // extra sidfråga, t.ex. armar=b
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
@@ -53,7 +53,8 @@ async function effektWav() {
     '-map', '[a]', '-t', DURATION, '-c:a', 'pcm_s16le', wav].map(String));
   return wav;
 }
-if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut })); }
+if (TIDER) { console.log(JSON.stringify(await p.evaluate(() => ({ ...window.TIDER, LJUD_NYA: window.LJUD_NYA || [], LJUD_SLUT: window.LJUD_SLUT || [] })))); }
+else if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut })); }
 else if (baraLjud) { console.log(await effektWav());
 } else if (ts.length) {
   const STILLS = join(dir, 'stills'); await mkdir(STILLS, { recursive: true });

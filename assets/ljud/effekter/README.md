@@ -182,7 +182,7 @@ Natt-ljuden på kullen. `syrsor` och `sus` ur Openverse (CC0), resten ElevenLabs
 | `nalle-hopp` | 2 | 3,6–3,8 s | nallen hoppar ur korgen och landar (*A soft plush teddy bear bouncing out of a basket and landing on grass, a light fluffy boing and a cushioned thud, cute cartoon.*) |
 | `lagga-sig` | 1 | 2,5 s | någon lägger sig på filten (*A small soft body settling down onto a fluffy picnic blanket, a gentle cloth rustle and a tiny cushioned puff, cozy and quiet.*) |
 | `smasteg` | 2 | 4 s | små snabba steg i gräset, nyckelpigan (*Tiny soft quick footsteps on grass, a little cartoon bug's pitter-patter, light and cute.*) |
-| `gaspning` | 1 | 3,1 s | en liten söt sömnig gäspning utan ord (*A tiny cute sleepy cartoon yawn, high soft voice, no words, sweet and drowsy.*) |
+| `gaspning` | 2 | 3,1 / 1,7 s | 1: en liten söt sömnig gäspning utan ord (*A tiny cute sleepy cartoon yawn, high soft voice, no words, sweet and drowsy.*) – **filen är tyst** (upptäckt 2026-11-25). 2: en riktig gäspning *aaah-mm* ur [yawn-3](https://freesound.org/people/9voltfan/sounds/736452/), 9voltfan, CC0, 0,15–1,75 s, 2 halvtoner upp, tempo 0,85, hög-/lågpass 120 Hz/7 kHz, −21 LUFS (051/J24, 2026-11-25). Originalet i `produktion/ljud-original/effekter/gaspning/` |
 | `gasp` | 2 | 3,7–4 s | ett litet glatt förvånat andetag utan ord (*A tiny soft cartoon gasp of happy surprise, a short breathy intake of air, no words, warm and close, gentle for toddlers.*) |
 
 ## Gula helikoptern (011)

@@ -4,6 +4,7 @@
 # märks med comment=papper-<styrka>, så att en film som redan har den inte får den två gånger. PAPPER=0 hoppar över texturen.
 #   produktion/youtube/shorts/jul/mastra.sh <mapp> [fil.mp4]
 # fil: standard <mapp>/<mappens namn>.mp4 (den liggande filmen); ge t.ex. <mapp>/<namn>-staende.mp4 för den stående.
+# Sist läggs 3D-introt och 3D-outrot på (three-rum/julkalender-intro/skarva.sh, inte med fil eller SKARVA=0).
 # Skriver över filmen med den mastrade versionen och gör förhandskopian <fil utan .mp4>-liten.mp4 bredvid (1280 px bred,
 # stående 720), och skriver ut nivån före och efter.
 # Så går det till: ljudet mäts med ffmpegs loudnorm (bara mätningen), får en rak förstärkning upp eller ner till −16 LUFS och
@@ -41,3 +42,7 @@ if [[ $papper != 0 && $(ffprobe -v error -show_entries format_tags=comment -of d
 fi
 ffmpeg -hide_banner -loglevel error -y -i $fil -vf "scale=$(( bredd > hojd ? 1280 : 720 )):-2" -c:v libx264 -crf 27 -c:a aac -b:a 128k -movflags +faststart ${fil%.mp4}-liten.mp4
 echo "${fil:t}: $fore[1] LUFS, topp $fore[2] dBTP  ->  $nu[1] LUFS, topp $nu[2] dBTP"
+# 3D-intro och 3D-outro på liggande luckor (Sanna 2026-11-25), bara för luckans egen film; SKARVA=0 hoppar över
+if [[ -z $2 && ${SKARVA:-1} != 0 ]] && grep -q "lucka" $mapp/index.html; then
+  bash ${0:A:h}/../../../three-rum/julkalender-intro/skarva.sh $mapp
+fi

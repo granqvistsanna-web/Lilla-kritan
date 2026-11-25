@@ -229,7 +229,11 @@ function rita(fig, f, p = POSE0) {
   lager('leg-l', p.benFram); lager('leg-r', p.benFram);
   del('leg-l', p.ben[0], 0, sank + p.benY[0], [1, 1 + p.benS[0]]);
   del('leg-r', -p.ben[1], 0, sank + p.benY[1], [1, 1 + p.benS[1]]);
-  del('tail', p.svans, 0, lyft(RIGG.tail[1]));
+  // Svansen är lång och tunn: mjukt tak på vinkeln (Sanna 25/11 "polish cat tail", J06/J08). In mot kroppen (−) högst ca 4°,
+  // annars gömmer sig kroken bakom kroppen och glider fram bakom armen; utåt (+) högst ca 7°, annars flyger den. Scenernas
+  // 10–24° blir lugna 3–7°.
+  const sv = p.svans < 0 ? 4 * Math.tanh(p.svans / 8) : 7 * Math.tanh(p.svans / 14);   // halva lutningen nära 0, så att stora vipp inte blir platta platåer
+  del('tail', sv, 0, lyft(RIGG.tail[1]));
 
   // Ansiktet glider med riktningen och blicken. Gurglet rundar kinderna och gör ansiktet en aning bredare.
   const fx = 36 * r, fy = 4 * a - 10 * u, pf = f.puff;

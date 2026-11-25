@@ -7,7 +7,7 @@ description: Hur kritan ritar i Lilla Kritan, så att det alltid ser likadant ut
 
 Kritan är **en sak, inte en figur**: en röd vaxkrita utan ansikte som aldrig vänds och aldrig knackar. Den ritar alltid på samma sätt, oavsett om det är ritintrot, en sak mitt i en scen eller en Gissa teckningen-short. Reglerna kommer från färgsångerna (`format/ritintro.md`), 045 och 046, där Sanna godkände dem.
 
-**All ny kod använder `verktyg/kritan-ritar.js`.** Där finns de godkända siffrorna (vinklar, skalor, svaj, fart, fyllning, gnistor) på ett ställe. Kopiera inte in egna varianter i avsnittet, och ändra en siffra i den filen om Sanna vill ändra något. Provsidan är `verktyg/prov/kritan-ritar-prov.html`.
+**All ny kod använder `verktyg/kritan-ritar.js`.** Där finns de godkända siffrorna (vinklar, skalor, svaj, fart, fyllning, gnistor) på ett ställe. Kopiera inte in egna varianter i avsnittet, och ändra en siffra i den filen om Sanna vill ändra något. Provsidan är `verktyg/prov/kritan-ritar-prov.html`. `verktyg/qa-scen.py` (raden `krita kod`) flaggar scener och intron som visar kritan utan att ladda filen; från avsnitt 052 ska den raden vara tom, äldre avsnitt flyttas över när de ändå renderas om (Sanna 2026-11-25).
 
 ## Förloppet (alltid i den här ordningen)
 
@@ -36,7 +36,7 @@ Kritan är **en sak, inte en figur**: en röd vaxkrita utan ansikte som aldrig v
 
 ## Kritan
 
-- Bilden är `assets/rekvisita/krita-rod/cut/krita-rod.png`, spetsen i (742, 132).
+- Bilden är `assets/rekvisita/krita-rod/cut/krita-rod-tunn.png` (tunn vit kant, som vita-kanter-regeln; Sanna 2026-11-25), spetsen i (742, 132). Den tjocka `krita-rod.png` används inte i nya scener.
 - **Skala:** 0,42 på ritpapperet. I en scen är skalan 0,33/√zoom (`kritaSkala(zoom)`), så att kritan är lika stor i bild hur nära kameran än går.
 - **Kritan går aldrig över ett ansikte.** Lägg väntplatsen och ut-banan på fri yta, bort från figurerna. Kommer kritan in i en scen med figurer, ska den komma uppifrån höger.
 - Ingen knackning, inget `tass`-ljud och inget `skrrrrt`. Ljudet är `effekter/krita-ritar` i loop under fas 2, vol ca 0,9–1,6, med 0,4 s fade.

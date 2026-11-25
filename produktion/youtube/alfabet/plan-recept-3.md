@@ -78,6 +78,8 @@ De nya bokstäverna börjar efter A–E, en i taget i alfabetisk ordning, samma 
 
 ## Slutet och ljudkartan (samma i varje bokstav, 2026-11-22)
 
+> **Uppdaterat 2026-11-24 (E):** bokstaven säger bara sin bokstav i fem toner (`x-glad`, `x-halsar`, `x-ja`, `x-nej`, `x-undrar`, Olivias röst), aldrig ord som *"b, b, boll!"* eller *"Hej!"*. Den tycker till efter varje ord (`x-ja` / `x-nej`) och Malin säger vad den menar; i slutet `x-ja`, och `x-halsar` samtidigt som Malins *"Hej då!"*. Malins frågor nedan (*"Hur låter C i clown?"*) och märkets ord går bort. Se *E:s riktning* i `format/abc-recept-3-kompisen-vill.md`. Tabellerna nedan är historik.
+
 Sanna 2026-11-22: *"now it ends with sounding letter, is a bit random … where should sounding letters be placed in clip, same in every letter."* Förlagan är B (`abc-b-recept-3`).
 
 **Slutet**, efter discot (klossarna står i slutraden):
@@ -118,12 +120,12 @@ Ljudet i 2–4 är det ljud bokstaven har **i just det ordet** (clown med k, cyk
 
 En session per bokstav (som i feedbackomgångarna), högst två samtidigt så att rösterna och renderingarna inte krockar.
 
-1. **Manus** (Opus): kopiera `abc-b-recept-3/` (den har feedbacken från 21/11), och för in C:s intro, frågorna före bokstavsljuden och den detaljerade skissen (se receptets *C:s riktning*) till `abc-x-recept-3/`, skriv `manus.md` och `malin-x-recept-3.txt` (ca 61 rader, ca 20 nya). Byt bokstavens drag och färg, `SAKER` och `TAL`. Regelkoll: inga djurnamn, inga utdragna ord, *"Vem är det?"* / *"Vad blir det?"*, en v3-tagg per rad, *"Hej hej!"* i introt.
+1. **Manus** (Opus): kopiera `abc-e-recept-3/` (den har feedbacken 21–25/11, C:s och E:s riktning: introsamtalet, bokstavens toner, den detaljerade skissen, snabbare teckningar) till `abc-x-recept-3/`, skriv `manus.md` och `malin-x-recept-3.txt` (ca 61 rader, ca 20 nya). Byt bokstavens drag och färg, `SAKER` och `TAL`. Regelkoll: inga djurnamn, inga utdragna ord, *"Vem är det?"* / *"Vad blir det?"*, en v3-tagg per rad, introsamtalet med bokstaven, bokstaven säger bara sin bokstav.
    → **Sanna godkänner replikerna.**
 2. **Bilder:** konturer med `kontur-bild.py` för varje sak, ögats plats mätt, kanter mätta (`tunn_kant.py`). Nya Flow-bilder bara om tabellen ovan säger det.
 3. **Malins tagning** i ElevenLabs (en tagning, alla rader), delad med `verktyg/dela-tagning.py` och kontrollerad rad för rad.
    → **Fråga Sanna före krediterna.**
-4. **Scenen:** delarna 3–6 skrivs nya (`kanner`, `narbild`, `gissning`, `flytta`), delarna 1, 2, 7 och 8 följer med från B. Se receptets *Lärdomar* (skissens ansikte, kontrast i det felritade, `KVISA`/`KNICK`, renderingen). Stillbilder enligt receptets punkt 4.
+4. **Scenen:** delarna 3–6 skrivs nya (`kanner`, `narbild`, `gissning`, `flytta`), delarna 1, 2, 7 och 8 följer med från E. Se receptets *Lärdomar* (skissens ansikte, kontrast i det felritade, `KVISA`/`KNICK`, renderingen). Stillbilder enligt receptets punkt 4.
    Från ABC-b3 (2026-11-22) följer med från B: markskuggorna på golvet, slutet och ljudkartan (ovan), raka klossar i discot och bädden `abc-bad-lang.m4a`. Kör `krock.mjs`.
 5. **Förhandsvisning** med `--snabb`, lokalt (020:s `render.mjs`, inte `render-delat.mjs`). Länk till feedbacksidan (`…/feedback/#ep`).
    → **Sanna granskar.**

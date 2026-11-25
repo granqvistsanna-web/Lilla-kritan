@@ -56,3 +56,7 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 - 0:56 Inget hopp mellan 4, 5 och 6a: samma utsnitt (`kanin`) hela vägen, och kaninen står kvar där den backade (`BAK`, förut flyttade den sig 60 px i klippet till 6a). Den osäkra minen blir nyfiken när kritan kommer, och i 6b tar kaninen ett litet glatt skutt fram till elefanten.
 - 2:56 Den röda tandborsten är större i fickan (0,42 → 0,52), och i 23c glider kameran ner till fickan strax efter frågan (förut ett klipp de sista 2 s), så att den syns länge innan glittret.
 - 4:02 Replik 44 är ny: *"Elefanten får också en!"* [giggles] (förut *"Och en till elefanten!"*, som lät som "en till"). ElevenLabs v3, Malin – Professional Swedish Narration, Natural (0,5), tagning 1 av 2, rådata i `produktion/ljud-original/049/malin-elefanten-ocksa-*.mp3`, −3 dBFS i `44-elefanten-far-ocksa-en.m4a`. Den gamla filen ligger kvar tills Sanna godkänt.
+
+## Feedback 6 (2026-11-25)
+
+- 0:39 Malin säger *"Du ska få sitta i den här tandläkarstolen …"* innan kaninen blir nervös. I 4 tittar kaninen nyfiket upp på stolen medan Malin säger 7 och 51; 0,3 s efter repliken blir minen orolig, kaninen backar, skakar på huvudet och öronen faller, och det trumpna ljudet kommer 1,1 s efter repliken. Rad 4 är 0,4 s längre (12,6 s). Repliken 51 börjar 0,4 s efter 7 (förut 2 s).

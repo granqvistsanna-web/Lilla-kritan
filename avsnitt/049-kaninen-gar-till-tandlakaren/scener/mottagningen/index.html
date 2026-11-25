@@ -295,9 +295,10 @@ function S(id, tl, d) {
       return { kam: 'hel', k: { pa: [x, PA_GOLV[1]], p, f } }; }
     case '2': return { kam: 'doktor', k: golv, d: { p: DP('neutral', DVINKA(tl, del(0, 0.5, tl) * (1 - del(d - 0.6, d - 0.1, tl)))) } };
     case '3': return { kam: 'kaninNar', k: { ...golv, f: KL.blanda(glad, KF('nyfiken', 1, { titt: [10, -6] }), del(0, 0.5, tl)) } };
-    case '4': {   // tandläkaren pekar på stolen; kaninen tittar upp, backar ett litet steg, skakar på huvudet, öronen faller. Malin efter.
-      const pek = del(0.2, 0.8, tl), nej = 0.9, back = del(nej - 0.2, nej + 0.5, tl);
-      const [fs, ps] = KL.skakaHuvud(OROLIG(del(0.3, 0.8, tl), { titt: [6, -8 + 16 * back] }), KP('neutral', { oron: [14 * back, 14 * back], sank: 6 * back, rikt: -0.3 * back }), Math.max(0, tl - nej), 2.2);
+    case '4': {   // tandläkaren pekar på stolen; kaninen tittar nyfiket upp medan Malin säger 7 och 51 (feedback 2026-11-25: repliken före nervositeten),
+                  // sedan blir den orolig, backar ett litet steg, skakar på huvudet, öronen faller
+      const pek = del(0.2, 0.8, tl), orolig = MT(1) + ML(51) + 0.3, nej = orolig + 0.6, back = del(nej - 0.2, nej + 0.5, tl);
+      const [fs, ps] = KL.skakaHuvud(KL.blanda(KF('nyfiken', 1, { titt: [6, -8] }), OROLIG(1, { titt: [6, -8 + 16 * back] }), del(orolig, orolig + 0.5, tl)), KP('neutral', { oron: [14 * back, 14 * back], sank: 6 * back, rikt: -0.3 * back }), Math.max(0, tl - nej), 2.2);
       const st = MT() + ML(7) - 0.9;   // "stol" sägs i slutet av repliken: kameran glider in på stolen och kaninen (samma utsnitt som 5–6b, så att klippet till 5 inte syns)
       return { kam: 'hel', kam2: 'kanin', kk: del(st, st + 1.4, tl), k: { ...golv, pa: [PA_GOLV[0] - 60 * back, PA_GOLV[1]], f: fs, p: ps }, d: { p: DP('neutral', { armar: [45 * pek, 0], armbage: [-20 * pek, 0], luta: -1 * pek }) } }; }
     case '5': return { kam: 'kanin', k: { ...golv, pa: BAK, f: OROLIG(1), p: KP('neutral', { oron: [14, 14], sank: 6 }) } };

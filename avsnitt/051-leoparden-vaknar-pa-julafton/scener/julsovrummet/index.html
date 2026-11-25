@@ -69,6 +69,7 @@
 </svg>
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -78,7 +79,6 @@ const f1 = v => v.toFixed(1);
 
 // --- Filer -----------------------------------------------------------------------------------------------------------------
 const RUM = A + 'bakgrunder/julsovrummet/julsovrummet-valvt-teal.jpeg';
-const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
 // Sakerna: [fil, bildens storlek, alfarutan x0 y0 x1 y1]
 const SAK = {
   sover:   [A + 'karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-sangen-jul.png', [1157, 649], [6, 6, 1151, 642]],   // leoparden (Sanna 2026-11-22), slutna ögon i bilden
@@ -123,9 +123,10 @@ const SANG_SK = SANG[2] / 1245, SANG_X0 = SANG[0] - 636.5 * SANG_SK, SANG_Y1 = S
 const iSang = (px, py) => [SANG_X0 + px * SANG_SK, SANG_Y1 - (667 - py) * SANG_SK];      // punkt i sangen.png → scenen
 const iSov = (px, py) => [SANG_X0 + px * SOV_SK, SANG_Y1 - (649 - py) * SOV_SK];         // punkt i sovbilden → scenen
 
+let ZOOM = 1;   // kamerans zoom just nu (kritan är lika stor i bild i alla utsnitt)
 function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
-  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  ZOOM = zoom; $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
   $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));
 }
 const HEL = () => kamera(1);
@@ -157,8 +158,10 @@ const tittVH = (pos, y = 330) => lagg('pilar', rakpil(...iFig(pos, [440, y]), ..
 const nick = pos => { const [x, y] = iFig(pos, [700, 330]); lagg('pilar', rakpil(x, y - 30, x, y + 30, 4) + rakpil(x + 18, y + 30, x + 18, y - 30, 4)); };
 const hopp = (x, y, s = 4) => lagg('pilar', rakpil(x, y, x, y - 40, s));
 const ring = (x, y, r = 40) => lagg('pilar', `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#c0392b" stroke-width="4" stroke-dasharray="8 6"/>`);
-const krita = (x, y, v = 125, s = 0.33) => lagg('kritan', `<image href="${KRITA}" width="755" height="265"
-  transform="translate(${f1(x)} ${f1(y)}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+// kritan ur verktyg/kritan-ritar.js (skillen kritan-ritar, qa-scen "krita kod"): samma bild, vinklar och svaj som i alla avsnitt.
+// På papperet har den papperets skala, i rummet kritaSkala(ZOOM), så att den är lika stor i bild hur nära kameran än går.
+const krita = (x, y, v = KRITAN.VINKEL_RITAR, s = 0.33) => lagg('kritan', kritaBild(x, y, { v, s: s >= KRITAN.SKALA_PAPPER ? KRITAN.SKALA_PAPPER : kritaSkala(ZOOM) }));
+const SV = KRITAN.SVAJ;
 const skak = (x, y) => lagg('pilar', `<g fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round" opacity=".85">
   <path d="M${x - 70} ${y - 30} q-14 30 0 60"/><path d="M${x - 92} ${y - 44} q-20 44 0 88"/><path d="M${x + 70} ${y - 30} q14 30 0 60"/><path d="M${x + 92} ${y - 44} q20 44 0 88"/></g>`);
 
@@ -433,7 +436,6 @@ const kl = (k, a = 0, b = 1) => Math.max(a, Math.min(b, k)), lerp = (a, b, k) =>
 const mjuk = k => (k = kl(k), k * k * (3 - 2 * k)), del = (a, b, t) => mjuk((t - a) / (b - a));
 const bump = (a, b, t) => (t <= a || t >= b) ? 0 : Math.sin(Math.PI * (t - a) / (b - a));
 const lerp2 = (A, B, k) => [lerp(A[0], B[0], k), lerp(A[1], B[1], k)];
-const ritfart = k => (k = kl(k), 0.6 * k + 0.4 * mjuk(k));
 let RAD_L = [], ROSTER = [], DURATION = 0, CUR = null, BL;
 const SVART = 0.6;
 const MT = (i = 0) => (CUR.malin || [])[i]?.[1] ?? 0;
@@ -442,8 +444,8 @@ const LT = f => (CUR.ljud || []).filter(x => x[0].startsWith(f)).map(x => x[1]);
 const bagPos = (A, B, u, h = 120) => { const m = mjuk(u); return [lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h * Math.sin(Math.PI * m)]; };
 
 // --- Kritan i scenen: kommer in uppifrån höger, ritar (spetsen i linjens ände), glider till väntplatsen och svajar, flyger ut ---------
-function kritaFas(tl, { rit: [a, b], spets, start, vanta, ut = null, s = 0.33, sida = 1 }) {   // sida -1: in och ut åt vänster (bort från ansiktet)
-  const svP = t => [vanta[0] + 5 * Math.sin(t * 1.2), vanta[1] + 4 * Math.sin(t * 1.7)], svV = t => 140 + 1.5 * Math.sin(t * 1.0);
+function kritaScen(tl, { rit: [a, b], spets, start, vanta, ut = null, s = 0.33, sida = 1 }) {   // sida -1: in och ut åt vänster (bort från ansiktet)
+  const svP = t => [vanta[0] + SV.ax * Math.sin(t * SV.fx), vanta[1] + SV.ay * Math.sin(t * SV.fy)], svV = t => KRITAN.VINKEL_VANTAR + SV.av * Math.sin(t * SV.fv);
   if (ut != null && tl >= ut) { const u = del(ut, ut + 0.8, tl); if (u < 1) { const [x, y] = svP(tl); krita(x + sida * 900 * u, y - 500 * u, svV(tl), s); } return; }
   if (tl < a) { const u = del(a - 0.4, a, tl); krita(lerp(vanta[0] + sida * 500, start[0], u), lerp(vanta[1] - 300, start[1], u), 125, s); return; }
   if (tl < b) { krita(...spets, 125, s); return; }
@@ -459,10 +461,8 @@ function fyllSak(namn, [x, fot, hojd], f, lager = 'saker', o = {}) {
   sak(namn, x, fot, hojd, { lager, klipp: `clip-path="url(#${id})"`, ...o });
 }
 // krit-gnistor: fyruddiga gula klistermärken som poppar fram en i taget (som 049)
-const gnistaD = (x, y, r) => `M${f1(x)} ${f1(y - r)} Q${f1(x + r * 0.18)} ${f1(y - r * 0.18)} ${f1(x + r)} ${f1(y)} Q${f1(x + r * 0.18)} ${f1(y + r * 0.18)} ${f1(x)} ${f1(y + r)} Q${f1(x - r * 0.18)} ${f1(y + r * 0.18)} ${f1(x - r)} ${f1(y)} Q${f1(x - r * 0.18)} ${f1(y - r * 0.18)} ${f1(x)} ${f1(y - r)}Z`;
-const gnistor = (cx, cy, R, t, sk = 1, n = 5) => Array.from({ length: n }, (_, i) => { const u = (t - 0.25 * i) / 1.4; if (u < 0 || u > 1) return '';
-  const a = -Math.PI / 2 + i * 2 * Math.PI / n + 0.4, x = cx + R * Math.cos(a), y = cy + R * 0.8 * Math.sin(a), r = 44 * sk * Math.sin(Math.PI * Math.min(1, u * 1.6)) * (1 - 0.3 * u);
-  return r > 0.5 ? `<path d="${gnistaD(x, y, r)}" fill="#ffd23f" stroke="#fff" stroke-width="${f1(6 * sk)}" stroke-linejoin="round" paint-order="stroke" transform="rotate(${f1(20 * u)} ${f1(x)} ${f1(y)})"/>` : ''; }).join('');
+const gnistorS = (cx, cy, R, t, sk = 1, n = 5) => sk === 1 ? gnistor(cx, cy, R, t, n)   // delade gnistor(), mindre i zoomade utsnitt (sk)
+  : `<g transform="translate(${f1(cx)} ${f1(cy)}) scale(${sk}) translate(${f1(-cx)} ${f1(-cy)})">${gnistor(cx, cy, R / sk, t, n)}</g>`;
 // skimmer som rör sig (fyra små stjärnor runt en punkt)
 const skimra = (x, y, R, t, op = 1) => op <= 0.01 ? '' : [0, 1, 2, 3].map(i => { const a = i * Math.PI / 2 + 0.4 + t * 1.2, px = x + R * Math.cos(a), py = y + R * 0.75 * Math.sin(a), r = R * 0.28 * (0.6 + 0.4 * Math.sin(t * 6 + i));
   return `<path d="M${f1(px - r)} ${f1(py)} L${f1(px + r)} ${f1(py)} M${f1(px)} ${f1(py - r)} L${f1(px)} ${f1(py + r)}" stroke="#fff7b0" stroke-width="${f1(R * 0.12)}" stroke-linecap="round" opacity="${f1(op)}"/>`; }).join('');
@@ -503,15 +503,15 @@ function papperRad(tl, { k, fyll = 0, ut = null, zoom = 0, rit = [0.4, 99] }) {
   if (fyll > 0) { $('fyllcirkel').setAttribute('cx', (x0 + x1) / 2); $('fyllcirkel').setAttribute('cy', (y0 + y1) / 2); $('fyllcirkel').setAttribute('r', 420 * Math.pow(mjuk(fyll), 1.2));
     lagg('saker', `<image href="${SAK.strumpa[0]}" width="${w}" height="${h}" filter="url(#rodstrumpa)" clip-path="url(#fyllklipp)" transform="translate(${P[0]} ${P[1]}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`); }
   const spets = ritaSak('strumpa', P, ritfart(k), '#3a2c28', 12, 1 - del(0.15, 0.9, fyll)), start = ritaSak('strumpa', P, 0, '#3a2c28', 12, 0);
-  kritaFas(tl, { rit, spets, start, vanta: VANTA_PAPPER, ut, s: 0.42 });
-  if (fyll > 0) lagg('kritan', gnistor(P[0], P[1] - P[2] / 2, 330, tl - (ut ?? 0) + 0.2));
+  kritaScen(tl, { rit, spets, start, vanta: VANTA_PAPPER, ut, s: 0.42 });
+  if (fyll > 0) lagg('kritan', gnistorS(P[0], P[1] - P[2] / 2, 330, tl - (ut ?? 0) + 0.2));
   const Z = (1 + 0.12 * mjuk((tl - 8.6) / 5)) * (1 + 1.6 * mjuk(zoom)); kamera(Z, 960, 560);   // kryper sakta in i gissningspausen
   if (zoom > 0.6) lagg('ram', `<rect width="1920" height="1080" fill="#fff" opacity="${del(0.6, 1, zoom).toFixed(2)}"/>`);
 }
 const sovRum = (o = {}) => rum({ sang: 'sover', ...o });
 // avskedet: kameran utan kantstopp (bakgrunden är enfärgad), rummet tonas till väggens turkos, snö faller lugnt
 const AVSKED = [1.55, STA[0] + 20, STA[1] - 250], VAGG = '#45A894';
-function kameraFri(z, cx, cy) { $('kamera').setAttribute('transform', `translate(${f1(960 - cx * z)} ${f1(540 - cy * z)}) scale(${z.toFixed(4)})`); $('brus').nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(2)); }
+function kameraFri(z, cx, cy) { ZOOM = z; $('kamera').setAttribute('transform', `translate(${f1(960 - cx * z)} ${f1(540 - cy * z)}) scale(${z.toFixed(4)})`); $('brus').nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(2)); }
 function avskedRum(k) {
   if (k < 1) { rum({ hangare: [], slinga: 13 }); sangFram(); ['saker', 'fram'].forEach(n => $(n).setAttribute('opacity', f1(1 - k))); }
   const m = mjuk(k), z = lerp(1, AVSKED[0], m), cx = lerp(960, AVSKED[1], m), cy = lerp(540, AVSKED[2], m); kameraFri(z, cx, cy);
@@ -526,8 +526,8 @@ function avskedRum(k) {
 function kritanAvsked(tl, inn, ut = null) {
   const v = [STA[0] + 240, STA[1] - 310], u = del(inn + 0.3, inn + 1.1, tl), o = ut == null ? 0 : del(ut, ut + 0.8, tl);
   if (u <= 0 || o >= 1) return;
-  const sv = [6 * Math.sin(tl * 1.3), 5 * Math.sin(tl * 1.8)], hej = 8 * Math.sin(tl * 5) * bump(inn + 1.1, inn + 2.2, tl);   // en liten vickning när den kommit fram
-  krita(lerp(v[0] + 700, v[0], u) + sv[0] + 900 * o, lerp(v[1] - 600, v[1], u) + sv[1] - 500 * o, 140 + 1.5 * Math.sin(tl) + hej, 0.3);
+  const sv = [SV.ax * Math.sin(tl * SV.fx), SV.ay * Math.sin(tl * SV.fy)], hej = 8 * Math.sin(tl * 5) * bump(inn + 1.1, inn + 2.2, tl);   // en liten vickning när den kommit fram
+  krita(lerp(v[0] + 700, v[0], u) + sv[0] + 900 * o, lerp(v[1] - 600, v[1], u) + sv[1] - 500 * o, KRITAN.VINKEL_VANTAR + SV.av * Math.sin(tl * SV.fv) + hej, 0.3);
 }
 const fin = { luva: true, strumpor: 2, halsduk: true };
 
@@ -545,11 +545,11 @@ const RADT = {
 
   '6a': (tl, d) => { sovRum(); HALV_SANG(); const rit = [0.4, 3.0], k = ritfart(kl((tl - rit[0]) / (rit[1] - rit[0])));
     const spets = ritaSak('klocka', KLOCKA, k, '#3a2c28', 4), start = ritaSak('klocka', KLOCKA, 0, '#3a2c28', 4, 0);
-    kritaFas(tl, { rit, spets, start, vanta: [KLOCKA[0] - 220, KLOCKA[1] - 200], sida: -1 }); },
+    kritaScen(tl, { rit, spets, start, vanta: [KLOCKA[0] - 220, KLOCKA[1] - 200], sida: -1 }); },
   '6b': (tl, d) => { sovRum(); HALV_SANG(); const f = del(0.05, 0.85, tl);
     skugga(KLOCKA[0], KLOCKA[1], 50 * f); fyllSak('klocka', KLOCKA, f); ritaSak('klocka', KLOCKA, 1, '#3a2c28', 4, 1 - del(0.15, 0.9, f));
-    kritaFas(tl + 9, { rit: [0, 1], spets: [0, 0], start: [0, 0], vanta: [KLOCKA[0] - 220, KLOCKA[1] - 200], ut: 9.1, sida: -1 });
-    lagg('kritan', gnistor(KLOCKA[0], KLOCKA[1] - 60, 110, tl - 0.1, 0.5)); },
+    kritaScen(tl + 9, { rit: [0, 1], spets: [0, 0], start: [0, 0], vanta: [KLOCKA[0] - 220, KLOCKA[1] - 200], ut: 9.1, sida: -1 });
+    lagg('kritan', gnistorS(KLOCKA[0], KLOCKA[1] - 60, 110, tl - 0.1, 0.5)); },
   '7': (tl) => { sovRum(); kamera(3.0, KLOCKA[0], KLOCKA[1] - 90); const r = LT('ringklocka')[0] ?? 0, sk = bump(r, r + 1.5, tl) > 0 ? 4 * Math.sin(2 * Math.PI * 9 * (tl - r)) : 0;
     $('saker').innerHTML = ''; skugga(KLOCKA[0], KLOCKA[1], 50, 'saker'); sak('klocka', KLOCKA[0], KLOCKA[1] - 3 * Math.abs(Math.sin(2 * Math.PI * 9 * (tl - r))) * (sk ? 1 : 0), KLOCKA[2], { rot: sk });
     if (sk) lagg('fram', `<g fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="${f1(0.6 + 0.4 * Math.sin(tl * 20))}">
@@ -571,7 +571,8 @@ const RADT = {
       { bakom: u < 0.5, klippY: pos[0] > SANG_X0 + 40 ? MADRASS + 30 : null }); },
   '9': (tl, d) => { rum({ klocka: true }); HALV(); bjornT(STA, F('jatteglad'), vinka(P(), tl, del(0, 0.4, tl) * (1 - del(d - 0.5, d, tl)))); sangFram(); },
   '10': (tl) => { rum({ klocka: true }); NARA(STA, 40); const f = F('glad', { titt: [-12, 10] }); bjornT(STA, f, nickP(f, P({ rikt: -0.4 * del(0, 0.5, tl) }), tl - MT() - 0.6)); sangFram(); },
-  '11': (tl, d) => { rum({ klocka: true }); NARA(STA, 60); const g = del(0.1, 0.6, tl) * (1 - del(2.2, 2.8, tl));
+  // J24 1:09 "gäspa sound a bit slower pacing": gäspningen hörs och öppnar sig lugnt med ljudet, Malin först när den landar
+  '11': (tl, d) => { rum({ klocka: true }); NARA(STA, 60); const y = LT('gaspning')[0] ?? 0.3, g = del(y - 0.1, y + 0.7, tl) * (1 - del(y + 1.8, y + 2.5, tl));
     bjornT(STA, L.blanda(F('glad'), F('gapar', { lock: [0.5, 0.5] }), g), P({ armar: [100 * g, 100 * g], upp: 0.4 * g, strack: 0.03 * g })); sangFram(); },
   '12': (tl) => { rum({ klocka: true }); HALV(); const h = LT('hopp-mjuk')[0] ?? 1, f = F('jatteglad', { titt: [-14, -8] });
     bjornT(ST(hoppY(tl, h)), f, { ...P({ rikt: -0.3, armar: [60 * del(h - 0.3, h, tl), 60 * del(h - 0.3, h, tl)] }), oron: [-8 * del(0, 0.5, tl), -8 * del(0, 0.5, tl)] }); sangFram(); },
@@ -632,11 +633,11 @@ const RADT = {
   '29a': (tl, d) => { rum({ hangare: [] }); sangFram(); HALV(); bjornT(STA, F('nyfiken', { titt: [10, 14] }), P({ rikt: 0.3, upp: -0.4 }), fin);
     const rit = [0.4, 2.8], k = ritfart(kl((tl - rit[0]) / (rit[1] - rit[0])));
     const spets = ritaSak('paket', PAKET, k, '#3a2c28', 4), start = ritaSak('paket', PAKET, 0, '#3a2c28', 4, 0);
-    kritaFas(tl, { rit, spets, start, vanta: [PAKET[0] + 200, PAKET[1] - 250] }); },
+    kritaScen(tl, { rit, spets, start, vanta: [PAKET[0] + 200, PAKET[1] - 250] }); },
   '29b': (tl) => { rum({ hangare: [] }); sangFram(); HALV(); bjornT(STA, L.blanda(F('nyfiken'), F('kawaii'), del(0.2, 0.7, tl)), P({ rikt: 0.3 }), fin); const f = del(0.05, 0.85, tl);
     skugga(PAKET[0], PAKET[1], 70 * f, 'saker'); if (f > 0) paketMedLock(PAKET, 0, 'fram', Math.min(1, f * 1.4)); ritaSak('paket', PAKET, 1, '#3a2c28', 4, 1 - del(0.15, 0.9, f));
-    kritaFas(tl + 9, { rit: [0, 1], spets: [0, 0], start: [0, 0], vanta: [PAKET[0] + 200, PAKET[1] - 250], ut: 9.1 });
-    lagg('kritan', gnistor(PAKET[0], PAKET[1] - 70, 120, tl - 0.1, 0.5)); },
+    kritaScen(tl + 9, { rit: [0, 1], spets: [0, 0], start: [0, 0], vanta: [PAKET[0] + 200, PAKET[1] - 250], ut: 9.1 });
+    lagg('kritan', gnistorS(PAKET[0], PAKET[1] - 70, 120, tl - 0.1, 0.5)); },
   '30': (tl) => { rum({ hangare: [] }); sangFram(); HALV(); const v = del(1.2, 1.8, tl); bjornT(STA, F('nyfiken', { titt: [lerp(12, 0, v), lerp(14, -6, v)] }), P({}), fin);
     skugga(PAKET[0], PAKET[1], 70, 'saker'); paketMedLock(PAKET); },
   '31': (tl) => { rum({ hangare: [] }); sangFram(); HALV(); bjornT(STA, F('jatteglad'), P({}), fin); const u = del(0.2, 1.0, tl), p = lerp2([PAKET[0], PAKET[1]], NALLE_START, u);
@@ -651,7 +652,7 @@ const RADT = {
     if (u > 0) { lagg('fram', `<clipPath id="ovanPaket"><rect x="${x - 300}" y="${y - 900}" width="600" height="${900 - PAKET[2] * 0.6}"/></clipPath>`);
       sak('nalle', x, y - PAKET[2] * 0.5 - 120 * mjuk(u), 150, { lager: 'fram', klipp: 'clip-path="url(#ovanPaket)"' }); }
     paketMedLock([x, y, PAKET[2]], lyft);
-    if (u > 0.5) lagg('fram', gnistor(x, y - 200, 110, tl - pop - 0.4, 0.5)); },
+    if (u > 0.5) lagg('fram', gnistorS(x, y - 200, 110, tl - pop - 0.4, 0.5)); },
   '33': (tl) => { rum({ hangare: [] }); sangFram(); kamera(2.1, STA[0] + 60, STA[1] - 230); const u = del(0.0, 0.8, tl), ok = tl >= 0.8;
     bjornT(STA, L.blanda(F('jatteglad'), F('drommer', { luta: 4 }), del(0.6, 1.0, tl)), P({ armar: [-40 * del(0.5, 1, tl), -40 * del(0.5, 1, tl)], fram: [del(0.5, 1, tl), del(0.5, 1, tl)] }), { ...fin, nalle: ok });
     if (!ok) { const mal = iFig(STA, [512, 900]), p = lerp2([NALLE_START[0], NALLE_START[1] - 200], mal, mjuk(u)); sak('nalle', p[0], p[1], lerp(150, 300 * BS, u), { lager: 'saker' }); } },
@@ -686,9 +687,10 @@ const RITLANGD = { '01a': 7.4, '6a': 2.6, '29a': 2.4 };
 function ljud() {
   const ut = [];
   for (const r of RAD_L) {
-    for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-vaknar-pa-julafton/${ROSTER[n - 1][0]}.m4a`, vol: 1.0 });
+    for (const [n, o, ss, l] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/leoparden-vaknar-pa-julafton/${ROSTER[n - 1][0]}.m4a`, vol: 1.0,
+      ...(ss ? { ss } : {}), ...(l ? { langd: l, fade: 0.1 } : {}) });   // [n, tid, ss, längd]: en del av repliken (J24 1:15: bara "Oj, vilken gäspning!")
     for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f),
-      ...(/^krita-ritar/.test(f) ? { loop: true, langd: RITLANGD[r.id] ?? 2, fade: 0.4 } : /^smasteg/.test(f) ? { langd: 1.4, fade: 0.4 } : /^bjallror/.test(f) ? { langd: 2.6, fade: 0.9 } : {}) });   // bjällrorna är 16 s långa: bara en kort ringning (J24 2:32)
+      ...(/^krita-ritar/.test(f) ? { loop: true, langd: RITLANGD[r.id] ?? 2, fade: 0.4 } : /^smasteg/.test(f) ? { langd: 1.4, fade: 0.4 } : /^snark-katt/.test(f) ? { langd: 3.9, fade: 0.8 } : /^bjallror/.test(f) ? { langd: 2.6, fade: 0.9 } : {}) });   // bjällrorna är 16 s långa: bara en kort ringning (J24 2:32)
   }
   const intro = RAD_L.find(r => r.id === '01c'); ut.push({ t: 0, fil: E + 'vinterljud/vinterljud-1.m4a', vol: 0.35, langd: intro.s + intro.d, loop: true, fadeIn: 1.0, fade: 1.5 });   // vinterljud under ritintrot
   const m0 = RAD_L.find(r => r.musik)?.s;
@@ -716,7 +718,7 @@ window.ready = (async () => {
   KONTUR.klocka = await (await fetch(R + 'ringklocka/cut/ringklocka-kontur.json')).json();
   KONTUR.paket = { d: 'M170 205 L860 205 Q902 210 905 260 L908 770 Q905 816 860 818 L170 820 Q124 816 125 770 L130 260 Q134 208 170 205Z' };
   window.kant?.lagg(G); window.kant?.lagg($('saker'), { andel: 0.01 });
-  await Promise.all([RUM, KRITA, R + 'paketlock/cut/paketlock.png', ...Object.values(SAK).map(s => s[0])].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([RUM, KRITAN.BILD, R + 'paketlock/cut/paketlock.png', ...Object.values(SAK).map(s => s[0])].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   const { RADER, ROST } = await (await fetch('/avsnitt/051-leoparden-vaknar-pa-julafton/scener/rader.json')).json();
   ROSTER = ROST; let acc = 0;
   RAD_L = RADER.map(r => { const s = acc; acc += r.d; return { ...r, s }; });

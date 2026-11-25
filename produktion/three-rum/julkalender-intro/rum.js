@@ -5,7 +5,7 @@
 // Effekterna: bärens små ljus i girlangen tindrar, glitter i snön, dagens lucka får en lysande guldram, vickar två gånger och
 // sprider krit-gnistor när kaninen pekar, och när den öppnas strömmar varmt ljus och gnistor ut medan kameran glider in.
 // Sist fyller öppningen bilden exakt med innehållets första bild (forst.png), så att filmen kan klippas in där (skarva.sh).
-//   ?lucka=24 (standard)  ?inne=<bild bakom luckan>
+//   ?lucka=24 (standard)  ?inne=<bild bakom luckan>  ?del=slut (outrot)  ?slut=vi-ses-i-morgon|vi-ses-snart|alla-luckor
 // Allt räknas ur t (window.seek), ingen requestAnimationFrame-tid.
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -18,6 +18,8 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 const Q = new URLSearchParams(location.search), SNABB = Q.has('snabb');
 const N = +(Q.get('lucka') || 24), INNE = Q.get('inne') || '/produktion/youtube/shorts/jul/24-bjornen-vaknar-pa-julafton/forst.png';
 const SIST = INNE.replace(/forst\.png$/, 'sist.png'), DEL = Q.get('del') === 'slut' ? 'slut' : 'intro';   // ?del=slut: stängningen (outro)
+// ?slut= som lucka.js slut: 'vi-ses-i-morgon' (vanliga luckor), 'vi-ses-snart' (julafton), 'alla-luckor' (lucka 24, standard där)
+const SLUTTYP = Q.get('slut') || (N === 24 ? 'alla-luckor' : 'vi-ses-i-morgon'), ALLA = SLUTTYP === 'alla-luckor';
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080;
 const $ = id => document.getElementById(id);
 const kl = (a, b, x) => Math.min(b, Math.max(a, x)), lerp = (a, b, k) => a + (b - a) * k;
@@ -49,6 +51,9 @@ async function tider() {
   const dA = await Promise.all([['alla-luckor-oppnade', 1.9], ['det-var-allt', 2.0], ['hurra-god-jul', 1.8]].map(([f, r]) => langd(`${ROST}/${f}.m4a`, r)));
   T0 = OPPEN + 3; STANG = [T0, T0 + 0.8]; UT = [T0 + 0.8, T0 + 1.7]; IGEN = [T0 + 1.9, T0 + 2.7];
   RA = [T0 + 3.0]; RA[1] = RA[0] + dA[0] + 0.5; RA[2] = RA[1] + dA[1] + 0.6; VINKUT = RA[2] - 0.3; SLUT = RA[2] + dA[2] + 1.6;
+  // vanliga luckor (lucka.js slut utan alla-luckor): luckan stängs, kameran backar, kaninen vinkar från UT[0], "Vi ses i morgon!" vid
+  // STANG[0] + 0,5, slut 2,4 s efter T0. Ingen lucka öppnas igen och inga "Hurra!".
+  if (!ALLA) { IGEN = [1e9, 1e9 + 1]; RA = [1e9, 1e9, 1e9]; VINKUT = UT[0]; SLUT = T0 + 2.4; }
   if (DEL === 'slut') OFFSET = Math.round(T0 * 30) / 30;
 }
 
@@ -91,7 +96,8 @@ const ruta = n => { const [k, r, s] = MUR[n], w = s * MW + (s - 1) * MG, x = MX 
   const [x0, y1] = varld(x, y), [x1, y0] = varld(x + w, y + w * 9 / 16); return { x0, x1, y0, y1, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 }; };
 const BAR = [[1791, 297], [1434, 310], [630, 316], [236, 338], [1002, 337], [2188, 343], [471, 383], [2029, 383], [1276, 387]];   // girlangens bär (mätta)
 const DJ = 0.30;   // plattans tjocklek (Sanna 25/11: lite tjockare, var 16 cm)
-const ZF = 0.022, DT = 0.008, E = 0.006, OPPEN_V = 100 * Math.PI / 180, TIDIGARE_V = 105 * Math.PI / 180;   // de tidigare dagarnas dörrar vikta längre bak (Sanna 25/11: inget staket av dörrar)   // dörrens baksida 22 mm framför tavlan, 8 mm tjock, 6 mm över karmen; öppen 100°
+const ZF = 0.022, DT = 0.008, E = 0.006, EY = 0.0052,   // EY: upp och ner bara 5,2 mm över, raderna har 11,8 mm springa (6 mm gick 1 mm in i luckan ovanför)
+  OPPEN_V = 100 * Math.PI / 180, TIDIGARE_V = 105 * Math.PI / 180;   // de tidigare dagarnas dörrar vikta längre bak (Sanna 25/11: inget staket av dörrar)   // dörrens baksida 22 mm framför tavlan, 8 mm tjock, 6 mm över karmen; öppen 100°
 const SIFFRA = ['M50 10 C15 10 10 60 10 80 C10 120 20 150 50 150 C80 150 90 120 90 80 C90 40 85 10 50 10 Z', 'M30 42 L60 10 L60 150',
   'M15 45 C15 0 85 0 85 45 C85 80 30 110 12 150 L90 150', 'M15 30 C30 0 85 5 82 42 C80 70 50 75 40 76 C60 76 90 85 88 115 C85 155 25 158 12 125',
   'M70 150 L70 10 L10 105 L92 105', 'M82 10 L25 10 L18 70 C40 55 88 60 88 105 C88 155 30 160 12 128',
@@ -120,6 +126,18 @@ function inreBild(w, h, im, n) {   // insidan bakom en öppnad lucka: papper, el
     x.fillStyle = g; x.fillRect(0, 0, w, h); }
   return c;
 }
+// Guldet över ikonerna (Sanna 25/11): ikonen som guldsiluett (vanlig blandning, så att den blir guld och inte bara ljusare) och ett
+// mjukt sken runt den (adderas). Samma placering som i inreBild. Används när kaninens blick sveper förbi och i slutet, en i taget.
+function ikonGuld(w, h, im) {
+  const s = Math.min(w * 0.62 / im.width, h * 0.66 / im.height), iw = im.width * s, ih = im.height * s, mask = canvas(w, h), mx = mask.getContext('2d');
+  mx.drawImage(im, (w - iw) / 2, (h - ih) / 2, iw, ih);
+  const g = canvas(w, h), gx = g.getContext('2d'); gx.drawImage(mask, 0, 0); gx.globalCompositeOperation = 'source-in'; gx.fillStyle = '#F7C948'; gx.fillRect(0, 0, w, h);
+  kornPa(gx, w, h, 128); gx.globalCompositeOperation = 'destination-in'; gx.drawImage(mask, 0, 0);
+  const sk = canvas(w, h), sx = sk.getContext('2d'); sx.filter = 'blur(16px)'; sx.drawImage(mask, 0, 0); sx.drawImage(mask, 0, 0); sx.filter = 'none';
+  sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#ffcf6a'; sx.fillRect(0, 0, w, h);
+  return [g, sk];
+}
+let ikonLjus = [];
 function bakBild() {   // dörrens baksida: varm gräddvit kartong med kritkorn, en tunn mörkare kant och en liten guldstjärna i mitten
   const w = 256, h = 144, c = canvas(w, h), x = c.getContext('2d'); x.fillStyle = '#F6E7C8'; x.fillRect(0, 0, w, h); kornPa(x, w, h, 128);
   x.strokeStyle = 'rgba(190,140,80,0.35)'; x.lineWidth = 6; x.strokeRect(3, 3, w - 6, h - 6);
@@ -182,6 +200,12 @@ async function byggTavla() {
       : (() => { const t = tex(inreBild(512, 288, dagar[n - 1], n)); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
           return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.32, 0.32, 0.32) }); })());
     inne.position.set(r.cx, r.cy, 0.003); inne.receiveShadow = !idag; scen.add(inne);
+    if (!idag && dagar[n - 1]) { const [gc, sc] = ikonGuld(512, 288, dagar[n - 1]), t1 = tex(gc), t2 = tex(sc);
+      for (const t of [t1, t2]) t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+      const fm = new THREE.MeshBasicMaterial({ map: t1, transparent: true, opacity: 0, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -1 });
+      const hm = new THREE.MeshBasicMaterial({ map: t2, transparent: true, opacity: 0, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending, polygonOffset: true, polygonOffsetFactor: -2 });
+      const pg = new THREE.PlaneGeometry(r.w, r.h), f = new THREE.Mesh(pg, fm), h = new THREE.Mesh(pg, hm);
+      f.position.set(r.cx, r.cy, 0.0034); h.position.set(r.cx, r.cy, 0.0038); scen.add(f, h); ikonLjus.push({ n, r, fm, hm }); }
     if (idag) { inneMesh = inne; const st = Object.assign(new THREE.Texture(sim), { colorSpace: THREE.SRGBColorSpace, needsUpdate: true, anisotropy: 8 });
       sistM = new THREE.MeshBasicMaterial({ map: st, toneMapped: false }); pappM = new THREE.MeshLambertMaterial({ map: tex(inreBild(512, 288)), emissive: new THREE.Color(0.12, 0.12, 0.12) }); }
     for (const [bx, by, px, py] of [[r.w + 2 * E, E, r.cx, r.y1 + E / 2], [r.w + 2 * E, E, r.cx, r.y0 - E / 2], [E, r.h, r.x0 - E / 2, r.cy], [E, r.h, r.x1 + E / 2, r.cy]]) {
@@ -189,7 +213,7 @@ async function byggTavla() {
     // dörren: gångjärnet i vänstra bakre kanten, öppnas mot kameran åt vänster
     const fram = tex(dorrBild(n, lim, idag ? 1920 : 768)); fram.wrapS = fram.wrapT = THREE.ClampToEdgeWrapping; fram.repeat.set(1, 1);
     const framM = new THREE.MeshLambertMaterial({ map: fram, emissiveMap: fram, emissive: new THREE.Color(0.2, 0.2, 0.2) });
-    const hoger = true, g = new RoundedBoxGeometry(r.w + 2 * E, r.h + 2 * E, DT, 2, 0.0025).translate((hoger ? -1 : 1) * (r.w + 2 * E) / 2, 0, DT / 2);
+    const hoger = true, g = new RoundedBoxGeometry(r.w + 2 * E, r.h + 2 * EY, DT, 2, 0.0025).translate((hoger ? -1 : 1) * (r.w + 2 * E) / 2, 0, DT / 2);
     const m = new THREE.Mesh(g, [sidaM, sidaM, sidaM, sidaM, framM, bakM]); m.castShadow = m.receiveShadow = true;
     const ga = new THREE.Group(); ga.position.set(hoger ? r.x1 + E : r.x0 - E, r.cy, ZF); ga.add(m); scen.add(ga);
     // inget går genom något: grannarna precis till vänster om dagens lucka (samma rader) står rakt ut i 85° i stället för att luta
@@ -462,7 +486,7 @@ function kanel(t) {
   const arm = mjuk((pek - 0.3) / 0.4) * sikte, gom = Math.sin(Math.PI * pek) * (pek < 1 ? 1 : 0);
   const par = x => [x, 0], s = -1, skutt = Math.sin(Math.PI * kl(0, 1, (t - PEK - 0.2) / 0.5)) * pek;
   const soker = mjuk((t - FRAGA - 0.3) / 0.4) * (1 - mjuk((t - PEK + 0.2) / 0.3)), u = mjuk((t - FRAGA - dD) / 1.5);
-  const r1 = ruta(1), r24 = ruta(24), dit0 = iKortet(512, FOT - 355, new THREE.Vector3(lerp(r1.cx, r24.cx, u), lerp(r1.cy, r24.cy, u), 0));
+  const r1 = ruta(1), rN = ruta(N), dit0 = iKortet(512, FOT - 355, new THREE.Vector3(lerp(r1.cx, rN.cx, u), lerp(r1.cy, rN.cy, u), 0));   // söker från 1 till dagens lucka
   const dit = dit0.map(d => 7 * d / Math.hypot(...dit0));
   // Lärdomarna från lekrummet (runda 7–8): inget av riggens vila (den tittar sig omkring utan syfte), blicken flyttas bara mot
   // tavlan och luckan. Lutningen går genom riggens delar (boj från fötterna, huvudet lutar emot med skak), inte genom att hela
@@ -536,11 +560,42 @@ function dagens(t) {
     km.color.set('#ffd27a').multiplyScalar(1.5 * k); hm.opacity = 0.55 * k; sm.opacity = 0.32 * k; });
 }
 
+// Ikonerna lyser (Sanna 25/11). I introt: blicken söker från lucka 1 till dagens lucka på "Vilken dag är det idag?", och varje ikon
+// den sveper förbi blänker svagt till (samma blick som i kanel(), bara x), så att barnens ögon följer sökandet fram till dagens lucka.
+// I slutet (alla luckor): på "Nu är alla luckor öppnade!" tänds ikonerna i guld en i taget från 1, och de lyser kvar och tindrar lugnt.
+function ikonGlod(t) {
+  const soker = mjuk((t - FRAGA - 0.3) / 0.4) * (1 - mjuk((t - PEK + 0.2) / 0.3)), u = mjuk((t - FRAGA - dD) / 1.5);
+  const gx = lerp(ruta(1).cx, ruta(N).cx, u), sv = soker * mjuk(u / 0.06) * (1 - mjuk((u - 0.9) / 0.1));
+  for (const { n, r, fm, hm } of ikonLjus) {
+    const b = sv * Math.exp(-(((gx - r.cx) / 0.1) ** 2));
+    const tn = RA[0] + 0.2 + 1.6 * (n - 1) / Math.max(1, N - 2), k = mjuk((t - tn) / 0.25), tin = 0.85 + 0.15 * Math.sin(t * 2.3 + n * 1.7);
+    const tand = t > T0 ? k : 0, pop = tand * (1 + 0.6 * Math.exp(-Math.max(0, t - tn) * 3.5));
+    fm.opacity = Math.max(0.5 * b, 0.9 * tand); hm.opacity = Math.max(0.45 * b, 0.5 * pop * tin);
+  }
+}
+
+// Stora suddiga flingor precis framför kameran medan den åker fram mot luckan (Sanna 25/11: mer djup innan luckan öppnas).
+// Sex mjuka skivor i kamerans eget rum, 0,3–0,7 m framför linsen, som driver lugnt nedåt och snett; borta innan dörren slås upp.
+let naraF = [];
+function byggNaraFlingor() {
+  const t = tex(glodBild());
+  for (let i = 0; i < 6; i++) { const m = new THREE.SpriteMaterial({ map: t, transparent: true, opacity: 0, depthWrite: false, depthTest: false, toneMapped: false, color: new THREE.Color(1, 1, 1.03) });
+    const sp = new THREE.Sprite(m); sp.renderOrder = 5; sp.visible = false; scen.add(sp);
+    naraF.push({ sp, m, x: (i % 3 - 1) * 0.28 + 0.12 * (slumpF(i, 61) - 0.5), y: 0.17 - 0.06 * slumpF(i, 62) + (i < 3 ? 0.05 : -0.04), d: 0.32 + 0.38 * slumpF(i, 63),
+      s: 0.05 + 0.04 * slumpF(i, 64), v: 0.06 + 0.05 * slumpF(i, 65), f: slumpF(i, 66) * 6.28, t0: Z0 - 0.3 + 0.9 * slumpF(i, 67) }); }
+}
+function naraFlingor(t) {
+  for (const f of naraF) { const u = t - f.t0, k = Math.min(mjuk(u / 0.5), 1 - mjuk((t - OPP0 + 0.35) / 0.4));
+    if (!(k > 0.001) || t >= T0) { f.sp.visible = false; continue; }
+    const lok = new THREE.Vector3(f.x * f.d + 0.03 * Math.sin(u * 1.3 + f.f) * f.d, (f.y - f.v * u) * f.d, -f.d);
+    f.sp.position.copy(cam.localToWorld(lok)); f.sp.scale.setScalar(f.s * f.d * 2.2); f.sp.visible = true; f.m.opacity = 0.42 * k; }
+}
+
 // ---------- kameran ----------
 // Helbild som glider långsamt in, en liten knuff mot dagens lucka när kaninen pekar, och sist åker kameran rakt in i öppningen
 // så att insidan fyller bilden precis när luckan är helt öppen (som lucka.js zoom). Kameran stannar framför dörrens svep.
 function kamera(t) {
-  const r = ruta(N), A = [new THREE.Vector3(1.55, 1.0, 3.3), new THREE.Vector3(0.43, 0.69, 0)], B = [new THREE.Vector3(1.05, 0.92, 3.5), new THREE.Vector3(0.44, 0.68, 0)];   // närmare (Sanna 24/11)
+  const r = ruta(N), A = [new THREE.Vector3(1.55, 1.0, 3.3), new THREE.Vector3(0.5, 0.69, 0)], B = [new THREE.Vector3(1.05, 0.92, 3.5), new THREE.Vector3(0.44, 0.68, 0)];   // närmare (Sanna 24/11)
   // A snett från höger, så att bara plattans högra kant syns (Sanna 25/11); driver lugnt till nästan rakt fram (Sanna 25/11: mindre kameraåkning)
   const dorr = new THREE.Vector3(r.cx, r.cy, 0.003), fyll = 0.985 * (r.h / 2) / Math.tan(cam.fov * Math.PI / 360);   // 1,5 % för nära: ingen karmkant i sista rutorna
   const C = [B[0].clone().lerp(new THREE.Vector3(r.cx, r.cy + 0.25, 2.6), 0.1), B[1].clone().lerp(dorr, 0.15)];
@@ -603,7 +658,7 @@ async function seek(t) {
   kort.rotation.y = Math.atan2(cam.position.x - KANEL.x, cam.position.z - KANEL.z); kort.updateMatrixWorld();
   const d = new THREE.Vector3().subVectors(KANEL, cam.position).dot(cam.getWorldDirection(new THREE.Vector3())) || 3;
   const s = 540 / (d * Math.tan(cam.fov * Math.PI / 360)) * ENHET;
-  kanel(t); dagens(t);
+  kanel(t); dagens(t); ikonGlod(t); naraFlingor(t);
   $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);
   $('boilStyrka').setAttribute('scale', (2.5 / s).toFixed(2));   // line boil 2,5 px i bild
   const ru = 3 / s;
@@ -627,7 +682,7 @@ async function seek(t) {
 }
 
 window.ready = (async () => {
-  await tider(); await byggVarld(); await byggTavla(); await byggKanel(); byggGnistor();
+  await tider(); await byggVarld(); await byggTavla(); await byggKanel(); byggGnistor(); byggNaraFlingor();
   const S = 'assets/ljud/effekter/';
   // Bara kalenderns egna ljud. I den skarvade filmen (skarva.sh) ligger den gamla filmens ljud under (samma tider), och de nya
   // effekterna läggs ovanpå: tindra när guldramen tänds, glitter när ljuset strömmar ut.
@@ -638,18 +693,32 @@ window.ready = (async () => {
     { t: Z0 + 0.4, fil: `${ROST}/nu-oppnar-vi.m4a`, vol: 2.5 }, { t: Z0, fil: S + 'swoosh/swoosh-1.m4a', vol: 1.5 }, { t: OPP0 + 0.1, fil: S + 'ding/ding-1.m4a', vol: 1.3 },
     { t: Z0, fil: 'assets/ljud/musik/jul/jul-oppning.m4a', vol: 0.7 }, ...window.LJUD_NYA];
   const M = 'assets/ljud/musik/jul/';
-  window.LJUD_SLUT = [{ t: RA[2] - 0.15, fil: S + 'tindra/tindra-3.m4a', vol: 0.9 }];   // nytt: tindra när guldramen lyser på "Hurra!"
-  if (DEL === 'slut') window.LJUD = [{ t: STANG[0], fil: S + 'swoosh/swoosh-1.m4a', vol: 1.4 }, { t: STANG[0], fil: M + 'jul-julafton.m4a', vol: 0.7 },
+  window.LJUD_SLUT = ALLA ? [{ t: RA[2] - 0.15, fil: S + 'tindra/tindra-3.m4a', vol: 0.9 }, { t: RA[0] + 0.2, fil: S + 'glimt/glimt-1.m4a', vol: 0.7 }] : [];   // glimt: ikonerna tänds en i taget   // nytt: tindra när guldramen lyser på "Hurra!"
+  if (DEL === 'slut' && !ALLA) window.LJUD = [{ t: STANG[0], fil: S + 'swoosh/swoosh-1.m4a', vol: 1.4 },
+    { t: STANG[0], fil: M + (SLUTTYP === 'vi-ses-i-morgon' ? 'jul-avslut.m4a' : 'jul-julafton.m4a'), vol: 0.7 },
+    { t: STANG[0] + 0.5, fil: `${ROST}/${SLUTTYP}.m4a`, vol: 2.5 }].map(c => ({ ...c, t: c.t - OFFSET }));
+  else if (DEL === 'slut') window.LJUD = [{ t: STANG[0], fil: S + 'swoosh/swoosh-1.m4a', vol: 1.4 }, { t: STANG[0], fil: M + 'jul-julafton.m4a', vol: 0.7 },
     { t: IGEN[0], fil: S + 'ding/ding-1.m4a', vol: 1.3 }, { t: RA[0], fil: `${ROST}/alla-luckor-oppnade.m4a`, vol: 2.5 }, { t: RA[1], fil: `${ROST}/det-var-allt.m4a`, vol: 2.5 },
     { t: RA[2], fil: `${ROST}/hurra-god-jul.m4a`, vol: 2.5 }, ...window.LJUD_SLUT].map(c => ({ ...c, t: c.t - OFFSET }));
   window.DURATION = DEL === 'slut' ? (Math.round(SLUT * 30) - Math.round(T0 * 30)) / 30 : OPPEN; window.OPPEN = OPPEN;
-  window.TIDER = { VINK, LATE, FRAGA, PEK, Z0, OPP0, OPP1, OPPEN, T0, IGEN0: IGEN[0], RA, SLUT, slutRutor: Math.round(SLUT * 30) - Math.round(T0 * 30) };
+  window.TIDER = { VINK, LATE, FRAGA, PEK, Z0, OPP0, OPP1, OPPEN, T0, IGEN0: IGEN[0], RA, SLUT, ALLA, slutTindra: ALLA ? RA[2] - 0.15 - Math.round(T0 * 30) / 30 : null, slutRutor: Math.round(SLUT * 30) - Math.round(T0 * 30) };
   // QA: kameran mot dörrens svep (inget går genom något): minsta avstånd från kameran till dagens dörr, var 1/120 s
   window.koll = () => { let min = 9; const { ga, r } = DORR[N];
     for (const t of [...Array(Math.ceil((OPP1 - Z0) * 120) + 1).keys()].map(i => Z0 + i / 120).concat([...Array(241).keys()].map(i => T0 + i / 120))) { kamera(t); dagens(t); ga.updateMatrixWorld();
-      const lok = ga.worldToLocal(cam.position.clone()), x = kl(-r.w - 2 * E, 0, lok.x), y = kl(-r.h / 2 - E, r.h / 2 + E, lok.y), z = kl(0, DT, lok.z);
+      const lok = ga.worldToLocal(cam.position.clone()), x = kl(-r.w - 2 * E, 0, lok.x), y = kl(-r.h / 2 - EY, r.h / 2 + EY, lok.y), z = kl(0, DT, lok.z);
       min = Math.min(min, Math.hypot(lok.x - x, lok.y - y, lok.z - z)); }
     return min; };
+  // Alla dagar (Sanna 25/11): kameran mot varje öppen dörr, och dagens dörr genom hela svepet mot de öppna grannarna (inget går genom något)
+  window.kollAlla = () => { const box = (d, v) => { const l = d.ga.worldToLocal(v.clone()), w = d.r.w + 2 * E, h = d.r.h / 2 + EY;
+      return Math.hypot(l.x - kl(-w, 0, l.x), l.y - kl(-h, h, l.y), l.z - kl(0, DT, l.z)); };
+    const oppna = Object.keys(DORR).map(Number).filter(n => n < N).map(n => DORR[n]); let kam = 9, kamN = 0, dorr = 9, dorrN = 0;
+    for (const t of [...Array(Math.ceil((OPP1 - Z0) * 60) + 1).keys()].map(i => Z0 + i / 60)) { kamera(t); dagens(t); scen.updateMatrixWorld();
+      for (const d of [...oppna, DORR[N]]) { const a = box(d, cam.position); if (a < kam) { kam = a; kamN = +Object.keys(DORR).find(k => DORR[k] === d); } }
+      const { ga, r } = DORR[N], w = r.w + 2 * E, h = r.h / 2 + EY;
+      for (const [lx, ly, lz] of [[-w, -h, 0], [-w, h, 0], [-w, -h, DT], [-w, h, DT], [-w / 2, -h, DT], [-w / 2, h, DT], [-w, 0, DT], [-w * 0.75, h, 0], [-w * 0.75, -h, 0]]) {
+        const v = ga.localToWorld(new THREE.Vector3(lx, ly, lz));
+        for (const d of oppna) { const a = box(d, v); if (a < dorr) { dorr = a; dorrN = +Object.keys(DORR).find(k => DORR[k] === d); } } } }
+    return { kam: +kam.toFixed(3), kamN, dorr: +dorr.toFixed(3), dorrN, gx: KANEL.x }; };
   await seek(+(Q.get('t') || 0));
   window.seek = seek;
   return true;
