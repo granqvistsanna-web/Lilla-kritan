@@ -739,9 +739,9 @@
  },
  "J04": {
   "duration": 176.3,
-  "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka-liten.mp4",
-  "rendered": "2026-11-19 07:54 (runda 3: rent inåk från vänster (0:42), grön halsduk på björnen som i tittut)",
-  "status": "klar",
+  "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka.mp4",
+  "rendered": "2026-11-25 13:20 (QA 25/11: säcken kastas i båge över luvan (björnens tass på den), björnen ur bild/helt ansikte i närbilderna 1:34 och 2:41, boil 2,5/zoom 6/s, skutt-ljud 0:17)",
+  "status": "granska",
   "stills": [
    {
     "label": "0:29",
@@ -768,7 +768,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9fab59d51b9ddc56010dcaabfe8b06a8.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J04-1119-0754.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J04-1125-1320.mp4",
   "videoId": "088d118be17591e25241f4de714abb2b",
   "name": "Grisen åker pulka"
  },
