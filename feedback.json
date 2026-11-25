@@ -9239,9 +9239,10 @@
   "sec": 227,
   "tags": [],
   "note": "try to avoid overlap of klossar",
-  "fixed": false,
+  "fixed": true,
   "at": 1795283017379,
-  "render": "2026-11-21 18:33 (Snabb förhandsvisning 21/11 kväll: B-klossen större och mitt i bild, björnskissen med nos, mun, fyllda ögon och öroninsida, kritan kommer fram och nickar när Malin pratar med den (0:48 och 1:59), ny beige ko ur Flow med fläckar och mule i skissen.)"
+  "render": "2026-11-21 18:33 (Snabb förhandsvisning 21/11 kväll: B-klossen större och mitt i bild, björnskissen med nos, mun, fyllda ögon och öroninsida, kritan kommer fram och nickar när Malin pratar med den (0:48 och 1:59), ny beige ko ur Flow med fläckar och mule i skissen.)",
+  "fixedAt": 1795614431710
  },
  "j7yxuothaemwro2jjj": {
   "ep": "ABC-b3",
@@ -9249,9 +9250,10 @@
   "sec": 155,
   "tags": [],
   "note": "polish shadow of items",
-  "fixed": false,
+  "fixed": true,
   "at": 1795341661039,
-  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)"
+  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)",
+  "fixedAt": 1795614431710
  },
  "egmgw23pjrmwro2xph": {
   "ep": "ABC-b3",
@@ -9259,9 +9261,10 @@
   "sec": 157,
   "tags": [],
   "note": "currently shadows follow objects but should stay on floor",
-  "fixed": false,
+  "fixed": true,
   "at": 1795341679397,
-  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)"
+  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)",
+  "fixedAt": 1795614431710
  },
  "qfpwlnky99mwro3f0a": {
   "ep": "ABC-b3",
@@ -9269,9 +9272,10 @@
   "sec": 165,
   "tags": [],
   "note": "try to avoid blocks overlapping, how can that be done?",
-  "fixed": false,
+  "fixed": true,
   "at": 1795341701818,
-  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)"
+  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)",
+  "fixedAt": 1795614431710
  },
  "xu6c92wy7gmwrx9u6f": {
   "ep": "J19",
