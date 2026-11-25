@@ -1413,10 +1413,10 @@
   "name": "Rosa sången"
  },
  "J11": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J11-1125-1251.mp4",
-  "duration": 159.0,
-  "rendered": "2026-11-25 12:52 (016 QA 25/11 (--snabb): hunden sover på sidan, närbilder utan halv figur i kanten, svagare line boil. Hela 016, luckan byggs om efter ja)",
-  "file": "avsnitt/016-blinka-lilla-stjarna/film/avsnitt-016-grovklipp.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J11-1125-1328.mp4",
+  "duration": 161.0,
+  "rendered": "2026-11-25 13:28 (016 slutrenderad 25/11: hunden sover på sidan, närbilder utan halv figur i kanten, line boil 2,5 px 6/s)",
+  "file": "produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/21-blinka-lilla-stjarna.mp4",
   "status": "granska",
   "name": "Blinka lilla stjärna"
  },
