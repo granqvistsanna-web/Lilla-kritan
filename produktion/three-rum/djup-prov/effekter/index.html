@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Djup-kit: effekterna</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- Provsida för verktyg/djup3d.js: alla effekter i fyra rutor, kameran pushar lugnt så att djupet syns.
+     Uppe till vänster snö i fönstret (052), uppe till höger ånga och skum (054), nere till vänster stråle och tvålbubblor (057),
+     nere till höger klossen och bollen som studsar och rullar med kontaktskugga (053).
+     Rendera: node avsnitt/056-raven-gar-och-lagger-sig/scener/render.mjs produktion/three-rum/djup-prov/effekter [--snabb] -->
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs><clipPath id="fonster"><circle cx="420" cy="250" r="170"/></clipPath>
+    <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient></defs>
+  <g id="kamera">
+    <g id="platta" data-djup-ramp="760:-0.1 900:0 1080:0.16"></g>
+    <g id="vagg" data-djup="-0.1"></g>
+    <g id="bak"></g>
+    <g id="fram"></g>
+  </g>
+  <g id="ram"></g>
+</svg>
+<script src="/verktyg/djup3d.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const DURATION = 12; window.DURATION = DURATION; window.LJUD = [];
+let ZOOM = 1;
+function kamera([z, cx, cy]) { ZOOM = z;
+  const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
+  $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${z})`); }
+const kloss = r => `<rect x="${-r}" y="${-r}" width="${2 * r}" height="${2 * r}" rx="${r * 0.18}" fill="#F2C14E" stroke="#fff" stroke-width="5"/><rect x="${-r * 0.6}" y="${-r * 0.6}" width="${r * 1.2}" height="${r * 1.2}" rx="${r * 0.12}" fill="none" stroke="#D9A23A" stroke-width="4"/>`;
+const boll = r => `<circle r="${r}" fill="#E8584A" stroke="#fff" stroke-width="5"/><path d="M${-r} 0 Q0 ${r * 0.5} ${r} 0" fill="none" stroke="#FFD9C9" stroke-width="6"/>`;
+function rita(t) {
+  ['platta', 'vagg', 'bak', 'fram', 'ram'].forEach(n => $(n).innerHTML = '');
+  kamera(djup.kamera([1, 960, 540], t, 'push'));
+  $('platta').innerHTML = `<rect x="-100" y="-100" width="2120" height="870" fill="#2F8F8A"/><rect x="-100" y="760" width="2120" height="420" fill="#E9C48E"/>
+    ${Array.from({ length: 9 }, (_, i) => `<line x1="-100" y1="${790 + i * 34}" x2="2020" y2="${790 + i * 34}" stroke="#D4AD76" stroke-width="3"/>`).join('')}
+    <rect x="1080" y="560" width="620" height="200" rx="40" fill="#F7F3EA" stroke="#fff" stroke-width="6"/><rect x="1110" y="590" width="560" height="60" rx="20" fill="#BFE3F5"/>
+    <rect x="160" y="640" width="180" height="40" rx="8" fill="#9DD6C9"/><rect x="235" y="560" width="30" height="80" rx="8" fill="#C9D3DA"/><rect x="235" y="560" width="110" height="26" rx="10" fill="#C9D3DA"/>`;
+  // snö i fönstret (052)
+  $('vagg').innerHTML = `<circle cx="420" cy="250" r="190" fill="#F7F3EA"/><g clip-path="url(#fonster)"><rect x="200" y="30" width="440" height="440" fill="#5B6FB3"/>
+    ${djup.sno({ ruta: [250, 80, 340, 340], t, vard: -0.1 })}</g>`;
+  // ånga och skum över badet (054): ånga bakom och framför, skummet glittrar i ljuset från fönstret
+  $('bak').innerHTML = djup.anga({ x: 1390, y: 600, w: 420, t, o: 0.45 }) + djup.skum({ x: 1390, y: 600, w: 520, t, ljus: [420, 250] });
+  $('fram').innerHTML = djup.anga({ x: 1390, y: 640, w: 300, t, p: 0.12, o: 0.3, fro: 5, n: 5 });
+  // vattenstrålen och tvålbubblorna (057): kranen öppnas vid 1 s
+  const pa = Math.max(0, Math.min(1, (t - 1) / 0.5)), bt = Math.max(0, t - 1.5);
+  $('bak').innerHTML += djup.strale({ x0: 330, y0: 586, x1: 336, y1: 640, bredd: 18, t, pa, zoom: ZOOM }) + `<g opacity="${Math.max(0, Math.min(1, bt / 0.8)).toFixed(3)}">${djup.tvalbubblor({ x: 300, y: 620, t, n: 8, ljus: [420, 250] })}</g>`;
+  // klossen och bollen (053): kastas in, studsar lugnt, rullar/tippar och stannar; kontaktskugga på golvet
+  const GOLV = 930, rk = 46, rb = 40;
+  const k = djup.studs({ t, t0: 1.5, fran: [760, 700], fart: [260, -300], golv: GOLV, r: rk, form: 'kloss', till: 1180 });
+  const b = djup.studs({ t, t0: 3, fran: [1860, 820], fart: [-300, -150], golv: GOLV, r: rb, form: 'rund', till: 1400 });
+  $('fram').innerHTML += djup.skugga({ x: k.x, golv: GOLV, hojd: k.hojd, r: rk }) + djup.skugga({ x: b.x, golv: GOLV, hojd: b.hojd, r: rb })
+    + `<g filter="url(#djup-boil)">${djup.sak(k, kloss(rk), rk)}${djup.sak(b, boll(rb), rb)}</g>`;
+  $('ram').innerHTML = '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)"/>';
+  djup.ram(t);
+}
+djup.init(document.querySelector('svg'));
+djup.skott(() => [1, 960, 540], DURATION);
+window.seek = t => rita(t);
+window.ready = Promise.resolve(true);
+rita(Number(new URLSearchParams(location.search).get('t') || 0));
+</script>
+</body>
+</html>

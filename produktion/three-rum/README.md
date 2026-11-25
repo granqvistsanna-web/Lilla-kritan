@@ -199,3 +199,33 @@ Samma intro som `lucka.js` (liggande) med exakt samma tider och repliker, byggt 
 - **Kanel enligt runda 7–8:** ingen rigg-vila (blicken flyttas bara mot tavlan och luckan), lutningen går genom `boj` + `skak` i stället för `luta` på hela kortet, armarna hänger 22° lägre intill sidorna när de inte används, uttryckens egna armar är borta, viktflytt i 4,7 s-takt med huvudet och öronen efter, inga blinkningar inom 0,45 s från en ändring och ett lugnare skutt.
 - QA: boil 3,7 px/s, inget svart, fryst eller tyst; kameran som närmast 0,29 m från dörren.
 - **Rötterna (24/11, Sanna: "roots of legs and tail is showing"):** benens långa rötter tonas bort i sin yttre ände (osynliga 62 enheter in i kroppen från leden, fulla 28 in), så den raka kanten där roten slutar syns inte när benen spretar. Leden och roten närmast kroppen är orörda. Svansens bruna rot-skiva tas bort på färgen (med 6 enheter runt om), bara tofsen är kvar. Armarna lämnas: deras rot ligger utanför kroppen i gången och fäster armen. Kanten (kant.js) byggs av en brantare alfa (under ca 0,4 ingen kant), annars blev tonade rötter bleka. Gäller ?ricks och ?prov. ?prov har ?djup alltid (Sanna: djup före puff).
+
+## Djup-kit (`verktyg/djup3d.js`, prov 2026-11-25, väntar på Sannas ja)
+Ger de platta SVG-scenerna djup och en liten bank med effekter. Det är ingen 3D-motor: plattan är en enda målad bild och effekterna måste ligga *mellan* scenens lager (regnet bakom fönsterkarmen, ljuset under kritan) och få husets filter, så djupet kommer från lager som rör sig olika mycket med kameran (parallax). Allt räknas på `t`, så delade renderingar blir lika. Figurerna är fortfarande platta urklipp som aldrig vänds.
+
+- **Prov:** `djup-prov/sovrummet/` är en kopia av 056 med djup, regn i lager och lampsken. `djup-prov/fore/` är samma kopia utan modulen. Filmen `djup-prov/djup-prov-056.mp4` visar dem sida vid sida (17–41 s och 99–109 s, 34 s). `djup-prov/effekter/` visar de andra effekterna (snö, ånga, skum, stråle, tvålbubblor, studs). Rendera med 056:s render.mjs:
+```bash
+node avsnitt/056-raven-gar-och-lagger-sig/scener/render.mjs produktion/three-rum/djup-prov/sovrummet --snabb --fran 17 --till 41
+```
+
+### Koppla in (en scen)
+1. `<script src="/verktyg/djup3d.js"></script>` efter kant.js och kritan-ritar.js.
+2. Ge lagren djup: `p = 0` är figurernas plan, minus är längre bort och plus närmare.
+   - Plattan: `<g id="platta" data-djup-ramp="810:-0.1 905:0 1080:0.18">`. Plattan delas i band var 30:e px. Väggen (ovanför golvlinjen, här y 810) ligger på −0,1, och golvet når 0 vid figurernas fotlinje (här y 905), så fötterna glider aldrig mot golvet. Mät golvlinjen och fotlinjen i scenens egen platta.
+   - Väggens saker och väggskuggan: `data-djup="-0.1"`, samma som väggen. Förgrundssaker: `data-djup="0.12"`.
+3. När sidan laddats: `djup.init(svg)` och `djup.skott(t => kameranVid(t), DURATION)`. `kameranVid` är scenens egen kamera vid tiden t, eller `null` på papperet i ritintrot. Klippen hittas där kamerans värde byts.
+4. I varje bildruta: `kamera(djup.kamera(K, t))` i stället för `kamera(K)`, och `djup.ram(t)` sist (före `kant.uppdatera()`, och inte på papperet). Varje skott får en lugn rörelse över hela sin längd: helbild = push in 4 %, halvnära = glid 50 px, närbild = settle. Rörelsen börjar och slutar stilla, och kameran stannar inne i bilden. En egen rörelse ges med `djup.kamera(K, t, 'push'|'glid'|'settle'|'still')`.
+5. Effekterna returnerar SVG-text. Lägg dem med scenens `lagg(lager, …)` och ge `vard` = lagrets eget djup.
+
+### Recept per effekt
+- **Regn i fönstret (056):** i fönstrets klipp: `djup.regn({ ruta: [cx - r, cy - r, 2 * r, 2 * r], vard: -0.1 })`. Tre lager (−0,8 mjukt och tunt, −0,45, −0,25 tydligast) glider bakom karmen, och droppar rinner långsamt nerför rutan (`glas: 5`, `0` stänger av). Moln längst bort: `djup.lagerTr(-0.8)` på en grupp.
+- **Snö i fönstret (052):** `djup.sno({ ruta: […], vard: -0.1 })`, samma tre lager, flingorna svajar.
+- **Lampsken (056):** `djup.lampsken({ x, y, r, k, golv, p })`. (x, y) är skärmen, `r` är hur långt ljuset når och `k` 0–1 om lampan är tänd. Skenet växer ut i rummet när k går upp, så ge k en ramp på ca 1 s när lampan tänds (`del(klick, klick + 1.1, t)`). `golv` ger en ljuspöl på golvet. Det andas 3 % på 4 s och fladdrar aldrig. Lägg det i nattlagret, ovanpå mörkret.
+- **Ånga (054):** `djup.anga({ x, y, w, o: 0.45 })` bakom lammet och en tunnare framför (`p: 0.12, o: 0.3, fro: 5, n: 5`). Molnen stiger, växer och tonas bort.
+- **Skum som glittrar (054):** `djup.skum({ x, y, w, ljus: [lx, ly] })` längs vattenytan. Varje bubbla har en ljus prick och en pastellskimrande kant mot ljuset, och en liten kritstjärna tänds kort på ljussidan, aldrig på alla bubblor samtidigt.
+- **Vattenstråle (057):** `djup.strale({ x0, y0, x1, y1, bredd, pa, zoom: ZOOM })`. Strålen går från kranens mun till händerna eller vattnet. `pa` 0→1 när kranen öppnas (vattnet faller ut), 1→2 när den stängs (slutet faller av). Den har vit kant, rinnande ljusa streck, stänk och ringar.
+- **Tvålbubblor (057):** `djup.tvalbubblor({ x, y, n: 7, ljus })`. Bubblorna svävar upp och åt sidan, på olika djup, och tonas bort i stället för att spricka. Tona in hela gruppen när de börjar.
+- **Studs och rull med kontaktskugga (053):** `const s = djup.studs({ t0, fran: [x, y], fart: [vx, vy], golv, r, form: 'kloss'|'rund', till })`. Saken faller, studsar lugnt (e 0,32, högst ett par studsar), rullar (rund) eller glider och tippar till en hel sida (kloss) och stannar vid `till`. Rita den med `djup.sak(s, svg, r)` och skuggan under med `djup.skugga({ x: s.x, golv, hojd: s.hojd, r })`. `s.traffar` ger tiderna för dunsljuden. Studsen går mot golvet, så saken går aldrig genom golvet. Kolla att banan inte korsar en lådkant (ge den `till` före kanten, eller låt den falla ner bakom kanten som i lekrummet).
+
+### Husregler som modulen följer
+Line boil (`#djup-boil` på strålen och sakerna) är 2,5 px i bild delat med zoomen, med ny brusbild 6 gånger/s. Strålens vita kant är 3 px + 1 % av höjden i bild (kant.js-regeln); bilder och figurer får sin kant av kant.js som vanligt. Varm ton, vinjett och papperskorn ligger kvar i scenen och i mastringen. Modulen lägger ingen egen helbildstextur. Rörelserna är lugna: inga blixtar, inget fladder, och inget spricker.
