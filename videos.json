@@ -1573,10 +1573,10 @@
   "name": "Kaninen bygger torn i snön"
  },
  "J24": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J24-1125-1241.mp4",
-  "duration": 229.4,
-  "rendered": "2026-11-25 12:42 (Förhandsvisning 25/11 (QA): leoparden hoppar i högre båge över nattduksbordet och klockan (0:53, 1:23, 1:39), kameran följer med uppåt så att huvudet stannar i bild. Utan julkalenderns ram.)",
-  "file": "avsnitt/051-leoparden-vaknar-pa-julafton/scener/julsovrummet/julsovrummet.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J24-1125-1330.mp4",
+  "duration": 252.1,
+  "rendered": "2026-11-25 13:31 (Slutrenderad 25/11: leopardversionen (turkos vägg, elefanten, röda strumpor) med julkalenderns ram och sista avslut (alla luckor öppna, guldramen, kaninen vinkar). Högre hopp över nattduksbordet (0:53, 1:23, 1:39 i filmen). 252,1 s, −16,1 LUFS.)",
+  "file": "produktion/youtube/shorts/jul/24-bjornen-vaknar-pa-julafton/24-bjornen-vaknar-pa-julafton.mp4",
   "status": "granska",
   "name": "J24 · 051 Leoparden vaknar på julafton"
  },
