@@ -80,7 +80,22 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 - Armarna: vinkningen 90° ± 6° i 1,3 gånger/s (var 124° ± 12°), `hurra` 84° i den här scenen (riggen har 100°).
 - Rösterna: `produktion/ljud-original/roster/abc-recept-3-adbe/` (Malin `malin-1.mp3`, bokstaven `louise-1.mp3`, *"a, a, apa!"* ur `louise-2.mp3`). `n-titta-noga` är delad i `n-titta-noga-1` och `n-var-ar-apan`.
 
+## E:s riktning 2026-11-25 (Sanna: "A:s och D:s repliker är ok, spela in dem i ElevenLabs")
+
+Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`), på samma sätt som B. Scenen före ändringen ligger i git, filmen i `aldre/abc-a-recept-3-fore-e-riktning.mp4`.
+
+- **Introt är ett samtal:** *"Titta, kritan ritar en bokstav."* → *"Bokstaven A."* → A puffar upp (`a-glad`) → *"Hej, A!"* → `a-halsar` (A vickar) → *"Ska vi leka, A?"* → `a-ja` (två hopp) → *"Ja! Vad kul!"* → A flyger till hörnet medan Malin säger *"Vad ritar kritan nu?"*. *"Det är ju A!"*, *"Hur låter A?"*, *"Kritan ritar något på bokstaven A."*, *"Hej! A! A!"* och *"a, a, A!"* går bort.
+- **A säger bara A, i fem toner**, och tycker till före Malin: `a-ja` efter apan, apelsinen och ananasen (*"Hur låter A i apa?"*, *"Och i apelsin?"* och märkets *"a, a, apa!"* … går bort), `a-undrar` + `a-nej` efter *"En bil!"*, `a-nej` efter hunden i muren, `a-ja` i slutet och `a-halsar` samtidigt som Malins *"Hej då! Vi ses snart!"*.
+- **A:s ansikte är större:** `HUVUD` [0, -95, 42, 52] (var [0, -110, 28, 38]), rosa kinder, större mun. Stillbild: ansiktet ryms i A:ets topp.
+- **Snabbare teckningar:** apan `tempo` 0,4 (konturen 2,6 s, hela apan med detaljerna ca 6,5 s, var ca 15), bilen 0,42, apelsinen och ananasen 0,45. Gissningspausen 4 → 3,3 s.
+- **Mjukare skuggor** som E och B (ca 60 % av förra styrkan, klossarnas lite bredare).
+- **Lugnare gömlek:** vändningen 0,9 s, varje byte 1,6 s med 0,7 s vila, båda klossarna snurrar ett varv medan de byter, pausen 2,8 s (`VANDSEK`, `BYTSEK`). `krock.mjs`: inga krockar.
+- **Musiken** i introt och berättelsen 0,5 → 0,38.
+- **Röster (inspelade 2026-11-25 av Sanna):** `produktion/ljud-original/roster/abc-a-intro-2026-11-25/`, delade med D (A:s rad och toner först i varje tagning). *"Ska vi leka, A?"* är `malin-a-och-d.mp3` 0,04–1,58. A:s toner är **Olivia** (*Bright, Youthful and Engaging*, v4; samma röst som E och B, Sanna 2026-11-25: "No, redo with Olivia"), klippta ur `olivia-1.mp3` (A:s fem toner först, sedan D:s) efter tonhöjden: `a-glad` 0,00–0,69 (hög, fallande), `a-halsar` 0,89–1,63 (hög–låg), `a-ja` 1,84–3,07 (två höga *A!*), `a-nej` 3,46–4,00 (lågt, fallande), `a-undrar` 4,47–4,86 (stiger). Louise-tagningarna i samma mapp används inte. `n-ja-vad-kul` och `n-vad-ritar-nu` är E:s klipp. Whisper hör *"Ah!"*, *"Ah, ah!"*, *"Aa."*, *"A."* (och *"Ey!"* för `a-glad`, lite e-färgat i det korta klippet) och *"Ska vi leka? Ja."*; ingen har lyssnat i blandningen.
+
 ## Öppet
+
+- `a-glad` hörs som *"Ey!"* av whisper. Lyssna om det låter som A; annars görs den om.
 
 - **Malins tagning:** en tagning med alla 61 rader ur `malin-a-recept-3.txt`, delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-a-recept-3/`. Gjort 2026-11-21: tagning 1 av 2 valdes (tagning 2 sa "Deal" på "Bil?").
 - **Förlagan E (rör inte härifrån):** E:s `ELSA`-mått (nederkant 328,84) lägger elefantens kontur ca 15 enheter för lågt. Riggen ritas med fötterna (`FOTTER` 930) i y 252, så det borde vara 675,84 + 252 − 0,66 · 930 = 314,04. A räknar så (`ALFONS`). Samma rättelse behövs i E och i B om B kopierade E:s tal.

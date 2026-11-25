@@ -1,16 +1,15 @@
 p-hej-hej  [warm] Hej hej!
 p-kritan-ritar  [warm] Titta, kritan ritar en bokstav.
-p-det-ar-a  [excited] Det är ju A!
 p-bokstaven-a  [warm] Bokstaven A.
 n-hej-a  [warm] Hej, A!
-n-hur-later  [curious] Hur låter A?
-p-kritan-ritar-nagot  [warm] Kritan ritar något på bokstaven A.
+n-ska-vi-leka  [curious] Ska vi leka, A?
+n-ja-vad-kul  [happy] Ja! Vad kul!
+n-vad-ritar-nu  [curious] Vad ritar kritan nu?
 p-hmm  [curious] Hmm …
 p-vem  [curious] Vem är det?
 p-apa  [excited] Apa!
 p-a-a-apa  [playful] A, a, apa!
 p-apa-a  [excited] Ja! Apa börjar på bokstaven A.
-n-hur-apa  [curious] Hur låter A i apa?
 n-hej-apan  [warm] Hej, apan!
 n-vad-later  [curious] Oj. Vad var det som lät?
 n-hungrig  [warm] Apan är hungrig.
@@ -31,7 +30,6 @@ n-gott-pa-a  [playful] Något gott på bokstaven A, tack!
 p-apelsin  [excited] Apelsin!
 p-a-a-apelsin  [playful] A, a, apelsin!
 p-ocksa-apelsin  [warm] Apelsin börjar också på A!
-n-och-apelsin  [curious] Och i apelsin?
 n-apelsinen-rullar  [playful] Apelsinen rullar!
 n-varsagod  [warm] Varsågod, apan!
 n-mums  [playful] Mums!
@@ -63,3 +61,4 @@ n-ananasen-snurrar  [playful] Ananasen snurrar!
 n-allt-for-idag  [warm] Det var allt för i dag.
 n-vad-kul  [warm] Vad kul det var att leka med A!
 p-hej-da-slut  [warm] Hej då! Vi ses snart!
+# bokstaven (inte Malin): olivia  A! ... A-a! ... A! A! ... A-a. ... A?  (a-glad, a-halsar, a-ja, a-nej, a-undrar)
