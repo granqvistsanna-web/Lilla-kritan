@@ -9465,9 +9465,10 @@
   "sec": 49,
   "tags": [],
   "note": "brush laying on floor",
-  "fixed": false,
+  "fixed": true,
   "at": 1795633737678,
-  "render": "2026-11-25 20:01 (omgång 2: båten, borsten i skummet, ullpuff; repliker ej inspelade)"
+  "render": "2026-11-25 20:01 (omgång 2: båten, borsten i skummet, ullpuff; repliker ej inspelade)",
+  "fixedAt": 1795635814990
  },
  "cbpgq2oafumwwio1np": {
   "ep": "052",
