@@ -176,6 +176,11 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **Det roliga syns stort (Sanna 25/11, från 057:s skumskägg):** skumhatten är nu en stor tydlig skumhög (fyra tussar i stället för en) och 6b klipper till närbild när lammet kommer upp, så den syns när Malin säger "En skumhatt!"; lammet fnissar sedan och det hörs ett `plopp`. Ullmolnet (20) och den fluffiga ullen (22) visas redan i närbild med `puff`/`moln-puff` när repliken sägs.
 - **Tempo:** pauserna efter replikerna kortare (mellanrummet 0,35 → 0,15 s, svarspauserna 1,0 → 0,9 s, slutpauserna 0,2–1,5 s kortare), pratstunden med ankan och båtraden kortare. Gissningspauserna (01b, b2, 12b), frågan till barnet (23b–23c) och pauserna för svar ligger kvar. 257 s → 237 s (−8 %; resten av tiden är repliker och svarspauser).
 
+### Feedback 20:01 (Sanna 2026-11-25)
+
+- **0:19 "better wave animation":** lammet vinkar nu med den delade rörelsen `L.ARMROR.vinka` (som 050): armen bakom kroppen, snett upp och ut förbi kanten, ±16°, 1,3 gånger/s, kroppen lutar lite med. Gäller hej-vinkningen (rad 1) och hej då (27–28).
+- **0:49 "brush laying on floor":** Sanna valde "Golvet, lammet tar med den". Borsten ligger platt på golvet framför pallen från början. I rad 3 (på "Upp på pallen") hoppar den upp i lammets tass, lammet bär den i skutten och ställer den i skummet bredvid sig (skaftet upp). När båten bonkar ankan (b4) rycker lammet till, borsten tippar ut i skummet och sjunker. Ankan hittar den där (23c–25), och efter borstningen lägger lammet den på golvet igen (26d).
+
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").

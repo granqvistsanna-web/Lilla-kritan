@@ -160,7 +160,7 @@ function klossLage(n, t) {
 }
 // hatten följer huvudet (ovanpå, mellan öronen); skuttet i rad 17 lyfter den med leoparden
 let HATT_LYFT = 0;
-const HATT = t => { const [x, y] = iFig([LX, FOT], [522, 225]); return [x, y - HATT_LYFT]; };
+const HATT = t => { const [x, y] = iFig([LX, FOT], [522, 208]); return [x, y - HATT_LYFT]; };
 
 // --- Raderna: tl = tid in i raden, d = radens längd ---------------------------------------------------------------------------------
 const RUM = o => ({ plats: 'rum', kam: HEL, pos: [LX, FOT], ...o });
@@ -176,7 +176,7 @@ const SR = {
   '1b': (tl, d) => { const m6 = 0.3 + LN(5) + 1.4, pr = 0.5 + LN(5), up = del(pr, pr + 0.3, tl);
     return RUM({ kam: NARA(), f: F(tl > m6 + LN(6) ? 'jatteglad' : 'nyfiken', tl < pr ? { titt: [-10, 9] } : {}), p: P({ luta: 4 * (1 - up), oron: UPP(up * (tl < pr + 1.6 ? 1 : 0.5)), svans: vipp(tl, pr) }) }); },
   // klossarna på golvet, sedan fnisset i närbild
-  '2': (tl, d) => { const fn = tl > 0.35 + LN(7);
+  '2': (tl, d) => { const fn = tl > 0.5 + LN(7);
     return RUM({ kam: fn ? NARA() : D(500, 1010, 1.6), f: F(fn ? 'fnissig' : 'nyfiken', fn ? {} : { titt: [-6, 10] }), p: P({ oron: UPP(fn ? 0.7 : 0), svans: vipp(tl, 0.4 + LN(7)) }) }); },
   '3a': (tl, d) => RUM({ kam: D(GOLVET.cirkel[0], GOLVET.cirkel[1] - 40), f: F('nyfiken', { titt: [-10, 9] }), p: P(), skim: [GOLVET.cirkel[0], GOLVET.cirkel[1] - 40, 0.8 * bump(0.05, d + 0.3, tl), 0.8] }),
   '3b': (tl, d) => RUM({ kam: D(GOLVET.fyrkant[0], GOLVET.fyrkant[1] - 40), f: F('nyfiken', { titt: [-6, 10] }), p: P(), skim: [GOLVET.fyrkant[0], GOLVET.fyrkant[1] - 40, 0.8 * bump(0.05, d + 0.3, tl), 0.8] }),
@@ -241,9 +241,9 @@ const SR = {
   '25a': (tl, d) => RUM({ kam: HEL, f: F('nyfiken', { titt: [-4, 4] }), p: P({ luta: 3 }) }),
   // under sängen: paus 5 s, efter 3 s skimrar hörnet svagt
   '25b': (tl, d) => { const g = 0.3 + LN(37) - 2.0 + 3.0;
-    return RUM({ kam: D(UNDER[0], UNDER[1] - 40, 3), f: F('nyfiken'), p: P(), skim: [UNDER[0] - 10, UNDER[1] + 2, 0.35 * del(g, g + 0.6, tl), 0.8] }); },
+    return RUM({ kam: D(UNDER[0] - 30 * del(0, d, tl), UNDER[1] - 40, 3 + 0.25 * del(0, d, tl)), f: F('nyfiken'), p: P(), skim: [UNDER[0] - 10, UNDER[1] + 2, 0.35 * del(g, g + 0.6, tl), 0.8] }); },
   '26': (tl, d) => { const n = tl > 0.4 + LN(38);
-    return RUM({ kam: n ? NARA() : D(UNDER[0], UNDER[1] - 40, 3), f: F(n ? 'ivrig' : 'nyfiken', n ? { titt: [12, 6] } : {}), p: P({ oron: UPP(n ? 1 : 0), rikt: n ? 0.3 : 0 }), skim: [UNDER[0] - 10, UNDER[1] + 2, n ? 0 : 0.35 + 0.55 * del(0.05, 0.4, tl), 0.9] }); },
+    return RUM({ kam: n ? NARA() : D(UNDER[0] - 30, UNDER[1] - 40, 3.25 + 0.1 * del(0, 0.4 + LN(38), tl)), f: F(n ? 'ivrig' : 'nyfiken', n ? { titt: [12, 6] } : {}), p: P({ oron: UPP(n ? 1 : 0), rikt: n ? 0.3 : 0 }), skim: [UNDER[0] - 10, UNDER[1] + 2, n ? 0 : 0.35 + 0.55 * del(0.05, 0.4, tl), 0.9] }); },
   // tassen sträcks, trekanten glider fram och i en båge till lådan
   '27a': (tl, d) => RUM({ kam: [1.5, 900, 820], f: F('ivrig', { titt: [14, 8] }), p: NAR_H(del(0, 0.4, tl)) }),
   '27b': (tl, d) => RUM({ kam: D_LADA(), f: F('ivrig', { titt: [14, 8] }), p: NAR_H(1), skimHal: [0, 0, 0.8 * bump(d - 0.3, d + 0.9, tl)] }),
@@ -252,7 +252,7 @@ const SR = {
   '28': (tl, d) => { const t0 = 0.4 + LN(40) - 0.2;
     return RUM({ kam: HEL, lyft: lyft(tl, t0, 40), f: F('glad'), p: skutt(P({ oron: UPP(0.6) }), tl, t0) }); },
   // hålen glimtar ett i taget, sedan leoparden
-  '29': (tl, d) => { const n = tl > Math.min(2.9, 0.4 + LN(41));
+  '29': (tl, d) => { const n = tl > 0.5 + LN(41);
     return RUM({ kam: n ? NARA() : D_LADA(), f: F('stolt'), p: P({ svans: vipp(tl, 0.5) }), skimHal: [0.6, 1.5, 2.4].map(a => 0.6 * bump(a - 0.1, a + 0.9, tl)) }); },
   // tassen puffar lådan två gånger, den skramlar; fniss i närbild
   '30': (tl, d) => { const n = tl > 1.6 + LN(42);

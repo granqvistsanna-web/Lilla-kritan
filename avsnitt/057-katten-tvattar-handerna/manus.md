@@ -254,6 +254,9 @@ Sanna (för 052–057): *"overall more reactions, close crops, character express
 | Uttryck | Öronen upp och svansen vippar på reaktionerna. 16 blir stolt efter *"borta!"*, 21 jätteglad med öronvipp efter *"borta!"* |
 | Ljudsvar | Aldrig samma kattljud två gånger i rad, ur hela familjen (`mjau-gullig`, `-glad`, `-fraga`, `-aah`, `-trill`, `-ooo`, `-oj`, `-prat`, `-spinn`). Nya små effekter: `glimt` på tassarna i 2, `svansvift`, `hopp-mjuk` på skutten, `puff` och `moln-puff` på skummet, `blubb` när bubblorna stiger, `tindra-4` på gula *"borta!"* |
 | Skumskägget | Ett riktigt skägg av skum: en U-båge av tussar från kind till kind under munnen, med spetsen på hakan (`SKAGG`). Det växer ut när tussen landar, visas i närbild (`K_SKAGG`), och katten tittar upp förvånad med öronen upp och fnissar sedan. Skägget sitter kvar genom 14b, 15 och 16 och puffar bort tuss för tuss på *"Rena tassar!"* (17) |
+| Vattnet (1:15, *"improve water flow"*) | Strålen är omritad som en mjuk, sammanhängande stråle: den smalnar nedåt, har en ljus kärna, en glansstrimma, strömmande ljusa streck och en krona av stänk där den träffar. Kranens hals är 40 enheter högre (`KRAN_D`), så strålen syns lång ovanför tassen. I rad 6 rinner vattnet först ner i handfatet, sedan kommer tassen upp in under strålen. Närmare bild (`K_STRALE`) |
+| Fler fniss (2:22) | Fniss i 3b, 4, 5, 14, 14b, 17b, 23, 28c och 30 (`mjau-gullig-3`, `mjau-glad-2`/`-4`) med fnissigt ansikte. Sanna vill ha fler än receptets 3–4 |
+| Vinkningen (4:18, *"better waving"*) | Enligt minnet om vinkande arm: armen bort från kranen, bakom kroppen, snett ut förbi kanten i ca 60°, ±16°, 1,3/s, lite lutning. Den andra armen vilar. Närmare bild (`K_VINK`) |
 | Tydligt och stort | Samma princip på de andra roliga ställena: avtrycken på golvet nära (4), bubblorna nästan dubbelt så stora och fria från kranen (22–23), det stora skummet på *"Oj!"* (13) |
 
 ## Öppet
