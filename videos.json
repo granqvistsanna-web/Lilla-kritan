@@ -1445,11 +1445,11 @@
   "name": "Lucka 9: Kaninen badar varmt"
  },
  "J15": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J15-1120-1605.mp4",
-  "duration": 249.0,
-  "rendered": "2026-11-20 16:05 (Runda 3 20/11 (förhandsvisning --snabb): lammet rycker på axlarna och funderar \"mmmeh\" på Vet du inte?, musiken lägre, ny julmelodi från klockan, lammet kvar i bild vid klockan, plåten ställs ner med tassarna)",
-  "file": "produktion/youtube/shorts/jul/15-lammet-bakar-pepparkakor/15-lammet-bakar-pepparkakor.mp4",
-  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J15-1125-1241.mp4",
+  "duration": 235.5,
+  "rendered": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)",
+  "file": "avsnitt/045-lammet-bakar-pepparkakor/scener/julkoket/julkoket.mp4",
+  "status": "granska",
   "name": "Lucka 15: Lammet bakar pepparkakor"
  },
  "J16": {
