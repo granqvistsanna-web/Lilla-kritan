@@ -820,7 +820,16 @@ function smulor(t, x, y, farg) {
   smulG.innerHTML = !farg ? '' : Array.from({ length: 6 }, (_, j) => { const b = Math.floor(t * 8) - j, age = t - b / 8, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7);
     const op = Math.max(0, 0.5 - age * 0.7); return op > 0 ? `<circle cx="${(x + (r - 0.5) * 30 + (r - 0.5) * age * 24).toFixed(1)}" cy="${(y + 6 + age * age * 110 + r2 * 8).toFixed(1)}" r="${(2 + 2.5 * r2).toFixed(1)}" fill="${farg}" opacity="${op.toFixed(2)}"/>` : ''; }).join('');
 }
+// Dockan ritas bakom dörren: kritan går aldrig in över dörren (inget går genom något, Sanna 2026-11-23). Medan dockans streck ritas
+// stannar spetsen vid dörrens högra kant, och den dolda delen av konturen ritas bakom dörren (förut: ABC-d3 2:07, kritan över dörren).
+const DOCKA_STRECK = STRECK.filter(x => x[0] === docka), DOCKA_RIT = [DOCKA_STRECK[0][2] - 0.9, DOCKA_STRECK.at(-1)[3] + 0.8];
+const DORR_KANT = DORR_RIT[0] + 0.5 * (DORR[1] / DORR[2] * DORR[3]) * DORR_RIT[2] - 6;   // dörrens högra kant (med vita kanten) i scenens px
 function kritan(t) {
+  const k = kritan0(t);
+  if (t >= DOCKA_RIT[0] && t < DOCKA_RIT[1]) k[0] = Math.max(k[0], DORR_KANT);
+  return k;
+}
+function kritan0(t) {
   const nu = STRECK.find(([, , a, b]) => t >= a && t < b);
   const pa = ([s, id], k) => { const [x, y, sk] = lage(s, t), [lx, ly] = s.drag[id].spets(k), [rx, ry, rs] = s.ram ?? [0, 0, 1];
     return [x + sk * rs * (lx + rx), y + sk * rs * (ly + ry)]; };
@@ -915,6 +924,9 @@ function levande(s, t) {
   } else if (typ === 'tittaFram') {   // lutar sig ut bakom dörren och tillbaka (dockan)
     const v = 10 * bage(clamp(d / 1.6)), dx = 22 * bage(clamp(d / 1.6));
     s.liv.setAttribute('transform', `translate(${dx.toFixed(1)} 0) rotate(${v.toFixed(2)} 0 250)`);
+  } else if (typ === 'vicka' && s === dorr) {   // dörren gungar kring tröskelns hörn, bort från knacken, så att tröskeln lyfter och aldrig går ner i golvet (inget går genom något, Sanna 2026-11-23)
+    const v = 4 * Math.max(0, Math.sin(d * 2 * Math.PI / 0.5)) * (1 - clamp(d / 1.2));
+    s.liv.setAttribute('transform', `rotate(${v.toFixed(2)} 168 250)`);
   } else if (typ === 'vicka') {   // vickar kring botten, lugnar sig
     const v = 7 * Math.sin(d * 2 * Math.PI / 0.6) * (1 - clamp(d / 1.8));
     s.liv.setAttribute('transform', `rotate(${v.toFixed(2)} 0 250)`);

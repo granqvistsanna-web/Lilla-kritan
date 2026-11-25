@@ -142,8 +142,14 @@ Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`), som B f
 - Förhandsvisning (`--snabb`, 4:17) på feedbacksidan som `ABC-d3`, status granska. Filmen före ändringen: `aldre/abc-d-recept-3-fore-e-riktning.mp4`. QA: −21,6 LUFS, inget svart eller tyst; stillheten 0:25–0:28 är gissningspausen efter *"Vem är det?"*.
 - **Röster:** *"Ska vi leka, D?"* är Malin (Sanna 2026-11-25), `produktion/ljud-original/roster/abc-d-intro-2026-11-25/malin-a-och-d.mp3` 2,08–3,56 (början är A:s rad). D:s toner är **Olivia** (*Bright, Youthful and Engaging*, v4), som E och B (Sanna: *"No, redo with Olivia"*; Louise-tagningarna i samma mapp används inte): `olivia-1.mp3` har A:s toner först och D:s två gånger, klippta ur andra omgången efter tonhöjden: `x-glad` 9,93–10,60 (stiger till en topp), `x-halsar` 10,73–11,40 (två stavelser, *D-d!*), `x-ja` 11,60–12,84 (två *D!*), `x-nej` 13,08–13,50 (faller jämnt), `x-undrar` 13,96–14,33 (stiger). Ingen har lyssnat på dem i blandningen än.
 
+## Täta bilder runt dörren och dockan 2026-11-25 (Sanna: "inget går genom något")
+
+Kontrollerat 6 bilder/s 1:47–2:39 (dinon går till dörren, knackningarna, kritan ritar dockan, dockan tittar fram och hoppar ut, klossarna poppar fram).
+
+- **Dörren vickade ner i golvet:** den vreds ±7° kring mitten, så tröskelns ena hörn gick ner i golvet på varje knack. Nu gungar den bara bort från knacken, 4°, kring tröskelns högra hörn: vänstra kanten lyfter lite och sätts ner igen.
+- **Kritan över dörren (2:07):** kritan följde dockans kontur in över dörren medan den dolda delen ritades. Nu stannar spetsen vid dörrens högra kant (`DORR_KANT`) så länge dockan ritas, och den dolda delen ritas bakom dörren.
+- Utan fel: dinons arm och svans ligger framför dörrkanten (dinon står närmare), dockan står bakom dörren när den tittar fram och kliver ut vid sidan, och klossarna poppar fram bakom dinon och dörren (längre bak på golvet, y 875 mot fötternas 940).
+
 ## Öppet
 
 - *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.
-- Dörren vickar 7° på varje knack (`vicka`, samma som sakerna). Kan bli mindre om det ser för vingligt ut.
-- Kritan ritar dockans kontur även bakom dörren (linjen syns inte där, men kritan gör det en kort stund).
