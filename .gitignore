@@ -26,6 +26,7 @@ produktion/ljud-original/*
 
 # Tillfälliga byggmappar från satt-ihop.sh
 **/film/.tmp*/
+**/.tmp/
 
 # QA-kontaktark från verktyg/qa-film.sh
 *-qa.jpg
