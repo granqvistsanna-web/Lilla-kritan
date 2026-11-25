@@ -9752,9 +9752,10 @@
   "sec": 63,
   "tags": [],
   "note": "zoom out more here",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641510220,
-  "render": "2026-11-25 22:10"
+  "render": "2026-11-25 22:10",
+  "fixedAt": 1795642241763
  },
  "ssxniceun0mwwmm792": {
   "ep": "052",
@@ -9762,9 +9763,10 @@
   "sec": 177,
   "tags": [],
   "note": "find sock earlier when they are looking",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641549878,
-  "render": "2026-11-25 22:10"
+  "render": "2026-11-25 22:10",
+  "fixedAt": 1795642241763
  },
  "5w5mjwvfpvmwwmmgmg": {
   "ep": "052",
@@ -9772,8 +9774,9 @@
   "sec": 184,
   "tags": [],
   "note": "close door in video too",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641562024,
-  "render": "2026-11-25 22:10"
+  "render": "2026-11-25 22:10",
+  "fixedAt": 1795642241763
  }
 }
