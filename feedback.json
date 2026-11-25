@@ -9510,9 +9510,10 @@
   "sec": 66,
   "tags": [],
   "note": "bed can lay on floor under bed",
-  "fixed": false,
+  "fixed": true,
   "at": 1795634988608,
-  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)",
+  "fixedAt": 1795636341126
  },
  "vzpjnl5mimmwwir3jn": {
   "ep": "052",
