@@ -9404,9 +9404,10 @@
   "sec": 75,
   "tags": [],
   "note": "improve water flow",
-  "fixed": false,
+  "fixed": true,
   "at": 1795633372409,
-  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)"
+  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)",
+  "fixedAt": 1795636486728
  },
  "xbvhdb7ssemwwhrdhw": {
   "ep": "057",
