@@ -64,16 +64,16 @@ const ZF = [1150, 1030];
 // Provbilderna: [kamera, ansikte, pose, plagg]
 // plagg: { str: [v, h] 0–1, mossa: 'lagom'|'liten'|'stor'|null, oron: 'bakom'|'genom', halsduk, kudde: true = gömda strumpan bakom kudden }
 // Närmare utsnitt (Sanna 25/11: "overall closer crop"), ca ×1,25 mot förut
-const KH = [1.9, 1150, 760], KN = [3.2, 1150, 760], KB = [3.9, 1150, 940];
+const KH = [1.9, 1150, 760], KN = [3.2, 1150, 760], KB = [3.9, 1150, 940], KM = [3.2, 1150, 690];   // KM: mössans närbild, högre så toppen inte klipps
 const PROV = [
-  ['hel',     [1.4, 1000, 640], 'glad', {}, {}],
+  ['hel',     [1.4, 1000, 670], 'glad', {}, {}],
   ['lyft v',  KB, 'nyfiken', { benY: [-34, 0], ben: [6, 0] }, { str: [0.5, 0] }],
   ['på v',    KB, 'glad', { benY: [-34, 0], ben: [6, 0] }, { str: [1, 0] }],
   ['båda',    KB, 'glad', {}, { str: [1, 1] }],
-  ['mössa bakom', KN, 'glad', {}, { mossa: 'lagom', oron: 'bakom' }],
-  ['mössa genom', KN, 'glad', {}, { mossa: 'lagom', oron: 'genom' }],
-  ['för liten', KN, 'forvanad', {}, { mossa: 'liten' }],
-  ['för stor',  KN, 'glad', {}, { mossa: 'stor' }],
+  ['mössa bakom', KM, 'glad', {}, { mossa: 'lagom', oron: 'bakom' }],
+  ['mössa genom', KM, 'glad', {}, { mossa: 'lagom', oron: 'genom' }],
+  ['för liten', KM, 'forvanad', {}, { mossa: 'liten' }],
+  ['för stor',  KM, 'glad', {}, { mossa: 'stor' }],
   ['halsduk',   KN, 'glad', {}, { halsduk: 1 }],
   ['allt på',   KH, 'stolt', {}, { str: [1, 1], mossa: 'lagom', oron: 'bakom', halsduk: 1 }],
   ['allt genom', KH, 'stolt', {}, { str: [1, 1], mossa: 'lagom', oron: 'genom', halsduk: 1 }],
