@@ -9782,5 +9782,135 @@
   "at": 1795641562024,
   "render": "2026-11-25 22:10",
   "fixedAt": 1795642241763
+ },
+ "j0tm5x73q9mwwm4ht1": {
+  "ep": "056",
+  "time": "0:11",
+  "sec": 11,
+  "tags": [],
+  "note": "much better drawing",
+  "fixed": false,
+  "at": 1795640723749,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "b31wbf9z96mwwm4w2l": {
+  "ep": "056",
+  "time": "0:16",
+  "sec": 16,
+  "tags": [],
+  "note": "polish rain more natural looking",
+  "fixed": false,
+  "at": 1795640742237,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "h85vnzqdezmwwm54l6": {
+  "ep": "056",
+  "time": "0:21",
+  "sec": 21,
+  "tags": [],
+  "note": "slow raisn",
+  "fixed": false,
+  "at": 1795640753274,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "6w8dqfw73emwwm5e9o": {
+  "ep": "056",
+  "time": "0:27",
+  "sec": 27,
+  "tags": [],
+  "note": "moon outside window",
+  "fixed": false,
+  "at": 1795640765820,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "fitatmgtwzmwwm6481": {
+  "ep": "056",
+  "time": "0:32",
+  "sec": 32,
+  "tags": [],
+  "note": "imporve bedding on bed. consider using a premade bed, a full image of bed with bedding",
+  "fixed": false,
+  "at": 1795640799457,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "p4ajwoe8ypmwwm6yrx": {
+  "ep": "056",
+  "time": "3:11",
+  "sec": 191,
+  "tags": [],
+  "note": "räv sleeps on bed not behind it fix. räv dont use cover might need new image with teddy and covers",
+  "fixed": false,
+  "at": 1795640839053,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "74imezmv9hmwwm84kg": {
+  "ep": "056",
+  "time": "0:43",
+  "sec": 43,
+  "tags": [],
+  "note": "not thta type of narration more convesatopnal. not räven hoppar upp i sängen, instead hopp upp i sängen",
+  "fixed": false,
+  "at": 1795640893216,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "myp7dav64fmwwm8jab": {
+  "ep": "056",
+  "time": "0:45",
+  "sec": 45,
+  "tags": [],
+  "note": "ja rama nallen så mysigt instead of narraton",
+  "fixed": false,
+  "at": 1795640912291,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "ojje3kg5uwmwwm9ei1": {
+  "ep": "056",
+  "time": "1:22",
+  "sec": 82,
+  "tags": [],
+  "note": "no sladd for lampa",
+  "fixed": false,
+  "at": 1795640952745,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "pizwemlld3mwwmacfy": {
+  "ep": "056",
+  "time": "1:45",
+  "sec": 105,
+  "tags": [],
+  "note": "maybe kritan suddar med baksidan",
+  "fixed": false,
+  "at": 1795640996734,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "48ibtl20d2mwwmaqyx": {
+  "ep": "056",
+  "time": "1:42",
+  "sec": 102,
+  "tags": [],
+  "note": "more close crops",
+  "fixed": false,
+  "at": 1795641015561,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "rjsne2vbwhmwwmbkfi": {
+  "ep": "056",
+  "time": "2:22",
+  "sec": 142,
+  "tags": [],
+  "note": "be more specific räven vet inte var nallen tog vägen",
+  "fixed": false,
+  "at": 1795641053742,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
+ },
+ "441mh5dif1mwwmbxmn": {
+  "ep": "056",
+  "time": "2:56",
+  "sec": 176,
+  "tags": [],
+  "note": "shadow looks lighter should look darker",
+  "fixed": false,
+  "at": 1795641070847,
+  "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)"
  }
 }
