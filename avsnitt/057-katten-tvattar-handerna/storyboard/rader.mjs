@@ -109,7 +109,7 @@ export const RADER = [
     bild: 'Katten tittar på tvålen. Paus 2,5 s: barnet säger tack', ljudtext: 'nyfiket mjau', ansikte: 'nyfiken' },
   { id: '12', d: 0.5 + L(22) + 1.2, plats: 'Närbild ansiktet', malin: [[22, 0.5]], ljud: [['mjau-aah/mjau-aah-2', 0.7 + L(22)]],
     bild: 'Katten nickar direkt på *Tack!*', ljudtext: 'förtjust mjau', ansikte: 'jätteglad' },
-  { id: '13', d: 1.2 + L(23) + 1.1, plats: 'Handfatet, halvbild → närbild på mjauet', malin: [[23, 1.2]], ljud: [BADRUM, ['kran/kran-1', 0, 0.4], ['skrubb/skrubb-1', 0.3], ['puff/puff-1', 1.3, 0.45], ['puff/puff-2', 2.3, 0.45], ['moln-puff/moln-puff-2', 1.2 + 2.42, 0.4], ['mjau-ooo/mjau-ooo-2', 1.3 + L(23)]],
+  { id: '13', d: 0.8 + L(23) + 1.1, plats: 'Handfatet, halvbild → närbild på mjauet', malin: [[23, 0.8]], ljud: [BADRUM, ['skrubb/skrubb-1', 0.3], ['puff/puff-1', 0.75, 0.45], ['puff/puff-2', 1.75, 0.45], ['moln-puff/moln-puff-2', 0.8 + 2.42, 0.4], ['mjau-ooo/mjau-ooo-2', 0.9 + L(23)]],   // kranen rinner 13–16: en loop i scenens ljud()
     bild: 'Kranen rinner, tvålen mellan tassarna (klappen), skummet växer i tre steg', ljudtext: '`skrubb`, `kran`', ansikte: 'glad' },
   { id: '14', d: 0.8 + L(24) + 1.7, plats: 'Närbild ansiktet', malin: [[24, 0.8]], ljud: [['puff/puff-3', 0.85, 0.5], MJAU(3, 1.2 + L(24))],
     bild: 'En skumtuss landar under hakan: skumskägg. Katten tittar ner på den. **Pausen:** fniss-mjau', ljudtext: 'fniss-mjau', ansikte: 'fnissig, tittar ner' },
@@ -133,7 +133,7 @@ export const RADER = [
     bild: 'Fläcken skimrar tydligt, örat vippar', ljudtext: '`mjau-oj`, `glimt`', ansikte: 'förvånad' },
   { id: '21', d: 0.7 + L(33) + 1.4, plats: 'Samma', malin: [[33, 0.7]], ljud: [['skrubb/skrubb-1', 0.7], ['tindra/tindra-3', 0.7 + BORTA[33]], ['mjau-ooo/mjau-ooo-1', 0.9 + L(33), 0.8]],
     bild: 'Skumtussen svävar upp och snurrar över örat, katten blundar. Blått borta på *"borta!"*', ljudtext: '`skrubb`, `tindra-3` på "borta"', ansikte: 'blundar, ler' },
-  { id: '22', d: 1.4 + L(34) + 0.8, plats: 'Badrummet, halvbild', malin: [[34, 1.4]], ljud: [BADRUM, ['blubb/blubb-1', 0.3, 0.45], ['blubb/blubb-2', 0.7, 0.45], ['blubb/blubb-3', 1.1, 0.45], ['mjau-oj/mjau-oj-2', 1.4 + L(34) + 0.1, 0.8]],
+  { id: '22', d: 0.8 + L(34) + 0.8, plats: 'Badrummet, halvbild', malin: [[34, 0.8]], ljud: [BADRUM, ['blubb/blubb-1', 0.3, 0.45], ['blubb/blubb-2', 0.7, 0.45], ['blubb/blubb-3', 1.1, 0.45], ['mjau-oj/mjau-oj-2', 0.8 + L(34) + 0.1, 0.8]],
     bild: 'En röd bubbla stiger ur handfatet, sedan en gul, sedan en blå', ljudtext: '–', ansikte: 'förvånad' },
   { id: '23', d: 0.3 + L(35) + 1.3, plats: 'Samma', malin: [[35, 0.3]], ljud: [['pop/pop-1', 0.3 + FARG[35][0]], ['pop/pop-2', 0.3 + FARG[35][1]], ['pop/pop-4', 0.3 + FARG[35][2]], MJAU(3, 0.5 + L(35))],
     bild: 'Bubblorna spricker en i taget på färgorden, katten tittar efter varje. **Shorten slutar här**', ljudtext: '`pop` ×3, fniss-mjau', ansikte: 'fnissig' },
