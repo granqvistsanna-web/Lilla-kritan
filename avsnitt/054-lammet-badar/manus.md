@@ -181,6 +181,11 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **0:19 "better wave animation":** lammet vinkar nu med den delade rörelsen `L.ARMROR.vinka` (som 050): armen bakom kroppen, snett upp och ut förbi kanten, ±16°, 1,3 gånger/s, kroppen lutar lite med. Gäller hej-vinkningen (rad 1) och hej då (27–28).
 - **0:49 "brush laying on floor":** Sanna valde "Golvet, lammet tar med den". Borsten ligger platt på golvet framför pallen från början. I rad 3 (på "Upp på pallen") hoppar den upp i lammets tass, lammet bär den i skutten och ställer den i skummet bredvid sig (skaftet upp). När båten bonkar ankan (b4) rycker lammet till, borsten tippar ut i skummet och sjunker. Ankan hittar den där (23c–25), och efter borstningen lägger lammet den på golvet igen (26d).
 
+### Feedback 20:43 (Sanna 2026-11-25, omgång 2b)
+
+- **0:37 "nice hot steam from bath":** ingen ånga fanns, så den är ny: fyra mjuka, halvgenomskinliga vita slingor stiger lugnt ur skummet, svajar och tonas bort (`anga()`, lätt oskärpa). De ligger bakom karet och lammet, så de kommer upp bakom skummet och täcker aldrig ansiktet. De finns hela tiden badet syns, från rad 1 till slutet.
+- **3:07 "make ull less dramatic and looking better, point of brushing should be restoring ull to default state":** ullmolnet är nu en smal, jämn ullkant som följer kroppens kontur (uppmätt i `ludde-body.png`) och tittar fram ca 25 px, i stället för en stor ring med utstående tussar. Tussarna på öronen och magen är mindre, och ullen har en varmare krämton. Varje borstdrag drar tillbaka tussarna där borsten går, in i kroppen tills de är borta: efter öronen, magen och de två dragen runt kroppen ser lammet ut precis som vanligt (standardläget), inget nytt utseende. Borsten i 26c följer den smalare kanten.
+
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").
