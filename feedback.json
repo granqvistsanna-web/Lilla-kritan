@@ -9426,9 +9426,10 @@
   "sec": 142,
   "tags": [],
   "note": "more giggles and varied sound effects, use the animal sound effects",
-  "fixed": false,
+  "fixed": true,
   "at": 1795633544267,
-  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)"
+  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)",
+  "fixedAt": 1795636491131
  },
  "ild0zegokbmwwhwjfs": {
   "ep": "057",
