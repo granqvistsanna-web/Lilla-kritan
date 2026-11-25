@@ -9454,9 +9454,10 @@
   "sec": 19,
   "tags": [],
   "note": "better wave animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795633701190,
-  "render": "2026-11-25 20:01 (omgång 2: båten, borsten i skummet, ullpuff; repliker ej inspelade)"
+  "render": "2026-11-25 20:01 (omgång 2: båten, borsten i skummet, ullpuff; repliker ej inspelade)",
+  "fixedAt": 1795635812765
  },
  "ay8n3g49yfmwwhyrbi": {
   "ep": "054",
