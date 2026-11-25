@@ -257,7 +257,7 @@ const RAD = {
   // tassen under strålen (023:s lärdom: inget går genom något): högra tassen står redan under pipen i vila, strålen slutar på den
   '6': () => { badrum(); NARA_TASS(); VID_(F('nyfiken', { titt: [10, 10] }), A20()); const [x, y] = iScen('.farg-r'); strale(y - 22);
     lagg('fram', [[-30, -10], [26, -16], [-14, 30], [18, 34]].map(([dx, dy]) => droppe(x + dx, y + dy, 6)).join('')); },
-  '7': () => { badrum(); NARA_TASS(); VID_(F('forvanad', { titt: [10, 12], armar: [0, 0] }), A20()); strale(iScen('.farg-r')[1] - 22);
+  '7': () => { badrum(); NARA_TASS(); VID_(F('nyfiken', { titt: [10, 12], luta: 0 }), A20()); strale(iScen('.farg-r')[1] - 22);
     const [x, y] = iFig(VID, [512, 200]); lagg('pilar', rakpil(x - 120, y - 30, x - 130, y + 20, 3) + rakpil(x + 120, y - 30, x + 130, y + 20, 3)); },
   '8': () => { badrum(); HALV(); VID_(F('ledsen', { le: -0.3 }), P({ armar: [35, 35] }));
     ['l', 'r'].forEach(n => { const [x, y] = iScen('.farg-' + n), sd = n === 'l' ? -1 : 1;

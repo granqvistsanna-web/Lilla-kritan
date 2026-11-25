@@ -222,7 +222,7 @@ const S = {
   // ritintrot: kritan ritar badankans kontur, väntar svajande, ankan fylls inifrån och blinkar, zoom in
   '01a': tl => ({ plats: 'papper' }),
   '01b': (tl, d) => ({ plats: 'papper', kryp: del(0, d, tl) }),
-  '01c': (tl, d) => ({ plats: 'papper', kryp: 1, fyll: del(0, 0.7, tl), blink: bump(0.9 + LN(3), 1.15 + LN(3), tl), zoom: lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), vit: del(d - 0.45, d, tl) }),
+  '01c': (tl, d) => ({ plats: 'papper', kryp: 1 + 0.3 * del(0, d, tl), gung: tl, fyll: del(0, 0.7, tl), blink: bump(0.9 + LN(3), 1.15 + LN(3), tl), zoom: lerp(1, 2.6, del(d - 0.8, d, tl) ** 2), vit: del(d - 0.45, d, tl) }),
 
   // trippar in från vänster, vinkar
   '1': (tl, d) => { const [pos, p0] = skuttar(tl, [-220, GOLV], [[0.15, 0.45, [0, GOLV], 16], [0.75, 0.45, [215, GOLV], 16], [1.35, 0.45, STA, 16]], P({}));
@@ -374,7 +374,8 @@ function ritaPapper(st, t) {
   kamera(z, mx, my);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
   const Rb = ritBana([ankaKontur([PA.X, PA.Y], PA.s)], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
-  if (f > 0) { lagg('saker', fyllMask('fyA', mx, my, 420, f)); anka([PA.X, PA.Y], { s: PA.s, lager: 'saker', klipp: f < 1 ? 'fyA' : '', blink: st.blink || 0 }); }
+  if (f > 0) { lagg('saker', fyllMask('fyA', mx, my, 420, f)); const g = st.gung ?? 0, bob = 10 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // ankan guppar lugnt, bilden står aldrig stilla
+    anka([PA.X, PA.Y + bob], { s: PA.s, rot: 2.5 * Math.sin(g * 1.7) * del(0.5, 1.2, g), lager: 'saker', klipp: f < 1 ? 'fyA' : '', blink: st.blink || 0 }); }
   if (k > 0 && f < 1) lagg('pilar', Rb.html);
   kritaRita(kritaFas(t, T_RIT, { start: Rb.start, spets: Rb.spets, slut: Rb.slut, vanta: [mx + 420, my - 300], s: KRITAN.SKALA_PAPPER / kryp }));
   if (f > 0) lagg('pilar', gnistor(mx, my, 360, t - T_RIT.ut[0]));
@@ -406,7 +407,7 @@ function ritaBad(st, t) {
     lamm(pos, BLINKA(st.f, t), liv(st.p, t), { blot: st.blot || 0, oron: st.oron || 0, mage: st.mage || 0, moln: st.moln || 0, hatt: st.hatt || 0, hattX: st.hattX || 0, ikar: st.ikar, framfor: st.framfor });
   }
   if (st.skim) skimmer(st.skim[0][0], st.skim[0][1], st.skim[1], st.skim[2] || 1);
-  if (st.iris != null) { const [cx, cy] = st.irisC, r = lerp(1500, 0, mjuk(st.iris * 1.15));
+  if (st.iris != null) { const [cx, cy] = st.irisC, r = lerp(1500, 0, mjuk(st.iris));
     if (r < 1400) { const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.07 * Math.sin(9 * a + t * 0.8)); return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
       lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4).toFixed(1)}" filter="url(#boil)"/>` : ''}`); } }
 }

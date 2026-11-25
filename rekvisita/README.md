@@ -218,3 +218,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Öronlampan | [oronlampa.md](oronlampa.md) | 046 |
 | Julklappspapperet | [julklappspapper.md](julklappspapper.md) | 048 |
 | Krukan (julstjärna) | [kruka.md](kruka.md) | 051 |
+| Formlådan | [formlada.md](formlada.md) | 053 |
+| Klossarna (cirkel, fyrkant, trekant) | [klossar.md](klossar.md) | 053 |

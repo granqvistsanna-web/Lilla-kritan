@@ -239,3 +239,5 @@ Läst före scenen: scenkoden i 030, 031, 033 och 038 (`scener/badet/index.html`
 | **Ljud** | Ett tindra-ljud för en borttagen sak lät fel (033) | – | `borsta-2` på varje drag och `tindra-3` bara på *"tre"*, som i `storyboard/rader.mjs` |
 
 **Före scenen (grind 6) behövs därför:** 1) Sannas ja till `gapar` och `borstar` i rävens `uttryck.html` (koordinera med 056), med provbilden `?prov=borsta&zoom=mun`; 2) `cut-tunn/` för räven. Scenen byggs sedan som 030/031/033 (samma `badet`-kod: `borstePaFat`, `tubBild`, `PASTA`, `koppBana`/`urKopp`, `handMal`, `tandglimt`), med 023:s handfat och pall.
+
+**Rävens gap och borstpose (2026-11-25):** `gapar` och `borstar` tillagda i rävens `uttryck.html` (som Gretas i 031), provbilder i `provbild/`. **Godkänt av Sanna 2026-11-25** ("Ja, bra"). Kvar före scenen: `cut-tunn/` för räven.

@@ -1,6 +1,6 @@
 # Avsnitt 053 – Leoparden städar (plan)
 
-**Status:** grind 1 (manus) godkänd av Sanna 2026-11-25 (korgen som är full, fel hål en gång, en teckning i berättelsen). **Samma dag: mer samtal och reaktioner** (Sannas mönster från 052: Malin frågar, leoparden svarar i pausen, Malin reagerar). 10 nya repliker (🆕) och en ändrad (✏️), **godkända av Sanna 2026-11-25**. Sedan grind 2 (formlådan och klossarna). Inget är byggt, inga saker eller ljud är gjorda. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med leoparden, leoparden svarar med spinn-ljud, öron och ansikte. Ca 3:45.
+**Status:** grind 1 (manus) godkänd av Sanna 2026-11-25 (korgen som är full, fel hål en gång, en teckning i berättelsen). **Samma dag: mer samtal och reaktioner** (Sannas mönster från 052: Malin frågar, leoparden svarar i pausen, Malin reagerar). 10 nya repliker (🆕) och en ändrad (✏️), **godkända av Sanna 2026-11-25**. **Grind 2 (saker) klar 2026-11-25:** formlådan nr 2 och klossarna nr 2 (med tjocklek och skuggning, grön trekant) är valda av Sanna, urklippta med tunnade kanter (ca 1 %) och beskrivna i `rekvisita/formlada.md` och `rekvisita/klossar.md`. Nästa steg är grind 3 (rösten). Inget är byggt, inga saker eller ljud är gjorda. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med leoparden, leoparden svarar med spinn-ljud, öron och ansikte. Ca 3:45.
 
 **Förlaga:** 037 Kaninen städar (korgen full av leksaker). Likt men inte identiskt: här är problemet att **klossarna inte får plats** (korgen är redan full), och vändningen är att kritan ritar en **formlåda** där varje kloss har sitt eget hål. Barnet letar efter **trekanten**, som har åkt in under sängen.
 
@@ -196,8 +196,8 @@ Allt utom klossens ljud finns i `assets/ljud/effekter/`: `spinn-gullig` (8 käns
 | Kudden | ✅ finns (`kudde`) |
 | Korgen | ✅ finns (`korg`, `cut/korg-v3.png`) |
 | Leksakerna i korgen | ✅ finns: `nalle`, `boll-rod`, `bil-rod`, `hink-bla`, `badbat` (samma som i 037) |
-| **Formlådan** | 🆕 **ny** (`formlada`): en låg trälåda i varmt honungsträ sedd rakt framifrån, locket lite synligt ovanifrån med tre hål i en rad (runt, fyrkantigt, trekantigt). Hålen mörka inuti. Kritan ritar den, så den behöver en kontur (`verktyg/kontur.py` + hålen som egna drag) |
-| **Klossarna** | 🆕 **ny** (`klossar`): tre träklossar sedda rakt framifrån, **röd cirkel, blå fyrkant, grön trekant**, med en tunn sida som visar tjockleken. Trekanten behöver en kontur för ritintrot. Kan bli en Flow-bild per kloss eller ritas i kod som tvålen; bestäms vid grind 2. (`rekvisita/cirkel.md` är en ihålig grön ring för ABC:n, inte en kloss, och passar inte här) |
+| **Formlådan** | ✅ **ny, nr 2 vald** (`rekvisita/formlada.md`, `assets/rekvisita/formlada/cut/formlada.png`, 1131 × 815, hålens mått står i filen). Konturen görs vid bygget |
+| **Klossarna** | ✅ **ny, nr 2 vald** (`rekvisita/klossar.md`, `assets/rekvisita/klossar/cut/kloss-cirkel.png`, `kloss-fyrkant.png`, `kloss-trekant.png`), med tjocklek och skuggning. Trekantens kontur görs vid bygget |
 
 Trekanten är grön och inte gul, så att den syns mot leopardens gula päls när den sitter på huvudet.
 

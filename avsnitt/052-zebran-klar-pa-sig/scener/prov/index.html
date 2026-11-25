@@ -63,9 +63,10 @@ const P = o => ({ ...L.POSE0, ...o });
 const ZF = [1150, 1030];
 // Provbilderna: [kamera, ansikte, pose, plagg]
 // plagg: { str: [v, h] 0–1, mossa: 'lagom'|'liten'|'stor'|null, oron: 'bakom'|'genom', halsduk, kudde: true = gömda strumpan bakom kudden }
-const KH = [1.5, 1150, 760], KN = [2.6, 1150, 760], KB = [3.2, 1150, 970];
+// Närmare utsnitt (Sanna 25/11: "overall closer crop"), ca ×1,25 mot förut
+const KH = [1.9, 1150, 760], KN = [3.2, 1150, 760], KB = [3.9, 1150, 940];
 const PROV = [
-  ['hel',     [1, 960, 540], 'glad', {}, {}],
+  ['hel',     [1.4, 1000, 640], 'glad', {}, {}],
   ['lyft v',  KB, 'nyfiken', { benY: [-34, 0], ben: [6, 0] }, { str: [0.5, 0] }],
   ['på v',    KB, 'glad', { benY: [-34, 0], ben: [6, 0] }, { str: [1, 0] }],
   ['båda',    KB, 'glad', {}, { str: [1, 1] }],
@@ -76,15 +77,23 @@ const PROV = [
   ['halsduk',   KN, 'glad', {}, { halsduk: 1 }],
   ['allt på',   KH, 'stolt', {}, { str: [1, 1], mossa: 'lagom', oron: 'bakom', halsduk: 1 }],
   ['allt genom', KH, 'stolt', {}, { str: [1, 1], mossa: 'lagom', oron: 'genom', halsduk: 1 }],
-  ['kudden',    [2.2, 800, 700], 'neutral', {}, { kudde: true }],
+  ['kudden',    [2.7, 820, 700], 'neutral', {}, { kudde: true }],
 ];
 
-const VAGG = new URLSearchParams(location.search).get('vagg');   // orange | teal: sovrummets vägg omfärgad (saker/sovrum-farg)
+// Färgsovrummen utan dörr (bakgrunder/sovrummet.md, 2026-11-25). Fönstret uppmätt i 1920×1080 (plattan slice ×1,406): r = inre vita + 15
+const RUM = {
+  'turkos-1': ['turkosa-sovrummet/turkosa-sovrummet-v1-utan-dorr', 781, 345, 185],
+  'orange-1': ['orangea-sovrummet/orangea-sovrummet-v1-utan-dorr', 748, 343, 168],
+  'orange-2': ['orangea-sovrummet/orangea-sovrummet-v2-utan-dorr', 790, 369, 180],
+  'himmelsbla-1': ['himmelsbla-sovrummet/himmelsbla-sovrummet-v1-utan-dorr', 754, 357, 190],
+}[new URLSearchParams(location.search).get('rum') || 'himmelsbla-1'];
+if (RUM) Object.assign(R.FONSTER, { cx: RUM[1], cy: RUM[2], r: RUM[3] });
 const KUDDE_KRAM = S + 'kudde-kram/kudde-kram.png';   // krämvit variant av kudde-v1-zebbe (#F6ECD6), saker/kudde-kram
 function render(t) {
   const [namn, kam, ans, pose, pl] = PROV[Math.max(0, Math.min(PROV.length - 1, Math.round(t)))];
   R.borja(3.3 * t); R.rum({ dag: true }); R.kamera(kam);
-  if (VAGG) document.querySelector('#platta image')?.setAttribute('href', S + 'sovrum-farg/sovrummet-' + VAGG + '.jpeg');
+  if (RUM) { document.querySelector('#platta image')?.setAttribute('href', '/assets/bakgrunder/' + RUM[0] + '.jpeg');
+    [...document.getElementById('himmel').children].slice(1).forEach(e => e.remove()); }   // inga gardiner: plattorna har inga
   R.zebra(ZF, ANS(ans), P(pose), { fram: true });
   strumpPa('l', (pl.str || [0, 0])[0]); strumpPa('r', (pl.str || [0, 0])[1]);
   const m = G.querySelector('.pl-mossa'), o = G.querySelector('.pl-oron'), h = G.querySelector('.pl-halsduk');

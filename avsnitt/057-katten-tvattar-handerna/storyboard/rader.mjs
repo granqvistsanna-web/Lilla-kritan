@@ -92,7 +92,7 @@ export const RADER = [
   { id: '6', d: 0.6 + L(13) + 1.0, plats: 'Handfatet, närbild tassarna', malin: [[13, 0.6]], ljud: [BADRUM, ['kran/kran-1', 0, 0.5], ['plask/plask-1', 0.9, 0.5], ['plask/plask-2', 2.8, 0.5]],
     bild: 'Högra tassen under strålen (strålen slutar på tassen), droppar stänker. Färgen sitter kvar', ljudtext: '`kran`, `plask` mjukt', ansikte: 'nyfiken' },
   { id: '7', d: 0.6 + L(14) + 1.6, plats: 'Samma', malin: [[14, 0.6]], ljud: [['kran/kran-1', 0, 0.4], MJAU(5, 0.8 + L(14))],
-    bild: 'Katten tittar på tassarna, öronen sjunker. Färgen sitter kvar', ljudtext: 'frågande mjau', ansikte: 'förvånad' },
+    bild: 'Katten tittar på tassarna, öronen sjunker. Färgen sitter kvar', ljudtext: 'frågande mjau', ansikte: 'nyfiken, tittar på tassen, öronen sjunker' },
   { id: '8', d: 0.8 + L(15) + 2.0, plats: 'Badrummet, halvbild', malin: [[15, 0.8]], ljud: [['droppar/droppar-1', 0.1], ['droppar/droppar-1', 0.4], ['droppar/droppar-1', 0.7], MJAU(6, 1.3 + L(15))],
     bild: 'Katten skakar tassarna, droppar flyger, färgen kvar. Kranen stängs. **Pausen:** trumpet mjau, öronen ner', ljudtext: '`droppar` ×3, trumpet mjau', ansikte: 'trumpen' },
   { id: '8b', d: 0.3 + L(16) + 1.0 + L(17) + 1.3, plats: 'Badrummet, närbild', malin: [[16, 0.3], [17, 0.3 + L(16) + 1.0]],

@@ -77,12 +77,22 @@ const NARA_MUN = () => kamera(3.6, BX, VID[1] - (L.FOTTER - 485) * GS);
 const NARA_MUGG = () => kamera(3.2, MUGGX + 20, RIM - 60);
 
 // --- Platsen ---------------------------------------------------------------------------------------------------------------
+// Kranen (Sanna 2026-11-25: "polish sink tap"): bildens kran maskas bort och ritas om i kod, samma kran som 030–033 och 038
+// ("polish faucet", runda 3): en ren, knubbig svanhals i mjukt silverblått med glansrand och två korallröda rattar. Handfatsbildens pixlar.
+const KRAN_D = 'M698 168 L698 72 C698 30 672 14 646 14 C619 14 600 31 600 58 L600 72';   // i handfatsbildens pixlar (läppen y 177)
+const KRANBILD = `<g id="kran"><rect x="664" y="156" width="68" height="24" rx="11" fill="#a9bfcf"/>
+  <path d="${KRAN_D}" fill="none" stroke="#9fb6c8" stroke-width="40" stroke-linecap="round"/>
+  <path d="${KRAN_D}" fill="none" stroke="#d6e4ee" stroke-width="31" stroke-linecap="round"/>
+  <path d="M687 158 L687 74 C687 42 668 27 646 26" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="0.9"/>
+  <rect x="585" y="64" width="30" height="20" rx="7" fill="#9fb6c8"/><rect x="589" y="67" width="22" height="13" rx="5" fill="#c3d5e2"/>
+  ${[[660, 150], [736, 150]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="24" fill="#e0705a"/><circle cx="${x}" cy="${y}" r="20" fill="#f08e76"/><circle cx="${x - 8}" cy="${y - 8}" r="6" fill="#fff" opacity="0.75"/>`).join('')}</g>`;
 function badrum() {
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
   $('pall').innerHTML = `<image href="${PALL}" x="${PALL_X0}" y="${PALL_Y0}" width="${781 * PALL_KS}" height="${551 * PALL_KS}"/>`;
   const { W, H, kantY } = HANDFAT;
   $('kar').innerHTML = `<ellipse cx="${HX}" cy="${GOLV + 4}" rx="${W * 0.3}" ry="14" fill="#000" opacity="0.07"/>
-    <image href="${HANDFAT.bild}" x="${HX - W / 2}" y="${RIM - kantY}" width="${W}" height="${H + kantY}" preserveAspectRatio="xMidYMax meet"/>`;
+    <defs><mask id="utan-kran" maskUnits="userSpaceOnUse" x="-50" y="-50" width="900" height="900"><rect x="-50" y="-50" width="900" height="900" fill="#fff"/><rect x="560" y="-50" width="300" height="218" fill="#000"/></mask></defs>
+    <g transform="translate(${HX - W / 2} ${RIM - kantY}) scale(${HK})"><image href="${HANDFAT.bild}" width="802" height="775" mask="url(#utan-kran)"/>${KRANBILD}</g>`;
 }
 const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
   <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };

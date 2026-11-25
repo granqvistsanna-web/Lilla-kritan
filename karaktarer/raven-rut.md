@@ -35,6 +35,8 @@
 body without arms and legs, left arm, right arm, left leg, right leg, left ear, right ear, tail (eyes and mouth are drawn in code)
 ```
 
+> **Tänder och tandborstning (055, 2026-11-25, Sannas ja), som Gretas i 031:** gapet `gapar` (`mun: [54, 42, 0.55, 461]`, överkant strax under nosen) med båda tandraderna och tungan, och posen `borstar` med den turkosa tandborsten i vänstra tassen (`BORSTARM = { axel: 129, L: 124, lut: -4 }`, uppmätt ur rut-arm-l.png). Inga befintliga uttryck eller poser ändrade. **Godkänt av Sanna 2026-11-25** ("Ja, bra"). `?prov=borsta&zoom=mun&rorelse=borsta` spelar borstningen i badrummet; stillbilder i `avsnitt/055-raven-borstar-tanderna/provbild/`.
+
 ## Prompt
 ```prompt
 Rut the fox, ONE smooth, slightly lopsided egg-shaped body (head and body in one), bright orange (#E8742C) wax crayon with grainy streaky texture and paper grain, no black outline, a thin uneven white rim. Cream-white (#FBF3E6) cheeks and tummy, two pointed ears with dark tips, a big bushy tail with a white tip, dark brown (#4A2E22) socks on the legs, a small black nose, tiny arm nubs, two short stubby legs. Face directly on the body: two round white eyes ringed in black with small black pupils and a big happy smile. Very minimal.
