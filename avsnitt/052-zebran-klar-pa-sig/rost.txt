@@ -10,7 +10,7 @@
 10-kla-pa-kroken-strumporna [cheerfully] Då ska vi klä på oss. Kläderna hänger på kroken. Ja, vad ska vi ta på först? Ja, strumporna, bra idé! Först strumporna.
 11-bla-strumpan-pa          [happy] Den blå strumpan … på foten!
 12-var-andra-strumpan       [surprised] Oj! Var är den andra strumpan?
-13-under-sangen             [curious] Är strumpan under sängen?
+13-under-pallen             [curious] Är strumpan under pallen?
 14-nej                      [playfully] Nej!
 15-i-korgen                 [curious] Är strumpan i korgen?
 16-nej                      [playfully] Nej!
@@ -35,7 +35,7 @@
 35-jag-ocksa                [warmly] Mm, du tycker om halsduken.
 36-strumpan-da              [curious] Men strumpan då? Zebran vet inte var.
 37-hjalpa-zebran-se         [warmly] Kan du hjälpa zebran? Ser du den blå strumpan?
-38-ja-dar                   [happy] Ja, där!
+38-i-stoveln                [happy] Ja, där! I stöveln!
 39-bla-strumpan-pa          [happy] Den blå strumpan … på foten!
 40-vad-skont                [happy] Ja, vad skönt!
 41-rod-gul-bla              [happy] Röd, gul … och blå!

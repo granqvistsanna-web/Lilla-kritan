@@ -40,7 +40,7 @@ export const RADER = [
   // --- Strumpan, och den andra är borta ---
   { id: '5', d: 1.2 + L(11) + 2.0, malin: [[11, 1.2]], ljud: [['strumpa/strumpa-1', 1.2 + PA(11) - 0.3], ['tindra/tindra-1', 1.2 + PA(11) + 0.1], [Z('fortjust', 'b'), 1.4 + L(11)]], bild: 'närbild benen, strumpan glider på' },
   { id: '6', d: 1.3 + L(12) + 1.2, malin: [[12, 1.3]], ljud: [['pling/pling-1', 1.0], [Z('nyfiken', 'b'), 1.5 + L(12)]], bild: 'lyfter andra benet: ingen strumpa, förvånad' },
-  { id: '7', d: 0.3 + L(13) + 1.2 + L(14) + 0.8, malin: [[13, 0.3], [14, 0.3 + L(13) + 1.2]], ljud: [[NEJ, 0.5 + L(13) + 1.2 + L(14)]], bild: 'närbild under sängen: bara golv' },
+  { id: '7', d: 0.3 + L(13) + 1.2 + L(14) + 0.8, malin: [[13, 0.3], [14, 0.3 + L(13) + 1.2]], ljud: [[NEJ, 0.5 + L(13) + 1.2 + L(14)]], bild: 'närbild under pallen: bara golv' },
   { id: '8', d: 0.3 + L(15) + 1.2 + L(16) + 0.8, malin: [[15, 0.3], [16, 0.3 + L(15) + 1.2]], ljud: [[Z('nej'), 0.5 + L(15) + 1.2 + L(16)]], bild: 'närbild i korgen: tom' },
   { id: '9', d: 1.6 + L(17) + SVAR + L(18) + 0.8, malin: [[17, 1.6], [18, 1.6 + L(17) + SVAR]], ljud: [[Z('trumpen'), 1.7 + L(17)]], bild: 'närbild, öronen faller, lite ledsen' },
 
@@ -68,9 +68,9 @@ export const RADER = [
 
   // --- Var är strumpan? Barnet hittar den ---
   { id: '21', d: 0.8 + L(36) + 1.2, malin: [[36, 0.8]], ljud: [[Z('nyfiken'), 1.0 + L(36)]], bild: 'tittar på foten, åt vänster och höger' },
-  { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild av sängen med kudden' },
-  { id: '22b', d: HJALP - 2.0 + 0.4, ljud: [['lysmask/lysmask-1', 1.2]], bild: 'närbild kudden, tån skimrar efter 3 s' },
-  { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'tån skimrar tydligt, zebran skuttar' },
+  { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild mot dörren, stövlarna och pallen' },
+  { id: '22b', d: HJALP - 2.0 + 0.4, ljud: [['lysmask/lysmask-1', 1.2]], bild: 'närbild stöveln, strumpan skimrar efter 3 s' },
+  { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'strumpan i stöveln skimrar tydligt, zebran skuttar' },
   { id: '24', d: 1.6 + L(39) + SVAR + 0.7 + L(40) + 0.8, malin: [[39, 1.6], [40, 1.6 + L(39) + SVAR + 0.7]], ljud: [['strumpa/strumpa-2', 1.6 + PA(39) - 0.3], ['tindra/tindra-3', 1.6 + PA(39) + 0.1], [Z('mysig-suck', 'c'), 1.7 + L(39)]],
     bild: 'kudden lutar, strumpan glider fram och på hoven' },
 

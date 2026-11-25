@@ -6,9 +6,9 @@
 <style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style>
 </head>
 <body>
-<!-- 052 Zebran klär på sig: hela kodscenen. Rummet, sängen och zebran ur 026:s rum.js, plaggen som i provet (../prov, grind 2
+<!-- 052 Zebran klär på sig: hela kodscenen, i hallen (hallen-v1, Sanna 2026-11-25; mappen heter fortfarande sovrummet). Zebran ur 026:s rum.js, plaggen som i provet (../prov, grind 2
      godkänd 2026-11-25), raderna och tiden ur rader.json (storyboard/rader.mjs). Kritan går genom verktyg/kritan-ritar.js.
-     Rummet: himmelsblå sovrummet v1 utan dörr, närmare utsnitt (Sanna 2026-11-25).
+     Hallen: dörren öppnas mot snön, knopparna i plattan, pallen med ben, stövlarna med strumpan, korgen. Närmare utsnitt.
      Rendera: node verktyg/render-delat.mjs avsnitt/052-zebran-klar-pa-sig/scener/sovrummet [--snabb]
      Bara hårda klipp; den enda åkningen är zoomen in i teckningen. Kritan är liten, utan ansikte, knackar aldrig. -->
 <script src="/verktyg/blinka.js"></script>
@@ -21,15 +21,16 @@ const { $, kl, lerp, mjuk, del, bump, f1, lagg, iFig, ANS, POS } = R;
 const NS = 'http://www.w3.org/2000/svg', E = '/avsnitt/052-zebran-klar-pa-sig/', S = E + 'saker/', A = '/assets/';
 
 // --- Rummet och sakerna ------------------------------------------------------------------------------------------------------
-const PLATTA = A + 'bakgrunder/himmelsbla-sovrummet/himmelsbla-sovrummet-v1-utan-dorr.jpeg';
-Object.assign(R.FONSTER, { cx: 754, cy: 357, r: 190 });   // uppmätt i plattan (manus Öppet 5)
-const ZF = [1150, 1030], GS = R.GS;                        // zebran på golvet framför sängen (provet)
-const HANG = { x: 180, y: 400, s: 0.38, w: 986, h: 282, fil: A + 'rekvisita/kladhangare/cut/kladhangare.png' };   // till vänster om fönstret
-const KROK = [162, 382, 603, 823].map(kx => [HANG.x + kx * HANG.s, HANG.y + 118 * HANG.s]);                   // knopparnas mitt
-const KORG = { fil: A + 'rekvisita/korg/cut/korg-v3-natt-tunn.png', s: 0.24, x: 300, botten: 930 };            // under hängaren, tom
-const KUDDE_NY = { bild: S + 'kudde-ny/cut/kudde-ny.png', w: 944, h: 458, s: 0.2 };   // kudde-ny 1, ligger platt (Sanna 2026-11-25)
-const KP = [765, R.RIM + 30];   // kuddens underkant, mitt: på madrassen mellan gaveln och täcket
-const SANG_NY = { bild: S + 'sang-baddad/cut/sang-baddad.png', s: 0.565, w: 1320, h: 698, mitt: 659.5, madrass: 298 };   // bäddad säng 4 med mintgrönt täcke (Sanna 2026-11-25)
+// Hallen (Sanna 2026-11-25: "try the hall background", vald hallen-v1). Plattan har dörren till vänster och fyra knoppar på en ribba till höger.
+// Uppmätt i plattan (1920×1080): dörrens öppning x 150–479, valvets mitt y 319, botten 810; golvlinjen y 820; knopparna y 317.
+const PLATTA = A + 'bakgrunder/hallen/hallen-v1.jpeg';
+const ZF = [1150, 1030], GS = R.GS;                        // zebran på golvet mitt i hallen
+const DORR = { x0: 150, x1: 479, cy: 319, botten: 810, farg: '#F5AC8B' };
+const DORR_D = `M${DORR.x0} ${DORR.botten} V${DORR.cy} A${(DORR.x1 - DORR.x0) / 2} ${(DORR.x1 - DORR.x0) / 2} 0 0 1 ${DORR.x1} ${DORR.cy} V${DORR.botten} Z`;
+const KROK = [1405, 1525, 1648, 1770].map(x => [x, 317]);                                                     // plattans knoppar
+const KORG = { fil: A + 'rekvisita/korg/cut/korg-v3-natt-tunn.png', s: 0.24, x: 1590, botten: 905 };           // under knopparna, tom
+const PALL = { bild: S + 'pall-ben/cut/pall-ben.png', w: 1015, h: 665, fot: [507, 655], s: 0.255, x: 820, botten: 905 };   // pallen med ben, Flow nr 1 (Sanna 2026-11-25: "add a pall too")
+const STOVEL = { bild: [A + 'rekvisita/stovlar-gula/cut/stovel-gul-1-tunn.png', A + 'rekvisita/stovlar-gula/cut/stovel-gul-2-tunn.png'], w: 1153, h: 1381, fot: [600, 1348], skaft: [430, 120], s: 0.1, x: [585, 640], botten: [900, 910] };   // stövlarna precis till höger om dörren
 const MOSSA = { bild: S + 'mossa-gul/cut/mossa-gul.png', w: 887, h: 870, brim: [443, 856] };
 const HALSDUK = { bild: S + 'halsduk-ny/cut/halsduk-ny-8.png', w: 856, h: 699, mitt: [428, 250], bredd: 832 };   // halsduk 8 (Sanna 2026-11-25)   // mitt = bandets mitt, bredd = bandets bredd i bilden
 const STRUMPA = { bild: [S + 'strumpor-klarbla/cut/strumpa-klarbla-1.png', S + 'strumpor-klarbla/cut/strumpa-klarbla-2.png'], w: 510, h: 767, s: 0.12 };   // provet hade 0,16; mindre så att den fria strumpan inte hänger framför magen vid hoven
@@ -37,9 +38,9 @@ const BLA = ['#2F7FD8', '#1F66B8'];
 
 // --- Kameror [zoom, cx, cy]: närmare utsnitt (Sanna 2026-11-25, provet) -----------------------------------------------------------
 const K = {
-  HEL: [1.4, 860, 670], HALV: [1.9, 1150, 760], NARA: [3.2, 1150, 790], MOSSA: [3.2, 1150, 690], BEN: [3.9, 1150, 940],
-  RIT: [1.9, 1060, 680], FONSTER: [2.4, 754, 390], KROK: [2.6, 380, 600], SKROK: [3.6, KROK[0][0], KROK[0][1] + 60], HKROK: [2.8, KROK[3][0] - 20, KROK[3][1] + 140],
-  UNDER: [3.2, 790, 940], TACK: [2.6, 1040, 740], KORG: [3.2, KORG.x, 850], KBRED: [1.9, 900, 700], KNARA: [2.7, 820, 700], HITTA: [1.6, 960, 740],
+  HEL: [1.4, 860, 670], HALV: [1.9, 1150, 760], NARA: [2.7, 1150, 740], MOSSA: [3.2, 1150, 690], BEN: [3.9, 1150, 940],
+  RIT: [1.9, 1060, 680], DORR: [1.6, 600, 500], KROK: [2.6, 1550, 470], SKROK: [3.6, KROK[0][0], KROK[0][1] + 60], HKROK: [2.8, 1570, 470],
+  UNDER: [3.2, PALL.x, 850], TACK: [2.6, 1040, 740], KORG: [3.2, KORG.x, 820], KBRED: [1.5, 800, 640], KNARA: [3.2, 640, 800], HITTA: [1.6, 960, 740],
 };
 
 // --- Plaggen på riggen (provet): strumpan målas i benets form, mössan och halsduken i .kropp ------------------------------------
@@ -58,7 +59,15 @@ function kladerIn(g) {
   document.querySelector('defs').insertAdjacentHTML('beforeend', `
     <filter id="strumpkrita" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.16" numOctaves="2" seed="3" result="n"/>
       <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.6 0 0 0 1.62" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>
-    <clipPath id="hdFram"><path d="${HD_FRAM}"/></clipPath>
+    <clipPath id="dorrklipp"><path d="${DORR_D}"/></clipPath>
+    <linearGradient id="uteHimmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE0F4"/><stop offset="1" stop-color="#E4F2FA"/></linearGradient>
+    <filter id="hdkrita" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.05 0.12" numOctaves="2" seed="8" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.7 0 0 0 1.55" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>
+    <linearGradient id="hdLjus" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EC5B4B"/><stop offset="0.45" stop-color="#DA3D2F"/><stop offset="1" stop-color="#B92E24"/></linearGradient>
+    <linearGradient id="hdSidor" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7A1A14" stop-opacity="0.45"/><stop offset="0.2" stop-color="#7A1A14" stop-opacity="0"/><stop offset="0.8" stop-color="#7A1A14" stop-opacity="0"/><stop offset="1" stop-color="#7A1A14" stop-opacity="0.45"/></linearGradient>
+    <radialGradient id="hdKnut" cx="0.38" cy="0.32" r="0.75"><stop offset="0" stop-color="#EF6656"/><stop offset="0.6" stop-color="#D53A2C"/><stop offset="1" stop-color="#AE2A21"/></radialGradient>
+    <linearGradient id="hdSvans" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B92E24"/><stop offset="0.25" stop-color="#D83C2E"/><stop offset="1" stop-color="#DE4334"/></linearGradient>
+    <mask id="oronMask" maskUnits="userSpaceOnUse" x="-500" y="-500" width="2000" height="2000"><rect x="-500" y="-500" width="2000" height="2000" fill="#fff"/><path class="oron-hatt" d="" fill="#000"/></mask>
     <filter id="delsiluett" x="0" y="0" width="1" height="1"><feMorphology in="SourceAlpha" operator="erode" radius="8"/>
       <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>`);
   g.querySelectorAll('image.leg-l, image.leg-r').forEach(img => {
@@ -70,33 +79,104 @@ function kladerIn(g) {
   });
   g.querySelector('.drag').insertAdjacentHTML('afterend', `<g class="pl-halsduk"></g><g class="pl-mossa"></g>`);
   g.querySelector('.kropp > image').insertAdjacentHTML('beforebegin', `<g class="pl-halsduk-bak"></g>`);
+  // öronen sticker upp genom mössan: kopior av riggens öron framför mössan, klippta där de går in i den (Sanna 2026-11-25)
+  g.querySelector('image.ear-l').id = 'ora-l'; g.querySelector('image.ear-r').id = 'ora-r';
+  g.querySelector('.kropp').insertAdjacentHTML('afterend', `<g class="pl-oron" mask="url(#oronMask)" display="none"><g transform="translate(0 ${-ORON_UPP})"><use href="#ora-l"/><use href="#ora-r"/></g></g>`);
 }
 // mössan: brättets nederkant (mitt) i (x, y), brättets bredd w, vinkel v. I riggens ruta (w i riggens px) eller i scenen (w·GS)
-const mossaSvg = ([x, y], w, v = 0, extra = '') => { const s = w / 820;
-  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-MOSSA.brim[0]} ${-MOSSA.brim[1]})" ${extra}><image href="${MOSSA.bild}" width="${MOSSA.w}" height="${MOSSA.h}"/></g>`; };
+const mossaSvg = ([x, y], w, v = 0, extra = '', sy = 1) => { const s = w / 820;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)} ${(s * sy).toFixed(4)}) translate(${-MOSSA.brim[0]} ${-MOSSA.brim[1]})" ${extra}><image href="${MOSSA.bild}" width="${MOSSA.w}" height="${MOSSA.h}"/></g>`; };
 const halsdukSvg = ([x, y], w, extra = '', v = 0, bild = '') => { const s = w / HALSDUK.bredd;
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-HALSDUK.mitt[0]} ${-HALSDUK.mitt[1]})" ${extra}><image href="${HALSDUK.bild}" width="${HALSDUK.w}" height="${HALSDUK.h}" ${bild}/></g>`; };
-// på zebran: bandets övre del (snibbarna som går runt nacken) ligger bakom kroppen och syns bara utanför den, framdelen ligger framför
-// (Sanna 2026-11-25: "backside not showing on wearing"). Linjen i halsduksbildens mått, strax under bandets övre kant.
-const HD_FRAM = 'M0 230 L170 175 L428 185 L686 175 L856 230 L856 699 L0 699 Z';
+// --- Halsduken på zebran, ritad i kod (Sanna 2026-11-25: bilden "don't look good" på zebran). Riggens ruta. Bandet följer kroppen
+// strax under nosen och sticker ut lite på sidorna (där det går runt), knuten till höger om mitten, två tofsar som slutar ovanför hovarna.
+// Samma röda, räfflade halsduk som bilden (nr 8), så den känns igen från kroken och ritintrot.
+const HDK = { ljus: '#DA3D2F', mork: '#A9271D', topp: [[220, 592], [508, 668], [796, 592]], botten: [[230, 676], [508, 764], [786, 676]], knut: [592, 724] };
+const qb = ([a, b, c], t) => [0, 1].map(i => (1 - t) ** 2 * a[i] + 2 * (1 - t) * t * b[i] + t * t * c[i]);
+const hdSvans = (a, b, c, d) => `M${a} Q${f1((a[0] + d[0]) / 2 - 6)} ${f1((a[1] + d[1]) / 2)} ${d} L${c} Q${f1((b[0] + c[0]) / 2 + 6)} ${f1((b[1] + c[1]) / 2)} ${b} Z`;
+const HD_SVANSAR = [[[566, 728], [604, 732], [598, 846], [556, 842]], [[600, 726], [632, 722], [690, 826], [652, 838]]];
+// bandet som två kanter (överkant, underkant) i HD_N punkter, så att samma kodade halsduk kan hänga vikt över knoppen och
+// veckla ut sig till bandet på zebran: formen glider, den byts aldrig (Sanna 2026-11-25: "hanging from krok, draw in code")
+const HD_N = 41, HD_S = Array.from({ length: HD_N }, (_, i) => i / (HD_N - 1));
+const HD_BAND = { top: HD_S.map(t => qb(HDK.topp, t)), bot: HD_S.map(t => qb(HDK.botten, t)) };
+const HD_VIK = (() => {   // vikt över knoppen (knoppen i 0,0, riggens mått): två halvor hänger ner och möts i en rund vikning överst
+  const L = 620, r = 44, a = Math.PI * r / (2 * L), h = 42;
+  const m = 0.42;   // vikt lite snett: högra halvan hänger längre, som en riktig halsduk på en knopp
+  const c = s => s < m - a ? [-r - 14 * (m - a - s), 6 + (m - a - s) * L] : s > m + a ? [r + 8 * (s - m - a), 6 + (s - m - a) * L]
+    : [r * Math.sin(Math.PI * (s - m) / (2 * a)), 6 - r * Math.cos(Math.PI * (s - m) / (2 * a))];
+  const top = [], bot = [];
+  HD_S.forEach(s => { const p = c(s), q = c(Math.min(1, s + 0.002)), o = c(Math.max(0, s - 0.002)), l = Math.hypot(q[0] - o[0], q[1] - o[1]), n = [(q[1] - o[1]) / l, -(q[0] - o[0]) / l];
+    top.push([p[0] + h * n[0], p[1] + h * n[1]]); bot.push([p[0] - h * n[0], p[1] - h * n[1]]); });
+  return { top, bot }; })();
+const hdKant = (k, t) => { const x = kl(t) * (HD_N - 1), i = Math.min(HD_N - 2, Math.floor(x)), f = x - i; return [lerp(k[i][0], k[i + 1][0], f), lerp(k[i][1], k[i + 1][1], f)]; };
+const hdLinje = (form, k, i0 = 0, i1 = HD_N - 1) => form.top.slice(i0, i1 + 1).map((p, i) => { const b = form.bot[i0 + i]; return `${i ? 'L' : 'M'}${f1(lerp(p[0], b[0], k))} ${f1(lerp(p[1], b[1], k))}`; }).join(' ');
+// knut 0–1: knuten och tofsarna knyts fram (i kd), frans 0–1: fransarna i bandets ändar (när den hänger)
+function halsdukKod(form = HD_BAND, knut = 1, frans = 0, kd = [0, 0]) {
+  const R = HDK, rand = 'stroke="#fff" stroke-width="13" stroke-linejoin="round"';
+  const band = `M${form.top.map(p => `${f1(p[0])} ${f1(p[1])}`).join(' L')} L${form.bot.slice().reverse().map(p => `${f1(p[0])} ${f1(p[1])}`).join(' L')} Z`;
+  // räfflorna tätnar mot sidorna (bandet vänder sig bort), lite olika långa och svagt böjda, som handritade
+  const rafflor = Array.from({ length: 23 }, (_, i) => { const u = i / 22, t = 0.5 + 0.47 * Math.sin(Math.PI * (u - 0.5)), a = hdKant(form.top, t), b = hdKant(form.bot, t), j = 3 * Math.sin(i * 2.3);
+    const p = [lerp(a[0], b[0], 0.1), lerp(a[1], b[1], 0.1) + j], q = [lerp(a[0], b[0], 0.9), lerp(a[1], b[1], 0.9) + j];
+    return `M${f1(p[0])} ${f1(p[1])} Q${f1((a[0] + b[0]) / 2 + 4 + j)} ${f1((a[1] + b[1]) / 2)} ${f1(q[0])} ${f1(q[1])}`; }).join(' ');
+  const fr = frans <= 0.01 ? '' : [[0, 1], [HD_N - 1, HD_N - 2]].map(([e, g]) => { const m = k => [(k.top[e][0] + k.bot[e][0]) / 2 - (k.top[g][0] + k.bot[g][0]) / 2, (k.top[e][1] + k.bot[e][1]) / 2 - (k.top[g][1] + k.bot[g][1]) / 2], d = m(form), l = Math.hypot(...d) || 1;
+    return [0.2, 0.5, 0.8].map(k => { const x = lerp(form.top[e][0], form.bot[e][0], k), y = lerp(form.top[e][1], form.bot[e][1], k), x2 = x + 22 * d[0] / l, y2 = y + 22 * d[1] / l;
+      return `M${f1(x)} ${f1(y)} L${f1(x2)} ${f1(y2)}`; }).join(' '); }).join(' ');
+  const fransar = fr ? `<g opacity="${kl(frans).toFixed(2)}"><path d="${fr}" stroke="#fff" stroke-width="19" stroke-linecap="round"/><path d="${fr}" stroke="#F6E9E4" stroke-width="11" stroke-linecap="round"/></g>` : '';
+  const [kx, ky] = R.knut, ks = 0.5 + 0.5 * mjuk(knut), kn = `transform="translate(${f1(kd[0])} ${f1(kd[1])}) translate(${kx} ${ky}) scale(${ks.toFixed(3)}) translate(${-kx} ${-ky})" opacity="${del(0, 0.4, knut).toFixed(2)}"`;
+  const svans = HD_SVANSAR.map(([a, b, c, d]) => hdSvans(a, b, c, d)).join(' ');
+  const svRafflor = HD_SVANSAR.map(([a, b, c, d]) => [0.33, 0.66].map(k => { const p = [lerp(a[0], b[0], k), lerp(a[1], b[1], k)], q = [lerp(d[0], c[0], k), lerp(d[1], c[1], k)];
+    return `M${f1(p[0])} ${f1(p[1] + 8)} L${f1(q[0])} ${f1(q[1] - 14)}`; }).join(' ')).join(' ');
+  const tofsFr = HD_SVANSAR.map(([, , c, d]) => [0.15, 0.5, 0.85].map(k => { const x = lerp(d[0], c[0], k), y = lerp(d[1], c[1], k);
+    return `<rect x="${f1(x - 6)}" y="${f1(y - 4)}" width="12" height="20" rx="5" fill="#F6E9E4"/>`; }).join('')).join('');
+  const svansar = knut <= 0.01 ? '' : `<g ${kn}><path d="${svans}" ${rand}/>${tofsFr.replace(/fill=/g, 'stroke="#fff" stroke-width="8" fill=')}<path d="${svans}" fill="url(#hdSvans)"/><path d="${svans}" fill="${R.mork}" opacity="0.3" filter="url(#hdkrita)"/>
+      <path d="${svRafflor}" stroke="${R.mork}" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.55"/>${tofsFr}</g>`;
+  const knuten = knut <= 0.01 ? '' : `<g ${kn}><path d="M${kx - 6} ${ky + 32} q 0 14 -2 22 M${kx + 18} ${ky + 30} q 4 12 6 18" stroke="#7A1A14" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.25"/>
+      <ellipse cx="${kx}" cy="${ky + 4}" rx="44" ry="38" fill="#4a1f18" opacity="0.18"/>
+      <ellipse cx="${kx}" cy="${ky}" rx="43" ry="37" ${rand}/><ellipse cx="${kx}" cy="${ky}" rx="43" ry="37" fill="url(#hdKnut)"/>
+      <ellipse cx="${kx}" cy="${ky}" rx="43" ry="37" fill="${R.mork}" opacity="0.25" filter="url(#hdkrita)"/>
+      <path d="M${kx - 30} ${ky - 14} Q${kx - 6} ${ky + 4} ${kx - 12} ${ky + 32} M${kx + 4} ${ky - 34} Q${kx + 24} ${ky - 6} ${kx + 18} ${ky + 32} M${kx - 14} ${ky - 30} Q${kx + 6} ${ky - 14} ${kx + 2} ${ky + 8}" stroke="${R.mork}" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.65"/>
+      <path d="M${kx - 24} ${ky - 20} q 10 -10 24 -10" stroke="#F8907E" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.6"/></g>`;
+  return `<g class="hd-kod">
+    ${svansar}${fransar}
+    <path d="${band}" transform="translate(0 14)" fill="#4a1f18" opacity="0.14"/><path d="${band}" ${rand}/>
+    <path d="${band}" fill="url(#hdLjus)"/><path d="${band}" fill="url(#hdSidor)"/><path d="${band}" fill="${R.mork}" opacity="0.3" filter="url(#hdkrita)"/>
+    <path d="${rafflor}" stroke="${R.mork}" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <path d="${hdLinje(form, 0.2, 3, HD_N - 4)}" stroke="#F7836F" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.55"/>
+    <path d="${hdLinje(form, 0.88)}" stroke="#7A1A14" stroke-width="16" fill="none" opacity="0.22"/>
+    ${knuten}
+  </g>`;
+}
+// öronen: kopiorna lyfts ORON_UPP och syns bara utanför mössan, så de ser ut att sticka upp genom den
+const ORON_UPP = 60;
+const oronHatt = () => msDrag(MS.lagom.pa, MS.lagom.w, MS.lagom.sy)[0];
 const strumpaFri = (i, [x, y], v = 0, op = 1) => op <= 0.01 ? '' : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${STRUMPA.s}) translate(-255 -383)" opacity="${kl(op).toFixed(2)}"><image href="${STRUMPA.bild[i]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`;
 
 // mössans tre storlekar: brättets bredd i riggens px (provet) och var den sitter på zebran (riggens ruta) [x, y, vinkel]
 // lagom sitter lägre och lite bredare så att den sluter om huvudet (Sanna 2026-11-25 "better fit for hat"); mindre, 420, så att brättet följer huvudet (Sanna 2026-11-25 kväll)
-const MS = { liten: { w: 96, pa: [660, 176, 18] }, stor: { w: 640, pa: [512, 470, 0] }, lagom: { w: 420, pa: [508, 326, 0] } };
+const MS = { liten: { w: 96, pa: [660, 176, 18] }, stor: { w: 640, pa: [512, 470, 0] }, lagom: { w: 420, pa: [508, 326, 0], sy: 0.74 } };   // lagom är lägre (sy), så att öronen sticker upp genom den (Sanna 2026-11-25)
 const LUFT = [880, 700];                                   // där kritan ritar mössan, i luften till vänster om zebran (brättets nederkant)
 const iZ = p => iFig(ZF, p);
 const franZ = ([x, y]) => [(x - ZF[0]) / GS + 512, (y - ZF[1]) / GS + 925];   // scenen → riggens ruta (omvänd iZ)
 // halsduken hänger på längden från fjärde knoppen (vriden 90°, tofsarna nedtill), vrids tillbaka medan den glider: storleken ändras aldrig
-const HD_HANG = [KROK[3][0], KROK[3][1] + 150], HD_HANG_V = 90, HD_PA = [516, 690], HD_W = 620;   // halsduk 8 som i pa-zebran.jpg: bandet lika brett som kroppen, under nosen
+const HD_HANG = [KROK[2][0], KROK[2][1] + 70];   // mitt på den vikta halsduken (glimten)
 // halsdukens väg till zebran (i riggens ruta): ner i en båge till halshöjd bredvid zebran och rätt vriden, sedan in från sidan,
 // så att den aldrig går över ansiktet (Sanna 2026-11-23: inget går genom något)
-const HD_SIDA = [HD_PA[0] - 430, HD_PA[1]];
-const hdVag = u => u < 0.6 ? { p: franZ(bage(HD_HANG, iZ(HD_SIDA), u / 0.6, 60)), v: HD_HANG_V * (1 - mjuk(u / 0.6)) }
-  : { p: [lerp(HD_SIDA[0], HD_PA[0], mjuk((u - 0.6) / 0.4)), HD_PA[1]], v: 0 };
+// halsdukens väg (riggens ruta): lyfts av knoppen, sänks vikt (liten) ner i gapet mellan zebran och korgen (först åt vänster, så att den
+// går över korgen), vecklas sedan ut över bröstet i halshöjd och knyts (knuten och tofsarna växer fram). Samma kodade halsduk hela vägen,
+// aldrig över ansiktet eller genom korgen (QA 2026-11-25).
+const HD_Q = [1030, 520];   // ovanför svansen, före korgen
+const hdFlytt = (f, [x, y]) => ({ top: f.top.map(p => [p[0] + x, p[1] + y]), bot: f.bot.map(p => [p[0] + x, p[1] + y]) });
+const hdVag = u => { const K0 = franZ(KROK[2]);
+  if (u < 0.55) { const w = del(0.2, 0.55, u), pos = [lerp(K0[0], HD_Q[0], mjuk(kl(w * 1.6))), lerp(K0[1] - 30 * mjuk(del(0, 0.2, u)), HD_Q[1], mjuk(w))];
+    return { ...hdFlytt(HD_VIK, pos), knut: 0, frans: 1, kd: [0, 0] }; }
+  const w = mjuk(del(0.55, 0.92, u)), A = hdFlytt(HD_VIK, HD_Q), mix = (a, b) => a.map((p, i) => [lerp(p[0], b[i][0], w), lerp(p[1], b[i][1], w)]);
+  return { top: mix(A.top, HD_BAND.top), bot: mix(A.bot, HD_BAND.bot), knut: del(0.82, 1, u), frans: 1 - del(0.6, 0.85, u), kd: [0, 0] }; };
 const S_HANG = [KROK[0][0], KROK[0][1] + 40];
+// strumpan från knoppen till vänster hov: över huvudet, ner längs zebrans vänstra sida, sedan in till hoven (aldrig över ansiktet, QA 2026-11-25)
+const strumpVag = (u, mal) => { const W1 = [ZF[0] - 250, ZF[1] - 430], W2 = [ZF[0] - 215, mal[1] - 40];
+  return u < 0.45 ? bage(S_HANG, W1, u / 0.45, 40) : u < 0.75 ? [lerp(W1[0], W2[0], mjuk((u - 0.45) / 0.3)), lerp(W1[1], W2[1], mjuk((u - 0.45) / 0.3))] : bage(W2, mal, (u - 0.75) / 0.25, 10); };
 const HOV = { l: iZ([432, 860]), r: iZ([606, 860]) };
-const GOMD = () => [KP[0] + 6, KP[1] - 74], GOMD_V = 78;   // strumpan ligger ovanpå kudden, hela syns (Sanna 2026-11-25: "hard to find under pillow, maybe can be on pillow")
+const GOMD = () => [STOVEL.x[0] + (STOVEL.skaft[0] - STOVEL.fot[0]) * STOVEL.s, STOVEL.botten[0] - (STOVEL.fot[1] - STOVEL.skaft[1]) * STOVEL.s - 4], GOMD_V = -8;   // strumpan står i stöveln vid dörren, mudden sticker upp (Sanna 2026-11-25)
 const glid = (k, tl, n) => [k[0] * (1 + 0.03 * mjuk(kl(tl / n))), k[1], k[2]];   // tomma platser kryper 3 % närmare
 const bage = (A, B, u, h) => { const m = mjuk(u); return [lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h * Math.sin(Math.PI * kl(u))]; };
 
@@ -109,7 +189,7 @@ const HD_DRAG_BILD = [[[150, 120], [200, 300]], [[330, 158], [345, 390]], [[690,
 const hdDrag = ([X, Y], k) => { const f = (x, y) => [X + (x - HALSDUK.mitt[0]) * k, Y + (y - HALSDUK.mitt[1]) * k]; return [flytta(HD_KONT, f), ...HD_DRAG_BILD.map(p => linje(p, f))]; };
 // mössan (mossa-gul.png): konturen med tofsen, brättets linje och fyra räfflor
 const MS_DRAG_BILD = [[[65, 628], [445, 608], [850, 625]], [[190, 610], [240, 420], [350, 255]], [[360, 605], [395, 285]], [[545, 605], [500, 285]], [[725, 610], [690, 420], [560, 250]]];
-const msDrag = ([X, Y], wScen) => { const k = wScen / 820, f = (x, y) => [X + (x - MOSSA.brim[0]) * k, Y + (y - MOSSA.brim[1]) * k]; return [flytta(MS_KONT, f), ...MS_DRAG_BILD.map(p => linje(p, f))]; };
+const msDrag = ([X, Y], wScen, sy = 1) => { const k = wScen / 820, f = (x, y) => [X + (x - MOSSA.brim[0]) * k, Y + (y - MOSSA.brim[1]) * k * sy]; return [flytta(MS_KONT, f), ...MS_DRAG_BILD.map(p => linje(p, f))]; };
 const MS_VIKT = [3, 0.8, 0.5, 0.5, 0.5, 0.5];
 
 // --- Rörelser ----------------------------------------------------------------------------------------------------------------
@@ -137,7 +217,7 @@ const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];
 const fran = (id, n) => IDX[id] >= IDX[n], efter = (id, n) => IDX[id] > IDX[n];
 const PAo = (id, n) => M(id, n) + PAW[n];   // "på!" i raden
 // plaggens läge efter en rad (raderna som rör ett plagg skriver över)
-const std = id => ({ str: [+efter(id, '5'), +efter(id, '24')], hangS: !fran(id, '5'), hangH: !fran(id, '19'), halsduk: efter(id, '19'),
+const std = id => ({ dorr: +efter(id, '2'), str: [+efter(id, '5'), +efter(id, '24')], hangS: !fran(id, '5'), hangH: !fran(id, '19'), halsduk: efter(id, '19'),
   mossa: efter(id, '17') ? { typ: 'lagom' } : null, gomd: !fran(id, '24') });
 const RUM = (id, o) => ({ plats: 'rum', kam: K.HEL, pos: ZF, f: F('glad'), p: P(), ...std(id), ...o });
 
@@ -155,8 +235,8 @@ const SC = {
   '1b': (tl, d) => { const sv = 0.3 + LN(5); const [f, p] = nick(F(tl > sv ? 'jatteglad' : 'nyfiken'), P(), tl - (sv + 0.1));
     return RUM('1b', { kam: K.TACK, f, p }); },
   // snön i fönstret, sedan zebran med stora ögon
-  '2': (tl, d) => { const c = M('2', 7) + LN(7) + 0.2, up = del(c + 0.2, c + 0.6, tl);   // fönstret medan Malin säger "Titta! Det snöar!", sedan zebran
-    return RUM('2', { kam: tl < c ? K.FONSTER : K.NARA, f: F('jatteglad', { titt: [-14, -8], ogonS: [1.1, 1.1] }), p: P({ rikt: -0.3, oron: [-12 * up, -12 * up] }), svans: glad(tl, c + 0.2, d) }); },
+  '2': (tl, d) => { const c = M('2', 7) + LN(7) + 0.2, up = del(c + 0.2, c + 0.6, tl);   // dörren glider upp, Malin säger "Titta! Det snöar!", sedan zebran
+    return RUM('2', { kam: tl < c ? K.DORR : K.NARA, dorr: del(0.05, 0.7, tl), f: F('jatteglad', { titt: [-14, -8], ogonS: [1.1, 1.1] }), p: P({ rikt: -0.3, oron: [-12 * up, -12 * up] }), svans: glad(tl, c + 0.2, d) }); },
   // vill du gå ut i snön? nickar, glatt skutt på "Ja, vad kul!"
   '3': (tl, d) => { const kul = 0.4 + LN(9) * 0.72; let [f, p] = nick(F('jatteglad', { titt: [-10, -4] }), P({ rikt: -0.3 }), tl - (0.4 + LN(9) * 0.45));
     return RUM('3', { kam: K.HALV, f, p: skutt(p, tl, kul, 20) }); },
@@ -168,9 +248,12 @@ const SC = {
 
   // den blå strumpan … på! (vänster ben lyfts, strumpan glider från kroken till hoven och dras upp på "på!")
   '5': (tl, d) => { const pa = PAo('5', 11), g0 = 0.4, g1 = pa - 0.45, ben = del(0.2, 0.6, tl) * (1 - del(pa + 0.3, pa + 0.7, tl));
-    const fri = tl < g1 + 0.25 ? strumpaFri(0, bage(S_HANG, [HOV.l[0], HOV.l[1] - 34 * GS * ben + 6], kl((tl - g0) / (g1 - g0)), 120), lerp(0, 8, del(g0, g1, tl)), 1 - del(g1, g1 + 0.25, tl)) : '';
+    // framme vid hoven trycks den lösa strumpan ihop nedåt (mot foten) medan den målade dras upp, under krit-gnistor: inget formbyte syns (QA 2026-11-25)
+    const sp = strumpVag(kl((tl - g0) / (g1 - g0)), [HOV.l[0], HOV.l[1] - 34 * GS * ben + 6]), sq = del(g1, g1 + 0.22, tl), fot = sp[1] + 0.45 * STRUMPA.h * STRUMPA.s;
+    const fri = tl < g1 + 0.22 ? `<g transform="translate(0 ${f1(fot)}) scale(1 ${(1 - 0.6 * mjuk(sq)).toFixed(3)}) translate(0 ${f1(-fot)})">${strumpaFri(0, sp, lerp(0, 8, del(g0, g1, tl)), 1 - del(g1 + 0.1, g1 + 0.22, tl))}</g>` : '';
+    const gn = tl > g1 - 0.05 && tl < g1 + 1.2 ? gnistor(HOV.l[0], HOV.l[1] - 30 * GS * ben, 60, tl - g1 + 0.05) : '';
     const re = tl > pa + 0.5;   // reaktionsslaget: närbild, stora glada ögon, öronen upp, svansen viftar
-    return RUM('5', { kam: re ? K.NARA : K.BEN, hangS: tl < g0, fri, str: [del(g1, pa, tl), 0], f: F(re ? 'jatteglad' : 'nyfiken', re ? { ogonS: [1.12, 1.12] } : { titt: [-6, 14] }),
+    return RUM('5', { kam: re ? K.NARA : K.BEN, hangS: tl < g0, fri: fri + gn, str: [del(g1 + 0.02, g1 + 0.3, tl), 0], f: F(re ? 'jatteglad' : 'nyfiken', re ? { ogonS: [1.12, 1.12] } : { titt: [-6, 14] }),
       p: P({ benY: [-34 * ben, 0], ben: [6 * ben, 0], oron: re ? [-12, -12] : [0, 0] }), svans: glad(tl, pa, d) }); },
   // lyfter andra benet: ingen strumpa. Förvånad, 0,3 s stilla
   '6': (tl, d) => { const ben = del(0.2, 0.6, tl) * (1 - del(d - 1.2, d - 0.7, tl)), forv = tl > 1.0;
@@ -210,12 +293,12 @@ const SC = {
   // den gula mössan … på! (öronen vrids ihop medan den glider ner, kritan flyger ut)
   '17': (tl, d) => { const pa = PAo('17', 30), g0 = pa - 1.3, u = del(g0, pa, tl), sitter = tl >= pa;
     return RUM('17', { kam: tl > pa + 0.5 ? K.MOSSA : K.HALV, svans: glad(tl, pa, d), f: F(sitter ? 'jatteglad' : 'nyfiken', { titt: [0, -14 * (1 - del(pa, pa + 0.4, tl))] }), p: P({ oron: [-10 * u * (1 - del(pa + 0.2, pa + 0.6, tl)), -10 * u * (1 - del(pa + 0.2, pa + 0.6, tl))] }),
-      luft: sitter ? null : { typ: 'lagom', glid: u, bage: 220 }, mossa: sitter ? { typ: 'lagom' } : null }); },
+      luft: sitter ? null : { typ: 'lagom', glid: u, bage: 50 }, mossa: sitter ? { typ: 'lagom' } : null }); },
 
   // halsduken på kroken glimtar; den glider runt halsen; gosar in mulen och blundar
   '18': (tl, d) => RUM('18', { kam: K.HKROK, zebra: false, skim: [[HD_HANG[0], HD_HANG[1] - 10], 0.8 * bump(0.3, 2.3, tl), 1.4] }),
   '19': (tl, d) => { const pa = PAo('19', 33), g0 = 0.5, g1 = pa, u = del(g0, g1, tl), sitter = tl >= g1;
-    return RUM('19', { kam: tl > g1 + 0.5 ? K.NARA : K.HEL, svans: glad(tl, g1, d), hangH: tl < g0, hdFri: null,
+    return RUM('19', { kam: tl > g1 + 0.5 ? K.NARA : [1.4, 1180, 650], svans: glad(tl, g1, d), hangH: tl < g0,
       // glider i riggens lager: bandets bakre del ligger bakom kroppen hela vägen, så den syns aldrig över ansiktet och hoppar inte vid landningen
       halsduk: sitter ? true : tl < g0 ? false : hdVag(kl((tl - g0) / (g1 - g0))),
       f: F(sitter ? 'jatteglad' : 'nyfiken', { titt: [-14 * (1 - u), -6 * (1 - u)] }), p: P({ rikt: -0.4 * (1 - u) }) }); },
@@ -227,20 +310,22 @@ const SC = {
     return RUM('21', { kam: K.HALV, f: F('nyfiken', { titt: [16 * v, 14 * ner] }), p: P({ rikt: 0.35 * v }) }); },
   // kan du hjälpa zebran? bred bild av sängen, sedan närbild kudden: tån skimrar efter 3 s av pausen
   '22a': (tl, d) => RUM('22a', { kam: K.KBRED, f: F('nyfiken', { titt: [-14, -4] }), p: P({ rikt: -0.3 }) }),
-  '22b': (tl, d) => RUM('22b', { kam: K.KNARA, f: F('nyfiken'), p: P({ rikt: -0.3 }), skim: [[GOMD()[0] + 10, GOMD()[1] - 4], 0.5 * del(1.0, 1.6, tl), 0.7] }),
+  '22b': (tl, d) => RUM('22b', { kam: glid(K.KNARA, tl, d + 3.8), f: F('nyfiken'), p: P({ rikt: -0.3 }), skim: [[GOMD()[0] + 10, GOMD()[1] - 4], 0.5 * del(1.0, 1.6, tl), 0.7] }),
   // ja, där! tån skimrar tydligt, sedan zebran som skuttar
   '23': (tl, d) => { const c = 1.2;
-    return tl < c ? RUM('23', { kam: K.KNARA, skim: [[GOMD()[0] + 10, GOMD()[1] - 4], 1, 0.8], vick: 4 * Math.sin(tl * 9) * bump(0, c, tl) })
+    return tl < c ? RUM('23', { kam: glid(K.KNARA, tl + RR['22b'].d, RR['22b'].d + 3.8), skim: [[GOMD()[0] + 10, GOMD()[1] - 4], 1, 0.8], vick: 4 * Math.sin(tl * 9) * bump(0, c, tl) })
       : RUM('23', { kam: K.HALV, f: F('jatteglad', { titt: [-12, 0] }), p: skutt(P({ rikt: -0.2 }), tl, c + 0.3, 20), svans: glad(tl, c, d) }); },
   // strumpan lyfter från kudden och glider till hoven (höger ben lyfts)
-  '24': (tl, d) => { const pa = PAo('24', 39), g0 = 1.0, g1 = pa - 0.45, u = kl((tl - g0) / (g1 - g0));
+  '24': (tl, d) => { const pa = PAo('24', 39), g00 = 0.6, g0 = 1.0, g1 = pa - 0.45, u = kl((tl - g0) / (g1 - g0)), lyft = 60 * mjuk(del(g00, g0, tl));   // först rakt upp ur stöveln (bakom skaftet), sedan iväg
     const ben = del(g0, g0 + 0.4, tl) * (1 - del(pa + 0.3, pa + 0.7, tl)), lut = 0;
-    const G1 = GOMD(), mal = [HOV.r[0], HOV.r[1] - 34 * GS * ben + 6];
+    const G1 = [GOMD()[0], GOMD()[1] - 60], mal = [HOV.r[0], HOV.r[1] - 34 * GS * ben + 6];
     // först ner på golvet till vänster om zebran, sedan längs golvet till hoven: den går aldrig framför ansiktet
-    const GOLVP = [ZF[0] - 190, HOV.r[1] + 6], vag = u < 0.55 ? bage(G1, GOLVP, u / 0.55, 60) : bage(GOLVP, mal, (u - 0.55) / 0.45, 12);
+    // ur stöveln åt vänster (mot dörren), rakt ner till golvet, sedan längs golvet framför pallen till hoven: den går aldrig genom pallen eller stövlarna
+    const A1 = [470, G1[1] + 40], B1 = [470, HOV.r[1] + 4];
+    const vag = u < 0.25 ? bage(G1, A1, u / 0.25, 50) : u < 0.45 ? [A1[0], lerp(A1[1], B1[1], mjuk((u - 0.25) / 0.2))] : bage(B1, mal, (u - 0.45) / 0.55, 10);
     const fri = tl < g0 ? null : tl < g1 + 0.25 ? strumpaFri(1, vag, lerp(GOMD_V, 8, mjuk(u)), 1 - del(g1, g1 + 0.25, tl)) : null;
     const kam24 = tl < pa + 0.3 ? K.HITTA : tl < pa + 1.4 ? K.BEN : K.NARA;   // båda strumporna, sedan reaktionen
-    return RUM('24', { kam: kam24, svans: glad(tl, pa, d), kuddeV: lut, gomd: tl < g0, fri, str: [1, del(g1, pa, tl)],
+    return RUM('24', { kam: kam24, svans: glad(tl, pa, d), gomd: tl < g0, gomdUpp: lyft, fri, str: [1, del(g1, pa, tl)],
       f: F(tl > pa ? 'jatteglad' : 'nyfiken', tl > pa + 1.4 ? { ogonS: [1.12, 1.12] } : { titt: [tl < g0 ? -14 : 0, tl < g0 ? 0 : 14] }), p: P({ rikt: tl < g0 ? -0.3 : 0, benY: [0, -34 * ben], ben: [0, -6 * ben], oron: tl > pa + 1.4 ? [-12, -12] : [0, 0] }) }); },
 
   // röd, gul … och blå! plaggen glimtar på färgerna, ett lugnt skutt
@@ -305,32 +390,37 @@ function ritaPapper(st, t) {
 }
 const boil = z => $('brus').nextElementSibling.setAttribute('scale', (2.5 / z).toFixed(2));   // line boil 2,5 px i bild (CLAUDE.md)
 
-function snoflingor(t) {   // lugna flingor i fönstret, hela filmen
-  const { cx, cy, r } = R.FONSTER; let h = '';
-  for (let i = 0; i < 16; i++) { const sx = R.slump(i * 3.7), sy = R.slump(i * 7.1 + 2), x = cx - r + 2 * r * sx + 10 * Math.sin(t * 0.8 + i), y = cy - r + ((sy * 2 * r + t * (28 + 14 * R.slump(i))) % (2 * r));
+function snoflingor(t, o) {   // ute genom dörren: ljus himmel, en snöig backe och lugna flingor (o = hur öppen dörren är)
+  if (o <= 0.01) return '';
+  const { x0, x1, cy, botten } = DORR; let h = '';
+  for (let i = 0; i < 18; i++) { const sx = R.slump(i * 3.7), sy = R.slump(i * 7.1 + 2), x = x0 + (x1 - x0) * sx + 8 * Math.sin(t * 0.8 + i), y = cy - 170 + ((sy * 650 + t * (26 + 14 * R.slump(i))) % 650);
     h += `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(4 + 3 * R.slump(i * 1.3))}" fill="#fff" opacity="0.95"/>`; }
-  lagg('himmel', `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#BCDDF1"/>${h}</g>`);   // bara snö, inget moln (Sanna 2026-11-25)
+  return `<g clip-path="url(#dorrklipp)"><rect x="${x0}" y="${cy - 170}" width="${x1 - x0}" height="${botten - cy + 170}" fill="url(#uteHimmel)"/>
+    <path d="M${x0 - 10} ${botten - 70} Q${x0 + 110} ${botten - 130} ${x1 + 10} ${botten - 95} V${botten + 5} H${x0 - 10} Z" fill="#fff"/>
+    <path d="M${x0 - 10} ${botten - 30} Q${x0 + 200} ${botten - 70} ${x1 + 10} ${botten - 40} V${botten + 5} H${x0 - 10} Z" fill="#EEF6FB"/>${h}</g>`;
+}
+// dörrbladet svänger upp kring gångjärnet till vänster (bladet smalnar, blir lite mörkare), kallt ljus faller in på golvet
+function dorren(t, o) {
+  const { x0, x1, botten, farg } = DORR, c = Math.cos(mjuk(kl(o)) * 1.35), w = x1 - x0;
+  const ljus = o > 0.01 ? `<path d="M${x0} ${botten} L${x1} ${botten} L${x1 + 120} ${botten + 150} L${x0 + 40} ${botten + 150} Z" fill="#DDF0FA" opacity="${(0.35 * kl(o)).toFixed(2)}"/>` : '';
+  return snoflingor(t, o) + ljus + `<g transform="translate(${x0} 0) scale(${c.toFixed(3)} 1) translate(${-x0} 0)"><path d="${DORR_D}" fill="${farg}"/><path d="${DORR_D}" fill="#7a3a2a" opacity="${(0.18 * (1 - c)).toFixed(2)}"/>
+    <circle cx="${x0 + 0.82 * w}" cy="${botten - 230}" r="11" fill="#E9806A"/></g>`;
 }
 function ritaRum(st, t) {
   R.rum({ dag: true }); R.kamera(st.kam); boil(st.kam[0]);
-  const sb = SANG_NY.s, si = document.querySelector('#sang image');
-  [['href', SANG_NY.bild], ['x', f1(1000 - sb * SANG_NY.mitt)], ['y', f1(R.RIM - sb * SANG_NY.madrass)], ['width', f1(SANG_NY.w * sb)], ['height', f1(SANG_NY.h * sb)]].forEach(([k, v]) => si.setAttribute(k, v));
-  lagg('under', R.nalleBild([900, R.BED.under - 46], 0.12, { v: -90 }));   // nallen från 026 ligger på golvet under sängen (Sanna 2026-11-25)
+  ['sang', 'himmel', 'bak'].forEach(i => { $(i).innerHTML = ''; });   // hallen: ingen säng, inget fönster, ingen tavla
   document.querySelector('#platta image')?.setAttribute('href', PLATTA);
   const z = st.kam[0], sd = z > 1.5 ? Math.min(1.1, 0.6 * (z - 1.5) + 0.4) / z : 0;   // premium: väggen lite mjuk i de nära bilderna (högst 1,1 px i bild)
   $('mjukbak').firstElementChild.setAttribute('stdDeviation', sd.toFixed(3)); $('platta').setAttribute('filter', sd ? 'url(#mjukbak)' : '');
-  [...$('himmel').children].slice(1).forEach(e => e.remove());   // inga gardiner: plattan har inga
-  snoflingor(t);
-  // hängaren med plaggen, korgen under (bakom zebran)
-  lagg('bak', `<image href="${HANG.fil}" x="${HANG.x}" y="${HANG.y}" width="${f1(HANG.w * HANG.s)}" height="${f1(HANG.h * HANG.s)}"/>`);
+  lagg('bak', dorren(t, st.dorr || 0));
+  // pallen vid dörren, stövlarna med strumpan, plaggen på knopparna, korgen under (bakom zebran)
+  lagg('bak', R.markskugga(PALL.x, PALL.botten, PALL.w * PALL.s * 0.9) + R.saksvg(PALL, [PALL.x, PALL.botten]));
+  const G0 = GOMD(), vick = st.vick || 0;
+  if (st.gomd) lagg('bak', `<g transform="translate(${f1(G0[0])} ${f1(G0[1] - (st.gomdUpp || 0))}) rotate(${f1(GOMD_V + vick)}) scale(${STRUMPA.s}) translate(-255 -383)"><image href="${STRUMPA.bild[1]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`);
+  [1, 0].forEach(i => lagg('bak', R.markskugga(STOVEL.x[i], STOVEL.botten[i], 150) + R.saksvg({ ...STOVEL, bild: STOVEL.bild[i] }, [STOVEL.x[i], STOVEL.botten[i]])));
   if (st.hangS) lagg('bak', strumpaFri(0, S_HANG, -4 + 4 * Math.sin(t * 0.9)));   // strumpan gungar lugnt på knoppen, närbilden står aldrig stilla
-  if (st.hangH) lagg('bak', halsdukSvg(HD_HANG, HD_W * GS, '', HD_HANG_V + 1.5 * Math.sin(t * 0.8)));
+  if (st.hangH) lagg('bak', `<g transform="translate(${KROK[2][0]} ${KROK[2][1]}) rotate(${f1(1.5 * Math.sin(t * 0.8))}) scale(${GS})">${halsdukKod(HD_VIK, 0, 1)}</g>`);   // vikt över knoppen
   lagg('bak', R.markskugga(KORG.x, KORG.botten, 220) + `<image href="${KORG.fil}" x="${f1(KORG.x - 512 * KORG.s)}" y="${f1(KORG.botten - 916 * KORG.s)}" width="${f1(1024 * KORG.s)}" height="${f1(1024 * KORG.s)}"/>`);
-  // kudden på madrassen, framför sänggaveln (lagret 'sang' efter sängbilden, Sanna 2026-11-25), strumpan ligger ovanpå
-  const [kx, ky] = KP, ks = KUDDE_NY.s, hx = kx + 0.45 * KUDDE_NY.w * ks, G0 = GOMD();
-  const vick = st.vick || 0;
-  lagg('sang', `<g transform="rotate(${f1(st.kuddeV || 0)} ${f1(hx)} ${ky})"><g transform="translate(${kx} ${ky}) scale(${ks}) translate(${-KUDDE_NY.w / 2} ${-KUDDE_NY.h})"><image href="${KUDDE_NY.bild}" width="${KUDDE_NY.w}" height="${KUDDE_NY.h}"/></g></g>`);
-  if (st.gomd) lagg('sang', `<g transform="translate(${f1(G0[0])} ${f1(G0[1])}) rotate(${f1(GOMD_V + vick)}) scale(${STRUMPA.s}) translate(-255 -383)"><image href="${STRUMPA.bild[1]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`);
 
   // zebran med plaggen
   if (st.zebra !== false) {
@@ -339,14 +429,18 @@ function ritaRum(st, t) {
     strumpPa('l', st.str[0]); strumpPa('r', st.str[1]);
     const m = st.mossa, mg = G.querySelector('.pl-mossa');
     mg.innerHTML = !m ? '' : m.av != null ? mossaSvg([MS.stor.pa[0] + 900 * mjuk(m.av), MS.stor.pa[1] - 60 * Math.sin(Math.PI * m.av)], MS.stor.w, 20 * m.av)
-      : mossaSvg([MS[m.typ].pa[0], MS[m.typ].pa[1] - (m.lyft || 0)], MS[m.typ].w, MS[m.typ].pa[2]);
-    const hd = st.halsduk, [hp, hv] = hd === true ? [HD_PA, 0] : hd ? [hd.p, hd.v] : [];
-    G.querySelector('.pl-halsduk').innerHTML = hd ? halsdukSvg(hp, HD_W, '', hv, 'clip-path="url(#hdFram)"') : '';
-    G.querySelector('.pl-halsduk-bak').innerHTML = hd ? halsdukSvg(hp, HD_W) : '';
+      : mossaSvg([MS[m.typ].pa[0], MS[m.typ].pa[1] - (m.lyft || 0)], MS[m.typ].w, MS[m.typ].pa[2], '', MS[m.typ].sy);
+    // halsduken: bilden glider fram till sidan av zebran, sedan lindas den kodade på (bilden tonas bort när bandet börjar lindas)
+    const hd = st.halsduk;
+    G.querySelector('.pl-halsduk').innerHTML = !hd ? '' : hd === true ? halsdukKod() : halsdukKod(hd, hd.knut, hd.frans, hd.kd);
+    G.querySelector('.pl-halsduk-bak').innerHTML = '';
+    // öronen genom mössan, bara när den lagom stora mössan sitter
+    const oron = m && m.typ === 'lagom' && m.av == null && !(m.lyft > 0);
+    G.querySelector('.pl-oron').setAttribute('display', oron ? 'inline' : 'none');
+    if (oron) document.querySelector('.oron-hatt').setAttribute('d', oronHatt());
   }
   // plagg på väg (i scenen, framför allt)
   if (st.fri) lagg('fram', st.fri);
-  if (st.hdFri) lagg('fram', halsdukSvg(st.hdFri[0], HD_W * GS, '', st.hdFri[1]));
   if (st.lillaUt != null && st.lillaUt > 0.01) lagg('fram', mossaSvg(iZ(MS.liten.pa), MS.liten.w * GS, MS.liten.pa[2], `opacity="${st.lillaUt.toFixed(2)}"`));
   // mössan i luften: kritan ritar den (ritad/fyll), sedan glider den till sin plats på zebran
   if (st.luft) { const { typ, fyll = 1, glid = 0, bage: bh = 120 } = st.luft, w = MS[typ].w * GS, mal = iZ(MS[typ].pa);
@@ -354,7 +448,7 @@ function ritaRum(st, t) {
     const d = RITN.find(x => x.typ === typ);
     if (d && fyll < 1) { const k = ritfart((t - d.T.rit[0]) / (d.T.rit[1] - d.T.rit[0]));
       if (k > 0) lagg('kontur', d.bana(t, linjeOpacitet(fyll), st.kam[0]).html); }
-    if (fyll > 0) lagg('fram', (fyll < 1 ? fyllMask('fyM', pos[0], pos[1] - 0.5 * w, 0.9 * w, fyll) : '') + mossaSvg(pos, w, v, fyll < 1 ? 'clip-path="url(#fyM)"' : ''));
+    if (fyll > 0) lagg('fram', (fyll < 1 ? fyllMask('fyM', pos[0], pos[1] - 0.5 * w, 0.9 * w, fyll) : '') + mossaSvg(pos, w, v, fyll < 1 ? 'clip-path="url(#fyM)"' : '', MS[typ].sy));
     if (d && fyll > 0 && fyll < 1) lagg('krita', gnistor(pos[0], pos[1] - 0.5 * w, 0.75 * w, t - d.T.fyll));
   }
   const kr = kritanRum(t, st.kam[0]); if (kr) lagg('krita', kritaBild(kr.x, kr.y, kr));
@@ -399,12 +493,12 @@ window.ready = (async () => {
   const a = RR['01a'].s, b = RR['01b'].s, c = RR['01c'].s;
   T_RIT = { in: [a + 0.1, a + 0.5], rit: [a + 0.6, a + 3.4], vanta: [b + 0.1, b + 0.9], ut: [c, c + 0.8] };
   // mössans tre teckningar: konturen, väntan, fyllningen (raderna 11, 13 och 14)
-  const ny = (typ, rit, fyll, inn) => { const drag = msDrag(LUFT, MS[typ].w * GS), T = { in: inn, rit, fyll };
+  const ny = (typ, rit, fyll, inn) => { const drag = msDrag(LUFT, MS[typ].w * GS, MS[typ].sy), T = { in: inn, rit, fyll };
     return { typ, T, drag, bana: (t, op = 1, z = 1.9) => ritBana(drag, ritfart((t - rit[0]) / (rit[1] - rit[0])), { vikt: MS_VIKT,
       attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(Math.min(10 / Math.sqrt(z), 0.035 * MS[typ].w * GS + 1.5))}" stroke-linecap="round" stroke-linejoin="round" opacity="${op.toFixed(2)}"` }) }; };
   const r11 = RR['11'].s + 0.3 + LN(20), r13 = RR['13'].s + 0.3 + LN(23), r14 = RR['14'].s + 0.3 + LN(26);
   RITN = [ny('liten', [r11, r11 + 2.5], RR['11'].s + M('11', 21) - 0.2, [RR['10'].s + 0.3, r11 - 0.1]), ny('stor', [r13, r13 + 2.0], r13 + 2.0, null), ny('lagom', [r14, r14 + 2.5], r14 + 2.5, null)];
-  ({ L, G } = await R.starta([PLATTA, KUDDE_NY.bild, SANG_NY.bild, MOSSA.bild, HALSDUK.bild, HANG.fil, KORG.fil, ...STRUMPA.bild, KRITAN.BILD]));
+  ({ L, G } = await R.starta([PLATTA, PALL.bild, ...STOVEL.bild, MOSSA.bild, HALSDUK.bild, KORG.fil, ...STRUMPA.bild, KRITAN.BILD]));
   kladerIn(G);
   document.querySelector('defs').insertAdjacentHTML('beforeend', '<filter id="mjukbak" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="0"/></filter>');
   window.LJUD = LJUD = await ljud();

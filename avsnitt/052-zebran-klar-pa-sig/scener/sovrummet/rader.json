@@ -198,7 +198,7 @@
   },
   {
    "id": "7",
-   "d": 4.81,
+   "d": 5.11,
    "malin": [
     [
      13,
@@ -206,16 +206,16 @@
     ],
     [
      14,
-     3.06
+     3.3600000000000003
     ]
    ],
    "ljud": [
     [
      "gnagg-nej/gnagg-nej-3",
-     3.9099999999999997
+     4.210000000000001
     ]
    ],
-   "bild": "närbild under sängen: bara golv"
+   "bild": "närbild under pallen: bara golv"
   },
   {
    "id": "8",
@@ -552,7 +552,7 @@
      0.3
     ]
    ],
-   "bild": "bred bild av sängen med kudden"
+   "bild": "bred bild mot dörren, stövlarna och pallen"
   },
   {
    "id": "22b",
@@ -563,11 +563,11 @@
      1.2
     ]
    ],
-   "bild": "närbild kudden, tån skimrar efter 3 s"
+   "bild": "närbild stöveln, strumpan skimrar efter 3 s"
   },
   {
    "id": "23",
-   "d": 2.8,
+   "d": 3.84,
    "malin": [
     [
      38,
@@ -581,10 +581,10 @@
     ],
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust",
-     1.7
+     2.74
     ]
    ],
-   "bild": "tån skimrar tydligt, zebran skuttar"
+   "bild": "strumpan i stöveln skimrar tydligt, zebran skuttar"
   },
   {
    "id": "24",
@@ -779,9 +779,9 @@
    "Oj! Var är den andra strumpan?"
   ],
   [
-   "13-under-sangen",
-   1.56,
-   "Är strumpan under sängen?"
+   "13-under-pallen",
+   1.86,
+   "Är strumpan under pallen?"
   ],
   [
    "14-nej",
@@ -904,9 +904,9 @@
    "Kan du hjälpa zebran? Ser du den blå strumpan?"
   ],
   [
-   "38-ja-dar",
-   1,
-   "Ja, där!"
+   "38-i-stoveln",
+   2.04,
+   "Ja, där! I stöveln!"
   ],
   [
    "39-bla-strumpan-pa",
