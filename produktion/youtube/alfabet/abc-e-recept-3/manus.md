@@ -167,3 +167,11 @@ Idag tar elefanten ca 13 s att rita: konturen 6,5 × `TEMPO` 0,8 = 5,2 s, sedan 
 - Scenen före ändringen ligger i git (`git show HEAD:produktion/youtube/alfabet/abc-e-recept-3/index.html`).
 - **E:s röst är Olivia** (Sanna 2026-11-24, "use olivia instead"): *Olivia – Bright, Youthful and Engaging*, v4, `olivia-1.mp3`. Klippen: `x-glad` 0,04–0,62, `x-halsar` 1,73–2,45, `x-ja` 3,22–4,24 (två *E!*), `x-nej` 5,68–6,20 (lågt, fallande), `x-undrar` 7,83–8,15 (stiger). Bitarna 4,48–4,86 och 7,02–7,25 används inte. Louises klipp ligger i `louise-klipp/`.
 - E:s ansikte är större (Sanna 2026-11-24): `HUVUD` i hörnet där ryggen möter översta strecket, ögonradie 42 (var 28), rosa kinder och större mun.
+
+## Feedback 2026-11-22, åtgärdad 2026-11-25
+
+- **3:07, elefantklossens kant saknades:** elefantklossens högra sida fick E-märkets bild (eller blev tom) i muren. Det var en WebGL-bugg: klossarnas texturer laddades upp först när klossen syntes, och då kunde sidan få texturen från märkets egen rendrare (KB). `abc-e/klossar.js` laddar nu upp alla texturer direkt (`R.initTexture`). Gäller alla scener som använder `klossar.js` (A–E recept 3). Samma sak var *"bokstavsmärket en extra gång bredvid elefantens kloss"* under Öppet.
+- **1:14 och 2:02, katten:** konturen följer pälsen i stället för den vita kanten (`kontur.py --krymp 28 --slat 2 --max 70`), så öronen blir spetsiga. Kritan ritar också den rosa nosen och morrhåren efter ögat.
+- **2:02, skuggorna:** mjukare och ljusare, ca 60 % av förra styrkan; klossarnas skugga lite bredare.
+- **Tempot:** gissningspausen 4 → 3,3 s (alla fem), gömlekens paus 3,2 → 2,8 s, efter *"Hopp, hopp, hopp!"* 1,0 → 0,6 s.
+- **0:06 och 0:44** (E hälsar och E deltar med *E!*, *E-e!*, *E?*) byggdes redan 2026-11-24: samtalet i introt och E:s fem toner.

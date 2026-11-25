@@ -130,6 +130,9 @@ async function bokstavsklossar(cv, def) {
     if (d.klister) m.material.forEach((mt, j) => { if (j !== 4) mt.visible = false; });   // bara framsidan syns
     scen.add(m); return { d, m, fram, tex: sidor[4] };
   });
+  // Alla texturer laddas upp till GPU:n direkt, inte först när klossen syns. Annars kunde en kloss som poppade fram sent få
+  // en annan rendrares textur på en sida (E-märkets bild på elefantklossens sida, ABC-e3 3:07, Sanna 2026-11-22).
+  for (const k of klossar) for (const mt of k.m.material) R.initTexture(mt.map);
 
   // kritan: samma bild som i scenerna, spetsen [742, 132], lutad 125°, skala 0,4, i en ortografisk scen ovanpå
   const kritaScen = new THREE.Scene(), orto = new THREE.OrthographicCamera(0, 1920, 0, -1080, -10, 10);

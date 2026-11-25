@@ -110,7 +110,11 @@ const SAKER = {
   // och skala som elefanten; fötterna (FOTTER 923) står lika på golvet, därför 7 · 0,66 lägre nederkant. Katten är en vanlig katt med delar.
   katt: { platta: ['#F2C53D', 35, 380, 0.09], fraga: 'p-vem', lang: 'p-katt', bild: KATT, delar: KATT_DELAR, ogon: [[167, -26, 9]], ogonKant: true, smil: ['M875 444 L873 457 Q866 469 850 465', '#EDE3D0', 6],
     streck: [['kontur', await kontur('rekvisita/katt-abc/katt-faceless', ...KATT.slice(1)), '#3B3431', 15, 6.5],
-      ['oga', iTeckning(ell(800, 392, 14, 16), ...KATT.slice(1)), '#3B3431', 12, 0.6]] },
+      ['oga', iTeckning(ell(800, 392, 14, 16), ...KATT.slice(1)), '#3B3431', 12, 0.6],
+      // Lättare att gissa (Sanna 2026-11-22, "polish cat drawing", "easier to guess"): konturen följer pälsen (spetsiga öron, krymp 28)
+      // i stället för den vita kanten, och kritan ritar nosen och morrhåren, mätta på katt-faceless.png.
+      ['nos', iTeckning(ifyllt(882, 426, 11, 0.8), ...KATT.slice(1)), '#E98AA0', 10, 0.4],
+      ['morrhar', iTeckning('M846 436 L772 425 M848 447 L774 458 M846 458 L790 488', ...KATT.slice(1)), '#3B3431', 7, 0.7]] },
   hund: { platta: ['#5BB8C9', 20, 440, -0.07], rigg: 'hunden-hugo', streck: [] },
 };
 const RIGG_SKALA = 0.66;   // elefanten-elsa i teckningens mått: samma 0,66 som teckningen är mätt i (stillbild 2026-11-19)
@@ -124,9 +128,9 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 const GOLV = 750;   // golvets kant mot väggen (papperet); golvet är de nedersta 330 px
 document.body.innerHTML = `<div id="scen"><svg id="botten" viewBox="0 0 1920 1080" xmlns="${NS}"><defs>${DEFS}
   <filter id="mjuk" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12"/></filter>
-  <radialGradient id="klosskugga-g"><stop offset="0" stop-color="#3b3431" stop-opacity=".42"/><stop offset="1" stop-color="#3b3431" stop-opacity="0"/></radialGradient>
-  <radialGradient id="sakskugga-g"><stop offset="0" stop-color="#4a3a2e" stop-opacity=".46"/><stop offset=".5" stop-color="#4a3a2e" stop-opacity=".3"/><stop offset="1" stop-color="#4a3a2e" stop-opacity="0"/></radialGradient>
-  <radialGradient id="sakkarna-g"><stop offset="0" stop-color="#3b2e25" stop-opacity=".55"/><stop offset=".45" stop-color="#3b2e25" stop-opacity=".3"/><stop offset="1" stop-color="#3b2e25" stop-opacity="0"/></radialGradient>
+  <radialGradient id="klosskugga-g"><stop offset="0" stop-color="#3b3431" stop-opacity=".26"/><stop offset=".45" stop-color="#3b3431" stop-opacity=".14"/><stop offset="1" stop-color="#3b3431" stop-opacity="0"/></radialGradient>
+  <radialGradient id="sakskugga-g"><stop offset="0" stop-color="#4a3a2e" stop-opacity=".28"/><stop offset=".5" stop-color="#4a3a2e" stop-opacity=".15"/><stop offset="1" stop-color="#4a3a2e" stop-opacity="0"/></radialGradient>
+  <radialGradient id="sakkarna-g"><stop offset="0" stop-color="#3b2e25" stop-opacity=".32"/><stop offset=".45" stop-color="#3b2e25" stop-opacity=".16"/><stop offset="1" stop-color="#3b2e25" stop-opacity="0"/></radialGradient>
   <radialGradient id="vinjett-g" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#6B4A2B" stop-opacity="0"/><stop offset="1" stop-color="#6B4A2B" stop-opacity=".13"/></radialGradient></defs>
   <linearGradient id="golv-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAD5B2"/><stop offset="1" stop-color="#E0C397"/></linearGradient>
   <linearGradient id="golvkant-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9A06E" stop-opacity=".0"/><stop offset=".55" stop-color="#C9A06E" stop-opacity=".45"/><stop offset="1" stop-color="#D9B98A" stop-opacity="0"/></linearGradient></defs>
@@ -157,6 +161,7 @@ for (const [namn, s] of Object.entries(SAKER)) {
   for (const [id, d, farg, bredd, , k] of s.streck) s.drag[id] = streck(k ? klipp[k] : vax, d, farg, bredd);
   for (const id in klipp) vax.appendChild(s.drag[id]);   // konturerna ovanpå sina fyllnader
   const kg = kant.lagg(el('g', {}, s.o), { andel: 0.02 }); kg.appendChild(s.g); s.kg = kg; s.KANT = kg.getAttribute('filter'); kg.removeAttribute('filter');
+  // Skuggorna är mjukare och ljusare (Sanna 2026-11-22, ABC-e3 2:02 "make shadows softer"): ca 60 % av förra styrkan, klossarnas lite bredare.
   // Markskuggan (ABC-b3, feedback 2026-11-21): ligger på golvet i scenens px, inte i saken, så att den stannar på golvet när
   // saken hoppar eller svävar och bara krymper och ljusnar. En mjuk, bred skugga och en mörkare kontaktskugga, gradienter utan filter.
   s.mark = [el('ellipse', { fill: 'url(#sakskugga-g)', opacity: 0 }, document.getElementById('sakskuggor')),
@@ -302,7 +307,7 @@ const BRUM = k => `brum-glad/brum-glad-${k}`;   // elefantens brum (glad, 1–6;
 const TRUT = 'elefant-trut/elefant-trut-1';   // elefantens trumpetande (Openverse, CC0; Sanna 2026-11-21 0:55: "elefanten sound here")
 const LAT = { elefant: [TRUT, 1.3], ekorre: ['prassel-buske/prassel-buske-1', 0.7], ekollon: ['plopp/plopp-1', 0.7], katt: ['mjau/mjau-1', 0.8], hund: ['vov/vov-1', 0.8] };
 const latFx = (s, t, langd = 0.85) => { const [p, v] = LAT[s.namn]; fxf(t, p, v, { langd, fade: 0.25 }); };
-const TEMPO = 0.8, MELLAN = 0.12, PAUS = 4, FYLL = 0.7;
+const TEMPO = 0.8, MELLAN = 0.12, PAUS = 3.3, FYLL = 0.7;   // PAUS 4 → 3,3 (Sanna 2026-11-22: "a bit faster pace overall")
 const MITT = [960, 590, 1.2], NARA = [960, 640, 1.35];   // där teckningen ritas: mitt i bild (Sanna 2026-11-18), och "närbilden": saken kliver fram på "En elefant!"
 const { elefant, ekorre, ekollon, katt, hund } = SAKER;
 elefant.tempo = 0.3; katt.tempo = ekorre.tempo = 0.42;   // ritas snabbare (Sanna 2026-11-24): elefanten ca 6 s i stället för 13, konturen ca 2,6 s som ritintrot
@@ -473,7 +478,7 @@ t = sag(t + 1.4, 'n-ekorren-hoppar');
 elefant.levande.push([t + 0.3, 'hoppa']); hoppLjud(t + 0.3);
 t = sag(t + 1.6, 'n-elefanten-hoppar');
 ekorre.levande.push([t + 0.4, 'hoppa']); elefant.levande.push([t + 0.4, 'hoppa']); hoppLjud(t + 0.4); fx(t + 0.6, 'jippi', 0.4);
-t = sag(t + 0.6, 'n-hopp-hopp') + 1.0;   // båda hoppar tillsammans
+t = sag(t + 0.6, 'n-hopp-hopp') + 0.6;   // båda hoppar tillsammans
 
 // 6. Ord 3: ekorren är hungrig (magen kurrar), och kritan ritar ett ekollon mitt emellan dem. Ekollonet krymper och glider
 //    till ekorrens tassar: "Varsågod, ekorren!" De hoppar till tillsammans, "Mums!", och elefanten jublar i närbild.
@@ -517,7 +522,7 @@ for (const s of [elefant, ekorre, ekollon]) s.vand = [u]; fx(u, 'swoosh', 0.4); 
 u = sag(u + 0.2, 'n-var-ar-elefanten');
 { const [cx, cy] = klossLage(elefant.kk, u); kamTill(u + 0.2, lerp(960, cx, 0.35), lerp(655, cy, 0.3), 1.42, 2.6);
   for (const h of [u + 0.5, u + 1.9]) { elefant.vick.push(h); fxf(h, BRUM(h < u + 1 ? 1 : 6), 0.55, { langd: 1.0, fade: 0.3 }); } }
-u += 3.2;   // paus: barnet gissar
+u += 2.8;   // paus: barnet gissar (var 3,2; lite fortare tempo 2026-11-25)
 elefant.vand.push(u); fx(u, 'swoosh', 0.4); u += 0.55;
 elefant.hopp.push(u); fx(u, 'pling', 0.4); fxf(u + 0.1, BRUM(3), 0.8, { langd: 1.2, fade: 0.3 }); u = sag(u + 0.1, 'n-dar-ar-den') + 0.2;   // elefantens kloss: där!
 for (const s of [ekorre, ekollon]) s.vand.push(u - 0.6); fx(u - 0.6, 'swoosh', 0.3);
@@ -992,7 +997,7 @@ function rita(t) {
   L.forEach((o, i) => {   // mjuka markskuggor på golvet; ingen skugga för klossar som står på andra klossar (eller för plattan på väggen)
     if (!o.syns || i === 0) return kuggor[i].setAttribute('opacity', 0);
     const [ax, ay] = skarmV(i, -0.5, -0.5), [bx, by] = skarmV(i, 0.5, -0.5), w = Math.hypot(bx - ax, by - ay);
-    for (const [k, v] of Object.entries({ cx: (ax + bx) / 2, cy: (ay + by) / 2 + o.luft - w * 0.05, rx: w * 0.66, ry: w * 0.11 })) kuggor[i].setAttribute(k, v.toFixed(1));
+    for (const [k, v] of Object.entries({ cx: (ax + bx) / 2, cy: (ay + by) / 2 + o.luft - w * 0.05, rx: w * 0.72, ry: w * 0.14 })) kuggor[i].setAttribute(k, v.toFixed(1));
     kuggor[i].setAttribute('opacity', (clamp(1 - o.luft / 260) ** 2 * ut).toFixed(3));
   });
   for (const s of Object.values(SAKER)) {
