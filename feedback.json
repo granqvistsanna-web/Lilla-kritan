@@ -9333,9 +9333,10 @@
   "sec": 157,
   "tags": [],
   "note": "make it easier to guess, spinning around showing placement a bit and slower movements",
-  "fixed": false,
+  "fixed": true,
   "at": 1795593507984,
-  "render": "2026-11-25 08:18 (elefantklossens kant, katten med spetsiga öron och morrhår, mjukare skuggor, kortare pauser)"
+  "render": "2026-11-25 08:18 (elefantklossens kant, katten med spetsiga öron och morrhår, mjukare skuggor, kortare pauser)",
+  "fixedAt": 1795614373420
  },
  "42cthv275dmww2a5fo": {
   "ep": "J15",
