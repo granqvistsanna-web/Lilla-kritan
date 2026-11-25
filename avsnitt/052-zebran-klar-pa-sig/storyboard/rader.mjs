@@ -49,7 +49,8 @@ export const RADER = [
   { id: '11', d: 0.3 + L(20) + 3.0 + 3.0 + L(21) + 0.6, malin: [[20, 0.3], [21, 0.3 + L(20) + 6.0]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(20)], ['glitter/glitter-2', 0.3 + L(20) + 6.0], [Z('fortjust'), 0.5 + L(20) + 6.0 + L(21)]],
     bild: 'kritan ritar en mössa i luften, gisspaus, den fylls i pytteliten' },
   { id: '12', d: 1.4 + L(22) + 1.0, malin: [[22, 1.4]], ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['pop/pop-1', 1.3], [Z('fniss'), 1.6 + L(22)]], bild: 'den lilla mössan sitter på örat' },
-  { id: '13', d: 0.3 + L(23) + 2.4 + L(24) + 0.8 + L(25) + SVAR + 1.5,   // långa fnisset (2,8 s) hörs klart före klippet malin: [[23, 0.3], [24, 0.3 + L(23) + 2.4], [25, 0.3 + L(23) + 2.4 + L(24) + 0.8]],
+  // rad 13: långa fnisset (2,8 s) hörs klart före klippet
+  { id: '13', d: 0.3 + L(23) + 2.4 + L(24) + 0.8 + L(25) + SVAR + 1.5, malin: [[23, 0.3], [24, 0.3 + L(23) + 2.4], [25, 0.3 + L(23) + 2.4 + L(24) + 0.8]],
     ljud: [['krita-ritar/krita-ritar-3', 0.3 + L(23)], ['prassel-tyg/prassel-tyg-1', 0.3 + L(23) + 2.0], ['landa-mjuk/landa-mjuk-1', 0.3 + L(23) + 3.1], [Z('langt-fniss'), 0.4 + L(23) + 2.4 + L(24) + 0.8 + L(25)]],
     bild: 'kritan ritar en jättestor, den glider ner över ögonen; "där inne": kanten lyfts' },
   { id: '14', d: 0.3 + L(26) + 3.0 + L(27) + 0.9, malin: [[26, 0.3], [27, 0.3 + L(26) + 3.0]],

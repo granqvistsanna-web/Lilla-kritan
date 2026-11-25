@@ -297,7 +297,7 @@ const S = {
     const [f, p] = nick(F(tl > sv ? 'jatteglad' : 'nyfiken', { titt: [14 * k, -4 * k] }), P({ rikt: 0.4 * k, oron: [-10 * del(sv, sv + 0.3, tl), -10 * del(sv, sv + 0.3, tl)] }), tl - (sv + 0.1));
     return RUM({ kam: K_HALV, f, p, anka: ANKA_VID }); },
   // närbild ankan som piper, sedan lammet med stora glada ögon
-  '2': (tl, d) => { const c = 1.8, up = del(c + 0.2, c + 0.6, tl);
+  '2': (tl, d) => { const c = 1.4, up = del(c + 0.2, c + 0.6, tl);
     return RUM({ kam: tl < c ? [3.0, ANKA_VID[0], ANKA_VID[1] - 60] : K_HALV, f: F('jatteglad', { titt: [14, -4], ogonS: [1.1, 1.1] }), p: P({ rikt: 0.4, oron: [-12 * up, -12 * up] }), anka: ANKA_VID, ankaPip: bump(0.45, 0.85, tl) }); },
   // ett skutt upp på nedre steget, ett på övre, ett ner i karet (landar på orden)
   '3': (tl, d) => { const w = SK(8).map(x => 0.4 + x + 0.2), t1 = w[0] - 0.42, t2 = w[1] - 0.42, t3 = Math.max(w[1] + 0.05, w[2] - 0.55), d3 = w[2] - t3;

@@ -116,7 +116,7 @@ export const RADER = [
   // --- Borsten är borta (omgång 2) ---
   { id: '22', d: 0.5 + L(45) + 0.8, plats: 'Närbild lammet', malin: [[45, 0.5]], ljud: [['moln-puff/moln-puff-1', 0.1], [FNISS(4), 0.6 + L(45)]],
     bild: 'Ullmolnet är jättefluffigt, ullen står åt alla håll. Lammet fnissar', ljudtext: 'fniss (3)', ansikte: 'fnissig' },
-  { id: '23a', d: 0.4 + L(46) + 0.9, plats: 'Närbild karets kant → lammet', malin: [[46, 0.4]], ljud: [[B(7, 'b'), 0.6 + L(46)]],
+  { id: '23a', d: 0.4 + L(46) + 0.9, plats: 'Närbild karets kant → lammet', malin: [[46, 0.4]], ljud: [[B(7, 'b'), 0.9 + L(46)]],
     bild: 'Lammet tittar på kanten där borsten låg: tom (närbild). Tillbaka till lammet, frågande', ljudtext: 'frågande (7b)', ansikte: 'nyfiken' },
   { id: '23b', d: 0.3 + L(47) + 1.6, plats: 'Badrummet, bred', malin: [[47, 0.3]],
     bild: 'Frågan till barnet, och de första sekunderna av pausen i den breda bilden', ljudtext: '–', ansikte: 'nyfiken' },

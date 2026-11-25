@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>053 Leoparden städar, storyboard</title>
+<style>html, body { margin:0; background:#000; overflow:hidden; } svg { width:100vw; height:100vh; display:block; }</style>
+</head>
+<body>
+<!-- 053 Leoparden städar: kodscenerna för storyboarden (förlaga: 057 storyboard/scen.html och 027:s sovrum).
+     window.rad(id) ritar radens stillbild (id som i rader.mjs). Serveras från repots rot (bygg.mjs).
+     Rummet, sängen, kritan och kritirisen ur 026:s rum.js (samma sovrum som 027). Leoparden är Lovas v2-rigg live ur
+     uttryck.html via v2-rigg.js med de tunna kanterna (cut-tunn). Formlådan och klossarna är rekvisita/formlada och klossar.
+     Röda streckade pilar visar rörelsen (bara i storyboarden). -->
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module">
+import * as R from '/avsnitt/026-zebran-gar-och-lagger-sig/scener/sovrummet/rum.js';
+const { $, lagg, A, BED } = R;
+
+// --- Saker -------------------------------------------------------------------------------------------------------------------
+const LADA = { bild: A + 'rekvisita/formlada/cut/formlada.png', w: 1131, h: 815, hal: { cirkel: [292, 131], fyrkant: [566, 130], trekant: [847, 132] } };
+const KL = { cirkel: [A + 'rekvisita/klossar/cut/kloss-cirkel.png', 400, 396], fyrkant: [A + 'rekvisita/klossar/cut/kloss-fyrkant.png', 391, 393],
+  trekant: [A + 'rekvisita/klossar/cut/kloss-trekant.png', 411, 380] };
+const KORG = { bild: A + 'rekvisita/korg/cut/korg-v3-tunn.png', s: 0.34, x: 215, fot: 900 };   // fyllnaden 139–882 × 105–915, öppningen y ca 500
+const LEK = [['nalle/cut/nalle-v2-ljus-tunn.png', 848, 856, 0.15, -55, -6], ['boll-rod/cut/boll-rod.png', 1024, 1024, 0.1, 50, -4],
+  ['bil-rod/cut/bil-rod.png', 1024, 1024, 0.13, 10, 8], ['hink-bla/cut/hink-bla.png', 1024, 1024, 0.1, 85, 14], ['badbat/cut/badbat-tunn.png', 708, 600, 0.17, -20, 18]];
+const KRIT = '#7a4a32';
+
+// --- Mått (1920 × 1080) ------------------------------------------------------------------------------------------------------
+const FOT = 1010, LS = 0.56, LX = 560;                      // leoparden på golvet framför sängen, vänster om mitten
+const LADA_POS = { x: 900, fot: 1030, w: 300 };              // formlådan på golvet till höger om leoparden
+const KS = 0.2;                                              // klossarnas skala (ca 80 px)
+const GOLVET = { cirkel: [330, 1045], fyrkant: [1010, 1050], trekant: [1250, 1040] };   // där klossarna ligger i början
+const VID_KORG = { cirkel: [175, 985], fyrkant: [300, 990] };                              // där de landar framför korgen
+const UNDER = [1150, 905];                                    // trekanten under sängen (bakom sängens framkant, ett hörn syns)
+
+let L, G;
+const iFig = ([x, fot], [px, py], s = LS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+const P = o => ({ ...L.POSE0, ...o });
+const F = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...o });
+function lova([x, fot] = [LX, FOT], f = F('glad'), p = P({}), s = LS) {
+  $('framfig').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+}
+// kameror [zoom, cx, cy]
+const HEL = [1, 960, 540], HB = [1.7, LX + 140, 820];
+const NARA = () => [2.6, LX, FOT + (430 - L.FOTTER) * LS];
+const D = (x, y, z = 3) => [z, x, y];
+
+// --- Ritfunktioner -----------------------------------------------------------------------------------------------------------
+const kloss = (n, [x, fot], v = 0, s = KS, lager = 'golvsak') => { const [b, w, h] = KL[n];
+  lagg(lager, R.markskugga(x, fot, w * s * 0.9) + `<g transform="translate(${x} ${fot}) rotate(${v}) scale(${s}) translate(${-w / 2} ${-h + 8})"><image href="${b}" width="${w}" height="${h}"/></g>`); };
+const ladaS = () => LADA_POS.w / LADA.w;
+const ladaPunkt = ([ix, iy]) => [LADA_POS.x + (ix - LADA.w / 2) * ladaS(), LADA_POS.fot + (iy - LADA.h) * ladaS()];
+function lada({ fyll = 1, kontur = 1, i = [] } = {}) {
+  const s = ladaS(), x0 = LADA_POS.x - LADA.w * s / 2, y0 = LADA_POS.fot - LADA.h * s;
+  if (fyll > 0) lagg('golvsak', R.markskugga(LADA_POS.x, LADA_POS.fot, LADA_POS.w) + `<g opacity="${fyll}"><image href="${LADA.bild}" x="${x0}" y="${y0}" width="${LADA.w * s}" height="${LADA.h * s}"/></g>`);
+  if (kontur < 1 || fyll < 1) {   // kritan ritar konturen: ytterformen, sedan hålen ett i taget
+    const om = 2 * (LADA.w + LADA.h) * s, k1 = Math.min(1, kontur / 0.6);
+    let h = `<rect x="${x0 + 8}" y="${y0 + 8}" width="${LADA.w * s - 16}" height="${LADA.h * s - 16}" rx="18" fill="none" stroke="${KRIT}" stroke-width="5" stroke-dasharray="${k1 * om} ${om}"/>`;
+    const n = kontur >= 1 ? 3 : Math.floor(Math.max(0, kontur - 0.6) / 0.4 * 3);
+    h += Object.values(LADA.hal).slice(0, n).map(([ix, iy], j) => { const [x, y] = ladaPunkt([ix, iy]); return j === 0 ? `<ellipse cx="${x}" cy="${y}" rx="26" ry="12" fill="none" stroke="${KRIT}" stroke-width="5"/>`
+      : j === 1 ? `<rect x="${x - 25}" y="${y - 12}" width="50" height="24" fill="none" stroke="${KRIT}" stroke-width="5"/>` : `<path d="M${x - 24} ${y + 12} L${x} ${y - 13} L${x + 24} ${y + 12}Z" fill="none" stroke="${KRIT}" stroke-width="5" stroke-linejoin="round"/>`; }).join('');
+    lagg('kontur', h);
+  }
+}
+function korg() {
+  const { s, x, fot } = KORG, y0 = fot - 915 * s;
+  const hel = `<image href="${KORG.bild}" x="${x - 512 * s}" y="${y0}" width="${1024 * s}" height="${1024 * s}"/>`;
+  lagg('bak', R.markskugga(x, fot, 260) + hel + LEK.map(([f, w, h, k, dx, dy]) => `<image href="${A}rekvisita/${f}" x="${x + dx - w * k / 2}" y="${y0 + 500 * s - h * k * 0.75 + dy}" width="${w * k}" height="${h * k}"/>`).join('')
+    + `<image href="${KORG.bild}" x="${x - 512 * s}" y="${y0}" width="${1024 * s}" height="${1024 * s}" clip-path="url(#korgfram)"/>`);
+}
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+const skimmer = (x, y, k = 1, v = 1) => lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * 40 * v, y + dy * 34 * v, 15 * s * k * v, Math.min(1, 0.4 + k))).join(''));
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rak = (x0, y0, x1, y1, s = 5) => lagg('krita', pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s));
+const bage = (x0, y0, x1, y1, h, s = 5) => lagg('krita', pil(`M${x0} ${y0} Q${(x0 + x1) / 2} ${Math.min(y0, y1) - h} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - (Math.min(y0, y1) - h), x1 - (x0 + x1) / 2), s));
+const nick = (s = 3) => { const [x, y] = iFig([LX, FOT], [830, 330]); lagg('krita', pil(`M${x} ${y - 40} Q${x + 30} ${y} ${x} ${y + 40}`, x, y + 40, 1.9, s)); };
+const vipp = (s = 3) => { const [x, y] = iFig([LX, FOT], [880, 700]); lagg('krita', pil(`M${x} ${y} Q${x + 50} ${y - 50} ${x + 20} ${y - 100}`, x + 20, y - 100, -1.9, s)); };
+const hatt = (v = -8) => { const [x, y] = iFig([LX, FOT], [520, 200]); kloss('trekant', [x, y], v, KS * 0.95, 'golvsak'); };
+const tass = () => iFig([LX, FOT], [870, 620]);
+
+// --- Platsen och papperet ------------------------------------------------------------------------------------------------------
+function rummet({ golv = GOLVET, korgen = true, under = false } = {}) {
+  R.rum({ dag: true });
+  if (korgen) korg();
+  for (const [n, p] of Object.entries(golv)) kloss(n, p, n === 'trekant' ? 6 : n === 'fyrkant' ? -4 : 0);
+  if (under) kloss('trekant', UNDER, 18, KS, 'under');
+}
+const VID = { cirkel: VID_KORG.cirkel, fyrkant: VID_KORG.fyrkant, trekant: GOLVET.trekant };
+function trekantPapper(k, fyll) {   // kritan ritar trekanten på papperet: kontur k 0–1, ifyllnad inifrån fyll 0–1
+  R.papper(); R.kamera(HEL);
+  const [b, w, h] = KL.trekant, s = 1.35, x0 = 960 - w * s / 2, y0 = 560 - h * s / 2;
+  const pts = [[x0 + 30 * s, y0 + 335 * s], [x0 + 205 * s, y0 + 25 * s], [x0 + 385 * s, y0 + 335 * s]];
+  const d = `M${pts[0]} L${pts[1]} L${pts[2]}Z`, om = 3 * 370 * s;
+  if (fyll > 0) lagg('bak', `<g clip-path="url(#fyllklipp)"><image href="${b}" x="${x0}" y="${y0}" width="${w * s}" height="${h * s}"/></g>`);
+  $('fyllcirkel').setAttribute('cx', 960); $('fyllcirkel').setAttribute('cy', 560); $('fyllcirkel').setAttribute('r', 450 * fyll);
+  if (fyll < 1) lagg('kontur', `<path d="${d}" fill="none" stroke="${KRIT}" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k * om} ${om}"/>`);
+  if (k < 1) { const e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', d); $('kontur').appendChild(e);
+    const q = e.getPointAtLength(k * e.getTotalLength()); e.remove(); R.krita([q.x, q.y], 125, 0.42); }
+  else if (fyll < 1) R.krita([1480, 360], 140, 0.42);
+}
+
+// --- Raderna -------------------------------------------------------------------------------------------------------------------
+const FORE = GOLVET, EFTER_KORG = { cirkel: VID_KORG.cirkel, fyrkant: VID_KORG.fyrkant, trekant: GOLVET.trekant };
+const MED_LADA = { cirkel: VID_KORG.cirkel, fyrkant: VID_KORG.fyrkant, trekant: [LX + 70, FOT + 40] };
+const UTAN_TRE = { cirkel: VID_KORG.cirkel, fyrkant: VID_KORG.fyrkant };
+const RAD = {
+  '00': () => {},
+  '01a': () => trekantPapper(0.55, 0),
+  '01b': () => trekantPapper(1, 0),
+  '01c': () => { trekantPapper(1, 1); lagg('krita', `<rect x="610" y="300" width="700" height="480" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { rummet(); R.kamera(HEL); lova([LX, FOT], F('glad'), P({ armar: [0, 86] })); rak(60, 960, 330, 960, 7); },
+  '1b': () => { rummet(); R.kamera(NARA()); lova([LX, FOT], F('nyfiken', { titt: [10, 8] }), P({ luta: 4 })); },
+  '2': () => { rummet(); R.kamera(D(780, 1000, 1.6)); lova([LX, FOT], F('fnissig'), P({})); },
+  '3a': () => { rummet(); R.kamera(D(...GOLVET.cirkel.map((v, i) => v - i * 40))); skimmer(GOLVET.cirkel[0], GOLVET.cirkel[1] - 40, 0.8); },
+  '3b': () => { rummet(); R.kamera(D(...GOLVET.fyrkant.map((v, i) => v - i * 40))); skimmer(GOLVET.fyrkant[0], GOLVET.fyrkant[1] - 40, 0.8); },
+  '3c': () => { rummet(); R.kamera(D(...GOLVET.trekant.map((v, i) => v - i * 40))); skimmer(GOLVET.trekant[0], GOLVET.trekant[1] - 40, 0.8); },
+  '4': () => { rummet(); R.kamera(NARA()); lova([LX, FOT], F('ivrig'), P({ oron: [8, 8] })); nick(); vipp(); },
+  '5a': () => { rummet({ golv: { ...FORE, cirkel: [LX - 170, FOT + 20] } }); R.kamera(D(LX - 120, FOT - 80, 2.4)); lova([LX, FOT], F('nyfiken', { titt: [-12, 8] }), P({ ...L.POSER.nar, rikt: -0.5 })); rak(LX - 190, FOT - 20, LX - 300, FOT - 60, 4); },
+  '5b': () => { rummet({ golv: { fyrkant: FORE.fyrkant, trekant: FORE.trekant } }); R.kamera([1.7, 420, 820]); kloss('cirkel', [KORG.x + 10, KORG.fot - 175], -6, KS, 'korg');
+    lova([LX, FOT], F('nyfiken', { titt: [-12, 0] }), P({ rikt: -0.5 })); bage(KORG.x + 60, KORG.fot - 190, VID_KORG.cirkel[0], VID_KORG.cirkel[1] - 40, 10, 4); },
+  '5c': () => { rummet({ golv: { ...FORE, cirkel: VID_KORG.cirkel } }); R.kamera(NARA()); lova([LX, FOT], F('forvanad'), P({ oron: [10, 10] })); },
+  '6': () => { rummet({ golv: { ...FORE, cirkel: VID_KORG.cirkel } }); R.kamera(D(KORG.x + 20, KORG.fot - 150, 2.6)); },
+  '7a': () => { rummet({ golv: { cirkel: VID_KORG.cirkel, fyrkant: [LX - 170, FOT + 22], trekant: FORE.trekant } }); R.kamera(D(LX - 120, FOT - 80, 2.4));
+    lova([LX, FOT], F('nyfiken', { titt: [-12, 8] }), P({ ...L.POSER.nar, rikt: -0.5 })); rak(LX - 190, FOT - 20, LX - 300, FOT - 60, 4); },
+  '7b': () => { rummet({ golv: { cirkel: VID_KORG.cirkel, trekant: FORE.trekant } }); R.kamera([1.7, 420, 820]); kloss('fyrkant', [KORG.x - 10, KORG.fot - 175], 5, KS, 'korg');
+    lova([LX, FOT], F('nyfiken', { titt: [-12, 0] }), P({ rikt: -0.5 })); bage(KORG.x + 40, KORG.fot - 190, VID_KORG.fyrkant[0], VID_KORG.fyrkant[1] - 40, 10, 4); },
+  '8': () => { rummet({ golv: EFTER_KORG }); R.kamera(NARA()); lova([LX, FOT], F('ledsen'), P({ luta: -6, oron: [-12, -12] })); },
+  '9': () => { rummet({ golv: EFTER_KORG }); R.kamera(NARA()); lova([LX, FOT], F('tanker'), P({ luta: 5 })); },
+  '10a': () => { rummet({ golv: EFTER_KORG }); R.kamera([1.5, 760, 820]); lova([LX, FOT], F('nyfiken', { titt: [12, 8] }), P({ rikt: 0.4 })); lada({ fyll: 0, kontur: 0.75 });
+    R.krita(ladaPunkt([847, 132]).map((v, i) => v + [24, 12][i]), 125, 0.28); },
+  '10b': () => { rummet({ golv: EFTER_KORG }); R.kamera([1.5, 760, 820]); lova([LX, FOT], F('nyfiken', { titt: [12, 8] }), P({ rikt: 0.4 })); lada({ fyll: 0, kontur: 1 });
+    R.krita([LADA_POS.x + 200, LADA_POS.fot - 300], 140, 0.28); },
+  '10c': () => { rummet({ golv: EFTER_KORG }); R.kamera([1.5, 760, 820]); lova([LX, FOT], F('forvanad', { titt: [12, 8] }), P({ rikt: 0.4 })); lada({ fyll: 0.7, kontur: 1 });
+    skimmer(LADA_POS.x, LADA_POS.fot - 110, 0.8, 1.6); R.krita([LADA_POS.x + 320, LADA_POS.fot - 420], 135, 0.28); },
+  '11': () => { rummet({ golv: EFTER_KORG }); lada(); R.kamera(NARA()); lova([LX, FOT], F('kawaii'), P({ oron: [10, 10] })); vipp(); },
+  '11b': () => { rummet({ golv: EFTER_KORG }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3)); },
+  '12': () => { rummet({ golv: EFTER_KORG }); lada(); R.kamera(NARA()); lova([LX, FOT], F('nyfiken', { titt: [12, 6] }), P({ rikt: 0.3 })); },
+  '13': () => { rummet({ golv: EFTER_KORG }); lada(); R.kamera(HB); lova([LX, FOT], F('jatteglad'), P({})); nick(4); R.krita([1500, 520], 140, 0.3); rak(1520, 500, 1700, 380, 4); },
+  '14': () => { rummet({ golv: { ...EFTER_KORG, trekant: MED_LADA.trekant } }); lada(); R.kamera(D(LX + 60, FOT - 60, 2.6)); lova([LX, FOT], F('nyfiken', { titt: [8, 14] }), P({ ...L.POSER.nar, rikt: 0.3 })); },
+  '15': () => { rummet({ golv: UTAN_TRE }); lada(); R.kamera(HB); lova([LX, FOT], F('skrattar'), P({ oron: [6, 6] })); hatt(); bage(LX + 80, FOT, LX + 10, FOT - 400, 60, 4); },
+  '16': () => { rummet({ golv: UTAN_TRE }); lada(); R.kamera(NARA()); lova([LX, FOT], F('stolt'), P({})); hatt(); vipp(); },
+  '17': () => { rummet({ golv: UTAN_TRE, under: true }); lada(); R.kamera(HEL); lova([LX, FOT - 20], F('fnissig', { glad: [1, 1] }), P({})); bage(LX + 40, FOT - 420, UNDER[0], UNDER[1] - 20, 40, 6); },
+  '18': () => { rummet({ golv: UTAN_TRE, under: true }); lada(); R.kamera(HB); lova([LX, FOT], F('ivrig', { titt: [12, 6] }), P({ ...L.POSER.hoger })); },
+  '19': () => { rummet({ golv: { fyrkant: VID_KORG.fyrkant }, under: true }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3));
+    kloss('cirkel', ladaPunkt(LADA.hal.trekant).map((v, i) => v + [0, 18][i]), 6, KS * 0.9, 'fram'); bage(LADA_POS.x - 190, LADA_POS.fot - 60, ladaPunkt(LADA.hal.trekant)[0] - 30, ladaPunkt(LADA.hal.trekant)[1] - 30, 60, 4); },
+  '20': () => { rummet({ golv: { fyrkant: VID_KORG.fyrkant }, under: true }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3));
+    const [x, y] = ladaPunkt(LADA.hal.cirkel); kloss('cirkel', [x, y + 14], 0, KS * 0.9, 'fram'); rak(x, y - 90, x, y - 20, 4); },
+  '20b': () => { rummet({ golv: { fyrkant: VID_KORG.fyrkant }, under: true }); lada(); R.kamera(NARA()); lova([LX, FOT - 14], F('stolt'), P({})); vipp(); },
+  '21': () => { rummet({ golv: { fyrkant: [LX + 110, FOT + 30] }, under: true }); lada(); R.kamera(D(LX + 200, FOT - 60, 2.2)); lova([LX, FOT], F('ivrig', { titt: [12, 10] }), P({ ...L.POSER.nar, rikt: 0.4 }));
+    skimmer(LX + 110, FOT - 10, 0.7); rak(LX + 150, FOT - 10, LADA_POS.x - 120, LADA_POS.fot - 160, 4); },
+  '22': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3)); const [x, y] = ladaPunkt(LADA.hal.fyrkant); kloss('fyrkant', [x, y + 14], 0, KS * 0.9, 'fram'); rak(x, y - 90, x, y - 20, 4); },
+  '23': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(NARA()); lova([LX, FOT], F('forvanad'), P({ armar: [0, 140] })); },
+  '24': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(NARA()); lova([LX, FOT], F('tanker', { titt: [-14, 0] }), P({ rikt: -0.3 }));
+    const [x, y] = iFig([LX, FOT], [512, 330]); rak(x - 60, y, x - 160, y, 3); rak(x + 60, y, x + 160, y, 3); },
+  '25a': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(HEL); lova([LX, FOT], F('nyfiken'), P({})); },
+  '25b': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(UNDER[0], UNDER[1] - 40, 3)); skimmer(UNDER[0] + 30, UNDER[1] - 30, 0.35, 0.8); },
+  '26': () => { rummet({ golv: {}, under: true }); lada(); R.kamera(D(UNDER[0], UNDER[1] - 40, 3)); skimmer(UNDER[0] + 30, UNDER[1] - 30, 0.9, 0.9); },
+  '27a': () => { rummet({ golv: {} }); lada(); R.kamera([1.5, 900, 820]); lova([LX + 60, FOT], F('ivrig', { titt: [14, 8] }), P({ ...L.POSER.nar, rikt: 0.5 }));
+    kloss('trekant', [UNDER[0] - 120, FOT + 10], 10, KS, 'golvsak'); bage(UNDER[0], UNDER[1] + 20, UNDER[0] - 140, FOT - 20, -30, 5); bage(UNDER[0] - 160, FOT - 40, ladaPunkt(LADA.hal.trekant)[0] + 10, ladaPunkt(LADA.hal.trekant)[1] - 40, 160, 5); },
+  '27b': () => { rummet({ golv: {} }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3)); const [x, y] = ladaPunkt(LADA.hal.trekant); kloss('trekant', [x, y + 14], 0, KS * 0.9, 'fram'); rak(x, y - 90, x, y - 20, 4); },
+  '27c': () => { rummet({ golv: {} }); lada(); R.kamera(NARA()); lova([LX, FOT], F('jatteglad'), P({ oron: [10, 10] })); vipp(); },
+  '28': () => { rummet({ golv: {} }); lada(); R.kamera(HEL); lova([LX, FOT - 20], F('glad'), P({})); rak(LX - 150, FOT - 120, LX - 150, FOT - 200, 5); },
+  '29': () => { rummet({ golv: {} }); lada(); R.kamera(D(LADA_POS.x, LADA_POS.fot - 160, 3)); Object.values(LADA.hal).forEach(h => { const [x, y] = ladaPunkt(h); skimmer(x, y - 10, 0.4, 0.5); }); },
+  '30': () => { rummet({ golv: {} }); lada(); R.kamera([2.2, LADA_POS.x - 120, LADA_POS.fot - 140]); lova([LX + 90, FOT], F('fnissig', { titt: [12, 10] }), P({ ...L.POSER.nar, rikt: 0.5 }));
+    const [x, y] = [LADA_POS.x + 160, LADA_POS.fot - 150]; lagg('krita', pil(`M${x} ${y} q20 -20 0 -40 q-20 -20 0 -40`, x, y - 80, -1.6, 3)); },
+  '30b': () => { rummet({ golv: {} }); lada(); R.kamera(NARA()); lova([LX, FOT], F('glad'), P({})); nick(); },
+  '31': () => { rummet({ golv: {} }); lada(); R.kamera(HB); lova([LX, FOT], F('glad'), P({ armar: [0, 86] })); const [x, y] = iFig([LX, FOT], [905, 395]); rak(x, y, x + 50, y - 50, 4); },
+  '32': () => { rummet({ golv: {} }); lada(); R.kamera(NARA()); lova([LX, FOT], F('kawaii'), P({ armar: [0, 44] })); },
+  '33': () => { rummet({ golv: {} }); lada(); R.kamera(HEL); lova([LX, FOT], F('glad'), P({})); R.kritiris(380, [LX + 170, FOT - 220], 0); },
+};
+
+window.rad = id => {
+  R.borja(0); $('gomda').appendChild(G); ['framfig', 'figurer'].forEach(n => [...$(n).childNodes].forEach(c => c !== G && c.remove()));
+  $('fyllcirkel').setAttribute('r', 0); R.kamera(HEL);
+  RAD[id]();
+  R.slut(0, 1e9, 0);
+};
+window.klar = (async () => {
+  await R.starta([LADA.bild, KORG.bild, ...Object.values(KL).map(k => k[0])]);
+  L = await v2rigg('leoparden-lova');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  G.querySelectorAll('image').forEach(e => { const h = e.getAttribute('href'); if (h && h.includes('/premium/cut/')) e.setAttribute('href', h.replace('/premium/cut/', '/premium/cut-tunn/')); });
+  window.kant?.lagg(G.querySelector('.figuren') || G);
+  // korgens framsida: allt under öppningens kant (y 500 i bilden) syns, leksakerna sticker upp bakom den
+  const s = KORG.s, y0 = KORG.fot - 915 * s;
+  $('kamera').insertAdjacentHTML('beforebegin', `<defs><clipPath id="korgfram" clipPathUnits="userSpaceOnUse"><path d="M-100 ${y0 + 470 * s} H2000 V2000 H-100Z"/></clipPath></defs>`);
+  // korgen bakom leksakerna upptill: rita korgens bakre del först
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>
