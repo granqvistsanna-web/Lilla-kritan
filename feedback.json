@@ -9232,5 +9232,155 @@
   "at": 1795591218639,
   "render": "2026-11-25 08:14 (putsning med riggarnas lärdomar: synlig vinkning (ARMROR), tandläkarens armar intill sidorna, viktflytt i skutten, kaninen bugar på tack)",
   "fixedAt": 1795592306421
+ },
+ "yfxy6tw419mwqp5lsz": {
+  "ep": "ABC-b3",
+  "time": "3:47",
+  "sec": 227,
+  "tags": [],
+  "note": "try to avoid overlap of klossar",
+  "fixed": false,
+  "at": 1795283017379,
+  "render": "2026-11-21 18:33 (Snabb förhandsvisning 21/11 kväll: B-klossen större och mitt i bild, björnskissen med nos, mun, fyllda ögon och öroninsida, kritan kommer fram och nickar när Malin pratar med den (0:48 och 1:59), ny beige ko ur Flow med fläckar och mule i skissen.)"
+ },
+ "j7yxuothaemwro2jjj": {
+  "ep": "ABC-b3",
+  "time": "2:35",
+  "sec": 155,
+  "tags": [],
+  "note": "polish shadow of items",
+  "fixed": false,
+  "at": 1795341661039,
+  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)"
+ },
+ "egmgw23pjrmwro2xph": {
+  "ep": "ABC-b3",
+  "time": "2:37",
+  "sec": 157,
+  "tags": [],
+  "note": "currently shadows follow objects but should stay on floor",
+  "fixed": false,
+  "at": 1795341679397,
+  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)"
+ },
+ "qfpwlnky99mwro3f0a": {
+  "ep": "ABC-b3",
+  "time": "2:45",
+  "sec": 165,
+  "tags": [],
+  "note": "try to avoid blocks overlapping, how can that be done?",
+  "fixed": false,
+  "at": 1795341701818,
+  "render": "2026-11-21 20:34 (B säger b, b, B med ögon och mun i introt (efter Bokstaven B.) och två gånger i slutet, som E)"
+ },
+ "xu6c92wy7gmwrx9u6f": {
+  "ep": "J19",
+  "time": "4:29",
+  "sec": 269,
+  "tags": [],
+  "note": "approved",
+  "fixed": false,
+  "at": 1795357117959,
+  "render": "2026-11-22 11:59 (Feedback 22/11: ritintrot med dörrens fönster och gula randen, mindre snögubbe, större snöplog, scenen efter hjärtat bort, nya ben, kalenderramen som intro och outro (slutrendering))"
+ },
+ "r17mnc1hi9mwuc8ju7": {
+  "ep": "J24",
+  "time": "0:26",
+  "sec": 26,
+  "tags": [],
+  "note": "add snooring sound remove bää",
+  "fixed": false,
+  "at": 1795503184494,
+  "render": "2026-11-23 06:59 (Förhandsvisning: Malins nya repliker inspelade (Vill du leka, leoparden? / Oj, haha! Leoparden vill leka. / Leoparden är borta! Var är leoparden? / Röda strumpor!), öronen tittar upp och fnissar bakom sängen, långsammare påklädning med fler ljud, halsduken högre med tunn kant och följer rörelsen, röda strumpor, locket och elefanten på orden, krukan längst till höger, avslut på turkos med snö. Utan julkalenderns ram.)"
+ },
+ "0fngtuszc3mwuc9qos": {
+  "ep": "J24",
+  "time": "1:09",
+  "sec": 69,
+  "tags": [],
+  "note": "gäspa sound a bit slower pacing",
+  "fixed": false,
+  "at": 1795503240028,
+  "render": "2026-11-23 06:59 (Förhandsvisning: Malins nya repliker inspelade (Vill du leka, leoparden? / Oj, haha! Leoparden vill leka. / Leoparden är borta! Var är leoparden? / Röda strumpor!), öronen tittar upp och fnissar bakom sängen, långsammare påklädning med fler ljud, halsduken högre med tunn kant och följer rörelsen, röda strumpor, locket och elefanten på orden, krukan längst till höger, avslut på turkos med snö. Utan julkalenderns ram.)"
+ },
+ "ud9aconwrkmwvtv6oi": {
+  "ep": "049",
+  "time": "0:39",
+  "sec": 39,
+  "tags": [],
+  "note": "say du ska vi sitta i den hör... before byúnny gets nervous",
+  "fixed": false,
+  "at": 1795593260178,
+  "render": "2026-11-25 08:39 (feedback 5: kameran glider in på stolen, inget hopp 5→6a, tydligare röd tandborste, ny replik 'Elefanten får också en!')"
+ },
+ "k7xjit6me7mwvtx4su": {
+  "ep": "ABC-e3",
+  "time": "0:33",
+  "sec": 33,
+  "tags": [],
+  "note": "lower music a bit",
+  "fixed": false,
+  "at": 1795593351054,
+  "render": "2026-11-25 08:18 (elefantklossens kant, katten med spetsiga öron och morrhår, mjukare skuggor, kortare pauser)"
+ },
+ "6s48wkzj1bmwvu0hw1": {
+  "ep": "ABC-e3",
+  "time": "2:37",
+  "sec": 157,
+  "tags": [],
+  "note": "make it easier to guess, spinning around showing placement a bit and slower movements",
+  "fixed": false,
+  "at": 1795593507984,
+  "render": "2026-11-25 08:18 (elefantklossens kant, katten med spetsiga öron och morrhår, mjukare skuggor, kortare pauser)"
+ },
+ "42cthv275dmww2a5fo": {
+  "ep": "J15",
+  "time": "0:36",
+  "sec": 36,
+  "tags": [],
+  "note": "a bit of flashing going on an white lines going in and out changing shape",
+  "fixed": false,
+  "at": 1795607395332,
+  "render": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)"
+ },
+ "3n0hqn7u9nmww2bcy3": {
+  "ep": "J15",
+  "time": "1:19",
+  "sec": 79,
+  "tags": [],
+  "note": "maybe more sound effects for lamm to use, current ones are a bit annoying",
+  "fixed": false,
+  "at": 1795607451723,
+  "render": "2026-11-25 12:42 (QA 25/11 förhandsvisning (--snabb, bara julköket, lucktid = +11 s): spökarmen över formarna borta, kakan och vänstra vanten flyger inte över ansiktet, plåtbilden visar hela ansiktet)"
+ },
+ "fqgz0v3urpmww2c9fa": {
+  "ep": "J24",
+  "time": "1:15",
+  "sec": 75,
+  "tags": [],
+  "note": "remove kan du cokså gäspa",
+  "fixed": false,
+  "at": 1795607493814,
+  "render": "2026-11-25 12:42 (Förhandsvisning 25/11 (QA): leoparden hoppar i högre båge över nattduksbordet och klockan (0:53, 1:23, 1:39), kameran följer med uppåt så att huvudet stannar i bild. Utan julkalenderns ram.)"
+ },
+ "12pu2aac0omww4y55d": {
+  "ep": "J06",
+  "time": "2:54",
+  "sec": 174,
+  "tags": [],
+  "note": "polish cat tail",
+  "fixed": false,
+  "at": 1795611873937,
+  "render": "2026-11-25 13:54 (QA 25/11 slutrendering: spårbilden utan halv katt (lugn push in), hörnet vid trappan rätt)"
+ },
+ "lup30h6fdhmww4yv50": {
+  "ep": "J08",
+  "time": "1:47",
+  "sec": 107,
+  "tags": [],
+  "note": "polish tail",
+  "fixed": false,
+  "at": 1795611907619,
+  "render": "2026-11-25 13:47 (QA 25/11 (snabb, scenfilmen; luckans tid = +11,2 s): katten går framför snögubben i ett lägre spår (3:09, 3:17), mjuk glidning huvud→knappar i st.f. hoppklipp (1:45), line boil 2,5/zoom 6 ggr/s, långsam push i närbilderna på stenarna och stolpen (stod still 1:29 och 3:01))"
  }
 }
