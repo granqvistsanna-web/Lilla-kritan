@@ -1429,11 +1429,11 @@
   "name": "J14 boil 2,5 px (förhandsvisning)"
  },
  "J08": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/044-1120-0749.mp4",
-  "duration": 275.1,
-  "rendered": "2026-11-20 07:49 (Lucka 8, godkänd 19/11 (275,1 s, −16 LUFS))",
-  "file": "produktion/youtube/shorts/jul/08-katten-snogubbe/08-katten-snogubbe-liten.mp4",
-  "status": "klar",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1125-1347.mp4",
+  "duration": 261.4,
+  "rendered": "2026-11-25 13:47 (QA 25/11 (snabb, scenfilmen; luckans tid = +11,2 s): katten går framför snögubben i ett lägre spår (3:09, 3:17), mjuk glidning huvud→knappar i st.f. hoppklipp (1:45), line boil 2,5/zoom 6 ggr/s, långsam push i närbilderna på stenarna och stolpen (stod still 1:29 och 3:01))",
+  "file": "avsnitt/044-katten-gor-en-snogubbe/scener/bjorkdungen/bjorkdungen.mp4",
+  "status": "granska",
   "name": "Lucka 8: Katten gör en snögubbe"
  },
  "J09": {
