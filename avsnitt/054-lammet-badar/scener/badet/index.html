@@ -210,7 +210,7 @@ function lammIn(g) {
   const KONTUR = [281, 298, 312, 319, 322, 323, 325, 326, 318, 302, 289, 279, 300, 317, 317, 322, 310, 319, 300, 274];
   let moln = ''; for (let i = 0; i < 24; i++) { const a = i / 24 * 2 * Math.PI, q = i / 24 * 20, j = Math.floor(q), rk = lerp(KONTUR[j], KONTUR[(j + 1) % 20], q - j), rr = 34 + 4 * Math.sin(i * 1.7);
     moln += ull(511 + (rk + 26 - rr) * Math.cos(a), 506 + (rk + 26 - rr) * Math.sin(a), rr); }
-  g.querySelector('defs').insertAdjacentHTML('afterend', `<g class="ull-moln">${moln}</g>`);   // längst bak, så att armarna syns utanför molnet
+  g.querySelector('g.figuren').insertAdjacentHTML('afterbegin', `<g class="ull-moln">${moln}</g>`);   // längst bak i figuren, så att armarna syns utanför; följer kroppen (Sanna 25/11)
   kropp.insertAdjacentHTML('afterend', `<g class="blot" mask="url(#kroppmask)"><rect width="1024" height="1024" fill="#8FA6B8" opacity=".24"/></g>
     <g class="ull-mage">${ull(470, 712, 28) + ull(526, 700, 32) + ull(580, 716, 26) + ull(498, 752, 24) + ull(556, 756, 24)}</g>`);
   kg.insertAdjacentHTML('beforeend', `<g class="skumhatt">${tuss(432, 212, 58) + tuss(594, 210, 60) + tuss(512, 175, 84) + tuss(520, 88, 56)}</g>`);
@@ -271,6 +271,7 @@ function lamm(pos, f, p, { blot = 0, oron = 0, mage = 0, moln = 0, hatt = 0, hat
   $(framfor ? 'figurerFram' : 'figurer').appendChild(G);
   G.setAttribute('transform', `translate(${f1(pos[0])} ${f1(pos[1])}) scale(${GS}) translate(-512 ${-FOT})`);
   L.rita(G, f, p);
+  G.querySelector('.ull-moln').setAttribute('transform', G.querySelector('g.kropp').getAttribute('transform') || '');   // ullen följer kroppens lutning, studs och andning
   G.querySelector('.blot').setAttribute('opacity', kl(blot).toFixed(2));
   const [o1, o2] = slat.o || [0, 0], [m1, m2] = slat.m || [0, 0], [h1, h2] = slat.h || [0, 0];
   puffa('.ull-orl', oron, 235, 305, null, (x, y, i, n) => tussVag(o1, i / n)); puffa('.ull-orr', oron, 790, 305, null, (x, y, i, n) => tussVag(o2, i / n));

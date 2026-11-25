@@ -185,6 +185,7 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 
 - **0:37 "nice hot steam from bath":** ingen ånga fanns, så den är ny: fyra mjuka, halvgenomskinliga vita slingor stiger lugnt ur skummet, svajar och tonas bort (`anga()`, lätt oskärpa). De ligger bakom karet och lammet, så de kommer upp bakom skummet och täcker aldrig ansiktet. De finns hela tiden badet syns, från rad 1 till slutet.
 - **3:07 "make ull less dramatic and looking better, point of brushing should be restoring ull to default state":** ullmolnet är nu en smal, jämn ullkant som följer kroppens kontur (uppmätt i `ludde-body.png`) och tittar fram ca 25 px, i stället för en stor ring med utstående tussar. Tussarna på öronen och magen är mindre, och ullen har en varmare krämton. Varje borstdrag drar tillbaka tussarna där borsten går, in i kroppen tills de är borta: efter öronen, magen och de två dragen runt kroppen ser lammet ut precis som vanligt (standardläget), inget nytt utseende. Borsten i 26c följer den smalare kanten.
+- **"also the ull should follow movement of lamm" (Sanna 25/11, via 057):** ullkanten ligger nu inne i figuren (längst bak) och får kroppens transform varje bildruta, så den följer med i skutt, lutning, nickar och andning i stället för att stå kvar.
 
 ### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
