@@ -1639,5 +1639,13 @@
   "rendered": "2026-11-25 22:10 (Hallen (hallen-v1): dörren öppnas mot snön, ny pall med ben, strumpan under pallen/i stöveln (nya repliker). Halsduken ritad i kod: hänger vikt över knoppen och vecklas ut runt halsen (samma halsduk hela vägen). Mössan lägre båge, öronen genom mössan, strumpan längs sidan och trycks på under gnistor, vidare närbilder. Förhandsvisning (--snabb).)",
   "file": "avsnitt/052-zebran-klar-pa-sig/scener/sovrummet/sovrummet.mp4",
   "status": "granska"
+ },
+ "djup-prov": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/djup-prov-1125-2211.mp4",
+  "duration": 34.0,
+  "rendered": "2026-11-25 22:11",
+  "file": "produktion/three-rum/djup-prov/djup-prov-056.mp4",
+  "status": "granska",
+  "name": "Djup-kit prov (056)"
  }
 }
