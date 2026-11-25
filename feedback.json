@@ -9521,8 +9521,9 @@
   "sec": 138,
   "tags": [],
   "note": "better fit for hat",
-  "fixed": false,
+  "fixed": true,
   "at": 1795635059891,
-  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)",
+  "fixedAt": 1795636343315
  }
 }
