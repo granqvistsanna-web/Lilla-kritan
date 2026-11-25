@@ -2,7 +2,7 @@
 
 **Status:** animatiken 2026-11-25, byggd ur `../manus.md` (grind 1–4 godkända) och Malins tagning A.
 
-**Längd:** 3:57.0 med 3,3 s intro (*Djuren hittar på!*), utan outro (räknat av bygg.mjs ur raderna).
+**Längd:** 3:57.1 med 3,3 s intro (*Djuren hittar på!*), utan outro (räknat av bygg.mjs ur raderna).
 
 **Malins repliker är inspelade** (tagning A 2026-11-25, `../rost.txt`): längderna i `rader.mjs` (`ROST`) är uppmätta, och tiderna för *"borta!"* (`BORTA`) och färgorden (`FARG`) är mätta med silencedetect och whisper. Pauserna är manusets, och varje rad med en replik har 0,7 s extra luft (`GLES`), utom ritintrot och rad 19a (klippet efter 2 s). Kattens ljud och effekterna är de som godkändes i grind 4.
 
@@ -67,8 +67,8 @@ node avsnitt/057-katten-tvattar-handerna/storyboard/bygg.mjs --animatik   # dess
 | [27](frames/27.jpg) | 3:25.5 | 7.2 s | Samma | *"Tassar! En röd, en gul … och en blå!"* (3:26.1) | Papperet fylls i, avtrycken röd, gul, blå på färgorden. Kritan flyger ut | `glitter`, `glimt`, `mjau-ooo` | förvånad → jätteglad |
 | [28](frames/28.jpg) | 3:32.7 | 5.6 s | Halvbild, katten och målningen | *"Vilken fin målning! Tack, kritan!"* (3:33.2) | Katten nickar stolt, svansen vippar. På *Tack, kritan!* nickar katten | förtjust mjau | stolt |
 | [28b](frames/28b.jpg) | 3:38.3 | 3.9 s | Samma | *"Var det roligt att tvätta tassarna?"* (3:38.6) | Katten tittar på oss. **Pausen:** glatt mjau och en nick | glatt mjau | glad |
-| [28c](frames/28c.jpg) | 3:42.2 | 3.1 s | Närbild ansiktet | *"Mm, jag tyckte också det!"* (3:42.5) | Katten myser | – | blundar, ler |
-| [29](frames/29.jpg) | 3:45.3 | 4.8 s | Badrummet, halvbild | *"Hej då, katten! Hej då, tvålen!"* (3:46.0) | Katten vinkar (armen bakom kroppen, snett ut förbi kanten), tvålen på kanten. **Hej då med vinkning** | mjau hej då | jätteglad |
-| [30](frames/30.jpg) | 3:50.1 | 4.3 s | Samma | *"Hej då! Vi ses snart! [giggles]"* (3:50.4) | Katten vinkar klart, armen sjunker | mjau hej då | glad |
-| [31](frames/31.jpg) | 3:54.5 | 2.5 s | Badrummet → kritirisen | – | Kritirisen drar ihop sig runt katten och målningen | – | glad |
+| [28c](frames/28c.jpg) | 3:42.2 | 3.2 s | Närbild ansiktet | *"Mm, jag tyckte också det!"* (3:42.5) | Katten myser | – | blundar, ler |
+| [29](frames/29.jpg) | 3:45.4 | 4.8 s | Badrummet, halvbild | *"Hej då, katten! Hej då, tvålen!"* (3:46.1) | Katten vinkar (armen bakom kroppen, snett ut förbi kanten), tvålen på kanten. **Hej då med vinkning** | mjau hej då | jätteglad |
+| [30](frames/30.jpg) | 3:50.2 | 4.3 s | Samma | *"Hej då! Vi ses snart! [giggles]"* (3:50.5) | Katten vinkar klart, armen sjunker | mjau hej då | glad |
+| [31](frames/31.jpg) | 3:54.6 | 2.5 s | Badrummet → kritirisen | – | Kritirisen drar ihop sig runt katten och målningen | – | glad |
 <!-- /tabell -->

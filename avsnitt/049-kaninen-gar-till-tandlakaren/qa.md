@@ -60,3 +60,8 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 ## Feedback 6 (2026-11-25)
 
 - 0:39 Malin säger *"Du ska få sitta i den här tandläkarstolen …"* innan kaninen blir nervös. I 4 tittar kaninen nyfiket upp på stolen medan Malin säger 7 och 51; 0,3 s efter repliken blir minen orolig, kaninen backar, skakar på huvudet och öronen faller, och det trumpna ljudet kommer 1,1 s efter repliken. Rad 4 är 0,4 s längre (12,6 s). Repliken 51 börjar 0,4 s efter 7 (förut 2 s).
+
+## Slutrendering (2026-11-25)
+
+- Förhandsvisning 5 godkänd. Slutrenderad med `verktyg/render-delat.mjs` (1920×1080, 30 fps, 8309 bildrutor) och mastrad med `film/satt-ihop.sh` (som 046) → `film/avsnitt-049.mp4`, 4:37, −13,8 LUFS, topp −1,3 dBFS.
+- `qa-film.sh`: inget fryst eller tyst, boil 2,6 px/s (gräns 4,5), rösterna rena. Svart 275,6–277 s är outrots iris. `krita kod` flaggar egen krita, men regeln gäller från 052 och förhandsvisning 5 godkändes med den här kritan, så den är kvar.

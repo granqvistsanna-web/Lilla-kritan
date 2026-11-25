@@ -73,7 +73,7 @@ const GOLV = 905, GS = 0.57;
 const HX = 1180, RIM = GOLV - HANDFAT.H, FATKANT = 700, BX = HX - 65;
 const STA = [600, GOLV];
 const TVAL = [HX - 205, RIM - 17];
-const KRAN = [HX + (598 - 401) * HK, RIM - (177 - 84) * HK];
+const KRAN = [HX + (598 - 401) * HK, RIM - (177 - 44) * HK];
 const HANDDUK_POS = [HX + 520, 170, 300];
 let VID, PALL_KS, PALL_X0, PALL_Y0, STEG1;
 
@@ -102,20 +102,23 @@ const K_TVAL = [3.2, TVAL[0] + 110, TVAL[1] - 45];
 const K_TVAL_NARA = [2.2, TVAL[0] + 110, TVAL[1] - 110];
 const K_NARA_ORA = () => [3, ...iFig(VID, [640, 300])];
 const K_TAVLAN = [1.4, 1010, 470];
+const K_VINK = () => [2.1, BX - 40, VID[1] - (L.FOTTER - 470) * GS];   // katten nära med vinkande arm
+const K_STRALE = [2.6, KRAN[0] - 90, RIM - 75];   // tassen under strålen, kranen och ansiktet i bild
 const K_SPAR = [1.9, 510, 740];   // avtrycken på golvet och katten, nära
 const K_SKAGG = () => [3.0, BX, VID[1] - (L.FOTTER - 450) * GS];   // närbild på ansiktet och skumskägget
 
 // --- Badrummet med den omritade kranen (som 023) --------------------------------------------------------------------------
 // Handfatsbildens kran maskas bort och ritas om i kod: ren svanhals i krom med glansrand, vaxkorn och två rattar. Pipen
 // (598, 84 i bilden) är där strålen börjar.
-const KRAN_D = 'M698 168 L698 72 C698 30 672 14 646 14 C619 14 600 31 600 58 L600 72';
+// kranens hals 40 enheter högre än 023:s, så att strålen syns lång och tydlig ovanför tassen (Sanna 2026-11-25: "improve water flow")
+const KRAN_D = 'M698 168 L698 32 C698 -10 672 -26 646 -26 C619 -26 600 -9 600 18 L600 32';
 const KRANBILD = `<rect x="668" y="158" width="62" height="20" rx="9" fill="#a9b4ba"/>
   <path d="${KRAN_D}" fill="none" stroke="#8d989e" stroke-width="36" stroke-linecap="round"/>
   <path d="${KRAN_D}" fill="none" stroke="#c8d1d6" stroke-width="28" stroke-linecap="round"/>
   <g filter="url(#vax)"><path d="${KRAN_D}" fill="none" stroke="#dde4e8" stroke-width="22" stroke-linecap="round"/></g>
-  <path d="M688 160 L688 74 C688 42 668 26 646 25" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
-  <path d="M708 150 L708 80" fill="none" stroke="#9aa5ab" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
-  <rect x="586" y="66" width="28" height="18" rx="5" fill="#8d989e"/><rect x="589" y="68" width="22" height="13" rx="4" fill="#b6c0c5"/>
+  <path d="M688 160 L688 34 C688 2 668 -14 646 -15" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="0.85"/>
+  <path d="M708 150 L708 40" fill="none" stroke="#9aa5ab" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <rect x="586" y="26" width="28" height="18" rx="5" fill="#8d989e"/><rect x="589" y="28" width="22" height="13" rx="4" fill="#b6c0c5"/>
   ${[[662, 150], [734, 150]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="23" fill="#d9644f"/><g filter="url(#vax)"><circle cx="${x}" cy="${y}" r="20" fill="#ef8a72"/></g>
     <circle cx="${x - 8}" cy="${y - 8}" r="6" fill="#fff" opacity="0.7"/>`).join('')}`;
 function badrum({ handduk = true } = {}) {
@@ -133,13 +136,19 @@ function kran(k, slut = RIM + 4) {
   if (k <= 0 || k >= 2) return;
   const [x, y] = KRAN, a0 = y + 8, b0 = slut, a = a0 + (k > 1 ? (b0 - a0) * mjuk(k - 1) : 0), b = a0 + (b0 - a0) * mjuk(Math.min(1, k));
   if (b <= a + 2) return;
-  const t = TT, vb = x + 2.5 * Math.sin(t * 9), w = (y2, s) => 8 + 1.5 * Math.sin(t * 13 + y2 * 0.05) * s;
-  let h = `<path d="M${f1(x - 8)} ${f1(a)} Q${f1(vb - 9)} ${f1((a + b) / 2)} ${f1(x - w(b, 1) - 1)} ${f1(b)} L${f1(x + w(b, -1) + 1)} ${f1(b)} Q${f1(vb + 9)} ${f1((a + b) / 2)} ${f1(x + 8)} ${f1(a)}Z" fill="#a9dcf0" opacity="0.92"/>`;
-  h += `<path d="M${f1(x - 3)} ${f1(a + 4)} V${f1(b - 4)}" stroke="#fff" stroke-width="3.5" stroke-linecap="round" opacity="0.8" stroke-dasharray="18 26" stroke-dashoffset="${f1(-t * 260)}"/>`;
-  h += `<path d="M${f1(x + 3.5)} ${f1(a + 10)} V${f1(b - 6)}" stroke="#e6f6fc" stroke-width="2.5" stroke-linecap="round" opacity="0.7" stroke-dasharray="9 31" stroke-dashoffset="${f1(-t * 330)}"/>`;
+  // en mjuk, sammanhängande stråle: smalnar lite nedåt, kanterna böljar svagt, ljus kärna, en glansstrimma och strömmande
+  // ljusa streck som visar att vattnet rinner (Sanna 2026-11-25: "improve water flow")
+  const t = TT, hw = yy => lerp(9, 6.5, (yy - a0) / Math.max(1, b0 - a0)) + 0.8 * Math.sin(t * 12 + yy * 0.09);
+  const N = 8, ys = [...Array(N + 1)].map((_, i) => a + (b - a) * i / N), xs = ys.map(yy => x + 1.2 * Math.sin(t * 7 + yy * 0.05));
+  const kant = sd => ys.map((yy, i) => `${f1(xs[i] + sd * hw(yy))} ${f1(yy)}`).join(' L');
+  let h = `<path d="M${kant(-1)} L${ys.map((yy, i) => `${f1(xs[N - i] + hw(ys[N - i]))} ${f1(ys[N - i])}`).join(' L')}Z" fill="#8fd0ea" stroke="#fff" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>`;
+  h += `<path d="M${kant(-0.45)} L${ys.map((yy, i) => `${f1(xs[N - i] + 0.45 * hw(ys[N - i]))} ${f1(ys[N - i])}`).join(' L')}Z" fill="#cfeefa" opacity="0.85"/>`;
+  h += `<path d="M${f1(x - 4.5)} ${f1(a + 3)} V${f1(b - 3)}" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>`;
+  h += `<path d="M${f1(x + 2)} ${f1(a + 6)} V${f1(b - 5)}" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity="0.75" stroke-dasharray="10 22" stroke-dashoffset="${f1(-t * 300)}"/>`;
   if (b >= b0 - 1 && k <= 1.6) {   // stänket där strålen tar emot
     const s = k > 1 ? 1 - del(1.0, 1.6, k) : 1;
-    h += `<ellipse cx="${f1(x)}" cy="${f1(b0 - 1)}" rx="${f1((22 + 3 * Math.sin(t * 11)) * s)}" ry="${f1(6 * s)}" fill="#fff" opacity="${(0.75 * s).toFixed(2)}"/>`;
+    h += `<ellipse cx="${f1(x)}" cy="${f1(b0 - 1)}" rx="${f1((20 + 3 * Math.sin(t * 11)) * s)}" ry="${f1(6.5 * s)}" fill="#e9f8fd" stroke="#fff" stroke-width="1.5" opacity="${(0.85 * s).toFixed(2)}"/>`;
+    [-1, 1].forEach(sd => h += `<path d="M${f1(x + sd * 6 * s)} ${f1(b0 - 2)} Q${f1(x + sd * 16 * s)} ${f1(b0 - 14 * s - 2 * Math.sin(t * 15))} ${f1(x + sd * 22 * s)} ${f1(b0 - 3)}" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity="${(0.8 * s).toFixed(2)}"/>`);
     for (let i = 0; i < 6; i++) { const fas = ((t * 2.2 + i / 6) % 1), sida = i % 2 ? 1 : -1, sp = 16 + 10 * ((i * 7) % 3);
       const dx = sida * sp * fas, dy = -34 * Math.sin(Math.PI * fas) * (0.7 + 0.3 * ((i * 5) % 2)), r = 4.4 * (1 - 0.6 * fas) * s;
       h += `<circle cx="${f1(x + dx)}" cy="${f1(b0 - 3 + dy)}" r="${f1(r)}" fill="#cdeefa" stroke="#fff" stroke-width="1.2" opacity="${(0.9 * (1 - fas * 0.7)).toFixed(2)}"/>`; }
@@ -198,7 +207,7 @@ function bubbla(x, y, r, farg, sprack = 0) {
   lagg('fram', `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="${farg}" fill-opacity="0.85" stroke="#fff" stroke-width="${f1(Math.max(3, r * 0.07))}"/>
     <path d="M${f1(x - r * 0.6)} ${f1(y - r * 0.2)} A${f1(r * 0.65)} ${f1(r * 0.65)} 0 0 1 ${f1(x - r * 0.15)} ${f1(y - r * 0.62)}" fill="none" stroke="#fff" stroke-width="${f1(Math.max(3, r * 0.09))}" stroke-linecap="round"/>`);
 }
-const BUBBLOR = [[HX + 310, RIM - 90, 40, ROD[0]], [HX + 125, RIM - 195, 44, GUL[0]], [HX + 265, RIM - 275, 46, BLA[0]]];   // stora och tydliga (Sanna 2026-11-25)
+const BUBBLOR = [[HX + 290, RIM - 205, 40, ROD[0]], [HX + 125, RIM - 225, 44, GUL[0]], [HX + 265, RIM - 290, 46, BLA[0]]];   // stora och tydliga (Sanna 2026-11-25)
 
 // --- Tvålen i kod (rekvisita/tval.md), fyll < 1 = fylls i inifrån ----------------------------------------------------------
 function tval(x, y, v = 0, s = 1, fyll = 1) {
@@ -259,7 +268,8 @@ const F = (n, o = {}) => n === 'stolt' ? { ...L.blanda('jatteglad', 'stolt', 0.4
 const UPP = (k = 1) => [-12 * k, -12 * k];   // öronen upp: glad, förvånad, stolt
 const A20 = (o = {}) => P({ armar: [20, 20], ...o });
 const klapp = (T, o = {}) => ({ ...L.ROR.klappa(T)[1], gnista: 0, ...o });   // 1.0 = tassarna möts, 1.12 = halvöppna
-const vink = (tl, v, o = {}) => P({ luta: 3 * v, armar: [0, v * (86 + 14 * Math.sin(2 * Math.PI * 1.1 * tl))], ...o });   // armen bakom kroppen, snett ut förbi kanten
+// vänstra armen (bort från kranen, som annars skymde tassen): bakom kroppen, snett ut förbi kanten i ca 60°, ±16°, 1,3/s, lite lutning
+const vink = (tl, v, o = {}) => P({ luta: -3 * v, armar: [-v * (60 + 16 * Math.sin(2 * Math.PI * 1.3 * tl)), 20], ...o });   // armen bakom kroppen, snett ut förbi kanten
 const nick = (f, p, tl, d = 1.2) => tl > 0 && tl < d ? L.nicka(f, p, tl, d, 2) : [f, p];
 const vipp = (tl, a, d = 1.4) => 10 * Math.sin(2 * Math.PI * (tl - a) / 0.7) * bump(a, a + d, tl);   // svansen vippar lugnt
 const oronVipp = (tl, t0, n = 2) => { const u = tl - t0; return u > 0 && u < 0.4 * n ? -10 * Math.sin(u / 0.4 * Math.PI * 2) * (1 - u / (0.4 * n)) : 0; };
@@ -344,9 +354,10 @@ const S = {
     const uppe = tl > t2 + 0.45;
     return RUM({ pos, bakom: uppe, f: F('glad', { titt: [10, -2] }), p: { ...p, rikt: 0.5 * (1 - del(t2 + 0.45, t2 + 0.9, tl)) }, kran: del(kr, kr + 0.5, tl) }); },
   // tassen under strålen (strålen slutar på tassen), droppar stänker
-  '6': (tl, d) => BAD({ kam: K_NARA_TASS, f: F('nyfiken', { titt: [10, 10] }), p: A20({ armar: [20, -20] }), kran: 1, tassStrale: true }),
+  // vattnet rinner först ner i handfatet, sedan kommer tassen upp ur handfatet in under strålen
+  '6': (tl, d) => BAD({ kam: K_STRALE, f: F('nyfiken', { titt: [10, 10] }), p: A20({ armar: [20, lerp(-48, -20, del(0.7, 1.3, tl))] }), kran: 1, tassStrale: true }),
   '7': (tl, d) => { const sj = del(0.6 + LN(14), 1.1 + LN(14), tl);
-    return BAD({ kam: K_NARA_TASS, f: F('nyfiken', { titt: [10, 12] }), p: A20({ armar: [20, -20], oron: [14 * sj, 14 * sj] }), kran: 1, tassStrale: true }); },
+    return BAD({ kam: K_STRALE, f: F('nyfiken', { titt: [10, 12] }), p: A20({ armar: [20, -20], oron: [14 * sj, 14 * sj] }), kran: 1, tassStrale: true }); },
   // skakar tassarna lugnt, kranen stängs, trumpet mjau i pausen
   '8': (tl, d) => { const sk = bump(0.1, 1.0, tl), ner = del(1.3 + LN(15), 1.7 + LN(15), tl);
     return BAD({ kam: tl > 1.2 + LN(15) ? K_NARA_ANS() : K_HALV, f: F(tl > 1.3 + LN(15) ? 'trumpen' : 'ledsen', { le: -0.3 }), p: P({ armar: [35 + 8 * Math.sin(tl * 14) * sk, 35 - 8 * Math.sin(tl * 14) * sk], oron: [16 * ner, 16 * ner] }),
@@ -390,7 +401,7 @@ const S = {
   // håller upp två rena tassar, spinner i pausen
   '17': (tl, d) => { const u = del(0.1, 0.5, tl), mys = tl > 0.8 + LN(28);
     return BAD({ f: F(mys ? 'jatteglad' : 'stolt'), p: P({ armar: [20 + 25 * u, 20 + 25 * u], oron: UPP(u) }), farg: ORA, tval: TVAL, skum: 1, rena: 0.5 * bump(0.3, 2.4, tl), skagg: 2 + del(0.1, 0.9, tl) }); },   // skägget puffar bort tuss för tuss
-  '17b': (tl, d) => BAD({ kam: K_NARA_ANS(), f: F('jatteglad'), p: P({ armar: [30, 30], svans: vipp(tl, 0.1), oron: UPP(1) }), farg: ORA, tval: TVAL, skum: 1 }),
+  '17b': (tl, d) => BAD({ kam: K_NARA_ANS(), f: F(tl > 0.3 + LN(29) ? 'fnissig' : 'jatteglad'), p: P({ armar: [30, 30], svans: vipp(tl, 0.1), oron: UPP(1) }), farg: ORA, tval: TVAL, skum: 1 }),
   // tittar på tassarna, åt vänster, åt höger
   '18': (tl, d) => { const v = del(0.6, 1.1, tl) - 2 * del(1.8, 2.4, tl) + del(d - 1.0, d - 0.4, tl);
     return BAD({ f: F('nyfiken', { titt: [-14 * v, tl < 0.6 ? 10 : 2] }), p: P({ armar: [32, 32], rikt: -0.4 * v }), farg: ORA, tval: TVAL, skum: 1 }); },
@@ -431,10 +442,10 @@ const S = {
     return BAD({ kam: K_TAVLAN, f, p, farg: REN, tval: TVAL, mal: 1 }); },
   '28b': (tl, d) => { const [f, p] = nick(F('glad'), A20(), tl - (0.8 + LN(42)));
     return BAD({ f, p, farg: REN, tval: TVAL, skum: 0.3, mal: 1 }); },
-  '28c': (tl, d) => BAD({ kam: K_NARA_ANS(), f: F('glad', tl > 0.4 ? { glad: [1, 1] } : {}), p: A20({ luta: 4 * del(0.2, 0.8, tl) }), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
+  '28c': (tl, d) => BAD({ kam: K_NARA_ANS(), f: tl > 0.3 + LN(43) ? F('fnissig') : F('glad', tl > 0.4 ? { glad: [1, 1] } : {}), p: A20({ luta: 4 * del(0.2, 0.8, tl) }), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
   // vinkar hej då, armen sjunker
-  '29': (tl, d) => BAD({ f: F('jatteglad', { titt: [-10 * bump(0.7 + LN(44) * 0.55, 0.7 + LN(44) + 0.4, tl), 6 * bump(0.7 + LN(44) * 0.55, 0.7 + LN(44) + 0.4, tl)] }), p: vink(tl, del(0.2, 0.7, tl)), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
-  '30': (tl, d) => BAD({ f: F('glad'), p: vink(tl + 7, 1 - del(d - 1.0, d - 0.4, tl)), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
+  '29': (tl, d) => BAD({ kam: K_VINK(), f: F('jatteglad', { titt: [-10 * bump(0.7 + LN(44) * 0.55, 0.7 + LN(44) + 0.4, tl), 6 * bump(0.7 + LN(44) * 0.55, 0.7 + LN(44) + 0.4, tl)] }), p: vink(tl, del(0.2, 0.7, tl)), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
+  '30': (tl, d) => BAD({ kam: K_VINK(), f: F(tl > 0.3 + LN(45) - 0.6 ? 'fnissig' : 'glad'), p: vink(tl + 7, 1 - del(d - 1.0, d - 0.4, tl)), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
   // kritirisen runt katten och målningen
   '31': (tl, d) => BAD({ f: F('glad'), p: A20(), farg: REN, tval: TVAL, skum: 0.3, mal: 1, iris: tl }),
 };
@@ -500,7 +511,7 @@ function ritaBad(st, t) {
   }
   // vattnet
   if (st.kran != null) {
-    if (st.tassStrale) { const [, y] = iScen('.farg-r'); kran(st.kran, y - 18); } else kran(st.kran);
+    if (st.tassStrale) { const [, y] = iScen('.farg-r'); kran(st.kran, Math.min(RIM + 4, y - 18)); } else kran(st.kran);
   }
   if (st.pipDropp != null) pipDroppar(st.tl, st.pipDropp);
   if (st.skak != null) ['l', 'r'].forEach((n, i) => flygDroppar(iScen('.farg-' + n), st.skak, i ? 1 : -1));
@@ -527,7 +538,8 @@ function ritaBad(st, t) {
   if (st.skim) skimmer(st.skim[0][0], st.skim[0][1], st.skim[1], st.skim[2] || 1);
   // bubblorna: stiger ur handfatet och guppar, spricker på färgorden
   if (st.bubb) BUBBLOR.forEach(([x, y, r, f], i) => { const k = st.bubb[i], pp = st.pop ? st.pop[i] : 0; if (k <= 0.01 || pp >= 1) return;
-    const bx = x + 8 * Math.sin(st.bubbT * 1.4 + i * 2), by = lerp(RIM - 10, y, mjuk(k)) + 5 * Math.sin(st.bubbT * 1.9 + i);
+    // upp ur handfatet framför katten, över kranen, sedan ut åt höger till sin plats (aldrig genom kranen)
+    const bx = lerp(HX + 40 + 15 * i, x, del(0.45, 1, k)) + 8 * Math.sin(st.bubbT * 1.4 + i * 2), by = lerp(RIM - 10, y, del(0, 0.55, k)) + 5 * Math.sin(st.bubbT * 1.9 + i);
     bubbla(bx, by, r * (0.4 + 0.6 * mjuk(k)), f, pp); });
   // kritirisen: radien 1400 → 300 på 1,5 s, står 0,4 s, → 0 på 0,6 s; sedan svart
   if (st.iris != null) { const [cx, cy] = [990, RIM - 170], tl = st.iris;

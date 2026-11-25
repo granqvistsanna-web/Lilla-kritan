@@ -29,7 +29,7 @@ const KROK = [162, 382, 603, 823].map(kx => [HANG.x + kx * HANG.s, HANG.y + 118 
 const KORG = { fil: A + 'rekvisita/korg/cut/korg-v3-natt-tunn.png', s: 0.24, x: 300, botten: 930 };            // under hängaren, tom
 const KUDDE_KRAM = S + 'kudde-kram/kudde-kram.png';
 const MOSSA = { bild: S + 'mossa-gul/cut/mossa-gul.png', w: 887, h: 870, brim: [443, 856] };
-const HALSDUK = { bild: S + 'halsduk-rod/halsduk-rod.png', mitt: [523, 470] };
+const HALSDUK = { bild: S + 'halsduk-rod/halsduk-rod.png', w: 1024, h: 1024, mitt: [523, 470], bredd: 787 };   // mitt = bandets mitt, bredd = bandets bredd i bilden
 const STRUMPA = { bild: [S + 'strumpor-klarbla/cut/strumpa-klarbla-1.png', S + 'strumpor-klarbla/cut/strumpa-klarbla-2.png'], w: 510, h: 767, s: 0.12 };   // provet hade 0,16; mindre så att den fria strumpan inte hänger framför magen vid hoven
 const BLA = ['#2F7FD8', '#1F66B8'];
 
@@ -70,8 +70,8 @@ function kladerIn(g) {
 // mössan: brättets nederkant (mitt) i (x, y), brättets bredd w, vinkel v. I riggens ruta (w i riggens px) eller i scenen (w·GS)
 const mossaSvg = ([x, y], w, v = 0, extra = '') => { const s = w / 820;
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-MOSSA.brim[0]} ${-MOSSA.brim[1]})" ${extra}><image href="${MOSSA.bild}" width="${MOSSA.w}" height="${MOSSA.h}"/></g>`; };
-const halsdukSvg = ([x, y], w, extra = '', v = 0) => { const s = w / 787;
-  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-HALSDUK.mitt[0]} ${-HALSDUK.mitt[1]})" ${extra}><image href="${HALSDUK.bild}" width="1024" height="1024"/></g>`; };
+const halsdukSvg = ([x, y], w, extra = '', v = 0) => { const s = w / HALSDUK.bredd;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-HALSDUK.mitt[0]} ${-HALSDUK.mitt[1]})" ${extra}><image href="${HALSDUK.bild}" width="${HALSDUK.w}" height="${HALSDUK.h}"/></g>`; };
 const strumpaFri = (i, [x, y], v = 0, op = 1) => op <= 0.01 ? '' : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${STRUMPA.s}) translate(-255 -383)" opacity="${kl(op).toFixed(2)}"><image href="${STRUMPA.bild[i]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`;
 
 // mössans tre storlekar: brättets bredd i riggens px (provet) och var den sitter på zebran (riggens ruta) [x, y, vinkel]

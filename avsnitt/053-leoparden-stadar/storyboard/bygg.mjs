@@ -71,6 +71,7 @@ figcaption { padding:12px 14px 14px; display:grid; gap:6px; font-size:14px } fig
 <div class="frames">${RADER.map(kort).join('\n')}</div>
 </div></body></html>
 `);
+await writeFile(ROT + 'avsnitt/053-leoparden-stadar/scener/sovrummet/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud }) => ({ id, d, malin, ljud })), ROST }));   // scenens tider
 console.log(`${RADER.length} bilder, ${tid(LANGD)}`);
 
 // --- animatiken (valfri) ---------------------------------------------------------------------------------------------------

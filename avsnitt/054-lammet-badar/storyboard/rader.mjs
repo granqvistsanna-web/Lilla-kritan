@@ -18,9 +18,9 @@ export const L = n => R(n)[2];
 // b = andra tagningen. Det långa fnisset är ba-fniss. Ankan: badanka-pip 1 frågande, 2 mjukt sjunkande.
 const B = (n, b = '') => `ba-gullig/ba-gullig-${n}${b}`, FNISS = n => `ba-fniss/ba-fniss-${n}`, PIP = n => `badanka-pip/badanka-pip-${n}`;
 // Ordtider inne i replikerna (whisper ord för ord, 2026-11-25): där "torrt!" börjar, och skutten i 8 och 16.
-export const BORTA_T = { 27: 4.25, 28: 4.52, 29: 5.67 };
+export const BORTA_T = { 27: 5.96, 28: 6.15, 29: 5.58 };   // omgång 3 (tydligare repliker, 25/11)
 const TORRT = n => BORTA_T[n];
-const SKUTT = { 8: [0.38, 1.33, 1.80], 16: [0.37, 1.56, 2.40] };
+const SKUTT = { 8: [1.55, 2.53, 3.29], 16: [0.30, 1.25, 1.92] };
 const SVAR = 0.9;   // pausen där lammet svarar innan Malin reagerar
 
 export const RADER = [
@@ -97,15 +97,15 @@ export const RADER = [
 
   // --- Torka tre gånger ---
   { id: '16', d: 2.4 + L(26) + 0.4 + L(27) + 1.0, plats: 'Badrummet, helbild', malin: [[26, 2.4], [27, 2.4 + L(26) + 0.4]],
-    ljud: [['prassel-tyg/prassel-tyg-1', 0.6], ['handduk-gnugg/handduk-gnugg-4', 2.4 + L(26) + 0.4 + 2.0], ['puff/puff-1', 2.4 + L(26) + 0.4 + TORRT(27)], ['tindra/tindra-3', 2.4 + L(26) + 0.4 + TORRT(27) + 0.1]],
+    ljud: [['prassel-tyg/prassel-tyg-1', 0.6], ['handduk-gnugg/handduk-gnugg-4', 2.4 + L(26) + 0.4 + 2.8], ['puff/puff-1', 2.4 + L(26) + 0.4 + TORRT(27)], ['tindra/tindra-3', 2.4 + L(26) + 0.4 + TORRT(27) + 0.1]],
     bild: 'Handduken glider ner från kroken och lägger sig tvärs över lammets hjässa och öron (ansiktet syns). Den torkar med en lugn gungning. På "torrt!" lyfts den: öronen är fluffiga', ljudtext: '`prassel-tyg` när den glider, `handduk-gnugg`, `puff` + `tindra` på "torrt!"', ansikte: 'blundar nöjt → glad' },
   { id: '17', d: 2.0, plats: 'Närbild öronen', ljud: [['tindra/tindra-1', 0.2], [B(2, 'b'), 0.6]],
     bild: 'Reaktion: lammet tittar upp på sina fluffiga öron, blinkar och ler', ljudtext: 'förtjust (2)', ansikte: 'jätteglad' },
   { id: '18', d: 1.2 + L(28) + 0.9, plats: 'Halvnära', malin: [[28, 1.2]],
-    ljud: [['prassel-tyg/prassel-tyg-1', 0.4], ['handduk-gnugg/handduk-gnugg-4', 1.2 + 2.2], ['puff/puff-2', 1.2 + TORRT(28)], ['tindra/tindra-4', 1.2 + TORRT(28) + 0.1]],
+    ljud: [['prassel-tyg/prassel-tyg-1', 0.4], ['handduk-gnugg/handduk-gnugg-4', 1.2 + 2.7], ['puff/puff-2', 1.2 + TORRT(28)], ['tindra/tindra-4', 1.2 + TORRT(28) + 0.1]],
     bild: 'Handduken glider ner framför magen och torkar med en lugn gungning. På "torrt!" glider den undan: magen är fluffig', ljudtext: '`prassel-tyg`, `handduk-gnugg`, `puff` + `tindra`', ansikte: 'glad' },
   { id: '19', d: 1.4 + L(29) + 1.0, plats: 'Badrummet, helbild', malin: [[29, 1.4]],
-    ljud: [['prassel-tyg/prassel-tyg-1', 0.5], ['handduk-gnugg/handduk-gnugg-4', 1.4 + 3.2], ['tindra/tindra-3', 1.4 + TORRT(29)]],
+    ljud: [['prassel-tyg/prassel-tyg-1', 0.5], ['handduk-gnugg/handduk-gnugg-4', 1.4 + 2.3], ['tindra/tindra-3', 1.4 + TORRT(29)]],
     bild: 'Handduken lägger sig framför hela lammet, från huvudet till golvet. Öronen och sidorna tittar fram. Den torkar med en lugn gungning. På "torrt!" lyfts den och glider tillbaka till kroken', ljudtext: '`prassel-tyg`, `handduk-gnugg`, `tindra`', ansikte: '– (under handduken)' },
   { id: '20', d: 1.6 + L(30) + 1.6, plats: 'Halvnära', malin: [[30, 1.6]],
     ljud: [['puff/puff-1', 0.1], ['puff/puff-3', 0.45], ['puff/puff-2', 0.8], [FNISS(2), 1.8 + L(30)]],
@@ -127,11 +127,11 @@ export const RADER = [
   { id: '25', d: 3.4 + L(48) + 1.0, plats: 'Badrummet, helbild', malin: [[48, 3.4]],
     ljud: [['vagor/vagor-1', 0.3], [PIP(1), 1.6], ['plopp/plopp-1', 2.1], ['swoosh/swoosh-1', 2.2], [B(1, 'b'), 3.6 + L(48)]],
     bild: 'Ankan glider genom skummet till borsten och knuffar den till kanten. Borsten hoppar upp och glider i en båge till lammet (som handduken)', ljudtext: '`vagor`, `badanka-pip`, `plopp`, förtjust (2b)', ansikte: 'nyfiken → jätteglad' },
-  { id: '26a', d: 0.6 + L(49) + 0.8, plats: 'Halvnära', malin: [[49, 0.6]], ljud: [['borsta/borsta-1', 0.8], [B(4), 0.7 + L(49)]],
+  { id: '26a', d: 0.6 + L(49) + 0.8, plats: 'Halvnära', malin: [[49, 0.6]], ljud: [['borsta/borsta-1', 0.6 + 1.92], [B(4), 0.7 + L(49)]],
     bild: 'Borsten går lugnt över öronen, ulltussarna blir släta och runda', ljudtext: '`borsta`', ansikte: 'blundar nöjt' },
-  { id: '26b', d: 0.6 + L(50) + 0.8, plats: 'Närbild magen → ansiktet', malin: [[50, 0.6]], ljud: [['borsta/borsta-2', 0.8], [FNISS(5), 0.8 + L(50)]],
+  { id: '26b', d: 0.6 + L(50) + 0.8, plats: 'Närbild magen → ansiktet', malin: [[50, 0.6]], ljud: [['borsta/borsta-2', 0.6 + 2.14], [FNISS(5), 0.8 + L(50)]],
     bild: 'Borsten går över magen, ullen blir slät. Närbild på det nöjda ansiktet', ljudtext: '`borsta`, mysig suck (4)', ansikte: 'mysig' },
-  { id: '26c', d: 0.6 + L(51) + 1.2, plats: 'Halvnära', malin: [[51, 0.6]], ljud: [['borsta/borsta-3', 1.2], ['tindra/tindra-3', 0.6 + L(51) - 0.3], [B(2), 0.7 + L(51)]],
+  { id: '26c', d: 0.6 + L(51) + 1.2, plats: 'Halvnära', malin: [[51, 0.6]], ljud: [['borsta/borsta-3', 0.6 + 3.01], ['tindra/tindra-3', 0.6 + L(51) - 0.3], [B(2), 0.7 + L(51)]],
     bild: 'Borsten går runt hela lammet: ullmolnet blir slätt, runt och fint. Krit-gnistor', ljudtext: '`borsta`, `tindra`', ansikte: 'jätteglad' },
   { id: '26d', d: 0.3 + L(38) + 0.6 + L(39) + SVAR + L(40) + 0.7, plats: 'Halvnära → närbild', malin: [[38, 0.3], [39, 0.3 + L(38) + 0.6], [40, 0.3 + L(38) + 0.6 + L(39) + SVAR]],
     ljud: [[B(3, 'b'), 0.5 + L(38) + 0.6 + L(39)]],

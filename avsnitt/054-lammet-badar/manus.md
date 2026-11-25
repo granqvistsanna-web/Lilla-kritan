@@ -176,7 +176,7 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **Det roliga syns stort (Sanna 25/11, från 057:s skumskägg):** skumhatten är nu en stor tydlig skumhög (fyra tussar i stället för en) och 6b klipper till närbild när lammet kommer upp, så den syns när Malin säger "En skumhatt!"; lammet fnissar sedan och det hörs ett `plopp`. Ullmolnet (20) och den fluffiga ullen (22) visas redan i närbild med `puff`/`moln-puff` när repliken sägs.
 - **Tempo:** pauserna efter replikerna kortare (mellanrummet 0,35 → 0,15 s, svarspauserna 1,0 → 0,9 s, slutpauserna 0,2–1,5 s kortare), pratstunden med ankan och båtraden kortare. Gissningspauserna (01b, b2, 12b), frågan till barnet (23b–23c) och pauserna för svar ligger kvar. 257 s → 237 s (−8 %; resten av tiden är repliker och svarspauser).
 
-### Tydligare repliker (förslag, väntar på Sannas ja)
+### Tydligare repliker (godkända av Sanna 2026-11-25, inspelade samma dag)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").
 
@@ -207,6 +207,8 @@ Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin say
 | 51 | [warmly] Och sist … borsta … borsta … så fint! | [warmly] Och sist borstar vi hela ullen. Borsta … borsta … så fint! |
 
 **Behålls som de är:** 01–03 och 22 (*"Kritan ritar …"*, *"Hm … vad blir det nu?"*, *"Titta! Kritan ritar något."*) eftersom barnet ska gissa vad kritan ritar, och att säga saken förstör gissningen. 07, 17, 19, 23, 24, 32, 39–44, 46, 47 säger redan vad som händer. 06, 13, 20, 25, 40 är svar och reaktioner (*"Ja, vad kul!"*, *"Tack!"*), och 12 är frågan till barnet om ankans pip.
+
+**Inspelat 2026-11-25:** en tagning i två versioner (`produktion/ljud-original/roster/054-lammet-badar/malin-tagning-3a.mp3`, `-3b.mp3`, ca 1 100 krediter), listan i `rost-3.txt`. 3b används, utom 27 och 28 från 3a (där "Blött" hörs tydligt). Normaliserade till −3 dBFS, de gamla filerna ligger i `forra-omg2/`. Nya ordtider: skutten i 08 på 1,55 / 2,53 / 3,29 s ("Upp på pallen" först), i 16 på 0,30 / 1,25 / 1,92 s, "torrt!" på 5,96 / 6,15 / 5,58 s, första "Borsta" i 49–51 på 1,92 / 2,14 / 3,01 s. Borsten börjar dra på "Borsta". Filmen blev ca 4:20, eftersom replikerna är längre (pauserna ligger kvar på omgång 2b:s korta mått).
 
 **Kostnad:** 23 repliker, ca 1 100 tecken, alltså ca 1 100 krediter i en tagning. Replik 49–51 spelades in i dag och skulle spelas in igen. Raderna i `rader.mjs` räknar om sina tider av sig själva. Skuttens ordtider i 08 och 16 och "torrt!" i 27–29 mäts om med whisper.
 
