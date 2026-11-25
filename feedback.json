@@ -9373,9 +9373,10 @@
   "sec": 174,
   "tags": [],
   "note": "polish cat tail",
-  "fixed": false,
+  "fixed": true,
   "at": 1795611873937,
-  "render": "2026-11-25 13:54 (QA 25/11 slutrendering: spårbilden utan halv katt (lugn push in), hörnet vid trappan rätt)"
+  "render": "2026-11-25 13:54 (QA 25/11 slutrendering: spårbilden utan halv katt (lugn push in), hörnet vid trappan rätt)",
+  "fixedAt": 1795614275395
  },
  "lup30h6fdhmww4yv50": {
   "ep": "J08",
@@ -9383,8 +9384,9 @@
   "sec": 107,
   "tags": [],
   "note": "polish tail",
-  "fixed": false,
+  "fixed": true,
   "at": 1795611907619,
-  "render": "2026-11-25 13:47 (QA 25/11 (snabb, scenfilmen; luckans tid = +11,2 s): katten går framför snögubben i ett lägre spår (3:09, 3:17), mjuk glidning huvud→knappar i st.f. hoppklipp (1:45), line boil 2,5/zoom 6 ggr/s, långsam push i närbilderna på stenarna och stolpen (stod still 1:29 och 3:01))"
+  "render": "2026-11-25 13:47 (QA 25/11 (snabb, scenfilmen; luckans tid = +11,2 s): katten går framför snögubben i ett lägre spår (3:09, 3:17), mjuk glidning huvud→knappar i st.f. hoppklipp (1:45), line boil 2,5/zoom 6 ggr/s, långsam push i närbilderna på stenarna och stolpen (stod still 1:29 och 3:01))",
+  "fixedAt": 1795614275396
  }
 }
