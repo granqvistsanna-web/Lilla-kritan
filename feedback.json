@@ -9536,9 +9536,10 @@
   "sec": 124,
   "tags": [],
   "note": "polish animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637720508,
-  "render": "2026-11-25 20:55 (Grind 6: hela scenen som snabb förhandsvisning (3:24). Kritan ritar trekanten och formlådan, klossarna puffas mot korgen, hatten glider in under sängen, alla tre ploppar ner i lådan. Säg vad som ska ändras före slutrenderingen.)"
+  "render": "2026-11-25 20:55 (Grind 6: hela scenen som snabb förhandsvisning (3:24). Kritan ritar trekanten och formlådan, klossarna puffas mot korgen, hatten glider in under sängen, alla tre ploppar ner i lådan. Säg vad som ska ändras före slutrenderingen.)",
+  "fixedAt": 1795639159552
  },
  "lpunwofhszmwwkckzk": {
   "ep": "053",
@@ -9546,9 +9547,10 @@
   "sec": 45,
   "tags": [],
   "note": "polish animtion of picking up and throwing blovks",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637741888,
-  "render": "2026-11-25 20:55 (Grind 6: hela scenen som snabb förhandsvisning (3:24). Kritan ritar trekanten och formlådan, klossarna puffas mot korgen, hatten glider in under sängen, alla tre ploppar ner i lådan. Säg vad som ska ändras före slutrenderingen.)"
+  "render": "2026-11-25 20:55 (Grind 6: hela scenen som snabb förhandsvisning (3:24). Kritan ritar trekanten och formlådan, klossarna puffas mot korgen, hatten glider in under sängen, alla tre ploppar ner i lådan. Säg vad som ska ändras före slutrenderingen.)",
+  "fixedAt": 1795639159552
  },
  "9ghysdglubmwwke64f": {
   "ep": "052",
@@ -9556,9 +9558,10 @@
   "sec": 149,
   "tags": [],
   "note": "the hat needs to be smaller and better fit, and the halsduk too. needs to be wider and backside not showing on wearng",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637815935,
-  "render": "2026-11-25 20:52 (Ny röd halsduk (8), bäddad säng med mintgrönt täcke (4), ny platt kudde (1) framför gaveln, nallen på golvet under sängen, bara snö i fönstret, mössan sitter bättre. Snabb förhandsvisning.)"
+  "render": "2026-11-25 20:52 (Ny röd halsduk (8), bäddad säng med mintgrönt täcke (4), ny platt kudde (1) framför gaveln, nallen på golvet under sängen, bara snö i fönstret, mössan sitter bättre. Snabb förhandsvisning.)",
+  "fixedAt": 1795639159552
  },
  "xage2c6mz5mwwkesd4": {
   "ep": "052",
@@ -9566,9 +9569,10 @@
   "sec": 187,
   "tags": [],
   "note": "sock will be hard to find udner pillow, maybe can be on pillow",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637844760,
-  "render": "2026-11-25 20:52 (Ny röd halsduk (8), bäddad säng med mintgrönt täcke (4), ny platt kudde (1) framför gaveln, nallen på golvet under sängen, bara snö i fönstret, mössan sitter bättre. Snabb förhandsvisning.)"
+  "render": "2026-11-25 20:52 (Ny röd halsduk (8), bäddad säng med mintgrönt täcke (4), ny platt kudde (1) framför gaveln, nallen på golvet under sängen, bara snö i fönstret, mössan sitter bättre. Snabb förhandsvisning.)",
+  "fixedAt": 1795639159552
  },
  "0nda06920vmwwkf1ku": {
   "ep": "056",
@@ -9576,9 +9580,10 @@
   "sec": 12,
   "tags": [],
   "note": "teddy needs eyes",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637856702,
-  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)"
+  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)",
+  "fixedAt": 1795639159552
  },
  "wedsh2jylrmwwkfbh0": {
   "ep": "056",
@@ -9586,9 +9591,10 @@
   "sec": 22,
   "tags": [],
   "note": "fox ears need work",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637869524,
-  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)"
+  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)",
+  "fixedAt": 1795639159552
  },
  "nzktpsbj31mwwkfro8": {
   "ep": "056",
@@ -9596,9 +9602,10 @@
   "sec": 39,
   "tags": [],
   "note": "new bedroom with teal bg ad bedding on bed please",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637890520,
-  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)"
+  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)",
+  "fixedAt": 1795639159552
  },
  "c6f2iq1cermwwkg73c": {
   "ep": "056",
@@ -9606,9 +9613,10 @@
   "sec": 174,
   "tags": [],
   "note": "rain outside window",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637910504,
-  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)"
+  "render": "2026-11-25 20:45 (Grind 6: hela scenen, --snabb-förhandsvisning (960×540, 15 fps). Riktiga bilderboksintrot först, sedan kritan som ritar nallen.)",
+  "fixedAt": 1795639159552
  },
  "odzznzjigbmwwkh4qc": {
   "ep": "057",
@@ -9616,9 +9624,10 @@
   "sec": 130,
   "tags": [],
   "note": "polish animation overall",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637954100,
-  "render": "2026-11-25 20:54 (Grind 6, --snabb. Snabbare (−11 %, 3:58), fler reaktionsslag i närbild, tydligare uttryck, varierade kattljud och fler fniss, riktigt skumskägg, mjukare och längre vattenstråle, vinkning med den fria armen.)"
+  "render": "2026-11-25 20:54 (Grind 6, --snabb. Snabbare (−11 %, 3:58), fler reaktionsslag i närbild, tydligare uttryck, varierade kattljud och fler fniss, riktigt skumskägg, mjukare och längre vattenstråle, vinkning med den fria armen.)",
+  "fixedAt": 1795639159552
  },
  "g0ek5l62ccmwwkh9p5": {
   "ep": "057",
@@ -9626,9 +9635,10 @@
   "sec": 130,
   "tags": [],
   "note": "polish washing animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637960537,
-  "render": "2026-11-25 20:54 (Grind 6, --snabb. Snabbare (−11 %, 3:58), fler reaktionsslag i närbild, tydligare uttryck, varierade kattljud och fler fniss, riktigt skumskägg, mjukare och längre vattenstråle, vinkning med den fria armen.)"
+  "render": "2026-11-25 20:54 (Grind 6, --snabb. Snabbare (−11 %, 3:58), fler reaktionsslag i närbild, tydligare uttryck, varierade kattljud och fler fniss, riktigt skumskägg, mjukare och längre vattenstråle, vinkning med den fria armen.)",
+  "fixedAt": 1795639159552
  },
  "hkjybpnypimwwkhiwr": {
   "ep": "057",
@@ -9636,9 +9646,10 @@
   "sec": 150,
   "tags": [],
   "note": "the sink tap looks cut off",
-  "fixed": false,
+  "fixed": true,
   "at": 1795637972475,
-  "render": "2026-11-25 20:54 (Grind 6, --snabb. Snabbare (−11 %, 3:58), fler reaktionsslag i närbild, tydligare uttryck, varierade kattljud och fler fniss, riktigt skumskägg, mjukare och längre vattenstråle, vinkning med den fria armen.)"
+  "render": "2026-11-25 20:54 (Grind 6, --snabb. Snabbare (−11 %, 3:58), fler reaktionsslag i närbild, tydligare uttryck, varierade kattljud och fler fniss, riktigt skumskägg, mjukare och längre vattenstråle, vinkning med den fria armen.)",
+  "fixedAt": 1795639159552
  },
  "omqo99sodumwwkobdx": {
   "ep": "054",
@@ -9646,9 +9657,10 @@
   "sec": 37,
   "tags": [],
   "note": "nice hot steam from bath",
-  "fixed": false,
+  "fixed": true,
   "at": 1795638289317,
-  "render": "2026-11-25 20:43 (Omgång 2b: tydligare repliker inspelade (23 st), reaktionsslag med närbild och uttryck, varierade ljud, stor skumhatt i närbild, ny vinkning, borsten på golvet (lammet tar med den i badet). 4:19.)"
+  "render": "2026-11-25 20:43 (Omgång 2b: tydligare repliker inspelade (23 st), reaktionsslag med närbild och uttryck, varierade ljud, stor skumhatt i närbild, ny vinkning, borsten på golvet (lammet tar med den i badet). 4:19.)",
+  "fixedAt": 1795639159552
  },
  "flke1j3c1hmwwkp7uk": {
   "ep": "054",
@@ -9656,8 +9668,9 @@
   "sec": 187,
   "tags": [],
   "note": "make ull less dramatic and looking better, poinst of brushing should be resoring ull to default state",
-  "fixed": false,
+  "fixed": true,
   "at": 1795638331388,
-  "render": "2026-11-25 20:43 (Omgång 2b: tydligare repliker inspelade (23 st), reaktionsslag med närbild och uttryck, varierade ljud, stor skumhatt i närbild, ny vinkning, borsten på golvet (lammet tar med den i badet). 4:19.)"
+  "render": "2026-11-25 20:43 (Omgång 2b: tydligare repliker inspelade (23 st), reaktionsslag med närbild och uttryck, varierade ljud, stor skumhatt i närbild, ny vinkning, borsten på golvet (lammet tar med den i badet). 4:19.)",
+  "fixedAt": 1795639159552
  }
 }
