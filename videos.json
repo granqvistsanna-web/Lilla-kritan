@@ -1421,12 +1421,12 @@
   "name": "Blinka lilla stjärna"
  },
  "J14": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1119-0652.mp4",
-  "duration": 167.2,
-  "rendered": "2026-11-19 06:52 (Röda sången (013) som lucka 8, nya kalenderintrot, mastrad -16 LUFS)",
-  "file": "produktion/youtube/shorts/jul/11-roda-sangen/11-roda-sangen.mp4",
-  "status": "klar",
-  "name": "Lucka 14: Röda sången"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J14-1125-1301.mp4",
+  "duration": 153.5,
+  "rendered": "2026-11-25 13:02 (Line boil sänkt till 2,5 px i bild i alla scener utom discot (25/11))",
+  "file": "avsnitt/013-rod-brandbil/film/forhand/j14-forhand-2511.mp4",
+  "status": "granska",
+  "name": "J14 boil 2,5 px (förhandsvisning)"
  },
  "J08": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/044-1120-0749.mp4",
