@@ -52,6 +52,8 @@
 </svg>
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
+<script src="/verktyg/utsnitt.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script>
 const NS = 'http://www.w3.org/2000/svg';
@@ -88,8 +90,9 @@ const KAROL = 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a';
 let KONTUR = {};
 
 // --- Kameran (PW = plattans bredd: kaktusrummet 2880, badrummet 1920) --------------------------------------------------------------
-let PW = 1920;
+let PW = 1920, ZOOM = 1;
 function kamera(zoom = 1, cx = 960, cy = 540) {
+  ZOOM = zoom;
   zoom *= 1 + 0.008 * (0.5 - 0.5 * Math.cos(2 * Math.PI * TT / 6.5)); cx += 5 * Math.sin(TT * 0.55); cy += 3 * Math.sin(TT * 0.41);   // andas lugnt (045)
   const tx = Math.max(1920 - PW * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
@@ -101,11 +104,14 @@ const kameraMix = (A, B, k) => kamera(lerp(A[0], B[0], k), lerp(A[1], B[1], k), 
 const glans = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${f1(r)})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
 const skimmer = (x, y, k = 1, vidd = 1) => { if (k < 0.02) return; lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
   .map(([dx, dy, s], i) => glans(x + dx * 40 * vidd, y + dy * 34 * vidd, 16 * s * k * vidd * (0.85 + 0.15 * Math.sin(TT * 5 + i * 2)), Math.min(1, 0.4 + k))).join('')); };
-const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
-const svajP = (x, y, tl) => [x + 14 * Math.sin(tl * 1.6), y + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3)];
+// kritan ur verktyg/kritan-ritar.js (skillen kritan-ritar): samma bild, vinklar och svaj som i alla avsnitt. På papperet (s 0,42)
+// har den papperets skala, i rummet kritaSkala(zoom), så att den är lika stor i bild hur nära kameran än går.
+const krita = (x, y, v = KRITAN.VINKEL_RITAR, s = 0.33) => lagg('pilar', kritaBild(x, y, { v, s: s >= KRITAN.SKALA_PAPPER ? s : kritaSkala(ZOOM) }));
+const svajP = (x, y, tl, SV = KRITAN.SVAJ) => [x + SV.ax * Math.sin(tl * SV.fx), y + SV.ay * Math.sin(tl * SV.fy), KRITAN.VINKEL_VANTAR + SV.av * Math.sin(tl * SV.fv)];
+// krit-gnistorna på svaret (kritan-ritar.js), lika stora i bild i alla utsnitt
+const gnistorNu = (x, y, r, t) => t > 0 && t < 2.6 && lagg('pilar', `<g transform="translate(${f1(x)} ${f1(y)}) scale(${(1 / ZOOM).toFixed(3)})">${gnistor(0, 0, r, t)}</g>`);
 const kritaGlid = (A, B, k, s, bage = 40) => { const m = mjuk(k), h = Math.min(1, Math.hypot(B[0] - A[0], B[1] - A[1]) / 300) * bage * Math.sin(Math.PI * m);
   krita(lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h, lerp(A[2] ?? 125, B[2] ?? 125, m), s); };
-const ritfart = k => (k = kl(k), 0.6 * k + 0.4 * mjuk(k));
 function kontur(namn, t, k, bredd, farg = '#3a2c28', o = 1) {
   lagg('pilar', `<g transform="${t}" opacity="${o.toFixed(3)}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(bredd)}"
     stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k.toFixed(4)} 2"/></g>`);
@@ -141,10 +147,10 @@ let FYLLNR = 0;
 function sakFyll(namn, pos, fyll, lager = 'saker') {
   if (fyll <= 0) return; if (fyll >= 1) return sak(namn, ...pos, { lager });
   const [, [w, h], [x0, y0, x1, y1]] = SAK[namn], [t] = sakT(namn, pos), id = 'fy' + FYLLNR++;
-  lagg(lager, `<g transform="${t}"><clipPath id="${id}"><circle cx="${(x0 + x1) / 2}" cy="${(y0 + y1) / 2}" r="${f1(0.75 * Math.max(x1 - x0, y1 - y0) * mjuk(fyll))}"/></clipPath>
+  lagg(lager, `<g transform="${t}">${fyllMask(id, (x0 + x1) / 2, (y0 + y1) / 2, 0.75 * Math.max(x1 - x0, y1 - y0), fyll)}
     <image href="${SAK[namn][0]}" width="${w}" height="${h}" clip-path="url(#${id})"/></g>`);
 }
-const ritaSak = (namn, pos, k, farg) => { const [t, s] = sakT(namn, pos); return kontur(namn, t, ritfart(k), 5 / s, farg); };
+const ritaSak = (namn, pos, k, farg, o = 1) => { const [t, s] = sakT(namn, pos); return kontur(namn, t, ritfart(k), 5 / s, farg, o); };
 const skugga = (x, fot, rx, lager = 'bak', o = 0.08) => lagg(lager, `<ellipse cx="${f1(x)}" cy="${f1(fot - 2)}" rx="${f1(rx)}" ry="${f1(rx * 0.12)}" fill="#000" opacity="${o}"/>`);
 const BD = 100;   // Sanna 2026-11-22 (J17 0:43): "bigger ball" (78 → 100)
 const boll = ([x, y], rot = 0) => { skugga(x, y + BD / 2 + 2, BD * 0.42 * (1 - kl((y + BD / 2 - K_GOLV) / -300) * 0.5), 'bak'); sak('boll', x, y + BD / 2, BD, { rot, mitt: true }); };
@@ -243,18 +249,37 @@ function kranNu() {
 
 // --- Hunden med tomteluvan ------------------------------------------------------------------------------------------------------
 let L, G, BLINKA; const DS = 0.5;
+// Blinkspärren (three-rum runda 8, Sanna 24/11): ingen blinkning inom 0,45 s från ett uttrycksbyte eller en blickflytt. Ett förpass
+// (forpass) går igenom hela filmen 15 gånger/s och läser bara hundens ansikte (PRE), sedan stryks de blinkningar som ligger för nära.
+let PRE = null, ANDRAD = null, BLINKAR = [];
+const PRE_FPS = 15, ansTal = f => Object.fromEntries(Object.entries(f).map(([n, v]) => [n, [v].flat().filter(x => typeof x === 'number')]));
+function forpass() {
+  const n = Math.ceil(DURATION * PRE_FPS), tal = [];
+  for (let i = 0; i <= n; i++) { let sist = null; PRE = f => { sist = ansTal(f); }; rita(i / PRE_FPS); tal.push(sist); }
+  PRE = null; ANDRAD = new Uint8Array(n + 1);
+  for (let i = 1; i <= n; i++) { const a = tal[i - 1], b = tal[i]; if (!a || !b) { ANDRAD[i] = +!!(a || b); continue; }
+    let d = 0; for (const k in b) if (a[k]) b[k].forEach((v, j) => d += Math.abs(v - (a[k][j] ?? v))); ANDRAD[i] = +(d > 0.3); }
+  const N = L.blanda('neutral', 'neutral', 1); let var0 = false;   // blinkningarnas starttider ur blinka.js (samma frö)
+  for (let t = 0; t < DURATION; t += 1 / 120) { const pa = BLINKA(N, t).lock[0] > N.lock[0] + 1e-4; if (pa && !var0) BLINKAR.push(t); var0 = pa; }
+}
+function blink(f, t) {
+  if (!ANDRAD) return BLINKA(f, t);
+  const b = BLINKAR.findLast(b => b <= t); if (b == null || t - b > 0.3) return f;
+  for (let i = Math.floor((b - 0.45) * PRE_FPS); i <= Math.ceil((b + 0.25 + 0.45) * PRE_FPS); i++) if (ANDRAD[i]) return f;
+  return BLINKA(f, t);
+}
 const P = o => ({ ...L.POSE0, ...o });
 const OPPNA = ['glad', 'jatteglad', 'fnissig', 'flinar', 'skrattar'];
-const ANS = (n, o = {}) => { const f = { ...L.blanda('neutral', n, 1), ...(OPPNA.includes(n) ? { glad: [0, 0] } : {}) };
-  if (f.armar) f.armar = f.armar.map(a => a / 2); return { ...f, ...o }; };
+// uttrycken lägger inga armar (three-rum runda 7, Sanna 24/11: armarna "som en fågelskrämma"); armarna styrs av raden, ARMROR och vilan i hund()
+const ANS = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(OPPNA.includes(n) ? { glad: [0, 0] } : {}), armar: [...L.NEUTRAL.armar], ...o });
+// en stund ur riggens STUNDER, redan intonad när raden börjar (raden börjar med ett klipp) och utan uttoning; uttryckets armar bort
+const stund = (namn, tl, d) => { const [f, p] = L.STUNDER[namn](tl + 0.45, d + 2); return [{ ...f, armar: [...L.NEUTRAL.armar] }, p]; };
 const mellan = (a, b, k) => { const m = mjuk(k), u = {}; for (const n in a) u[n] = Array.isArray(a[n]) ? a[n].map((v, i) => lerp(v, (b[n] ?? a[n])[i], m)) : typeof a[n] === 'number' ? lerp(a[n], b[n] ?? a[n], m) : (m < 0.5 ? a[n] : b[n]); return u; };
 const skutt = (tl, a, b, h = 22) => h * bump(a + 0.15 * (b - a), b - 0.1 * (b - a), tl);
 const nick = (f, p, tl, d = 1.2) => tl > 0 && tl < d ? L.nicka(f, P(p), tl, d, 2) : [f, P(p)];
 const omkring = (tl, fart = 1.1) => { const v = Math.sin(tl * fart); return { titt: [16 * v, -2 + 4 * Math.abs(v)], rikt: 0.4 * v, luta: 4 * v }; };
-const VINKA = (tl, a, b) => ({ upp: del(a, a + 0.6, tl) - del(b, b + 0.6, tl), sving: del(a + 0.5, a + 0.8, tl) - del(b - 0.4, b, tl), tl: tl - a - 0.5 });
 const P_HOPP = 1.45, P_LAND = 1.85;   // rad 19: hoppet upp på pottan
 const SITTER = { ben: [40, 40], benY: [-40, -40], sank: 48, bred: 0.03, armar: [6, 6] };   // på pottan: rumpan ner i skålen, benen fram över kanten
-const iFig = ([x, fot], [px, py], s = DS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 // svansen viftar (svansvift-ljuden): utslaget i grader
 const svans = () => { let v = 0; for (const r of [CUR]) for (const [f, o] of r.ljud || []) if (/^svansvift/.test(f)) v += 16 * bump(r.s + o - 0.1, r.s + o + 1.4, TT) * Math.sin((TT - r.s - o) * 15); return v; };
 // magen: rundare för varje glas, platt igen efter pottan
@@ -294,19 +319,23 @@ function glasK() {
   return kl(1 - dr(a6, b6, 1) + 0.8 * del(at('8a', lj('8a', 0)), at('8a', lj('8a', 0) + 1.6), TT) - dr(a9, b9, 0.8) + 0.8 * del(at('11', lj('11', 0)), at('11', lj('11', 0) + 1.2), TT) - dr(a12, b12, 0.8));
 }
 // sakLyft: glaset lyfts så mycket (px i hundens ruta) över riggens väg, så att det flyger i en båge upp i tassen (rad 8b, 11)
-function hund([x, fot], f, p = {}, { lyft = 0, dold = false, s = DS, sak = null, skugga = true, sakLyft = 0 } = {}) {
+const ARM_VILA = 22;
+function hund([x, fot], f, p = {}, { lyft = 0, dold = false, s = DS, sak = null, skugga = true, sakLyft = 0, armVila = 1 } = {}) {
+  if (PRE) return PRE(f);   // förpasset (blinkspärren): bara ansiktet
   const nyckel = sak ? sak + (sak === 'glas' ? Math.round(glasK() * 40) + (vag() > 0.01 ? '-' + Math.round(TT * 30) : '') : '') : null;
   if (G.sakNamn !== nyckel) { L.sakIn(G, sak ? SAKER[sak](glasK()) : null); G.sakNamn = nyckel; }
   p = { ...P(p) };
+  const av = Array.isArray(armVila) ? armVila : [armVila, armVila], hl = p.hall || [0, 0];
+  p.armar = p.armar.map((v, i) => v - ARM_VILA * av[i] * (1 - kl(hl[i])));
   const a = (1 - Math.cos(2 * Math.PI * TT / 3.6)) / 2; p.strack = (p.strack || 0) + 0.012 * a; p.bred = (p.bred || 0) + 0.006 * a + MAGE();
   const sv = svans(); if (sv) p.svans = (p.svans || 0) + sv;
   $('figurer').appendChild(G);
   G.setAttribute('transform', `translate(${f1(x)} ${f1(fot - lyft)}) scale(${s}) translate(-512 ${-L.FOTTER})`);
-  L.rita(G, BLINKA(f, TT), p);
+  L.rita(G, blink(f, TT), p);
   if (sakLyft) G.querySelectorAll('.sak-ting').forEach(e => e.setAttribute('transform', `translate(0 ${f1(-sakLyft)}) ${e.getAttribute('transform')}`));
   // sugröret bara när glaset sitter i tassen (inte när det står på golvet eller flyger), tonar in sista biten
   const ih = p.hall?.[1] ?? 0;
-  if (sak === 'glas' && ih > 0.9 && !p.rack?.some?.(v => v > 0 && v < 1)) sugror(kl((ih - 0.9) / 0.1)); else SUG = 0;
+  if (sak === 'glas' && ih > 0.9 && !p.rack?.some?.(v => v > 0.02)) sugror(kl((ih - 0.9) / 0.1)); else SUG = 0;
   G.querySelectorAll('.leg-l,.leg-r,.tail').forEach(e => dold ? e.setAttribute('visibility', 'hidden') : e.removeAttribute('visibility'));
   G.querySelectorAll('.skugga').forEach(e => dold || !skugga || fot < B_GOLV - 40 ? e.setAttribute('visibility', 'hidden') : e.removeAttribute('visibility'));
 }
@@ -325,9 +354,9 @@ function gang(tl, a, b, x0, x1) { const u = kl((tl - a) / (b - a)), x = lerp(x0,
   const [, q] = L.steg(Math.abs(x - x0) / (2 * STEG), amp, sg); const { x: _x, ...r } = q;
   return { x, p: { ...r, rikt: 0.55 * sg, luta: (r.luta || 0) + 2 * sg } }; }
 const plus = (p, q) => { const u = { ...p }; for (const n in q) u[n] = Array.isArray(q[n]) && Array.isArray(p[n]) ? p[n].map((v, i) => v + q[n][i]) : typeof q[n] === 'number' && typeof p[n] === 'number' && n !== 'hand' ? p[n] + q[n] : q[n]; return u; };
-// vinka: armen bakom kroppen, snett ut förbi kanten (vänster arm)
-const medVinka = (p, v) => { if (!v || v.upp <= 0.001) return p; const u = mjuk(v.upp), a = [...(p.armar || [0, 0])];
-  a[0] += u * (55 + 16 * Math.sin(2 * Math.PI * 1.15 * v.tl) * v.sving); return { ...p, armar: a, luta: (p.luta || 0) + 1.5 * u }; };
+// vinka: riggens ARMROR.vinka med vänster arm (bollen ligger till höger), armen bakom kroppen, snett ut förbi kanten (minnet
+// "vinkande arm bakom kroppen"). k = hur mycket den vinkar; vilan i hund() tonas bort för den armen (armVila [1 − k, 1]).
+const vinka = (f, p, tl, k) => L.ARMROR.vinka(f, p, tl, k, { hand: 0 });
 // drickandet: riggens ataDel('dricka') med glaset i högra tassen, första klunken på klunk-ljudet
 // Sanna 2026-11-20 (0:47 "hand flying in air", 1:04 "maybe straw"): glaset stannar i tassen framför magen och hunden dricker genom ett sugrör
 var SUG = 0;
@@ -350,7 +379,6 @@ const HALL_P = () => { const p = HALL(); return { hall: p.hall, fram: p.fram, ha
 // make glass fly up in hand"): hunden ställer ner det tomma glaset på golvet (0–n), kritan svävar in och fyller på det där (a–b),
 // och när det är fullt flyger glaset i en båge upp i tassen (f0–f1). Ingen närbild på glaset i tassen längre, så sugröret syns
 // bara när glaset sitter i tassen.
-const DRKV = () => [1.95, VID_GLAS[0] + 70, K_GOLV - 245], GOLVK = () => [2.2, GLAS[0] - 70, K_GOLV - 210];
 const GLAS_O = () => ({ fri: [512 + (GLAS[0] - VID_GLAS[0]) / DS, L.FOTTER, 0], hand: 1, boj: L.HAND.golv, fram: true, lyft: -20 });
 function glasRad(tl, d, { n = 0, a = null, b = null, f0 = null, f1 = null }) {
   kaktus(); boll(BOLL_PALL);
@@ -361,13 +389,13 @@ function glasRad(tl, d, { n = 0, a = null, b = null, f0 = null, f1 = null }) {
   else { f = mellan(mellan(fv, titta, del(n, n + 0.4, tl)), glad, f0 == null ? 0 : del(f0 - 0.1, f0 + 0.4, tl));
     p = { ...mellan(vila, { ...vila, ...HALL_P() }, arm), hall: [0, flyg], rack: [0, 0], sakFri: O.fri, sakLager: 1 }; }
   // kameran: från drickbilden ner till glaset på golvet medan hunden ställer ner det, tillbaka när glaset flyger upp
-  const ner = n ? del(0.3, n + 0.3, tl) : 1, upp = f0 == null ? 0 : del(f0, Math.min(f1 + 0.5, d - 0.05), tl);
-  kameraMix(DRKV(), GOLVK(), ner * (1 - upp));
-  hund(VID_GLAS, f, p, { sak: 'glas', sakLyft: 220 * Math.sin(Math.PI * kl(p.hall[1])) });
+  DRK();   // samma halvnära som drickandet: glaset på golvet syns (utsnitt.js)
+  hund(VID_GLAS, f, p, { sak: 'glas', sakLyft: 220 * Math.sin(Math.PI * kl(p.hall[1])), armVila: [1, 0] });
   if (tl >= 0.85 * n && p.hall[1] < 0.5) skugga(GLAS[0], GLAS[1], 34, 'bak', 0.08 * (1 - 2 * p.hall[1]));
   const gx = GLAS[0], gy = GLAS[1] - 58, UT = [gx + 650, gy - 460, 140], hv = svajP(gx + 90, gy - 120, tl);
   const ritP = u => [gx + 50 * Math.cos(u * 14), gy - 62 - 8 * Math.sin(u * 14), 125 + 6 * Math.sin(u * 9)], st = ritP(0);
-  if (b != null) skimmer(gx, gy, 0.8 * bump(b - 0.2, b + 1.1, tl), 0.8);
+  if (b != null) gnistorNu(gx, gy, 150, tl - b + 0.1);
+  else if (a == null) gnistorNu(gx, gy, 150, tl + RR['8a'].d - lj('8a', 0) - 1.6 + 0.1);   // 8b: gnistorna från 8a:s svar fortsätter
   if (f0 != null && flyg > 0) { const [sx, sy] = sakPos(); skimmer(sx, sy, bump(f0 - 0.05, f1 + 0.5, tl), 0.9); }
   // kritan: in och svävar över glaset (gisspausen), ritar vattnet, svävar; ut på väg upp (8b, eller i 11 direkt efter)
   if (a == null) return kritaGlid(svajP(gx + 90, gy - 120, tl + RR['8a'].d), UT, del(0, 0.9, tl), 0.3, 0);
@@ -380,13 +408,20 @@ function glasRad(tl, d, { n = 0, a = null, b = null, f0 = null, f1 = null }) {
   kritaGlid(ritP(1), hv, del(b, b + 0.45, tl), 0.3, 0); }
 
 // kamerorna i kaktusrummet och badrummet
-const HZ = 1.3, HEL = (cx = STA[0]) => kamera(HZ, cx, 580),   // helbilden 1.3 (Sanna 2026-11-20: "bigger dog")
-  HALV = ([x, fot], dx = 0) => kamera(1.6, x + dx, fot - 210), NARA = ([x, fot], dy = 0) => kamera(2.4, x, fot - 250 + dy);
-const DRK = () => kamera(1.95, VID_GLAS[0] + 70, K_GOLV - 245);   // Sanna 2026-11-20 (0:47): "bigger dog" när den dricker
-const pottaKam = (z = 1.9) => kamera(z, POTTA[0] + 60, B_GOLV - 250);
+// Utsnitten ur format/bildutsnitt.md, räknade med verktyg/utsnitt.js: helbild (kroppen 40 % av bildhöjden), halvnära (60 %),
+// närbild (115 %, huvudet 6 % från överkanten). Hundens kroppshöjd utan öron är 717 i riggen (huvudets topp y 206, fötterna 923),
+// 358 px i plattan vid DS. tx = var hunden står i sidled (1/3, 0.5, 2/3). Utsnittet hålls inne i plattan (PW).
+// I närbilden räknas tomteluvan som en del av huvudet (toppen y 64), annars kapas luvan i varje närbild.
+const KROPP = 717, KROPP_LUVA = 859;
+const UT = (typ, [x, fot], tx = 0.5, s = DS) => utsnitt(typ, { x, golv: fot, kropp: (typ === 'nara' ? KROPP_LUVA : KROPP) * s }, tx, PW);
+const ut = (...a) => kamera(...UT(...a));
+const HEL = (cx = STA[0], fot = K_GOLV) => ut('hel', [cx, fot]);
+const DRKV = () => UT('halv', VID_GLAS, 1 / 3), DRK = () => kamera(...DRKV());   // drickandet och glaset på golvet: halvnära, glaset på högra tredjedelen
+const pottaKam = () => ut('halv', [POTTA[0], B_GOLV], 1 / 3);   // på pottan: halvnära, pottan med, plats för rullen till höger
+const SITTFOT = () => [B_POTTA[0], B_POTTA[1] + SITTER.sank * DS];   // där den sittande hundens kropp slutar (för närbilden)
 // Sanna 2026-11-22 (J17): "bigger ball, bigger dog" (0:43) och "more reactions and closeup on face overall"
 const OJ = (o = {}) => ANS('forvanad', { ogonS: [1.38, 1.34], brynY: [-20, -20], mun: [13, 17, 0, 462], oron: [-16, -16], ...o });   // riktigt förvånad: stora ögon, öronen upp
-const BOLLKAM = () => kamera(1.7, 1490, 650), ANSKAM = (pos, z = 2.4, s = DS) => kamera(z, ...iFig(pos, [512, 440], s));
+const BOLLKAM = () => ut('halv', STA, 1 / 3), ANSKAM = pos => ut('nara', pos);
 
 // --- Ritintrot: kritan ritar pottans kontur (som i badrummet, men stor på papperet), sedan fylls pottan i inifrån ------------------
 // Sanna 2026-11-21 (J17 0:08): "make kritan rita potta in intro". Linjen tonas bort medan pottan fylls (kritan-ritar).
@@ -394,7 +429,7 @@ const PP = [960, 850, 500];
 function papperPotta(k, fyll) {
   papper(); PW = 1920; let sp = null; const [t, s] = sakT('potta', PP);
   if (fyll > 0) { skugga(PP[0], PP[1], 300, 'bak', 0.10 * mjuk(fyll)); sakFyll('potta', PP, fyll); }
-  const o = 1 - del(0.15, 0.9, fyll);
+  const o = linjeOpacitet(fyll);
   if (o > 0 && k > 0) { const q = kontur('potta', t, ritfart(k), 12 / s, '#3a2c28', o); if (k > 0 && k < 1) sp = q; }
   return sp;
 }
@@ -410,20 +445,22 @@ const S = {
   '01c': (tl, d) => { const z0 = mo(0) + rl(3) + 0.2, klipp = z0 + 1.0;
     if (tl < klipp) { const z = mjuk((tl - z0) / (klipp - z0)); kamera(lerp(1, 2.6, z), 960, lerp(560, 620, z));
       papperPotta(1, del(0, 0.9, tl)); kritaGlid(svajP(1420, 300, RR['01b'].d + tl), [2100, 60, 140], del(0.2, 1.4, tl), 0.42, 0);
-      skimmer(960, 600, 0.7 * bump(0.3, 2.0, tl), 2.4); vit(del(klipp - 0.45, klipp, tl)); return; }
-    kaktus(); boll(BOLL_FRAM); kamera(HZ, 760, 580); vit(1 - del(klipp, klipp + 0.6, tl)); },
+      gnistorNu(960, PP[1] - 180, 330, tl - 0.2); vit(del(klipp - 0.45, klipp, tl)); return; }
+    kaktus(); boll(BOLL_FRAM); HEL(760); vit(1 - del(klipp, klipp + 0.6, tl)); },
 
   // --- Kaktusrummet: hunden kommer in genom dörren och leker med bollen ---
   '1': (tl, d) => { kaktus(); boll(BOLL_FRAM); const g = gang(tl, 0.3, 3.6, 330, STA[0]), stopp = del(3.4, 3.8, tl);
-    kameraMix([HZ, 760, 580], [HZ, STA[0], 580], del(0.6, 3.6, tl)); if (tl > 3.6) kameraMix([HZ, STA[0], 580], [1.6, STA[0], 500], del(3.6, 4.6, tl));
-    hund([g.x, K_GOLV], mellan(ANS('glad', { titt: [6, 0] }), ANS('jatteglad'), stopp), medVinka(g.p, VINKA(tl, mo(0) + rl(4) + 0.1, d - 0.6)), { lyft: skutt(tl, 3.6, 4.2, 18) }); },
+    kameraMix(UT('hel', [760, K_GOLV]), UT('hel', STA), del(0.6, 3.6, tl)); if (tl > 3.6) kameraMix(UT('hel', STA), UT('halv', STA), del(3.6, 4.6, tl));   // hej: halvnära i mitten (vinkningen syns)
+    const v0 = mo(0) + rl(4) + 0.1, kv = mjuk(kl((tl - v0) / 0.6)) * (1 - mjuk(kl((tl - d + 0.6) / 0.6))), [f, p] = vinka(mellan(ANS('glad', { titt: [6, 0] }), ANS('jatteglad'), stopp), g.p, tl - v0, kv);
+    hund([g.x, K_GOLV], f, p, { lyft: skutt(tl, 3.6, 4.2, 18), armVila: [1 - kv, 1] }); },
   '2': (tl, d) => { kaktus(); boll(BOLL_FRAM); const v = del(mo(0) + rl(5), mo(0) + rl(5) + 0.3, tl), w = Math.sin((tl - mo(0) - rl(5)) * 5) * v * (1 - del(d - 0.6, d, tl));
-    kamera(2.4, ...iFig(STA, [512, 360])); hund(STA, mellan(ANS('glad'), ANS('fnissig'), v), { luta: 7 * w, oron: [-8 * v, -8 * v] }); },
+    ut('nara', STA); hund(STA, mellan(ANS('glad'), ANS('fnissig'), v), { luta: 7 * w, oron: [-8 * v, -8 * v] }); },
   '3': (tl, d) => { kaktus(); boll(bollNu(), bollNu()[2]); BOLLKAM(); const puff = bump(0.15, 0.65, tl), titt = del(0.5, 1.2, tl);
     hund(STA, mellan(ANS('nyfiken', { titt: [10, 8] }), ANS('glad', { titt: [16, 2] }), titt), { strack: -0.07 * puff, bred: 0.05 * puff, rikt: 0.45, luta: 5 * puff }); },
-  '4': (tl, d) => { kaktus(); const b = bollNu(); boll(b, b[2]); BOLLKAM(); const puff = bump(0.15, 0.65, tl), titt = del(0.5, 1.5, tl);
+  '4': (tl, d) => { kaktus(); const b = bollNu(); boll(b, b[2]); if (tl < lo(2) - 0.3) BOLLKAM(); else ut('nara', STA);   // reaktionen i närbild efter repliken
+    const puff = bump(0.15, 0.65, tl), titt = del(0.5, 1.5, tl);
     hund(STA, mellan(ANS('nyfiken', { titt: [10, 8] }), ANS('fnissig', { titt: [16, 4] }), titt), { strack: -0.07 * puff, bred: 0.05 * puff, rikt: 0.5, luta: 5 * puff }); },
-  '5': (tl, d) => { kaktus(); boll(BOLL_PALL); NARA(STA, -30); const fl = Math.sin(tl * 11) * (1 - del(mo(0) + rl(8), mo(0) + rl(8) + 0.4, tl));
+  '5': (tl, d) => { kaktus(); boll(BOLL_PALL); ut('nara', STA); const fl = Math.sin(tl * 11) * (1 - del(mo(0) + rl(8), mo(0) + rl(8) + 0.4, tl));
     const [f, p] = nick(ANS('glad', { streck: 0, mun: [14, 16, 0, 462], tungan: [1, 0, 0] }), { bred: 0.02 * fl, strack: -0.01 * fl }, tl - lo(1) + 0.1, 1.0); hund(STA, f, p); },
 
   // --- Vattnet: glaset, tre gånger ---
@@ -435,10 +472,10 @@ const S = {
       if (tl < a) return kritaGlid([GLAS[0] + 700, GLAS[1] - 520, 140], mal, del(0, a, tl), 0.3);
       const [t, s] = sakT('glas', GLAS), sp = kontur('glas', t, ritfart(kl((tl - a) / (b - a))), 5 / s, '#3a2c28', 1 - del(b + 0.1, b + 0.6, tl));   // linjen tonas bort när glaset fylls
       if (tl < b) return krita(sp[0], sp[1], 125, 0.3);
-      skimmer(GLAS[0], GLAS[1] - 60, 0.8 * bump(b, b + 1.2, tl), 0.8);
+      gnistorNu(GLAS[0], GLAS[1] - 60, 150, tl - b);
       return kritaGlid([...sp, 125], [GLAS[0] + 700, GLAS[1] - 520, 140], del(b + 0.1, b + 1.0, tl), 0.3, 0); }
     const t6 = tl; tl -= T; const dp = 1.8;
-    if (tl < dp) { const [f, p] = L.plockaDel('upp', tl, dp, { fri: [512 + (GLAS[0] - VID_GLAS[0]) / DS, L.FOTTER, 0], hand: 1, boj: L.HAND.golv, fram: true, lyft: -20 }); return hund(VID_GLAS, f, p, { sak: 'glas' }); }
+    if (tl < dp) { const [f, p] = L.plockaDel('upp', tl, dp, { fri: [512 + (GLAS[0] - VID_GLAS[0]) / DS, L.FOTTER, 0], hand: 1, boj: L.HAND.golv, fram: true, lyft: -20 }); return hund(VID_GLAS, f, p, { sak: 'glas', armVila: [1, 1 - del(0, 0.4, tl)] }); }
     const [f, p] = dr(t6); hund(VID_GLAS, f, p, { sak: 'glas' }); },
   '7': (tl, d) => { kaktus(); boll(BOLL_PALL); DRK(); const upp = del(mo(0) + rl(10) - 0.2, mo(0) + rl(10) + 0.2, tl);
     const [f, p] = nick(mellan(ANS('nyfiken', { titt: [8, 14] }), ANS('glad'), upp), { ...HALL_P(), luta: 3 * (1 - upp) }, tl - lo(0) + 0.1, 1.0); hund(VID_GLAS, f, p, { sak: 'glas' }); },
@@ -450,37 +487,38 @@ const S = {
   '12': (tl, d) => { kaktus(); boll(BOLL_PALL); DRK(); const dr = drick('12'), slut = mo(1) - 0.3;
     if (tl < slut) { const [f, p] = dr(tl); return hund(VID_GLAS, f, p, { sak: 'glas' }); }
     const ner = del(slut, slut + 0.5, tl), fn = del(lo(2) - 0.2, lo(2) + 0.2, tl);
-    hund(VID_GLAS, mellan(ANS('nyfiken', { titt: [0, 16 * ner] }), ANS('fnissig', { titt: [0, 10] }), fn), { ...HALL_P(), luta: 3 * ner, bred: 0.03 * fn * Math.abs(Math.sin(tl * 8)) }, { sak: 'glas' }); },
+    hund(VID_GLAS, mellan(ANS('nyfiken', { titt: [0, 16 * ner] }), ANS('fnissig', { titt: [0, 10] }), fn), { ...HALL_P(), luta: 3 * ner, bred: 0.012 * fn * Math.abs(Math.sin(tl * 8)) }, { sak: 'glas' }); },
 
   // --- Behöver du kissa? ---
-  '13': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); kameraMix([HZ, STA[0], 580], [2.3, ...iFig(STA, [512, 440])], del(mo(0) + rl(18), mo(0) + rl(18) + 0.8, tl)); const v = Math.sin((tl - 0.2) * 3.4) * del(0.1, 0.5, tl);
+  '13': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); kameraMix(UT('hel', STA), UT('nara', STA), del(mo(0) + rl(18), mo(0) + rl(18) + 0.8, tl)); const v = Math.sin((tl - 0.2) * 3.4) * del(0.1, 0.5, tl);
     hund([STA[0] + 6 * v, K_GOLV], ANS('nyfiken', { titt: [0, 4], oron: [-10, -10] }), { luta: 4 * v, ben: [6 * Math.max(0, v), 6 * Math.max(0, -v)] }, { lyft: 5 * Math.abs(v) }); },
-  '14': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); NARA(STA, -30); const v = Math.sin((tl + 0.6) * 3.4);
+  '14': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); ut('nara', STA); const v = Math.sin((tl + 0.6) * 3.4);
     const [f, p] = nick(mellan(ANS('nyfiken', { titt: [0, -8], oron: [-10, -10] }), ANS('glad', { titt: [0, -4] }), del(lo(0) - 0.3, lo(0), tl)), { luta: 4 * v }, tl - lo(0) + 0.05, 0.8);
     hund([STA[0] + 6 * v, K_GOLV], f, p, { lyft: 5 * Math.abs(v) }); },
   '15': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); const g = gang(tl, 0.5, d + 1.0, STA[0], 1570);   // Sanna 2026-11-21 (J17 1:39): "no overlap ball dog" – svepet tar hunden innan den når bollen
-    kamera(HZ, kl(g.x, STA[0], 2140), 580); hund([g.x, K_GOLV], ANS('glad', { titt: [14, 0] }), g.p); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = BAD_FARG; },
+    HEL(kl(g.x, STA[0], 2140)); hund([g.x, K_GOLV], ANS('glad', { titt: [14, 0] }), g.p); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = BAD_FARG; },
 
   // --- Badrummet: pottan ---
-  '16': (tl, d) => { badrum(); HEL(960); SVEP = tl < SVEP_UT ? 0.5 + 0.3 * del(0, SVEP_UT, tl) : 0; SVEP_F = BAD_FARG;
+  '16': (tl, d) => { badrum(); HEL(960, B_GOLV); SVEP = tl < SVEP_UT ? 0.5 + 0.3 * del(0, SVEP_UT, tl) : 0; SVEP_F = BAD_FARG;
     const g = gang(tl, 0.1, 2.0, -120, B_STA[0]), o = tl > 2.0 ? omkring(tl - 2.1, 1.6) : { titt: [8, 0], rikt: 0, luta: 0 }, v = Math.sin((tl - 2.0) * 3.4) * del(2.0, 2.6, tl);
     const oj = mo(0) + rl(21) * 0.62, f = del(oj - 0.15, oj + 0.2, tl), ryck = bump(oj - 0.1, oj + 0.5, tl);   // Sanna 2026-11-22 (J17 1:44): "more suprised face" på "Ingen potta!"
-    if (tl > oj - 0.3) kameraMix([HZ, 960, 580], [2.1, ...iFig([B_STA[0], B_GOLV], [512, 470])], del(oj - 0.3, oj + 0.5, tl));
+    if (tl > oj - 0.3) kameraMix(UT('hel', [960, B_GOLV]), UT('nara', B_STA), del(oj - 0.3, oj + 0.5, tl));
     hund([g.x + 6 * v * (1 - f), B_GOLV], mellan(mellan(ANS('glad', { titt: o.titt }), ANS('nyfiken', { titt: o.titt, oron: [-10, -10] }), del(1.9, 2.3, tl)), OJ(), f),
       plus({ rikt: o.rikt * (1 - f), luta: (o.luta + 3 * v) * (1 - f), strack: 0.05 * ryck, bred: -0.02 * ryck }, g.p), { lyft: 4 * Math.abs(v) * (1 - f) + 14 * ryck }); },
-  '17a': (tl, d) => { badrum(); kamera(1.7, (B_STA[0] + POTTA[0]) / 2 + 40, B_GOLV - 200); const v = Math.sin(tl * 3.4);
+  '17a': (tl, d) => { badrum(); ut('halv', B_STA, 1 / 3); const v = Math.sin(tl * 3.4);
     hund([B_STA[0] + 6 * v, B_GOLV], ANS('nyfiken', { titt: [14, 10] }), { rikt: 0.4, luta: 3 * v }, { lyft: 4 * Math.abs(v) });
     const a = lo(0), b = a + 1.8, mal = [POTTA[0] + 150, POTTA[1] - 220, 125];
     if (tl < a) return kritaGlid([2100, 100, 140], mal, del(0, a, tl), 0.33);
     const sp = ritaSak('potta', POTTA, kl((tl - a) / (b - a)), '#b8322b'); if (tl < b) return krita(sp[0], sp[1], 125, 0.33);
     kritaGlid([...sp, 125], svajP(POTTA[0] + 170, POTTA[1] - 230, tl), del(b, b + 0.8, tl), 0.33); },
-  '17b': (tl, d) => { badrum(); kamera(1.7, (B_STA[0] + POTTA[0]) / 2 + 40, B_GOLV - 200); if (tl < 0.9) ritaSak('potta', POTTA, 1, '#b8322b');
-    skimmer(POTTA[0], POTTA[1] - 90, 0.8 * bump(0.1, 2.0, tl), 1.2); kritaGlid(svajP(POTTA[0] + 170, POTTA[1] - 230, tl + 5), [2100, 60, 140], del(0.4, 1.5, tl), 0.33, 0);
+  '17b': (tl, d) => { badrum(); ut('halv', B_STA, 1 / 3); if (tl < 0.9) ritaSak('potta', POTTA, 1, '#b8322b');
+    gnistorNu(POTTA[0], POTTA[1] - 90, 230, tl - 0.1); kritaGlid(svajP(POTTA[0] + 170, POTTA[1] - 230, tl + 5), [2100, 60, 140], del(0.4, 1.5, tl), 0.33, 0);
     const g = del(0.6, 1.0, tl), v = Math.sin((tl + 2) * 3.4);
     hund([B_STA[0] + 6 * v, B_GOLV], mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [12, 8] }), g), { rikt: 0.4, luta: 3 * v }, { lyft: skutt(tl, 1.0, 1.6, 16) + 4 * Math.abs(v) }); },
-  '18': (tl, d) => { badrum(); ANSKAM(B_STA, 2.3); const v = Math.sin((tl + 4) * 3.4);
-    const [f, p] = nick(ANS('glad', { titt: [10, 6] }), { rikt: 0.3, luta: 3 * v }, tl - lo(0) + 0.05, 0.9); hund([B_STA[0] + 6 * v, B_GOLV], f, p, { lyft: 4 * Math.abs(v) }); },
-  '19': (tl, d) => { badrum(); HEL(960); const g = gang(tl, 0.15, 1.2, B_STA[0], POTTA[0] - 20), huk = bump(1.15, P_HOPP + 0.1, tl), u = kl((tl - P_HOPP) / (P_LAND - P_HOPP));
+  '18': (tl, d) => { badrum(); ANSKAM(B_STA); const v = Math.sin((tl + 4) * 3.4);
+    const [f, p] = stund('tack', tl, d);   // riggens tack: en liten bugning, svansen viftar
+    hund([B_STA[0] + 6 * v, B_GOLV], { ...f, titt: [10, 6 + f.titt[1]] }, plus(p, { rikt: 0.3, luta: 3 * v }), { lyft: 4 * Math.abs(v) }); },
+  '19': (tl, d) => { badrum(); HEL(960, B_GOLV); const g = gang(tl, 0.15, 1.2, B_STA[0], POTTA[0] - 20), huk = bump(1.15, P_HOPP + 0.1, tl), u = kl((tl - P_HOPP) / (P_LAND - P_HOPP));
     const s = del(P_HOPP, P_LAND, tl), land = bump(P_LAND - 0.02, P_LAND + 0.35, tl), efter = bump(P_LAND + 0.3, P_LAND + 0.8, tl);
     const x = lerp(g.x, POTTA[0], mjuk(u)), y = lerp(B_GOLV, B_POTTA[1], s);
     const p = mellan(P({ ...g.p, rikt: tl < 1.2 ? g.p.rikt ?? 0.55 : 0.55 * (1 - del(1.2, P_LAND, tl)) }), P(SITTER), s);   // P(): alla nycklar, annars blandas inte SITTER in
@@ -489,71 +527,75 @@ const S = {
       { lyft: 46 * Math.sin(Math.PI * u) * (u > 0 && u < 1) }); },
   '20': (tl, d) => { badrum(); pottaKam(); const l = del(0.4, 0.9, tl);   // Sanna 2026-11-22 (J17 2:06): lättad min tidigare, på porlet
     hund(B_POTTA, mellan(ANS('glad', { titt: [0, 4] }), ANS('somnig', { lock: [0.55, 0.55], oron: [16, 16] }), l), { ...SITTER, strack: -0.02 * l, bred: SITTER.bred + 0.02 * l }); },
-  '21': (tl, d) => { badrum(); ANSKAM(B_POTTA, 2.3); const o = del(0.05, 0.4, tl);
+  '21': (tl, d) => { badrum(); ANSKAM(SITTFOT()); const o = del(0.05, 0.4, tl);
     hund(B_POTTA, mellan(ANS('somnig', { lock: [0.55, 0.55], oron: [16, 16] }), ANS('jatteglad'), o), { ...SITTER, oron: [16 * (1 - o), 16 * (1 - o)] }, { lyft: skutt(tl, lo(0) - 0.1, lo(0) + 0.5, 10) }); },
-  '22': (tl, d) => { badrum(); ANSKAM(B_POTTA, 2.5); const fn = del(lo(0) - 0.2, lo(0) + 0.2, tl);
-    hund(B_POTTA, mellan(ANS('glad'), ANS('fnissig'), fn), { ...SITTER, oron: [-12 * fn, -12 * fn], luta: 3 * Math.sin(tl * 7) * fn }); },
+  '22': (tl, d) => { badrum(); ANSKAM(SITTFOT()); const fn = del(lo(0) - 0.2, lo(0) + 0.2, tl);
+    hund(B_POTTA, mellan(ANS('glad'), ANS('fnissig'), fn), { ...SITTER, oron: [-12 * fn, -12 * fn], luta: 1.5 * Math.sin(tl * 7) * fn }); },
 
   // --- Inget papper: kritan ritar toarullen ---
-  '23': (tl, d) => { badrum(); pottaKam(); const k = del(0.1, 0.5, tl), o = omkring(tl - 0.2, 1.5), ner = del(mo(0) + rl(29) - 0.3, mo(0) + rl(29) + 0.2, tl);
-    hund(B_POTTA, ANS('nyfiken', { titt: o.titt.map(v => v * k), oron: [10 * ner, 10 * ner] }), { ...SITTER, rikt: o.rikt * k, luta: o.luta * k }); },
-  '24a': (tl, d) => { badrum(); kamera(1.95, RULLE_VID[0] - 60, B_GOLV - 215); hund(B_POTTA, ANS('nyfiken', { titt: [14, 10] }), { ...SITTER, rikt: 0.4 });
+  '23': (tl, d) => { badrum(); pottaKam(); const k = del(0.1, 0.5, tl), [lf, lp] = stund('letar', tl - 0.2, d), ner = del(mo(0) + rl(29) - 0.3, mo(0) + rl(29) + 0.2, tl);   // riggens letar: ögonen först, huvudet efter
+    hund(B_POTTA, ANS('nyfiken', { titt: lf.titt.map(v => v * k), luta: lf.luta * k, oron: [10 * ner, 10 * ner] }), { ...SITTER, luta: lp.luta * k, upp: lp.upp * k }); },
+  '24a': (tl, d) => { badrum(); pottaKam(); hund(B_POTTA, ANS('nyfiken', { titt: [14, 10] }), { ...SITTER, rikt: 0.4 });
     const a = lo(0), b = a + 1.5, mal = [RULLE_VID[0] + 110, RULLE_VID[1] - 140, 125];
     if (tl < a) return kritaGlid([2100, 100, 140], mal, del(0, a, tl), 0.3);
     const sp = ritaSak('rulle', RULLE_VID, kl((tl - a) / (b - a)), '#7d8a99'); if (tl < b) return krita(sp[0], sp[1], 125, 0.3);
     kritaGlid([...sp, 125], svajP(RULLE_VID[0] + 120, RULLE_VID[1] - 150, tl), del(b, b + 0.8, tl), 0.3); },
-  '24b': (tl, d) => { badrum(); kamera(1.95, RULLE_VID[0] - 60, B_GOLV - 215); if (tl < 0.9) ritaSak('rulle', RULLE_VID, 1, '#7d8a99');
-    sakFyll('rulle', RULLE_VID, del(0, 0.9, tl)); skimmer(RULLE_VID[0], RULLE_VID[1] - 50, 0.8 * bump(0.1, 2.0, tl), 0.9);
+  '24b': (tl, d) => { badrum(); pottaKam(); if (tl < 0.9) ritaSak('rulle', RULLE_VID, 1, '#7d8a99');
+    sakFyll('rulle', RULLE_VID, del(0, 0.9, tl)); gnistorNu(RULLE_VID[0], RULLE_VID[1] - 50, 170, tl - 0.1);
     kritaGlid(svajP(RULLE_VID[0] + 120, RULLE_VID[1] - 150, tl + 5), [2100, 60, 140], del(0.4, 1.5, tl), 0.3, 0);
-    const g = del(0.6, 1.0, tl); hund(B_POTTA, mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [14, 8] }), g), { ...SITTER, rikt: 0.4 }); },
+    const g = del(0.6, 1.0, tl); hund(B_POTTA, mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [14, 8] }), g), { ...SITTER, rikt: 0.4 });
+    if (tl > 1.6) ANSKAM(SITTFOT()); },   // reaktionsslaget: närbild på glädjen när rullen är ritad
   '25': (tl, d) => { badrum(); pottaKam(); const fri = [512 + (RULLE_VID[0] - B_POTTA[0]) / DS, L.FOTTER + (RULLE_VID[1] - B_POTTA[1]) / DS, 0];
     const t0 = lo(0) + 0.1, dp = 1.8;
-    if (tl < t0) { sak('rulle', ...RULLE_VID, { extra: RULLE_KANT }); const [f, p] = nick(ANS('glad', { titt: [12, 8] }), { ...SITTER, rikt: 0.3 }, tl - lo(0) + 0.05, 0.8); return hund(B_POTTA, f, p); }
+    if (tl < t0) { sak('rulle', ...RULLE_VID, { extra: RULLE_KANT }); const [f, p] = stund('tack', tl, d); return hund(B_POTTA, { ...f, titt: [12, 8 + f.titt[1]] }, plus(p, { ...SITTER, rikt: 0.3 })); }
     const [f, p] = L.plockaDel('upp', tl - t0, dp, { fri, hand: 1, boj: { luta: 6, boj: 0, strack: -0.03, bred: 0.02, armar: -10 } });
-    hund(B_POTTA, f, { ...p, ...{ ben: SITTER.ben, benY: SITTER.benY, sank: SITTER.sank } }, { sak: 'rulle' }); },
-  '26': (tl, d) => { badrum(); kamera(HZ, 960, 610); const [a] = RULL_T(), slapp = del(a - 0.3, a, tl + RR['26'].s);
+    hund(B_POTTA, f, { ...p, ...{ ben: SITTER.ben, benY: SITTER.benY, sank: SITTER.sank } }, { sak: 'rulle', armVila: [1, 1 - del(t0, t0 + 0.4, tl)] }); },
+  '26': (tl, d) => { badrum(); HEL(960, B_GOLV); const [a] = RULL_T(), slapp = del(a - 0.3, a, tl + RR['26'].s);
     const f = mellan(ANS('glad', { titt: [10, 8] }), ANS('forvanad', { titt: [16, 6] }), del(0.3, 0.6, tl));
     if (TT < a) { hund(B_POTTA, f, { ...SITTER, hall: [0, 1], armar: [6, 6 + 20 * slapp] }, { sak: 'rulle' }); RULLE_START = tass(1); return; }
-    hund(B_POTTA, mellan(f, ANS('nyfiken', { titt: [16, 2] }), del(lo(1) - 0.4, lo(1), tl)), { ...SITTER, rikt: 0.5 }); },
-  '27': (tl, d) => { badrum(); ANSKAM(B_POTTA, 2.3); const o = omkring(tl - 0.6, 1.5), k = del(0.5, 0.9, tl);   // först förvånad över rullen, sedan letar den
-    hund(B_POTTA, mellan(OJ({ titt: [14, 4] }), ANS('nyfiken', { titt: o.titt.map(v => v * k) }), del(0.4, 0.8, tl)), { ...SITTER, rikt: o.rikt * k, luta: o.luta * k }); },
-  '28': (tl, d) => { badrum(); kamera(HZ, 960, 610); hund(B_POTTA, ANS('nyfiken', { titt: [14, 4] }), { ...SITTER, rikt: 0.4 });
+    const u = del(a, a + 0.4, TT);   // armen sjunker lugnt till vilan när rullen släppts
+    hund(B_POTTA, mellan(f, ANS('nyfiken', { titt: [16, 2] }), del(lo(1) - 0.4, lo(1), tl)), { ...SITTER, rikt: 0.5, armar: [6, 6 + 20 * (1 - u)] }, { armVila: [1, u] }); },
+  '27': (tl, d) => { badrum(); ANSKAM(SITTFOT()); const [lf, lp] = stund('letar', tl - 0.6, d), k = del(0.5, 0.9, tl);   // först förvånad över rullen, sedan letar den (riggens letar)
+    hund(B_POTTA, mellan(OJ({ titt: [14, 4] }), ANS('nyfiken', { titt: lf.titt.map(v => v * k), luta: lf.luta * k }), del(0.4, 0.8, tl)), { ...SITTER, luta: lp.luta * k, upp: lp.upp * k }); },
+  '28': (tl, d) => { badrum(); HEL(960, B_GOLV); hund(B_POTTA, ANS('nyfiken', { titt: [14, 4] }), { ...SITTER, rikt: 0.4 });
     const s = mo(0) + rl(35) + 3.0; skimmer(RULLE_SLUT[0] + 10, RULLE_SLUT[1] - 40, 0.4 * del(s, s + 0.6, tl), 0.7); },
   '29': (tl, d) => { badrum(); kamera(2.4, RULLE_SLUT[0] - 60, RULLE_SLUT[1] - 120); skimmer(RULLE_SLUT[0] + 10, RULLE_SLUT[1] - 40, 0.5 + 0.5 * bump(0, 2.4, tl), 0.9); },
-  '30': (tl, d) => { badrum(); pottaKam(2.3); const r = lo(0), ner = bump(0, r + 0.25, tl);
-    hund(B_POTTA, ANS('glad', { titt: [14, 12] }), { ...SITTER, rikt: 0.3, armar: [6, 6 - 40 * ner], hall: [0, tl > r ? 1 : 0] }, { sak: tl > r ? 'lapp' : null }); },
+  '30': (tl, d) => { badrum(); pottaKam(); const r = lo(0), ner = bump(0, r + 0.25, tl);
+    hund(B_POTTA, ANS('glad', { titt: [14, 12] }), { ...SITTER, rikt: 0.3, armar: [6, 6 - 40 * ner], hall: [0, tl > r ? 1 : 0] }, { sak: tl > r ? 'lapp' : null, armVila: [1, 0] }); },
   '31': (tl, d) => { badrum(); pottaKam(); const ner = bump(0.1, 0.55, tl);
-    hund(B_POTTA, ANS('glad', { titt: [0, 8] }), { ...SITTER, hall: [0, 1], armar: [6, 6 - 70 * ner] }, { sak: ner > 0.6 ? null : 'lapp' }); },
+    hund(B_POTTA, ANS('glad', { titt: [0, 8] }), { ...SITTER, hall: [0, 1], armar: [6, 6 - 70 * ner] }, { sak: ner > 0.6 ? null : 'lapp', armVila: [1, 0] }); },
   '32': (tl, d) => { badrum(); pottaKam(); const plopp = Math.max(1.0, mo(0) + rl(39) * 0.3), upp = del(0.15, 0.7, tl), fn = del(lo(1) - 0.2, lo(1) + 0.2, tl);
     // hoppar ner bredvid pottan med lappen, släpper den i pottan på "Plopp!" (Sanna 2026-11-20: hunden sitter PÅ pottan)
     const x = lerp(B_POTTA[0], B_BREDVID[0] - 100, upp), y = lerp(B_POTTA[1], B_GOLV, upp);
     hund([x, y], mellan(ANS('glad', { titt: [6, 10] }), ANS('fnissig'), fn), { ...mellan(P(SITTER), P({ rikt: 0.35 }), upp), hall: [0, tl < plopp ? 1 : 0] },
-      { sak: tl < plopp ? 'lapp' : null, lyft: 40 * bump(0.15, 0.7, tl) + skutt(tl, lo(0) - 0.2, lo(0) + 0.4, 10) });
+      { sak: tl < plopp ? 'lapp' : null, armVila: [1, 0], lyft: 40 * bump(0.15, 0.7, tl) + skutt(tl, lo(0) - 0.2, lo(0) + 0.4, 10) });
     if (tl >= plopp - 0.45 && tl < plopp + 0.4) sakFyll('potta', POTTA, 1, 'fram');
     if (tl >= plopp && tl < plopp + 0.4) { const u = (tl - plopp) / 0.4; lagg('saker', `<rect x="${f1(lerp(POTTA[0] - 90, POTTA[0] + 10, u))}" y="${f1(lerp(POTTA[1] - 200, POTTA[1] - 120, u * u))}" width="36" height="26" rx="4" fill="#F3EAD6" stroke="#8FA3BA" stroke-width="4"/>`); } },
 
   // --- Tvätta händerna ---
-  '33': (tl, d) => { badrum(); kameraMix([HZ, 960, 580], [2.2, ...iFig(B_BREDVID, [512, 440])], del(mo(0) + rl(40), mo(0) + rl(40) + 0.9, tl) * (1 - del(mo(1) + rl(41), mo(1) + rl(41) + 0.8, tl))); const sv = del(mo(1) - 0.4, mo(1) + 0.4, tl);
+  '33': (tl, d) => { badrum(); kameraMix(UT('hel', [960, B_GOLV]), UT('nara', B_BREDVID), del(mo(0) + rl(40), mo(0) + rl(40) + 0.9, tl) * (1 - del(mo(1) + rl(41), mo(1) + rl(41) + 0.8, tl))); const sv = del(mo(1) - 0.4, mo(1) + 0.4, tl);
     hund(B_BREDVID, mellan(ANS('nyfiken', { titt: [16, -2] }), ANS('glad', { titt: [10, 0] }), sv), { rikt: 0.5, luta: 2 * Math.sin(tl * 1.2) }, { lyft: skutt(tl, lo(0) - 0.1, lo(0) + 0.5, 10) }); },
-  '34': (tl, d) => { badrum(); kamera(1.5, HX - 60, RIM - 40); const u = kl((tl - 0.15) / 0.75), m = mjuk(u);
+  '34': (tl, d) => { badrum(); HEL(960, B_GOLV);   // hoppet upp på pallen i helbild: golvet och pallen syns
+    const u = kl((tl - 0.15) / 0.75), m = mjuk(u);
     const x = lerp(B_BREDVID[0], VIDF[0], m), y = lerp(B_GOLV, VIDF[1], m) - 150 * Math.sin(Math.PI * u);
     hund([x, y], ANS('glad', { titt: [10, 6] }), { rikt: 0.4 * (1 - m), strack: 0.05 * bump(0.1, 0.4, tl) - 0.04 * bump(0.85, 1.1, tl) }, { dold: tl > 0.85, s: lerp(DS, DSF, m) }); },
-  '35': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [10, 14] }), { armar: [6, 50 * del(0, 0.3, tl)] }, { dold: true, s: DSF }); kamera(2.4, BX + 70, RIM - 60);
+  '35': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [10, 14] }), { armar: [6, 50 * del(0, 0.3, tl)] }, { dold: true, s: DSF, armVila: 0 }); kamera(2.4, BX + 70, RIM - 60);
     const [x, y] = tass(1); lagg('fram', tuss(x, y - 6, 14 + 10 * del(lo(0), lo(0) + 1.5, tl))); },
-  '36': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [-10, 14] }), { armar: [50 * del(0, 0.3, tl), 50] }, { dold: true, s: DSF }); kamera(2.4, BX + 20, RIM - 60);
+  '36': (tl, d) => { badrum(); hund(VIDF, ANS('glad', { titt: [-10, 14] }), { armar: [50 * del(0, 0.3, tl), 50] }, { dold: true, s: DSF, armVila: 0 }); kamera(2.4, BX + 20, RIM - 60);
     const [x, y] = tass(-1), [x2, y2] = tass(1); lagg('fram', tuss(x, y - 6, 12 + 10 * del(lo(0), lo(0) + 1.5, tl)) + tuss(x2, y2 - 6, 24)); },
   '37': (tl, d) => { badrum(); const gn = lo(1), bort = del(gn, gn + 0.4, tl), arm = bump(gn - 0.5, gn + 0.6, tl);
-    hund(VIDF, mellan(ANS('fnissig'), ANS('glad'), bort), { armar: [6, 6 + 110 * arm], luta: -3 * arm }, { dold: true, s: DSF }); const [x, y] = iG(512, 450); kamera(2.8, x, y + 40);
+    hund(VIDF, mellan(ANS('fnissig'), ANS('glad'), bort), { armar: [6, 6 + 110 * arm], luta: -3 * arm }, { dold: true, s: DSF, armVila: 0 }); const [x, y] = iG(512, 450); ut('nara', VIDF, 0.5, DSF);
     if (bort < 1) lagg('fram', `<g opacity="${(1 - bort).toFixed(2)}">${tuss(x, y - 4, 11)}</g>`); },
   // Sanna 2026-11-22 (J17): "better animation torka handduken" – hunden lutar sig mot handduken, tassen trycks in i den och gnider
   // tre gånger (handduken trycks ihop och svänger på kroken, gungar tillbaka när tassen släpper), sedan skakar den tassarna torra
-  '38': (tl, d) => { badrum(); kamera(1.6, BX - 170, RIM - 120); const { lut, gn, fas, sk } = TORKA(tl), skak = sk * Math.sin(tl * 34);
+  '38': (tl, d) => { badrum(); ut('halv', VIDF, 2 / 3, DSF);   // handduken på vänstra tredjedelen
+    const { lut, gn, fas, sk } = TORKA(tl), skak = sk * Math.sin(tl * 34);
     const f = mellan(mellan(ANS('glad', { titt: [-16, -4] }), ANS('fnissig', { titt: [-14, -2] }), gn), ANS('jatteglad'), sk);
     hund([VIDF[0] - 70 * lut, VIDF[1]], f, { rikt: -0.6 * (1 - sk), armar: [6 + 64 * lut + 16 * fas * gn + 34 * sk + 9 * skak, 6 + 34 * sk - 9 * skak], luta: -7 * lut + 2 * skak },
-      { dold: true, s: DSF, lyft: 3 * Math.abs(skak) }); },
-  '39': (tl, d) => { badrum(); HEL(960); const k = (CUR.ljud || []).filter(([f]) => /^klapp/.test(f)).reduce((s, [, o]) => s + bump(o - 0.25, o + 0.1, tl), 0);
-    hund(VIDF, ANS('jatteglad'), { armar: [40 + 30 * k, 40 + 30 * k] }, { dold: true, lyft: 5 * k, s: DSF }); },
-  '40': (tl, d) => { badrum(); HEL(960); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = KAKTUS_FARG;
+      { dold: true, s: DSF, lyft: 3 * Math.abs(skak), armVila: 0 }); },
+  '39': (tl, d) => { badrum(); ut('hel', VIDF, 2 / 3, DSF); const k = (CUR.ljud || []).filter(([f]) => /^klapp/.test(f)).reduce((s, [, o]) => s + bump(o - 0.25, o + 0.1, tl), 0);
+    hund(VIDF, ANS('jatteglad'), { armar: [40 + 30 * k, 40 + 30 * k] }, { dold: true, lyft: 5 * k, s: DSF, armVila: 0 }); },
+  '40': (tl, d) => { badrum(); ut('hel', VIDF, 2 / 3, DSF); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = KAKTUS_FARG;
     const u = kl((tl - 0.3) / 0.7), land = [BX - 380, B_GOLV], huk = bump(0, 0.36, tl), ner = bump(0.95, 1.35, tl);
     const x = lerp(VIDF[0], land[0], mjuk(u)), y = lerp(VIDF[1], land[1], u) - 4 * 150 * u * (1 - u);
     const p = { rikt: -0.5 * mjuk(u), strack: -0.07 * huk + 0.05 * bump(0.3, 0.7, tl) - 0.07 * ner, bred: 0.05 * huk + 0.05 * ner, oron: [10 * ner - 12 * bump(0.3, 0.8, tl), 10 * ner - 12 * bump(0.3, 0.8, tl)] };
@@ -562,14 +604,14 @@ const S = {
 
   // --- Kaktusrummet igen: bollen under pallen, hopp, dansa, hej då ---
   '41': (tl, d) => { kaktus(); SVEP = tl < SVEP_UT ? 0.5 + 0.3 * del(0, SVEP_UT, tl) : 0; SVEP_F = KAKTUS_FARG; const b = bollNu(); boll(b, b[2]);
-    kamera(1.6, 1560, 640); const puff = bump(0.1, 0.5, tl), gl = del(lo(1) - 0.3, lo(1), tl);
+    ut('halv', [1460, K_GOLV], 1 / 3); const puff = bump(0.1, 0.5, tl), gl = del(lo(1) - 0.3, lo(1), tl);
     hund([1460, K_GOLV], mellan(ANS('nyfiken', { titt: [14, 10] }), ANS('glad', { titt: [10, 6] }), del(1.0, 1.4, tl)), { rikt: 0.5, strack: -0.07 * puff, bred: 0.05 * puff, luta: 5 * puff }, { lyft: skutt(tl, lo(1) - 0.1, lo(1) + 0.5, 12) * gl }); },
-  '42': (tl, d) => { kaktus(); const b = bollNu(); boll(b, b[2]); kamera(1.6, 1580, 640); const fn = del(lo(1) - 0.2, lo(1) + 0.2, tl);
+  '42': (tl, d) => { kaktus(); const b = bollNu(); boll(b, b[2]); ut('halv', [1460, K_GOLV], 1 / 3); const fn = del(lo(1) - 0.2, lo(1) + 0.2, tl);
     hund([1460, K_GOLV], mellan(ANS('glad', { titt: [lerp(10, 16, del(0.4, 1.3, tl)), lerp(4, -8, bump(0.4, 1.3, tl))] }), ANS('fnissig'), fn), { rikt: 0.4 }, { lyft: skutt(tl, 0.35, 0.8, 10) }); },
-  '45': (tl, d) => { kaktus(); boll([1790, K_GOLV - BD / 2]); HALV([1460, K_GOLV], 60); const o = del(0, 0.3, tl);
-    hund([1460, K_GOLV], ANS('jatteglad'), medVinka({}, VINKA(tl, 0.1, 99))); },
-  '46': (tl, d) => { kaktus(); boll([1790, K_GOLV - BD / 2]); HALV([1460, K_GOLV], 60);
-    hund([1460, K_GOLV], ANS('glad'), medVinka({}, VINKA(tl + RR['45'].d - 0.1, 0, RR['45'].d + d - 1.2))); },
+  '45': (tl, d) => { kaktus(); boll([1790, K_GOLV - BD / 2]); ut('halv', [1460, K_GOLV]); const o = del(0, 0.3, tl);
+    const kv = mjuk(kl((tl - 0.1) / 0.6)); hund([1460, K_GOLV], ...vinka(ANS('jatteglad'), {}, tl - 0.1, kv), { armVila: [1 - kv, 1] }); },
+  '46': (tl, d) => { kaktus(); boll([1790, K_GOLV - BD / 2]); ut('halv', [1460, K_GOLV]);
+    const kv = 1 - mjuk(kl((tl - d + 1.1) / 0.6)); hund([1460, K_GOLV], ...vinka(ANS('glad'), {}, tl + RR['45'].d - 0.1, kv), { armVila: [1 - kv, 1] }); },
   '47': (tl, d) => { const c = CUR; CUR = RR['46']; TT = RR['46'].s + RR['46'].d - 0.01; S['46'](RR['46'].d - 0.01, RR['46'].d); CUR = c;
     const p = new DOMPoint(512, 520).matrixTransform(G.getCTM()); kritiris(lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))), [p.x, p.y]); },
 };
@@ -580,7 +622,7 @@ const glasG = () => { const [f, [w, h], [x0, y0, x1, y1]] = SAK.glas, hh = 90, s
 function glasGolv(fyll, k) {
   const [, [w, h], [x0, y0, x1, y1]] = SAK.glas, [t] = sakT('glas', GLAS), id = 'fy' + FYLLNR++;
   if (fyll > 0) skugga(GLAS[0], GLAS[1], 34, 'bak', 0.08 * fyll);
-  lagg('saker', `<g transform="${t}"><clipPath id="${id}"><circle cx="${(x0 + x1) / 2}" cy="${(y0 + y1) / 2}" r="${f1(0.75 * Math.max(x1 - x0, y1 - y0) * mjuk(fyll))}"/></clipPath>
+  lagg('saker', `<g transform="${t}">${fyllMask(id, (x0 + x1) / 2, (y0 + y1) / 2, 0.75 * Math.max(x1 - x0, y1 - y0), fyll)}
     <image href="${SAK.glas[0]}" width="${w}" height="${h}" clip-path="url(#${id})"/>${vatten(k)}</g>`); }
 // fyllningen i ritintrot: en växande cirkel i hundens ruta
 let FYLL_R = 0; const fyllR = k => FYLL_R = k;
@@ -614,10 +656,14 @@ function rita(t) {
   SVEP = 0; PW = 1920; FYLL_R = 0; SUG = 0; G.removeAttribute('clip-path'); $('gomda').appendChild(G); kamera(1);
   S[r.id](Math.min(t - r.s, r.d), r.d);
   if (G.getAttribute('clip-path')) { const c = $('fyllc'); c.setAttribute('r', f1(700 * mjuk(FYLL_R))); }
+  if (PRE) return;
   window.kritsvep?.(SVEP, SVEP_F);
   if (t > DURATION - SVART) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#101010"/>`);
   window.kant?.uppdatera();
+  if (KANT_F) { const r = KANT_F.getAttribute('radius'); if (r !== KANT_SKREV) KANT_BAS = +r;   // kant.js skrev en ny bredd: lägg till 3 enheter
+    KANT_SKREV = (KANT_BAS + KANT_EXTRA).toFixed(3); KANT_F.setAttribute('radius', KANT_SKREV); }
 }
+let KANT_F = null, KANT_BAS = 0, KANT_SKREV = null; const KANT_EXTRA = 3;
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
   const { RADER, ROST } = await (await fetch(HAR + 'rader.json')).json();
@@ -639,7 +685,15 @@ window.ready = (async () => {
   KONTUR.glas = await (await fetch(R + 'mjolkglas/cut/mjolkglas-v2-tomt-kontur.json')).json();
   KONTUR.rulle = await (await fetch(R + 'toarulle/cut/toarulle-kontur.json')).json();
   try { KONTUR.hund = await (await fetch(HAR + 'badrummet/hund-kontur.json')).json(); } catch { KONTUR.hund = { d: 'M300 300 L700 300 L700 900 L300 900Z' }; }
-  window.kant?.lagg(G); ['kar', 'saker'].forEach(n => window.kant?.lagg($(n), { andel: 0.01 }));
+  // Rötterna utan vit söm (three-rum 24/11, Sanna: "can the root of arms and legs have no white rim"): delarna bakom kroppen
+  // (benen, armarna, svansen och kroppen) får sin inbakade rent vita kant bortnyckad, så att armar, ben och svans växer ut ur kroppen
+  // utan söm. Figurens kant blir kant.js runt hela silhuetten, 3 enheter bredare (KANT_EXTRA). Öronen och armarna framför kroppen behåller sin.
+  document.querySelector('defs').insertAdjacentHTML('beforeend', `<filter id="utanKant" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -15 -15 -15 0 43.95" result="k"/><feComposite in="k" in2="SourceAlpha" operator="in"/></filter>`);
+  for (const e of G.querySelector('.figuren').children) { if (e.classList.contains('kropp')) break; if (e.tagName === 'image') e.setAttribute('filter', 'url(#utanKant)'); }
+  G.querySelectorAll('.kropp > image').forEach(e => /tail|body/.test(e.getAttribute('href')) && e.setAttribute('filter', 'url(#utanKant)'));
+  const ke = window.kant?.lagg(G); KANT_F = ke && document.querySelector(ke.getAttribute('filter').slice(4, -1))?.querySelector('feMorphology[result="d"]');
+  ['kar', 'saker'].forEach(n => window.kant?.lagg($(n), { andel: 0.01 }));
   await Promise.all([KAKTUS, BADRUM, KRITA, PALL, HANDFAT.bild, HANDDUK[0], ...Object.values(SAK).map(s => s[0])]
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   if (location.search.includes('silhuett')) {   // för att spåra hundens kontur: bara figuren i 1024-rutan, genomskinlig bakgrund
@@ -647,6 +701,8 @@ window.ready = (async () => {
     $('figurer').appendChild(G); G.setAttribute('transform', 'translate(448 28)'); L.rita(G, ANS('glad'), P({})); G.querySelectorAll('.skugga').forEach(e => e.setAttribute('opacity', 0));
     window.stilla = true; return true; }
   window.LJUD = ljud();
+  forpass(); rita(RULL_T()[0] - 0.02);   // RULLE_START (var rullen lämnar tassen) sätts i rad 26, även när en renderingsbit börjar senare
+  window.BLINKSTAT = { blinkar: BLINKAR.length, andrad: ANDRAD.reduce((a, b) => a + b, 0) / ANDRAD.length };
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
 })();
