@@ -74,6 +74,10 @@ Rörelsen först, Malin efteråt. **Fet** = ny replik som spelas in. C:s toner s
 - **Röster:** Malin `produktion/ljud-original/roster/abc-c-intro-2026-11-25/malin-1.mp3` (Eleven v4, 50/75; `[excited]` byttes mot `[happy]`), delad med `dela-tagning.py`: alla 13 klipp hörs rätt, inga avklippta ord. C:s toner: Olivia `olivia-1.mp3` där, klippta efter tonhöjden: `x-glad` 0,00–0,64, `x-halsar` 1,00–1,76 (hög–lägre), `x-ja` 2,09–2,64 + 2,69–3,25 (två *C!* med 0,12 s emellan), `x-nej` 3,68–4,34 (lågt, fallande), `x-undrar` 5,75–6,20 (stiger). Biten 4,91–5,29 används inte. Clownens gamla klipp ligger i `assets/ljud/roster/alfabet/abc-c-recept-3/clown/`.
 - **Kontroll:** `krock.mjs`: inga krockar. Clownfilmen och dess stillbilder ligger i `aldre/`.
 
+## Rendering 2026-11-25 22:20
+
+4:17 (257 s), feedbacksidan ABC-c3. QA: −21,9 LUFS (E −22,6, B −20,8), inget svart eller tyst. Fryst 3,4 s vid 0:53 är gissningspausen (citronen rör sig lite). Boil 4,7 px/s mot gränsen 4,5 (E 4,4) med samma `gissa.boil()` som E, alltså inget fel i koden. Cirkeln som krymper in vid cykeln blir framhjulet, så den går inte genom något.
+
 ## Historik: clownversionen (2026-11-21–22)
 
 
