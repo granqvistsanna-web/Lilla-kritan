@@ -1625,5 +1625,12 @@
   "rendered": "2026-11-25 20:09 (provlyssning: Malins 46 repliker, v2-leoparden på stillbilden)",
   "file": "avsnitt/053-leoparden-stadar/film/053-provlyssning-rost.mp4",
   "status": "granska"
+ },
+ "055": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/055-1125-2016.mp4",
+  "duration": 205.4,
+  "rendered": "2026-11-25 20:16 (Grind 6, förhandsvisning (--snabb): 16 tydligare repliker inspelade, snabbare tempo (3:25), fler närbilder och reaktioner, kittlet på nosen och vicket i muggen i närbild, varierade rävljud)",
+  "file": "avsnitt/055-raven-borstar-tanderna/scener/badet/badet.mp4",
+  "status": "granska"
  }
 }
