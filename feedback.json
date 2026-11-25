@@ -9279,9 +9279,10 @@
   "sec": 269,
   "tags": [],
   "note": "approved",
-  "fixed": false,
+  "fixed": true,
   "at": 1795357117959,
-  "render": "2026-11-22 11:59 (Feedback 22/11: ritintrot med dörrens fönster och gula randen, mindre snögubbe, större snöplog, scenen efter hjärtat bort, nya ben, kalenderramen som intro och outro (slutrendering))"
+  "render": "2026-11-22 11:59 (Feedback 22/11: ritintrot med dörrens fönster och gula randen, mindre snögubbe, större snöplog, scenen efter hjärtat bort, nya ben, kalenderramen som intro och outro (slutrendering))",
+  "fixedAt": 1795613442157
  },
  "r17mnc1hi9mwuc8ju7": {
   "ep": "J24",
