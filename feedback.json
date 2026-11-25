@@ -9396,5 +9396,125 @@
   "at": 1795611907619,
   "render": "2026-11-25 13:47 (QA 25/11 (snabb, scenfilmen; luckans tid = +11,2 s): katten går framför snögubben i ett lägre spår (3:09, 3:17), mjuk glidning huvud→knappar i st.f. hoppklipp (1:45), line boil 2,5/zoom 6 ggr/s, långsam push i närbilderna på stenarna och stolpen (stod still 1:29 och 3:01))",
   "fixedAt": 1795614275396
+ },
+ "7yodrk3v44mwwhqxh5": {
+  "ep": "057",
+  "time": "1:15",
+  "sec": 75,
+  "tags": [],
+  "note": "improve water flow",
+  "fixed": false,
+  "at": 1795633372409,
+  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)"
+ },
+ "xbvhdb7ssemwwhrdhw": {
+  "ep": "057",
+  "time": "1:44",
+  "sec": 104,
+  "tags": [],
+  "note": "overall a bit faster pace",
+  "fixed": false,
+  "at": 1795633393172,
+  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)"
+ },
+ "1m7kcgs9y5mwwhum2z": {
+  "ep": "057",
+  "time": "2:22",
+  "sec": 142,
+  "tags": [],
+  "note": "more giggles and varied sound effects, use the animal sound effects",
+  "fixed": false,
+  "at": 1795633544267,
+  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)"
+ },
+ "ild0zegokbmwwhwjfs": {
+  "ep": "057",
+  "time": "4:18",
+  "sec": 258,
+  "tags": [],
+  "note": "better waving",
+  "fixed": false,
+  "at": 1795633634152,
+  "render": "2026-11-25 19:45 (Grind 6, --snabb. Nytt: 11 tydligare repliker (Malin säger handlingen och saken), det stora skummet på \"Oj!\". 4:29.)"
+ },
+ "7gm7yj63v5mwwhwsus": {
+  "ep": "056",
+  "time": "0:04",
+  "sec": 4,
+  "tags": [],
+  "note": "use real intro",
+  "fixed": false,
+  "at": 1795633646356,
+  "render": "2026-11-25 20:03 (Provlyssning: Malins 44 repliker (15 nya, tydligare) över stillbild med sovbilden, lampan och täcket. Ingen animatik än.)"
+ },
+ "x9kzq36f0umwwhxz5y": {
+  "ep": "054",
+  "time": "0:19",
+  "sec": 19,
+  "tags": [],
+  "note": "better wave animation",
+  "fixed": false,
+  "at": 1795633701190,
+  "render": "2026-11-25 20:01 (omgång 2: båten, borsten i skummet, ullpuff; repliker ej inspelade)"
+ },
+ "ay8n3g49yfmwwhyrbi": {
+  "ep": "054",
+  "time": "0:49",
+  "sec": 49,
+  "tags": [],
+  "note": "brush laying on floor",
+  "fixed": false,
+  "at": 1795633737678,
+  "render": "2026-11-25 20:01 (omgång 2: båten, borsten i skummet, ullpuff; repliker ej inspelade)"
+ },
+ "cbpgq2oafumwwio1np": {
+  "ep": "052",
+  "time": "0:25",
+  "sec": 25,
+  "tags": [],
+  "note": "pilllow in front of bed not behidnd",
+  "fixed": false,
+  "at": 1795634917477,
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+ },
+ "1n7zctipg0mwwio7t8": {
+  "ep": "052",
+  "time": "0:25",
+  "sec": 25,
+  "tags": [],
+  "note": "no cloud outside window just snow",
+  "fixed": false,
+  "at": 1795634925452,
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+ },
+ "0fwc26uj0nmwwiooeg": {
+  "ep": "052",
+  "time": "0:35",
+  "sec": 35,
+  "tags": [],
+  "note": "bedding on bed please. consider new bed with bedding",
+  "fixed": false,
+  "at": 1795634946952,
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+ },
+ "0bampwxujzmwwipkjl": {
+  "ep": "052",
+  "time": "1:06",
+  "sec": 66,
+  "tags": [],
+  "note": "bed can lay on floor under bed",
+  "fixed": false,
+  "at": 1795634988608,
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
+ },
+ "vzpjnl5mimmwwir3jn": {
+  "ep": "052",
+  "time": "2:18",
+  "sec": 138,
+  "tags": [],
+  "note": "better fit for hat",
+  "fixed": false,
+  "at": 1795635059891,
+  "render": "2026-11-25 20:21 (Förhandsvisning (--snabb) med Malins röst: 18 tydligare repliker, 2 s paus i replik 10. Snabbare tempo (4:03 → 3:37), fler reaktionsnärbilder, varierade zebraljud och små effekter (plopp, pling, tindra).)"
  }
 }
