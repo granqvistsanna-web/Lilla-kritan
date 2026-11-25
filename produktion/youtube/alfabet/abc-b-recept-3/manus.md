@@ -91,6 +91,11 @@ Förd in från ABC-c3 (Sanna 2026-11-22: *"i like this new direction"*, se recep
 - Armarna: vinkningen 90° ± 6 i 1,3 gånger/s, `hurra` 64 (+ jätteglad 20 = 84°) bara i den här scenen (riggen har 105).
 - Nya röster 2026-11-23 (Malin: `n-hej-b`, `n-hur-later`, `n-hur-bjorn`, `n-och-boll`; märket, Louise: `b-hej`, `b-bjorn`, `b-boll`, `b-ballong`). Original: `produktion/ljud-original/roster/abc-recept-3-adbe/malin-1.mp3` och `louise-1.mp3`.
 
+## Feedback 2026-11-25 (ABC-b3, noter från render 21/11 20:34)
+
+- 2:35 och 2:37, skuggorna: markskuggan ligger på golvet i scenens px sedan 21/11 och stannar där när saken hoppar eller ballongen flyger (den krymper och ljusnar). Nu också E:s mjukare skuggor: ca 60 % av förra styrkan, klossarnas skugga lite bredare.
+- 2:45 och 3:47, klossar som överlappar: klossarna har fasta platser 350 px isär, och varje flytt sker i en båge (lyft, flytta, sätt ner), så att en kloss aldrig glider in i en granne (klosskrockar 2026-11-22). `node produktion/youtube/alfabet/krock.mjs produktion/youtube/alfabet/abc-b-recept-3` testar alla klossar mot varandra som lådor i 3D var 1/30 s: inga krockar.
+
 ## Öppet
 
 - Bollen och ballongen är båda röda. Plattorna har olika färg, men en blå boll skulle skilja dem bättre (det finns ingen `boll-bla` i dag).

@@ -111,9 +111,9 @@ document.head.insertAdjacentHTML('beforeend', `<style>
 const GOLV = 750;   // golvets kant mot väggen (papperet); golvet är de nedersta 330 px
 document.body.innerHTML = `<div id="scen"><svg id="botten" viewBox="0 0 1920 1080" xmlns="${NS}"><defs>${DEFS}
   <filter id="mjuk" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="12"/></filter>
-  <radialGradient id="klosskugga-g"><stop offset="0" stop-color="#3b3431" stop-opacity=".42"/><stop offset="1" stop-color="#3b3431" stop-opacity="0"/></radialGradient>
-  <radialGradient id="sakskugga-g"><stop offset="0" stop-color="#4a3a2e" stop-opacity=".46"/><stop offset=".5" stop-color="#4a3a2e" stop-opacity=".3"/><stop offset="1" stop-color="#4a3a2e" stop-opacity="0"/></radialGradient>
-  <radialGradient id="sakkarna-g"><stop offset="0" stop-color="#3b2e25" stop-opacity=".55"/><stop offset=".45" stop-color="#3b2e25" stop-opacity=".3"/><stop offset="1" stop-color="#3b2e25" stop-opacity="0"/></radialGradient>
+  <radialGradient id="klosskugga-g"><stop offset="0" stop-color="#3b3431" stop-opacity=".26"/><stop offset=".45" stop-color="#3b3431" stop-opacity=".14"/><stop offset="1" stop-color="#3b3431" stop-opacity="0"/></radialGradient>
+  <radialGradient id="sakskugga-g"><stop offset="0" stop-color="#4a3a2e" stop-opacity=".28"/><stop offset=".5" stop-color="#4a3a2e" stop-opacity=".15"/><stop offset="1" stop-color="#4a3a2e" stop-opacity="0"/></radialGradient>
+  <radialGradient id="sakkarna-g"><stop offset="0" stop-color="#3b2e25" stop-opacity=".32"/><stop offset=".45" stop-color="#3b2e25" stop-opacity=".16"/><stop offset="1" stop-color="#3b2e25" stop-opacity="0"/></radialGradient>
   <radialGradient id="vinjett-g" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#6B4A2B" stop-opacity="0"/><stop offset="1" stop-color="#6B4A2B" stop-opacity=".13"/></radialGradient></defs>
   <linearGradient id="golv-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EAD5B2"/><stop offset="1" stop-color="#E0C397"/></linearGradient>
   <linearGradient id="golvkant-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9A06E" stop-opacity=".0"/><stop offset=".55" stop-color="#C9A06E" stop-opacity=".45"/><stop offset="1" stop-color="#D9B98A" stop-opacity="0"/></linearGradient></defs>
@@ -144,6 +144,7 @@ for (const [namn, s] of Object.entries(SAKER)) {
   for (const [id, d, farg, bredd, , k] of s.streck) s.drag[id] = streck(k ? klipp[k] : vax, d, farg, bredd);
   for (const id in klipp) vax.appendChild(s.drag[id]);   // konturerna ovanpå sina fyllnader
   const kg = kant.lagg(el('g', {}, s.o), { andel: 0.02 }); kg.appendChild(s.g); s.kg = kg; s.KANT = kg.getAttribute('filter'); kg.removeAttribute('filter');
+  // Skuggorna mjukare och ljusare som i E (Sanna 2026-11-25, ABC-b3 2:35 "polish shadow of items"): ca 60 % av förra styrkan, klossarnas lite bredare.
   // Markskuggan (feedback 2026-11-21 2:35, 2:37): ligger på golvet i scenens px, inte i saken, så att den stannar på golvet när
   // saken hoppar eller svävar och bara krymper och ljusnar. En mjuk, bred skugga och en mörkare kontaktskugga, gradienter utan filter.
   s.mark = [el('ellipse', { fill: 'url(#sakskugga-g)', opacity: 0 }, document.getElementById('sakskuggor')),
@@ -976,7 +977,7 @@ function rita(t) {
   L.forEach((o, i) => {   // mjuka markskuggor på golvet; ingen skugga för klossar som står på andra klossar (eller för plattan på väggen)
     if (!o.syns || i === 0) return kuggor[i].setAttribute('opacity', 0);
     const [ax, ay] = skarmV(i, -0.5, -0.5), [bx, by] = skarmV(i, 0.5, -0.5), w = Math.hypot(bx - ax, by - ay);
-    for (const [k, v] of Object.entries({ cx: (ax + bx) / 2, cy: (ay + by) / 2 + o.luft - w * 0.05, rx: w * 0.66, ry: w * 0.11 })) kuggor[i].setAttribute(k, v.toFixed(1));
+    for (const [k, v] of Object.entries({ cx: (ax + bx) / 2, cy: (ay + by) / 2 + o.luft - w * 0.05, rx: w * 0.72, ry: w * 0.14 })) kuggor[i].setAttribute(k, v.toFixed(1));
     kuggor[i].setAttribute('opacity', (clamp(1 - o.luft / 260) ** 2 * ut).toFixed(3));
   });
   for (const s of Object.values(SAKER)) {
