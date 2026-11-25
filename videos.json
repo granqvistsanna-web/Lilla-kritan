@@ -1018,9 +1018,9 @@
   "name": "Jul (parkerad): Tittut lammet"
  },
  "J01": {
-  "duration": 277.4,
-  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka.mp4",
-  "rendered": "2026-11-25 15:26 (nytt 3D-intro och 3D-outro)",
+  "duration": 263.8,
+  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka-qa2511b.mp4",
+  "rendered": "2026-11-25 16:41 (QA 25/11 b: kritan som i alla filmer (kritan-ritar.js, ritintrot 2,8 s, tunn kant, fylls inifrån, gnistor), riggens vink (ARMROR) i hallen och på pulkan. Förhandsvisning, scenen utan kalenderramen)",
   "status": "granska",
   "stills": [
    {
@@ -1048,7 +1048,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1125-1526.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1125-1640.mp4",
   "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
   "name": "Lucka 1: Kaninen ska åka pulka"
  },
