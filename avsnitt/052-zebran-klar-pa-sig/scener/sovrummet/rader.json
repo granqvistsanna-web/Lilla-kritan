@@ -567,7 +567,7 @@
   },
   {
    "id": "23",
-   "d": 4.22,
+   "d": 2.8,
    "malin": [
     [
      38,
@@ -581,7 +581,7 @@
     ],
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust",
-     3.12
+     1.7
     ]
    ],
    "bild": "tån skimrar tydligt, zebran skuttar"
@@ -904,9 +904,9 @@
    "Kan du hjälpa zebran? Ser du den blå strumpan?"
   ],
   [
-   "38-dar-bakom-kudden",
-   2.42,
-   "Ja, där! Bakom kudden!"
+   "38-ja-dar",
+   1,
+   "Ja, där!"
   ],
   [
    "39-bla-strumpan-pa",

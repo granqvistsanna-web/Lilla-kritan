@@ -35,7 +35,7 @@
 35-jag-ocksa                [warmly] Mm, du tycker om halsduken.
 36-strumpan-da              [curious] Men strumpan då? Zebran vet inte var.
 37-hjalpa-zebran-se         [warmly] Kan du hjälpa zebran? Ser du den blå strumpan?
-38-dar-bakom-kudden         [happy] Ja, där! Bakom kudden!
+38-ja-dar                   [happy] Ja, där!
 39-bla-strumpan-pa          [happy] Den blå strumpan … på foten!
 40-vad-skont                [happy] Ja, vad skönt!
 41-rod-gul-bla              [happy] Röd, gul … och blå!

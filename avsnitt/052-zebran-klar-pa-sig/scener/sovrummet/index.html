@@ -58,6 +58,7 @@ function kladerIn(g) {
   document.querySelector('defs').insertAdjacentHTML('beforeend', `
     <filter id="strumpkrita" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.16" numOctaves="2" seed="3" result="n"/>
       <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.6 0 0 0 1.62" result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/></filter>
+    <clipPath id="hdFram"><path d="${HD_FRAM}"/></clipPath>
     <filter id="delsiluett" x="0" y="0" width="1" height="1"><feMorphology in="SourceAlpha" operator="erode" radius="8"/>
       <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/></filter>`);
   g.querySelectorAll('image.leg-l, image.leg-r').forEach(img => {
@@ -68,24 +69,34 @@ function kladerIn(g) {
     grupp.insertAdjacentHTML('beforeend', strumpaBen(sida));
   });
   g.querySelector('.drag').insertAdjacentHTML('afterend', `<g class="pl-halsduk"></g><g class="pl-mossa"></g>`);
+  g.querySelector('.kropp > image').insertAdjacentHTML('beforebegin', `<g class="pl-halsduk-bak"></g>`);
 }
 // mössan: brättets nederkant (mitt) i (x, y), brättets bredd w, vinkel v. I riggens ruta (w i riggens px) eller i scenen (w·GS)
 const mossaSvg = ([x, y], w, v = 0, extra = '') => { const s = w / 820;
   return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-MOSSA.brim[0]} ${-MOSSA.brim[1]})" ${extra}><image href="${MOSSA.bild}" width="${MOSSA.w}" height="${MOSSA.h}"/></g>`; };
-const halsdukSvg = ([x, y], w, extra = '', v = 0) => { const s = w / HALSDUK.bredd;
-  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-HALSDUK.mitt[0]} ${-HALSDUK.mitt[1]})" ${extra}><image href="${HALSDUK.bild}" width="${HALSDUK.w}" height="${HALSDUK.h}"/></g>`; };
+const halsdukSvg = ([x, y], w, extra = '', v = 0, bild = '') => { const s = w / HALSDUK.bredd;
+  return `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(4)}) translate(${-HALSDUK.mitt[0]} ${-HALSDUK.mitt[1]})" ${extra}><image href="${HALSDUK.bild}" width="${HALSDUK.w}" height="${HALSDUK.h}" ${bild}/></g>`; };
+// på zebran: bandets övre del (snibbarna som går runt nacken) ligger bakom kroppen och syns bara utanför den, framdelen ligger framför
+// (Sanna 2026-11-25: "backside not showing on wearing"). Linjen i halsduksbildens mått, strax under bandets övre kant.
+const HD_FRAM = 'M0 230 L170 175 L428 185 L686 175 L856 230 L856 699 L0 699 Z';
 const strumpaFri = (i, [x, y], v = 0, op = 1) => op <= 0.01 ? '' : `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${STRUMPA.s}) translate(-255 -383)" opacity="${kl(op).toFixed(2)}"><image href="${STRUMPA.bild[i]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`;
 
 // mössans tre storlekar: brättets bredd i riggens px (provet) och var den sitter på zebran (riggens ruta) [x, y, vinkel]
-// lagom sitter lägre och lite bredare så att den sluter om huvudet (Sanna 2026-11-25 "better fit for hat")
-const MS = { liten: { w: 96, pa: [660, 176, 18] }, stor: { w: 640, pa: [512, 470, 0] }, lagom: { w: 500, pa: [512, 330, 0] } };
+// lagom sitter lägre och lite bredare så att den sluter om huvudet (Sanna 2026-11-25 "better fit for hat"); mindre, 420, så att brättet följer huvudet (Sanna 2026-11-25 kväll)
+const MS = { liten: { w: 96, pa: [660, 176, 18] }, stor: { w: 640, pa: [512, 470, 0] }, lagom: { w: 420, pa: [508, 326, 0] } };
 const LUFT = [880, 700];                                   // där kritan ritar mössan, i luften till vänster om zebran (brättets nederkant)
-const iZ = p => iFig(ZF, p);                               // riggens ruta → scenen (zebran står still när plaggen landar)
+const iZ = p => iFig(ZF, p);
+const franZ = ([x, y]) => [(x - ZF[0]) / GS + 512, (y - ZF[1]) / GS + 925];   // scenen → riggens ruta (omvänd iZ)
 // halsduken hänger på längden från fjärde knoppen (vriden 90°, tofsarna nedtill), vrids tillbaka medan den glider: storleken ändras aldrig
-const HD_HANG = [KROK[3][0], KROK[3][1] + 150], HD_HANG_V = 90, HD_PA = [516, 690], HD_W = 520;   // halsduk 8 som i pa-zebran.jpg: bandet lika brett som kroppen, under nosen
+const HD_HANG = [KROK[3][0], KROK[3][1] + 150], HD_HANG_V = 90, HD_PA = [516, 690], HD_W = 620;   // halsduk 8 som i pa-zebran.jpg: bandet lika brett som kroppen, under nosen
+// halsdukens väg till zebran (i riggens ruta): ner i en båge till halshöjd bredvid zebran och rätt vriden, sedan in från sidan,
+// så att den aldrig går över ansiktet (Sanna 2026-11-23: inget går genom något)
+const HD_SIDA = [HD_PA[0] - 430, HD_PA[1]];
+const hdVag = u => u < 0.6 ? { p: franZ(bage(HD_HANG, iZ(HD_SIDA), u / 0.6, 60)), v: HD_HANG_V * (1 - mjuk(u / 0.6)) }
+  : { p: [lerp(HD_SIDA[0], HD_PA[0], mjuk((u - 0.6) / 0.4)), HD_PA[1]], v: 0 };
 const S_HANG = [KROK[0][0], KROK[0][1] + 40];
 const HOV = { l: iZ([432, 860]), r: iZ([606, 860]) };
-const GOMD = () => [KP[0] + 70, R.RIM - 12];   // kudden ligger framför sängen nu: bara tån sticker ut till höger om kudden   // tån sticker ut lika långt som i provet (strumpan 0,12 i stället för 0,16)   // den gömda strumpan bakom kudden (provet)
+const GOMD = () => [KP[0] + 6, KP[1] - 74], GOMD_V = 78;   // strumpan ligger ovanpå kudden, hela syns (Sanna 2026-11-25: "hard to find under pillow, maybe can be on pillow")
 const glid = (k, tl, n) => [k[0] * (1 + 0.03 * mjuk(kl(tl / n))), k[1], k[2]];   // tomma platser kryper 3 % närmare
 const bage = (A, B, u, h) => { const m = mjuk(u); return [lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h * Math.sin(Math.PI * kl(u))]; };
 
@@ -204,7 +215,9 @@ const SC = {
   // halsduken på kroken glimtar; den glider runt halsen; gosar in mulen och blundar
   '18': (tl, d) => RUM('18', { kam: K.HKROK, zebra: false, skim: [[HD_HANG[0], HD_HANG[1] - 10], 0.8 * bump(0.3, 2.3, tl), 1.4] }),
   '19': (tl, d) => { const pa = PAo('19', 33), g0 = 0.5, g1 = pa, u = del(g0, g1, tl), sitter = tl >= g1;
-    return RUM('19', { kam: tl > g1 + 0.5 ? K.NARA : K.HEL, svans: glad(tl, g1, d), hangH: tl < g0, halsduk: sitter, hdFri: sitter ? null : [bage(HD_HANG, iZ(HD_PA), kl((tl - g0) / (g1 - g0)), 160), HD_HANG_V * (1 - mjuk(kl((tl - g0) / (g1 - g0))))],
+    return RUM('19', { kam: tl > g1 + 0.5 ? K.NARA : K.HEL, svans: glad(tl, g1, d), hangH: tl < g0, hdFri: null,
+      // glider i riggens lager: bandets bakre del ligger bakom kroppen hela vägen, så den syns aldrig över ansiktet och hoppar inte vid landningen
+      halsduk: sitter ? true : tl < g0 ? false : hdVag(kl((tl - g0) / (g1 - g0))),
       f: F(sitter ? 'jatteglad' : 'nyfiken', { titt: [-14 * (1 - u), -6 * (1 - u)] }), p: P({ rikt: -0.4 * (1 - u) }) }); },
   '20': (tl, d) => { const mys = del(0.3, 0.9, tl) * (1 - del(d - 1.2, d - 0.6, tl));
     return RUM('20', { kam: K.NARA, f: F('glad', mys > 0.5 ? { lock: [1, 1] } : {}), p: P({ upp: -0.6 * mys, oron: [4 * mys, 4 * mys] }) }); },
@@ -219,15 +232,15 @@ const SC = {
   '23': (tl, d) => { const c = 1.2;
     return tl < c ? RUM('23', { kam: K.KNARA, skim: [[GOMD()[0] + 10, GOMD()[1] - 4], 1, 0.8], vick: 4 * Math.sin(tl * 9) * bump(0, c, tl) })
       : RUM('23', { kam: K.HALV, f: F('jatteglad', { titt: [-12, 0] }), p: skutt(P({ rikt: -0.2 }), tl, c + 0.3, 20), svans: glad(tl, c, d) }); },
-  // kudden lutar, strumpan glider fram och på hoven (höger ben lyfts)
-  '24': (tl, d) => { const pa = PAo('24', 39), ut = del(0.3, 1.0, tl), g0 = 1.0, g1 = pa - 0.45, u = kl((tl - g0) / (g1 - g0));
-    const ben = del(g0, g0 + 0.4, tl) * (1 - del(pa + 0.3, pa + 0.7, tl)), lut = 6 * del(0.1, 0.6, tl) * (1 - del(g0 + 0.3, g0 + 0.9, tl));
-    const G0 = GOMD(), G1 = [G0[0] + 70, G0[1] - 6], mal = [HOV.r[0], HOV.r[1] - 34 * GS * ben + 6];
+  // strumpan lyfter från kudden och glider till hoven (höger ben lyfts)
+  '24': (tl, d) => { const pa = PAo('24', 39), g0 = 1.0, g1 = pa - 0.45, u = kl((tl - g0) / (g1 - g0));
+    const ben = del(g0, g0 + 0.4, tl) * (1 - del(pa + 0.3, pa + 0.7, tl)), lut = 0;
+    const G1 = GOMD(), mal = [HOV.r[0], HOV.r[1] - 34 * GS * ben + 6];
     // först ner på golvet till vänster om zebran, sedan längs golvet till hoven: den går aldrig framför ansiktet
-    const GOLVP = [ZF[0] - 190, HOV.r[1] + 6], vag = u < 0.55 ? bage(G1, GOLVP, u / 0.55, 50) : bage(GOLVP, mal, (u - 0.55) / 0.45, 12);
-    const fri = tl < g0 ? null : tl < g1 + 0.25 ? strumpaFri(1, vag, lerp(90, 8, mjuk(u)), 1 - del(g1, g1 + 0.25, tl)) : null;
+    const GOLVP = [ZF[0] - 190, HOV.r[1] + 6], vag = u < 0.55 ? bage(G1, GOLVP, u / 0.55, 60) : bage(GOLVP, mal, (u - 0.55) / 0.45, 12);
+    const fri = tl < g0 ? null : tl < g1 + 0.25 ? strumpaFri(1, vag, lerp(GOMD_V, 8, mjuk(u)), 1 - del(g1, g1 + 0.25, tl)) : null;
     const kam24 = tl < pa + 0.3 ? K.HITTA : tl < pa + 1.4 ? K.BEN : K.NARA;   // båda strumporna, sedan reaktionen
-    return RUM('24', { kam: kam24, svans: glad(tl, pa, d), kuddeV: lut, gomd: tl < g0, gomdX: 70 * ut, fri, str: [1, del(g1, pa, tl)],
+    return RUM('24', { kam: kam24, svans: glad(tl, pa, d), kuddeV: lut, gomd: tl < g0, fri, str: [1, del(g1, pa, tl)],
       f: F(tl > pa ? 'jatteglad' : 'nyfiken', tl > pa + 1.4 ? { ogonS: [1.12, 1.12] } : { titt: [tl < g0 ? -14 : 0, tl < g0 ? 0 : 14] }), p: P({ rikt: tl < g0 ? -0.3 : 0, benY: [0, -34 * ben], ben: [0, -6 * ben], oron: tl > pa + 1.4 ? [-12, -12] : [0, 0] }) }); },
 
   // röd, gul … och blå! plaggen glimtar på färgerna, ett lugnt skutt
@@ -313,11 +326,11 @@ function ritaRum(st, t) {
   if (st.hangS) lagg('bak', strumpaFri(0, S_HANG, -4 + 4 * Math.sin(t * 0.9)));   // strumpan gungar lugnt på knoppen, närbilden står aldrig stilla
   if (st.hangH) lagg('bak', halsdukSvg(HD_HANG, HD_W * GS, '', HD_HANG_V + 1.5 * Math.sin(t * 0.8)));
   lagg('bak', R.markskugga(KORG.x, KORG.botten, 220) + `<image href="${KORG.fil}" x="${f1(KORG.x - 512 * KORG.s)}" y="${f1(KORG.botten - 916 * KORG.s)}" width="${f1(1024 * KORG.s)}" height="${f1(1024 * KORG.s)}"/>`);
-  // kudden på madrassen, framför sänggaveln (lagret 'sang' efter sängbilden, Sanna 2026-11-25), den gömda strumpan bakom med tån ute; kudden lutar kring nedre högra hörnet
+  // kudden på madrassen, framför sänggaveln (lagret 'sang' efter sängbilden, Sanna 2026-11-25), strumpan ligger ovanpå
   const [kx, ky] = KP, ks = KUDDE_NY.s, hx = kx + 0.45 * KUDDE_NY.w * ks, G0 = GOMD();
   const vick = st.vick || 0;
-  if (st.gomd) lagg('sang', `<g transform="translate(${f1(G0[0] + (st.gomdX || 0))} ${f1(G0[1])}) rotate(${f1(90 + vick)}) scale(${STRUMPA.s}) translate(-255 -383)"><image href="${STRUMPA.bild[1]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`);
   lagg('sang', `<g transform="rotate(${f1(st.kuddeV || 0)} ${f1(hx)} ${ky})"><g transform="translate(${kx} ${ky}) scale(${ks}) translate(${-KUDDE_NY.w / 2} ${-KUDDE_NY.h})"><image href="${KUDDE_NY.bild}" width="${KUDDE_NY.w}" height="${KUDDE_NY.h}"/></g></g>`);
+  if (st.gomd) lagg('sang', `<g transform="translate(${f1(G0[0])} ${f1(G0[1])}) rotate(${f1(GOMD_V + vick)}) scale(${STRUMPA.s}) translate(-255 -383)"><image href="${STRUMPA.bild[1]}" width="${STRUMPA.w}" height="${STRUMPA.h}"/></g>`);
 
   // zebran med plaggen
   if (st.zebra !== false) {
@@ -327,7 +340,9 @@ function ritaRum(st, t) {
     const m = st.mossa, mg = G.querySelector('.pl-mossa');
     mg.innerHTML = !m ? '' : m.av != null ? mossaSvg([MS.stor.pa[0] + 900 * mjuk(m.av), MS.stor.pa[1] - 60 * Math.sin(Math.PI * m.av)], MS.stor.w, 20 * m.av)
       : mossaSvg([MS[m.typ].pa[0], MS[m.typ].pa[1] - (m.lyft || 0)], MS[m.typ].w, MS[m.typ].pa[2]);
-    G.querySelector('.pl-halsduk').innerHTML = st.halsduk ? halsdukSvg(HD_PA, HD_W) : '';
+    const hd = st.halsduk, [hp, hv] = hd === true ? [HD_PA, 0] : hd ? [hd.p, hd.v] : [];
+    G.querySelector('.pl-halsduk').innerHTML = hd ? halsdukSvg(hp, HD_W, '', hv, 'clip-path="url(#hdFram)"') : '';
+    G.querySelector('.pl-halsduk-bak').innerHTML = hd ? halsdukSvg(hp, HD_W) : '';
   }
   // plagg på väg (i scenen, framför allt)
   if (st.fri) lagg('fram', st.fri);
