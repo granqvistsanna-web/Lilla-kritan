@@ -94,6 +94,54 @@ Sanna godkände (feedback på E 3:54: *"det viktigaste att lära sig är hur e l
 - Armarna: vinkningen 90° ± 6° i 1,3 gånger/s (var 90° ± 10° på 0,7 s), `hurra` 84° i den här scenen (riggen har 100°).
 - Rösterna: `produktion/ljud-original/roster/abc-recept-3-adbe/` (Malin `malin-1.mp3`, bokstaven `louise-1.mp3`). `n-titta-noga` är delad i `n-titta-noga-1` och `n-var-ar-dinon`.
 
+## E:s riktning 2026-11-25 (Sanna godkände replikerna: "A:s och D:s repliker är ok, spela in dem i ElevenLabs")
+
+Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`), som B fick samma dag.
+
+**Introt är ett samtal:**
+
+| Bild | Vem | Replik |
+|---|---|---|
+| Kritan ritar D:ets kontur (börjar på *"Titta"*) | Malin | [warm] Titta, kritan ritar en bokstav. |
+| Bilden fylls i inifrån | Malin | [warm] Bokstaven D. *(befintligt klipp, som i B)* |
+| D puffar upp, ögon och mun poppar fram | D | `x-glad` *D!* (uppåt) |
+| | Malin | [warm] Hej, D! |
+| D vickar | D | `x-halsar` *D-d!* (upp–ner) |
+| | Malin | [curious] Ska vi leka, D? **(ny)** |
+| Två lugna hopp | D | `x-ja` *D! D!* |
+| | Malin | [happy] Ja! Vad kul! *(E:s klipp)* |
+| D krymper och flyger till hörnet | Malin | [curious] Vad ritar kritan nu? *(E:s klipp)* |
+
+**D säger bara D, i fem toner** (Olivia, som E och B), och tycker till före Malin:
+
+| Stund | D | Malin |
+|---|---|---|
+| Dinon fylls i, efter *"D, d, dinosaurie!"* | `x-ja` | *"Ja! Dinosaurie börjar på bokstaven D."* |
+| Grisen, efter *"En gris!"* | `x-undrar`, sedan `x-nej` | närbilden, *"Ha ha! Busiga kritan!"*, *"Gris börjar inte på D."* |
+| Dörren, efter *"D, d, dörr!"* | `x-ja` | *"Dörr börjar också på D!"* |
+| Dockan, efter *"En docka!"* | `x-ja` | *"Docka börjar också på D!"* |
+| Gömleken | tyst | |
+| Muren, efter *"Hunden!"* | `x-nej` | *"Hund börjar inte på D."* |
+| Slutet, märket i mitten | `x-ja` (stolt) | |
+| *"Hej då!"* | `x-halsar` samtidigt som Malin | |
+
+**Går bort:** *"Det är ju D!"*, *"Hur låter D?"*, *"Kritan ritar något på bokstaven D."*, *"Hur låter D i dino?"*, *"Och i dörr?"* och alla märkets ord (*"Hej! D! D!"*, *"d, d, D!"*, *"d, d, dino!"*, *"d, d, dörr!"*, *"d, d, docka!"*).
+
+**Nytt att spela in:** Malin *"Ska vi leka, D?"* och Olivias fem toner (*D!*, *D-d!*, *D! D!*, *D-d.*, *D?*). Allt annat finns.
+
+**Scenen:** D:s ansikte större (`HUVUD`, ögonradie 42, rosa kinder, större mun), dinon `tempo` ca 0,4 (konturen ca 2,6 s, hela teckningen ca 6 s), grisen, dörren och dockan 0,42–0,5, gissningspausen 4 → 3,3 s, E:s mjukare skuggor, E:s lugnare gömlek (`VANDSEK`, `BYTSEK`), musiken i introt och berättelsen 0,5 → 0,38.
+
+**Byggt 2026-11-25** (scenen före ändringen ligger i git):
+
+- Introt som samtal, `eTon()` i hörnet (som B), `sagE()` för D:s mun. `bLjud`, `d-hej`, `d-dino`, `d-dorr`, `d-docka`, `d-ljud-1…3` används inte längre.
+- D:s ansikte: `HUVUD` [-80, -235, 50, 62] (var [-55, -240, 28, 40]), i hörnet där ryggen möter översta strecket, rosa kinder, större mun.
+- Teckningarna: dinon `tempo` 0,4, grisen 0,42, dörren och dockan 0,45. `PAUS` 3,3.
+- E:s mjukare skuggor, gömleken med `VANDSEK` 0,9 och `BYTSEK` 1,6 (klossarna snurrar ett varv i bytet), pausen 2,8 s. `krock.mjs`: inga krockar.
+- Musiken i introt och berättelsen 0,5 → 0,38.
+- `n-ja-vad-kul` och `n-vad-ritar-nu` är E:s klipp (`abc-e-recept-3-v2`).
+- Förhandsvisning (`--snabb`, 4:17) på feedbacksidan som `ABC-d3`, status granska. Filmen före ändringen: `aldre/abc-d-recept-3-fore-e-riktning.mp4`. QA: −21,6 LUFS, inget svart eller tyst; stillheten 0:25–0:28 är gissningspausen efter *"Vem är det?"*.
+- **Röster:** *"Ska vi leka, D?"* är Malin (Sanna 2026-11-25), `produktion/ljud-original/roster/abc-d-intro-2026-11-25/malin-a-och-d.mp3` 2,08–3,56 (början är A:s rad). D:s toner är **Olivia** (*Bright, Youthful and Engaging*, v4), som E och B (Sanna: *"No, redo with Olivia"*; Louise-tagningarna i samma mapp används inte): `olivia-1.mp3` har A:s toner först och D:s två gånger, klippta ur andra omgången efter tonhöjden: `x-glad` 9,93–10,60 (stiger till en topp), `x-halsar` 10,73–11,40 (två stavelser, *D-d!*), `x-ja` 11,60–12,84 (två *D!*), `x-nej` 13,08–13,50 (faller jämnt), `x-undrar` 13,96–14,33 (stiger). Ingen har lyssnat på dem i blandningen än.
+
 ## Öppet
 
 - *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.
