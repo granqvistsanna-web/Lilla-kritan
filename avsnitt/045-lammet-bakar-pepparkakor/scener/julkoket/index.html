@@ -331,7 +331,7 @@ function lamm(f, p = {}, { vinka = null, lyft = 0, dx = 0, gang = null } = {}) {
   if (ARMAR_UPP) { const a = p.armar || [0, 0]; p = { ...p, armar: [a[0] + 40 * ARMAR_UPP, a[1] + 40 * ARMAR_UPP] }; }
   { const a = (1 - Math.cos(2 * Math.PI * TT / 3.6)) / 2; p = { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a }; }
   // bä: öronen lyfts och kroppen sträcks lite på varje bä
-  const n = (CUR.ljud || []).filter(([fil]) => /^ba-/.test(fil)).reduce((s, [, o]) => s + bump(o - 0.05, o + 0.45, TT - CUR.s), 0);
+  const n = (CUR.ljud || []).filter(([fil]) => LAMM.test(fil)).reduce((s, [, o]) => s + bump(o - 0.05, o + 0.45, TT - CUR.s), 0);
   if (n > 0.01) p = { ...p, strack: p.strack + 0.03 * n, oron: (p.oron || [0, 0]).map(o => o - 9 * n) };
   if (DRY) { LAST = { f, p: P(p), lyft }; return; }   // förra radens slutpose (se rita)
   if (BLEND) { f = blandU(BLEND.f, f, BLEND.k); p = blandU(BLEND.p, P(p), BLEND.k); lyft = lerp(BLEND.lyft, lyft, BLEND.k); }
@@ -584,7 +584,12 @@ const S = {
 
 // --- Ljud: Malin och effekterna ur raderna, julmusiken lågt under köket ------------------------------------------------------------
 const E = 'assets/ljud/effekter/';
-const VOL = f => /^ba-/.test(f) ? 0.6 : /^(glitter|tindra)/.test(f) ? 0.7 : /^tick/.test(f) ? 0.55 : /^(sno-duns|tass)/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : 0.75;
+// Sanna 25/11 (1:19, "more sound effects for lamm, current ones are a bit annoying"): lammet har nu en egen tagning per rad
+// (ba-gullig, ba, ba-fniss och lamm-* från 07 julkulan; inga höga pip ba-gullig-2/2b/7 längre) och varje ljud jämnas till
+// -21 LUFS, strax under Malin (-20,5). Förut låg ba-gullig på ca -13 LUFS i mixen, 7 dB över Malin.
+const LAMM_LUFS = {"ba-fniss-1": -17.8, "ba-gullig-1": -8.4, "ba-gullig-1b": -9.3, "ba-gullig-3": -11.5, "ba-gullig-4": -10.5, "ba-gullig-4b": -10.6, "ba-gullig-5": -9.8, "ba-gullig-5b": -9.9, "ba-gullig-6": -11.7, "ba-gullig-6b": -11.3, "ba-gullig-7b": -8.7, "ba-gullig-8": -11.6, "ba-7": -14.6, "ba-9": -14.6, "lamm-aah-1": -18.0, "lamm-aah-2": -18.0, "lamm-ah-1": -18.0, "lamm-ah-2": -18.0, "lamm-ah-3": -18.1, "lamm-hihi-2": -18.1, "lamm-hihi-3": -18.1, "lamm-jippi-1": -18.1, "lamm-jippi-2": -18.1, "lamm-ooo-2": -18.0};
+const LAMM = /^(ba|lamm)-/, lammVol = f => Math.min(1, 10 ** ((-21 - (LAMM_LUFS[f.split('/')[1]] ?? -15)) / 20));
+const VOL = f => LAMM.test(f) ? lammVol(f) : /^(glitter|tindra)/.test(f) ? 0.7 : /^tick/.test(f) ? 0.55 : /^(sno-duns|tass)/.test(f) ? 0.6 : /^krita-ritar/.test(f) ? 0.9 : 0.75;
 function ljud() {
   const ut = [];
   for (const r of RAD_L) {
@@ -617,7 +622,9 @@ function rita(t) {
   $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);   // line boil: ny brusbild 6 gånger/s (CLAUDE.md)
   window.kant?.uppdatera();
 }
-window.seek = t => { window.stilla = true; rita(t); };
+// QA 25/11 (Sanna 0:36, "flashing"): efter en uppifrånbild (2b) hann bakgrunden, bordet och sakerna inte avkodas till första
+// bildrutan, så lammet blinkade på tomt papper. seek väntar nu tills alla bilder är avkodade innan bilden tas.
+window.seek = t => { window.stilla = true; rita(t); return Promise.all([...document.querySelectorAll("image")].map(i => i.decode?.().catch(() => {}))); };
 window.ready = (async () => {
   const { RADER, ROST } = await (await fetch('/avsnitt/045-lammet-bakar-pepparkakor/scener/julkoket/rader.json')).json();
   ROSTER = ROST; let acc = 0;
