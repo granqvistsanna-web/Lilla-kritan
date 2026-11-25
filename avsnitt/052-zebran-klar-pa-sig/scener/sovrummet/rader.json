@@ -30,7 +30,7 @@
   },
   {
    "id": "01c",
-   "d": 5.36,
+   "d": 4.76,
    "malin": [
     [
      3,
@@ -47,7 +47,7 @@
   },
   {
    "id": "1",
-   "d": 6.5,
+   "d": 5.7,
    "malin": [
     [
      4,
@@ -68,7 +68,7 @@
   },
   {
    "id": "1b",
-   "d": 5.68,
+   "d": 4.58,
    "malin": [
     [
      5,
@@ -76,12 +76,12 @@
     ],
     [
      6,
-     2.75
+     2.45
     ]
    ],
    "ljud": [
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     "gnagg-gullig/gnagg-gullig-7",
      1.5499999999999998
     ]
    ],
@@ -89,7 +89,7 @@
   },
   {
    "id": "2",
-   "d": 7.97,
+   "d": 6.77,
    "malin": [
     [
      7,
@@ -97,7 +97,7 @@
     ],
     [
      8,
-     4.45
+     4.05
     ]
    ],
    "ljud": [
@@ -106,32 +106,32 @@
      0.3
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
-     3.35
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     3.25
     ]
    ],
    "bild": "närbild fönstret med snön, klipp till zebran"
   },
   {
    "id": "3",
-   "d": 5.93,
+   "d": 5.13,
    "malin": [
     [
      9,
-     0.4
+     0.3
     ]
    ],
    "ljud": [
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust",
-     3.43
+     "gnagg-mjuk/gnagg-mjuk-fniss",
+     3.3299999999999996
     ]
    ],
    "bild": "halvnära, nickar, glatt skutt på \"Ja, vad kul!\""
   },
   {
    "id": "4",
-   "d": 15.53,
+   "d": 14.73,
    "malin": [
     [
      10,
@@ -144,7 +144,7 @@
      2.4
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     "gnagg-gullig/gnagg-gullig-7b",
      7.7
     ]
    ],
@@ -152,45 +152,53 @@
   },
   {
    "id": "5",
-   "d": 7.51,
+   "d": 6.41,
    "malin": [
     [
      11,
-     1.4
+     1.2
     ]
    ],
    "ljud": [
     [
      "strumpa/strumpa-1",
-     3.09
+     2.89
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust",
-     4.51
+     "tindra/tindra-1",
+     3.29
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     4.3100000000000005
     ]
    ],
    "bild": "närbild benen, strumpan glider på"
   },
   {
    "id": "6",
-   "d": 6.73,
+   "d": 5.63,
    "malin": [
     [
      12,
-     1.6
+     1.3
     ]
    ],
    "ljud": [
     [
+     "pling/pling-1",
+     1
+    ],
+    [
      "gnagg-mjuk/gnagg-mjuk-nyfiken-b",
-     4.63
+     4.33
     ]
    ],
    "bild": "lyfter andra benet: ingen strumpa, förvånad"
   },
   {
    "id": "7",
-   "d": 5.71,
+   "d": 4.81,
    "malin": [
     [
      13,
@@ -198,20 +206,20 @@
     ],
     [
      14,
-     3.3600000000000003
+     3.06
     ]
    ],
    "ljud": [
     [
      "gnagg-nej/gnagg-nej-3",
-     4.21
+     3.9099999999999997
     ]
    ],
    "bild": "närbild under sängen: bara golv"
   },
   {
    "id": "8",
-   "d": 5.73,
+   "d": 4.83,
    "malin": [
     [
      15,
@@ -219,52 +227,58 @@
     ],
     [
      16,
-     3.2199999999999998
+     2.92
     ]
    ],
    "ljud": [
     [
-     "gnagg-nej/gnagg-nej-4",
-     4.23
+     "gnagg-mjuk/gnagg-mjuk-nej",
+     3.93
     ]
    ],
    "bild": "närbild i korgen: tom"
   },
   {
    "id": "9",
-   "d": 11.64,
+   "d": 10.34,
    "malin": [
     [
      17,
-     2
+     1.6
     ],
     [
      18,
-     6.239999999999999
+     5.54
     ]
    ],
    "ljud": [
     [
      "gnagg-mjuk/gnagg-mjuk-trumpen",
-     5.04
+     4.64
     ]
    ],
    "bild": "närbild, öronen faller, lite ledsen"
   },
   {
    "id": "10",
-   "d": 5.66,
+   "d": 5.06,
    "malin": [
     [
      19,
-     0.4
+     0.3
+    ]
+   ],
+   "ljud": [
+    [
+     "swoosh/swoosh-1",
+     0.1
     ]
    ],
    "bild": "halvnära, kritan flyger in"
   },
   {
    "id": "11",
-   "d": 12.06,
+   "d": 11.46,
    "malin": [
     [
      20,
@@ -285,19 +299,19 @@
      9.54
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-nyfiken",
-     10.86
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     10.76
     ]
    ],
    "bild": "kritan ritar en mössa i luften, gisspaus, den fylls i pytteliten"
   },
   {
    "id": "12",
-   "d": 6.05,
+   "d": 5.05,
    "malin": [
     [
      22,
-     1.6
+     1.4
     ]
    ],
    "ljud": [
@@ -306,29 +320,19 @@
      0.3
     ],
     [
+     "pop/pop-1",
+     1.3
+    ],
+    [
      "gnagg-mjuk/gnagg-mjuk-fniss",
-     4.15
+     3.95
     ]
    ],
    "bild": "den lilla mössan sitter på örat"
   },
   {
    "id": "13",
-   "d": 12.57,
-   "malin": [
-    [
-     23,
-     0.3
-    ],
-    [
-     24,
-     4.46
-    ],
-    [
-     25,
-     7.99
-    ]
-   ],
+   "d": 12.27,
    "ljud": [
     [
      "krita-ritar/krita-ritar-3",
@@ -339,15 +343,19 @@
      4.0600000000000005
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fniss-b",
-     10.07
+     "landa-mjuk/landa-mjuk-1",
+     5.16
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-langt-fniss",
+     9.87
     ]
    ],
    "bild": "kritan ritar en jättestor, den glider ner över ögonen; \"där inne\": kanten lyfts"
   },
   {
    "id": "14",
-   "d": 9.88,
+   "d": 9.18,
    "malin": [
     [
      26,
@@ -360,7 +368,7 @@
    ],
    "ljud": [
     [
-     "prassel-tyg/prassel-tyg-1",
+     "swoosh/swoosh-2",
      0.2
     ],
     [
@@ -380,7 +388,7 @@
   },
   {
    "id": "15",
-   "d": 4.54,
+   "d": 4.14,
    "malin": [
     [
      28,
@@ -389,7 +397,7 @@
    ],
    "ljud": [
     [
-     "gnagg-mjuk/gnagg-mjuk-nyfiken-b",
+     "gnagg-mjuk/gnagg-mjuk-hej-b",
      1.54
     ]
    ],
@@ -397,7 +405,7 @@
   },
   {
    "id": "16",
-   "d": 2.7,
+   "d": 1.9,
    "malin": [
     [
      29,
@@ -414,36 +422,40 @@
   },
   {
    "id": "17",
-   "d": 9.72,
+   "d": 8.32,
    "malin": [
     [
      30,
-     1.2
+     1
     ],
     [
      31,
-     5.89
+     5.19
     ]
    ],
    "ljud": [
     [
      "prassel-tyg/prassel-tyg-1",
-     2.46
+     2.2600000000000002
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust",
-     4.09
+     "pop/pop-2",
+     2.8600000000000003
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fniss-b",
+     3.89
     ]
    ],
    "bild": "mössan glider ner på huvudet, kritan flyger ut"
   },
   {
    "id": "18",
-   "d": 4.45,
+   "d": 3.45,
    "malin": [
     [
      32,
-     1
+     0.8
     ]
    ],
    "ljud": [
@@ -456,62 +468,70 @@
   },
   {
    "id": "19",
-   "d": 6.19,
+   "d": 5.99,
    "malin": [
     [
      33,
-     1.4
+     1.2
     ]
    ],
    "ljud": [
     [
      "prassel-tyg/prassel-tyg-1",
-     2.5700000000000003
+     2.37
+    ],
+    [
+     "tindra/tindra-2",
+     3.37
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     4.49
     ]
    ],
-   "bild": "halsduken glider från kroken runt halsen"
+   "bild": "halsduken glider från kroken runt halsen, glad närbild"
   },
   {
    "id": "20",
-   "d": 9.88,
+   "d": 8.78,
    "malin": [
     [
      34,
-     0.6
+     0.5
     ],
     [
      35,
-     5.699999999999999
+     5.3
     ]
    ],
    "ljud": [
     [
      "gnagg-mjuk/gnagg-mjuk-mysig-suck",
-     4.5
+     4.3999999999999995
     ]
    ],
    "bild": "närbild, gosar in mulen i halsduken"
   },
   {
    "id": "21",
-   "d": 8.16,
+   "d": 7.16,
    "malin": [
     [
      36,
-     1
+     0.8
     ]
    ],
    "ljud": [
     [
      "gnagg-mjuk/gnagg-mjuk-nyfiken",
-     6.0600000000000005
+     5.86
     ]
    ],
    "bild": "tittar på foten, åt vänster och höger"
   },
   {
    "id": "22a",
-   "d": 7.15,
+   "d": 6.75,
    "malin": [
     [
      37,
@@ -533,11 +553,11 @@
   },
   {
    "id": "23",
-   "d": 4.92,
+   "d": 4.22,
    "malin": [
     [
      38,
-     0.6
+     0.5
     ]
    ],
    "ljud": [
@@ -547,72 +567,76 @@
     ],
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust",
-     3.2199999999999998
+     3.12
     ]
    ],
    "bild": "tån skimrar tydligt, zebran skuttar"
   },
   {
    "id": "24",
-   "d": 10.12,
+   "d": 8.82,
    "malin": [
     [
      39,
-     1.8
+     1.6
     ],
     [
      40,
-     6.87
+     6.170000000000001
     ]
    ],
    "ljud": [
     [
      "strumpa/strumpa-2",
-     3.47
+     3.2700000000000005
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
-     4.77
+     "tindra/tindra-3",
+     3.6700000000000004
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-mysig-suck-c",
+     4.57
     ]
    ],
    "bild": "kudden lutar, strumpan glider fram och på hoven"
   },
   {
    "id": "25",
-   "d": 7.28,
+   "d": 6.18,
    "malin": [
     [
      41,
-     0.8
+     0.6
     ],
     [
      42,
-     3.78
+     3.48
     ]
    ],
    "ljud": [
     [
      "glimt/glimt-1",
-     1
+     0.8
     ],
     [
      "glimt/glimt-2",
-     1.961
+     1.7610000000000001
     ],
     [
      "glimt/glimt-1",
-     2.98
+     2.7800000000000002
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-fortjust",
-     5.779999999999999
+     "gnagg-mjuk/gnagg-mjuk-fortjust-b",
+     5.48
     ]
    ],
-   "bild": "helbild, allt på, plaggen glimtar på färgerna"
+   "bild": "halvbild, allt på, plaggen glimtar på färgerna, stolt"
   },
   {
    "id": "26",
-   "d": 7.76,
+   "d": 6.66,
    "malin": [
     [
      43,
@@ -620,41 +644,45 @@
     ],
     [
      44,
-     3.38
+     3.08
     ]
    ],
    "ljud": [
     [
-     "gnagg-mjuk/gnagg-mjuk-langt-fniss",
-     5.56
+     "gnagg-mjuk/gnagg-mjuk-hej",
+     2.1799999999999997
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-langt-fniss-b",
+     5.26
     ]
    ],
    "bild": "tittar mot snön, nickar"
   },
   {
    "id": "27",
-   "d": 7.79,
+   "d": 6.69,
    "malin": [
     [
      45,
-     0.8
+     0.6
     ],
     [
      46,
-     4.78
+     4.28
     ]
    ],
    "ljud": [
     [
      "gnagg-gullig/gnagg-gullig-8c",
-     3.58
+     3.38
     ]
    ],
    "bild": "vinkar"
   },
   {
    "id": "28",
-   "d": 4.96,
+   "d": 4.16,
    "malin": [
     [
      47,
@@ -663,7 +691,7 @@
    ],
    "ljud": [
     [
-     "gnagg-gullig/gnagg-gullig-8d",
+     "gnagg-mjuk/gnagg-mjuk-hejda",
      2.46
     ]
    ],

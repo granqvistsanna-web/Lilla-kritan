@@ -25,6 +25,7 @@ Lägger du till ett ljud: ny mapp med filerna numrerade från 1, en rad i tabell
 | `klapp` | 2 | 0,1–0,3 s | en handklapp (dansen i 005) |
 | `elefant-trut` | 3 | 1–1,5 s | elefanten trumpetar, lite ljusare och mjukare än ett riktigt trumpetande (Kritans ABC E). 1 ur [Elephant voice - trumpeting](https://commons.wikimedia.org/wiki/File:Elephant_voice_-_trumpeting.ogg), தகவலுழவன், CC0; 2 ur [Elephant Trumpets Growls](https://freesound.org/people/D.jones/sounds/527845), D.jones, CC0; 3 ur [R01-34-Elephant trumpet](https://freesound.org/people/craigsmith/sounds/479814), craigsmith, CC0. Tonhöjd +12 %, diskanten dämpad (Openverse 2026-11-21). Ännu ej lyssnade |
 | `knack` | 3 | 0,25 s | någon knackar på en dörr, ett knack per fil (julkalendern lucka 13). Ur [wood_knock.wav](https://freesound.org/people/110110010/sounds/66397), 110110010, CC0 (Openverse 2026-11-12) |
+| `klonk` | 1 | 0,4 s | en mjuk träkloss landar, läggs under `plopp` när en kloss går ner i formlådan (053). Ur [Soft hit wooden block and sandish noise](https://freesound.org/people/jorickhoofd/sounds/161593), jorickhoofd, **CC BY 4.0: skriv "Soft hit wooden block by jorickhoofd (freesound.org), CC BY 4.0" i YouTube-texten** (Openverse 2026-11-25) |
 | `dunk` | 4 | 0,5–0,8 s | ett stamp (dinon stampar i 005) |
 | `boing` | 4 | 2 s | ett hopp |
 | `duns` | 4 | 1 s | landningen efter hoppet |

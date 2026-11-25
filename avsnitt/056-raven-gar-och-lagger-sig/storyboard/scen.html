@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Räven går och lägger sig scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 056 Räven går och lägger sig: kodscenerna för storyboarden (förlaga: 055 storyboard/scen.html, sovrummet ur 026 rum.js).
+     window.rad(id) ritar radens stillbild (id som i rader.mjs). Serveras från repots rot (bygg.mjs).
+     Räven ur sin v2-rigg (uttryck.html via v2-rigg.js, tunna kanter). Sovbilden, nattlampan och täcket är 056:s egna saker (saker/*/cut).
+     I kod: kvällsmörkret (varmt blått, aldrig svart), lampornas sken, skuggan på väggen, bulan i täcket, skimret, zzz, pilarna. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <filter id="silhuett" x="-20%" y="-20%" width="140%" height="140%">
+      <feFlood flood-color="#9C8CC8"/><feComposite in2="SourceAlpha" operator="in"/><feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
+    <radialGradient id="sken"><stop offset="0" stop-color="#FFE7A3" stop-opacity="0.8"/><stop offset="0.45" stop-color="#FFD57A" stop-opacity="0.3"/><stop offset="1" stop-color="#FFD57A" stop-opacity="0"/></radialGradient>
+    <radialGradient id="hal"><stop offset="0" stop-color="#000"/><stop offset="0.55" stop-color="#000" stop-opacity="0.85"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    <radialGradient id="vinjett" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#2a1c12" stop-opacity="0"/><stop offset="1" stop-color="#2a1c12" stop-opacity="1"/></radialGradient>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+    <clipPath id="tackeklipp" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-400" width="2400" height="1251"/></clipPath>
+    <clipPath id="fonsterklipp"><circle cx="556" cy="321" r="159"/></clipPath>
+    <mask id="morkmask" maskUnits="userSpaceOnUse" x="-200" y="-200" width="2400" height="1500"><rect x="-200" y="-200" width="2400" height="1500" fill="#fff"/><g id="haal"></g></mask>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="himmel"></g>
+    <g id="skugga"></g>
+    <g id="bak"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g id="sov"></g>
+    <g clip-path="url(#tackeklipp)"><g id="tacke"></g></g>
+    <g id="sang"></g>
+    <g id="golv" filter="url(#boil)"></g>
+    <g id="natt"></g>
+    <g id="fram"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', S = '/avsnitt/056-raven-gar-och-lagger-sig/saker/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => (+v).toFixed(1);
+
+// --- Bilderna och måtten (sovrummet som 026 rum.js) ------------------------------------------------------------------------
+const PLATTA = A + 'bakgrunder/sovrummet/sovrummet-v1.jpeg';
+const SANG = A + 'rekvisita/sangen/cut/sangen.png';
+const KUDDE = A + 'rekvisita/kudde/cut/kudde-v1-zebbe.png';
+const NALLE = { bild: A + 'rekvisita/nalle/cut/nalle-v2-ljus-tunn.png', w: 848, h: 856, fot: [424, 816], s: 0.196 };
+const TACKE = { bild: S + 'tacke/cut/tacke-mint.png', w: 1312, h: 534 };
+const LAMPBILD = { bild: S + 'nattlampa/cut/nattlampa.png', w: 615, h: 776, fot: [300, 770], skarm: [300, 250] };
+const SOVBILD = { bild: S + 'sovbild/cut/rav-sover.png', w: 1278, h: 656 };
+const GOLV = 905, GS = 0.59;                       // kroppen 430 px i plattan (format/bildutsnitt.md)
+const BX = 1000;                                   // räven bakom sängen, mitt i
+const FATKANT = 700;                               // rävens y (riggens ruta) vid madrassens överkant
+const RIM = 772;                                   // madrassens överkant (026)
+const SANG_BILD = { s: 0.6, x: 1000 - 0.6 * 636, y: RIM - 0.6 * 288, w: 1273, h: 667 };
+const BED = { x0: 663, x1: 1338, sida: 851, gavelV: 614 };
+const FONSTER = { cx: 556, cy: 321, r: 173 };
+const RUMSLAMPA = [1798, 640];
+const KUDDE_POS = [770, RIM + 2], NALLE_FOT = [1250, RIM + 14], NALLE_BREDVID = [1170, RIM + 10];
+const LAMPFOT = [400, 930];                        // nattlampan på golvet vid huvudgaveln
+const LAMPH = { liten: 70, stor: 820, lagom: 300 }; // de tre storlekarna (höjd i plattan)
+const GOLVSTA = [430, GOLV];                       // räven på golvet framför huvudgaveln (rad 1–3b)
+
+let L, G, VID;
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));   // line boil 2,5 px i bild, delat med zoomen
+}
+const HEL = () => kamera(1);
+const HALV = () => kamera(1.6, BX - 40, 600);
+const ANS = () => kamera(2.6, BX, VID[1] - (L.FOTTER - 440) * GS);
+const ANS_GOLV = () => kamera(2.6, GOLVSTA[0], GOLV - (L.FOTTER - 440) * GS);
+
+// --- Rummet --------------------------------------------------------------------------------------------------------------
+// natt 0–1: varmt kvällsblått (högst 0,42, aldrig svart); rumslampa 0–1; nattlampan { h, x, sken } ger ett hål i mörkret och ett sken
+function rum({ natt = 0, rumslampa = 1, ljus = [] } = {}) {
+  $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  $('sang').innerHTML = `<image href="${SANG}" x="${f1(SANG_BILD.x)}" y="${f1(SANG_BILD.y)}" width="${f1(SANG_BILD.w * SANG_BILD.s)}" height="${f1(SANG_BILD.h * SANG_BILD.s)}"/>`;
+  const { cx, cy, r } = FONSTER;
+  $('himmel').innerHTML = `<g clip-path="url(#fonsterklipp)"><rect x="${cx - r}" y="${cy - r}" width="${2 * r}" height="${2 * r}" fill="#3A4C8A"/>
+    ${[[-80, -60], [70, -90], [-40, 80], [90, 60], [-100, 20], [20, -30]].map(([dx, dy], i) => `<circle cx="${cx + dx}" cy="${cy + dy}" r="${4 + (i % 2) * 2}" fill="#FFF3C4"/>`).join('')}</g>`;
+  $('haal').innerHTML = ljus.map(([x, y, R]) => `<ellipse cx="${x}" cy="${y}" rx="${R}" ry="${R * 0.8}" fill="url(#hal)"/>`).join('');
+  $('natt').innerHTML = (natt > 0 ? `<rect x="-200" y="-200" width="2400" height="1500" fill="#2B3A78" opacity="${(0.42 * natt).toFixed(2)}" mask="url(#morkmask)"/>` : '')
+    + (rumslampa > 0 ? `<ellipse cx="${RUMSLAMPA[0]}" cy="${RUMSLAMPA[1] + 10}" rx="320" ry="240" fill="url(#sken)" opacity="${rumslampa}"/>` : '')
+    + ljus.map(([x, y, R]) => `<ellipse cx="${x}" cy="${y}" rx="${R * 0.9}" ry="${R * 0.72}" fill="url(#sken)"/>`).join('');
+}
+// nattlampan med foten i (x, y) och höjden h; tand = lyser (skärmen ljusare)
+function lampa([x, y], h, { tand = false, kontur = null } = {}) {
+  const s = h / 760, { w, h: ih, fot } = LAMPBILD;
+  const t = `translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(4)}) translate(${-fot[0]} ${-fot[1]})`;
+  lagg('golv', `<ellipse cx="${f1(x + 4)}" cy="${f1(y + 2)}" rx="${f1(h * 0.3)}" ry="${f1(h * 0.05)}" fill="#5a3e2a" opacity="0.18" filter="url(#mjukskugga)"/>`);
+  if (kontur != null) { lagg('golv', `<g transform="${t}"><path d="${KL.d}" pathLength="1" fill="none" stroke="#8a5a1e" stroke-width="${f1(6 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${kontur} 2"/></g>`); return; }
+  lagg('golv', `<g transform="${t}"><image href="${LAMPBILD.bild}" width="${w}" height="${ih}"/>${tand ? `<circle cx="${LAMPBILD.skarm[0]}" cy="${LAMPBILD.skarm[1]}" r="235" fill="#FFF6C8" opacity="0.55"/>` : ''}</g>`);
+}
+const lampSkarm = ([x, y], h) => [x, y - h * (770 - 250) / 760];
+// nallen (x, y) = underkanten mitt; ansiktet i kod som 026 nalleBild
+function nalle([x, y], s = NALLE.s, lager = 'bak', { blund = 0 } = {}) {
+  const NV = { ogon: [[352, 246], [498, 246]], kinder: [[306, 304], [544, 304]], nos: [425, 300], mun: [425, 338] }, [nx, ny] = NV.nos, [mx, my] = NV.mun;
+  const ans = `<ellipse cx="${nx}" cy="${ny + 14}" rx="70" ry="52" fill="#F1DFC1"/><ellipse cx="${nx}" cy="${ny}" rx="20" ry="14" fill="#3a1d12"/>`
+    + NV.kinder.map(([kx, ky]) => `<ellipse cx="${kx}" cy="${ky}" rx="28" ry="17" fill="#ec8f96" opacity=".8"/>`).join('')
+    + NV.ogon.map(([ox, oy]) => blund ? `<path d="M${ox - 19} ${oy} Q${ox} ${oy + 15} ${ox + 19} ${oy}" fill="none" stroke="#140c08" stroke-width="7" stroke-linecap="round"/>`
+      : `<ellipse cx="${ox}" cy="${oy}" rx="19" ry="26" fill="#140c08" stroke="#f3e6d6" stroke-width="3"/><circle cx="${ox - 6}" cy="${oy - 10}" r="7" fill="#fff"/>`).join('')
+    + `<path d="M${mx - 22} ${my - 6} Q${mx - 11} ${my + 6} ${mx} ${my - 4} Q${mx + 11} ${my + 6} ${mx + 22} ${my - 6}" fill="none" stroke="#3a2a22" stroke-width="5" stroke-linecap="round"/>`;
+  lagg(lager, `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s}) translate(${-NALLE.fot[0]} ${-NALLE.fot[1]})"><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${ans}</g>`);
+}
+const kudde = () => lagg('bak', `<g transform="translate(${KUDDE_POS[0]} ${KUDDE_POS[1]}) scale(0.2) translate(-512 -930)"><image href="${KUDDE}" width="1024" height="1024"/></g>`);
+// täcket över sängen från x0 till fotgaveln, överkanten på y; bula: nallen under täcket med ett öra som sticker fram
+function tacke(x0 = 860, y = RIM - 70, { bula = false } = {}) {
+  const w = BED.x1 - 20 - x0, s = w / TACKE.w;
+  lagg('tacke', `<image href="${TACKE.bild}" x="${x0}" y="${y}" width="${f1(w)}" height="${f1(TACKE.h * s)}" preserveAspectRatio="none"/>`);
+  if (bula) { const bx = 1220, by = y + 10;
+    lagg('tacke', `<path d="M${bx - 80} ${by + 6} Q${bx - 40} ${by - 34} ${bx} ${by - 36} Q${bx + 40} ${by - 34} ${bx + 80} ${by + 6}Z" fill="#8FD6B8" stroke="#FFFDF6" stroke-width="5"/>
+      <g transform="translate(${bx + 22} ${by - 34}) rotate(-15)"><path d="M-17 4 A17 17 0 1 1 17 4Z" fill="#B07A4A" stroke="#FFFDF6" stroke-width="4"/><path d="M-9 3 A9 9 0 1 1 9 3Z" fill="#E8C49A"/></g>`); }
+}
+// sovbilden: kudden mot huvudgaveln, underkanten strax under madrassens kant
+function sovbild() { const h = 300, w = h * SOVBILD.w / SOVBILD.h; lagg('sov', `<image href="${SOVBILD.bild}" x="${BED.gavelV + 70}" y="${RIM + 40 - h}" width="${f1(w)}" height="${h}"/>`); }
+
+// --- Räven ---------------------------------------------------------------------------------------------------------------
+function rav([x, fot], f, p, { bakom = false, s = GS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+  if (bakom) G.querySelectorAll('.leg-l,.leg-r,.skugga').forEach(e => e.setAttribute('opacity', 0));
+}
+// skuggan på väggen: en kopia av räven, mjuk och ljust lila, k gånger större kring fötterna
+function vaggskugga(k, dx = 0) {
+  const c = G.cloneNode(true); c.removeAttribute('id');
+  c.setAttribute('transform', `translate(${BX + dx} ${VID[1] - 40}) scale(${GS * k}) translate(-512 ${-L.FOTTER})`);
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'); g.setAttribute('filter', 'url(#silhuett)'); g.setAttribute('opacity', '0.55');
+  g.appendChild(c); $('skugga').appendChild(g);
+}
+const P = o => ({ ...L.POSE0, ...o });
+const POSE = (n, o = {}) => ({ ...L.POSE0, ...L.POSER[n], ...o });
+const F = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'fnissig', 'stolt', 'flinar'].includes(n) ? { glad: [0, 0] } : {}), ...o });
+const VINK = { armar: [0, 95] };
+const RADD = () => F('ledsen', { ogonS: [1.2, 1.2], titt: [-8, 0] });   // lite rädd: stora ögon, inte läskigt
+const LATTAD = () => F('glad', { glad: [1, 1], le: 1.1 });
+
+// --- Pilar, kritan, skimmer, zzz -------------------------------------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', kritaBild(x, y, { v, s }));
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${f1(r)})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+const skimmer = (x, y, k, v = 1) => lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
+  .map(([dx, dy, s]) => stjarna(x + dx * 46 * v, y + dy * 40 * v, 18 * s * k * v, Math.min(1, 0.4 + k))).join(''));
+const zzz = (x, y) => lagg('fram', [0, 1, 2].map(i => { const zx = x + 22 * i, zy = y - 60 * i, r = 10 + 5 * i;
+  return `<path d="M${zx - r} ${zy - r} H${zx + r} L${zx - r} ${zy + r} H${zx + r}" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M${zx - r} ${zy - r} H${zx + r} L${zx - r} ${zy + r} H${zx + r}" fill="none" stroke="#7a4a32" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`; }).join(''));
+const oronpilar = (y0 = 150) => { const [x, y] = iFig(VID, [512, y0]); lagg('pilar', rakpil(x - 140, y + 10, x - 160, y - 30, 3) + rakpil(x + 140, y + 10, x + 160, y - 30, 3)); };
+const iris = () => { const [cx, cy] = [BX - 60, RIM - 120], r = 360;
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+    return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+  lagg('pilar', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`); };
+const varm = () => lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)" opacity="0.12"/>');
+
+// --- Ritintrot: kritan ritar nallen ---------------------------------------------------------------------------------------
+let KN, KL;
+function papperNalle(k, fyll) {
+  $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/><rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`;
+  kamera(1);
+  const s = 0.75, x0 = 960 - 424 * s, y0 = 560 - 430 * s, t = `translate(${x0} ${y0}) scale(${s})`;
+  lagg('bak', `<g transform="${t}"><path d="${KN.d}" pathLength="1" fill="none" stroke="#6b4a2a" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2" opacity="${1 - 0.8 * fyll}"/>
+    <image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}" clip-path="url(#fyllklipp)"/></g>`);
+  $('fyllcirkel').setAttribute('cx', 424); $('fyllcirkel').setAttribute('cy', 430); $('fyllcirkel').setAttribute('r', 620 * fyll);
+  const p = $('bak').querySelector('path'), pt = p.getPointAtLength(p.getTotalLength() * Math.min(k, 0.999));
+  if (k < 1) krita(x0 + pt.x * s, y0 + pt.y * s, 125, 0.42);
+  else if (fyll < 1) krita(1440, 380, 140, 0.42);
+  if (fyll >= 1) lagg('fram', [[700, 330], [1220, 420], [760, 760]].map(([x, y]) => stjarna(x, y, 22, 0.9)).join(''));
+}
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const kvall = (o = {}) => rum({ natt: 0, rumslampa: 1, ...o });
+const morkt = (ljus = []) => rum({ natt: 1, rumslampa: 0, ljus });
+const iSang = (f, p = {}) => rav(VID, f, P(p), { bakom: true });
+const paGolv = (f, p = {}) => rav(GOLVSTA, f, P(p));
+const sken = (h, [x, y] = LAMPFOT, R) => { const [sx, sy] = lampSkarm([x, y], h); return [sx, sy, R ?? h * 2.2]; };
+const LITEN_VID_FOTEN = [1305, RIM + 6];           // den lilla lampan på sängens fotände (rad 13–24)
+const LITEN_VID_NALLE = [1255, RIM + 6];
+
+const RAD = {
+  '00': () => lagg('ram', `<rect width="1920" height="1080" fill="#FBF7EE"/><text x="960" y="580" style="font:700 120px Fredoka,'Arial Rounded MT Bold',system-ui;fill:#e2574c;text-anchor:middle">Lilla Kritan</text>`),
+  '01a': () => papperNalle(0.55, 0),
+  '01b': () => papperNalle(1, 0),
+  '01c': () => { papperNalle(1, 1); lagg('pilar', `<rect x="560" y="260" width="800" height="560" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { kvall(); HEL(); kudde(); nalle(NALLE_FOT); paGolv(F('glad'), VINK); lagg('pilar', rakpil(40, 860, 300, 860, 8)); varm(); },
+  '1b': () => { kvall(); ANS_GOLV(); paGolv(F('flinar'), {}); varm(); },
+  '2': () => { kvall(); kamera(2.4, FONSTER.cx, FONSTER.cy + 20); skimmer(FONSTER.cx + 60, FONSTER.cy - 70, 0.5, 0.5); varm(); },
+  '3': () => { kvall(); kamera(3.0, NALLE_FOT[0], NALLE_FOT[1] - 70); kudde(); nalle(NALLE_FOT); tacke(860, RIM - 10); skimmer(NALLE_FOT[0] + 70, NALLE_FOT[1] - 140, 0.6, 0.5); varm(); },
+  '3r': () => { kvall(); ANS_GOLV(); paGolv(F('jatteglad', { titt: [14, 4] }), { oron: [-8, -8], svans: 14, rikt: 0.3 }); varm(); },
+  '3b': () => { kvall(); kamera(1.6, 700, 620); kudde(); nalle(NALLE_FOT); tacke(860, RIM - 10); paGolv(F('nyfiken', { titt: [14, 6] }), { rikt: 0.4 });
+    const [x, y] = iFig(GOLVSTA, [512, 150]); lagg('pilar', rakpil(x - 130, y, x - 150, y - 36, 4) + rakpil(x + 130, y, x + 150, y - 36, 4)); varm(); },
+  '4': () => { kvall(); kamera(1.6, BX - 60, 640); kudde(); nalle(NALLE_BREDVID); tacke(1060, RIM - 10); iSang(F('glad'), { armar: [20, 20] });
+    lagg('pilar', pil(`M${GOLVSTA[0] + 40} ${GOLV - 200} Q${GOLVSTA[0] + 300} ${RIM - 420} ${BX - 120} ${RIM - 330}`, BX - 120, RIM - 330, 0.5, 6)
+      + rakpil(NALLE_FOT[0] + 40, RIM - 60, NALLE_BREDVID[0] + 40, RIM - 80, 4)); varm(); },
+  '5': () => { kvall(); kamera(2.2, BX + 60, RIM - 120); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('kawaii', { glad: [1, 1] }), { luta: 6 }); varm(); },
+
+  '6': () => { morkt(); kamera(3.0, RUMSLAMPA[0] - 60, RUMSLAMPA[1] + 20); lagg('pilar', `<text x="${RUMSLAMPA[0] - 80}" y="${RUMSLAMPA[1] - 90}" style="font:700 30px system-ui;fill:#fff;text-anchor:middle;paint-order:stroke;stroke:#c0392b;stroke-width:6">släcks</text>`); },
+  '7': () => { morkt(); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(RADD(), { oron: [14, 14], svans: -10 });
+    const [x, y] = iFig(VID, [512, 380]); lagg('pilar', rakpil(x - 40, y, x - 120, y, 3) + rakpil(x + 40, y, x + 120, y, 3)); },
+  '8': () => { morkt(); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('ledsen', { le: -0.3 }), { oron: [16, 16], svans: -16, upp: -0.3 }); },
+
+  '9a': () => { morkt(); kamera(2.2, LAMPFOT[0] + 40, LAMPFOT[1] - 110); lampa(LAMPFOT, LAMPH.liten, { kontur: 0.6 });
+    const [x, y] = lampSkarm(LAMPFOT, LAMPH.liten); krita(x + 20, y - 10, 125, 0.33 * 0.7); },
+  '9b': () => { morkt(); kamera(2.2, LAMPFOT[0] + 40, LAMPFOT[1] - 110); lampa(LAMPFOT, LAMPH.liten, { kontur: 1 }); krita(LAMPFOT[0] + 140, LAMPFOT[1] - 190, 140, 0.33 * 0.7); },
+  '10': () => { morkt([sken(LAMPH.liten, LAMPFOT, 70)]); kamera(2.2, LAMPFOT[0] + 40, LAMPFOT[1] - 110); lampa(LAMPFOT, LAMPH.liten, { tand: true }); },
+  '10r': () => { morkt([sken(LAMPH.liten, LAMPFOT, 70)]); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('tanker', { titt: [-14, 12] }), { upp: -0.6, oron: [-10, 6], rikt: -0.3 }); },
+  '11': () => { morkt(); HEL(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('nyfiken', { titt: [-14, -10] }), { upp: 0.8, rikt: -0.4 });
+    lampa(LAMPFOT, LAMPH.stor, { kontur: 0.7 }); const [x, y] = lampSkarm(LAMPFOT, LAMPH.stor); krita(x + 230, y - 60, 125, 0.33); },
+  '12': () => { rum({ natt: 0, rumslampa: 0 }); HEL(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('fnissig', { glad: [1, 1] }), { oron: [-12, -12] });
+    lampa(LAMPFOT, LAMPH.stor, { tand: true }); lagg('natt', `<rect x="-200" y="-200" width="2400" height="1500" fill="#FFF3C8" opacity="0.38"/>`); },
+  '12r': () => { rum({ natt: 0, rumslampa: 0 }); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('fnissig', { glad: [1, 1] }), { oron: [-12, -12], svans: 16, luta: 3 });
+    lagg('natt', `<rect x="-200" y="-200" width="2400" height="1500" fill="#FFF3C8" opacity="0.38"/>`); },
+  '13': () => { morkt(); HEL(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('nyfiken', { titt: [-14, -6] }), { rikt: -0.4 });
+    lampa(LAMPFOT, LAMPH.stor, { kontur: 0.4 }); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true });
+    const [x, y] = lampSkarm(LAMPFOT, LAMPH.stor); krita(x + 40, y + 300, 125, 0.33);
+    lagg('pilar', rakpil(LAMPFOT[0] + 40, LAMPFOT[1] - 40, LITEN_VID_FOTEN[0] - 60, LITEN_VID_FOTEN[1] - 30, 5)); },
+  '14': () => { morkt([sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HALV(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('nyfiken', { titt: [-14, 4] }), { rikt: -0.4 });
+    lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { kontur: 0.75 }); const [x, y] = lampSkarm(LAMPFOT, LAMPH.lagom); krita(x + 70, y + 40, 125, 0.33 * 0.7); },
+  '15': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HALV(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(LATTAD(), { oron: [-6, -6], svans: 10 }); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true }); },
+  '15r': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('kawaii', { glad: [0, 0], titt: [-12, 0] }), { oron: [-8, -8], rikt: -0.3, armar: [-72, -72], fram: [1, 1] }); },
+  '16': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HALV(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('stolt'), POSE('stolt')); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true });
+    const [x, y] = iFig(VID, [512, 260]); lagg('pilar', rakpil(x, y - 30, x, y + 20, 4)); },
+
+  '17': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HEL(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('forvanad', { titt: [10, -10] }), { upp: 0.5 }); vaggskugga(1.3, 60); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true }); },
+  '18': () => { const n = [LAMPFOT[0] + 140, LAMPFOT[1] - 20]; morkt([sken(LAMPH.lagom, n), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HEL(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('glad', { titt: [10, -10] }), { upp: 0.6 }); vaggskugga(2.1, 160); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(n, LAMPH.lagom, { tand: true });
+    lagg('pilar', rakpil(LAMPFOT[0] - 40, LAMPFOT[1] + 50, n[0] + 20, n[1] + 50, 6)); },
+  '19': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HEL(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('skrattar'), { oron: [-12, 4] }); vaggskugga(0.85, 30); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true });
+    lagg('pilar', rakpil(LAMPFOT[0] + 120, LAMPFOT[1] + 50, LAMPFOT[0] - 20, LAMPFOT[1] + 50, 6)); },
+  '19b': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); ANS(); kudde(); tacke(880, RIM - 60);
+    iSang(F('glad', { mun: [16, 12, 1, 458], titt: [0, 0] }), { oron: [-6, -6] }); oronpilar(); },
+
+  '20': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HALV(); kudde(); tacke(880, RIM - 60, { bula: true });
+    iSang(F('forvanad', { titt: [-16, 4] }), { oron: [-10, -10] }); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true });
+    lagg('pilar', `<ellipse cx="${NALLE_BREDVID[0]}" cy="${NALLE_BREDVID[1] - 70}" rx="70" ry="80" fill="none" stroke="#c0392b" stroke-width="5" stroke-dasharray="12 9"/>`);
+    const [x, y] = iFig(VID, [512, 380]); lagg('pilar', rakpil(x - 40, y, x - 120, y, 3) + rakpil(x + 40, y, x + 120, y, 3)); },
+  '21': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); kamera(2.8, 1210, RIM - 70); kudde(); tacke(880, RIM - 60, { bula: true });
+    lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); skimmer(1236, RIM - 120, 0.3, 0.4); },
+  '22': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); kamera(2.8, 1210, RIM - 70); kudde(); tacke(880, RIM - 60, { bula: true });
+    lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); skimmer(1236, RIM - 120, 1, 0.5); },
+  '23': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_FOTEN, 70)]); HALV(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(LATTAD(), { luta: 5 }); lampa(LITEN_VID_FOTEN, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true });
+    lagg('pilar', rakpil(1240, RIM - 10, NALLE_BREDVID[0] + 10, RIM - 100, 5)); },
+  '23r': () => { morkt([sken(LAMPH.lagom)]); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60); iSang(F('jatteglad'), POSE('hurra', { svans: 14 })); },
+  '24': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_NALLE, 110)]); kamera(2.6, NALLE_BREDVID[0] + 40, RIM - 90); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('stolt', { titt: [10, 6] }), { rikt: 0.3 }); lampa(LITEN_VID_NALLE, LAMPH.liten, { tand: true });
+    lagg('pilar', rakpil(LITEN_VID_FOTEN[0] + 30, RIM + 30, LITEN_VID_NALLE[0] + 30, RIM - 20, 3)); },
+
+  '25': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_NALLE, 110)]); HALV(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('somnig', { titt: [-12, 0] }), { rikt: -0.3, oron: [8, 8] }); lampa(LITEN_VID_NALLE, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true }); },
+  '25b': () => { morkt([sken(LAMPH.lagom)]); ANS(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('gapar', { glad: [1, 1], lock: [0, 0], tand: 0, tunga: 0, mun: [30, 36, 0, 466] }), { oron: [10, 10], strack: 0.04 }); },
+  '26': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_NALLE, 110)]); HALV(); kudde(); nalle(NALLE_BREDVID); tacke(880, RIM - 60);
+    iSang(F('somnig'), { ...VINK, oron: [8, 8] }); lampa(LITEN_VID_NALLE, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true }); },
+  '27': () => { morkt([sken(LAMPH.lagom), sken(LAMPH.liten, LITEN_VID_NALLE, 110)]); kamera(1.5, BX - 40, 640); sovbild(); nalle(NALLE_BREDVID, NALLE.s, 'bak', { blund: 1 }); tacke(980, RIM - 50);
+    lampa(LITEN_VID_NALLE, LAMPH.liten, { tand: true }); lampa(LAMPFOT, LAMPH.lagom, { tand: true }); zzz(BX - 60, RIM - 230); },
+  '28': () => { RAD['27'](); $('pilar').innerHTML = ''; iris(); },
+};
+
+window.rad = id => {
+  ['platta', 'himmel', 'skugga', 'bak', 'sov', 'tacke', 'sang', 'golv', 'natt', 'fram', 'pilar', 'ram', 'haal'].forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('raven-rut');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  [KN, KL] = await Promise.all(['nalle-kontur.json', 'lampa-kontur.json'].map(f => fetch(f).then(r => r.json())));
+  VID = [BX, RIM + (L.FOTTER - FATKANT) * GS];
+  const finns = u => new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = u; });
+  await Promise.all([PLATTA, SANG, KUDDE, NALLE.bild, TACKE.bild, LAMPBILD.bild, SOVBILD.bild].map(finns));
+  window.kant?.lagg(G);
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>

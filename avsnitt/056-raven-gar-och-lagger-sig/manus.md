@@ -1,6 +1,6 @@
 # Avsnitt 056 – Räven går och lägger sig (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-25 ("Ja, vidare till saker"). **Räven i stället för grisen** (Sanna 2026-11-25). **Samtalsrepliker tillagda 2026-11-25** (10 nya, märkta 🆕), ✅ godkända 2026-11-25 ("Ja, de är bra"). Grind 2 (saker): täcket mintgrönt nr 1 ✅ valt 2026-11-25; sovbilden nr 4 ✅ vald 2026-11-25 (Sanna: "Keep nr 4"), urklippt till `saker/sovbild/cut/rav-sover.png` med 7 px kant (ca 1 %); de första fyra (lång fyrbent räv) kasserade. Nattlampan nr 4 ✅ vald 2026-11-25, urklippt till `saker/nattlampa/cut/nattlampa.png`. **Grind 2 klar.** Nattlampan: Flow gjorde den men den gick inte att hämta, görs om. **Grind 3 (rösten) 2026-11-25:** ElevenLabs, Malin, v3, två varianter (`produktion/ljud-original/roster/raven-gar-och-lagger-sig/malin-tagning-1a.mp3` 2:16 och `-1b.mp3` 2:03). 1a delad i 44 filer i `assets/ljud/roster/raven-gar-och-lagger-sig/`, alla stämmer mot manuset med whisper; 43 klipptes om för hand (slutade tvärt), alla normaliserade till −3 dBFS, längderna i `rost-langder.txt` (95 s tal). ✅ **Godkänd 2026-11-25** (Sanna: alla 44 repliker är bra). **Grind 4 klar 2026-11-25:** första tagningarna (`rav-gullig-1…8`, `rav-fniss-1` och `-3`, `lampa-klick-1`). Inget är byggt, mappen har bara det här manuset. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlagor: [026 Zebran går och lägger sig](../026-zebran-gar-och-lagger-sig/manus.md) (sovrummet, sängen, nallen som letas fram) och [040 Leoparden går och lägger sig](../040-leoparden-gar-och-lagger-sig/manus.md) (kritan ritar ett ljus som får lysa hela natten). **Det som är nytt:** problemet är att **det är för mörkt**, och kritan ritar en nattlampa tre gånger: **för liten, för stor, lagom** ([`format/berattelse.md`](../../format/berattelse.md), "Fel först, sedan rätt"). Inget *"Gäsp … god natt!"* tre gånger, ingen gäspa-med, ingen tittut.
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-25 ("Ja, vidare till saker"). **Räven i stället för grisen** (Sanna 2026-11-25). **Samtalsrepliker tillagda 2026-11-25** (10 nya, märkta 🆕), ✅ godkända 2026-11-25 ("Ja, de är bra"). Grind 2 (saker): täcket mintgrönt nr 1 ✅ valt 2026-11-25; sovbilden nr 4 ✅ vald 2026-11-25 (Sanna: "Keep nr 4"), urklippt till `saker/sovbild/cut/rav-sover.png` med 7 px kant (ca 1 %); de första fyra (lång fyrbent räv) kasserade. Nattlampan nr 4 ✅ vald 2026-11-25, urklippt till `saker/nattlampa/cut/nattlampa.png`. **Grind 2 klar.** Nattlampan: Flow gjorde den men den gick inte att hämta, görs om. **Grind 3 (rösten) 2026-11-25:** ElevenLabs, Malin, v3, två varianter (`produktion/ljud-original/roster/raven-gar-och-lagger-sig/malin-tagning-1a.mp3` 2:16 och `-1b.mp3` 2:03). 1a delad i 44 filer i `assets/ljud/roster/raven-gar-och-lagger-sig/`, alla stämmer mot manuset med whisper; 43 klipptes om för hand (slutade tvärt), alla normaliserade till −3 dBFS, längderna i `rost-langder.txt` (95 s tal). ✅ **Godkänd 2026-11-25** (Sanna: alla 44 repliker är bra). **Grind 4 klar 2026-11-25:** första tagningarna (`rav-gullig-1…8`, `rav-fniss-1` och `-3`, `lampa-klick-1`). **Grind 5 (animatik) 2026-11-25:** `storyboard/` (rader.mjs, scen.html, bygg.mjs; förlaga 055 och 026:s sovrum), 42 stillbilder med reaktionsslagen som egna bilder, 3:12 med loggan, `storyboard/animatik.mp4` med Malin, rävens ljud och effekterna. Tiderna för scenen i `scener/sovrummet/rader.json`. Uppe på feedbacksidan. **Väntar på Sannas granskning.** Inget är byggt, mappen har bara det här manuset. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`. Förlagor: [026 Zebran går och lägger sig](../026-zebran-gar-och-lagger-sig/manus.md) (sovrummet, sängen, nallen som letas fram) och [040 Leoparden går och lägger sig](../040-leoparden-gar-och-lagger-sig/manus.md) (kritan ritar ett ljus som får lysa hela natten). **Det som är nytt:** problemet är att **det är för mörkt**, och kritan ritar en nattlampa tre gånger: **för liten, för stor, lagom** ([`format/berattelse.md`](../../format/berattelse.md), "Fel först, sedan rätt"). Inget *"Gäsp … god natt!"* tre gånger, ingen gäspa-med, ingen tittut.
 
 **Reglerna för den här omgången (Sanna 2026-11-25):** inga uppmaningar till barnet att göra något med kroppen; barnets del är att **leta** (nallen under täcket). Lärotemat **stor och liten** ligger i nattlamporna, skuggan på väggen och den lilla lampan som nallen får på slutet, aldrig som lektion. Ritintrot ritar **nallen**, inte räven.
 
@@ -75,9 +75,9 @@ Kritan ritar **nallen** (Sanna 2026-11-25: en sak ur berättelsen, inte figuren)
 | 1 | Helbild, sovrummet i kvällsljus, lampan lyser. Räven kommer in på golvet framför sängen och vinkar | Hej, räven! Hej, hej! | `tass`, `rav-gullig-1` (hej) |
 | 1b 🆕 | Halvbild, räven visar tänderna i ett stort leende (`flinar`) och nickar i pausen | Har du borstat tänderna? *(paus: räven svarar)* Ja, vad bra! | `rav-gullig-2` (förtjust) i pausen |
 | 2 | Halvbild, räven vid sängen. **Närbild på fönstret på *"kväll"*** (kvällshimmel), sedan tillbaka | Det är kväll nu. Snart ska räven sova. | `rav-gullig-5` (nyfiken) |
-| 3 | **Närbild på nallen på fotänden på *"nallen"***, räven tittar dit | Och där är nallen! | `rav-gullig-2` (förtjust) |
+| 3 | **Närbild på nallen på fotänden på *"nallen"***, räven tittar dit | Och där är nallen! | `rav-gullig-3` (kort fniss) |
 | 3b 🆕 | Halvbild, räven tittar på nallen och sedan på sängen, öronen vippar i pausen | Ska nallen också sova? *(paus: räven svarar)* Ja, så klart! | `rav-gullig-7` (pratar) i pausen |
-| 4 | Helbild, räven hoppar upp bakom sängen, nallen glider upp bredvid kudden | Räven hoppar upp i sängen! | `hopp-mjuk`, `puff`, `nalle-hopp` |
+| 4 | Halvbild på sängen, räven hoppar upp bakom madrassen, nallen glider upp bredvid kudden | Räven hoppar upp i sängen! | `hopp-mjuk`, `puff`, `nalle-hopp` |
 | 5 | Halvbild, räven lutar sig mot nallen och sluter ögonen | Mmm … räven kramar nallen. *(paus: räven myser)* 🆕 Åh, vad mjuk nallen är! | `rav-gullig-4` (mysig suck) i pausen |
 | 6 | **Närbild på lampan på *"lampan"***, skenet släcks, rummet blir kvällsblått | Nu släcker vi lampan. | `lampa-klick` |
 | 7 | Närbild i mörkret (reaktionsslaget), rävens ögon blir stora, tittar åt sidorna | Oj! Så mörkt! Räven ser ingenting. | `rav-gullig-5` (nyfiken) |
@@ -88,17 +88,17 @@ Kritan ritar **nallen** (Sanna 2026-11-25: en sak ur berättelsen, inte figuren)
 | 12 | Lampan tänds på *"Klick"*, hela rummet blir alldeles ljust, räven kniper ihop ögonen | Klick … oj, lampan är för stor! Så ljust! | `lampa-klick`, `rav-fniss-1` |
 | 13 | Kritan suddar den stora lampan (linjen baklänges), det blir mörkt igen. Den lilla lampan glider till fotänden | Kritan suddar bort den stora lampan. | `krita-ritar` baklänges, lågt |
 | 14 | Halvbild, **kritan ritar en lagom lampa**, lika hög som huvudgaveln | Kritan ritar en lampa till … | `krita-ritar`, `glitter` |
-| 15 | Lampan tänds på *"Klick"*, ett mjukt varmt sken över sängen och räven. Räven tittar på lampan, kawaii-ögon | Klick … nu är lampan lagom! Varsågod, räven. *(paus: räven svarar, kawaii-ögon)* 🆕 Oj, vad fint lampan lyser! | `lampa-klick`, `tindra`, `rav-gullig-2` i pausen |
+| 15 | Lampan tänds på *"Klick"*, ett mjukt varmt sken över sängen och räven. Närbild: räven blir lättad (suck, axlarna sjunker), sedan kawaii-ögon | Klick … nu är lampan lagom! Varsågod, räven. *(paus: räven svarar, kawaii-ögon)* 🆕 Oj, vad fint lampan lyser! | `lampa-klick`, `tindra`, `rav-gullig-4` (lättad suck) i pausen |
 | 16 | Halvbild, räven tittar på lampan | Ska vi säga tack? *(paus 2,5 s)* Tack! | `rav-gullig-5`, sedan `rav-gullig-2`, nickar direkt |
 | 17 | Helbild, rävens skugga syns på väggen bakom den | Oj! Titta, en skugga på väggen! | `rav-gullig-5` |
 | 18 | Lampan glider närmare, skuggan växer nästan till taket | En stor räv på väggen! | `rav-gullig-7` (pratar) |
 | 19 | Lampan glider tillbaka, skuggan blir liten. Räven vickar på öronen, skuggan vickar med | Och en liten räv på väggen! | `rav-fniss-3` |
 | 19b 🆕 | Halvbild, räven tittar på Malin (tittaren) och "pratar" om skuggorna, öronen vippar | *(paus: räven pratar)* Jaså, tycker du att skuggan är rolig? Mm, jag också. | `rav-gullig-7` (pratar) före repliken |
 | 20 | Halvbild, räven vänder sig mot nallens plats: den är tom. Räven tittar åt vänster, sedan åt höger | Oj, var är nallen? Räven vet inte var. | `rav-gullig-5` (nyfiken) |
-| 21 | Bred bild över sängen för frågan, sedan **klipp till närbild på täcket**: bulan och ett öra som sticker fram. Örat skimrar efter 3 s | Kan du hjälpa räven? Ser du nallen? *(paus 5,5 s)* | `lysmask-1` lågt |
-| 22 | Örat skimrar tydligt | Ja, där! Under täcket! | `tindra`, `rav-gullig-2` |
-| 23 | Nallen glider upp ur täcket och sätter sig bredvid räven, räven lutar sig mot den | Där är nallen! | `prassel-tyg`, `nalle-hopp`, `rav-gullig-4` |
-| 24 | **Närbild på den lilla lampan på *"lilla"***: den glider upp bredvid nallen, dess sken lyser runt nallen | Och den lilla lampan … den får nallen! | `glimt`, `rav-gullig-2` |
+| 21 | Halvnära över sängen för frågan, sedan **klipp till närbild på täcket**: bulan och ett öra som sticker fram. Örat skimrar efter 3 s | Kan du hjälpa räven? Ser du nallen? *(paus 5,5 s)* | `lysmask-1` lågt |
+| 22 | Örat skimrar tydligt | Ja, där! Under täcket! | `tindra`, `rav-gullig-3` (kort fniss) |
+| 23 | Nallen glider upp ur täcket och sätter sig bredvid räven, räven lutar sig mot den | Där är nallen! | `prassel-tyg`, `nalle-hopp`, `rav-gullig-2` (förtjust) |
+| 24 | **Närbild på den lilla lampan på *"lilla"***: den glider upp bredvid nallen, dess sken lyser runt nallen | Och den lilla lampan … den får nallen! | `glimt`, `rav-gullig-7` (pratar) |
 | 25 | Halvbild, räven tittar på den lagom lampan | Lampan får lysa hela natten. | `rav-gullig-4` (mysig suck) |
 | 25b 🆕 | Halvbild, räven gäspar stort i pausen (O-mun, ögonen kniper ihop) | Är du sömnig nu? *(paus: räven gäspar)* Ja, räven gäspar! Det hörde jag! | `gaspning` i pausen |
 | 26 | Halvbild, räven vinkar sömnigt (armen bakom kroppen) | Hej då, räven! Hej då, nallen! | `rav-gullig-8` (hej då) |
@@ -268,7 +268,7 @@ Alla ljud som 056 använder finns redan i `assets/ljud/effekter/`: rävens famil
 
 ## Reaktionsslag och uttryck (Sanna 2026-11-25: starka reaktioner)
 
-Varje händelse får ett reaktionsslag: en närbild på rävens ansikte i 1,2–1,8 s, uttrycket i ansikte, öron och svans, och sedan Malin (0,4–0,8 s efter). Starkt i uttrycket, lugnt i rörelsen: inga studsar, inga snurrar. Uttrycken och poserna är de i riggens `uttryck.html` (samma fil som 055).
+Varje händelse får ett reaktionsslag: en närbild på rävens ansikte i 0,6–1 s (Sanna 2026-11-25: fler reaktioner, snabbare), uttrycket i ansikte, öron och svans, och sedan Malin (0,4–0,8 s efter). Starkt i uttrycket, lugnt i rörelsen: inga studsar, inga snurrar. Uttrycken och poserna är de i riggens `uttryck.html` (samma fil som 055).
 
 | Rad | Händelse | Närbild | Ansikte (`ansikte`) | Pose, öron, svans |
 |---|---|---|---|---|
@@ -276,19 +276,29 @@ Varje händelse får ett reaktionsslag: en närbild på rävens ansikte i 1,2–
 | 1b | tänderna | ✓ | `flinar`, sedan `stolt` på *"Ja, vad bra!"* | pose `stolt` (hakan upp), öronen spetsade |
 | 3 | nallen syns | ✓ | `jatteglad` | öronen upp, svansen viftar |
 | 5 | kramar nallen | ✓ | `kawaii` med slutna ögon (raden ber om det) | lutar 6°, öronen mjukt bakåt |
-| 7 | lampan släcks | ✓ (byts från halvbild) | `forvanad` 0,3 s stilla | öronen rakt upp, svansen stilla |
+| 7 | lampan släcks | ✓ (byts från halvbild) | `forvanad` 0,3 s stilla, sedan **lite rädd** (`ledsen` med stora ögon, inte läskigt) | öronen bakåt, svansen tätt intill |
 | 8 | för mörkt | ✓ | `ledsen` | öronen ner 12°, svansen sjunker; 2–3 s |
 | 9 | kritan ritar | – | `nyfiken` | pose `upp`, tittar på kritan |
 | 10 | för liten | ✓ | `tanker` | pose `ner`, ett öra vickar |
 | 12 | för stor | ✓ | `fnissig` (bågögon) | öronen bakåt, svansen viftar |
-| 15 | lagom | ✓ | `kawaii` | öronen reser sig, pose `magen` |
+| 15 | lagom | ✓ | **lättad** (`glad` med en suck), sedan `kawaii` | öronen reser sig, svansen viftar lugnt, pose `magen` |
 | 16 | tack | ✓ | `jatteglad`, nickar på *"Tack!"* | pose `stolt` |
 | 18–19 | skuggan stor/liten | – (helbild visar skuggan) | `skrattar` på *"liten"* | öronen vickar, skuggan vickar med |
 | 20 | nallen är borta | ✓ | `forvanad`, sedan `ledsen` | rikt −0,3/+0,3 med ögonen, öronen sjunker |
-| 23 | nallen hittad | ✓ | `jatteglad` | pose `hurra` lugnt (armarna upp, inget hopp) |
+| 23 | nallen hittad | ✓ | **lättad**, sedan `jatteglad` | pose `hurra` lugnt (armarna upp, inget hopp), svansen viftar |
 | 24 | lilla lampan till nallen | – | `stolt` | |
 | 25b | sömnig | ✓ | `gapar` (gäsp), sedan `somnig` | öronen sjunker, svansen lägger sig |
 | 27 | somnar | – | riggens `sover` → sovbilden (`rav-sover.png`) i det mörkaste | ligger på sidan, bara huvud och kropp andas |
+
+## Feedback 2026-11-25: fler reaktioner, närmare, snabbare (gäller storyboard och scen)
+
+Sanna om alla 052–057: *"more reactions, close crops, character expressions, varied sound effect responses, a bit faster pace"*. Det finns ingen storyboard eller scen för 056 än, så det här är reglerna som `storyboard/rader.mjs` och scenen byggs efter (grind 5–6). Ändringarna i tabellerna ovan är redan gjorda.
+
+1. **Reaktionsslag efter varje händelse, 0,6–1 s,** i närbild (tabellen "Reaktionsslag"). Malin 0,4–0,8 s efter.
+2. **Närmare utsnitt:** närbild på ansiktet vid varje reaktion, detaljbilder på nallen (rad 3, 23), lamporna (rad 6, 9, 10, 15, 24) och täcket (rad 21–22). Helbild bara där vi måste se var vi är: rad 1 (rummet), 11–12 (den stora lampan når taket), 17–18 (skuggan på väggen). Rad 4 och 21 är ändrade till halvbild/halvnära.
+3. **Uttryck oftare:** glad → förvånad → lite rädd i mörkret (stora ögon, öronen bakåt, aldrig läskigt) → ledsen → nyfiken → fnissig → lättad → stolt → sömnig. Öron och svans följer varje byte.
+4. **Varierade ljudsvar:** aldrig samma rävljud två rader i rad. Ordningen nu: 1 hej, 2 förtjust, 5 nyfiken, 3 fniss, 7 pratar, 4 suck, 5, 6 trumpen, 5, fniss-1, 4 (lättad), 2 (tack), 5, 7, fniss-3, 7, 5, 3, 2, 7, 4, gäsp, 8 hej då. Alla 8 känslor används (3 kort fniss nu på rad 3 och 22). Första tagningen per känsla, som Sanna valde. Små effekter på varje händelse: `lampa-klick`, `prassel-tyg` (nallen under och ur täcket, täcket upp till hakan), `glimt` (lampan glider), `puff` (landar i sängen), `tindra` (lagom, örat), `krita-ritar` (rita och sudda).
+5. **Lite snabbare tempo:** extra luft per replik (`GLES`) 0,4 s i stället för 0,7; stillastående före Malin högst 0,8 s; gången in 1,6 s; hoppet 0,7 s; lamporna glider på 0,6 s. **Pauserna för barnet behålls:** gissa lampan 3 s, tack 2,5 s, ser du nallen 5,5 s. **Slutet lugnare** (rad 25–28): `GLES` 0,9 s, långsam vinkning, räven lägger sig på 1,4 s. Rörelsen rask men lugn: inga studsar.
 
 ## Kontroll mot regler (2026-11-25)
 

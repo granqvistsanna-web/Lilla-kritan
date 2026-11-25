@@ -83,6 +83,7 @@ const HD_HANG = [KROK[3][0], KROK[3][1] + 150], HD_HANG_V = 90, HD_PA = [516, 65
 const S_HANG = [KROK[0][0], KROK[0][1] + 40];
 const HOV = { l: iZ([432, 860]), r: iZ([606, 860]) };
 const GOMD = () => [R.KUDDE_POS[0] + 143, R.KUDDE_POS[1] - 14];   // tån sticker ut lika långt som i provet (strumpan 0,12 i stället för 0,16)   // den gömda strumpan bakom kudden (provet)
+const glid = (k, tl, n) => [k[0] * (1 + 0.03 * mjuk(kl(tl / n))), k[1], k[2]];   // tomma platser kryper 3 % närmare
 const bage = (A, B, u, h) => { const m = mjuk(u); return [lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h * Math.sin(Math.PI * kl(u))]; };
 
 // --- Konturerna som kritan ritar ---------------------------------------------------------------------------------------------
@@ -116,7 +117,7 @@ const nej = (tl, a) => { const [sk, sl] = R.skaka(tl, a, a + 1.3); return [{ lut
 
 // --- Raderna ----------------------------------------------------------------------------------------------------------------
 let L, G, RAD = [], RR = {}, IDX = {}, ROST = [], PAW = {}, DURATION = 0, LJUD = [];
-const SVART = 0.6, SVAR = 1.3;
+const SVART = 0.6, SVAR = 1.0;
 const LN = n => ROST[n - 1][1];   // rader.json: ROST = [namn, längd, text]
 const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];
 const fran = (id, n) => IDX[id] >= IDX[n], efter = (id, n) => IDX[id] > IDX[n];
@@ -138,7 +139,7 @@ const SC = {
     return RUM('1', { pos, vitIn: 1 - del(0, 0.4, tl), f: F('jatteglad'), p: P({ ...p0, ...R.vink(tl, v) }) }); },
   // har du sovit gott? nickar i pausen
   '1b': (tl, d) => { const sv = 0.3 + LN(5); const [f, p] = nick(F(tl > sv ? 'jatteglad' : 'nyfiken'), P(), tl - (sv + 0.1));
-    return RUM('1b', { kam: K.HALV, f, p }); },
+    return RUM('1b', { kam: K.TACK, f, p }); },
   // snön i fönstret, sedan zebran med stora ögon
   '2': (tl, d) => { const c = M('2', 7) + LN(7) + 0.2, up = del(c + 0.2, c + 0.6, tl);   // fönstret medan Malin säger "Titta! Det snöar!", sedan zebran
     return RUM('2', { kam: tl < c ? K.FONSTER : K.NARA, f: F('jatteglad', { titt: [-14, -8], ogonS: [1.1, 1.1] }), p: P({ rikt: -0.3, oron: [-12 * up, -12 * up] }), svans: glad(tl, c + 0.2, d) }); },
@@ -146,7 +147,7 @@ const SC = {
   '3': (tl, d) => { const kul = 0.4 + LN(9) * 0.72; let [f, p] = nick(F('jatteglad', { titt: [-10, -4] }), P({ rikt: -0.3 }), tl - (0.4 + LN(9) * 0.45));
     return RUM('3', { kam: K.HALV, f, p: skutt(p, tl, kul, 20) }); },
   // kläderna på kroken: helbild, närbild kroken, zebran tittar, närbild strumpan
-  '4': (tl, d) => { const m = M('4', 10), krok = m + LN(10) * 0.22, tillbaka = m + LN(10) * 0.42, str = m + LN(10) * 0.72;
+  '4': (tl, d) => { const m = M('4', 10), krok = m + 1.5, tillbaka = m + 5.0, str = m + 9.6;   // klippen i replikens tystnader (efter "oss.", före "Ja, vad ska vi", före "Ja, strumporna")
     const kam = tl < krok ? K.HEL : tl < tillbaka ? K.KROK : tl < str ? K.HALV : K.SKROK;
     return RUM('4', { kam, f: F(tl > str ? 'jatteglad' : 'nyfiken', { titt: [-16, -6] }), p: P({ rikt: -0.4 }),
       skim: tl > krok && tl < tillbaka ? [[KROK[1][0], KROK[1][1] + 60], 0.6 * bump(krok, tillbaka, tl)] : tl > str ? [[S_HANG[0] + 30, S_HANG[1] - 20], 0.7 * bump(str, str + 1.6, tl)] : null }); },
@@ -161,9 +162,10 @@ const SC = {
   '6': (tl, d) => { const ben = del(0.2, 0.6, tl) * (1 - del(d - 1.2, d - 0.7, tl)), forv = tl > 1.0;
     return RUM('6', { kam: forv ? K.NARA : K.HALV, f: F(forv ? 'forvanad' : 'nyfiken', { titt: [4, 14], ...(forv ? { ogonS: [1.15, 1.15] } : {}) }), p: P({ benY: [0, -34 * ben], ben: [0, -6 * ben], oron: forv ? [-14, -14] : [0, 0] }), svans: forv ? 18 : 0 }); },
   // under sängen? (bara golv) … Nej! (zebran skakar på huvudet)
-  '7': (tl, d) => { const n = M('7', 14) - 0.1; if (tl < n) return RUM('7', { kam: K.UNDER, zebra: false });
+  // tomma platser: kameran kryper 3 % närmare under bilden, så att den aldrig står helt stilla
+  '7': (tl, d) => { const n = M('7', 14) - 0.1; if (tl < n) return RUM('7', { kam: glid(K.UNDER, tl, n), zebra: false });
     const [p, skak] = nej(tl, n + LN(14) + 0.1); return RUM('7', { kam: K.NARA, f: F('nyfiken', { le: -0.2 }), p: P(p), skak }); },
-  '8': (tl, d) => { const n = M('8', 16) - 0.1; if (tl < n) return RUM('8', { kam: K.KORG, zebra: false });
+  '8': (tl, d) => { const n = M('8', 16) - 0.1; if (tl < n) return RUM('8', { kam: glid(K.KORG, tl, n), zebra: false });
     const [p, skak] = nej(tl, n + LN(16) + 0.1); return RUM('8', { kam: K.NARA, f: F('nyfiken', { le: -0.2 }), p: P(p), skak }); },
   // lite ledsen: öronen faller, tittar ner, 2 s stilla; öronen lyfts lite på "tillsammans"
   '9': (tl, d) => { const ner = del(0.3, 1.0, tl), upp = del(M('9', 18) + LN(18) * 0.7, M('9', 18) + LN(18) * 0.7 + 0.5, tl);
@@ -189,7 +191,7 @@ const SC = {
       mossa: av < 1 ? { typ: 'stor', av } : null, luft: { typ: 'lagom', ritad: 1, fyll: del(fy, fy + 0.5, tl) },
       skim: gl ? [[LUFT[0], LUFT[1] - 120], 0.9 * bump(fy + 0.2, fy + 2.2, tl)] : null }); },
   // ska vi säga tack? öronen reser sig; tack! nickar
-  '15': (tl, d) => RUM('15', { kam: K.TACK, f: F('nyfiken', { titt: [-14, -6] }), p: P({ rikt: -0.3, oron: [-10 * del(0.4, 0.9, tl), -10 * del(0.4, 0.9, tl)] }), luft: { typ: 'lagom' } }),
+  '15': (tl, d) => RUM('15', { kam: K.TACK, f: F(tl < 0.5 + LN(28) ? 'nyfiken' : 'blyg', { titt: [-14, -6] }), p: P({ rikt: -0.3, oron: [-10 * del(0.4, 0.9, tl), -10 * del(0.4, 0.9, tl)] }), luft: { typ: 'lagom' } }),
   '16': (tl, d) => { const [f, p] = nick(F('jatteglad', { titt: [-8, -4] }), P({ rikt: -0.15 }), tl - 0.2); return RUM('16', { kam: K.TACK, f, p, luft: { typ: 'lagom' }, svans: glad(tl, 0.2, d) }); },
   // den gula mössan … på! (öronen vrids ihop medan den glider ner, kritan flyger ut)
   '17': (tl, d) => { const pa = PAo('17', 30), g0 = pa - 1.3, u = del(g0, pa, tl), sitter = tl >= pa;
@@ -199,7 +201,7 @@ const SC = {
   // halsduken på kroken glimtar; den glider runt halsen; gosar in mulen och blundar
   '18': (tl, d) => RUM('18', { kam: K.HKROK, zebra: false, skim: [[HD_HANG[0], HD_HANG[1] - 10], 0.8 * bump(0.3, 2.3, tl), 1.4] }),
   '19': (tl, d) => { const pa = PAo('19', 33), g0 = 0.5, g1 = pa, u = del(g0, g1, tl), sitter = tl >= g1;
-    return RUM('19', { kam: K.HEL, hangH: tl < g0, halsduk: sitter, hdFri: sitter ? null : [bage(HD_HANG, iZ(HD_PA), kl((tl - g0) / (g1 - g0)), 160), HD_HANG_V * (1 - mjuk(kl((tl - g0) / (g1 - g0))))],
+    return RUM('19', { kam: tl > g1 + 0.5 ? K.NARA : K.HEL, svans: glad(tl, g1, d), hangH: tl < g0, halsduk: sitter, hdFri: sitter ? null : [bage(HD_HANG, iZ(HD_PA), kl((tl - g0) / (g1 - g0)), 160), HD_HANG_V * (1 - mjuk(kl((tl - g0) / (g1 - g0))))],
       f: F(sitter ? 'jatteglad' : 'nyfiken', { titt: [-14 * (1 - u), -6 * (1 - u)] }), p: P({ rikt: -0.4 * (1 - u) }) }); },
   '20': (tl, d) => { const mys = del(0.3, 0.9, tl) * (1 - del(d - 1.2, d - 0.6, tl));
     return RUM('20', { kam: K.NARA, f: F('glad', mys > 0.5 ? { lock: [1, 1] } : {}), p: P({ upp: -0.6 * mys, oron: [4 * mys, 4 * mys] }) }); },
@@ -228,7 +230,7 @@ const SC = {
   // röd, gul … och blå! plaggen glimtar på färgerna, ett lugnt skutt
   '25': (tl, d) => { const m = M('25', 41), r = m + 0.2, g = m + LN(41) * 0.45, b = m + LN(41) - 0.4, gl = (t0, P0) => bump(t0, t0 + 1.2, tl) > 0 ? [P0, 0.9 * bump(t0, t0 + 1.2, tl), 1.2] : null;
     const skim = gl(r, iZ([516, 640])) || gl(g, iZ([512, 180])) || gl(b, iZ([520, 880]));
-    return RUM('25', { kam: K.HEL, svans: glad(tl, 0, d), f: F('stolt'), p: skutt(P(), tl, M('25', 42) + 0.4, 20), skim }); },
+    return RUM('25', { kam: [1.75, 1150, 740], svans: glad(tl, 0, d), f: F('stolt'), p: skutt(P(), tl, M('25', 42) + 0.4, 20), skim }); },
   // är du färdig nu? tittar mot snön och nickar
   '26': (tl, d) => { const [f, p] = nick(F('jatteglad', { titt: [-14, -8] }), P({ rikt: -0.35 }), tl - (0.5 + LN(43)));
     return RUM('26', { kam: K.HALV, f: tl > M('26', 44) + LN(44) ? F('fnissig', { titt: [-8, -4] }) : f, p }); },
@@ -302,8 +304,8 @@ function ritaRum(st, t) {
   snoflingor(t);
   // hängaren med plaggen, korgen under (bakom zebran)
   lagg('bak', `<image href="${HANG.fil}" x="${HANG.x}" y="${HANG.y}" width="${f1(HANG.w * HANG.s)}" height="${f1(HANG.h * HANG.s)}"/>`);
-  if (st.hangS) lagg('bak', strumpaFri(0, S_HANG, -4 + 2 * Math.sin(t * 0.9)));
-  if (st.hangH) lagg('bak', halsdukSvg(HD_HANG, HD_W * GS, '', HD_HANG_V));
+  if (st.hangS) lagg('bak', strumpaFri(0, S_HANG, -4 + 4 * Math.sin(t * 0.9)));   // strumpan gungar lugnt på knoppen, närbilden står aldrig stilla
+  if (st.hangH) lagg('bak', halsdukSvg(HD_HANG, HD_W * GS, '', HD_HANG_V + 1.5 * Math.sin(t * 0.8)));
   lagg('bak', R.markskugga(KORG.x, KORG.botten, 220) + `<image href="${KORG.fil}" x="${f1(KORG.x - 512 * KORG.s)}" y="${f1(KORG.botten - 916 * KORG.s)}" width="${f1(1024 * KORG.s)}" height="${f1(1024 * KORG.s)}"/>`);
   // kudden på madrassen, den gömda strumpan bakom med tån ute (provet); kudden lutar kring nedre högra hörnet
   const [kx, ky] = R.KUDDE_POS, ks = R.KUDDE.s * 1.3, hx = kx + 418 * ks, G0 = GOMD();
@@ -350,7 +352,7 @@ function rita(t) {
 
 // --- Ljudet ------------------------------------------------------------------------------------------------------------------
 const EF = 'assets/ljud/effekter/';
-const VOL = f => /gnagg-gullig-8/.test(f) ? 0.8 : /gnagg/.test(f) ? 1.2 : /(glitter|tindra|glimt|lysmask)/.test(f) ? 0.85 : /trav/.test(f) ? 0.7 : /prassel-tyg|strumpa/.test(f) ? 0.9 : 1.0;
+const VOL = f => /gnagg-gullig-8/.test(f) ? 0.8 : /gnagg/.test(f) ? 1.2 : /(glitter|tindra|glimt|lysmask)/.test(f) ? 0.85 : /trav/.test(f) ? 0.7 : /prassel-tyg|strumpa/.test(f) ? 0.9 : /(pop|pling|swoosh|landa-mjuk)/.test(f) ? 0.6 : 1.0;   // små effekter lågt
 async function ljud() {
   const ut = [];
   for (const r of RAD) {

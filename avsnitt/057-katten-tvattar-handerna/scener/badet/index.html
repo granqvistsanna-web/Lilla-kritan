@@ -102,6 +102,8 @@ const K_TVAL = [3.2, TVAL[0] + 110, TVAL[1] - 45];
 const K_TVAL_NARA = [2.2, TVAL[0] + 110, TVAL[1] - 110];
 const K_NARA_ORA = () => [3, ...iFig(VID, [640, 300])];
 const K_TAVLAN = [1.4, 1010, 470];
+const K_SPAR = [1.9, 510, 740];   // avtrycken på golvet och katten, nära
+const K_SKAGG = () => [3.0, BX, VID[1] - (L.FOTTER - 450) * GS];   // närbild på ansiktet och skumskägget
 
 // --- Badrummet med den omritade kranen (som 023) --------------------------------------------------------------------------
 // Handfatsbildens kran maskas bort och ritas om i kod: ren svanhals i krom med glansrand, vaxkorn och två rattar. Pipen
@@ -164,6 +166,10 @@ function flygDroppar([x, y], tl, sida = 1, n = 3) {
 // --- Skum, tussar, bubblor, skimmer ------------------------------------------------------------------------------------------
 const tuss = (x, y, r, fill = '#fff', kant = '#cfe6ee') => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
   .map(([dx, dy, k]) => `<circle cx="${f1(x + dx * r)}" cy="${f1(y + dy * r)}" r="${f1(k * r)}" fill="${fill}" stroke="${kant}" stroke-width="${f1(0.08 * r)}" paint-order="stroke"/>`).join('');
+// skumskäggets tussar i figurens koordinater [x, y, r i scenen, när den växer ut 0–0,65]: nedre kanten i en U-båge från kind
+// till kind med spetsen på hakan, en övre rad precis under munnen, en stor tuss i mitten
+const SKAGG = [...[-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1].map(a => [512 + 112 * a, 600 - 85 * a * a, 15 + 6 * (1 - a * a), 0.1 + 0.5 * Math.abs(a)]),
+  ...[-0.6, -0.2, 0.2, 0.6].map(a => [512 + 100 * a, 522 + 8 * a * a, 13, 0.05 + 0.4 * Math.abs(a)]), [512, 560, 23, 0]];
 const ROD = ['#E8483B', '#B8322A'], GUL = ['#F2C230', '#C99A12'], BLA = ['#5B8FD9', '#3E6DB5'];
 const SKUMTON = { rod: { sida: -1, f: ['#F9CFCB', '#E8483B'] }, gul: { sida: 1, f: ['#FCEDB4', '#E2B21F'] }, bla: { f: ['#D6E4F8', '#5B8FD9'] } };
 // skum längs läppen framför katten, k 0–1; ton = färgat skum på en sida (k-ton 0–1); tussarna guppar lugnt
@@ -192,7 +198,7 @@ function bubbla(x, y, r, farg, sprack = 0) {
   lagg('fram', `<circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="${farg}" fill-opacity="0.85" stroke="#fff" stroke-width="${f1(Math.max(3, r * 0.07))}"/>
     <path d="M${f1(x - r * 0.6)} ${f1(y - r * 0.2)} A${f1(r * 0.65)} ${f1(r * 0.65)} 0 0 1 ${f1(x - r * 0.15)} ${f1(y - r * 0.62)}" fill="none" stroke="#fff" stroke-width="${f1(Math.max(3, r * 0.09))}" stroke-linecap="round"/>`);
 }
-const BUBBLOR = [[HX + 230, RIM - 70, 24, ROD[0]], [HX + 170, RIM - 165, 28, GUL[0]], [HX + 250, RIM - 255, 30, BLA[0]]];
+const BUBBLOR = [[HX + 310, RIM - 90, 40, ROD[0]], [HX + 125, RIM - 195, 44, GUL[0]], [HX + 265, RIM - 275, 46, BLA[0]]];   // stora och tydliga (Sanna 2026-11-25)
 
 // --- Tvålen i kod (rekvisita/tval.md), fyll < 1 = fylls i inifrån ----------------------------------------------------------
 function tval(x, y, v = 0, s = 1, fyll = 1) {
@@ -314,16 +320,18 @@ const S = {
     return RUM({ pos: [GANG(tl), GOLV], vitIn: 1 - del(0, 0.4, tl), f: L.blanda({ ...fw, titt: [8, 0] }, F('jatteglad'), stopp), p: L.blandaPose({ ...pw, x: 0, rikt: 0.6 }, vink(tl, v), stopp) }); },
   // tittar på oss, svansen vippar; glatt mjau i pausen, öronen upp
   '1b': (tl, d) => { const sv = 0.8 + LN(5), up = del(sv, sv + 0.3, tl) * (1 - del(sv + 1.4, sv + 1.8, tl));
-    return RUM({ kam: K_HALV_STA(), f: F(tl > sv ? 'jatteglad' : 'nyfiken'), p: P({ svans: vipp(tl, 0.2), oron: [-10 * up, -10 * up] }) }); },
+    return RUM({ kam: tl > sv - 0.1 ? K_NARA_STA() : K_HALV_STA(), f: F(tl > sv ? 'jatteglad' : 'nyfiken'), p: P({ svans: vipp(tl, 0.2) + vipp(tl, sv), oron: [-10 * up, -10 * up] }) }); },
   // håller upp tassarna: röd, gul; tassen lyser till på färgordet
   '2': (tl, d) => ({ ...RUM({ kam: K_NARA_STA(), f: F('stolt'), p: P({ armar: [40 * del(0.1, 0.6, tl), 40 * del(0.1, 0.6, tl)], oron: UPP(del(0.3, 0.7, tl)), svans: vipp(tl, 0.6, 2.4) }) }),
     lys: [0.9 * bump(0.4 + FARG[7][0] - 0.1, 0.4 + FARG[7][0] + 1.1, tl), 0.9 * bump(0.4 + FARG[7][1] - 0.1, 0.4 + FARG[7][1] + 1.1, tl)] }),
   // nickar stolt i pausen, svansen vippar
   '3': (tl, d) => { const [f, p] = nick(F('stolt'), P({ svans: vipp(tl, 0.3), oron: UPP(del(0.8 + LN(8), 1.2 + LN(8), tl)) }), tl - (0.8 + LN(8)));
     return RUM({ kam: K_HALV_STA(), f, p }); },
-  '3b': (tl, d) => RUM({ kam: K_HALV_STA(), f: F('jatteglad'), p: P({ armar: [30 * bump(0.2, d - 0.2, tl), 30 * bump(0.2, d - 0.2, tl)] }) }),
+  '3b': (tl, d) => RUM({ kam: K_NARA_STA(), f: F('jatteglad'), p: P({ armar: [30 * bump(0.2, d - 0.2, tl), 30 * bump(0.2, d - 0.2, tl)], oron: UPP(del(0.1, 0.4, tl)), svans: vipp(tl, 0.3) }) }),
   // avtrycken på golvet skimrar ett i taget, katten tittar ner
-  '4': (tl, d) => RUM({ f: F(tl > 0.8 + LN(10) ? 'fnissig' : 'nyfiken', { titt: [-10, 8] }), p: P({ rikt: -0.4 }), glans: tl }),
+  // reaktionsslaget: klipp till närbild på fnisset
+  '4': (tl, d) => { const fn = tl > 0.7 + LN(10);
+    return RUM({ kam: fn ? K_NARA_STA() : K_SPAR, f: F(fn ? 'fnissig' : 'nyfiken', { titt: fn ? [-6, 6] : [-10, 8] }), p: P({ rikt: -0.4, oron: UPP(fn ? 0.8 : 0), svans: vipp(tl, 0.7 + LN(10)) }), glans: tl }); },
   // tittar mot handfatet, nickar i pausen
   '5': (tl, d) => { const k = del(0.1, 0.5, tl), [f, p] = nick(F(tl > 0.8 + LN(11) ? 'glad' : 'nyfiken', { titt: [12 * k, -2] }), P({ rikt: 0.5 * k }), tl - (0.8 + LN(11)));
     return RUM({ kam: K_HALV_GOLV, f, p }); },
@@ -341,7 +349,7 @@ const S = {
     return BAD({ kam: K_NARA_TASS, f: F('nyfiken', { titt: [10, 12] }), p: A20({ armar: [20, -20], oron: [14 * sj, 14 * sj] }), kran: 1, tassStrale: true }); },
   // skakar tassarna lugnt, kranen stängs, trumpet mjau i pausen
   '8': (tl, d) => { const sk = bump(0.1, 1.0, tl), ner = del(1.3 + LN(15), 1.7 + LN(15), tl);
-    return BAD({ f: F(tl > 1.3 + LN(15) ? 'trumpen' : 'ledsen', { le: -0.3 }), p: P({ armar: [35 + 8 * Math.sin(tl * 14) * sk, 35 - 8 * Math.sin(tl * 14) * sk], oron: [16 * ner, 16 * ner] }),
+    return BAD({ kam: tl > 1.2 + LN(15) ? K_NARA_ANS() : K_HALV, f: F(tl > 1.3 + LN(15) ? 'trumpen' : 'ledsen', { le: -0.3 }), p: P({ armar: [35 + 8 * Math.sin(tl * 14) * sk, 35 - 8 * Math.sin(tl * 14) * sk], oron: [16 * ner, 16 * ner] }),
       kran: 1 + del(0.2, 0.8, tl), pipDropp: 0.8, skak: sk > 0.05 ? tl : null }); },
   // tittar ner på tassarna, sedan på oss
   '8b': (tl, d) => { const upp = del(0.3 + LN(16) + 0.4, 0.3 + LN(16) + 0.9, tl);
@@ -354,31 +362,35 @@ const S = {
   // lutar sig mot tvålen och nosar, blundar i pausen
   '10b': (tl, d) => { const lut = del(0.2, 0.9, tl), mys = tl > 1.3 + LN(20) - 0.2;
     return BAD({ kam: K_TVAL_NARA, f: F('glad', mys ? { glad: [1, 1] } : { titt: [-12, 6] }), p: A20({ luta: -9 * lut }), tval: TVAL }); },
-  '11': (tl, d) => BAD({ f: F('nyfiken', { titt: [-12, 6] }), p: A20(), tval: TVAL }),
+  '11': (tl, d) => BAD({ kam: K_TVAL_NARA, f: F('nyfiken', { titt: [-12, 6] }), p: A20({ oron: UPP(del(0.4 + LN(21), 0.8 + LN(21), tl) * 0.6) }), tval: TVAL }),
   '12': (tl, d) => { const [f, p] = nick(F('jatteglad'), A20({ oron: UPP(del(0.1, 0.4, tl)) }), tl - 0.15);
-    return BAD({ f, p, tval: TVAL }); },
+    return BAD({ kam: K_NARA_ANS(), f, p: { ...p, svans: vipp(tl, 0.3) }, tval: TVAL }); },
   // kranen rinner, tvålen till tassarna (klappen), skummet växer i tre steg
   // tvålen skummar lite medan Malin säger handlingen, det stora skummet kommer på "Oj!" (whisper: 2,46 s in i replik 23)
   '13': (tl, d) => { const OJ13 = 1.2 + 2.42, ta = del(0.1, 0.6, tl), gn = del(0.7, 1.0, tl);
-    return BAD({ f: F('glad'), p: klapp(lerp(1.2, 1.12, ta) + 0.05 * Math.sin(2 * Math.PI * tl / 1.6) * gn), kran: del(0, 0.4, tl) + del(d - 0.7, d - 0.1, tl),
+    const re = tl > 1.2 + LN(23) + 0.05;   // reaktionsslaget: närbild, förtjust, öronen upp
+    return BAD({ kam: re ? K_NARA_ANS() : K_HALV, f: F(re ? 'jatteglad' : 'glad'), p: klapp(lerp(1.2, 1.12, ta) + 0.05 * Math.sin(2 * Math.PI * tl / 1.6) * gn), kran: del(0, 0.4, tl) + del(d - 0.7, d - 0.1, tl),
       tvalTass: ta, skum: 0.25 * del(1.3, 1.8, tl) + 0.25 * del(2.3, 2.8, tl) + 0.5 * del(OJ13, OJ13 + 0.5, tl), tusser: del(1.3, OJ13 + 0.5, tl) }); },
   // en skumtuss flyger upp och landar under hakan: skumskägg, fniss i pausen
-  '14': (tl, d) => { const fl = kl((tl - 0.3) / 0.6);
-    return BAD({ kam: K_NARA_ANS(), f: F(tl > 1.2 + LN(24) - 0.2 ? 'fnissig' : 'forvanad', { titt: [0, 12] }), p: klapp(1.12), tvalTass: 1, skum: 1, skagg: fl }); },
+  // skägget växer ut från hakan (kind till kind) medan Malin säger det; reaktionsslaget: tittar upp förvånad, öronen upp, sedan fniss
+  '14': (tl, d) => { const sk = kl((tl - 0.3) / 0.6) + del(0.9, 1.4, tl), upp = 0.8 + LN(24) + 0.05, fn = 1.2 + LN(24) - 0.1;
+    return BAD({ kam: K_SKAGG(), f: F(tl > fn ? 'fnissig' : 'forvanad', { titt: tl > upp ? [0, 0] : [0, 12] }), p: klapp(1.12, { oron: UPP(del(upp, upp + 0.3, tl)) }), tvalTass: 1, skum: 1, skagg: sk }); },
   // tittar upp med skägget kvar; tvålen läggs tillbaka på läppen
   '14b': (tl, d) => { const t = del(0.1, 0.7, tl);
-    return BAD({ kam: K_NARA_ANS(), f: F('jatteglad'), p: L.blandaPose(klapp(1.12), A20(), t), tvalTass: 1, tvalTillbaka: t, skum: 1, skagg: 1 }); },
+    return BAD({ kam: K_NARA_ANS(), f: F('jatteglad'), p: L.blandaPose(klapp(1.12), A20(), t), tvalTass: 1, tvalTillbaka: t, skum: 1, skagg: 2 }); },
   // röda tassen: skummet blir rosa-rött, färgen borta på "borta!"
   '15': (tl, d) => { const b = 0.6 + BORTA[26], tk = del(0.6, 2.2, tl) * (1 - del(b, b + 0.8, tl));
-    return BAD({ kam: K_NARA_TASS, f: F('glad'), p: A20({ armar: [26, 20] }), farg: { l: 1 - del(b - 0.1, b + 0.15, tl), r: 1, ora: 1 }, tval: TVAL, skum: 0.8, ton: [SKUMTON.rod, tk],
-      skrubb: ['l', SKUMTON.rod, del(0.6, 1.0, tl) * (1 - del(b + 0.1, b + 0.5, tl)), tl], borta: ['l', b, tl] }); },
+    const re = tl > b + 0.6;   // reaktionsslaget: närbild på ansiktet, stolt glad, öronen upp
+    return BAD({ kam: re ? K_NARA_ANS() : K_NARA_TASS, f: F(re ? 'jatteglad' : 'glad'), p: A20({ armar: [26, 20], oron: UPP(del(b + 0.6, b + 0.9, tl)) }), farg: { l: 1 - del(b - 0.1, b + 0.15, tl), r: 1, ora: 1 }, tval: TVAL, skum: 0.8, ton: [SKUMTON.rod, tk],
+      skrubb: ['l', SKUMTON.rod, del(0.6, 1.0, tl) * (1 - del(b + 0.1, b + 0.5, tl)), tl], borta: ['l', b, tl], skagg: 2 }); },
   '16': (tl, d) => { const b = 0.6 + BORTA[27], tk = del(0.6, 2.2, tl) * (1 - del(b, b + 0.8, tl));
-    return BAD({ kam: K_NARA_TASS, f: F('glad'), p: A20({ armar: [20, 26] }), farg: { l: 0, r: 1 - del(b - 0.1, b + 0.15, tl), ora: 1 }, tval: TVAL, skum: 1, ton: [SKUMTON.gul, tk],
-      skrubb: ['r', SKUMTON.gul, del(0.6, 1.0, tl) * (1 - del(b + 0.1, b + 0.5, tl)), tl], borta: ['r', b, tl] }); },
+    const re = tl > b + 0.6;
+    return BAD({ kam: re ? K_NARA_ANS() : K_NARA_TASS, f: F(re ? 'stolt' : 'glad'), p: A20({ armar: [20, 26], oron: UPP(del(b + 0.6, b + 0.9, tl)) }), farg: { l: 0, r: 1 - del(b - 0.1, b + 0.15, tl), ora: 1 }, tval: TVAL, skum: 1, ton: [SKUMTON.gul, tk],
+      skrubb: ['r', SKUMTON.gul, del(0.6, 1.0, tl) * (1 - del(b + 0.1, b + 0.5, tl)), tl], borta: ['r', b, tl], skagg: 2 }); },
   // håller upp två rena tassar, spinner i pausen
   '17': (tl, d) => { const u = del(0.1, 0.5, tl), mys = tl > 0.8 + LN(28);
-    return BAD({ f: F(mys ? 'jatteglad' : 'stolt'), p: P({ armar: [20 + 25 * u, 20 + 25 * u], oron: UPP(u) }), farg: ORA, tval: TVAL, skum: 1, rena: 0.5 * bump(0.3, 2.4, tl) }); },
-  '17b': (tl, d) => BAD({ f: F('jatteglad'), p: P({ armar: [30, 30], svans: vipp(tl, 0.1) }), farg: ORA, tval: TVAL, skum: 1 }),
+    return BAD({ f: F(mys ? 'jatteglad' : 'stolt'), p: P({ armar: [20 + 25 * u, 20 + 25 * u], oron: UPP(u) }), farg: ORA, tval: TVAL, skum: 1, rena: 0.5 * bump(0.3, 2.4, tl), skagg: 2 + del(0.1, 0.9, tl) }); },   // skägget puffar bort tuss för tuss
+  '17b': (tl, d) => BAD({ kam: K_NARA_ANS(), f: F('jatteglad'), p: P({ armar: [30, 30], svans: vipp(tl, 0.1), oron: UPP(1) }), farg: ORA, tval: TVAL, skum: 1 }),
   // tittar på tassarna, åt vänster, åt höger
   '18': (tl, d) => { const v = del(0.6, 1.1, tl) - 2 * del(1.8, 2.4, tl) + del(d - 1.0, d - 0.4, tl);
     return BAD({ f: F('nyfiken', { titt: [-14 * v, tl < 0.6 ? 10 : 2] }), p: P({ armar: [32, 32], rikt: -0.4 * v }), farg: ORA, tval: TVAL, skum: 1 }); },
@@ -391,7 +403,7 @@ const S = {
     return BAD({ kam: K_NARA_ORA(), f: F(tl > 0.6 + LN(32) ? 'forvanad' : 'nyfiken'), p: A20({ oron: [0, v] }), farg: ORA, oraSkim: 0.4 + 0.5 * del(0.1, 0.5, tl) }); },
   // skumtussen svävar upp och cirklar över örat, katten blundar; blått borta på "borta!"
   '21': (tl, d) => { const b = 0.7 + BORTA[33];
-    return BAD({ kam: K_NARA_ORA(), f: F('glad', tl > 0.8 ? { glad: [1, 1] } : {}), p: A20(), farg: { l: 0, r: 0, ora: 1 - del(b - 0.1, b + 0.15, tl) },
+    return BAD({ kam: K_NARA_ORA(), f: F(tl > b + 0.2 ? 'jatteglad' : 'glad', tl > 0.8 && tl < b + 0.2 ? { glad: [1, 1] } : {}), p: A20({ oron: [0, oronVipp(tl, b + 0.2)] }), farg: { l: 0, r: 0, ora: 1 - del(b - 0.1, b + 0.15, tl) },
       oraSkrubb: [del(0.4, 1.0, tl) * (1 - del(b + 0.1, b + 0.5, tl)), tl], borta: ['ora', b, tl] }); },
   // tre färgade bubblor stiger ur handfatet en i taget
   '22': (tl, d) => { const k = i => del(0.2 + 0.4 * i, 1.4 + 0.4 * i, tl);
@@ -406,7 +418,7 @@ const S = {
   // tittar mot den tomma väggen, tre mjau i pausen
   '25': (tl, d) => { const k = del(0.2, 0.7, tl);
     return BAD({ f: F('glad', { titt: [-14 * k, -4 * k] }), p: A20({ rikt: -0.5 * k }), farg: REN, tval: TVAL, skum: 0.4 }); },
-  '25b': (tl, d) => BAD({ f: F('nyfiken', { titt: [-14, -4] }), p: A20({ rikt: -0.5 }), farg: REN, tval: TVAL, skum: 0.4 }),
+  '25b': (tl, d) => BAD({ kam: K_NARA_ANS(), f: F('nyfiken', { titt: [-14, -4] }), p: A20({ rikt: -0.5, oron: UPP(0.5) }), farg: REN, tval: TVAL, skum: 0.4 }),
   // kritan ritar papperet och tre tassavtryck på väggen
   '26': (tl, d) => BAD({ kam: K_TAVLAN, f: F('nyfiken', { titt: [-14, -4] }), p: A20({ rikt: -0.5 }), farg: REN, tval: TVAL, malRit: true }),
   // papperet fylls i, avtrycken röd, gul, blå på färgorden, kritan flyger ut
@@ -419,7 +431,7 @@ const S = {
     return BAD({ kam: K_TAVLAN, f, p, farg: REN, tval: TVAL, mal: 1 }); },
   '28b': (tl, d) => { const [f, p] = nick(F('glad'), A20(), tl - (0.8 + LN(42)));
     return BAD({ f, p, farg: REN, tval: TVAL, skum: 0.3, mal: 1 }); },
-  '28c': (tl, d) => BAD({ f: F('glad', tl > 0.4 ? { glad: [1, 1] } : {}), p: A20({ luta: 4 * del(0.2, 0.8, tl) }), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
+  '28c': (tl, d) => BAD({ kam: K_NARA_ANS(), f: F('glad', tl > 0.4 ? { glad: [1, 1] } : {}), p: A20({ luta: 4 * del(0.2, 0.8, tl) }), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
   // vinkar hej då, armen sjunker
   '29': (tl, d) => BAD({ f: F('jatteglad', { titt: [-10 * bump(0.7 + LN(44) * 0.55, 0.7 + LN(44) + 0.4, tl), 6 * bump(0.7 + LN(44) * 0.55, 0.7 + LN(44) + 0.4, tl)] }), p: vink(tl, del(0.2, 0.7, tl)), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
   '30': (tl, d) => BAD({ f: F('glad'), p: vink(tl + 7, 1 - del(d - 1.0, d - 0.4, tl)), farg: REN, tval: TVAL, skum: 0.3, mal: 1 }),
@@ -498,8 +510,13 @@ function ritaBad(st, t) {
   if (st.skum) skum(st.skum, st.ton ? st.ton[0] : null, st.ton ? st.ton[1] : 0);
   if (st.tusser) { const [x, y] = tassMitt(), k = st.tusser;
     lagg('fram', [[-58, 4, 16, 0], [56, 2, 18, 0.33], [0, 22, 22, 0.66]].map(([dx, dy, r, a]) => { const s = del(a, a + 0.3, k); return s > 0.01 ? tuss(x + dx, y + dy + 3 * Math.sin(TT * 1.6 + a * 9), r * s) : ''; }).join('')); }
-  if (st.skagg != null) { const [x0, y0] = tassMitt(), [x1, y1] = iFig(VID, [512, 535]), u = mjuk(st.skagg);
-    lagg('fram', tuss(lerp(x0, x1, u), lerp(y0 - 40, y1, u) - 120 * Math.sin(Math.PI * u), 30 * (0.7 + 0.3 * u))); }
+  // skumskägget: skagg 0–1 tussen flyger från tassarna till hakan, 1–2 skägget växer ut från hakan (kind till kind, spets
+  // nedåt), 2–3 det försvinner tuss för tuss (rena igen). Formen följer kattens haka under munnen.
+  if (st.skagg != null && st.skagg < 3) { const sk = st.skagg;
+    if (sk < 1) { const [x0, y0] = tassMitt(), [x1, y1] = iFig(VID, [512, 560]), u = mjuk(sk);
+      lagg('fram', tuss(lerp(x0, x1, u), lerp(y0 - 20, y1, u) - 25 * Math.sin(Math.PI * u), 22)); }
+    else lagg('fram', SKAGG.map(([fx, fy, r, o], i) => { const v = del(o, o + 0.35, sk - 1) * (1 - del(i / SKAGG.length * 0.7, i / SKAGG.length * 0.7 + 0.3, sk - 2));
+      const [x, y] = iFig(VID, [fx, fy]); return v > 0.01 ? tuss(x, y + 1.5 * Math.sin(TT * 2 + i), r * v) : ''; }).join('')); }
   if (st.skrubb) { const [n, ton, k, tl] = st.skrubb, [x, y] = iScen('.farg-' + n); skrubb([x + (n === 'l' ? 6 : -6), y - 6], 19, tl, ton, k); }
   if (st.oraSkrubb) { const [k, tl] = st.oraSkrubb, [x, y] = iScen('.farg-ora'); skrubb([x, y - 4], 16, tl, SKUMTON.bla, k); }
   if (st.borta) { const [n, b, tl] = st.borta, [x, y] = iScen('.farg-' + n); skimmer(x, y, 0.8 * bump(b - 0.05, b + 1.0, tl), n === 'ora' ? 0.5 : 0.55); }

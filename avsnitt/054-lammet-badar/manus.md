@@ -169,6 +169,13 @@ Stryks: replik 33, 34, 36, 37 (ankan gömmer sig, hatten på ankan).
 - **Såpbubblor** stiger ur skummet hela tiden i badrummet.
 - Storyboardens stillbilder tas nu ur kodscenen själv (`bygg.mjs`), mitt i varje rad.
 
+### Fler reaktioner, snabbare (Sanna 2026-11-25, för 052–057)
+
+- **Reaktionsslag:** varje gång lammet svarar med ett ljud klipper bilden till en närbild på ansiktet i ca 1 s (zoom 3 utanför karet, 2,8 i karet), uttrycket byts efter ljudet (glad, jätteglad, fnissig, mysig, nyfiken, ledsen) och öronen följer med. Rader som redan är närbilder eller där något händer (gången, skutten, borstningen) klipps inte. Koden: `reaktion()` i `scener/badet/index.html`.
+- **Ljud:** inget lammljud upprepas två gånger i rad (2 → 1b, 7 → 3, 15 → 1, 17 → 2b, 22 → fniss 4, 25 → 1b, 26a → 4, 26b → fniss 5, 26c → 2, 26d → 3b). Nya små effekter: fyra tassteg in, `stank` på plasket, `plopp` när skumhatten kommer, `glid` när ankan glider, fniss efter bonken, `hopp-mjuk` på det glada skuttet, `moln-puff` på det fluffiga ullmolnet, `swoosh` när borsten flyger, `tindra` på de torra öronen.
+- **Det roliga syns stort (Sanna 25/11, från 057:s skumskägg):** skumhatten är nu en stor tydlig skumhög (fyra tussar i stället för en) och 6b klipper till närbild när lammet kommer upp, så den syns när Malin säger "En skumhatt!"; lammet fnissar sedan och det hörs ett `plopp`. Ullmolnet (20) och den fluffiga ullen (22) visas redan i närbild med `puff`/`moln-puff` när repliken sägs.
+- **Tempo:** pauserna efter replikerna kortare (mellanrummet 0,35 → 0,15 s, svarspauserna 1,0 → 0,9 s, slutpauserna 0,2–1,5 s kortare), pratstunden med ankan och båtraden kortare. Gissningspauserna (01b, b2, 12b), frågan till barnet (23b–23c) och pauserna för svar ligger kvar. 257 s → 237 s (−8 %; resten av tiden är repliker och svarspauser).
+
 ### Tydligare repliker (förslag, väntar på Sannas ja)
 
 Sanna 2026-11-25 (alla 052–057): *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Malin säger rakt ut vad som händer: handlingen, saken och gärna kroppsdelen. Inget spelas in förrän listan är godkänd. Korta meningar, upprepning, v3-taggarna och reglerna gäller som förut (inga djurnamn, aldrig "Vad kan det vara?", "Ska vi säga tack?").

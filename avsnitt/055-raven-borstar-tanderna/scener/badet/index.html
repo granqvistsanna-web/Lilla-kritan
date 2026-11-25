@@ -98,6 +98,7 @@ const K_ANS = () => [2.6, BX, VID[1] - (L.FOTTER - 440) * GS];
 const K_MUN = () => [3.6, BX, VID[1] - (L.FOTTER - 485) * GS];
 const K_MUGG = [3.2, MUGGX + 20, RIM - 60];
 const K_KLAM = [3.6, LIGG[0] - SK * (GREPP[0] - HUVUD[0]) + 20, RIM - 40];   // tätt på borsthuvudet (030:s K_KLAM)
+const NOS_Y = -2.2;   // borstY på nosen (rad 10, kittlet)
 const K_LUFT = [1.6, HX + 60, RIM - 170];                                    // kritan ritar den stora borsten bredvid räven
 
 // --- Badrummet med den omritade kranen (som 030–033 och 038) -------------------------------------------------------------
@@ -258,19 +259,19 @@ const S = {
     return BAD({ kam: K_HEL, pos, bakom: uppe, vitIn: 1 - del(0, 0.4, tl), f: L.blanda({ ...fw, titt: [8, 0] }, F(uppe ? 'jatteglad' : 'glad'), stopp), p: { ...p, svans: vipp(tl, 3.2) } }); },
   // tittar på oss, öronen vippar; svarar glatt i pausen
   '1b': (tl, d) => { const sv = 0.3 + LN(5), up = oronUpp(tl, sv, sv + 1.4);
-    return BAD({ f: F(tl > sv ? 'jatteglad' : 'nyfiken'), p: P({ oron: [up, up], svans: vipp(tl, sv) }) }); },
+    return BAD({ kam: tl > sv ? K_ANS() : K_HALV, f: F(tl > sv ? 'jatteglad' : 'nyfiken'), p: P({ oron: [up, up], svans: vipp(tl, sv) }) }); },
   // ler stort: blåbär på tänderna; slickar sig om nosen efter repliken
   '2': (tl, d) => { const s = 0.8 + LN(7);
-    return BAD({ kam: K_ANS(), f: F('flinar', { tunga: bump(s, s + 1.0, tl), ...(tl > s ? { glad: [0.6, 0.6] } : {}) }), p: P({ oron: [-4, -4] }), bar: BLA }); },
+    return BAD({ kam: tl < s - 0.2 ? K_MUN() : K_ANS(), f: F('flinar', { tunga: bump(s, s + 1.0, tl), ...(tl > s ? { glad: [0.6, 0.6] } : {}) }), p: P({ oron: [-4, -4] }), bar: BLA }); },
   // nickar och "pratar" i pausen
   '2b': (tl, d) => { const [f, p] = nick(F('glad', { mun: [16, 12, 1, 458] }), P(), tl - (0.3 + LN(8)));
     return BAD({ kam: K_ANS(), f, p }); },
   // tittar på tandborsten i muggen, nickar i pausen
   '3': (tl, d) => { const k = del(0.1, 0.5, tl), [f, p] = nick(F('glad', { titt: [-14 * k, 8 * k] }), P({ rikt: -0.4 * k, svans: vipp(tl, 0.3 + LN(10)) }), tl - (0.3 + LN(10)));
-    return BAD({ f, p }); },
+    return BAD({ kam: tl > 0.3 + LN(10) ? K_ANS() : K_HALV, f, p }); },
   // tar den lilla borsten ur muggen (rakt upp, sedan bågen till tassen) och håller upp den: pytteliten
   '4': (tl, d) => { const u = kl((tl - 0.2) / 0.7), arm = del(0.2, 0.8, tl), hal = [0, 0, 90, LK];
-    return BAD({ f: F(tl > 1.0 ? 'forvanad' : 'nyfiken', { titt: [-10 * (1 - arm), 6 * (1 - arm) - 4 * arm], oron: [-12 * del(0.9, 1.2, tl), -12 * del(0.9, 1.2, tl)] }),
+    return BAD({ kam: tl > 1.2 + LN(12) ? K_ANS() : K_HALV, f: F(tl > 1.0 ? 'forvanad' : 'nyfiken', { titt: [-10 * (1 - arm), 6 * (1 - arm) - 4 * arm], oron: [-12 * del(0.9, 1.2, tl), -12 * del(0.9, 1.2, tl)] }),
       p: P({ armar: [HA * arm, 0] }), kant: { liten: false }, litenFlyg: u < 1 ? u : null, hall: u >= 1 ? { href: LITEN, v: 95, s: LK } : null }); },
   // den lilla borsten mot den långa raden tänder: ett försiktigt drag, når bara två
   '5': (tl, d) => { const x = -0.6 + 0.18 * Math.sin(Math.PI * kl((tl - 0.2) / 0.7));
@@ -280,7 +281,8 @@ const S = {
     return BAD({ kam: K_ANS(), f, p, kant: { liten: false } }); },
   // lägger tillbaka den lilla borsten i muggen (bakom framsidan) och tittar på oss
   '6': (tl, d) => { const u = kl((tl - 0.1) / 0.8), arm = 1 - del(0.3, 0.9, tl);
-    return BAD({ f: F('nyfiken', { titt: [-8 * (1 - del(0.9, 1.3, tl)), 4 * (1 - del(0.9, 1.3, tl))] }), p: P({ armar: [HA * arm, 0] }), kant: { liten: u >= 1 }, litenIn: u > 0 && u < 1 ? u : null,
+    const tank = tl > 0.8 + LN(16);
+    return BAD({ kam: tank ? K_ANS() : K_HALV, f: F(tank ? 'tanker' : 'nyfiken', tank ? {} : { titt: [-8 * (1 - del(0.9, 1.3, tl)), 4 * (1 - del(0.9, 1.3, tl))] }), p: P({ armar: [HA * arm, 0], ...(tank ? { oron: [6, -2] } : {}) }), kant: { liten: u >= 1 }, litenIn: u > 0 && u < 1 ? u : null,
       hall: u <= 0 ? { href: LITEN, v: 95, s: LK } : null }); },
   // kritan ritar en stor tandborste i luften bredvid räven, gisspaus med svajande krita; räven tittar dit
   '7a': (tl, d) => BAD({ kam: K_LUFT, f: F('nyfiken', { titt: [14, -6] }), p: P({ rikt: 0.4, oron: [-6, -6] }), luftRit: true }),
@@ -292,22 +294,28 @@ const S = {
   '8': (tl, d) => { const t = M('8', 20), [f, p] = nick(F(tl > t ? 'jatteglad' : 'nyfiken'), P({ armar: [HA, 0], oron: [-8 * del(t, t + 0.3, tl), -8 * del(t, t + 0.3, tl)], svans: vipp(tl, t) }), tl - t);
     return BAD({ f, p, hall: { href: STOR, v: 92, s: SK } }); },
   // håller den stora borsten framför nosen: den räcker över hela raden tänder
-  '8b': (tl, d) => { const sv = 0.6 + LN(21), [f, p] = nick(F('glad'), BORST(0.1 + 0.05 * Math.sin(tl * 2), -0.2, { borstNer: 0 }), tl - sv);
+  '8b': (tl, d) => { const sv = 0.6 + LN(21), [f, p] = nick(F(tl > M('8b', 22) ? 'jatteglad' : 'glad'), BORST(0.1 + 0.05 * Math.sin(tl * 2), -0.2, { borstNer: 0 }), tl - sv);
     return BAD({ kam: K_ANS(), f, p, riggB: { stor: true } }); },
   // den stora borsten upprätt bredvid muggen med den lilla: en liten och en stor
-  '9': (tl, d) => BAD({ f: F('glad', { titt: [-12, 4] }), p: P({ armar: [HA - 14, 0], rikt: -0.3 }), hall: { href: STOR, v: 90, s: SK } }),
+  '9': (tl, d) => BAD({ kam: tl > 0.8 + LN(23) ? K_ANS() : K_HALV, f: tl > 0.8 + LN(23) ? F('blinkar') : F('glad', { titt: [-12, 4] }), p: P({ armar: [HA - 14, 0], rikt: -0.3 }), hall: { href: STOR, v: 90, s: SK } }),
   // borsten kittlar på nosen två gånger, räven blundar och fnissar; skaftet stöter till tuben, som glider bakom muggen;
   // sedan läggs borsten på läppen
-  '10': (tl, d) => { const kit = bump(0.2, 0.8, tl) + bump(0.9, 1.5, tl), r = kl((tl - 1.6) / 0.8), ner = kl((tl - (d - 1.4)) / 0.9);
+  '10': (tl, d) => { const kit = bump(0.2, 0.8, tl) + bump(0.9, 1.5, tl) + bump(2.7, 3.3, tl), sa = M('10', 24), r = kl((tl - 1.6) / 0.8), ner = kl((tl - (d - 1.4)) / 0.9);
     const tubP = r <= 0 ? 'bredvid' : [lerp(TUBX0, BAKOM[0], mjuk(r)), RIM + 4, lerp(0, BAKOM[2], mjuk(r)) + 14 * Math.sin(Math.PI * 3 * r) * (1 - r)];
-    return BAD({ f: F('fnissig', { glad: [1, 1] }), p: P({ armar: [HA + 10 * kit, 0], luta: -3 * kit, oron: [8 * kit, 8 * kit], svans: vipp(tl, 0.2, 1.8) }),
+    // kittlet i närbild med riggens borste på nosen (klippen döljer bytet mellan riggens borste och den hållna)
+    if (tl < 1.5 || (tl >= 2.6 && tl < sa + LN(24) + 0.3)) {
+      const k = Math.min(kit, 1);
+      return BAD({ kam: [3.0, BX, VID[1] - (L.FOTTER - 468) * GS], f: F('fnissig', { glad: [1, 1] }),
+        p: BORST(-0.15 + 0.3 * Math.sin(2 * Math.PI * 2.5 * tl) * k, NOS_Y, { borstNer: 0, oron: [8 * k, 8 * k], luta: -3 * k, svans: vipp(tl, 0.2, 1.8) }),
+        riggB: { stor: true }, kant: { tub: tubP } }); }
+    return BAD({ kam: K_HALV, f: F('fnissig', { glad: [1, 1] }), p: P({ armar: [HA + 10 * kit, 0], luta: -3 * kit, oron: [8 * kit, 8 * kit], svans: vipp(tl, 0.2, 1.8) }),
       kant: { tub: tubP }, hall: ner <= 0 ? { href: STOR, v: 92 - 40 * kit + 35 * del(1.5, 1.7, tl) * (1 - del(1.9, 2.3, tl)), s: SK } : null, storLagg: ner > 0 ? ner : null }); },
   // tittar ner på kanten där tuben stod: tomt; klipp till närbild på den förvånade minen
   '11': (tl, d) => { const c = 0.3 + LN(25) + 0.4, k = del(0.1, 0.5, tl);
     return BAD({ kam: tl < c ? K_HALV : K_ANS(), f: F(tl < c ? 'nyfiken' : 'forvanad', { titt: [-6 * k, 12 * k] }), p: P({ oron: tl < c ? [0, 0] : [-14, -14] }), kant: { tub: 'bakom', stor: LIGG } }); },
   // tittar åt vänster, sedan åt höger (ögonen, huvudet vänds inte)
   '12': (tl, d) => { const v = del(0.5, 0.9, tl) - 2 * del(1.5, 2.0, tl) + del(d - 0.8, d - 0.3, tl);
-    return BAD({ f: F('nyfiken', { titt: [-16 * v, 4] }), p: P({ svans: vipp(tl, 1.0) }), kant: { tub: 'bakom', stor: LIGG } }); },
+    return BAD({ kam: K_ANS(), f: F('nyfiken', { titt: [-16 * v, 4] }), p: P({ oron: [-4 + 10 * v, -4 - 10 * v], svans: vipp(tl, 1.0) }), kant: { tub: 'bakom', stor: LIGG } }); },
   // frågan i bred bild, efter 1,5 s klipp till närbild på muggen: korken sticker fram; efter 3 s skimrar den svagt
   '13': (tl, d) => { const g = tl - (0.3 + LN(28) + 3.0);
     return BAD({ kam: tl < 1.5 ? K_HALV : K_MUGG, f: F('nyfiken', { titt: [-10, 8] }), p: P(), kant: { tub: 'bakom', stor: LIGG }, korkSkim: 0.4 * del(0, 0.6, g) }); },
@@ -334,17 +342,17 @@ const S = {
     return BAD({ kam: K_MUN(), f: GAP({ glad: [1, 1], tander, titt: [3 * x, y < 0 ? -2 : 3] }), p: BORST(x, y, { skum: 0.6, bubblor: { k: 1, t: tl + 3 * i }, borstNer: 0 }),
       riggB: { stor: true, pasta: id === '17' ? 1 - del(0.3, 1.6, tl) : 0 }, kant: { tub: 'bakom' }, bar, rentSkim: [RENT[id], 0.9 * bump(tre, tre + 1.1, tl)] }); },
   // stort leende, glansen sveper över de vita tänderna (tandglimt)
-  '20': (tl, d) => BAD({ kam: K_ANS(), f: F('flinar', { tander: Array(8).fill(1), glimt: del(0.2, 0.9, tl) }), p: P({ oron: [-8, -8], svans: vipp(tl, 0.4, 2) }), kant: { tub: 'bakom' }, glimt: true }),
+  '20': (tl, d) => BAD({ kam: tl < 0.4 + LN(34) ? K_MUN() : K_ANS(), f: F('flinar', { tander: Array(8).fill(1), glimt: del(0.2, 0.9, tl) }), p: P({ oron: [-8, -8], svans: vipp(tl, 0.4, 2) }), kant: { tub: 'bakom' }, glimt: true }),
   // blundar nöjt och slickar sig om nosen
   '20b': (tl, d) => { const sv = 0.3 + LN(35);
-    return BAD({ kam: K_ANS(), f: F('glad', { glad: [1, 1], tunga: bump(sv, sv + 1.1, tl) }), p: P({ luta: 3 * del(0.2, 0.8, tl), svans: vipp(tl, sv) }), kant: { tub: 'bakom' } }); },
+    return BAD({ kam: K_ANS(), f: tl > M('20b', 36) ? F('stolt') : F('glad', { glad: [1, 1], tunga: bump(sv, sv + 1.1, tl) }), p: P({ luta: 3 * del(0.2, 0.8, tl), svans: vipp(tl, sv) }), kant: { tub: 'bakom' } }); },
   // sätter den stora borsten i muggen: den vilar på kanten och vickar; klipp till fnisset; sedan bredvid muggen på läppen
   '21': (tl, d) => { const u = kl((tl - 0.1) / 0.45), vick = 6 * Math.exp(-2.5 * Math.max(0, tl - 0.55)) * Math.sin(10 * Math.max(0, tl - 0.55)) * (tl > 0.55 ? 1 : 0);
     const c1 = 1.2 + LN(37), c2 = c1 + 1.5, l = kl((tl - (c2 + 0.2)) / 0.9);
     const STA_H = [MUGGX - 60, RIM - 150, 90, SK];
     let stor = u <= 0 ? null : u < 1 ? koppBana(STA_H, STOR_MUGG, u, 60) : [STOR_MUGG[0], STOR_MUGG[1], STOR_MUGG[2] + vick, SK];
     if (l > 0) stor = urKopp(STOR_MUGG, LIGG, l, 60);
-    const kam = tl >= c1 && tl < c2 ? K_ANS() : K_HALV;
+    const kam = tl < c1 ? [2.4, MUGGX, RIM - 120] : tl < c2 ? K_ANS() : K_HALV;   // vicket stort i närbild på muggen medan Malin säger det
     return BAD({ kam, f: F(tl >= c1 && tl < c2 ? 'fnissig' : 'forvanad', tl >= c1 && tl < c2 ? { glad: [1, 1] } : { titt: [-12, -6] }), p: P({ armar: [HA * (1 - del(0.1, 0.5, tl)), 0], oron: [tl >= c1 && tl < c2 ? 6 * Math.sin(tl * 9) : -10, tl >= c1 && tl < c2 ? -6 * Math.sin(tl * 9) : -10] }),
       kant: { tub: 'bakom', stor, storBak: l <= 0.3 && u > 0.62 }, hall: u <= 0 ? { href: STOR, v: 90, s: SK } : null }); },
   // tittar åt vänster mot dörren och tillbaka, öronen upp, ett lugnt glatt skutt

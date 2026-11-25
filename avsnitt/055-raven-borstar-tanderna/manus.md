@@ -266,7 +266,7 @@ Scenen finns i `scener/badet/index.html` (render `scener/render.mjs`, tiderna i 
 - **Saker i tassen:** vänstra armen lyfts ut förbi kroppens kant (som vinkningen), och saken ligger mellan kroppen och armen, så att tassen är framför skaftet. Borsten håller sin vinkel i bilden.
 - **Kvar att titta på i förhandsvisningen:** täta bilder (6/s) runt varje kontakt (borsten in i muggen, tuben som glider bakom muggen, tuben över borsthuvudet, borsten till tassen).
 
-## Tydligare repliker (förslag 2026-11-25, inte inspelat)
+## Tydligare repliker (godkända och inspelade 2026-11-25)
 
 Sannas instruktion för 052–057: *"make sure all manus are clear and malin says things like ska du torka dig med handduken or things that are clear"*. Varje replik nedan säger nu rakt ut vad som händer: handlingen, saken och kroppsdelen. Taggarna och reglerna är oförändrade. Rösten är redan inspelad (grind 3), så de nya tagningarna (16 repliker) kostar ElevenLabs-krediter. Spelas in först efter Sannas ja. `RAKNA` och `PLUTT` (whisper) mäts om för 30–33.
 
@@ -290,3 +290,26 @@ Sannas instruktion för 052–057: *"make sure all manus are clear and malin say
 | 38 | [warmly] Där. Bredvid den lilla. | [warmly] Där. Den stora ligger bredvid muggen. |
 
 Oförändrade, eftersom de redan är tydliga eller är seriens fasta repliker: 01–09, 11–13, 17–20 (ritintrot och gissningen *"Titta! Kritan ritar något."* ska inte avslöja saken), 26–29, 34, 36, 39–42.
+
+**Inspelat 2026-11-25:** Sanna godkände listan. De 16 replikerna spelades in i ett block (`rost-tydligare.txt`) med samma röst och inställningar, generation 1 av 2 användes (373 krediter, 50 890 → 50 517). Originalet ligger i `produktion/ljud-original/roster/055-raven-borstar-tanderna/malin-tydligare.mp3`. Det delades med `dela-tagning.py` (inga ord avklippta), normaliserades till −3 dBFS och AAC 160k och skrev över de 16 filerna med samma namn. `rost.txt` och klistra in-blocket har den nya texten, och längderna finns i `rost-langder.txt` och `ROST`. `RAKNA` = 31 [3,73 4,47 5,32], 32 [3,49 4,32 5,25], 33 [3,96 4,77 5,66] och `PLUTT` = 2,66 mättes om ur pauserna och kontrollerades med whisper. Animatiken byggdes om (3:48,7) och scenen renderades om med `--snabb`.
+
+## Feedbackrunda 2026-11-25: fler reaktioner, närmare, snabbare
+
+Sanna om 052–057: *"overall more reactions, close crops, character expressions, varied sound effect responses, overall a bit faster pace"*, och om 057:s skum: det roliga som repliken nämner ska synas stort i närbild när den sägs.
+
+- **Tempo:** `GLES` 0,7 → 0,4, `SVAR` 2,0 → 1,6, och svansen efter varje replik är 0,2–0,7 s kortare. Pauserna där barnet svarar (gissningen, tacket, var tandkrämen är) är kvar. Scenen är 3:28 (förut 3:48, ungefär −9 %, och de nya tagningarna är också kortare).
+- **Reaktioner i närbild:** 1b, 3, 4, 6, 9 och 12 klipper till ansiktet på rävens svar.
+- **Det roliga stort:**
+  - Rad 2: *"Blåbär på tänderna!"* sägs i närbild på munnen.
+  - Rad 10: kittlet görs med riggens borste på nosen i närbild (`NOS_Y`). Det sker två gånger före repliken och en gång på den, och klippen döljer bytet mellan riggens borste och den borste räven håller.
+  - Rad 20: *"Blanka tänder!"* sägs i närbild på munnen.
+  - Rad 21: borsten som vickar i muggen visas i närbild på muggen.
+- **Uttryck:**
+  - tänker (rad 6)
+  - blinkar (rad 9)
+  - jätteglad på *"den når alla tänderna"* (rad 8b)
+  - stolt på *"så rena tänder"* (rad 20b)
+  - öronen följer blicken (rad 12)
+- **Ljud:**
+  - Rävens svar växlar mellan känslorna, så att två rader i rad aldrig har samma känsla (7b 3b, 8b 7c, 9 4d, 6 7c, 10 3c på det tredje kittlet).
+  - Nya effekter: glas-klirr när den lilla borsten går ner i muggen, vick när den stora vickar, glimt på de blanka tänderna, och skrubb under borstningen, där borstljudet växlar mellan borsta-1 och borsta-4.
