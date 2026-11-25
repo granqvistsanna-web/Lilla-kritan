@@ -3,6 +3,7 @@
 <title>Kritans ABC – B, recept 3 (prov)</title>
 <script src="/produktion/youtube/shorts/gissa/gissa.js"></script>
 <script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script src="/verktyg/blinka.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/alfabet/abc-e/klossar.js"></script>
@@ -183,10 +184,7 @@ for (const s of Object.values(SAKER)) if (s.rigg) {   // riggarna (elefanten, ka
 }
 const RA = SAKER.bjorn.R, P = SAKER.bjorn.P;
 RA.POSER.hurra = { ...RA.POSER.hurra, armar: [64, 64] };   // C:s riktning: + jätteglad 20 = 84°, som clownen (riggen har 105; ändras bara här)
-kritaG.innerHTML = `<g><use href="#krita-form" fill="none" stroke="#fff" stroke-width="12" stroke-linejoin="round"/>
-  <g filter="url(#vax)"><use class="farg" href="#krita-form"/>
-  <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="#fff" opacity=".35"/></g></g>`;
-kritaG.firstChild.style.filter = 'drop-shadow(8px 14px 6px rgba(59,52,49,.22))';   // kritans skugga
+await ladda(KRITAN.BILD.slice(1));   // den delade kritan (verktyg/kritan-ritar.js, skillen kritan-ritar), Sanna 2026-11-25
 // Klossarna (klossar.js): A-klossen med målad platta och ett tjockt A i tre drag (bara trä på sidorna, Sanna: inget B),
 // och en bildkloss per sak (platta i sakens färg; saken själv läggs ovanpå plattan i SVG:n, så att den kan blinka och röra sig).
 // B:et som i abc-b/ (bokstavens mått −260 … 260 × −330 … 330): ryggen uppifrån och ner, sedan övre bågen och nedre bågen.
@@ -800,6 +798,11 @@ function smulor(t, x, y, farg) {
   smulG.innerHTML = !farg ? '' : Array.from({ length: 6 }, (_, j) => { const b = Math.floor(t * 8) - j, age = t - b / 8, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7);
     const op = Math.max(0, 0.5 - age * 0.7); return op > 0 ? `<circle cx="${(x + (r - 0.5) * 30 + (r - 0.5) * age * 24).toFixed(1)}" cy="${(y + 6 + age * age * 110 + r2 * 8).toFixed(1)}" r="${(2 + 2.5 * r2).toFixed(1)}" fill="${farg}" opacity="${op.toFixed(2)}"/>` : ''; }).join('');
 }
+const kritVinkel = t => { if (STRECK.some(([, , a, b]) => t >= a && t < b)) return KRITAN.VINKEL_RITAR;
+  const fore = STRECK.filter(x => x[3] <= t).at(-1), efter = STRECK.find(x => x[2] > t), S = KRITAN.SVAJ;
+  if (fore && efter && efter[2] - fore[3] < 1) return KRITAN.VINKEL_RITAR;
+  const n = Math.min(fore ? t - fore[3] : 9, efter ? efter[2] - t : 9);
+  return lerp(KRITAN.VINKEL_RITAR, KRITAN.VINKEL_VANTAR + S.av * Math.sin(t * S.fv), inUt(clamp(n / 0.8))); };
 function kritan(t) {
   const nu = STRECK.find(([, , a, b]) => t >= a && t < b);
   const pa = ([s, id], k) => { const [x, y, sk] = lage(s, t), [lx, ly] = s.drag[id].spets(k), [rx, ry, rs] = s.ram ?? [0, 0, 1];
@@ -1033,9 +1036,8 @@ function rita(t) {
   bakRita(t);
   const [kx, ky, kf] = kritan(t), syns = t > A.rita[1] + 0.6 && t < STRECK.at(-1)[3] + 1.2;   // kritan går när allt är ritat
   kritaG.style.display = syns ? '' : 'none';
-  kritaG.querySelector('.farg').setAttribute('fill', kf === F.svart ? '#3B3431' : kf);
   smulor(t, kx, ky, syns && STRECK.some(([, , a, b]) => t >= a && t < b) && (kf === F.svart ? '#3B3431' : kf));
-  kritaG.firstChild.setAttribute('transform', `translate(${kx.toFixed(1)} ${ky.toFixed(1)}) rotate(38) scale(${(0.8 * clamp((t - A.rita[1] - 0.6) / 0.4)).toFixed(3)})`);
+  kritaG.innerHTML = kritaBild(kx, ky, { s: kritaSkala(z) * clamp((t - A.rita[1] - 0.6) / 0.4), v: kritVinkel(t) });
   gissa.boil(t, z);   // 2,5 px i bild, 6 gånger/s (CLAUDE.md)
   kant.uppdatera();
 }
