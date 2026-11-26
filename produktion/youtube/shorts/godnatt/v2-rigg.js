@@ -11,7 +11,7 @@ async function v2rigg(mapp) {
   const a = rader.findIndex(r => r.startsWith('const RIGG') || r.startsWith('const GOM')), r0 = rader.findIndex(r => r.startsWith('const ROR ='));
   const b = rader.findIndex((r, i) => i > r0 && r.startsWith('};')) + 1;
   // verktyg/rigg-motor.js först: det gemensamma (blanda-hjälparna, steg, klappNy, standardrörelserna) står där, inte i uttryck.html
-  const motor = rader.some(r => r.includes('rigg-motor.js')) ? await (await fetch('/verktyg/rigg-motor.js')).text() : 'const mjuk = k => k * k * (3 - 2 * k);';   // Fia har kvar sin egen kod
+  const motor = rader.some(r => r.includes('rigg-motor.js') && !r.trimStart().startsWith('//')) ? await (await fetch('/verktyg/rigg-motor.js')).text() : 'const mjuk = k => k * k * (3 - 2 * k);';   // Fia har kvar sin egen kod
   const kod = rader.slice(a, b).join('\n')
     .replace(/href="(cut[^/"]*)\//g, (_, d) => `href="${bas}${d}/`)   // cut/ och cut-tunn/ (Kanel, Bulle)
     .replaceAll("'../../../rekvisita/", "'/assets/rekvisita/")   // riggens saker (tandborsten): sökvägen är relativ rigg-sidan, inte scenen

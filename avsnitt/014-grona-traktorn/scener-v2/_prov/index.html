@@ -1,0 +1,14 @@
+<!doctype html><html lang="sv"><head><meta charset="utf-8"><title>prov</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style></head><body>
+<script src="/verktyg/blinka.js"></script><script src="/verktyg/kant.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module">
+import * as K from '../kit.js';
+window.SCEN = ['10', '10'];
+const ANIM = { standard: () => { K.vagen(0); K.traktor({ x: 1250, fot: K.VAG_FOT }); K.lovaKor(K.F('lova', 'glad'));
+  const v = K.vagnBakom({ x: 1250, fot: K.VAG_FOT });
+  K.figur('pip', [v.golv[0] - 80, v.golv[1] + 30], K.F('pip', 'glad'), K.P('pip'), { s: 0.4 });
+  K.figur('gurra', [v.golv[0] + 80, v.golv[1] + 30], K.F('gurra', 'glad'), K.P('gurra'), { s: 0.4 });
+  K.figur('humle', [180, 400], K.F('humle', 'glad'), K.P('humle'), { s: 0.3 });
+  K.figur('fia', [1750, 420], K.F('fia', 'glad'), K.P('fia'), { s: 0.3 }); } };
+window.ready = K.starta({ ANIM, figurer: [['lova', 'leoparden-lova', 14], ['pip', 'kycklingen-pip', 3], ['gurra', 'grodan-gurra', 5], ['humle', 'humlan-humle', 7], ['fia', 'fjarilen-fia', 9]] });
+</script></body></html>

@@ -1,5 +1,7 @@
 # Avsnitt 014 – Gröna sången
 
+> **v2 pågår (2026-11-26):** Gröna sången görs om på plats i art direction v2 (Lova, Pip och Gurra v2, nya traktorn `traktor-gron-v2`), samma sång, och laddas upp som en ny video. Planen: [storyboard-v2/storyboard.md](storyboard-v2/storyboard.md). Avsnittstid v2 = sångtid + 9,0 s. v1-filmen och allt nedan gäller den publicerade versionen.
+
 **Status:** klart att publicera (2026-11-07). Svenska slutklippet `film/avsnitt-014.mp4` (3:37) och `youtube.md`; engelska *The Green Song* `film/avsnitt-014-en.mp4` (3:32) och `en/youtube.md`; miniatyrer i `thumbnail/`. Sången är tagning 1 (`sang.m4a`, 3:26.4, oklippt, tider i `rader.txt`). Shorts är inte gjorda. Färgsång i serien efter [005 Rosa sången](../005-rosa-bilen/README.md), [006 Orangea sången](../006-orange-baten/README.md) och [007 Bruna sången](../007-bruna-ladbilen/README.md): samma låtform, samma refrängdans, samma mönster ("Vad är grönt? Titta där!").
 
 | | |

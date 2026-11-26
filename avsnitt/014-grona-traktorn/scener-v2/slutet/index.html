@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><title>014 v2 slutet</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style></head>
+<body>
+<!-- 014 Gröna sången v2: slutet (storyboard-v2 17–17b, avsnittstid 3:24.0–3:35.4), över outrot (instrumentalt, "putt, putt" viskas).
+     17: brunt kritsvep (kit SVEP 204,0) från discot till åkern ur Ärtresan (samma jord och fåror som vagen/ aker()). Lova kör lugnt åt
+     höger med vagnen bakom; Pip och Gurra står i vagnen och vinkar (en i taget), en ärtplanta växer upp i fåran bakom vagnen per slag.
+     17b: traktorn har stannat, kameran glider in mot Lova, kritirisen (013:s) sluter sig runt hennes ansikte, hon blinkar, irisen
+     stängs, en stjärna glimtar, svart till sångens slut. -->
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module">
+import * as K from '../kit.js';
+const { kl, lerp, mjuk, del, bump, f1, lagg, $ } = K;
+window.SCEN = ['17', '17b'];
+const T = { START: 204.0, STANNA: [209.6, 212.0], IRIS: [212.3, 213.9, 214.3, 215.0], SLUT: 215.4 };
+const FOT = K.VAG_FOT;
+
+// åkern (som vagen/ aker(): vägens himmel och vägg, brun jord med fåror); står still, traktorn kör
+function aker() {
+  K.platta(K.VAG);
+  const f = Array.from({ length: 5 }, (_, i) => { const y = 900 + i * 38; return `<path d="M-20 ${y} Q960 ${y - 10} 1940 ${y}" stroke="#5C3C26" stroke-width="${7 + i * 2}" fill="none" stroke-linecap="round" opacity="0.55"/>`; }).join('');
+  lagg('bakom', `<rect x="-20" y="868" width="1960" height="240" fill="#8A5A3B"/>
+    <path d="M-20 870 Q960 856 1940 870" stroke="#fff" stroke-width="10" fill="none"/>${f}
+    ${Array.from({ length: 14 }, (_, i) => { const x = ((i * 157) % 2200) - 140; return `<ellipse cx="${f1(x)}" cy="${f1(930 + (i * 37) % 120)}" rx="22" ry="7" fill="#5C3C26" opacity="0.5"/>`; }).join('')}`);
+}
+// en ärtplanta (som vagen/ grodd(), med en liten skida när den är fullvuxen): växer ur jorden (k 0–1), h = höjd
+function planta(x, fot, h, k) {
+  if (k <= 0.01) return;
+  const s = h / 100 * (0.2 + 0.8 * mjuk(k)), vik = 6 * Math.sin(K.TID * 2.2 + x), sk = mjuk(del(0.6, 1, k));
+  lagg('bakom', `<g transform="translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(3)}) rotate(${f1(vik)})"><g stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke">
+    <path d="M0 0 Q-4 -50 0 -78" fill="none" stroke="#4E9A2E" stroke-width="9" stroke-linecap="round"/>
+    <path d="M0 -70 Q-46 -96 -52 -60 Q-22 -50 0 -70Z" fill="#6FBF47"/><path d="M0 -76 Q44 -110 56 -72 Q26 -58 0 -76Z" fill="#80C446"/>
+    ${sk > 0.01 ? `<g transform="translate(8 -40) scale(${sk.toFixed(2)})"><path d="M0 0 C 8 12 6 30 -2 44 C -12 34 -14 12 0 0Z" fill="#86CF6E"/></g>` : ''}</g></g>`);
+}
+// traktorns x: kör in lugnt från vänster och saktar in till stopp mitt i bild
+const START_X = 880, STOPP_X = 1260;
+const traktorX = t => lerp(START_X, STOPP_X, mjuk(del(T.START, T.STANNA[1], t) ** 0.8));
+// plantorna: en per slag, där vagnen just passerat (fast x, sorterat)
+const PLANTOR = Array.from({ length: 11 }, (_, i) => ({ x: 640 - i * 62 + (i % 2) * 14, fot: 915 + (i % 3) * 32, h: 150 + (i * 37) % 70 }));   // från vagnens startplats och bakåt (vänster)
+const BAK = 560;   // vagnens bakkant ligger ca så här långt bakom traktorns mitt
+
+// kritirisen (013:s scen-kit): svart runt en ring kring (cx, cy) i skärmens koordinater
+function kritiris(r, cx, cy, { t = 0, glimt = 0, in: inn = 0 } = {}) {
+  if (r >= 1400) return;
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+    return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+  const sx = cx + 110 * (1 - inn), sy = cy - 120 * (1 - inn), sk = (18 + 22 * inn) * glimt;
+  lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>
+    ${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4)}" stroke-linejoin="round" filter="url(#boil)"/>` : ''}
+    ${glimt > 0 ? `<path d="M0 -1 L.16 -.16 L1 0 L.16 .16 L0 1 L-.16 .16 L-1 0 L-.16 -.16Z" fill="#fff8e0" transform="translate(${f1(sx)} ${f1(sy)}) rotate(${f1(20 * t)}) scale(${sk.toFixed(2)})"/>` : ''}`);
+}
+// scen → skärm med samma klämning som kit.kamera()
+const skarm = ([x, y], z, cx, cy) => { const tx = kl(960 - cx * z, 1920 - 1920 * z, 0), ty = kl(540 - cy * z, 1080 - 1080 * z, 0); return [tx + x * z, ty + y * z]; };
+
+const vink = (t, a, fas = 0) => del(a, a + 0.4, t) * (1 - del(T.IRIS[0] - 0.4, T.IRIS[0], t));
+const ANIM = {
+  standard: () => {
+    const t = K.TID, x = traktorX(t), rull = x - START_X;
+    aker();
+    PLANTOR.forEach((p, i) => {   // en per slag, närmast vagnen först; aldrig före vagnens bakkant har passerat
+      let tp = T.START; while (tp < T.SLUT && traktorX(tp) - BAK < p.x) tp += 0.05;
+      tp = Math.max(tp, T.START + 0.9 + i * K.BEAT);
+      planta(p.x, p.fot, p.h, del(tp, tp + 0.7, t)); });
+    const skump = t < T.STANNA[1] ? 4 * Math.abs(Math.sin((t - T.START) * Math.PI / K.BEAT)) * (1 - del(T.STANNA[0], T.STANNA[1], t)) : 0;
+    K.traktor({ x, fot: FOT - skump, rull, flagg: 6 * (1 - del(T.STANNA[0], T.STANNA[1], t)) });
+    const v = K.vagnBakom({ x, fot: FOT - skump * 0.5, rull });
+    // Lova kör och skrattar; vinkar 208–211; blinkar precis innan irisen stängs
+    const fl = t < T.IRIS[2] - 0.3 ? K.F('lova', 'skrattar') : K.FIG.lova.L.blanda('skrattar', 'blinkar', mjuk(del(T.IRIS[2] - 0.3, T.IRIS[2], t)));
+    const lv = del(207.6, 208.0, t) * (1 - del(211.0, 211.4, t)), sv = Math.sin((t - 207.6) * 5.5);
+    K.lovaKor(fl, { armar: [6, 6 + lv * (80 + 14 * sv)], luta: 2 * Math.sin((t - T.START) * Math.PI / K.BEAT) }, { upp: 10 * lv });
+    // Pip och Gurra i vagnen vinkar, en i taget (0,25 s isär)
+    const s = 0.4;
+    [['pip', -80, 204.6, 0], ['gurra', 80, 204.85, 1.3]].forEach(([n, dx, a, fas]) => {
+      const k = vink(t, a, fas), sv = Math.sin((t - a) * 5.5 + fas);
+      K.figur(n, [v.golv[0] + dx, v.golv[1] + 12 - 3 * Math.abs(Math.sin((t - T.START) * Math.PI / K.BEAT + fas))], K.F(n, 'skrattar'),
+        K.P(n, { armar: [6, 6 + k * (92 + 16 * sv)], luta: 3 * Math.sin((t - T.START) * Math.PI / K.BEAT + fas) }), { s });
+    });
+    // kameran: helbild, glider in mot Lova i 17b; irisen runt hennes ansikte
+    const ansikte = K.iTraktor([K.SITS[0], K.SITS[1] + (430 - K.FIG.lova.L.FOTTER) * K.LT], { x, fot: FOT });
+    const kz = mjuk(del(T.STANNA[0] + 1.0, T.IRIS[1], t)), z = lerp(1, 1.7, kz), cx = lerp(960, ansikte[0], kz), cy = lerp(540, ansikte[1], kz);
+    K.kamera(z, cx, cy);
+    if (t > T.IRIS[0]) {
+      const [sx, sy] = skarm(ansikte, z, cx, cy);
+      const r = t < T.IRIS[1] ? lerp(1400, 300, mjuk(del(T.IRIS[0], T.IRIS[1], t))) : t < T.IRIS[2] ? 300 : lerp(300, 0, mjuk(del(T.IRIS[2], T.IRIS[3], t)));
+      const glimt = bump(T.IRIS[1] - 0.3, T.IRIS[1] + 0.6, t) + (t > T.IRIS[3] - 0.15 ? del(T.IRIS[3] - 0.15, T.IRIS[3] + 0.1, t) * (1 - del(T.SLUT - 0.3, T.SLUT, t)) : 0);
+      kritiris(r, sx, sy, { t: t - T.IRIS[0], glimt, in: del(T.IRIS[2], T.IRIS[3], t) });
+    }
+  },
+};
+window.ready = K.starta({ ANIM, figurer: [['lova', 'leoparden-lova', 14], ['pip', 'kycklingen-pip', 3], ['gurra', 'grodan-gurra', 5]] });
+</script>
+</body>
+</html>

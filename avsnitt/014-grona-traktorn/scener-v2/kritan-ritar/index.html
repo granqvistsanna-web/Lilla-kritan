@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><title>014 v2 kritan ritar</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style></head>
+<body>
+<!-- 014 Gröna sången v2: kritan ritar traktorn (01a–01c, avsnittstid 9,0–30,0). Renderas med ../render.mjs.
+     Skillen kritan-ritar och verktyg/kritan-ritar.js (format/ritintro.md). Sången börjar redan vid 9,0 ("Kritan ritar …"), så
+     väntan kan inte kortas: kameran kryper och teckningen gungar i takt på "tick, tack" (ingen knackning). Konturen ur
+     traktor-gron-v2.png (kontur-yttre.json, --krymp 16 så att stolparna och taket kommer med, och kontur-fonster.json: hyttens
+     öppning ner till sätet), två drag på 2,8 s. Svaret på "En traktor!" (24,7): bilden fylls inifrån, gnistor, pling.
+     "Tut-tut": två vita puffar ur avgasröret. Flaggan på taket döljs här (den finns inte i bilden kritan ritar).
+     Början: introts gröna kritsvep glider undan (9,0–9,8). Slutet: kitets gröna svep (SVEP 30,0) in på vägen. -->
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script type="module">
+import * as K from '../kit.js';
+window.SCEN = ['01a', '01c'];
+const HAR = K.HAR + 'kritan-ritar/';
+const [YT, FO] = await Promise.all(['kontur-yttre.json', 'kontur-fonster.json'].map(async f => (await fetch(HAR + f)).json()));
+const DRAG = [YT.d, FO.d];
+
+// Traktorn på papperet: ca 600 px hög, mitt i bild och lite under mitten
+const TX = 960, TF = 870, TK = 0.82, S = K.TS * TK;
+const iS = ([x, y]) => [TX + (x - K.TRAKTOR.mitt) * S, TF + (y - K.TRAKTOR.botten) * S];
+const MITT = iS([525, 520]), R_FYLL = 540;
+const LINJE = '#2A5E27';   // mörk ton av avsnittets gröna
+
+// Tider (avsnittstid)
+const T = { in: [9.6, 10.2], rit: [10.2, 13.0], vanta: [13.0, 13.8], ut: [24.95, 25.75] };
+const SVAR = 24.7, GRON = 25.9, TUT = [27.3, 27.75], KOR = 28.7, TICK = 19.3, BEAT = K.BEAT;
+const VANTA = [1500, 330];   // väntplatsen i scenen: fri yta uppe till höger om taket
+
+// kameran (samma klämning som kit.kamera): scenpunkt → skärm
+let CAM = [1, 960, 540];
+const kam = (z, cx, cy) => { CAM = [z, K.kl(960 - cx * z, 1920 - 1920 * z, 0), K.kl(540 - cy * z, 1080 - 1080 * z, 0)]; K.kamera(z, cx, cy); };
+const skarm = ([x, y]) => [CAM[1] + x * CAM[0], CAM[2] + y * CAM[0]];
+const ritK = t => ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
+const spetsVid = t => iS(ritBana(DRAG, ritK(t)).spets);
+
+const ANIM = {
+  standard: () => {
+    const t = K.TID;
+    $p();
+    // kameran: följer spetsen lugnt under ritandet (medel över 0,6 s), glider ut till hela, kryper in i väntan, närmare på svaret
+    let z, c;
+    if (t < T.vanta[0]) {
+      const pts = [0, 0.15, 0.3, 0.45, 0.6].map(d => spetsVid(Math.max(T.rit[0], t - d)));
+      const m = [pts.reduce((a, p) => a + p[0], 0) / pts.length, pts.reduce((a, p) => a + p[1], 0) / pts.length];
+      const ut = K.del(12.5, T.vanta[0], t);
+      z = K.lerp(1.3, 1.08, ut); c = [K.lerp(K.lerp(m[0], 960, 0.35), 960, ut), K.lerp(K.lerp(m[1], 560, 0.35), 560, ut)];
+    } else {
+      const kryp = K.del(T.vanta[0], SVAR, t), svar = K.del(SVAR, SVAR + 0.6, t), ut = K.del(KOR, KOR + 0.8, t);
+      z = K.lerp(K.lerp(1.0, 1.12, kryp), 1.2, svar); z = K.lerp(z, 1.0, ut);
+      c = [960, K.lerp(560, 580, svar)];
+      if (t < T.vanta[1]) { const g = K.del(T.vanta[0], T.vanta[1], t); z = K.lerp(1.08, 1.0, g); }
+    }
+    kam(z, c[0], c[1]);
+
+    // teckningen: tick-tack-gung (en halv svängning per "tick"/"tack"), hopp på svaret, skutt på "grön", lutning på "kör"
+    const tick = K.del(TICK - 0.2, TICK, t) * (1 - K.del(SVAR - 0.4, SVAR, t)), gung = 2.2 * tick * Math.sin(Math.PI * (t - TICK) / BEAT);
+    const hopp = 40 * K.bump(SVAR, SVAR + 0.5, t) + 18 * K.bump(GRON, GRON + 0.35, t) + 10 * K.bump(TUT[0], TUT[0] + 0.25, t) + 10 * K.bump(TUT[1], TUT[1] + 0.25, t);
+    const kor = K.del(KOR, KOR + 0.6, t), rull = 70 * kor;
+    const fot = TF - hopp, x = TX + rull, lut = gung - 2 * K.bump(KOR, KOR + 0.9, t);
+
+    // fyllningen inifrån
+    const f = K.kl((t - SVAR) / 0.7);
+    if (f > 0) {
+      K.traktor({ x, fot, k: TK, lut, rull });
+      document.getElementById('flagga').setAttribute('display', 'none');
+      const fo = document.getElementById('fordon');
+      if (f < 1) { K.lagg('pynt', `<defs>${fyllMask('fyll', MITT[0], MITT[1] - hopp, R_FYLL, f)}</defs>`); fo.setAttribute('clip-path', 'url(#fyll)'); }
+      else fo.removeAttribute('clip-path');
+    }
+    // konturen (i traktorns pixlar, samma transform som traktorn)
+    const R = ritBana(DRAG, ritK(t), { attr: `fill="none" stroke="${LINJE}" stroke-width="${(KRITAN.BRED / S).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"` });
+    if (f < 1) K.lagg('pynt', `<g transform="translate(${K.f1(x - K.TRAKTOR.mitt * S)} ${K.f1(fot - K.TRAKTOR.botten * S)}) scale(${S.toFixed(4)}) rotate(${K.f1(lut)} ${K.TRAKTOR.mitt} ${K.TRAKTOR.botten})">${R.html}</g>`);
+
+    // puffar ur avgasröret på "Tut-tut"
+    const av = iS(K.TRAKTOR.avgas);
+    for (const t0 of TUT) { const u = (t - t0) / 1.3; if (u <= 0 || u >= 1) continue;
+      const px = av[0] + rull - 30 * u, py = av[1] - hopp - 20 - 120 * K.mjuk(u), r = 22 + 30 * K.mjuk(Math.min(1, u * 1.6)), o = 1 - K.del(0.55, 1, u);
+      K.lagg('pynt', `<g opacity="${o.toFixed(2)}" fill="#fff" stroke="#D8D2C4" stroke-width="5" paint-order="stroke">
+        <circle cx="${K.f1(px)}" cy="${K.f1(py)}" r="${K.f1(r)}"/><circle cx="${K.f1(px - r * 0.8)}" cy="${K.f1(py + r * 0.35)}" r="${K.f1(r * 0.62)}"/><circle cx="${K.f1(px + r * 0.75)}" cy="${K.f1(py + r * 0.3)}" r="${K.f1(r * 0.7)}"/></g>`); }
+
+    // gnistor på svaret (skärm, i #ram)
+    if (t > SVAR) K.lagg('ram', gnistor(...skarm(MITT), 330 * z, t - SVAR));
+    // kritan (skärmen, samma storlek hela scenen)
+    const kr = kritaFas(t, T, { start: skarm(iS(R.start)), spets: skarm(iS(R.spets)).map((v, i) => v + (i ? -hopp * z : 0)), slut: skarm(iS(R.slut)), vanta: VANTA });
+    if (kr) K.lagg('ram', kritaBild(kr.x, kr.y, kr));
+    // introts gröna svep glider undan åt höger
+    if (t < 9.8) K.kritsvep(0.5 + (t - 9.0) / (2 * K.SV), K.SVEP[0][1], K.SVEP[0][2]);
+  },
+};
+function $p() { K.$('platta').innerHTML = '<rect x="-2000" y="-2000" width="6000" height="5000" fill="#FDFBF4"/>'; }
+
+window.ready = K.starta({ ANIM, forladda: [KRITAN.BILD, '/assets/rekvisita/traktor-gron-v2/cut/traktor-bak.png'], ljud: () => {
+  K.ljud('skogsljud', 9.0, { vol: 0.35, langd: 12, fade: 2.2, fadeIn: 1.2 });
+  K.ljud('krita-ritar', T.rit[0], { vol: 1.6, langd: 2.3, fade: 0.5 });
+  K.ljud('krita-ritar', T.rit[0] + 1.8, { vol: 1.6, variant: 2, langd: T.rit[1] - T.rit[0] - 1.8, fade: 0.4, fadeIn: 0.5 });
+  K.ljud('pling', SVAR, { vol: 1.2 });
+  K.ljud('puff', TUT[0], { vol: 0.8 }); K.ljud('puff', TUT[1], { vol: 0.8, variant: 2 });
+} });
+</script>
+</body>
+</html>

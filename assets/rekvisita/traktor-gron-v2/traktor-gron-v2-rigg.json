@@ -1,0 +1,47 @@
+{
+  "_anm": "Klippt ur traktor-gron-v2.jpg (1024x1024, Sannas Flow-redigering 2026-11-26 med brett lagt sate och ingen ratt).",
+  "canvas": {
+    "w": 1024,
+    "h": 1024
+  },
+  "kant_px": 11,
+  "lager": [
+    "traktor-bak",
+    "figur",
+    "traktor-fram",
+    "hjul-bak",
+    "hjul-fram"
+  ],
+  "filer": {
+    "hel": "traktor-gron-v2.png",
+    "bak": "traktor-bak.png",
+    "fram": "traktor-fram.png",
+    "hjulBak": "hjul-bak.png",
+    "hjulFram": "hjul-fram.png"
+  },
+  "hjulBak": {
+    "cx": 290.9,
+    "cy": 690.5,
+    "r": 186.5
+  },
+  "hjulFram": {
+    "cx": 800.8,
+    "cy": 753.9,
+    "r": 119.1
+  },
+  "sits": {
+    "x": 571,
+    "y": 588
+  },
+  "karKantNederst": {
+    "xl": 235,
+    "xr": 689,
+    "y_vid_sits": 598
+  },
+  "avgasToppen": {
+    "x": 752.0,
+    "y": 321
+  },
+  "takUndersidaY": 214,
+  "vankning": "traktorn vetter at hoger (huv och avgasror at hoger)"
+}

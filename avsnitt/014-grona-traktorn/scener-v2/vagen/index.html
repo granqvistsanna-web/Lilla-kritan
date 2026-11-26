@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="sv">
+<head><meta charset="utf-8"><title>014 v2 vägen</title>
+<style>html, body { margin:0; background:#000; overflow:hidden } svg { width:100vw; height:100vh; display:block; }</style></head>
+<body>
+<!-- 014 Gröna sången v2: vägen och Ärtresan (03–09a–g, avsnittstid 30,0–106,0). Renderas med ../render.mjs.
+     Tiderna i koden är avsnittstid (sångtid + 9,0, ur ../../rader.txt). Allt på marken (trafikljuset, Gurra, ärtorna, groddarna)
+     glider med vägen: världens x = x0 − (vag(t) − vag(t0)), så inget står still medan traktorn kör. -->
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module">
+import * as K from '../kit.js';
+const { kl, lerp, mjuk, del, bump, f1, lagg } = K;
+window.SCEN = ['03', '09a–g'];
+
+// --- Ordtider (avsnittstid) ------------------------------------------------------------------------------------------------
+const PUTT = [39.6, 40.0, 40.4], KOR = [77.7, 78.4, 79.0], ZIPP = [91.3, 92.0, 92.5], HOPP = [67.7, 68.7, 69.7];
+const R1 = { a: 48.1, gront: [48.1, 49.0, 49.8, 50.2], gbk: 50.6, kor: 51.8, ut: 52.6, artor: [52.6, 54.4, 55.3], ekon: [53.5, 54.4, 55.3],
+  tak: 56.3, putt: [59.2, 59.6, 60.0, 60.4], titta: 61.7, slut: 62.5, kawaii: true };
+const R2 = { a: 93.0, gront: [93.0, 93.7, 94.7, 95.7], gbk: 96.4, kor: 97.5, ut: 97.7, artor: [97.7, 99.7, 100.7], ekon: [98.7, 99.7, 100.7],
+  tak: 101.5, putt: [103.6, 104.0, 104.4, 104.8], titta: 105.4, slut: 106.0, kawaii: false };
+
+// --- Farten och vägen: vag(t) = körd sträcka (px), integrerad ur farten, så att inbromsningar och rusningar blir mjuka ----------
+const fart = t => {
+  let v = 150;
+  v *= 1 - del(63.2, 64.6, t) * (1 - del(69.9, 71.0, t));             // grodan: bromsar in, rullar igen när den landat
+  v *= 1 - del(71.3, 72.6, t) * (1 - del(KOR[0] - 0.1, KOR[0] + 0.3, t));   // röda ljuset: stannar, står still till "kör"
+  v += 260 * bump(KOR[0] - 0.1, KOR[2] + 1.2, t);                       // kör, kör, kör: fort en stund
+  return v;
+};
+const VAGMINNE = new Map();
+function vag(t) {   // ∫ fart från 30,0 (steg 0,02 s), samma t ger alltid samma värde
+  const k = Math.round(t * 50); if (VAGMINNE.has(k)) return VAGMINNE.get(k);
+  let s = 0; for (let i = 1500; i < k; i++) s += fart(i / 50) / 50; VAGMINNE.set(k, s); return s;
+}
+const varld = (x0, t0) => x0 - (vag(K.TID) - vag(t0));   // en sak på marken som stod i x0 vid t0
+
+// --- Traktorn och Lova -------------------------------------------------------------------------------------------------------
+const TX = 880, FOT = K.VAG_FOT;
+const LOVA_HUVUD = () => K.iTraktor([470, 351], { x: TX, fot: FOT });
+const NARA = () => K.kamera(1.8, 825, 560);
+const HEL = (z = 1) => K.kamera(z, 900, 540);
+const L = () => K.FIG.lova.L;
+const ans = (a, b = a, k = 1) => L().blanda(a, b, kl(k));
+const pose = (...namn) => Object.assign({}, ...namn.map(n => { const { namn: _, ...p } = L().POSER[n]; return p; }));
+// skumpet: ett litet gupp per slag när den kör (sångtid = TID − 9), lugnt
+const gupp = (t, h = 5) => h * Math.pow(Math.abs(Math.sin(Math.PI * (t - 9.0) / K.BEAT)), 6) * kl(fart(t) / 150);
+function kor({ x = TX, lut = 0, k = 1, flagg = 0, synlig = true } = {}) {
+  const t = K.TID, o = vag(t);
+  K.vagen(o);
+  K.traktor({ x, fot: FOT - gupp(t), rull: o, lut: lut - 0.6 * gupp(t), k, flagg: flagg + 6 * kl((fart(t) - 150) / 260), synlig });
+}
+function lova(f, p = {}, upp = 0) { K.lovaKor(typeof f === 'string' ? ans(f) : f, p, { upp: upp + 0.6 * gupp(K.TID) }); }
+// dragkedjan: nere (öppen) tills "Zipp, zipp, zipp!" drar upp den i tre ryck
+function zipp() { const t = K.TID; K.zipp(ZIPP.reduce((z, a, i) => z + del(a - 0.05, a + 0.18, t) / 3, 0)); }
+
+// puffar ur avgasröret: vita kritmoln som stiger och driver bakåt, ett per "putt"
+const AVGAS = () => K.iTraktor([752, 330], { x: TX, fot: FOT });
+function puffar(tider) {
+  const [ax, ay] = AVGAS();
+  for (const a of tider) { const u = (K.TID - a) / 1.3; if (u < 0 || u > 1) continue;
+    const r = 16 + 26 * mjuk(u), x = ax - 150 * u, y = ay - 30 - 70 * mjuk(u);
+    lagg('framfor', `<g opacity="${f1(1 - mjuk((u - 0.55) / 0.45))}"><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r + 5)}" fill="#E4E8EC"/><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="#fff"/>
+      <circle cx="${f1(x + r * 0.7)}" cy="${f1(y + r * 0.2)}" r="${f1(r * 0.7)}" fill="#fff"/></g>`); }
+}
+// glitter: små vita fyrstrålade stjärnor som tänds och släcks i en ring runt (cx, cy)
+function glitter(cx, cy, R, a, d = 1.4) {
+  const u = (K.TID - a) / d; if (u < 0 || u > 1) return;
+  lagg('pynt', Array.from({ length: 6 }, (_, i) => { const v = i * 1.05 + 0.4, k = bump(i * 0.08, i * 0.08 + 0.55, u), r = 6 + 18 * k;
+    const x = cx + R * Math.cos(v), y = cy + R * 0.8 * Math.sin(v), q = r * 0.28;
+    return k > 0.02 ? `<path d="M${f1(x)} ${f1(y - r)}L${f1(x + q)} ${f1(y - q)}L${f1(x + r)} ${f1(y)}L${f1(x + q)} ${f1(y + q)}L${f1(x)} ${f1(y + r)}L${f1(x - q)} ${f1(y + q)}L${f1(x - r)} ${f1(y)}L${f1(x - q)} ${f1(y - q)}Z" fill="#fff" stroke="#F2E7A6" stroke-width="2"/>` : ''; }).join(''));
+}
+
+// --- Trafikljuset v2 (assets/rekvisita/trafikljus-v2, Sannas Flow-bild 2026-11-26; lamporna ritas i kod) -----------------------------------------------------
+const LJUS_BB = [306, 91, 718, 933], LAMPA = { rod: [510, 278, 108, '#F2443A'], gron: [512, 535, 107, '#5FD35A'] };   // trafikljus-v2-rigg.json
+document.querySelector('defs').insertAdjacentHTML('beforeend', '<filter id="lampglod" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="28"/></filter>');
+function trafikljus(x, fot, h, tand, k = 1, ring = -1) {
+  const s = h / (LJUS_BB[3] - LJUS_BB[1]), [mx, my, r, c] = LAMPA[tand] || [];
+  let lampa = '';
+  if (tand && k > 0.01) lampa = `<g transform="translate(${mx} ${my}) scale(${f1(0.6 + 0.4 * k)})" opacity="${k.toFixed(2)}"><circle r="${f1(r * 1.5)}" fill="${c}" opacity="0.55" filter="url(#lampglod)"/>
+    <circle r="${f1(r * 1.04)}" fill="${c}"/><ellipse cx="${f1(-r * 0.33)}" cy="${f1(-r * 0.4)}" rx="${f1(r * 0.22)}" ry="${f1(r * 0.2)}" fill="#fff" opacity="0.6"/></g>`;
+  if (ring >= 0 && ring < 1) lampa += `<circle cx="${mx}" cy="${my}" r="${f1(r * (1.1 + 2.4 * mjuk(ring)))}" fill="none" stroke="${c}" stroke-width="${f1(22 * (1 - ring))}" opacity="${f1(1 - ring)}"/>`;
+  lagg('bakom', `<g transform="translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(${-(LJUS_BB[0] + LJUS_BB[2]) / 2} ${-LJUS_BB[3]})">
+    <image href="/assets/rekvisita/trafikljus-v2/cut/trafikljus-v2.png" width="1024" height="1024"/>${lampa}</g>`);
+}
+
+// --- Ärtor och groddar (i kod) ------------------------------------------------------------------------------------------------
+// en ärta med ansikte: r = radien, glad 0–1 (öppen mun), blink 0–1, kawaii (stora glansögon)
+function arta(x, y, r, { lager = 'pynt', mun = 0, blink = 0, kawaii = 0 } = {}) {
+  const oy = y - r * 0.12, ox = r * 0.34, oh = r * 0.2 * (1 - blink) + 1.5;
+  const ogon = [-1, 1].map(s => kawaii > 0.5
+    ? `<ellipse cx="${f1(x + s * ox)}" cy="${f1(oy)}" rx="${f1(r * 0.16)}" ry="${f1(r * 0.2)}" fill="#3a2c28"/><circle cx="${f1(x + s * ox - r * 0.05)}" cy="${f1(oy - r * 0.07)}" r="${f1(r * 0.07)}" fill="#fff"/>`
+    : `<ellipse cx="${f1(x + s * ox)}" cy="${f1(oy)}" rx="${f1(r * 0.09)}" ry="${f1(oh / 2 + 1)}" fill="#3a2c28"/>`).join('');
+  const munD = mun > 0.3 ? `<path d="M${f1(x - r * 0.2)} ${f1(y + r * 0.18)} Q${f1(x)} ${f1(y + r * 0.5)} ${f1(x + r * 0.2)} ${f1(y + r * 0.18)}Z" fill="#a33b45"/>`
+    : `<path d="M${f1(x - r * 0.2)} ${f1(y + r * 0.2)} Q${f1(x)} ${f1(y + r * 0.38)} ${f1(x + r * 0.2)} ${f1(y + r * 0.2)}" fill="none" stroke="#3a2c28" stroke-width="${f1(r * 0.08)}" stroke-linecap="round"/>`;
+  lagg(lager, `<g><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r + 3 + r * 0.04)}" fill="#fff"/><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="#80C446"/>
+    <circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="#4E9A2E" opacity="0.25" mask="url(#artskugga)"/>
+    <ellipse cx="${f1(x - r * 0.38)}" cy="${f1(y - r * 0.42)}" rx="${f1(r * 0.2)}" ry="${f1(r * 0.13)}" fill="#fff" opacity="0.7" transform="rotate(-30 ${f1(x - r * 0.38)} ${f1(y - r * 0.42)})"/>
+    <ellipse cx="${f1(x - r * 0.5)}" cy="${f1(y + r * 0.1)}" rx="${f1(r * 0.13)}" ry="${f1(r * 0.08)}" fill="#F4A6A0" opacity="0.8"/><ellipse cx="${f1(x + r * 0.5)}" cy="${f1(y + r * 0.1)}" rx="${f1(r * 0.13)}" ry="${f1(r * 0.08)}" fill="#F4A6A0" opacity="0.8"/>
+    ${ogon}${munD}</g>`);
+}
+document.querySelector('defs').insertAdjacentHTML('beforeend', `<radialGradient id="artskuggaG" cx="0.35" cy="0.3" r="0.8"><stop offset="0.5" stop-color="#000"/><stop offset="1" stop-color="#fff"/></radialGradient>
+  <mask id="artskugga" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#artskuggaG)"/></mask>`);
+// en grodd: stjälk och två blad, växer ur jorden (k 0–1), h = höjd
+function grodd(x, fot, h, k) {
+  if (k <= 0.01) return;
+  const s = h / 100 * (0.2 + 0.8 * mjuk(k)), vik = 6 * Math.sin(K.TID * 2.2 + x);
+  lagg('bakom', `<g transform="translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(3)}) rotate(${f1(vik)})"><g stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke">
+    <path d="M0 0 Q-4 -50 0 -78" fill="none" stroke="#4E9A2E" stroke-width="9" stroke-linecap="round"/>
+    <path d="M0 -70 Q-46 -96 -52 -60 Q-22 -50 0 -70Z" fill="#6FBF47"/><path d="M0 -76 Q44 -110 56 -72 Q26 -58 0 -76Z" fill="#80C446"/></g></g>`);
+}
+// åkern: vägens himmel och vägg ligger kvar, marken blir brun jord med fåror; gron 0–1 = åkern grönskar
+function aker(o, gron = 0) {
+  K.platta(K.VAG);
+  const f = Array.from({ length: 5 }, (_, i) => { const y = 900 + i * 38; return `<path d="M-20 ${y} Q960 ${y - 10} 1940 ${y}" stroke="#5C3C26" stroke-width="${7 + i * 2}" fill="none" stroke-linecap="round" opacity="0.55"/>`; }).join('');
+  lagg('bakom', `<rect x="-20" y="868" width="1960" height="240" fill="#8A5A3B"/><rect x="-20" y="868" width="1960" height="240" fill="#6FBF47" opacity="${f1(0.55 * gron)}"/>
+    <path d="M-20 870 Q960 856 1940 870" stroke="#fff" stroke-width="10" fill="none"/>${f}
+    ${Array.from({ length: 14 }, (_, i) => { const x = ((i * 157 - o * 0.999) % 2200 + 2200) % 2200 - 140; return `<ellipse cx="${f1(x)}" cy="${f1(930 + (i * 37) % 120)}" rx="22" ry="7" fill="#5C3C26" opacity="0.5"/>`; }).join('')}`);
+}
+
+// --- Refrängen: Ärtresan (05a–g och 09a–g likadana, R = tiderna) --------------------------------------------------------------
+const GRODD_X = [1000, 1330, 640, 1560], GRODD_STOR = [380, 820, 1150, 1450, 1700, 250];
+function refrang(R) {
+  const t = K.TID, o = vag(t);
+  if (t < R.ut) {   // a–c: åkern, en grodd per "Grönt!", trafikljuset blir grönt på "kör", traktorn rusar ut åt höger
+    const ruta = mjuk((t - R.kor) / 0.8), x = TX + 1500 * ruta * ruta;
+    aker(o, del(R.kor, R.kor + 0.7, t));
+    R.gront.forEach((a, i) => grodd(varld(GRODD_X[i], a), 880, 120, (t - a) / 0.45));
+    GRODD_STOR.forEach((gx, i) => grodd(varld(gx, R.kor), 875, 170, (t - R.kor - i * 0.08) / 0.5));
+    const lx = varld(1650, R.gbk), up = mjuk((t - R.gbk) / 0.4);
+    if (t > R.gbk) trafikljus(lx, 880 + 60 * (1 - up), 470 * up, t >= R.kor ? 'gron' : 'rod', 1, t >= R.kor ? (t - R.kor) / 0.8 : -1);
+    K.traktor({ x, fot: FOT - gupp(t, 9), rull: o + 600 * ruta, lut: -3 * ruta, flagg: 14 * ruta });
+    const hej = R.gront.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.6, t)), 0);
+    lova(t >= R.kor ? 'jatteglad' : ans('glad', 'jatteglad', hej), { armar: [6 + 60 * hej, 6 + 60 * hej] }, 6 * hej);
+    HEL();
+    return;
+  }
+  // d–g: vägen igen; traktorn susar in från vänster och saktar in, en ärta hoppar in per "Grönt!" och följer som ett litet tåg
+  const in_ = mjuk((t - R.ut) / 1.1), x = lerp(-500, TX, in_);
+  kor({ x, flagg: 10 * (1 - in_) });
+  const narbild = t >= R.tak && t < R.putt[0];
+  const ARTPLATS = [-500, -640, -780];
+  R.artor.forEach((a, i) => {
+    if (t < a || (i === 2 && t >= R.tak)) return;   // den tredje hoppar upp på taket på "Grön som en liten ärta"
+    const u = (t - a) / 0.7, mal = x + ARTPLATS[i], start = -120;
+    const ax = u < 1 ? lerp(start, mal, mjuk(u)) : mal, hopp = Math.abs(Math.sin(Math.PI * (t - a) / (K.BEAT * 1.0)));
+    const y = FOT - 48 - (u < 1 ? 150 * Math.sin(Math.PI * kl(u)) : 40 * Math.pow(hopp, 2));
+    arta(ax, y, 46, { mun: hopp > 0.7 ? 1 : 0, blink: bump(a + 2 + i, a + 2.15 + i, t) });
+  });
+  // ärtan på taket: hoppar upp från vägen på "Grön som en liten ärta!", blinkar, sitter kvar och gungar
+  const tak = K.iTraktor([400, 128], { x, fot: FOT - gupp(t) });
+  if (t >= R.tak) {
+    const u = kl((t - R.tak) / 0.9), fr = [x - 780, FOT - 48], y = lerp(fr[1], tak[1], mjuk(u)) - 260 * Math.sin(Math.PI * u);
+    const blink = bump(R.tak + 1.6, R.tak + 1.85, t);
+    arta(lerp(fr[0], tak[0], mjuk(u)), y - 8 * Math.pow(Math.abs(Math.sin(Math.PI * (t - 9) / K.BEAT)), 2) * (u >= 1), 38,
+      { lager: 'framfor', mun: u >= 1 ? 1 : 0, blink, kawaii: R.kawaii && t > R.tak + 0.9 && t < R.putt[0] ? 1 : 0 });
+    if (u >= 1 && t < R.tak + 2.2) glitter(tak[0], tak[1], 60, R.tak + 0.9, 1.2);
+  }
+  puffar(R.putt);
+  // Lova: armarna upp per "Grönt!", tittar upp mot ärtan och fnissar, kawaii på taket (bara refräng 1), spanar på "Titta ut!"
+  const hej = R.ekon.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.6, t)), 0);
+  let f = ans('glad', 'jatteglad', hej), p = { armar: [6 + 60 * hej, 6 + 60 * hej] };
+  if (t >= R.tak) { const upp = del(R.tak + 0.3, R.tak + 0.8, t) * (1 - del(R.putt[0] - 0.4, R.putt[0], t));
+    f = R.kawaii && t > R.tak + 0.9 && t < R.putt[0] ? ans('fnissig', 'kawaii', del(R.tak + 0.9, R.tak + 1.2, t)) : ans('glad', 'fnissig', upp);
+    p = { upp: 0.9 * upp, armar: [6, 6] }; }
+  if (t >= R.putt[0]) { f = ans('glad', 'skrattar', R.putt.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.35, t)), 0)); p = { armar: [6, 6] }; }
+  if (t >= R.titta) { const sp = Math.sin(Math.PI * 2 * (t - R.titta) / 1.6); f = ans('nyfiken'); p = { rikt: sp, armar: [6, 50] }; }
+  lova(f, p);
+  narbild ? K.kamera(lerp(1.4, 1.7, del(R.tak, R.tak + 1.5, t)), x - 40, 470) : HEL();
+}
+
+// --- Bilderna -------------------------------------------------------------------------------------------------------------
+const ANIM = {
+  // 03: in på vägen under det gröna svepet; vägen börjar glida, Lova jätteglad → glad
+  '03': (u, s) => { kor(); zipp(); lova(ans('jatteglad', 'glad', del(31.5, 32.5, K.TID))); HEL(); },
+  // 03a: närbild, en vinkning (armen bakom kroppen, snett ut), tittar framåt igen och blinkar
+  '03a': (u, s) => { kor(); zipp(); const v = bump(0.2, 2.4, s), vink = 15 * Math.sin(2 * Math.PI * (s - 0.2) / 0.7) * v;
+    lova(s > 2.6 ? ans('glad', 'blinkar', bump(2.6, 3.2, s)) : 'glad', { armar: [6, 6 + 80 * mjuk(v * 2) + vink], rikt: -0.3 * (1 - v) }); NARA(); },
+  // 03b: helbild, skumpar per "putt", puffar; humlan flyger ett lugnt varv runt Lovas huvud och flyger iväg, Lova följer henne
+  '03b': (u, s) => { const t = K.TID; kor(); zipp(); puffar(PUTT);
+    const [hx, hy] = LOVA_HUVUD(), a = 37.6, b = 41.8, w = del(a, b, t);
+    let bx, by, fram = false;
+    if (t < a) { bx = 2100; by = 200; }
+    else if (w < 1) { const v = -Math.PI / 2 + 2.2 * Math.PI * w; bx = hx + 300 * Math.cos(v) + lerp(700, 0, del(a, a + 1, t)); by = hy - 40 + 130 * Math.sin(v) - lerp(160, 0, del(a, a + 1, t)); fram = Math.sin(v) > 0; }
+    else { const k = del(b, b + 0.8, t); bx = hx + 300 * Math.cos(0.2 * Math.PI) - 900 * k; by = hy - 40 - 300 * k; }
+    K.figur('humle', [bx, by + 14 * Math.sin(t * 7)], K.F('humle', 'glad'), K.P('humle'), { s: 0.24, lager: fram ? 'framfor' : 'bakom' });
+    const skratt = PUTT.reduce((m, p) => Math.max(m, bump(p - 0.05, p + 0.35, t)), 0);
+    lova(t > PUTT[0] ? ans('glad', 'skrattar', 0.3 + 0.7 * skratt) : 'glad', { rikt: kl((bx - hx) / 300, -1, 1) * 0.8 * (w > 0 && w < 1 ? 1 : 0.3), upp: kl((hy - by) / 300, -0.3, 0.6) });
+    HEL(); },
+  // 04: närbild: tittar sig om, ser jackan (tittar ner, litet skutt), pekar på tittaren
+  '04': (u, s) => { const t = K.TID; kor(); zipp();
+    if (t < 43.6) lova(ans('glad', 'nyfiken', del(42.2, 42.6, t)), { rikt: Math.sin(2 * Math.PI * (t - 42.3) / 1.3) });
+    else if (t < 44.8) lova(ans('nyfiken', 'forvanad', del(43.6, 43.9, t)), { ...pose('ner'), armar: [6, 6] }, 14 * bump(43.9, 44.4, t));
+    else lova(ans('forvanad', 'jatteglad', del(44.8, 45.1, t)), { armar: [6, 6 + 26 * del(44.8, 45.2, t)], boj: 2.5, luta: 1 });
+    NARA(); },
+  '05a–g': () => { zipp(); refrang(R1); },
+  // 06: Gurra hoppar över vägen framför traktorn (från förgrunden in mot andra sidan), tre hopp; Lova studsar per hopp
+  '06': (u, s) => { const t = K.TID; kor(); zipp(); puffar([]);
+    const B = [[1500, 1120, 0.48], [1520, 1010, 0.44], [1545, 940, 0.4], [1570, 868, 0.36]];   // förgrunden → vägen → andra sidan
+    const fas = HOPP.findLastIndex(a => t >= a), titt = del(64.8, 65.6, t);
+    let [gx, gy, gs] = B[0], hojd = 0;
+    if (fas < 0) { gy = lerp(1650, 1120, titt); }
+    else { const a = HOPP[fas], u2 = kl((t - a) / 0.55), A = B[fas], C = B[fas + 1];
+      gx = lerp(A[0], C[0], mjuk(u2)); gy = lerp(A[1], C[1], mjuk(u2)); gs = lerp(A[2], C[2], u2); hojd = 170 * Math.sin(Math.PI * u2); }
+    if (t > 70.0) { gx = varld(B[3][0], 70.0); }
+    const iLuft = hojd > 20, gf = iLuft ? K.F('gurra', 'jatteglad') : fas >= 2 ? K.F('gurra', 'fnissig') : K.F('gurra', 'glad');
+    const sista = fas >= 2 && t > HOPP[2] + 0.55;
+    K.figur('gurra', [gx, gy - hojd], gf, K.P('gurra', iLuft ? { strack: 0.08 } : {}), { s: gs, lager: sista ? 'bakom' : 'framfor' });
+    const studs = HOPP.reduce((m, a) => Math.max(m, bump(a, a + 0.45, t)), 0);
+    const f = t < 65.0 ? ans('glad', 'nyfiken', del(62.5, 62.9, t)) : t < HOPP[0] ? ans('nyfiken', 'forvanad', del(65.4, 65.8, t)) : ans('forvanad', 'skrattar', 0.4 + 0.6 * studs);
+    lova(f, { rikt: 0.5 * titt, armar: [6, 6] }, 10 * studs);
+    HEL(); },
+  // 07a: trafikljuset glider in och lyser rött, traktorn stannar mjukt
+  '07a': () => { const t = K.TID; kor(); zipp(); trafikljus(varld(1480, 72.6), 885, 470, 'rod', del(70.6, 71.0, t));
+    lova(t < 71.9 ? ans('glad', 'nyfiken', del(70.4, 70.8, t)) : ans('nyfiken', 'forvanad', del(71.9, 72.2, t)), { rikt: 0.6 }); HEL(); },
+  // 07b: närbild, tassen upp, sitter stilla och tittar upp mot lampan; blinkar mot tittaren på andra "vänta"
+  '07b': () => { const t = K.TID; kor(); zipp();
+    lova(t > 74.7 ? ans('nyfiken', 'blinkar', bump(74.7, 75.15, t)) : 'nyfiken', { upp: 0.7, rikt: 0.5, armar: [6, 6 + 70 * del(73.5, 73.8, t)] }); NARA(); },
+  // 07c: pling, grönt, en grön ring; traktorn far iväg på "kör", Lova pumpar armarna per "kör"
+  '07c': () => { const t = K.TID; kor(); zipp();
+    trafikljus(varld(1480, 72.6), 885, 470, t >= 75.2 ? 'gron' : 'rod', 1, t >= 75.2 ? (t - 75.2) / 0.9 : -1);
+    const pump = KOR.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.45, t)), 0);
+    lova(t < KOR[0] ? ans('nyfiken', 'forvanad', del(75.2, 75.4, t)) : ans('glad', 'jatteglad', 0.5 + 0.5 * pump), { armar: [6 + 64 * pump, 6 + 64 * pump], upp: 0.4 * (t < KOR[0]) }, 8 * pump);
+    HEL(); },
+  // 08a: närbild: frågar tittaren, tittar ner mot jackan i pausen; kameran glider in mot jackan; tick, tack: små huvudlutningar
+  '08a': () => { const t = K.TID; kor(); zipp(); const ner = del(82.6, 83.4, t), tick = Math.sin(Math.PI * (t - 85.1) / 0.85) * del(85.0, 85.4, t);
+    lova('nyfiken', { upp: -0.9 * ner, rikt: -0.2 * (1 - ner), luta: 3 * tick });
+    K.kamera(lerp(1.8, 2.3, mjuk((t - 82.6) / 5)), 825, lerp(560, 620, mjuk((t - 82.6) / 5))); },
+  // 08b: pekar på jackan (glitter), kameran åker ut till flaggan (glitter)
+  '08b': () => { const t = K.TID; kor(); zipp(); const ut = del(89.9, 90.9, t);
+    lova(t < 90.2 ? ans('nyfiken', 'forvanad', del(88.5, 88.8, t)) : ans('forvanad', 'skrattar', del(90.2, 90.5, t)), { upp: -0.5 * (1 - ut), armar: [6, lerp(-60, 50, ut)], fram: [0, 1 - ut] });
+    const [jx, jy] = K.iTraktor([470, 600], { x: TX, fot: FOT }); glitter(jx, jy, 110, 88.6, 1.4);
+    const [fx, fy] = K.iTraktor([140, 30], { x: TX, fot: FOT }); glitter(fx, fy, 90, 90.3, 1.3);
+    K.kamera(lerp(2.3, 1.35, ut), lerp(825, 680, ut), lerp(620, 440, ut)); },
+  // 08c: drar upp dragkedjan i tre ryck, stolt, blinkar på sista "zipp"
+  '08c': () => { const t = K.TID; kor(); zipp(); const ryck = ZIPP.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.3, t)), 0);
+    lova(t > ZIPP[2] + 0.1 ? ans('stolt', 'blinkar', bump(ZIPP[2] + 0.1, ZIPP[2] + 0.55, t)) : 'stolt', { armar: [-80 + 20 * ryck, -80 + 20 * ryck], fram: [1, 1], klapp: 30, upp: 0.3 });
+    K.kamera(1.9, 825, 590); },
+  '09a–g': () => { K.zipp(1); refrang(R2); },
+};
+
+window.ready = K.starta({ ANIM, figurer: [['lova', 'leoparden-lova', 14], ['humle', 'humlan-humle', 7], ['gurra', 'grodan-gurra', 5]],
+  forladda: ['/assets/rekvisita/trafikljus-v2/cut/trafikljus-v2.png'],
+  ljud: () => {
+    K.ljud('tuff-tuff', 30.4, { loop: true, langd: 75.4, vol: 0.08, fade: 0.8 });
+    PUTT.forEach(a => K.ljud('plupp', a, { vol: 0.15 }));
+    K.ljud('surr', 37.6, { vol: 0.12, langd: 4.6, fade: 0.8 });
+    K.ljud('glimt', 43.7, { vol: 0.2 });
+    for (const R of [R1, R2]) {
+      R.gront.forEach(a => K.ljud('pop', a + 0.05, { vol: 0.15 }));
+      K.ljud('pling', R.kor, { vol: 0.3 }); K.ljud('brum', R.kor + 0.05, { vol: 0.25 }); K.ljud('swoosh', R.kor + 0.3, { vol: 0.2 });
+      R.artor.forEach(a => K.ljud('boing', a + 0.3, { vol: 0.12 }));
+      K.ljud('boing', R.tak + 0.4, { vol: 0.15 }); K.ljud('glitter', R.tak + 0.9, { vol: 0.12 });
+      R.putt.forEach(a => K.ljud('plupp', a, { vol: 0.12 }));
+    }
+    K.ljud('fniss', R1.tak + 1.0, { vol: 0.25 });
+    HOPP.forEach(a => K.ljud('boing', a, { vol: 0.15 })); K.ljud('kvak', 65.3, { vol: 0.2 });
+    K.ljud('hjul-gnissel', 71.6, { vol: 0.18, langd: 0.8, fade: 0.2 });
+    K.ljud('pling', 75.2, { vol: 0.35 }); KOR.forEach(a => K.ljud('plupp', a + 0.05, { vol: 0.15 }));
+    K.ljud('brum', KOR[0] - 0.05, { vol: 0.3 }); K.ljud('wiii', KOR[2] + 0.1, { vol: 0.22 });
+    K.ljud('glitter', 88.6, { vol: 0.15 }); K.ljud('glitter', 90.3, { vol: 0.15 });
+    ZIPP.forEach(a => K.ljud('zipp', a, { vol: 0.35, langd: 0.4 }));
+  } });
+</script>
+</body>
+</html>

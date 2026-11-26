@@ -59,8 +59,10 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Kon | [ko.md](ko.md) | Shorts: gissa teckningen |
 | Rosa grisen | [gris-rosa.md](gris-rosa.md) | Shorts: gissa teckningen |
 | Gröna traktorn, öppen | [traktor-gron-oppen.md](traktor-gron-oppen.md) | 014 |
+| Gröna traktorn v2 | [traktor-gron-v2.md](traktor-gron-v2.md) | 014 v2 |
 | Ärtskidan | [artskida.md](artskida.md) | 014 |
 | Trafikljuset | [trafikljus.md](trafikljus.md) | 014 |
+| Trafikljuset v2 | [trafikljus-v2.md](trafikljus-v2.md) | 014 v2 |
 | Röda brandbilen | [brandbil-rod.md](brandbil-rod.md) | 013 |
 | Röda ballongen | [ballong-rod.md](ballong-rod.md) | 013 |
 | Gula helikoptern | [helikopter-gul.md](helikopter-gul.md) | 011 |
