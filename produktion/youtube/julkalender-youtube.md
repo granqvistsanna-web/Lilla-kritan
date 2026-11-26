@@ -140,7 +140,24 @@ pineforest winter NL by klankbeeld (freesound.org), CC BY 4.0
 
 ## Lucka 7 – 7 dec 05:00
 
-Lammet och julkulan flyttade till lucka 2 (2026-11-22, texten står där). Lucka 7 är nu `07-hunden-ater-julmat` (036 Hunden äter julmat); YouTube-texten är inte skriven än.
+Fil: `07-hunden-ater-julmat/07-hunden-ater-julmat.mp4` (3:57), 036 Hunden äter julmat (bilderbok, hel video). Ersätter Lammet och julkulan, som flyttade till lucka 2 (2026-11-22). Miniatyr: saknas än (ingen `jul-07`-rad för hunden; raden `jul-07` i `verktyg/miniatyr.html` är lucka 2).
+YouTube: **inte uppladdad**
+
+```
+Lucka 7 🍖 Hunden äter julmat | Lilla Kritans julkalender
+```
+
+```
+Idag öppnar vi lucka sju! Ljusen lyser, det är jul. Men oj, det kurrar i hundens mage, och julbordet är tomt. Kritan ritar en julskinka. Varsågod, hunden! Ska vi säga tack? Sedan ritar kritan en pepparkaka och ett glas mjölk. Mums! Oj, smulor på nosen. Slick, slick … borta! Men var är mjölken? Kan du hjälpa hunden att se var den är? Plask, mjölken skvätte ut! Det gör ingenting. Kritan ritar en handduk, torka, torka. Och sedan: en mjölkmustasch!
+
+Säg tack, hitta mjölken och säg god jul till hunden.
+
+[SLUT]
+
+Ljud: Cotton Thud by rainial.co (freesound.org), CC BY 4.0
+
+#julkalender #julmat #lillakritan
+```
 
 ## Lucka 8 – 8 dec 05:00
 
