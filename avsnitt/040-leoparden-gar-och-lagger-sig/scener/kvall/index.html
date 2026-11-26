@@ -19,6 +19,7 @@
       <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
       <feDisplacementMap in="SourceGraphic" scale="2.5"/>
     </filter>
+    <filter id="kranKorn" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .5  0 0 0 0 .56  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter>
     <filter id="fjader" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
     <clipPath id="tubkropp"><rect width="386" height="594"/></clipPath><clipPath id="tubkork"><rect y="594" width="386" height="147"/></clipPath>
     <!-- J03 "polish the sink tap": svansen (en del av kroppsbilden, x > 790, y > 640 i riggens ruta) klipps bort bakom handfatet, annars trasslar den in sig i kranen -->
@@ -199,9 +200,25 @@ const bubblor = (x, y, k, tl) => { if (k < 0.02) return; lagg('fram', Array.from
 
 // --- Badrummet (som 023): handfatet, leoparden bakom det på en pall, julhandduken, grankvisten med kulan, kroken ---------------
 const BAD = A + 'bakgrunder/badrummet/badrummet-v1.jpeg';
-const HK = 0.68, HANDFAT = { bild: R + 'handfatet/cut/handfatet.png', W: 802 * HK, H: (772 - 177) * HK, kantY: 177 * HK };
+// J03 26/11 "polish the sink tap" (0:51): urklippets kran var knölig i närbilden. 040 har en egen kopia utan kran
+// (saker/handfatet-utan-kran.png, x 562–761 över läppen bortradert) och kranen ritas rent i kod i urklippets mått (kranSvg)
+const HK = 0.68, HANDFAT = { bild: '/avsnitt/040-leoparden-gar-och-lagger-sig/saker/handfatet-utan-kran.png', W: 802 * HK, H: (772 - 177) * HK, kantY: 177 * HK };
 const GOLV_B = 905, HX = 1080, RIM = GOLV_B - HANDFAT.H, BX = HX - 50;
 const KRAN = [HX + (598 - 401) * HK, RIM - (177 - 84) * HK];
+// kranen i urklippets bildrutor (802 × 775, läppens vita kant y 166): röret upp från läppen, en jämn båge och pipen ner mot KRAN,
+// två korallröda vred, vit klistermärkeskant 8 px och svagt kritkorn som resten av urklippet
+const KRAN_ROR = 'M693 174 V64 A47.5 47.5 0 0 0 598 64 V74', KRAN_VRED = [[662, 150], [724, 150]];
+const kranSvg = () => { const s = HK * 772 / 775, x0 = HX - 401 * s, y0 = RIM - HANDFAT.kantY;
+  const ror = (w, c) => `<path d="${KRAN_ROR}" fill="none" stroke="${c}" stroke-width="${w}"/>`;
+  const pip = (k, c) => `<rect x="${577 - k}" y="${68 - k}" width="${42 + 2 * k}" height="${17 + 2 * k}" rx="${7 + k}" fill="${c}"/>`;
+  const vred = (k, c) => KRAN_VRED.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="${19 + k}" fill="${c}"/>`).join('');
+  return `<g transform="translate(${x0.toFixed(2)} ${y0.toFixed(2)}) scale(${s.toFixed(5)})">`
+    + `<g>${ror(50, '#fff')}${pip(8, '#fff')}${vred(8, '#fff')}</g>`
+    + `<g filter="url(#kranKorn)">${ror(34, '#C9D2DA')}${pip(0, '#C9D2DA')}`
+    + `<path d="M683 168 V64 A37.5 37.5 0 0 0 608 64" fill="none" stroke="#B4BFC9" stroke-width="6" stroke-linecap="round"/>`
+    + `<path d="M703 150 V64 A57.5 57.5 0 0 0 600 34" fill="none" stroke="#E9EEF2" stroke-width="5" stroke-linecap="round"/>`
+    + `<rect x="577" y="80" width="42" height="5" rx="2.5" fill="#B4BFC9"/>`
+    + `${vred(0, '#F07A5F')}${KRAN_VRED.map(([x, y]) => `<circle cx="${x - 6}" cy="${y - 6}" r="6" fill="#F8A48F" opacity=".85"/>`).join('')}</g></g>`; };
 const FATKANT = 800;                                 // leopardens y (riggens ruta) vid läppen: nästan hela pyjamasskjortan syns (Sanna 2026-11-18)
 let VID;                                             // fötterna bakom handfatet (räknas när riggen är laddad)
 const STA = [400, GOLV_B];                           // på golvet till vänster om pallen innan den kliver upp
@@ -226,7 +243,7 @@ function badrum({ skjortaPaKrok = true, skjortaVrid = 0 } = {}) {
     + (skjortaPaKrok ? bild(SKJORTA.fil, SKJORTA.w, SKJORTA.h, `translate(${KROK[0]} ${KROK[1] - 8}) rotate(${skjortaVrid}) scale(0.27) translate(-438 0)`) : ''));
   lagg('pall', `<ellipse cx="${PALL.x + PALL.w / 2}" cy="${GOLV_B + 2}" rx="${PALL.w * 0.48}" ry="10" fill="#000" opacity="0.08"/>` + bild(R + 'pall/cut/pall.png', 781, 551, `translate(${PALL.x} ${GOLV_B - 551 * PALL_S}) scale(${PALL_S})`));
   $('kar').innerHTML = `<ellipse cx="${HX}" cy="${GOLV_B + 4}" rx="${HANDFAT.W * 0.3}" ry="14" fill="#000" opacity="0.07"/>`
-    + `<image href="${HANDFAT.bild}" x="${HX - HANDFAT.W / 2}" y="${RIM - HANDFAT.kantY}" width="${HANDFAT.W}" height="${HANDFAT.H + HANDFAT.kantY}" preserveAspectRatio="xMidYMax meet"/>`;
+    + `<image href="${HANDFAT.bild}" x="${HX - HANDFAT.W / 2}" y="${RIM - HANDFAT.kantY}" width="${HANDFAT.W}" height="${HANDFAT.H + HANDFAT.kantY}" preserveAspectRatio="xMidYMax meet"/>` + kranSvg();
 }
 const BORSTE = '/avsnitt/040-leoparden-gar-och-lagger-sig/saker/tandborste-jul-utan-kvist.png', GLAS = R + 'mjolkglas/cut/mjolkglas-v2-tomt.png', TUB = R + 'tandkramen/cut/tandkramen.png';
 const glasSvg = () => `<path d="M64 232 L602 232 L546 852 L118 852Z" fill="#8fd3ef" opacity=".55"/><image href="${GLAS}" width="665" height="901"/>
