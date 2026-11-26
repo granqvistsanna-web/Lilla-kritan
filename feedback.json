@@ -10650,9 +10650,10 @@
   "sec": 142,
   "tags": [],
   "note": "improve crying animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795716753462,
-  "render": "2026-11-26 18:40 (Feedback 26/11: traktorteckningen är en hel traktor redan i första draget (kaross, hjul, tak, stolpar; säte, nav, avgasrör som ledtråd), jackan stängd med krage och ärmar, tydliga groddar som växer (en per Grönt!, en våg på kör), hjul som snurrar, ärtorna hoppar ut mjukt, större groda, mer uttryck i frågan, hela huvudet i bild och sitter kvar under taket, tydligare ärtskida med ärtorna synliga. --snabb.)"
+  "render": "2026-11-26 18:40 (Feedback 26/11: traktorteckningen är en hel traktor redan i första draget (kaross, hjul, tak, stolpar; säte, nav, avgasrör som ledtråd), jackan stängd med krage och ärmar, tydliga groddar som växer (en per Grönt!, en våg på kör), hjul som snurrar, ärtorna hoppar ut mjukt, större groda, mer uttryck i frågan, hela huvudet i bild och sitter kvar under taket, tydligare ärtskida med ärtorna synliga. --snabb.)",
+  "fixedAt": 1795717325402
  },
  "5qc2iatltemwxvee0p": {
   "ep": "014",
@@ -10660,9 +10661,10 @@
   "sec": 157,
   "tags": [],
   "note": "improve chicken animation getting pea",
-  "fixed": false,
+  "fixed": true,
   "at": 1795716768121,
-  "render": "2026-11-26 18:40 (Feedback 26/11: traktorteckningen är en hel traktor redan i första draget (kaross, hjul, tak, stolpar; säte, nav, avgasrör som ledtråd), jackan stängd med krage och ärmar, tydliga groddar som växer (en per Grönt!, en våg på kör), hjul som snurrar, ärtorna hoppar ut mjukt, större groda, mer uttryck i frågan, hela huvudet i bild och sitter kvar under taket, tydligare ärtskida med ärtorna synliga. --snabb.)"
+  "render": "2026-11-26 18:40 (Feedback 26/11: traktorteckningen är en hel traktor redan i första draget (kaross, hjul, tak, stolpar; säte, nav, avgasrör som ledtråd), jackan stängd med krage och ärmar, tydliga groddar som växer (en per Grönt!, en våg på kör), hjul som snurrar, ärtorna hoppar ut mjukt, större groda, mer uttryck i frågan, hela huvudet i bild och sitter kvar under taket, tydligare ärtskida med ärtorna synliga. --snabb.)",
+  "fixedAt": 1795717325402
  },
  "r3e8pnno6rmwxvesbm": {
   "ep": "014",
@@ -10670,8 +10672,9 @@
   "sec": 171,
   "tags": [],
   "note": "bigger animals",
-  "fixed": false,
+  "fixed": true,
   "at": 1795716786658,
-  "render": "2026-11-26 18:40 (Feedback 26/11: traktorteckningen är en hel traktor redan i första draget (kaross, hjul, tak, stolpar; säte, nav, avgasrör som ledtråd), jackan stängd med krage och ärmar, tydliga groddar som växer (en per Grönt!, en våg på kör), hjul som snurrar, ärtorna hoppar ut mjukt, större groda, mer uttryck i frågan, hela huvudet i bild och sitter kvar under taket, tydligare ärtskida med ärtorna synliga. --snabb.)"
+  "render": "2026-11-26 18:40 (Feedback 26/11: traktorteckningen är en hel traktor redan i första draget (kaross, hjul, tak, stolpar; säte, nav, avgasrör som ledtråd), jackan stängd med krage och ärmar, tydliga groddar som växer (en per Grönt!, en våg på kör), hjul som snurrar, ärtorna hoppar ut mjukt, större groda, mer uttryck i frågan, hela huvudet i bild och sitter kvar under taket, tydligare ärtskida med ärtorna synliga. --snabb.)",
+  "fixedAt": 1795717325402
  }
 }
