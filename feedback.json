@@ -10527,9 +10527,10 @@
   "sec": 35,
   "tags": [],
   "note": "remove motion lines when waving",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711830408,
-  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))",
+  "fixedAt": 1795714895748
  },
  "u3t92inflzmwxsho9v": {
   "ep": "006-v2",
@@ -10537,9 +10538,10 @@
   "sec": 81,
   "tags": [],
   "note": "show fish more clear",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711882531,
-  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))",
+  "fixedAt": 1795714895748
  },
  "lhf7qd6etvmwxsi6sj": {
   "ep": "006-v2",
@@ -10547,9 +10549,10 @@
   "sec": 97,
   "tags": [],
   "note": "more expressions from dino",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711906531,
-  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))",
+  "fixedAt": 1795714895748
  },
  "et2l7wqlnamwxsj4u9": {
   "ep": "006-v2",
@@ -10557,9 +10560,10 @@
   "sec": -1,
   "tags": [],
   "note": "need deep polish and look for how to improve better flow in animations",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711950657,
-  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))",
+  "fixedAt": 1795714895748
  },
  "vbflgg85rbmwxsk3et": {
   "ep": "006-v2",
@@ -10567,9 +10571,10 @@
   "sec": 183,
   "tags": [],
   "note": "add the dance sticker in the upper corner like red song",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711995461,
-  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))",
+  "fixedAt": 1795714895748
  },
  "ebkfma6qcpmwxskm8z": {
   "ep": "006-v2",
@@ -10577,9 +10582,10 @@
   "sec": 210,
   "tags": [],
   "note": "less shine on disco ball",
-  "fixed": false,
+  "fixed": true,
   "at": 1795712019875,
-  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))",
+  "fixedAt": 1795714895748
  },
  "qnrvog246pmwxt2flr": {
   "ep": "014",
@@ -10620,9 +10626,10 @@
   "sec": 109,
   "tags": [],
   "note": "lower music",
-  "fixed": false,
+  "fixed": true,
   "at": 1795713055775,
-  "render": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))"
+  "render": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))",
+  "fixedAt": 1795714895748
  },
  "yu38r7bjy6mwxt72iw": {
   "ep": "049",
@@ -10630,8 +10637,9 @@
   "sec": 135,
   "tags": [],
   "note": "ops malin co is clipped in the middle of gapa",
-  "fixed": false,
+  "fixed": true,
   "at": 1795713067400,
-  "render": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))"
+  "render": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))",
+  "fixedAt": 1795714895748
  }
 }
