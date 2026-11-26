@@ -855,9 +855,9 @@
   ]
  },
  "J02": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J02-1126-0745.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J02-1126-0807.mp4",
   "duration": 163.9,
-  "rendered": "2026-11-26 07:46 (Feedback 26/11: elden klipps som en låga under strumporna (kanten nådde strumpan) och skenet ligger ovanpå, granens nedersta gröna bågar syns hela. Förhandsvisning, slutrendering efter ditt ja.)",
+  "rendered": "2026-11-26 08:07 (Feedback 26/11 + all QA: elden klipps som en låga under strumporna och skenet ligger ovanpå (ingen mörk kant), granens nedersta gröna bågar hela, line boil följer kamerazoomen (1,5 px i bild, 6 byten/s). Förhandsvisning, slutrendering efter ditt ja.)",
   "file": "produktion/youtube/shorts/jul/07-lammet-julkula/07-lammet-julkula-fb2611.mp4",
   "status": "granska"
  },
