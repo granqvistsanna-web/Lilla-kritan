@@ -10012,9 +10012,10 @@
   "sec": 175,
   "tags": [],
   "note": "green kloss might blend in to green wall. pehaps needs another color",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642213593,
-  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))",
+  "fixedAt": 1795676871774
  },
  "r2zf4xf2gsmwwn2qp1": {
   "ep": "052",
