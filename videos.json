@@ -50,12 +50,13 @@
   "youtube": "https://youtu.be/EFhrcqzz7-Q"
  },
  "014": {
-  "duration": 217.4,
-  "file": "avsnitt/014-grona-traktorn/film/avsnitt-014.mp4",
-  "rendered": "2026-11-07 13:22",
-  "status": "live",
+  "duration": 213.0,
+  "file": "avsnitt/014-grona-traktorn/film/avsnitt-014-v2-grovklipp.mp4",
+  "rendered": "2026-11-26 13:03 (v2 grovklipp, fixar 26/11)",
+  "status": "granska",
   "youtube": "https://youtu.be/t9DABoy7yw4",
-  "name": "Gröna sången"
+  "name": "Gröna sången",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/014-1126-1302.mp4"
  },
  "015": {
   "duration": 89.5,
