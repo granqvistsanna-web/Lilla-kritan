@@ -1646,10 +1646,10 @@
   "name": "Räven går och lägger sig"
  },
  "053": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-0932.mp4",
-  "duration": 215.8,
-  "rendered": "2026-11-26 09:32 (Slutrendering, nytt ljud: skimret vid 'Ja, där!' (2:53) använder tindra-3 i stället för platshållaren tindra-1. Bilden är oförändrad. QA ren.)",
-  "file": "avsnitt/053-leoparden-stadar/film/avsnitt-053.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-1625.mp4",
+  "duration": 215.3,
+  "rendered": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)",
+  "file": "avsnitt/053-leoparden-stadar/film/avsnitt-053-forhand.mp4",
   "status": "granska",
   "name": "Leoparden städar"
  },
