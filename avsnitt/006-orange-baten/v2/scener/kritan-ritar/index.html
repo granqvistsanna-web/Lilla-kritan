@@ -33,9 +33,13 @@ const tillScen = ([x, y]) => [BX + x * PS, BY + y * PS];
 const MITT = [647, 183], FYLL_R = 820;   // fyllningens mitt (kontur.json) och radie som når flaggans spets
 const LINJE = '#8A3E0C';                 // mörk ton av orange (färgsångerna)
 const FLAGG_DRAG = ['M60 90 L60 -170', 'M60 -170 Q0 -160 -70 -130 Q0 -110 60 -90'];
+// Detaljerna (Sanna 2026-11-26 "fler detaljer så den blir lättare att gissa"), mätta i bilden: den ljusa kanten längs relingen,
+// aktern där motorn sitter, och motorns huvud mot skaftet. Ritas medan kritan förut stod still efter konturen.
+const DETALJ_DRAG = ['M846 44 Q790 66 700 86 Q600 104 450 116 Q260 124 100 122', 'M94 108 Q96 180 106 250', 'M28 160 Q44 168 60 166'];
 // Tider (avsnittstid): kontur 9.8–12.6 (2,8 s); står kvar; glider till stången 15.4–15.8; stången och flaggan 15.8–17.4;
 // väntar 17.6–18.4 och svajar genom gissningen (sjungen 13.2 + pausen); svaret 28.1: fyllning 0,7 s, kritan ut 28.1–28.9.
-const T = { in: [9.3, 9.75], rit: [9.8, 17.4], vanta: [17.6, 18.4], ut: [28.1, 28.9] }, R1 = [9.8, 12.6], GLID = [15.35, 15.8], R2 = [15.8, 17.4];
+// Detaljerna 12.95–15.1 (glider dit 12.65–12.95).
+const T = { in: [9.3, 9.75], rit: [9.8, 17.4], vanta: [17.6, 18.4], ut: [28.1, 28.9] }, R1 = [9.8, 12.6], GLID0 = [12.65, 12.95], RD = [12.95, 15.1], GLID = [15.35, 15.8], R2 = [15.8, 17.4];
 const SVAR = 28.1, KRYP = [22.2, 28.1], ZOOM = [31.4, 33.2];
 let KONTUR;
 
@@ -44,7 +48,8 @@ function rita(t) {
   const E = E0 + t;
   const k1 = ritfart((E - R1[0]) / (R1[1] - R1[0])), k2 = ritfart((E - R2[0]) / (R2[1] - R2[0])), f = kl((E - SVAR) / 0.7);
   const st = `fill="none" stroke="${LINJE}" stroke-width="${(KRITAN.BRED / PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"`;
-  const A = ritBana([KONTUR.d], k1, { attr: st }), B = ritBana(FLAGG_DRAG, k2, { attr: st });
+  const kd = ritfart((E - RD[0]) / (RD[1] - RD[0]));
+  const A = ritBana([KONTUR.d], k1, { attr: st }), D = ritBana(DETALJ_DRAG, kd, { attr: st }), B = ritBana(FLAGG_DRAG, k2, { attr: st });
   // båten gungar till på svaret, sedan lugnt
   const gung = E > SVAR + 0.2 ? 3 * Math.sin((E - SVAR - 0.2) * 5) * Math.exp(-(E - SVAR - 0.2) * 1.5) + 0.8 * Math.sin(E * 1.7) : 0;
   const fl = Math.sin(E * 6) * 10 * f;
@@ -53,10 +58,10 @@ function rita(t) {
       <g clip-path="url(#fy)"><path d="M60 90 L60 -170" stroke="#8a5a36" stroke-width="12" stroke-linecap="round"/>
         <path d="M60 -170 Q0 ${-160 + fl} -70 ${-130 + fl * 0.6} Q0 ${-110 + fl} 60 -90Z" fill="#FF7A21" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
         <image href="${BATEN}" width="883" height="325"/></g>
-      ${B.html}${A.html}</g>`;
-  // kritan: kontur, står kvar, glider i en båge till stången, ritar flaggan, väntar, flyger ut
-  let spets = E < R1[1] ? A.spets : B.spets;
-  if (E >= R1[1] && E < R2[0]) { const m = mjuk((E - GLID[0]) / (GLID[1] - GLID[0])); spets = [lerp(A.slut[0], B.start[0], m), lerp(A.slut[1], B.start[1], m) - 40 / PS * Math.sin(Math.PI * m)]; }
+      ${B.html}${D.html}${A.html}</g>`;
+  // kritan: kontur, glider till relingen och ritar detaljerna, glider i en båge till stången, ritar flaggan, väntar, flyger ut
+  const glid = (P0, P1, G) => { const m = mjuk((E - G[0]) / (G[1] - G[0])); return [lerp(P0[0], P1[0], m), lerp(P0[1], P1[1], m) - 40 / PS * Math.sin(Math.PI * m)]; };
+  const spets = E < R1[1] ? A.spets : E < RD[0] ? glid(A.slut, D.start, GLID0) : E < RD[1] ? D.spets : E < R2[0] ? glid(D.slut, B.start, GLID) : B.spets;
   const z = zoomAt(E);
   const kr = kritaFas(E, T, { start: tillScen(A.start), spets: tillScen(spets), slut: tillScen(B.slut), vanta: [1640, 250], s: KRITAN.SKALA_PAPPER / z });
   $('kritan').innerHTML = kr ? kritaBild(kr.x, kr.y, kr) : '';
@@ -72,7 +77,7 @@ const zoomAt = E => E < ZOOM[0] ? 1 + 0.12 * mjuk((E - KRYP[0]) / (KRYP[1] - KRY
 const EF = 'assets/ljud/effekter/';
 function ljud() {
   const ut = [{ t: E0, fil: EF + 'skogsljud/skogsljud-1.m4a', vol: 0.4, langd: DURATION, loop: true, fadeIn: 0.5, fade: 1 }];
-  [R1, R2].forEach(([a, b], i) => ut.push({ t: a, fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: b - a + 0.1, loop: true, fade: 0.4 }));
+  [R1, RD, R2].forEach(([a, b], i) => ut.push({ t: a, fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: b - a + 0.1, loop: true, fade: 0.4 }));
   ut.push({ t: SVAR, fil: EF + 'pling/pling-1.m4a', vol: 1.0 }, { t: SVAR + 0.2, fil: EF + 'tindra/tindra-3.m4a', vol: 0.7 });
   ut.push({ t: ZOOM[0], fil: EF + 'swoosh/swoosh-1.m4a', vol: 0.6 });
   return ut.map(c => ({ ...c, t: c.t - E0 }));

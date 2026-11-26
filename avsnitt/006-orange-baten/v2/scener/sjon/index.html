@@ -47,7 +47,9 @@ const E0 = 33.2, E1 = 119.4, DURATION = E1 - E0;   // avsnittstid; kritsvepet 11
 
 // Kameror [cx, cy, zoom]. HEL: båten och himlen; NAR: Disa (provet, godkänt); HALV: Disa och fören (fisken, fågeln); REF: refrängen.
 // Tätare som v1 (Sanna 2026-11-26 "match close crops better to og video"): helbilden har båten på ca 60 % av bredden, närbilden Disa på ca 70 % av höjden.
-const HEL = [975, 585, 1.95], HEL0 = [975, 600, 1.7], NAR = [975, 490, 2.7], HALV = [1130, 590, 1.8], REF = [975, 565, 1.85], REFIN = [1090, 520, 2.1], VAST_K = [985, 620, 3.2];
+// HEL 25 px högre (Sanna 2026-11-26 "flytta kameran upp lite" vid 0:53). REF = HEL: refrängen börjar utan ett litet hoppklipp
+// (förut 5 % zoom vid 1:01, "klippen ser för hackiga ut").
+const HEL = [975, 560, 1.95], HEL0 = [975, 600, 1.7], NAR = [975, 490, 2.7], HALV = [1130, 590, 1.8], REF = HEL, REFIN = [1090, 520, 2.1], VAST_K = [985, 620, 3.2];
 const B_X = 960, B_Y = 760;
 const REF0 = [61.3, 105.0];   // refrängernas början (avsnittstid)   // båtens vattenlinje mitt
 
@@ -109,9 +111,14 @@ const strAt = E => STR[Math.max(0, Math.round((E - E0) * 60))];
 function lage(E) {
   const { i, s, tl, d } = skott(S, E); let [f, p] = s[4](tl, d);
   // refrängen: alla byten glider (också in i 05d/09d, där kameran glider), lite längre (Sanna 2026-11-26 "smoother dancing in chorus too")
-  const ref = /^(05|09)[b-f]$/.test(s[1]), BL = ref ? 0.6 : 0.45;
+  const ref = /^(05|09)[a-f]$/.test(s[1]), BL = ref ? 0.6 : 0.45;
   if (i && tl < BL && (S[i - 1][2] === s[2] || ref)) { const [f0, p0] = S[i - 1][4](s[0] - S[i - 1][0], s[0] - S[i - 1][0]), k = mjuk(tl / BL);
     f = B.L.blanda(f0, f, k); p = { ...p, ...B.L.blandaPose(p0, p, k) }; }
+  // Riggen gömmer armen bakom kroppen mellan 26° och 80° (GOM i uttryck.html). Lyfta armar (refrängens hurra och pulsar, flaxet,
+  // pekandet) blinkade därför in och ut på varje slag (Sanna 2026-11-26: armen försvinner vid 1:11, hackigt vid 1:04).
+  // Riggens vink (som vinkningen, minnet vinkande-arm-bakom-kroppen) håller armen synlig; den tonas in mellan 12° och 24°.
+  const A = Math.max(...[0, 1].map(i => (f.armar?.[i] || 0) + (p.armar?.[i] || 0)));
+  p = { ...p, vink: Math.max(p.vink || 0, mjuk((A - 12) / 12)) };
   return [f, p];
 }
 function kam(E) {
@@ -227,12 +234,14 @@ function varld(E) {
   g.style.display = '';
   const [i0, i1] = IN(r), [u0, u1] = UT(r);
   $('torka-yta').setAttribute('d', E < u0 ? kantD(lerp(-500, 2500, mjuk((E - i0) / (i1 - i0))), false) : kantD(lerp(-500, 2500, mjuk((E - u0) / (u1 - u0))), true));
-  // solen: går upp bakom horisonten på första raden, vrider sig sakta
-  const su = mjuk((E - r - 0.3) / 1.4), [sx, sy] = [SOL[0], lerp(HOR + 70, SOL[1], su)];
-  const strale = Array.from({ length: 10 }, (_, i) => { const a = i * 36 + E * 8, c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180);
-    return `M${(sx + 58 * c).toFixed(0)} ${(sy + 58 * s).toFixed(0)} L${(sx + 80 * c).toFixed(0)} ${(sy + 80 * s).toFixed(0)}`; }).join(' ');
-  $('sol').innerHTML = `<path d="${strale}" stroke="#FFB23E" stroke-width="11" stroke-linecap="round"/>
-    <circle cx="${sx}" cy="${sy.toFixed(0)}" r="50" fill="#fff"/><circle cx="${sx}" cy="${sy.toFixed(0)}" r="44" fill="#FFB23E"/><circle cx="${sx - 11}" cy="${(sy - 12).toFixed(0)}" r="15" fill="#FFD27A"/>`;
+  // solen: går upp bakom horisonten på första raden, vrider sig sakta. Putsad (Sanna 2026-11-26 "den vita linjen ser konstig ut"):
+  // ingen vit ring, en kritkant i en mörkare ton, mjuk ljusare fläck, strålar som smalnar utåt i två längder.
+  const su = mjuk((E - r - 0.3) / 1.4), [sx, sy] = [SOL[0], +lerp(HOR + 70, SOL[1], su).toFixed(1)];
+  const strale = Array.from({ length: 10 }, (_, i) => { const a = (i * 36 + E * 8) * Math.PI / 180, c = Math.cos(a), s = Math.sin(a), L = i % 2 ? 76 : 86, n = 6;
+    return `M${(sx + 56 * c - n * s).toFixed(1)} ${(sy + 56 * s + n * c).toFixed(1)} L${(sx + L * c).toFixed(1)} ${(sy + L * s).toFixed(1)} L${(sx + 56 * c + n * s).toFixed(1)} ${(sy + 56 * s - n * c).toFixed(1)}Z`; }).join(' ');
+  $('sol').innerHTML = `<path d="${strale}" fill="#FFB23E" stroke="#FFB23E" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="${sx}" cy="${sy}" r="45" fill="#FFB23E" stroke="#F39A28" stroke-width="5"/>
+    <ellipse cx="${sx - 12}" cy="${sy - 13}" rx="19" ry="15" fill="#FFCF73" opacity="0.8"/>`;
   // regnbågen: ritas från vänster till höger längs bågen
   const [b0, b1] = BAGE_RIT(r), k = kl((E - b0) / (b1 - b0));
   if (k <= 0) { $('bage').innerHTML = ''; return; }
