@@ -464,14 +464,16 @@ dino.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-dinon'] + 0.4]); t = sag
   flytta(gris, u, 2450, RITA[1], RITA[2], 3.2); gris.levande.push([u, 'ga', ut1]);   // lugna steg, benen i diagonala par
   fx(u, 'steg', 0.8, { loop: true, langd: 2.8, fade: 0.5 });
   dino.levande.push([u + 0.2, 'vinka', ut1]);
-  sag(u + 0.7, 'p-hej-da-grisen'); t = ut1 + 0.2; }
+  sag(u + 0.7, 'p-hej-da-grisen');
+  dino.levande.push([ut1 - 0.4, 'titta', ut1 + 0.9, 'nyfiken', { rikt: 1, bada: 1, upp: 0 }]);   // tittar efter grisen (ABC-d3 1:25 stod still 3 s, Sanna 2026-11-26)
+  t = ut1 + 0.2; }
 
 // 5. Ord 2: dörren, ritad där den sedan står, till höger med steget på golvet. Dinon tittar nyfiket medan kritan ritar och blir
 //    jätteglad på svaret. Sedan leken: dinon går till dörren och knackar (armen mot dörren, dörren vickar på varje knack). Ingen svarar.
 const DORR_RIT = [1250, 652, 1.15];   // steget på golvet (y + 250 · skalan ≈ 940); dörren x ca 1060–1425, ca 570 hög
 const DINO_DORR = [870, 700, 0.95];   // dinon vid dörrens vänstra kant, armen når fram
 const DOCKA_TITT = [1480, 690, 1.0], DOCKA_UT = [1640, 690, 1.0];   // dockan bakom dörrens högra kant (en tredjedel gömd), sedan ute bredvid
-t = sag(t + 0.2, 'p-engang');
+dino.levande.push([t + 0.5, 'nicka']); t = sag(t + 0.2, 'p-engang');   // dinon nickar: ja, en gång till!
 t = sag(t + 0.3, 'n-nagot-pa-d') - 0.2;
 kanner(t + 0.8, t + 5, 'nyfiken', 'lutaH');
 gissning(dorr, 'vicka', 'vicka', 1.6, DORR_RIT, DORR_RIT);
