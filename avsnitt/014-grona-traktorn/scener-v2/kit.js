@@ -53,14 +53,25 @@ export const LT = 0.62;              // Lovas skala i traktorns pixlar (= i scen
 export const SITS = [470, 662];      // Lovas fötter i traktorns pixlar (under sätets kant, döljs av fram)
 // Gröna flaggan (v1:s lager/flagga-gron.png, 543 × 811, stångens fot (485, 790)) står på takets bakre del och fladdrar ("och flaggan med!")
 export const FLAGGA = { fot: [222, 168], s: 0.3 };
+// Feedback 26/11 (0:31 "spinning wheels"): navkapslarna i bilden är släta, så snurret syns inte. Fem bultar och en mittknapp på
+// naven och kraftiga mönsterklackar runt däcket ritas i hjulens grupper och snurrar med dem.
+const TRAKTOR_HJUL = { bak: [290.9, 690.5, 183, 73], fram: [800.8, 753.9, 116, 48] };   // mitt, däckets radie, navets radie
+function hjulDetalj(cx, cy, R, r) {
+  const bult = Array.from({ length: 5 }, (_, i) => { const v = i * 2 * Math.PI / 5; return `<circle cx="${f1(cx + 0.58 * r * Math.cos(v))}" cy="${f1(cy + 0.58 * r * Math.sin(v))}" r="${f1(r * 0.12)}" fill="#8E8E8A"/>`; }).join('');
+  const klack = Array.from({ length: 16 }, (_, i) => { const v = i * 2 * Math.PI / 16, a = R * 0.8, b = R * 0.97, w = 0.09;
+    const p = (rr, vv) => `${f1(cx + rr * Math.cos(vv))} ${f1(cy + rr * Math.sin(vv))}`;
+    return `<path d="M${p(a, v - w)} L${p(b, v - w + 0.05)} L${p(b, v + w + 0.05)} L${p(a, v + w)}Z" fill="#3D3B3A" opacity="0.75"/>`; }).join('');
+  return `<g>${klack}<circle cx="${cx}" cy="${cy}" r="${f1(r * 0.86)}" fill="none" stroke="#A9A9A5" stroke-width="${f1(r * 0.07)}"/>${bult}
+    <circle cx="${cx}" cy="${cy}" r="${f1(r * 0.24)}" fill="#9C9C98"/><circle cx="${f1(cx - r * 0.06)}" cy="${f1(cy - r * 0.07)}" r="${f1(r * 0.08)}" fill="#fff" opacity="0.5"/></g>`;
+}
 $('fordon').innerHTML = `<g id="traktor">
   <g id="flagga"><image href="${HAR}lager/flagga-gron.png" width="543" height="811"/></g>
   <image href="${TR}traktor-bak.png" width="1024" height="1024"/>
   <g id="forare"></g>
   <image href="${TR}traktor-fram.png" width="1024" height="1024"/>
   <g stroke-linecap="round"><path d="M175 690 L96 770" stroke="#fff" stroke-width="42"/><path d="M175 690 L96 770" stroke="#3E9A43" stroke-width="30"/></g>   <!-- dragkroken bakom bakhjulet -->
-  <g id="hjul-bak"><image href="${TR}hjul-bak.png" width="1024" height="1024"/></g>
-  <g id="hjul-fram"><image href="${TR}hjul-fram.png" width="1024" height="1024"/></g>
+  <g id="hjul-bak"><image href="${TR}hjul-bak.png" width="1024" height="1024"/>${hjulDetalj(...TRAKTOR_HJUL.bak)}</g>
+  <g id="hjul-fram"><image href="${TR}hjul-fram.png" width="1024" height="1024"/>${hjulDetalj(...TRAKTOR_HJUL.fram)}</g>
 </g>`;
 // x = traktorns mitt i scenen, fot = hjulens underkant; rull = hur långt den rullat (px i scenen), lut i grader, synlig
 export function traktor({ x = 700, fot = 1000, rull = 0, lut = 0, k = 1, synlig = true, flagg = 0 } = {}) {   // flagg: extra lutning bakåt (grader) när den far iväg
@@ -89,19 +100,38 @@ export async function figurer(namn) {
 // --- Lovas gröna jacka (ritad i kod som zebrans i 052): målad i kroppens egen form (kroppsbilden som mask, innanför den vita
 // kanten) från halsen och ner, över magen, ljusare grön än traktorn. Dragkedjan mitt fram; zipp(0–1) flyttar handtaget
 // (1 = uppe vid kragen, stängd; 0 = nere, öppen i ett V så att magen syns). Riggens ruta (kroppen y 182–829).
-const JK = { farg: '#86CF6E', mork: '#3F8F3A', hals: 532, topp: 560, botten: 815 };
+// Feedback 26/11 (014 0:42 "close the jacket", 014-v2 0:31 "make jacket zipped"): jackan läste som grön färg på magen. Nu har den
+// ärmar i armarnas form ned till tassen (052:s pl-arm), en vikt krage på båda sidor om handtaget och en mörk söm under kedjan,
+// så att den syns som en stängd jacka.
+const JK = { farg: '#86CF6E', mork: '#3F8F3A', hals: 532, topp: 560, botten: 815, tass: 44 };
 function jacka(G) {
-  const kb = G.querySelector('.kropp > image').getAttribute('href');
+  const kb = G.querySelector('.kropp > image').getAttribute('href'), L = FIG.lova?.L || G.__L;
   document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="jackmask" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024">
     <image href="${kb}" width="1024" height="1024" filter="url(#delsiluett)"/></mask>`);
   const { farg, mork, hals, topp, botten } = JK, kant = `M150 ${hals} Q512 ${hals + 60} 874 ${hals}`;
+  const krage = [1, -1].map(sd => `<path d="M512 ${topp + 4} L${512 - sd * 118} ${hals + 18} Q${512 - sd * 104} ${hals + 66} ${512 - sd * 44} ${topp + 54} Z" fill="${farg}" stroke="${mork}" stroke-width="10" stroke-linejoin="round"/>`).join('');
   G.querySelector('.kropp .mage').insertAdjacentHTML('afterend', `<g class="jacka" mask="url(#jackmask)">
     <path class="jk-tyg" fill-rule="evenodd" fill="${farg}"/><path class="jk-tyg" fill-rule="evenodd" fill="${mork}" opacity="0.3" filter="url(#tygkrita)"/>
     <path d="${kant}" fill="none" stroke="${mork}" stroke-width="22" stroke-linecap="round"/>
     <path d="M300 720 q45 12 90 0 M634 720 q45 12 90 0" stroke="${mork}" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path class="jk-som" stroke="${mork}" stroke-width="20" stroke-linecap="round" opacity="0.55" fill="none"/>
     <path class="jk-kedja" stroke="#8C8C86" stroke-width="12" stroke-dasharray="5 7" fill="none"/>
+    <g class="jk-krage">${krage}</g>
     <g class="jk-dra"><rect x="-13" y="-6" width="26" height="40" rx="11" fill="#fff" stroke="#8C8C86" stroke-width="5"/><circle cy="20" r="4" fill="#8C8C86"/></g></g>`);
+  // ärmarna: en grupp efter varje armbild, som tar armens transform och synlighet varje bildruta (armar() nedan)
+  G.querySelectorAll('image.arm-l, image.arm-r').forEach((a, j) => { const n = a.classList.contains('arm-l') ? 'l' : 'r', [hx, hy] = HAND_LOVA[n];
+    document.querySelector('defs').insertAdjacentHTML('beforeend', `<mask id="lv-armmask-${j}" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024"><image href="${a.getAttribute('href')}" width="1024" height="1024" filter="url(#delsiluett)"/></mask>
+      <clipPath id="lv-armtass-${j}"><path d="M0 0H1024V1024H0Z M${hx - JK.tass} ${hy} a${JK.tass} ${JK.tass} 0 1 0 ${2 * JK.tass} 0 a${JK.tass} ${JK.tass} 0 1 0 ${-2 * JK.tass} 0Z" clip-rule="evenodd"/></clipPath>`);
+    a.insertAdjacentHTML('afterend', `<g class="jk-arm"><g clip-path="url(#lv-armtass-${j})"><g mask="url(#lv-armmask-${j})"><rect width="1024" height="1024" fill="${farg}"/>
+      <rect width="1024" height="1024" fill="${mork}" opacity="0.3" filter="url(#tygkrita)"/></g></g>
+      <circle cx="${hx}" cy="${hy}" r="${JK.tass + 6}" fill="none" stroke="${mork}" stroke-width="14" mask="url(#lv-armmask-${j})"/></g>`); });
   zipp(1);
+}
+const HAND_LOVA = { l: [167, 635], r: [854, 632] };   // tassarnas mitt i Lovas rigg (premium/uttryck.html HAND)
+function armar(G) {   // ärmarna följer armbilderna (transform, synlighet, opacitet)
+  G.querySelectorAll('.jk-arm').forEach(e => { const a = e.previousElementSibling;
+    e.setAttribute('transform', a.getAttribute('transform') || ''); e.setAttribute('opacity', a.getAttribute('opacity') ?? 1);
+    e.setAttribute('display', a.getAttribute('display') === 'none' ? 'none' : 'inline'); });
 }
 export function zipp(k = 1) {   // handtagets läge: 1 uppe (stängd), 0 nere (öppen)
   const G = FIG.lova?.G; if (!G) return;
@@ -109,6 +139,8 @@ export function zipp(k = 1) {   // handtagets läge: 1 uppe (stängd), 0 nere (�
   const tyg = `M150 ${hals} Q512 ${hals + 60} 874 ${hals} V1024 H150 Z` + (g > 1 ? ` M${f1(512 - g)} ${topp - 20} L${f1(512 + g)} ${topp - 20} L512 ${f1(ty)} Z` : '');
   G.querySelectorAll('.jk-tyg').forEach(e => e.setAttribute('d', tyg));
   G.querySelector('.jk-kedja').setAttribute('d', `M512 ${f1(ty)} V${botten}`);
+  G.querySelector('.jk-som').setAttribute('d', `M512 ${f1(ty)} V${botten + 20}`);
+  G.querySelector('.jk-krage').setAttribute('opacity', kl(k * 3 - 2).toFixed(2));   // kragen viks ihop när den är stängd, syns inte i V:et
   G.querySelector('.jk-dra').setAttribute('transform', `translate(512 ${f1(ty)})`);
 }
 // ansikte/pose ur namn eller objekt; glada uttryck får öppna ögon som standard (som 053)
@@ -120,6 +152,7 @@ export function figur(n, [x, fot], f, p, { s = 0.57, lager = 'figurer', t = TID 
   $(lager).appendChild(G);
   G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(-512 ${-L.FOTTER})`);
   L.rita(G, blinka(f, t), p);
+  if (n === 'lova') armar(G);
 }
 // Lova i traktorn: sitter i karet, armarna fria mellan stolparna
 export function lovaKor(f, p = {}, { upp = 0 } = {}) {   // upp: hon reser sig i sätet (px i traktorns pixlar), så att armarna syns när hon vinkar/hejar
@@ -127,6 +160,7 @@ export function lovaKor(f, p = {}, { upp = 0 } = {}) {   // upp: hon reser sig i
   $('forare').appendChild(G);
   G.setAttribute('transform', `translate(${SITS[0]} ${SITS[1] - upp}) scale(${LT}) translate(-512 ${-L.FOTTER})`);
   L.rita(G, blinka(f, TID), { ...L.blandaPose('neutral', 'sitter', 1), ...p });
+  armar(G);
   G.querySelectorAll('.tail, .skugga').forEach(e => e.setAttribute('display', 'none'));   // svansen och skuggan syns inte i karet
 }
 

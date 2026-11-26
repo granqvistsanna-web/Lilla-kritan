@@ -5,9 +5,8 @@
 <body>
 <!-- 014 Gröna sången v2: kritan ritar traktorn (01a–01c, avsnittstid 9,0–30,0). Renderas med ../render.mjs.
      Skillen kritan-ritar och verktyg/kritan-ritar.js (format/ritintro.md). Sången börjar redan vid 9,0 ("Kritan ritar …"), så
-     väntan kan inte kortas: kameran kryper och teckningen gungar i takt på "tick, tack" (ingen knackning). Konturen ur
-     traktor-gron-v2.png (kontur-yttre.json, --krymp 16 så att stolparna och taket kommer med, och kontur-fonster.json: hyttens
-     öppning ner till sätet), två drag på 2,8 s. Svaret på "En traktor!" (24,7): bilden fylls inifrån, gnistor, pling.
+     väntan kan inte kortas: kameran kryper och teckningen gungar i takt på "tick, tack" (ingen knackning). Teckningen är
+     traktorns delar, handritade i traktorns pixlar (DRAG, DRAG2; feedback 26/11). Svaret på "En traktor!" (24,7): bilden fylls inifrån, gnistor, pling.
      "Tut-tut": två vita puffar ur avgasröret. Flaggan på taket döljs här (den finns inte i bilden kritan ritar).
      Början: introts gröna kritsvep glider undan (9,0–9,8). Slutet: kitets gröna svep (SVEP 30,0) in på vägen. -->
 <script src="/verktyg/blinka.js"></script>
@@ -18,8 +17,16 @@
 import * as K from '../kit.js';
 window.SCEN = ['01a', '01c'];
 const HAR = K.HAR + 'kritan-ritar/';
-const [YT, FO] = await Promise.all(['kontur-yttre.json', 'kontur-fonster.json'].map(async f => (await fetch(HAR + f)).json()));
-const DRAG = [YT.d];   // QA 26/11: ytterformen i introts drag (2,8 s); hyttens öppning ritas för sig på andra "Vad kan det vara?"
+// Feedback 26/11 (0:11 "better tractor drawing, not just outline"; 014 0:12 "much better drawing, it must look like a tractor"):
+// teckningen följer traktorns bild (traktor-gron-v2, 1024) del för del, så att den är en traktor redan i första draget.
+// Första draget (på "Kritan ritar … vad kan det vara?"): karet i ett lugnt streck (bakskärmen över bakhjulet, sätets golv,
+// huven, fronten), bakhjulet, karets underkant, framhjulet, taket och de två stolparna. Andra draget (ledtråden i pausen):
+// sätets rygg, navkapslarna och avgasröret. Samma form och delar som bilden den blir (teckningen-som-bilden).
+const ring = (cx, cy, r) => `M${cx} ${cy - r} A${r} ${r} 0 1 1 ${cx - 0.01} ${cy - r}Z`;
+const KROPP = 'M176 548 L176 482 Q178 458 230 456 L300 456 Q410 462 450 540 L478 592 Q484 600 500 600 L640 598 Q664 596 670 576 L684 492 Q690 466 720 466 L830 470 Q886 476 895 540 L900 640';
+const TAK = 'M196 162 L652 156 Q676 160 678 186 Q678 206 656 208 L198 216 Q176 216 176 190 Q176 164 196 162Z';
+const DRAG = [KROPP, ring(291, 690, 180), 'M474 734 L688 734', ring(801, 754, 114), TAK, 'M218 218 L218 452', 'M626 210 L706 462'];
+const DRAG2 = ['M232 450 Q232 432 300 432 Q392 434 440 482 Q462 512 520 520 L642 518 Q666 516 676 490', ring(291, 690, 72), ring(801, 754, 46), 'M742 464 L742 392 Q742 388 748 388 L766 388 Q770 388 770 392 L770 464', 'M754 388 L754 324'];
 
 // Traktorn på papperet: ca 600 px hög, mitt i bild och lite under mitten
 const TX = 960, TF = 870, TK = 0.82, S = K.TS * TK;
@@ -28,8 +35,8 @@ const MITT = iS([525, 520]), R_FYLL = 540;
 const LINJE = '#2A5E27';   // mörk ton av avsnittets gröna
 
 // Tider (avsnittstid)
-const T = { in: [9.6, 10.2], rit: [10.2, 13.0], vanta: [13.0, 13.8], ut: [24.95, 25.75] };
-const T2 = { till: [15.9, 16.5], rit: [16.5, 17.6], tillbaka: [17.6, 18.4] };   // andra draget: kritan kommer tillbaka och ritar hyttens öppning
+const T = { in: [9.6, 10.2], rit: [10.2, 14.2], vanta: [14.2, 15.0], ut: [24.95, 25.75] };   // hela traktorn i första draget (4 s)
+const T2 = { till: [15.6, 16.1], rit: [16.1, 18.3], tillbaka: [18.3, 19.1] };   // andra draget: kritan kommer tillbaka och ritar sätets rygg, naven och avgasröret
 const SVAR = 24.7, GRON = 25.9, TUT = [27.3, 27.75], KOR = 28.7, TICK = 19.3, BEAT = K.BEAT;
 const VANTA = [1500, 330];   // väntplatsen i scenen: fri yta uppe till höger om taket
 
@@ -49,7 +56,7 @@ const ANIM = {
     if (t < T.vanta[0]) {
       const pts = [0, 0.15, 0.3, 0.45, 0.6].map(d => spetsVid(Math.max(T.rit[0], t - d)));
       const m = [pts.reduce((a, p) => a + p[0], 0) / pts.length, pts.reduce((a, p) => a + p[1], 0) / pts.length];
-      const ut = K.del(12.5, T.vanta[0], t);
+      const ut = K.del(T.vanta[0] - 1.8, T.vanta[0], t);
       z = K.lerp(1.3, 1.08, ut); c = [K.lerp(K.lerp(m[0], 960, 0.35), 960, ut), K.lerp(K.lerp(m[1], 560, 0.35), 560, ut)];
     } else {
       const kryp = K.del(T.vanta[0], SVAR, t), svar = K.del(SVAR, SVAR + 0.6, t), ut = K.del(KOR, KOR + 0.8, t);
@@ -77,7 +84,7 @@ const ANIM = {
     // konturen (i traktorns pixlar, samma transform som traktorn)
     const attr = `fill="none" stroke="${LINJE}" stroke-width="${(KRITAN.BRED / S).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"`;
     const R = ritBana(DRAG, ritK(t), { attr });
-    const k2 = ritfart((t - T2.rit[0]) / (T2.rit[1] - T2.rit[0])), R2 = ritBana([FO.d], k2, { attr });
+    const k2 = ritfart((t - T2.rit[0]) / (T2.rit[1] - T2.rit[0])), R2 = ritBana(DRAG2, k2, { attr });
     if (f < 1) K.lagg('pynt', `<g transform="translate(${K.f1(x - K.TRAKTOR.mitt * S)} ${K.f1(fot - K.TRAKTOR.botten * S)}) scale(${S.toFixed(4)}) rotate(${K.f1(lut)} ${K.TRAKTOR.mitt} ${K.TRAKTOR.botten})">${R.html}${k2 > 0 ? R2.html : ''}</g>`);
 
     // puffar ur avgasröret på "Tut-tut"

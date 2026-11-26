@@ -54,7 +54,7 @@ const skutt = (p, t, a, b, h = 18) => { const u = kl((t - a) / (b - a)), huk = b
   return { ...p, lyft: (p.lyft || 0) - h * Math.sin(Math.PI * u), strack: (p.strack || 0) - 0.05 * huk + 0.03 * Math.sin(Math.PI * u) - 0.05 * land, bred: (p.bred || 0) + 0.04 * huk + 0.035 * land }; };
 const gung = (t, fas = 0) => Math.sin(2 * Math.PI * (t - K.SANG0) / (2 * K.BEAT) + fas);   // gung i takt (två slag per vagg)
 const HALL = [512, 690];     // där en ärta ligger mellan tassarna i 'magen'-posen (riggens ruta)
-const NOS = [512, 500];      // nosens topp (där ärtan balanserar)
+const NOS = [512, 436];      // nosens topp (där ärtan balanserar): nosen är y 439–471, ansiktet glider 10 px upp när hon tittar upp (upp 0,5)
 // ritar figuren; sitter = på bänken (i #figurer, bänkens sits framför), annars framför bänken (#framfor)
 const fig = (n, pos, f, p, { lager } = {}) => K.figur(n, pos, f, p, { s: S, lager: lager || 'pynt' });
 const sitter = (n, f, p = {}, x = SX[n]) => fig(n, [x, G.SITT], f, { ...L(n).blandaPose('neutral', 'sitter', 1), ...p }, { lager: 'figurer' });
@@ -136,10 +136,15 @@ function pipOchGurra(t, lv) {
     let f = K.F('lova', 'glad'), p = { armar: [-95, -95], fram: [1, 1] };
     if (t < T.ETT) f = K.F('lova', 'glad');
     else if (t < T.NOS[0]) f = fb('lova', 'glad', 'skrattar', del(T.ETT, T.ETT + 0.3, t));
-    else if (t < T.KAST[0][0]) { f = fb('lova', 'skrattar', 'fnissig', del(T.NOS[0], T.NOS[0] + 0.3, t)); p = { ...p, upp: 0.5, luta: 3 * Math.sin((t - T.NOS[0]) * 2.4) }; }
+    else if (t < T.KAST[0][0]) {   // feedback 26/11 (2:04 polish): balanserar ärtan på nosen med armarna ut, blicken på ärtan, vinglar med den, skrattar när den hoppar
+      const bal = del(T.NOS[0] + 0.3, T.NOS[0] + 0.7, t) * (1 - del(T.NOS[1] - 0.2, T.NOS[1] + 0.2, t)), sv = Math.sin((t - T.NOS[0]) * 2.4);
+      const hoppa = bump(T.NOS[0] + 1.6, T.NOS[0] + 2.1, t) + bump(T.NOS[0] + 2.8, T.NOS[0] + 3.3, t);
+      f = { ...fb('lova', hoppa > 0.3 ? 'forvanad' : 'fnissig', 'skrattar', del(T.NOS[1] - 0.2, T.NOS[1] + 0.1, t)), titt: [-2 * sv, -12 * bal] };
+      p = { armar: [lerp(-95, 38 + 12 * sv, bal), lerp(-95, 38 - 12 * sv, bal)], fram: [1 - bal, 1 - bal], upp: 0.5, luta: 4 * sv * bal, lyft: -6 * hoppa }; }
     else if (t < T.GKAST[0]) { const ik = T.KAST.findIndex(([a, b]) => t >= a - 0.2 && t < b + 0.2);
       f = ik >= 0 ? fb('lova', 'forvanad', 'skrattar', del(T.KAST[ik][1] - 0.1, T.KAST[ik][1] + 0.2, t)) : K.F('lova', 'skrattar');
-      p = ik >= 0 ? { ...p, upp: 0.8 * bump(T.KAST[ik][0], T.KAST[ik][1], t) } : p; }
+      p = ik >= 0 ? { ...p, upp: 0.8 * bump(T.KAST[ik][0], T.KAST[ik][1], t), strack: -0.05 * bump(T.KAST[ik][1] - 0.05, T.KAST[ik][1] + 0.25, t), bred: 0.04 * bump(T.KAST[ik][1] - 0.05, T.KAST[ik][1] + 0.25, t) } : p; }
+    else if (t < T.HOG[0]) { f = t < T.GKAST[1] ? K.F('lova', 'forvanad') : K.F('lova', 'skrattar'); p = { ...p, rikt: 0.6 * del(T.GKAST[0] - 0.3, T.GKAST[0], t), upp: t < T.GKAST[1] ? 0.6 : 0.2 }; }   // tittar på Gurras ärta
     else if (t < T.HOG[0]) f = K.F('lova', 'skrattar');
     else if (t < T.NED[0]) { f = fb('lova', 'ivrig', 'forvanad', del(T.HOG[1], T.HOG[1] + 0.4, t)); p = { ...p, upp: t < T.HOG[1] + 0.2 ? 0.3 : 1 }; }
     else if (t < T.LNER[0]) { f = K.F('lova', 'forvanad'); p = { ...p, rikt: 0.6, ner: 1 }; }
@@ -192,6 +197,10 @@ function pipOchGurra(t, lv) {
     else if (t < T.LSITT[0]) { f = t < T.KNAPP ? fb('pip', 'skrattar', 'forvanad', del(T.PLOCK[1] - 0.2, T.PLOCK[1], t)) : K.F('pip', 'jatteglad'); p = { armar: [-95, -95], fram: [1, 1], upp: 0.3 }; }
     else if (t < T.NOS[0]) { f = t < T.TVA + 0.6 ? fb('pip', 'glad', 'blinkar', bump(T.ETT + 0.2, T.ETT + 0.8, t)) : fb('pip', 'glad', 'skrattar', del(T.TVA + 0.6, T.TVA + 0.9, t));
       const ge = T.GE.findIndex(([a, b]) => t >= a - 0.25 && t < b); p = { armar: [-95, -95], fram: [1, 1], rikt: ge === 0 ? -0.6 * bump(T.GE[0][0] - 0.25, T.GE[0][1], t) : ge === 1 ? 0.6 * bump(T.GE[1][0] - 0.25, T.GE[1][1], t) : 0 }; }
+    else if (t < T.GKAST[0] && t >= T.NOS[0]) {   // feedback 26/11: Pip tittar på Lovas ärta (nosen, kasten) och följer den med blicken
+      const ik = T.KAST.findIndex(([a, b]) => t >= a && t < b), hoppa = bump(T.NOS[0] + 1.6, T.NOS[0] + 2.1, t) + bump(T.NOS[0] + 2.8, T.NOS[0] + 3.3, t);
+      f = t < T.NOS[1] ? fb('pip', 'nyfiken', 'skrattar', Math.max(hoppa, del(T.NOS[1] - 0.3, T.NOS[1], t))) : ik >= 0 ? fb('pip', 'forvanad', 'skrattar', del(T.KAST[ik][1] - 0.1, T.KAST[ik][1] + 0.2, t)) : K.F('pip', 'skrattar');
+      p = { armar: [-95, -95], fram: [1, 1], rikt: -0.6, upp: t < T.NOS[1] ? 0.3 : ik >= 0 ? 0.9 * bump(T.KAST[ik][0], T.KAST[ik][1], t) : 0, lyft: -8 * hoppa }; }
     else if (t < T.STUDS[0]) { f = t < T.GKAST[0] ? K.F('pip', 'skrattar') : t < T.GNER[1] ? fb('pip', 'skrattar', 'fnissig', del(T.GKAST[1], T.GKAST[1] + 0.3, t)) : K.F('pip', 'skrattar'); p = { armar: [-95, -95], fram: [1, 1], rikt: t > T.GKAST[0] && t < T.GNER[1] ? 0.5 : 0 }; }
     else if (t < T.RULL[0]) { f = K.F('pip', 'forvanad'); p = { ner: 1, armar: [-95, -95], fram: [1, 1] }; }
     else if (t < T.NA[0]) { f = K.F('pip', 'fnissig'); p = { ner: 1, rikt: -0.4, armar: [-95, -95], fram: [1, 1] }; }
@@ -233,9 +242,15 @@ function pipOchGurra(t, lv) {
     if (t < 107.5) f = K.F('gurra', 'glad');
     else if (t < 108.3) f = fb('gurra', 'glad', 'blinkar', bump(107.5, 108.3, t));
     else if (t < T.TVA) { f = K.F('gurra', 'glad'); p = {}; }
-    else if (t < T.GKAST[0]) f = fb('gurra', 'glad', 'skrattar', del(T.TVA + 0.3, T.TVA + 0.6, t));
-    else if (t < T.GNER[1]) { f = t < T.GKAST[1] ? K.F('gurra', 'forvanad') : K.F('gurra', 'fnissig'); p = { ...p, upp: t < T.GKAST[1] ? 1 : 0.4 }; }
-    else if (t < T.STUDS[0]) f = K.F('gurra', 'skrattar');
+    else if (t < T.NOS[0]) f = fb('gurra', 'glad', 'skrattar', del(T.TVA + 0.3, T.TVA + 0.6, t));
+    else if (t < T.GKAST[0]) {   // feedback 26/11: Gurra tittar på Lovas ärta och skrattar
+      const ik = T.KAST.findIndex(([a, b]) => t >= a && t < b);
+      f = t < T.NOS[1] ? fb('gurra', 'nyfiken', 'skrattar', del(T.NOS[0] + 1.6, T.NOS[0] + 1.9, t)) : ik >= 0 ? fb('gurra', 'forvanad', 'skrattar', del(T.KAST[ik][1] - 0.1, T.KAST[ik][1] + 0.2, t)) : K.F('gurra', 'skrattar');
+      p = { ...p, rikt: -0.7, upp: ik >= 0 ? 0.9 * bump(T.KAST[ik][0], T.KAST[ik][1], t) : 0.2 }; }
+    else if (t < T.GNER[1]) { const bal = t > T.GKAST[1] && t < T.GNER[0]; f = t < T.GKAST[1] ? K.F('gurra', 'forvanad') : { ...K.F('gurra', 'fnissig'), titt: [0, -10] };
+      p = bal ? { armar: [36 + 10 * Math.sin((t - T.GKAST[1]) * 3), 36 - 10 * Math.sin((t - T.GKAST[1]) * 3)], fram: [0, 0], upp: 0.5, luta: 4 * Math.sin((t - T.GKAST[1]) * 3) } : { ...p, upp: t < T.GKAST[1] ? 1 : 0.4 };
+      if (t >= T.GNER[0]) p = skutt({ ...p, upp: 0 }, t, T.GNER[1] - 0.05, T.GNER[1] + 0.35, 10); }
+    else if (t < T.STUDS[0]) { f = t > T.HOG[0] && t < T.NED[1] ? K.F('gurra', 'forvanad') : K.F('gurra', 'skrattar'); if (t > T.HOG[0] && t < T.NED[1]) p = { ...p, upp: 1, rikt: -0.3 }; }
     else if (t < T.NA[0]) { f = K.F('gurra', 'forvanad'); p = { ...p, ner: 1, rikt: -0.5 }; }
     else if (t < T.PIPHOPP[0]) { f = t < OHNEJ1 ? K.F('gurra', 'nyfiken') : t < T.NA[1] ? K.F('gurra', 'forvanad') : t < T.VEM[0] ? K.F('gurra', 'ledsen') : K.F('gurra', 'nyfiken'); p = { ...p, upp: t < OHNEJ1 ? 0.4 : 0, rikt: t > T.VEM[0] ? -0.5 - 0.6 * Math.sin((t - T.VEM[0]) * 2.2) : -0.5 }; }
     else if (t < T.TILLBAKA[1]) { f = t < T.TRILL[0] + 0.2 ? K.F('gurra', 'forvanad') : K.F('gurra', 'skrattar'); p = { ...p, ner: 0.6, rikt: -0.5 }; }
@@ -266,7 +281,7 @@ function artor(t, lv) {
     const pop = T.RAKNA.map(s => 1.6 * bump(s - 0.05, s + 0.45, t));
     const kvar = [t >= T.RAKNA[0] - 0.05 && t < T.GE[0][0] ? 1 : 0, t >= T.RAKNA[1] - 0.05 && t < T.STUDS[0] ? 1 : 0, t >= T.RAKNA[2] - 0.05 && t < T.GE[1][0] ? 1 : 0];
     const ny = 1 + 0.06 * bump(T.KNAPP, T.KNAPP + 0.3, t), lyft = mjuk(del(T.KNAPP - 0.3, T.KNAPP + 0.2, t)) * (1 - del(T.LSITT[0] - 0.4, T.LSITT[0], t));
-    G.oppenSkida([pipHall[0], pipHall[1] - 20 - 70 * lyft], 0, 0.21 * ny * (1 + 0.7 * lyft), kvar, 'pynt', pop);
+    G.oppenSkida([pipHall[0], pipHall[1] - 10 - 25 * lyft], 0, 0.21 * ny * (1 + 0.45 * lyft), kvar, 'pynt', pop);   // feedback 26/11: skidan i kod, framför magen så att den inte täcker ansiktet
   }
   if (t >= T.PIPHOPP[0] && t < T.TILLBAKA[1]) G.oppenSkida([SX.pip + 10, G.BANK.sits - 12], 4, 0.2, [0, 1, 0], 'figurer');   // skidan (med Pips ärta) ligger kvar på bänken
   if (t >= T.GRONT[0]) {   // 14g: Pip håller upp den tomma skidan över huvudet
@@ -328,7 +343,8 @@ function ritaArta([x, y], t, lager = 'pynt', k = 1) {
 const KAM = {
   // QA 26/11 (bildutsnitt.md): inga kapade huvuden och ingen figur halvt vid kanten. Närbilderna på Lova och Pip är så täta att
   // grannen på bänken är helt ute; tvåbilderna så breda att alla som syns är helt med.
-  HEL: [1, 960, 540], VALV: [2.3, 1260, 250], TVA: [1.55, 1150, 660], LOVA: [2.0, 1165, 600], GURRA: [1.75, 1350, 600], BRED: [1.35, 1150, 640],
+  HEL: [1, 960, 540], VALV: [2.3, 1260, 250], TVA: [1.55, 1150, 660], LOVA: [1.75, 1180, 600], GURRA: [1.75, 1330, 600],   // alla tre helt med (bänken är för trång för tvåbilder utan att kapa grannen)
+  BRED: [1.45, 1255, 640],
   LAG: [1.45, 1120, 700], LAGV: [1.45, 1060, 700], LNARA: [3.0, 800, 740], PIP: [2.6, 1360, 600], PIPL: [1.45, 1120, 700], TVA2: [1.55, 1040, 720], ALLA: [1.35, 1250, 640], SKIDA: [1.6, 1220, 600],
 };
 const glid = (A, B, k) => [lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k)];
@@ -340,12 +356,14 @@ function kamera(t) {
     case '11a': k = glid(KAM.HEL, KAM.VALV, mjuk(u / 1.2)); break;
     case '11b': k = glid(glid(KAM.VALV, KAM.TVA, mjuk(u / 0.9)), KAM.SKIDA, mjuk(del(T.KNAPP - 0.4, T.KNAPP + 0.3, t))); break;   // in mot skidan på räknandet
     case '11b2': k = KAM.BRED; break;
-    case '11c–f':
-      k = t < T.KAST[0][0] ? glid(KAM.LOVA, KAM.LOVA, 0) : t < T.GKAST[0] - 0.4 ? KAM.BRED : t < T.HOG[0] - 0.3 ? KAM.GURRA : KAM.BRED;
-      if (t < T.KAST[0][0]) k = [KAM.LOVA[0] + 0.1 * (t - T.NOS[0]) / 4, KAM.LOVA[1], KAM.LOVA[2]];
-      if (t >= T.HOG[0] - 0.3) k = glid(KAM.BRED, [1.1, 1100, 460], mjuk(del(T.HOG[0], T.NED[0], t)));
-      break;
-    case '13a': k = glid([1.1, 1100, 460], KAM.BRED, mjuk(u / 1.0)); break;
+    case '11c–f': {   // feedback 26/11 (2:04 polish): kameran glider mellan utsnitten i stället för att klippa
+      const lova = [KAM.LOVA[0] + 0.06 * kl((t - T.NOS[0]) / 4), KAM.LOVA[1], KAM.LOVA[2]];
+      k = glid(lova, KAM.BRED, del(T.KAST[0][0] - 0.5, T.KAST[0][0] + 0.2, t));
+      k = glid(k, KAM.GURRA, del(T.GKAST[0] - 0.6, T.GKAST[0], t));
+      k = glid(k, KAM.BRED, del(T.GNER[1], T.HOG[0], t));
+      k = glid(k, [1.1, 1180, 460], del(T.HOG[0], T.NED[0], t));
+      break; }
+    case '13a': k = glid([1.1, 1180, 460], KAM.BRED, mjuk(u / 1.0)); break;
     case '13b': k = KAM.LAG; break;
     case '13b2': k = KAM.LAGV; break;
     case '13c': k = KAM.LNARA; break;
@@ -366,6 +384,9 @@ window.ready = K.starta({ ANIM, figurer: [['lova', 'leoparden-lova', 14], ['pip'
   ljud: () => {
     K.ljud('lampa-klick', T.KNAPP, { vol: 0.25 });   // knapp-ljud finns inte
     T.RAKNA.forEach(s => K.ljud('plupp', s, { vol: 0.2 }));
+    [T.NOS[0] + 1.6, T.NOS[0] + 2.8].forEach(s => K.ljud('boing', s, { vol: 0.1 }));   // ärtan hoppar på nosen
+    T.KAST.forEach(([a, b]) => { K.ljud('swoosh', a, { vol: 0.08 }); K.ljud('plupp', b, { vol: 0.15 }); });
+    K.ljud('boing', T.GKAST[1], { vol: 0.12 }); K.ljud('fniss', T.GKAST[1] + 0.3, { vol: 0.15 });
     K.ljud('studs', T.STUDS[0], { vol: 0.15 }); K.ljud('studs', T.STUDS[1], { vol: 0.12 });
     T.PICK.forEach(s => K.ljud('pick', s, { vol: 0.2 }));
     K.ljud('hupp', T.PIPHOPP[0], { vol: 0.2 });

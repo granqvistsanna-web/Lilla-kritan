@@ -1,11 +1,11 @@
 // Bondgården v2 (014 v2, 10–14h): rummet, bänken och ärtvalvet i kod. Scenens koordinater 1920 × 1080.
 // Gul vägg #F6C21C och vitt golv i kod; ladans dörr och höet är PLATSHÅLLARE ur v1-plattan (lager/dorr-v1.png, lager/ho-v1.png)
-// tills Sannas v2-bilder finns (bildlista.md, v2). Ärtskidan är v1:s urklipp (assets/rekvisita/artskida/cut/), också PLATSHÅLLARE.
+// tills Sannas v2-bilder finns (bildlista.md, v2). Ärtskidan ritas i kod (feedback 26/11, 1:49 "better peas in a pod drawing").
 import { $, lagg, f1, lerp, kl, mjuk, HAR } from '../kit.js';
 
 export const VAGG = 700;                 // väggens nederkant (golvets början)
 export const BANK = { x0: 800, x1: 1720, sits: 740, tjock: 34, fot: 880 };   // sitsens överkant y 740, benen ner till golvet y 880
-export const PLATS = { lova: 1020, pip: 1260, gurra: 1500 };                  // var de sitter på bänken (x)
+export const PLATS = { lova: 975, pip: 1255, gurra: 1535 };                   // var de sitter på bänken (x); feedback 26/11: glesare, ingen sitter i en annan
 export const S = 0.5;                    // figurernas skala (v2, alla lika stora)
 export const STA = 960;                  // fötterna när de står på golvet framför bänken
 export const SITT = 790;                 // fötterna (riggens FOTTER) när de sitter på bänken (sitter-posen)
@@ -70,15 +70,39 @@ const del01 = (k, a, b) => mjuk((k - a) / (b - a));
 // den mogna skidan högst upp i valvet (stängd v1-skida, PLATSHÅLLARE), hänger i rankan
 export const MOGEN = [1260, 150];
 export const MOGEN_H = 230;   // skidans höjd i scenen (1024-rutan × 0,146)
-export function mogenSkida([x, y], v = -8, syn = 1, lager = 'bakom', bild = SKIDA_BILD.stangd, k = MOGEN_H / 1024) {
+// Ärtskidan i kod (feedback 26/11, 1:49 "better peas in a pod drawing"), i samma 1024-ruta som v1-bilden (SKIDA_MITT, ARTA_MITT),
+// så att alla skalor står kvar. En böjd skida med spetsiga ändar och skaft med en liten klänge till vänster. Stängd: buktar över
+// de tre ärtorna inuti, sömmen ovanpå. Öppen: den övre halvan uppfälld bakom, ljus insida, ärtorna i rad i skålen, främre kanten över deras nedre halva.
+const SK = { farg: '#5FB03C', mork: '#3C8A2B', ljus: '#9BD86A', insida: '#D3F0A6' };
+const skaft = `<g fill="none" stroke-linecap="round"><path d="M178 478 Q128 470 112 430 Q102 398 132 392" stroke="#fff" stroke-width="30"/>
+  <path d="M178 478 Q128 470 112 430 Q102 398 132 392" stroke="${RANKA}" stroke-width="16"/><path d="M150 448 q-30 -6 -36 -32 q-4 -18 12 -22" stroke="${RANKA}" stroke-width="7" opacity="0.8"/></g>`;
+const kritYta = (d, farg) => `<path d="${d}" fill="${farg}"/><path d="${d}" fill="${SK.mork}" opacity="0.28" filter="url(#tygkrita)"/>`;
+export function mogenSkida([x, y], v = -8, syn = 1, lager = 'bakom', _bild, k = MOGEN_H / 1024) {
+  const d = 'M172 482 C250 400 380 372 515 374 C650 372 790 404 862 470 C800 530 760 548 702 556 C660 600 600 604 550 568 C500 610 440 612 397 566 C330 590 260 560 172 482Z';
   lagg(lager, `<g opacity="${syn.toFixed(2)}" transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${k.toFixed(4)}) translate(${-SKIDA_MITT[0]} ${-SKIDA_MITT[1]})">
-    <image href="${bild}" width="1024" height="1024"/></g>`);
+    ${skaft}<path d="${d}" fill="#fff" stroke="#fff" stroke-width="26" stroke-linejoin="round"/>${kritYta(d, SK.farg)}
+    ${ARTA_MITT.map(([ax, ay]) => `<path d="M${ax - 52} ${ay + 40} Q${ax} ${ay + 92} ${ax + 52} ${ay + 40}" fill="none" stroke="${SK.mork}" stroke-width="9" stroke-linecap="round" opacity="0.45"/>
+      <ellipse cx="${ax - 18}" cy="${ay + 10}" rx="26" ry="14" fill="${SK.ljus}" opacity="0.8"/>`).join('')}
+    <path d="M200 474 C330 404 700 396 836 466" fill="none" stroke="${SK.mork}" stroke-width="10" stroke-linecap="round"/>
+    <path d="M260 450 C380 410 520 404 620 410" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity="0.45"/></g>`);
 }
-// den öppna skidan (tom bild + ärtorna kvar i den): kvar = vilka ärtor som ligger kvar [1,1,1]
+// den öppna skidan: kvar = vilka ärtor som ligger kvar [1,1,1]; pop 0–1 lyfter ärtan ur skålen
 export function oppenSkida([x, y], v = 0, k = 0.3, kvar = [1, 1, 1], lager = 'framfor', pop = [0, 0, 0]) {
-  let h = `<image href="${SKIDA_BILD.tom}" width="1024" height="1024"/>`;
-  ARTA_MITT.forEach(([ax, ay], i) => { if (!kvar[i]) return; const l = 60 * pop[i];
-    h += `<image href="${SKIDA_BILD.arta[i]}" width="1024" height="1024" transform="translate(0 ${f1(-l)})"/>`; });
+  // feedback 26/11 (014-v2 1:49): ärtorna syntes knappt (samma ljusgröna som locket, främre kanten över halva ärtan). Nu: locket
+  // visar sin ljusa insida med mörkgrön kant, ärtorna är mörkare och större och sitter högt, främre kanten täcker bara deras nederkant.
+  const lock = 'M176 478 C250 312 420 262 520 276 C650 276 800 330 860 466 C780 430 640 418 515 420 C380 420 260 436 176 478Z';
+  const fram = 'M170 474 C260 500 380 556 515 558 C650 556 770 500 864 464 C820 574 700 654 515 660 C330 654 210 574 170 474Z';
+  let h = `${skaft}<path d="${lock}" fill="#fff" stroke="#fff" stroke-width="26" stroke-linejoin="round"/>${kritYta(lock, SK.insida)}
+    <path d="${lock}" fill="none" stroke="${SK.farg}" stroke-width="24" stroke-linejoin="round"/>
+    <path d="M250 440 C370 360 670 350 800 432" fill="none" stroke="${SK.ljus}" stroke-width="8" opacity="0.8" stroke-linecap="round"/>
+    <path d="${fram}" fill="#fff" stroke="#fff" stroke-width="26" stroke-linejoin="round"/>
+    <path d="M176 478 C260 436 380 420 515 420 C640 418 780 430 860 466 C770 500 650 556 515 558 C380 556 260 500 176 478Z" fill="#3F7F2A"/>`;   // skidans mörka insida bakom ärtorna
+  ARTA_MITT.forEach(([ax, ay], i) => { if (!kvar[i]) return; const l = 90 * pop[i], cy = ay + 6 - l;
+    h += `<g><circle cx="${ax}" cy="${f1(cy)}" r="80" fill="#fff"/><circle cx="${ax}" cy="${f1(cy)}" r="72" fill="#6DBE45"/><circle cx="${ax}" cy="${f1(cy)}" r="72" fill="#3C8A2B" opacity="0.3" filter="url(#tygkrita)"/>
+      <path d="M${ax - 54} ${f1(cy + 32)} Q${ax} ${f1(cy + 82)} ${ax + 54} ${f1(cy + 32)}" fill="none" stroke="#3C8A2B" stroke-width="10" opacity="0.45" stroke-linecap="round"/>
+      <circle cx="${ax - 24}" cy="${f1(cy - 26)}" r="17" fill="#fff" opacity="0.8"/></g>`; });
+  h += `${kritYta(fram, SK.farg)}<path d="M200 486 C320 514 420 566 515 568 C610 566 720 514 834 478" fill="none" stroke="${SK.ljus}" stroke-width="10" stroke-linecap="round" opacity="0.9"/>
+    <path d="M300 606 C400 640 630 640 730 604" fill="none" stroke="${SK.mork}" stroke-width="8" stroke-linecap="round" opacity="0.4"/>`;
   lagg(lager, `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${k.toFixed(4)}) translate(${-SKIDA_MITT[0]} ${-SKIDA_MITT[1]})">${h}</g>`);
 }
 // en lös ärta (rund, ljusgrön, vit kant) med mitten i (x, y), radie r
