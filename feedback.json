@@ -10280,5 +10280,25 @@
   "at": 1795704618006,
   "render": "2026-11-26 13:10 (Slutrendering 26/11 (full kvalitet, QA ren: −14,1 LUFS, topp −1,8 dB))",
   "fixedAt": 1795707131560
+ },
+ "cxffkubx0bmwxsr15e": {
+  "ep": "056",
+  "time": "0:10",
+  "sec": 10,
+  "tags": [],
+  "note": "much better teddy drawing not just outline",
+  "fixed": false,
+  "at": 1795712319122,
+  "render": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)"
+ },
+ "cez1k65mi8mwxss82e": {
+  "ep": "056",
+  "time": "2:27",
+  "sec": 147,
+  "tags": [],
+  "note": "better nalle peeking throug maybe on floor under bed",
+  "fixed": false,
+  "at": 1795712374742,
+  "render": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)"
  }
 }
