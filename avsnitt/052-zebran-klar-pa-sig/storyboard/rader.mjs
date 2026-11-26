@@ -40,7 +40,7 @@ export const RADER = [
   { id: '4', d: 0.4 + L(10) + 0.6, malin: [[10, 0.4]], ljud: [[Z('nyfiken'), 2.4], ['gnagg-gullig/gnagg-gullig-7b', 0.4 + 7.3]], bild: 'helbild → närbild kroken → den blå strumpan' },   // replik 10 har 2 s paus efter "… först?" (7,0 s in i filen): zebran svarar där
 
   // --- Strumpan, och den andra är borta ---
-  { id: '5', d: 1.2 + L(11) + 2.0, malin: [[11, 1.2]], ljud: [['strumpa/strumpa-1', 1.2 + PA(11) - 0.3], ['tindra/tindra-1', 1.2 + PA(11) + 0.1], [Z('fortjust', 'b'), 1.4 + L(11)]], bild: 'närbild benen, strumpan glider på' },
+  { id: '5', d: 1.2 + L(11) + 2.0, malin: [[11, 1.2]], ljud: [['strumpa/strumpa-1', 1.2 + PA(11) - 0.3], ['tindra/tindra-3', 1.2 + PA(11) + 0.1], [Z('fortjust', 'b'), 1.4 + L(11)]], bild: 'närbild benen, strumpan glider på' },
   { id: '6', d: 1.3 + L(12) + 1.2, malin: [[12, 1.3]], ljud: [['pling/pling-1', 1.0], [Z('nyfiken', 'b'), 1.5 + L(12)]], bild: 'lyfter andra benet: ingen strumpa, förvånad' },
   { id: '7', d: 0.3 + L(13) + 1.2 + L(14) + 0.8, malin: [[13, 0.3], [14, 0.3 + L(13) + 1.2]], ljud: [[NEJ, 0.5 + L(13) + 1.2 + L(14)]], bild: 'närbild under pallen: bara golv' },
   { id: '8', d: 0.3 + L(15) + 1.2 + L(16) + 0.8, malin: [[15, 0.3], [16, 0.3 + L(15) + 1.2]], ljud: [[Z('nej'), 0.5 + L(15) + 1.2 + L(16)]], bild: 'närbild i korgen: tom' },
@@ -48,8 +48,8 @@ export const RADER = [
 
   // --- Barnet hittar strumpan direkt (Sanna 2026-11-25: "put on sock first and find it too not at the end") ---
   { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild mot dörren, stövlarna och pallen' },
-  { id: '22b', d: 1.6, ljud: [['lysmask/lysmask-1', 0.2]], bild: 'närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: "find sock earlier when they are looking")' },
-  { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'strumpan i stöveln skimrar tydligt, zebran skuttar' },
+  { id: '22b', d: 1.6, ljud: [['glimt/glimt-1', 0.2]], bild: 'närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: "find sock earlier when they are looking")' },
+  { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-4', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'strumpan i stöveln skimrar tydligt, zebran skuttar' },
   { id: '24', d: 1.6 + L(39) + SVAR + 0.7 + L(40) + 0.8, malin: [[39, 1.6], [40, 1.6 + L(39) + SVAR + 0.7]], ljud: [['strumpa/strumpa-2', 1.6 + PA(39) - 0.3], ['tindra/tindra-3', 1.6 + PA(39) + 0.1], [Z('mysig-suck', 'c'), 1.7 + L(39)]],
     bild: 'kudden lutar, strumpan glider fram och på hoven' },
 
@@ -72,13 +72,13 @@ export const RADER = [
 
   // --- Halsduken ---
   { id: '18', d: 0.8 + L(32) + 0.8, malin: [[32, 0.8]], ljud: [['glimt/glimt-2', 0.4]], bild: 'närbild halsduken på kroken, den glimtar' },
-  { id: '19', d: 1.2 + L(33) + 1.4, malin: [[33, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(33) - 0.8], ['tindra/tindra-2', 1.2 + PA(33) + 0.2], [Z('fortjust'), 1.2 + L(33) + 0.2]], bild: 'halsduken glider från kroken runt halsen, glad närbild' },
+  { id: '19', d: 1.2 + L(33) + 1.4, malin: [[33, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(33) - 0.8], ['tindra/tindra-4', 1.2 + PA(33) + 0.2], [Z('fortjust'), 1.2 + L(33) + 0.2]], bild: 'halsduken glider från kroken runt halsen, glad närbild' },
   { id: '20', d: 0.5 + L(34) + SVAR + L(35) + 0.7, malin: [[34, 0.5], [35, 0.5 + L(34) + SVAR]], ljud: [[Z('mysig-suck'), 0.6 + L(34)]], bild: 'närbild, gosar in mulen i halsduken' },
 
   // --- Jackan (grön, ritad i kod som strumporna) och stövlarna (Sanna 2026-11-25: "zebra need shoes and jacket too") ---
   { id: 'J1', d: 0.8 + L(48) + 0.8, malin: [[48, 0.8]], ljud: [['glimt/glimt-1', 0.4]], bild: 'närbild jackan på andra knoppen, den glimtar' },
-  { id: 'J2', d: 1.2 + L(49) + 1.6, malin: [[49, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(49) - 0.8], ['tindra/tindra-2', 1.2 + PA(49) + 0.1], [Z('mysig-suck'), 1.2 + L(49) + 0.3]], bild: 'jackan glider från knoppen in på kroppen, ärmarna kommer, mysig närbild' },
-  { id: 'S1', d: 0.3 + L(50) + HJALP, malin: [[50, 0.3]], ljud: [[Z('nyfiken', 'b'), 0.6 + L(50)], ['lysmask/lysmask-1', 0.3 + L(50) + 1.2]], bild: 'zebran tittar på hovarna, klipp till stövlarna vid dörren som skimrar: barnet svarar' },
+  { id: 'J2', d: 1.2 + L(49) + 1.6, malin: [[49, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(49) - 0.8], ['tindra/tindra-4', 1.2 + PA(49) + 0.1], [Z('mysig-suck'), 1.2 + L(49) + 0.3]], bild: 'jackan glider från knoppen in på kroppen, ärmarna kommer, mysig närbild' },
+  { id: 'S1', d: 0.3 + L(50) + HJALP, malin: [[50, 0.3]], ljud: [[Z('nyfiken', 'b'), 0.6 + L(50)], ['glimt/glimt-1', 0.3 + L(50) + 1.2]], bild: 'zebran tittar på hovarna, klipp till stövlarna vid dörren som skimrar: barnet svarar' },
   { id: 'S2', d: 0.3 + L(51) + SVAR, malin: [[51, 0.3]], ljud: [[Z('fortjust'), 0.5 + L(51)]], bild: 'halvnära, zebran nickar och skuttar' },
   { id: 'S3', d: 1.4 + L(52) + 1.6, malin: [[52, 1.4]], ljud: [['swoosh/swoosh-1', 1.2], ['landa-mjuk/landa-mjuk-1', 1.4 + PA(52)], ['tindra/tindra-3', 1.4 + PA(52) + 0.15], [Z('fniss'), 1.4 + PA(52) + 1.3]], bild: 'stövlarna hoppar från dörren till hovarna, glad närbild på benen' },
 
