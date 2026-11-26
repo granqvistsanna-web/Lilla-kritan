@@ -9922,9 +9922,10 @@
   "sec": 30,
   "tags": [],
   "note": "i like it keep dup",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641473082,
-  "render": "2026-11-25 22:11"
+  "render": "2026-11-25 22:11",
+  "fixedAt": 1795674881102
  },
  "c5cklrrpltmwwmvu4f": {
   "ep": "057",
