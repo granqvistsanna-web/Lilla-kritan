@@ -10287,9 +10287,10 @@
   "sec": 10,
   "tags": [],
   "note": "much better teddy drawing not just outline",
-  "fixed": false,
+  "fixed": true,
   "at": 1795712319122,
-  "render": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)"
+  "render": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)",
+  "fixedAt": 1795713141842
  },
  "cez1k65mi8mwxss82e": {
   "ep": "056",
@@ -10297,9 +10298,10 @@
   "sec": 147,
   "tags": [],
   "note": "better nalle peeking throug maybe on floor under bed",
-  "fixed": false,
+  "fixed": true,
   "at": 1795712374742,
-  "render": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)"
+  "render": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)",
+  "fixedAt": 1795713141842
  },
  "8e820ce7qemwxsmgot": {
   "ep": "014-v2",
