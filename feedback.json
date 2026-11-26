@@ -9935,9 +9935,10 @@
   "sec": 26,
   "tags": [],
   "note": "happy jump and happy expression",
-  "fixed": false,
+  "fixed": true,
   "at": 1795641999423,
-  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))"
+  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))",
+  "fixedAt": 1795676409343
  },
  "4eohxt75bdmwwmw7x9": {
   "ep": "057",
