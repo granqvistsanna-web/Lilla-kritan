@@ -1644,9 +1644,9 @@
   "name": "Räven går och lägger sig"
  },
  "053": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-0852.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-0932.mp4",
   "duration": 215.8,
-  "rendered": "2026-11-26 08:52 (Slutrendering (1920×1080, 30 fps, molnet) med feedbacken 26/11: lugnare fall ur korgen, armen når klossen, kaktusen närmare väggen och större, lila trekant, fyrkanten går inte ner i golvet. QA ren.)",
+  "rendered": "2026-11-26 09:32 (Slutrendering, nytt ljud: skimret vid 'Ja, där!' (2:53) använder tindra-3 i stället för platshållaren tindra-1. Bilden är oförändrad. QA ren.)",
   "file": "avsnitt/053-leoparden-stadar/film/avsnitt-053.mp4",
   "status": "granska",
   "name": "Leoparden städar"
