@@ -1662,10 +1662,10 @@
   "name": "Räven borstar tänderna"
  },
  "052": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/052-1126-0749.mp4",
-  "duration": 235.8,
-  "rendered": "2026-11-26 07:50 (QA: det långa fnisset efter stövlarna (3:26) byttes mot ett kort på klippet till närbilden, så det inte längre går in under Malins 'Strumpor, mössa …'. Förhandsvisning (--snabb).)",
-  "file": "avsnitt/052-zebran-klar-pa-sig/scener/sovrummet/sovrummet.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/052-1126-1308.mp4",
+  "duration": 245.8,
+  "rendered": "2026-11-26 13:09 (Slutrendering 26 nov (30 fps, 4:05). Med alla fixar: större zebra på 0:57, kortare fniss i S3, riktiga tindra/glimt i stället för platshållarljuden.)",
+  "file": "avsnitt/052-zebran-klar-pa-sig/film/avsnitt-052.mp4",
   "status": "granska",
   "name": "Zebran klär på sig"
  },
