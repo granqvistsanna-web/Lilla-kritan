@@ -1644,9 +1644,9 @@
   "name": "Räven går och lägger sig"
  },
  "053": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-0807.mp4",
-  "duration": 215.9,
-  "rendered": "2026-11-26 08:07 (Feedback 26/11 + QA: klossarna faller lugnare ur korgen (tippar sakta över kanten, båge, liten studs, skugga); armen går ner till klossen och följer med upp, far inte i luften; kaktusen närmare väggen och större; trekanten lila (syns mot väggen och kaktusen). QA: fyrkanten går inte längre ner i golvet när den tumlar, trekanten glider fram framför krukan före bågen till lådan, hyllans lila kloss olivbrun. Snabb förhandsvisning.)",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-0852.mp4",
+  "duration": 215.8,
+  "rendered": "2026-11-26 08:52 (Slutrendering (1920×1080, 30 fps, molnet) med feedbacken 26/11: lugnare fall ur korgen, armen når klossen, kaktusen närmare väggen och större, lila trekant, fyrkanten går inte ner i golvet. QA ren.)",
   "file": "avsnitt/053-leoparden-stadar/film/avsnitt-053.mp4",
   "status": "granska",
   "name": "Leoparden städar"
