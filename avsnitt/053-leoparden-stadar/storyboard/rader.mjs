@@ -68,7 +68,7 @@ export const RADER = [
   { id: '24', d: 0.3 + L(36) + 2.4, plats: 'N', malin: [[36, 0.3]], ljud: [S(7, 0.4 + L(36))], bild: 'Leoparden tittar åt vänster, sedan åt höger', ljudtext: 'spinn 7', ansikte: 'tänker' },
   { id: '25a', d: 2.0, plats: 'H', malin: [[37, 0.3]], bild: '*Kan du hjälpa leoparden?* Klipp efter 2 s', ljudtext: 'tyst', ansikte: 'nyfiken' },
   { id: '25b', d: 0.3 + L(37) - 2.0 + 5.0, plats: 'D under sängen', ljud: [E('glimt', 2, 0.3 + L(37) - 2.0 + 3.0, 0.3)], bild: 'Det gröna hörnet under sängen. Paus 5 s, efter 3 s skimrar det svagt', ljudtext: 'tyst, `glimt` svagt', ansikte: '–' },
-  { id: '26', d: 0.3 + L(38) + 0.8, plats: 'D hörnet → N', malin: [[38, 0.3]], ljud: [E('tindra', 1, 0.1), S(2, 0.4 + L(38))], bild: 'Hörnet skimrar tydligt, sedan leoparden', ljudtext: '`tindra`, spinn 2', ansikte: 'ivrig' },
+  { id: '26', d: 0.3 + L(38) + 0.8, plats: 'D hörnet → N', malin: [[38, 0.3]], ljud: [E('tindra', 3, 0.1), S(2, 0.4 + L(38))], bild: 'Hörnet skimrar tydligt, sedan leoparden', ljudtext: '`tindra`, spinn 2', ansikte: 'ivrig' },
   { id: '27a', d: 1.6, plats: 'HB', ljud: [E('glid', 1, 0.2, 0.5)], bild: 'Leoparden sträcker tassen, trekanten glider fram och i en båge mot lådan', ljudtext: '`glid` lågt', ansikte: 'ivrig' },
   { id: '27b', d: 0.3 + L(39) + 0.2, plats: 'D lådan', malin: [[39, 0.3]], ljud: PLOPP(0.3 + L(39) - 0.45), bild: 'Trekanten sjunker ner på *plopp*', ljudtext: '`plopp`, `klonk`, `glitter`', ansikte: '–' },
   { id: '27c', d: 1.0, plats: 'N', ljud: [S('3b', 0.1)], bild: 'Öronen upp, svansen vippar', ljudtext: 'spinn 3b', ansikte: 'jätteglad' },
