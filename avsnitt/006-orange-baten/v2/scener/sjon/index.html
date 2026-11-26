@@ -25,6 +25,7 @@
     <g id="orangevarld" clip-path="url(#torka)" style="display:none"><use href="#sjon" filter="url(#tillorange)"/>
       <g clip-path="url(#ovanhorisont)"><g filter="url(#boil)"><g id="sol"></g><g id="bage"></g></g></g></g>
     <g filter="url(#boil)">
+      <g id="fagelbak"></g>
       <g id="batlager"></g>
       <g id="fram">
         <g id="fisk" clip-path="url(#ovanvatten)"></g>
@@ -45,7 +46,8 @@
 const E0 = 33.2, E1 = 119.4, DURATION = E1 - E0;   // avsnittstid; kritsvepet 118.6–120.2, klippet vid 119.4
 
 // Kameror [cx, cy, zoom]. HEL: båten och himlen; NAR: Disa (provet, godkänt); HALV: Disa och fören (fisken, fågeln); REF: refrängen.
-const HEL = [960, 590, 1.25], HEL0 = [960, 600, 1.1], NAR = [975, 570, 2], HALV = [1180, 600, 1.45], REF = [960, 560, 1.35], REFIN = [1100, 520, 1.6], VAST_K = [985, 640, 2.6];
+// Tätare som v1 (Sanna 2026-11-26 "match close crops better to og video"): helbilden har båten på ca 60 % av bredden, närbilden Disa på ca 70 % av höjden.
+const HEL = [975, 585, 1.95], HEL0 = [975, 600, 1.7], NAR = [975, 490, 2.7], HALV = [1130, 590, 1.8], REF = [975, 565, 1.85], REFIN = [1090, 520, 2.1], VAST_K = [985, 620, 3.2];
 const B_X = 960, B_Y = 760;
 const REF0 = [61.3, 105.0];   // refrängernas början (avsnittstid)   // båtens vattenlinje mitt
 
@@ -106,7 +108,9 @@ const strAt = E => STR[Math.max(0, Math.round((E - E0) * 60))];
 // Läget med inblandning från förra skottet (samma kamera = ingen klippning).
 function lage(E) {
   const { i, s, tl, d } = skott(S, E); let [f, p] = s[4](tl, d);
-  if (i && tl < 0.45 && S[i - 1][2] === s[2]) { const [f0, p0] = S[i - 1][4](s[0] - S[i - 1][0], s[0] - S[i - 1][0]), k = mjuk(tl / 0.45);
+  // refrängen: alla byten glider (också in i 05d/09d, där kameran glider), lite längre (Sanna 2026-11-26 "smoother dancing in chorus too")
+  const ref = /^(05|09)[b-f]$/.test(s[1]), BL = ref ? 0.6 : 0.45;
+  if (i && tl < BL && (S[i - 1][2] === s[2] || ref)) { const [f0, p0] = S[i - 1][4](s[0] - S[i - 1][0], s[0] - S[i - 1][0]), k = mjuk(tl / BL);
     f = B.L.blanda(f0, f, k); p = { ...p, ...B.L.blandaPose(p0, p, k) }; }
   return [f, p];
 }
@@ -146,8 +150,8 @@ function fia(E) {
 const FISK = '/assets/rekvisita/fisk-orange-v2/cut/fisk-orange-v2.png', FS = 0.3, VY = 860;   // vattenytan framför båten
 // hopp: [start, längd, x0, x1, höjd]
 const EKO = REF0.flatMap(r => [0.576, 1.73, 4.6 + 0.576, 4.6 + 1.73].map(d => r + d - 0.1));
-const FISKREF = EKO.map((t, i) => [t, 0.6, i % 2 ? 1560 : 1380, i % 2 ? 1380 : 1560, 210]);
-const FISKHOPP = [[75.3, 1.4, 1330, 1640, 380], [81.15, 0.5, 1430, 1530, 130], [81.65, 0.5, 1530, 1450, 130], [82.15, 0.5, 1450, 1560, 130]];
+const FISKREF = EKO.map((t, i) => [t, 0.6, i % 2 ? 1440 : 1300, i % 2 ? 1300 : 1440, 170]);
+const FISKHOPP = [[75.3, 1.4, 1250, 1420, 300], [81.15, 0.5, 1430, 1530, 130], [81.65, 0.5, 1530, 1450, 130], [82.15, 0.5, 1450, 1560, 130]];
 function fisk(E) {
   let h = '', plask = '';
   const rita = (x, y, v, speg = 1) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${v.toFixed(1)}) scale(${(speg * FS).toFixed(3)} ${FS})">
@@ -161,20 +165,22 @@ function fisk(E) {
     [[t0 - 0.05, x0], [t0 + D - 0.08, x1]].forEach(([tp, xp]) => { const w = (E - tp) / 0.7; if (w > 0 && w < 1) plask += plaskRita(xp, VY, w); });
   }
   // 06a: fisken guppar i vattenytan bredvid fören och tittar upp (bara överdelen syns)
-  if (E >= 76.7 && E < 81.15) { const k = del(76.9, 77.4, E) * (1 - del(80.9, 81.15, E)); h = rita(1480, VY + 120 - 90 * k + 6 * Math.sin(E * 3), -12 + 4 * Math.sin(E * 2), -1); }
+  if (E >= 76.7 && E < 81.15) { const k = del(76.9, 77.4, E) * (1 - del(80.9, 81.15, E)); h = rita(1360, VY + 60 - 70 * k + 6 * Math.sin(E * 3), -12 + 4 * Math.sin(E * 2), -1); }
   $('fisk').innerHTML = h; $('plask').innerHTML = plask;
 }
 
 // --- Fågeln (07–08): flyger in från höger (vänd åt vänster), flaxar på stället framför fören, flyger ut uppåt i 08 -------------
-const FAGEL = '/assets/rekvisita/fagel-orange-v2/delar/', FG = 0.26, FAGEL_IN = [82.9, 85.4], FAGEL_UT = [92.6, 95.0], SVAV = [1560, 420];
+const FAGEL = '/assets/rekvisita/fagel-orange-v2/delar/', FG = 0.26, FAGEL_IN = [82.9, 85.4], FAGEL_UT = [92.6, 95.0], SVAV = [1360, 470];
 const FAGEL_F = REF0.map(r => [r + 11.6, r + 13.8]);   // rad 8 "Titta ut!": fågeln flyger förbi från höger till vänster, dit Disa pekar
 function fagel(E) {
   const ff = FAGEL_F.find(([a, b]) => E >= a && E <= b);
-  if (ff) { const u = (E - ff[0]) / (ff[1] - ff[0]), x = lerp(1600, 320, u), y = 345 - 30 * Math.sin(Math.PI * u) + 10 * Math.sin(E * 4.2), sy = 0.65 + 0.35 * Math.cos(2 * Math.PI * 2.5 * E);
+  $('fagelbak').innerHTML = '';
+  if (ff) { const u = (E - ff[0]) / (ff[1] - ff[0]), x = lerp(1600, 320, u), y = 320 - 25 * Math.sin(Math.PI * u) + 10 * Math.sin(E * 4.2), sy = 0.65 + 0.35 * Math.cos(2 * Math.PI * 2.5 * E);
     $('fagel').innerHTML = `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${-FG} ${FG}) translate(-511 -511)">
       <g transform="translate(0 613) scale(1 ${sy.toFixed(3)}) translate(0 -613)"><image href="${FAGEL}fagel-vinge.png" width="1024" height="1024"/></g>
       <image href="${FAGEL}fagel-kropp.png" width="1024" height="1024"/>
-      <ellipse cx="818" cy="655" rx="15" ry="18" fill="#2a1d1a"/><circle cx="814" cy="648" r="5" fill="#fff"/></g>`; return; }
+      <ellipse cx="818" cy="655" rx="15" ry="18" fill="#2a1d1a"/><circle cx="814" cy="648" r="5" fill="#fff"/></g>`;
+    $('fagelbak').innerHTML = $('fagel').innerHTML; $('fagel').innerHTML = ''; return; }   // långt bort: bakom Disa
   if (E < FAGEL_IN[0] || E > FAGEL_UT[1]) { $('fagel').innerHTML = ''; return; }
   let [x, y] = SVAV;
   if (E < FAGEL_IN[1]) { const u = mjuk((E - FAGEL_IN[0]) / (FAGEL_IN[1] - FAGEL_IN[0])); x = lerp(2150, SVAV[0], u); y = lerp(300, SVAV[1], u) - 60 * Math.sin(Math.PI * u); }
@@ -189,26 +195,26 @@ function fagel(E) {
 }
 
 // --- Apelsinbubblan (05d/09d): poppar upp till höger med glitter, står kvar raden ut och nästa, poppar bort ---------------------
-const APELSIN = '/assets/rekvisita/apelsin-v2/cut/apelsin-v2.png', BUB = [1430, 330];
+const APELSIN = '/assets/rekvisita/apelsin-v2/cut/apelsin-v2.png', BUB = [1300, 400];
 function bubbla(E) {
   let h = '';
   for (const t0 of [61.3 + 6.9, 105 + 6.9]) {
     const u = E - t0 - 0.2, ut = E - (t0 + 4.4); if (u < 0 || ut > 0.35) continue;
     const s = (ut > 0 ? 1 - mjuk(ut / 0.35) : pop(u * 0.9)) * (1 + 0.02 * Math.sin(E * 6));
-    h += `<g transform="translate(${BUB[0]} ${BUB[1]}) scale(${Math.max(0, s).toFixed(3)})">
+    h += `<g transform="translate(${BUB[0]} ${BUB[1]}) scale(${Math.max(0, 0.7 * s).toFixed(3)})">
       <path d="M-60 100 L-150 190 L-10 118Z" fill="#fff"/><circle r="150" fill="#fff"/><circle r="138" fill="#FFF3E2"/>
       <image href="${APELSIN}" x="-117" y="-107" width="234" height="214"/></g>`;
-    h += gnistor(BUB[0], BUB[1], 190, u);
+    h += gnistor(BUB[0], BUB[1], 135, u);
   }
   $('bubbla').innerHTML = h;
 }
 
 // --- Refrängens värld (som v1 refrang.js): sjön torkas över till orange på första slaget och tillbaka på sista, en låg sol går
 // upp, kritan ritar en regnbåge (det orange bandet bredast) på rad 3 och den ligger kvar; fisken hoppar på ekona i rad 1–2 och 4–5.
-const HOR = 588, SOL = [330, 330];
+const HOR = 588, SOL = [600, 345];
 const IN = r => [r, r + 0.7], UT = r => [r + 12.9, r + 13.6], BAGE_RIT = r => [r + 2.4, r + 4.0];
-const REGNBAGE = [['#E8483A', 18], ['#F28C28', 34], ['#F6C431', 18], ['#5DB65A', 18], ['#3E8EDB', 18], ['#5B5FC7', 15], ['#9A5BC4', 15]];
-const BC = [960, HOR], BRX = 560, BRY = 400;   // bågens yttre kant: halvellips över Disa, benen ner bakom horisonten
+const REGNBAGE = [['#E8483A', 14], ['#F28C28', 26], ['#F6C431', 14], ['#5DB65A', 14], ['#3E8EDB', 14], ['#5B5FC7', 12], ['#9A5BC4', 12]];
+const BC = [960, HOR], BRX = 470, BRY = 300;   // bågens yttre kant: halvellips över Disa, benen ner bakom horisonten
 const bageP = (u, o) => [BC[0] - (BRX - o) * Math.cos(Math.PI * u), BC[1] + 20 - (BRY - o) * Math.sin(Math.PI * u)];
 function kantD(E, ut) {   // torkans ojämna kritkant vid x = E; ut: ytan till höger om kanten
   const k = []; for (let y = -500; y <= 1500; y += 40) k.push([E + 30 * Math.sin(y * 0.013) + 14 * Math.sin(y * 0.07 + 1.3), y]);
@@ -222,11 +228,11 @@ function varld(E) {
   const [i0, i1] = IN(r), [u0, u1] = UT(r);
   $('torka-yta').setAttribute('d', E < u0 ? kantD(lerp(-500, 2500, mjuk((E - i0) / (i1 - i0))), false) : kantD(lerp(-500, 2500, mjuk((E - u0) / (u1 - u0))), true));
   // solen: går upp bakom horisonten på första raden, vrider sig sakta
-  const su = mjuk((E - r - 0.3) / 1.4), [sx, sy] = [SOL[0], lerp(HOR + 90, SOL[1], su)];
+  const su = mjuk((E - r - 0.3) / 1.4), [sx, sy] = [SOL[0], lerp(HOR + 70, SOL[1], su)];
   const strale = Array.from({ length: 10 }, (_, i) => { const a = i * 36 + E * 8, c = Math.cos(a * Math.PI / 180), s = Math.sin(a * Math.PI / 180);
-    return `M${(sx + 88 * c).toFixed(0)} ${(sy + 88 * s).toFixed(0)} L${(sx + 122 * c).toFixed(0)} ${(sy + 122 * s).toFixed(0)}`; }).join(' ');
-  $('sol').innerHTML = `<path d="${strale}" stroke="#FFB23E" stroke-width="16" stroke-linecap="round"/>
-    <circle cx="${sx}" cy="${sy.toFixed(0)}" r="74" fill="#fff"/><circle cx="${sx}" cy="${sy.toFixed(0)}" r="66" fill="#FFB23E"/><circle cx="${sx - 16}" cy="${(sy - 18).toFixed(0)}" r="22" fill="#FFD27A"/>`;
+    return `M${(sx + 58 * c).toFixed(0)} ${(sy + 58 * s).toFixed(0)} L${(sx + 80 * c).toFixed(0)} ${(sy + 80 * s).toFixed(0)}`; }).join(' ');
+  $('sol').innerHTML = `<path d="${strale}" stroke="#FFB23E" stroke-width="11" stroke-linecap="round"/>
+    <circle cx="${sx}" cy="${sy.toFixed(0)}" r="50" fill="#fff"/><circle cx="${sx}" cy="${sy.toFixed(0)}" r="44" fill="#FFB23E"/><circle cx="${sx - 11}" cy="${(sy - 12).toFixed(0)}" r="15" fill="#FFD27A"/>`;
   // regnbågen: ritas från vänster till höger längs bågen
   const [b0, b1] = BAGE_RIT(r), k = kl((E - b0) / (b1 - b0));
   if (k <= 0) { $('bage').innerHTML = ''; return; }
@@ -234,7 +240,7 @@ function varld(E) {
   for (const [c, w] of REGNBAGE) { o += w / 2; const N = 48, pts = []; for (let i = 0; i <= N * k; i++) pts.push(bageP(i / N, o).map(v => v.toFixed(0)).join(' '));
     if (pts.length > 1) h += `<path d="M${pts.join(' L')}" fill="none" stroke="${c}" stroke-width="${w + 1}" stroke-linecap="butt"/>`; o += w / 2; }
   $('bage').innerHTML = h;
-  if (k < 1) { const [x, y] = bageP(k, 68); $('bagekrita').innerHTML = kritaBild(x, y, { s: KRITAN.SKALA_PAPPER / 1.35, v: 125 }); }
+  if (k < 1) { const [x, y] = bageP(k, 52); $('bagekrita').innerHTML = kritaBild(x, y, { s: KRITAN.SKALA_PAPPER / 1.35, v: 125 }); }
 }
 
 function rita(t) {

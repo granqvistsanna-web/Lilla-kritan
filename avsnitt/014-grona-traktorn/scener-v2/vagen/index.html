@@ -18,7 +18,8 @@ window.SCEN = ['03', '09a–g'];
 const PUTT = [39.6, 40.0, 40.4], KOR = [77.7, 78.4, 79.0], ZIPP = [91.3, 92.0, 92.5], HOPP = [67.7, 68.7, 69.7];
 const R1 = { a: 48.1, gront: [48.1, 49.0, 49.8, 50.2], gbk: 50.6, kor: 51.8, ut: 52.6, artor: [52.6, 54.4, 55.3], ekon: [53.5, 54.4, 55.3],
   tak: 56.3, putt: [59.2, 59.6, 60.0, 60.4], titta: 61.7, slut: 62.5, kawaii: true };
-const R2 = { a: 93.0, gront: [93.0, 93.7, 94.7, 95.7], gbk: 96.4, kor: 97.5, ut: 97.7, artor: [97.7, 99.7, 100.7], ekon: [98.7, 99.7, 100.7],
+const R2 = { a: 93.0, gront: [93.0, 93.7, 94.7, 95.7], gbk: 96.4, kor: 97.15,   // QA 26/11: grönt på "kör" (sångtid 1:28,2)
+  ut: 97.7, artor: [97.7, 99.7, 100.7], ekon: [98.7, 99.7, 100.7],
   tak: 101.5, putt: [103.6, 104.0, 104.4, 104.8], titta: 105.4, slut: 106.0, kawaii: false };
 
 // --- Farten och vägen: vag(t) = körd sträcka (px), integrerad ur farten, så att inbromsningar och rusningar blir mjuka ----------
@@ -51,7 +52,11 @@ function kor({ x = TX, lut = 0, k = 1, flagg = 0, synlig = true } = {}) {
   K.vagen(o);
   K.traktor({ x, fot: FOT - gupp(t), rull: o, lut: lut - 0.6 * gupp(t), k, flagg: flagg + 6 * kl((fart(t) - 150) / 260), synlig });
 }
-function lova(f, p = {}, upp = 0) { K.lovaKor(typeof f === 'string' ? ans(f) : f, p, { upp: upp + 0.6 * gupp(K.TID) }); }
+function lova(f, p = {}, upp = 0) { const st = kl(upp / STA_H) * (upp > 20);   // reser hon sig: benen rätas ut mot sätet
+  K.lovaKor(typeof f === 'string' ? ans(f) : f, st ? { ...L().blandaPose('sitter', 'neutral', st), ...p } : p, { upp: upp + 0.6 * gupp(K.TID) }); }
+const STA_H = 80;   // så högt att jackan går fri från huven men huvudet stannar under taket
+// står upp i sätet från "Jackan är grön" till sista "zipp" (traktorns px), så att jackan syns ovanför huven
+const STA = () => STA_H * del(87.9, 88.6, K.TID) * (1 - del(ZIPP[2] + 0.5, ZIPP[2] + 0.9, K.TID));
 // dragkedjan: nere (öppen) tills "Zipp, zipp, zipp!" drar upp den i tre ryck
 function zipp() { const t = K.TID; K.zipp(ZIPP.reduce((z, a, i) => z + del(a - 0.05, a + 0.18, t) / 3, 0)); }
 
@@ -137,7 +142,7 @@ function refrang(R) {
     return;
   }
   // d–g: vägen igen; traktorn susar in från vänster och saktar in, en ärta hoppar in per "Grönt!" och följer som ett litet tåg
-  const in_ = mjuk((t - R.ut) / 1.1), x = lerp(-500, TX, in_);
+  const in_ = mjuk((t - R.ut) / 1.1), x = lerp(TX - 420, TX, in_);   // QA 26/11: redan i bild efter klippet, ingen tom vägbild
   kor({ x, flagg: 10 * (1 - in_) });
   const narbild = t >= R.tak && t < R.putt[0];
   const ARTPLATS = [-500, -640, -780];
@@ -212,11 +217,16 @@ const ANIM = {
     lova(f, { rikt: 0.5 * titt, armar: [6, 6] }, 10 * studs);
     HEL(); },
   // 07a: trafikljuset glider in och lyser rött, traktorn stannar mjukt
-  '07a': () => { const t = K.TID; kor(); zipp(); trafikljus(varld(1480, 72.6), 885, 470, 'rod', del(70.6, 71.0, t));
+  '07a': () => { const t = K.TID; kor(); zipp();
+    { const u = (t - 70.4) / 1.1;   // QA 26/11: grodan hoppar vidare ut åt höger i två skutt i stället för att försvinna
+      if (u < 1) { const h = Math.abs(Math.sin(Math.PI * 2 * u)), gx = varld(1570, 70.0) + 760 * u;
+        K.figur('gurra', [gx, 868 - 150 * h], K.F('gurra', 'jatteglad'), K.P('gurra', h > 0.2 ? { strack: 0.08 } : {}), { s: 0.36, lager: 'bakom' }); } }
+    trafikljus(varld(1480, 72.6), 885, 470, 'rod', del(70.6, 71.0, t));   // efter grodan: grodan (fot 868) står bakom lampan (885)
     lova(t < 71.9 ? ans('glad', 'nyfiken', del(70.4, 70.8, t)) : ans('nyfiken', 'forvanad', del(71.9, 72.2, t)), { rikt: 0.6 }); HEL(); },
   // 07b: närbild, tassen upp, sitter stilla och tittar upp mot lampan; blinkar mot tittaren på andra "vänta"
   '07b': () => { const t = K.TID; kor(); zipp();
-    lova(t > 74.7 ? ans('nyfiken', 'blinkar', bump(74.7, 75.15, t)) : 'nyfiken', { upp: 0.7, rikt: 0.5, armar: [6, 6 + 70 * del(73.5, 73.8, t)] }); NARA(); },
+    trafikljus(varld(1480, 72.6), 885, 470, 'rod', 1);   // QA 26/11: lampan syns under "Vänta, vänta"
+    lova(t > 74.7 ? ans('nyfiken', 'blinkar', bump(74.7, 75.15, t)) : 'nyfiken', { upp: 0.7, rikt: 0.5, armar: [6, 6 + 70 * del(73.5, 73.8, t)] }); K.kamera(1.4, 1060, 560); },
   // 07c: pling, grönt, en grön ring; traktorn far iväg på "kör", Lova pumpar armarna per "kör"
   '07c': () => { const t = K.TID; kor(); zipp();
     trafikljus(varld(1480, 72.6), 885, 470, t >= 75.2 ? 'gron' : 'rod', 1, t >= 75.2 ? (t - 75.2) / 0.9 : -1);
@@ -227,16 +237,17 @@ const ANIM = {
   '08a': () => { const t = K.TID; kor(); zipp(); const ner = del(82.6, 83.4, t), tick = Math.sin(Math.PI * (t - 85.1) / 0.85) * del(85.0, 85.4, t);
     lova('nyfiken', { upp: -0.9 * ner, rikt: -0.2 * (1 - ner), luta: 3 * tick });
     K.kamera(lerp(1.8, 2.3, mjuk((t - 82.6) / 5)), 825, lerp(560, 620, mjuk((t - 82.6) / 5))); },
-  // 08b: pekar på jackan (glitter), kameran åker ut till flaggan (glitter)
-  '08b': () => { const t = K.TID; kor(); zipp(); const ut = del(89.9, 90.9, t);
-    lova(t < 90.2 ? ans('nyfiken', 'forvanad', del(88.5, 88.8, t)) : ans('forvanad', 'skrattar', del(90.2, 90.5, t)), { upp: -0.5 * (1 - ut), armar: [6, lerp(-60, 50, ut)], fram: [0, 1 - ut] });
-    const [jx, jy] = K.iTraktor([470, 600], { x: TX, fot: FOT }); glitter(jx, jy, 110, 88.6, 1.4);
+  // 08b: reser sig i sätet så att hela jackan syns ovanför huven (QA 26/11: jackan var dold bakom huven), pekar på jackan
+  // (glitter på jackan), kameran åker ut till flaggan (glitter)
+  '08b': () => { const t = K.TID; kor(); zipp(); const ut = del(89.9, 90.9, t), st = STA();
+    lova(t < 90.2 ? ans('nyfiken', 'forvanad', del(88.5, 88.8, t)) : ans('forvanad', 'skrattar', del(90.2, 90.5, t)), { upp: -0.5 * (1 - ut), armar: [6, lerp(-60, 50, ut)], fram: [0, 1 - ut] }, st);
+    const [jx, jy] = K.iTraktor([470, 540 - STA_H], { x: TX, fot: FOT }); glitter(jx, jy, 75, 88.75, 1.4);   // QA 26/11: på jackan, inte på huven
     const [fx, fy] = K.iTraktor([140, 30], { x: TX, fot: FOT }); glitter(fx, fy, 90, 90.3, 1.3);
-    K.kamera(lerp(2.3, 1.35, ut), lerp(825, 680, ut), lerp(620, 440, ut)); },
-  // 08c: drar upp dragkedjan i tre ryck, stolt, blinkar på sista "zipp"
+    K.kamera(lerp(2.1, 1.35, ut), lerp(825, 680, ut), lerp(520, 440, ut)); },
+  // 08c: står kvar och drar upp dragkedjan i tre ryck (handtaget mitt i bild), stolt, blinkar på sista "zipp", sätter sig efter
   '08c': () => { const t = K.TID; kor(); zipp(); const ryck = ZIPP.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.3, t)), 0);
-    lova(t > ZIPP[2] + 0.1 ? ans('stolt', 'blinkar', bump(ZIPP[2] + 0.1, ZIPP[2] + 0.55, t)) : 'stolt', { armar: [-80 + 20 * ryck, -80 + 20 * ryck], fram: [1, 1], klapp: 30, upp: 0.3 });
-    K.kamera(1.9, 825, 590); },
+    lova(t > ZIPP[2] + 0.1 ? ans('stolt', 'blinkar', bump(ZIPP[2] + 0.1, ZIPP[2] + 0.55, t)) : 'stolt', { armar: [-80 + 20 * ryck, -80 + 20 * ryck], fram: [1, 1], klapp: 30 }, 0.55 * STA());   // stolt sträcker på huvudet: lägre, så att öronen stannar under taket
+    K.kamera(2.0, 825, 500); },
   '09a–g': () => { K.zipp(1); refrang(R2); },
 };
 

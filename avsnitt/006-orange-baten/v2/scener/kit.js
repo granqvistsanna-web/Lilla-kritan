@@ -95,8 +95,9 @@ const KORN = '/avsnitt/013-rod-brandbil/storyboard-v2/kritsvep-korn.png';
 function orangesvep(k) {
   const ram = $('ram'); if (!ram) return;
   if (k <= 0 || k >= 1) { ram.innerHTML = ''; return; }
-  const ut = k > 0.54, inne = k >= 0.46 && !ut, u = ut ? (k - 0.54) / 0.46 : Math.min(1, k / 0.46);
-  const E = inne ? 2200 : lerp(-260, 2200, ut ? u * u : 1 - (1 - u) * (1 - u));
+  // jämnare (Sanna 2026-11-26 "improve crayon transitions"): helt orange bara ett ögonblick runt klippet, ut med mjuk start och stopp
+  const ut = k > 0.52, inne = k >= 0.48 && !ut, u = ut ? (k - 0.52) / 0.48 : Math.min(1, k / 0.48);
+  const E = inne ? 2200 : lerp(-260, 2200, ut ? mjuk(u) : 1 - (1 - u) * (1 - u));
   const kant = []; for (let y = -120; y <= 1200; y += 40) kant.push([E + 30 * Math.sin(y * 0.013) + 14 * Math.sin(y * 0.07 + 1.3) + 6 * Math.sin(y * 0.31), y]);
   const yta = ut ? `M2400 -200 L${kant.map(p => p.join(' ')).join(' L')} L2400 1300Z` : `M-400 -200 L${kant.map(p => p.join(' ')).join(' L')} L-400 1300Z`;
   const drag = Array.from({ length: 11 }, (_, i) => { const x = i * 250 - 380 + 30 * Math.sin(i * 2.7), w = 46 + 20 * Math.abs(Math.sin(i * 1.9)),
@@ -114,7 +115,10 @@ function orangesvep(k) {
       <g fill="none" stroke="${ORANGE_M}" stroke-linecap="round" mask="url(#svep-m)">${drag}</g></g>
       ${!inne ? `<path d="${yta}" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="70 9 26 7" opacity="0.6"/>` : ''}</g>`;
   if (!ut && !inne) { const y = 540 + 360 * Math.sin(u * Math.PI * 4), v = 28 + 8 * Math.cos(u * Math.PI * 4);   // kritan vid kanten, lugnt sicksack
-    h += kritaBild(E, y, { s: 0.9, v: 90 + v }); }
+    // en orange vaxkrita (som introts kritsvep), inte den röda ritkritan
+    h += `<g transform="translate(${E.toFixed(0)} ${y.toFixed(0)}) rotate(${v.toFixed(1)}) scale(2.2)">
+      <path d="M-9 -2 Q0 4 9 -2 L19 -46 L19 -262 Q19 -270 11 -270 L-11 -270 Q-19 -270 -19 -262 L-19 -46 Z" fill="${ORANGE}" stroke="#fff" stroke-width="7" stroke-linejoin="round" paint-order="stroke"/>
+      <path d="M-19 -78 Q0 -84 19 -78 L19 -232 Q0 -238 -19 -232 Z" fill="${ORANGE_M}"/></g>`; }
   ram.innerHTML = h;
 }
 

@@ -18,15 +18,17 @@
       <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="9"/><feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G"/></filter>
   </defs>
   <g id="kamera">
-    <image href="/avsnitt/006-orange-baten/scener/lager/disco-prickar.png" width="1920" height="1080" preserveAspectRatio="none"/>
+    <image href="../lager/disco-orange.png" width="1920" height="1080"/>   <!-- 013:s disco-rod.png omfärgad till orange (mallen) -->
     <g id="ljus"></g>
     <g filter="url(#boil)">
       <g id="kula"></g>
       <g id="ikoner"></g>
       <g id="figurer"></g>
       <g id="streck"></g>
+      <g id="ikonstor"></g>
     </g>
   </g>
+  <g id="ram"></g>
   <g id="iris"></g>
 </svg>
 <script src="/verktyg/blinka.js"></script>
@@ -35,7 +37,7 @@
 <script src="../kit.js"></script>
 <script>
 const E0 = 170.6, E1 = 221.9, DURATION = E1 - E0;
-const R = '/assets/rekvisita/', LAGER = '/avsnitt/006-orange-baten/scener/lager/';
+const R = '/assets/rekvisita/', LAGER = '../lager/';
 const B0 = 61.3;   // refrängens första slag (avsnittstid); slagen ligger på B0 + n · SLAG
 const slagFas = E => ((E - B0) / SLAG % 1 + 1) % 1;
 
@@ -80,14 +82,27 @@ function lage(n, F, E) {
     if (n === 'gurra') { const [f, p] = L.ROR.hoppa((E - solo[0]) * 2.08); return [f, p, 0, 0]; }   // ett hopp per två slag
     const [f, p] = L.ROR.klappa(((E - solo[0] + 0.5) % 1.5) + 0.5); return [L.param('fnissig'), p, 0, 0];   // klapp på slagen
   }
-  // dansar (i solot för någon annan: lugnt gung)
-  const iSolo = E >= 180.2 && E < 187.3, [f, p] = L.ROR.dansa(((takt % 4) + 4) % 4);
+  // dansar (i solot för någon annan: lugnt gung). Riggens dansa tonas ut till stillastående var 4:e sekund och har ett ryck
+  // (hoppet på sjätte studsen), så här används bara mittdelen (T 1–2, full styrka) som en jämn slinga, och studsen är mjuk
+  // (1 − cos) i stället för |sin| (Sanna 2026-11-26 "improve dino dancing more smooth").
+  const fas = ((takt % 1) + 1) % 1, [f, p0] = L.ROR.dansa(1 + fas), fi = 2 * Math.PI * fas;
+  const p = { ...p0, lyft: -12 * (1 - Math.cos(2 * fi)) / 2, strack: 0.02 * (1 - Math.cos(2 * fi)) / 2 };
+  const iSolo = E >= 180.2 && E < 187.3;
   if (tittaUpp) { const k = del(199.0, 199.6, E); return [L.blanda('forvanad', 'glad', del(199.6, 200.2, E)), { ...p, armar: p.armar.map(a => a * (1 - k)), upp: -k }, 0, 0]; }
   return [iSolo ? L.param('glad') : f, iSolo ? { ...P({}), luta: 2 * Math.sin(E * 2) } : p, 0, 0];
 }
 
+// Byten mellan lägena (solo, titta upp, magen, hej då) glider över 0,4 s i stället för att hoppa.
+const BYTEN = [173.8, 180.2, 182.6, 184.8, 187.3, 199.0, 207.8, 212.4];
+function lageMjuk(n, F, E) {
+  const b = BYTEN.findLast(b => E >= b && E < b + 0.4), nu = lage(n, F, E);
+  if (b === undefined || (n === 'agda' && b === AGDA_IN[1])) return nu;
+  const fore = lage(n, F, b - 0.001), k = mjuk((E - b) / 0.4);
+  return [F.L.blanda(fore[0], nu[0], k), { ...nu[1], ...F.L.blandaPose(fore[1], nu[1], k) }, lerp(fore[2], nu[2], k), lerp(fore[3], nu[3], k)];
+}
+
 // Ikonerna i bågen överst: fisken, fågeln, västen, apelsinen, båten.
-const IKON_X = [220, 470, 1250, 1480, 1710], ikonY = x => 140 + 0.00018 * (x - 960) ** 2;
+const IKON_X = [250, 470, 690, 1230, 1450], ikonY = x => 120 + 0.00022 * (x - 960) ** 2;   // 013:s plats: två och två runt kulan
 const VAST_IKON = `<g><path d="M-58 50 L-58 -20 Q-50 -48 -20 -50 L-6 -50 L-6 50Z M58 50 L58 -20 Q50 -48 20 -50 L6 -50 L6 50Z" fill="#FF7A21" stroke="#fff" stroke-width="8" stroke-linejoin="round" paint-order="stroke"/>
   <rect x="-58" y="6" width="52" height="9" fill="#FFF6E8"/><rect x="6" y="6" width="52" height="9" fill="#FFF6E8"/><rect x="-10" y="2" width="20" height="16" rx="4" fill="#5b5b66"/></g>`;
 const IKON = [
@@ -97,19 +112,41 @@ const IKON = [
   `<image href="${R}apelsin-v2/cut/apelsin-v2.png" x="-62" y="-57" width="124" height="113"/>`,
   `<image href="${R}orange-baten-v2/cut/orange-baten-v2.png" x="-95" y="-35" width="190" height="70"/>`,
 ];
+// Som 013: varje sak poppar först upp stor mitt i bilden på en vit kritskiva (0,75 s), glider sedan upp till sin plats i raden.
+const STOR = [960, 380], SKIVA = (x, y, sk, h) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${sk.toFixed(3)})">
+  <circle cx="4" cy="8" r="70" fill="#8a3a10" opacity="0.2" filter="url(#mjuk)"/><circle r="70" fill="#fff"/><circle r="59" fill="#FDEBD8"/>
+  <g transform="scale(0.62)">${h}</g></g>`;
 function ikoner(E) {
+  let stor = '';
   $('ikoner').innerHTML = IKON.map((h, i) => { const u = E - IKON_T[i]; if (u < 0) return '';
-    const x = IKON_X[i], y = ikonY(x) + 6 * Math.sin(E * 2 + i), extra = i === 3 && E > 209.9 && E < 212.4 ? 1 + 0.12 * Math.abs(Math.sin(Math.PI * (E - 209.9) / SLAG)) : 1;
-    return `<g transform="translate(${x} ${y.toFixed(1)}) scale(${(1.35 * pop(u * 0.9) * extra).toFixed(3)}) rotate(${(4 * Math.sin(E * 1.7 + i)).toFixed(1)})">${h}</g>` + gnistor(x, y, 110, u * 1.5, 4); }).join('');
+    const x1 = IKON_X[i], y1 = ikonY(x1) + 5 * Math.sin(E * 2 + i), g = mjuk((u - 0.75) / 0.45);
+    const extra = i === 3 && E > 209.9 && E < 212.4 ? 1 + 0.12 * Math.abs(Math.sin(Math.PI * (E - 209.9) / SLAG)) : 1;
+    const x = lerp(STOR[0], x1, g), y = lerp(STOR[1], y1, g), sk = lerp(2.1 * pop(u * 1.2), 1, g) * extra;
+    if (g < 1) { stor += SKIVA(x, y, sk, h) + (u < 0.9 ? gnistor(STOR[0], STOR[1], 190, u * 1.3, 5) : ''); return ''; }   // stor: framför dansarna
+    return SKIVA(x, y, sk, h); }).join('');
+  $('ikonstor').innerHTML = stor;
 }
 
 // Kulan och ljuset (som 013:s disco()): kulan gungar, fyra mjuka ljuskäglor, ljusfläckar på golvet som byter färg på slaget.
 function ljus(E) {
   const s = E - B0, gung = Math.sin(s / SLAG * Math.PI), kagla = v => { const r = v * Math.PI / 180, L = 1300, b = 0.16;
-    return `M960 230 L${(960 + L * Math.sin(r - b)).toFixed(0)} ${(230 + L * Math.cos(r - b)).toFixed(0)} L${(960 + L * Math.sin(r + b)).toFixed(0)} ${(230 + L * Math.cos(r + b)).toFixed(0)}Z`; };
+    return `M960 200 L${(960 + L * Math.sin(r - b)).toFixed(0)} ${(200 + L * Math.cos(r - b)).toFixed(0)} L${(960 + L * Math.sin(r + b)).toFixed(0)} ${(200 + L * Math.cos(r + b)).toFixed(0)}Z`; };
   $('ljus').innerHTML = `<g opacity="${(0.2 + 0.06 * gung).toFixed(3)}" filter="url(#mjuk)">${[-50, -18, 18, 50].map((v, i) => `<path d="${kagla(v + 6 * Math.sin(s * 0.7 + i))}" fill="#FFF6EC"/>`).join('')}</g>
     ${[[520, 960, 170], [960, 1010, 200], [1400, 950, 160]].map(([x, y, r], i) => `<ellipse cx="${(x + 120 * Math.sin(s * 0.5 + i * 2)).toFixed(0)}" cy="${y}" rx="${r}" ry="${r * 0.3}" fill="${['#FFF0B0', '#FFFFFF', '#FFD8A8'][(i + Math.floor(s / SLAG / 4)) % 3]}" opacity="0.35" filter="url(#mjuk)"/>`).join('')}`;
-  $('kula').innerHTML = `<g transform="rotate(${(2 * Math.sin(s * 1.2)).toFixed(2)} 960 0)"><image href="${LAGER}discokula-orange.png" x="${960 - 150}" y="-30" width="300" height="300"/></g>`;
+  // musiknoter som gungar på slaget (013:s, uppe till vänster)
+  const not = (x, y, k, dubbel) => `<g transform="translate(${x} ${(y - 10 * gung).toFixed(1)}) rotate(${(-8 * gung).toFixed(1)}) scale(${k})" fill="#B5531A" stroke="#B5531A" stroke-width="7" stroke-linecap="round">
+    ${(dubbel ? [0, 44] : [0]).map(dx => `<ellipse cx="${dx}" cy="0" rx="14" ry="10" transform="rotate(-22 ${dx} 0)" stroke="none"/><path d="M${dx + 12} -4V-64" fill="none"/>`).join('')}
+    <path d="${dubbel ? 'M12 -64L56 -72' : 'M12 -64Q16 -48 34 -42'}" fill="none"/></g>`;
+  // kulan snurrar (Sanna 2026-11-26 "spinning disco ball"): ljusa fasettrader glider runt klotet (projicerade på en cirkel),
+  // två glimtar tänds och slocknar; hela kulan gungar lite i snöret
+  const KX = 960, KY = 200, KR = 128, w = s * 1.6;
+  const rader = Array.from({ length: 16 }, (_, j) => { const a = w + j * Math.PI / 8, x = KR * Math.sin(a), fram = Math.cos(a);
+    return fram <= 0 ? '' : `<rect x="${(KX + x - 9 * fram).toFixed(1)}" y="${KY - KR}" width="${(18 * fram).toFixed(1)}" height="${2 * KR}" fill="#fff" opacity="${(0.32 * fram * (j % 2 ? 0.5 : 1)).toFixed(2)}"/>`; }).join('');
+  const glimt = (x, y, fas) => { const k = Math.max(0, Math.sin(s * 3 + fas)) ** 3; return k < 0.05 ? '' : `<path d="M0 -1 L.18 -.18 L1 0 L.18 .18 L0 1 L-.18 .18 L-1 0 L-.18 -.18Z" fill="#fff" transform="translate(${x} ${y}) scale(${(30 * k).toFixed(1)})"/>`; };
+  $('kula').innerHTML = `<g transform="rotate(${(2 * Math.sin(s * 1.2)).toFixed(2)} 960 0)"><image href="${LAGER}discokula-orange.png" x="${960 - 132}" y="-10" width="264" height="${(264 * 824 / 632).toFixed(0)}"/>
+    <clipPath id="kulklipp"><circle cx="${KX}" cy="${KY}" r="${KR - 4}"/></clipPath><g clip-path="url(#kulklipp)" style="mix-blend-mode:screen">${rader}</g>
+    ${glimt(KX - 60, KY - 50, 0)}${glimt(KX + 55, KY + 30, 2.1)}${glimt(KX + 20, KY - 85, 4.2)}</g>
+    ${not(150, 360, 1.2) + not(250, 520, 0.9, true) + not(110, 610, 0.85)}`;
 }
 
 // Kritirisen (som prenumerera-kortets): krämvit vinglig ring runt Disas ansikte, 1400 → 240 på 1,1 s, står 0,35 s, → 0 på 0,5 s, svart.
@@ -128,12 +165,13 @@ function rita(t) {
   ljus(E); ikoner(E);
   for (const [n, F] of Object.entries(FIG)) {
     F.g.style.display = syns(n, E) ? '' : 'none'; if (!syns(n, E)) continue;
-    const [f, p, dx, dy] = lage(n, F, E);
+    const [f, p, dx, dy] = lageMjuk(n, F, E);
     F.g.setAttribute('transform', `translate(${(F.x + dx).toFixed(1)} ${(F.y + dy).toFixed(1)})`);
     F.L.rita(F.fig, F.blinka(f, E), p);
     if (n === 'disa') vinkStreck($('streck'), F.fig, p.vinkFart || 0);
   }
   const [cx, cy, z] = kamAt(E); kamera(cx, cy, z, E);
+  orangesvep((E - 169.8) / 1.6);   // bryggans kritsvep glider undan
   iris(E);
 }
 
@@ -154,7 +192,7 @@ window.ready = (async () => {
     F.L = await v2rigg(F.slug); F.g = document.createElementNS(NS, 'g'); $('figurer').appendChild(F.g);
     F.fig = F.L.figur(0, 0, F.s, F.g); F.blinka = skapaBlinka(F.fro);
     if (n === 'fia') F.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none'); }
-  await Promise.all([LAGER + 'disco-prickar.png', LAGER + 'discokula-orange.png', R + 'fisk-orange-v2/cut/fisk-orange-v2.png', R + 'fagel-orange-v2/delar/fagel-hel.png']
+  await Promise.all([LAGER + 'disco-orange.png', LAGER + 'discokula-orange.png', R + 'fisk-orange-v2/cut/fisk-orange-v2.png', R + 'fagel-orange-v2/delar/fagel-hel.png']
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   const q = new URLSearchParams(location.search).get('t');

@@ -42,6 +42,7 @@ const BRYGGA = R + 'bryggan-v2/cut/bryggan-v2.png', KORG = R + 'korg/cut/korg-v3
 // Båten lägger till vid bryggans vänstra ände, vattenlinjen y 800. Agda (skala 0,4) sitter på däcket, korgen bredvid.
 const JS = 0.7, JX = 1010, JY = 629, DACK = JY + 110 * JS, B_X1 = 700, B_Y = 800, AX = 1180, AS = 0.4, VY = 915;
 const KX = 1430, KS = 0.22, KY = DACK - 915 * KS;   // korgen: botten (y 915 i rutan) på däcket
+const RIM = KY + 505 * KS, KORG_APELSIN = [KX + 30, RIM - 16, 0.75];   // korgens öppning; apelsinen ligger i korgen (Sanna 2026-11-26: "place fruits better in basket not behind it")
 // Kameror [cx, cy, zoom]
 const HEL = [1075, 560, 1.12], TVA = [960, 600, 1.4], NAR_D = [730, 520, 2], NAR_A = [1270, 520, 2];
 
@@ -49,6 +50,7 @@ let B, A, LA;   // båten med Disa (kit.js), Agda (grupp, rigg)
 const DP = (a, b, k = 1) => B.L.blandaPose(a, b, k), DF = n => B.L.param(n), DB = (a, b, k) => B.L.blanda(a, b, k);
 const AP = (a, b, k = 1) => LA.blandaPose(a, b, k), AF = n => LA.param(n), AB = (a, b, k) => LA.blanda(a, b, k);
 const D0 = () => ({ ...B.L.POSE0 }), A0 = () => ({ ...LA.POSE0 });
+const GRAT = tl => B.L.ROR.grata(tl);   // riggens gråtslinga (verktyg/rigg-motor.js gratDel)
 const pekH = k => ({ ...DP('neutral', 'pekar', k), rikt: 0.6 * k });
 const sitt = (o = {}) => ({ ...AP('neutral', 'sitter'), ...o });
 const haller = k => sitt({ rikt: -k, bada: k, armar: [6 + 19 * k, 6] });   // sitter och håller fram apelsinen mot Disa
@@ -65,8 +67,9 @@ const S = [
   [138.0, '13a', TVA, tl => [[DB('glad', 'forvanad', del(0, 0.3, tl)), pekH(1 - del(0.3, 0.8, tl))], [AF('forvanad'), sitt()]]],
   [140.3, '13b', HEL, () => [[DF('forvanad'), { ...D0(), rikt: 0.6 }], [AF('forvanad'), sitt({ rikt: 0.6 })]]],
   [142.6, '13c', HEL, tl => [[DB('forvanad', 'ledsen', del(0, 1.5, tl)), { ...D0(), rikt: 0.6 }], [AF('ledsen'), sitt({ rikt: 0.6 })]]],
-  [147.1, '13d', NAR_D, tl => [[DF('ledsen'), { ...D0(), sank: 12 * pulsar(tl, [0.5, 1.2, 1.9], 0.35), upp: 0.3 }], [AF('ledsen'), sitt()]]],
-  [151.8, '13e', NAR_D, tl => [[DB('ledsen', 'nyfiken', del(0, 0.6, tl)), { ...D0(), luta: 5 * del(0.3, 0.9, tl) }], [AF('ledsen'), sitt()]]],
+  // gråter med riggens gråt (Sanna 2026-11-26 "improve crying animation"): en tår per öga som rinner, darrande mun, tre små snyftningar
+  [147.1, '13d', NAR_D, tl => { const [gf, gp] = GRAT(tl), k = del(0, 0.6, tl); return [[B.L.blanda(DF('ledsen'), gf, k), { ...D0(), ...gp }], [AF('ledsen'), sitt()]]; }],
+  [151.8, '13e', NAR_D, tl => [[B.L.blanda(GRAT(4.7 + tl)[0], DF('nyfiken'), del(0, 0.8, tl)), { ...D0(), luta: 5 * del(0.3, 0.9, tl) }], [AF('ledsen'), sitt()]]],
   [154.3, '13f', HEL, tl => [[DF('nyfiken'), D0()], [AF('nyfiken'), sitt({ ...AP('neutral', 'pekar', del(0.2, 0.6, tl)), ben: [40, 40], benY: [-40, -40], sank: 48 })]]],
   [156.6, '14a', HEL, tl => [[DF('glad'), D0()], [AF('stolt'), AP('sitter', 'stolt', del(0, 0.6, tl))]]],
   [158.0, '14b', HEL, tl => [[DF('jatteglad'), { ...D0(), rikt: 0.5 }], [AF('jatteglad'), tl < 0.3 ? AP('stolt', 'huka', tl / 0.3) : { ...AP('neutral', 'hurra', 0.6), rikt: 0.5 }]]],
@@ -123,7 +126,7 @@ function fram(E) {
   // apelsinen
   if (E >= 121.0 && E < 164.5) {
     let p = null;
-    if (E < 121.4) { const u = mjuk((E - 121.0) / 0.4); p = [lerp(KX + 60, ah.x, u), lerp(DACK - 75, ah.y, u) - 50 * Math.sin(Math.PI * u), 1]; }
+    if (E < 121.4) { const u = mjuk((E - 121.0) / 0.4); p = [lerp(KORG_APELSIN[0], ah.x, u), lerp(KORG_APELSIN[1], ah.y, u) - 50 * Math.sin(Math.PI * u), lerp(KORG_APELSIN[2], 1, u)]; }
     else if (E < 134.6) { const u = mjuk((E - 133.6) / 1.0); p = [lerp(ah.x, dh.x, u), lerp(ah.y, dh.y, u) - 70 * Math.sin(Math.PI * u), 1]; }
     else if (E < 138.0) p = [dh.x, dh.y, 1];
     else if (E < 138.6) { const u = (E - 138.0) / 0.6; p = [lerp(dh.x, 1000, u), lerp(dh.y, VY - 8, u * u) - 40 * Math.sin(Math.PI * u), 1]; }
@@ -141,9 +144,7 @@ function fram(E) {
   const o = apelsinPlats(E);
   if (o && E > 154.3 && E < 156.6) h += gnistor(o[0], o[1], 70, (E - 154.5) * 1.5, 4);
   if (E > 164.5 && E < 166.6) h += gnistor((ah.x + dh.x) / 2, (ah.y + dh.y) / 2 - 40, 200, E - 164.6);
-  // tåren (13d)
-  if (E > 147.1 && E < 151.9) { const u = ((E - 147.3) % 1.6) / 1.6, oga = punkt(g, B.fig.querySelector('.kropp'), 610, 450);
-    h += `<path d="M0 -14 Q9 0 0 9 Q-9 0 0 -14Z" transform="translate(${oga.x.toFixed(1)} ${(oga.y + 40 * u).toFixed(1)}) scale(1.4)" fill="#8fd3f4" stroke="#fff" stroke-width="2" opacity="${(1 - u).toFixed(2)}"/>`; }
+  // tårarna (13d) ritar riggen själv (GRAT)
   g.innerHTML = h;
   // ringar efter Agda när hon simmar
   let r = '';
@@ -164,7 +165,7 @@ function rita(t) {
   fram(E);
   $('korgen-apelsin').style.display = E < 121.0 ? '' : 'none';
   const [cx, cy, z] = skott(S, E).s[2]; kamera(cx, cy, z, E);
-  orangesvep((E - 118.6) / 1.6);
+  orangesvep(E < 140 ? (E - 118.6) / 1.6 : (E - 169.8) / 1.6);   // in från sjön, och ut till discot (klippet 170.6)
 }
 
 const EF = 'assets/ljud/effekter/';
@@ -173,6 +174,7 @@ function ljud() {
   ut.push({ t: 138.6, fil: EF + 'plask/plask-1.m4a', vol: 0.9 }, { t: 159.0, fil: EF + 'plask-stor/plask-stor-1.m4a', vol: 0.9 });
   ut.push({ t: 159.4, fil: EF + 'simma/simma-1.m4a', vol: 0.6, langd: 5, loop: true, fade: 0.5 });
   ut.push({ t: 154.5, fil: EF + 'tindra/tindra-4.m4a', vol: 0.7 }, { t: 164.6, fil: EF + 'tindra/tindra-3.m4a', vol: 0.8 });
+  ut.push({ t: 169.8, fil: EF + 'swoosh/swoosh-1.m4a', vol: 0.7 });   // kritsvepet till discot
   return ut.map(c => ({ ...c, t: c.t - E0 }));
 }
 
@@ -181,12 +183,15 @@ window.SANG = [E0 - SANG0, E1 - SANG0];
 window.seek = t => { window.stilla = true; rita(t); };
 window.render = window.seek;
 window.ready = (async () => {
-  // bryggan, frukterna (bakom korgen) och korgen
+  // bryggan, korgen, frukterna I korgen (bananen bakerst, äpplet, apelsinen främst) och korgens framsida (under kanten) över dem
+  const korg = klipp => `<g transform="translate(${KX - 512 * KS} ${KY}) scale(${KS})"><image href="${KORG}" width="1024" height="1024"${klipp}/></g>`;
   $('brygga').innerHTML = `<image href="${BRYGGA}" x="${JX}" y="${JY}" width="${1242 * JS}" height="${400 * JS}"/>
-    <image href="${APPLE}" x="${KX - 95}" y="${DACK - 160}" width="${729 * 0.11}" height="${836 * 0.11}"/>
-    <image href="${BANAN}" x="${KX - 40}" y="${DACK - 178}" width="${1659 * 0.075}" height="${1535 * 0.075}" transform="rotate(-12 ${KX + 20} ${DACK - 120})"/>
-    <g id="korgen-apelsin">${apelsinBild(KX + 60, DACK - 118, 1)}</g>
-    <image href="${KORG}" x="${KX - 512 * KS}" y="${KY}" width="${1024 * KS}" height="${1024 * KS}"/>`;
+    <clipPath id="korgfram"><path d="M0 1024 L0 492 Q512 632 1024 492 L1024 1024Z"/></clipPath>
+    ${korg('')}
+    <image href="${BANAN}" x="${KX + 8 - 1659 * 0.055 / 2}" y="${RIM - 34 - 1535 * 0.055 / 2}" width="${1659 * 0.055}" height="${1535 * 0.055}" transform="rotate(-20 ${KX + 8} ${RIM - 34})"/>
+    <image href="${APPLE}" x="${KX - 34 - 729 * 0.075 / 2}" y="${RIM - 20 - 836 * 0.075 / 2}" width="${729 * 0.075}" height="${836 * 0.075}"/>
+    <g id="korgen-apelsin">${apelsinBild(...KORG_APELSIN)}</g>
+    ${korg(' clip-path="url(#korgfram)"')}`;
   B = await batBygg($('batlager'));
   LA = await v2rigg('ankan-agda');
   A = { g: $('agda'), blinka: skapaBlinka(37) };
