@@ -162,8 +162,9 @@ function scen(t) {
   else if (t < T.gront) { pf = rop ? ansikte('pip', 'jatteglad', t, 'skrattar', 1) : L('pip').blanda('glad', 'forvanad', tittU); pp = pose('pip', 'upp', 0.8 * tittU, rop ? dans('pip', t, { hopp: 10, arm: 60 }) : {}); }
   else { pf = L('pip').blanda('neutral', t < T.hej + 2 ? 'skrattar' : 'glad', 1); pp = pose('pip', 'neutral', 1, vinka(T.hej + 0.25, 0.8)); }
   const narA = t > T.arta - 0.3 && t < T.bak;   // QA 26/11: i Lovas närbild håller grannarna armarna nere, annars sticker spetsarna in i kanten
+  const isarA = narA ? 140 * mjuk(del(T.arta - 0.3, T.arta + 0.4, t)) : 0;   // och glider lite isär medan kameran går in
   if (narA) pp = pose('pip', 'neutral', 1, { armar: [-20, -20] });
-  rita('pip', px, FOT, pf, pp, sKrymp);
+  rita('pip', px - isarA, FOT, pf, pp, sKrymp);
 
   // Gurra
   let gf, gp;
@@ -180,7 +181,7 @@ function scen(t) {
       gp = { ...gp, lyft: -110 * bump(T.grodanG - 0.1, T.grodanG + 0.45, t) }; } }   // Gurra på skivan: han blinkar
   else { gf = L('gurra').blanda('neutral', t < T.hej + 2.5 ? 'skrattar' : 'blinkar', t < T.hej + 2.5 ? 1 : bump(T.hej + 4, T.hej + 4.8, t)); gp = pose('gurra', 'neutral', 1, vinka(T.hej + 0.5, 2.1)); }
   if (narA) gp = pose('gurra', 'neutral', 1, { armar: [-20, -20] });
-  rita('gurra', gx, FOT, gf, gp, sKrymp);
+  rita('gurra', gx + isarA, FOT, gf, gp, sKrymp);
 
   // Lova: dansar i mitten fram till 16d; från klippet på T.bak sitter hon i traktorn längst bak, som sedan kör fram
   const TR_BAK = { x: 960, fot: 742, k: 0.3 }, TR_FRAM = { x: 960, fot: 1050, k: 0.78 };
