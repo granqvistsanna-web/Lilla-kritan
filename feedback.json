@@ -5325,36 +5325,6 @@
   "render": "2026-11-18 11:14 (utan 'den passar')",
   "fixedAt": 1795042066337
  },
- "wjxdwsw9v2mwlz0w82": {
-  "ep": "JP-julafton",
-  "time": "1:17",
-  "sec": 77,
-  "tags": [],
-  "note": "julgrans fot.",
-  "fixed": false,
-  "at": 1794997262882,
-  "render": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)"
- },
- "3drusfly81mwlz147k": {
-  "ep": "JP-julafton",
-  "time": "1:17",
-  "sec": 77,
-  "tags": [],
-  "note": "match VO better",
-  "fixed": false,
-  "at": 1794997273232,
-  "render": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)"
- },
- "txp93tgndlmwlz1k11": {
-  "ep": "JP-julafton",
-  "time": "1:42",
-  "sec": 102,
-  "tags": [],
-  "note": "leo instead of bear",
-  "fixed": false,
-  "at": 1794997293733,
-  "render": "2026-11-18 05:39 (ny bakgrund: Gula vardagsrummet)"
- },
  "01tn3qes0jmwlz3vo5": {
   "ep": "JP-hunden-snogubbe",
   "time": "0:38",
@@ -9925,5 +9895,135 @@
   "at": 1795641070847,
   "render": "2026-11-25 22:04 (QA-fynd 1–10 fixade)",
   "fixedAt": 1795643121619
+ },
+ "zru7qeceyxmwwkm9uv": {
+  "ep": "J02",
+  "time": "0:24",
+  "sec": 24,
+  "tags": [],
+  "note": "polish fire it looks like some edge animation touch the sock",
+  "fixed": false,
+  "at": 1795638194023,
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+ },
+ "zl5u9bccqfmwwkn2q9": {
+  "ep": "J02",
+  "time": "0:24",
+  "sec": 24,
+  "tags": [],
+  "note": "the julgran bottom green part looks clipped",
+  "fixed": false,
+  "at": 1795638231441,
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+ },
+ "jabu3vauaxmwwmkjzu": {
+  "ep": "djup-prov",
+  "time": "0:30",
+  "sec": 30,
+  "tags": [],
+  "note": "i like it keep dup",
+  "fixed": false,
+  "at": 1795641473082,
+  "render": "2026-11-25 22:11"
+ },
+ "c5cklrrpltmwwmvu4f": {
+  "ep": "057",
+  "time": "0:26",
+  "sec": 26,
+  "tags": [],
+  "note": "happy jump and happy expression",
+  "fixed": false,
+  "at": 1795641999423,
+  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))"
+ },
+ "4eohxt75bdmwwmw7x9": {
+  "ep": "057",
+  "time": "0:56",
+  "sec": 56,
+  "tags": [],
+  "note": "the sink tap still looks clipped at top",
+  "fixed": false,
+  "at": 1795642017309,
+  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))"
+ },
+ "4o8vgojuapmwwmwshw": {
+  "ep": "057",
+  "time": "2:03",
+  "sec": 123,
+  "tags": [],
+  "note": "nodding head",
+  "fixed": false,
+  "at": 1795642043972,
+  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))"
+ },
+ "23b8s7hbt9mwwmymsh": {
+  "ep": "053",
+  "time": "0:49",
+  "sec": 49,
+  "tags": [],
+  "note": "better animation of klossar fall of basket",
+  "fixed": false,
+  "at": 1795642129889,
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+ },
+ "nmo6zzpdedmwwmyz9l": {
+  "ep": "053",
+  "time": "0:58",
+  "sec": 58,
+  "tags": [],
+  "note": "arms flying in air on picking pu toy",
+  "fixed": false,
+  "at": 1795642146057,
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+ },
+ "1rpf778c2qmwwmzfkp": {
+  "ep": "053",
+  "time": "1:53",
+  "sec": 113,
+  "tags": [],
+  "note": "place kaktus closer to wall",
+  "fixed": false,
+  "at": 1795642167193,
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+ },
+ "okpbwk8akemwwmzq3f": {
+  "ep": "053",
+  "time": "2:01",
+  "sec": 121,
+  "tags": [],
+  "note": "and mae ckaktus bigger",
+  "fixed": false,
+  "at": 1795642180827,
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+ },
+ "zlo172drsgmwwn0fdl": {
+  "ep": "053",
+  "time": "2:55",
+  "sec": 175,
+  "tags": [],
+  "note": "green kloss might blend in to green wall. pehaps needs another color",
+  "fixed": false,
+  "at": 1795642213593,
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+ },
+ "r2zf4xf2gsmwwn2qp1": {
+  "ep": "052",
+  "time": "0:57",
+  "sec": 57,
+  "tags": [],
+  "note": "make zebra bigger",
+  "fixed": false,
+  "at": 1795642321573,
+  "render": "2026-11-25 22:31 (Halsduken högre upp under mulen (inte ett bälte), knuten åt sidan. Halvnära när andra strumpan saknas, strumpan i stöveln skimrar redan medan vi letar (kortare väntan), dörren stängs igen när kläderna ska på. Förhandsvisning (--snabb).)"
+ },
+ "m9pg1yww6jmwx6ei4g": {
+  "ep": "054",
+  "time": "0:50",
+  "sec": 50,
+  "tags": [],
+  "note": "less bubbles in the bathtub overall",
+  "fixed": false,
+  "at": 1795674783040,
+  "render": "2026-11-25 23:00 (Djup QA fixad: svart slut, hoppet över kanten, skuggan, ankan, borsten bakom pallen, närbilden, irisen)"
  }
 }
