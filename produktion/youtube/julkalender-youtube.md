@@ -140,7 +140,7 @@ pineforest winter NL by klankbeeld (freesound.org), CC BY 4.0
 
 ## Lucka 7 – 7 dec 05:00
 
-Fil: `07-hunden-ater-julmat/07-hunden-ater-julmat.mp4` (3:57), 036 Hunden äter julmat (bilderbok, hel video). Ersätter Lammet och julkulan, som flyttade till lucka 2 (2026-11-22). Miniatyr: saknas än (ingen `jul-07`-rad för hunden; raden `jul-07` i `verktyg/miniatyr.html` är lucka 2).
+Fil: `07-hunden-ater-julmat/07-hunden-ater-julmat.mp4` (3:57), 036 Hunden äter julmat (bilderbok, hel video). Ersätter Lammet och julkulan, som flyttade till lucka 2 (2026-11-22). Miniatyr: `07-hunden-ater-julmat/thumbnail/miniatyr-strimma.png` (raden `jul-07-julmat`; raden `jul-07` är lammet, lucka 2).
 YouTube: **inte uppladdad**
 
 ```
