@@ -10401,5 +10401,225 @@
   "at": 1795712282076,
   "render": "2026-11-26 13:09 (Punkt 5–8 rättade: kycklingen trillar och pickar i takt, ritintrot (hyttens öppning ritas på 'Vad kan det vara?', gung på tick-tack), utsnitten på gården, reaktioner på 'Åh nej!' och 'Vem kan hjälpa?', grönt på 'kör' i refräng 2, ingen tom vägbild, grodan hoppar ut, lampan syns i 'Vänta', glittret på jackan, discots närbild utan vingspetsar, prenumerera-kortet sist. --snabb.)",
   "fixedAt": 1795713589737
+ },
+ "kwv4ygtxv1mwxs5mky": {
+  "ep": "J03",
+  "time": "1:54",
+  "sec": 114,
+  "tags": [],
+  "note": "some abrbt motion i leo positon please make all movement seamless",
+  "fixed": false,
+  "at": 1795711320466,
+  "render": "2026-11-26 16:31 (Feedback 26/11: kranen vid 0:51 putsad (ritad i kod, jämn båge och vit kant), förhandsvisning (--snabb) med 3D-intro och 3D-outro)"
+ },
+ "xqijosbgnmmwxs5xxf": {
+  "ep": "J03",
+  "time": "2:07",
+  "sec": 127,
+  "tags": [],
+  "note": "hand drinking looks odd here wrong hand i think",
+  "fixed": false,
+  "at": 1795711335171,
+  "render": "2026-11-26 16:31 (Feedback 26/11: kranen vid 0:51 putsad (ritad i kod, jämn båge och vit kant), förhandsvisning (--snabb) med 3D-intro och 3D-outro)"
+ },
+ "qmhdoo6g1rmwxs897n": {
+  "ep": "052",
+  "time": "0:28",
+  "sec": 28,
+  "tags": [],
+  "note": "simplify clothes hanging on krok, they look odd",
+  "fixed": false,
+  "at": 1795711443107,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "td0gozi43tmwxs8jmw": {
+  "ep": "052",
+  "time": "0:35",
+  "sec": 35,
+  "tags": [],
+  "note": "move camera down a bit",
+  "fixed": false,
+  "at": 1795711456616,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "uwhgn99m79mwxs9og2": {
+  "ep": "052",
+  "time": "1:21",
+  "sec": 81,
+  "tags": [],
+  "note": "move camera down a bit",
+  "fixed": false,
+  "at": 1795711509506,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "omzno1cz79mwxsa764": {
+  "ep": "052",
+  "time": "2:09",
+  "sec": 129,
+  "tags": [],
+  "note": "remove ticking noise",
+  "fixed": false,
+  "at": 1795711533772,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "66a6rxu7f2mwxsb72q": {
+  "ep": "052",
+  "time": "3:04",
+  "sec": 184,
+  "tags": [],
+  "note": "remove du tycker om halsduken",
+  "fixed": false,
+  "at": 1795711580305,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "4ij5099ol3mwxsbliz": {
+  "ep": "052",
+  "time": "3:16",
+  "sec": 196,
+  "tags": [],
+  "note": "improve jacket on zebra, more shoulder section",
+  "fixed": false,
+  "at": 1795711599035,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "fnipq8641bmwxsc5of": {
+  "ep": "052",
+  "time": "3:32",
+  "sec": 212,
+  "tags": [],
+  "note": "improve stövlar på fötter, look at bunny getting dressed pulka vide",
+  "fixed": false,
+  "at": 1795711625151,
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+ },
+ "12nm5i3hpamwxsdmjz": {
+  "ep": "053",
+  "time": "2:19",
+  "sec": 139,
+  "tags": [],
+  "note": "calpping",
+  "fixed": false,
+  "at": 1795711693679,
+  "render": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)"
+ },
+ "gbyp0jioyrmwxsdyyi": {
+  "ep": "053",
+  "time": "2:32",
+  "sec": 152,
+  "tags": [],
+  "note": "happy jump",
+  "fixed": false,
+  "at": 1795711709754,
+  "render": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)"
+ },
+ "6ip8979d6ymwxsgk20": {
+  "ep": "006-v2",
+  "time": "0:35",
+  "sec": 35,
+  "tags": [],
+  "note": "remove motion lines when waving",
+  "fixed": false,
+  "at": 1795711830408,
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+ },
+ "u3t92inflzmwxsho9v": {
+  "ep": "006-v2",
+  "time": "1:21",
+  "sec": 81,
+  "tags": [],
+  "note": "show fish more clear",
+  "fixed": false,
+  "at": 1795711882531,
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+ },
+ "lhf7qd6etvmwxsi6sj": {
+  "ep": "006-v2",
+  "time": "1:37",
+  "sec": 97,
+  "tags": [],
+  "note": "more expressions from dino",
+  "fixed": false,
+  "at": 1795711906531,
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+ },
+ "et2l7wqlnamwxsj4u9": {
+  "ep": "006-v2",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "need deep polish and look for how to improve better flow in animations",
+  "fixed": false,
+  "at": 1795711950657,
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+ },
+ "vbflgg85rbmwxsk3et": {
+  "ep": "006-v2",
+  "time": "3:03",
+  "sec": 183,
+  "tags": [],
+  "note": "add the dance sticker in the upper corner like red song",
+  "fixed": false,
+  "at": 1795711995461,
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+ },
+ "ebkfma6qcpmwxskm8z": {
+  "ep": "006-v2",
+  "time": "3:30",
+  "sec": 210,
+  "tags": [],
+  "note": "less shine on disco ball",
+  "fixed": false,
+  "at": 1795712019875,
+  "render": "2026-11-26 16:20 (Förhandsvisning, fixar 26/11: båtteckningen får relingens kant, aktern och motorn; helbilden högre; solen utan vit ring; refrängen utan hoppklipp; armarna syns hela tiden (riggens vink))"
+ },
+ "qnrvog246pmwxt2flr": {
+  "ep": "014",
+  "time": "0:12",
+  "sec": 12,
+  "tags": [],
+  "note": "much better drawing , must look like tractor",
+  "fixed": false,
+  "at": 1795712851071,
+  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)"
+ },
+ "d8atk7kjxbmwxt2ptk": {
+  "ep": "014",
+  "time": "0:42",
+  "sec": 42,
+  "tags": [],
+  "note": "close jacket",
+  "fixed": false,
+  "at": 1795712864312,
+  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)"
+ },
+ "dp0eqbx4i9mwxt369d": {
+  "ep": "014",
+  "time": "0:49",
+  "sec": 49,
+  "tags": [],
+  "note": "more clear spouts and more growing",
+  "fixed": false,
+  "at": 1795712885617,
+  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)"
+ },
+ "t2inbhaithmwxt6tjz": {
+  "ep": "049",
+  "time": "1:49",
+  "sec": 109,
+  "tags": [],
+  "note": "lower music",
+  "fixed": false,
+  "at": 1795713055775,
+  "render": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))"
+ },
+ "yu38r7bjy6mwxt72iw": {
+  "ep": "049",
+  "time": "2:15",
+  "sec": 135,
+  "tags": [],
+  "note": "ops malin co is clipped in the middle of gapa",
+  "fixed": false,
+  "at": 1795713067400,
+  "render": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))"
  }
 }
