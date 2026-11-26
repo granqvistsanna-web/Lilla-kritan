@@ -114,7 +114,7 @@ const K_SKAGG = () => K_NARA_ANS();   // samma närbild som före och efter skä
 // (598, 84 i bilden) är där strålen börjar.
 // kranens hals 40 enheter högre än 023:s, så att strålen syns lång och tydlig ovanför tassen (Sanna 2026-11-25: "improve water flow")
 const KRAN_D = 'M698 168 L698 32 C698 -10 672 -26 646 -26 C619 -26 600 -9 600 18 L600 32';
-const KRANBILD = `<rect x="668" y="158" width="62" height="20" rx="9" fill="#a9b4ba"/>
+const KRANBILD = `<rect x="570" y="-90" width="180" height="1" fill="none"/><rect x="668" y="158" width="62" height="20" rx="9" fill="#a9b4ba"/>
   <path d="${KRAN_D}" fill="none" stroke="#8d989e" stroke-width="36" stroke-linecap="round"/>
   <path d="${KRAN_D}" fill="none" stroke="#c8d1d6" stroke-width="28" stroke-linecap="round"/>
   <g filter="url(#vax)"><path d="${KRAN_D}" fill="none" stroke="#dde4e8" stroke-width="22" stroke-linecap="round"/></g>
@@ -238,10 +238,11 @@ function spar(t, glans = -1) {
 
 // --- Katten ----------------------------------------------------------------------------------------------------------------
 const SMUTSIG = { l: 1, r: 1, ora: 1 }, ORA = { l: 0, r: 0, ora: 1 }, REN = { l: 0, r: 0, ora: 0 };
-function katt([x, fot], f, p, { farg = SMUTSIG, bakom = false, armR = null } = {}) {
+function katt([x, fot], f, p, { farg = SMUTSIG, bakom = false, armR = null, lyft = 0 } = {}) {
   $('figurer').appendChild(G);
-  G.setAttribute('transform', `translate(${f1(x)} ${f1(fot)}) scale(${GS}) translate(-512 ${-L.FOTTER})`);
+  G.setAttribute('transform', `translate(${f1(x)} ${f1(fot - lyft)}) scale(${GS}) translate(-512 ${-L.FOTTER})`);
   L.rita(G, f, p);
+  if (lyft) G.querySelectorAll('.skugga').forEach(e => e.setAttribute('transform', `translate(0 ${f1(lyft / GS)}) ` + (e.getAttribute('transform') || '')));   // skuggan kvar på golvet
   // armR [dx, dy]: flyttar bara högra armens axel (riggens armY flyttar båda), så att tassen når upp till örat bakom huvudet
   if (armR) G.querySelectorAll('.arm-r').forEach(e => e.setAttribute('transform', `translate(${f1(armR[0])} ${f1(armR[1])}) ` + (e.getAttribute('transform') || '')));
   ['l', 'r'].forEach(n => { const syns = [...G.querySelectorAll('.arm-' + n)].find(e => e.getAttribute('opacity') === '1'), h = G.querySelector('.farg-' + n);
@@ -255,7 +256,7 @@ const tassMitt = () => { const a = iScen('.farg-l'), b = iScen('.farg-r'); retur
 const P = o => ({ ...L.POSE0, ...o });
 const GLADA = ['glad', 'jatteglad', 'fnissig', 'stolt'];
 const F = (n, o = {}) => n === 'stolt' ? { ...L.blanda('jatteglad', 'stolt', 0.45), glad: [0, 0], ...o }   // riggens stolt har sura bryn: blandas med jätteglad (kontroll mot regler 25/11)
-  : ({ ...L.blanda('neutral', n, 1), ...(GLADA.includes(n) ? { glad: [0, 0] } : {}), ...o });   // glada ögon öppna
+  : ({ ...L.blanda('neutral', n, 1), ...(GLADA.includes(n) ? { glad: [0, 0] } : {}), ...(n === 'jatteglad' ? { mun: [32, 28, 1, 452] } : {}), ...o });   // glada ögon öppna; jätteglad med stor mun, annars syns glädjen inte (Sanna 2026-11-26)
 const FB = (a, b, t0, tl, oa = {}, ob = oa, d = 0.3) => L.blanda(F(a, oa), F(b, ob), del(t0, t0 + d, tl));   // uttrycket a → b mjukt från t0
 const UPP = (k = 1) => [-12 * k, -12 * k];   // öronen upp: glad, förvånad, stolt
 const A20 = (o = {}) => P({ armar: [20, 0], ...o });   // högra armen lite lägre: tassen under pipen med ett mellanrum
@@ -328,8 +329,10 @@ const S = {
   '1': (tl, d) => { const g = kl(tl / 2.4), [fw, pw] = L.ROR.ga(0.25 + 1.5 * g), stopp = del(2.1, 2.6, tl), v = del(2.3, 2.8, tl) - del(d - 0.9, d - 0.3, tl);
     return RUM({ pos: [GANG(tl), GOLV], vitIn: 1 - del(0, 0.4, tl), f: L.blanda({ ...fw, titt: [8, 0] }, F('jatteglad'), stopp), p: L.blandaPose({ ...pw, x: 0, rikt: 0.6 }, vink(tl, v), stopp) }); },
   // tittar på oss, svansen vippar; glatt mjau i pausen, öronen upp
-  '1b': (tl, d) => { const sv = 0.8 + LN(5), up = del(sv, sv + 0.3, tl) * (1 - del(sv + 1.4, sv + 1.8, tl));
-    return RUM({ kam: tl > sv - 0.1 ? K_NARA_STA() : K_HALV_STA(), f: FB('nyfiken', 'jatteglad', sv - 0.1, tl), p: P({ svans: vipp(tl, 0.2) + vipp(tl, sv), oron: [-10 * up, -10 * up] }) }); },
+  // svarar med ett glatt litet hopp på stället (Sanna 2026-11-26: "happy jump and happy expression"): lugnt, ingen vändning
+  '1b': (tl, d) => { const sv = 0.8 + LN(5), up = del(sv, sv + 0.3, tl) * (1 - del(sv + 1.4, sv + 1.8, tl)), hp = sv + 0.15;
+    return RUM({ kam: tl > sv - 0.1 ? K_NARA_STA() : K_HALV_STA(), f: FB('nyfiken', 'jatteglad', sv - 0.25, tl), lyft: 40 * Math.sin(Math.PI * kl((tl - hp) / 0.5)),
+      p: skutt(P({ svans: vipp(tl, 0.2) + vipp(tl, sv), oron: [-10 * up, -10 * up] }), tl, hp, 40, 0.5) }); },
   // håller upp tassarna: röd, gul; tassen lyser till på färgordet
   '2': (tl, d) => ({ ...RUM({ kam: K_NARA_STA(), f: F('stolt'), p: P({ armar: [40 * del(0.1, 0.6, tl), 40 * del(0.1, 0.6, tl)], oron: UPP(del(0.3, 0.7, tl)), svans: vipp(tl, 0.6, 2.4) }) }),
     lys: [0.9 * bump(0.4 + FARG[7][0] - 0.1, 0.4 + FARG[7][0] + 1.1, tl), 0.9 * bump(0.4 + FARG[7][1] - 0.1, 0.4 + FARG[7][1] + 1.1, tl)] }),
@@ -390,7 +393,8 @@ const S = {
     return BAD({ kam: K_SKAGG(), f: FB('forvanad', 'fnissig', fn, tl, { titt: [0, 12 * (1 - del(upp, upp + 0.3, tl))] }), p: gnugg(tl, 0.35 * (1 - del(upp - 0.3, upp, tl)), { oron: UPP(del(upp, upp + 0.3, tl)) }), tvalTass: 1, skum: 1, tusser: 1, skagg: sk, kran: 1 }); },
   // tittar upp med skägget kvar; tvålen läggs tillbaka på läppen
   '14b': (tl, d) => { const t = del(0.1, 0.7, tl), pf = 0.3 + LN(25) + 0.1;
-    return BAD({ kam: K_NARA_ANS(), f: F('jatteglad'), p: L.blandaPose(klapp(1.12), A20(), t), tvalTass: 1, tvalTillbaka: t, skum: 1, tusser: 1, skagg: 2 + del(pf, pf + 0.9, tl), kran: 1, armR: [-45 * t, 0] }); },   // högra tassen åt sidan, inte in i strålen
+    const [f, p] = nick(F('jatteglad'), L.blandaPose(klapp(1.12), A20(), t), tl - (pf - 0.05));   // nickar ja (Sanna 2026-11-26: "nodding head")
+    return BAD({ kam: K_NARA_ANS(), f, p, tvalTass: 1, tvalTillbaka: t, skum: 1, tusser: 1, skagg: 2 + del(pf - 0.7, pf + 0.1, tl), kran: 1, armR: [-45 * t, 0] }); },   // högra tassen åt sidan, inte in i strålen
   // röda tassen: skummet blir rosa-rött, färgen borta på "borta!"
   '15': (tl, d) => { const b = 0.6 + BORTA[26], tk = del(0.6, 2.2, tl) * (1 - del(b, b + 0.8, tl));
     const re = tl > 0.6 + LN(26) + 0.1;   // reaktionsslaget efter repliken: närbild på ansiktet, glad, öronen upp
@@ -502,7 +506,7 @@ function ritaBad(st, t) {
   const pos = st.pos;
   const f = { ...st.f, glad: st.f.glad.map(g => g > 0.5 ? 1 : 0) };   // glada slutna ögon ↔ öppna byts direkt, aldrig halvslutna
   const fb = st.tl < 0.45 ? f : BLINKA(f, t), sl = fb.lock.some(l => l > 0.5), ff = { ...fb, lock: fb.lock.map(l => l < 0.15 ? l : 0), glad: sl ? [1, 1] : fb.glad };   // blinkningen: öppet → slutna bågar direkt (halva locket ser surt ut, helt lock tar bort ögonen)
-  katt(pos, ff, liv(st.p, t), { farg: st.farg, bakom: st.bakom, armR: st.armR });   // ingen blinkning medan uttrycket blandas in
+  katt(pos, ff, liv(st.p, t), { farg: st.farg, bakom: st.bakom, armR: st.armR, lyft: st.lyft || 0 });   // ingen blinkning medan uttrycket blandas in
   // tvålen: kritan ritar konturen (9–10), på läppen, i tassarna (13–14), tillbaka (14b)
   if (st.tvalRit) {
     const k = ritfart((t - T_TV.rit[0]) / (T_TV.rit[1] - T_TV.rit[0])), f = st.tvalFyll || 0;
@@ -544,7 +548,7 @@ function ritaBad(st, t) {
     if (sk < 1) { const [x0, y0] = tassMitt(), [x1, y1] = iFig(VID, [512, 560]), u = mjuk(sk);
       lagg('fram', tuss(lerp(x0, x1, u), lerp(y0 - 20, y1, u) - 25 * Math.sin(Math.PI * u), 22)); }
     else lagg('fram', SKAGG.map(([fx, fy, r, o], i) => { const v = del(o, o + 0.35, sk - 1) * (1 - del(i / SKAGG.length * 0.7, i / SKAGG.length * 0.7 + 0.3, sk - 2));
-      const [x, y] = iFig(VID, [fx, fy]); return v > 0.01 ? tuss(x, y + 1.5 * Math.sin(TT * 2 + i), r * v) : ''; }).join('')); }
+      const [x, y] = iFig(VID, [fx, fy]); return v > (sk > 2 ? 0.25 : 0.01) ? tuss(x, y + 1.5 * Math.sin(TT * 2 + i), r * v) : ''; }).join('')); }   // på väg bort: ingen tuss krymper till en prick
   if (st.skrubb) { const [n, ton, k, tl] = st.skrubb, [x, y] = iScen('.farg-' + n); skrubb([x + (n === 'l' ? -4 : 4), y + 12], 12, tl, ton, k, true); }
   if (st.oraSkrubb) { const [k, tl] = st.oraSkrubb, [x, y] = iScen('.farg-ora'); skrubb([x, y - 4], 16, tl, SKUMTON.bla, k); }
   if (st.borta) { const [n, b, tl] = st.borta, [x, y] = iScen('.farg-' + n); skimmer(x, y, 0.8 * bump(b - 0.05, b + 1.0, tl), n === 'ora' ? 0.5 : 0.55); }
