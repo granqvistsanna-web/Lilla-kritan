@@ -80,7 +80,7 @@ export const RADER = [
   { id: 'J2', d: 1.2 + L(49) + 1.6, malin: [[49, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(49) - 0.8], ['tindra/tindra-2', 1.2 + PA(49) + 0.1], [Z('mysig-suck'), 1.2 + L(49) + 0.3]], bild: 'jackan glider från knoppen in på kroppen, ärmarna kommer, mysig närbild' },
   { id: 'S1', d: 0.3 + L(50) + HJALP, malin: [[50, 0.3]], ljud: [[Z('nyfiken', 'b'), 0.6 + L(50)], ['lysmask/lysmask-1', 0.3 + L(50) + 1.2]], bild: 'zebran tittar på hovarna, klipp till stövlarna vid dörren som skimrar: barnet svarar' },
   { id: 'S2', d: 0.3 + L(51) + SVAR, malin: [[51, 0.3]], ljud: [[Z('fortjust'), 0.5 + L(51)]], bild: 'halvnära, zebran nickar och skuttar' },
-  { id: 'S3', d: 1.4 + L(52) + 1.6, malin: [[52, 1.4]], ljud: [['swoosh/swoosh-1', 1.2], ['landa-mjuk/landa-mjuk-1', 1.4 + PA(52)], ['tindra/tindra-3', 1.4 + PA(52) + 0.15], [Z('langt-fniss'), 1.4 + L(52) + 0.3]], bild: 'stövlarna hoppar från dörren till hovarna, glad närbild på benen' },
+  { id: 'S3', d: 1.4 + L(52) + 1.6, malin: [[52, 1.4]], ljud: [['swoosh/swoosh-1', 1.2], ['landa-mjuk/landa-mjuk-1', 1.4 + PA(52)], ['tindra/tindra-3', 1.4 + PA(52) + 0.15], [Z('fniss'), 1.4 + PA(52) + 1.3]], bild: 'stövlarna hoppar från dörren till hovarna, glad närbild på benen' },
 
   // --- Färdig, hej då ---
   { id: '25', d: 0.6 + L(53) + 0.3 + L(42) + 1.0, malin: [[53, 0.6], [42, 0.6 + L(53) + 0.3]], ljud: [0.05, 0.25, 0.45, 0.62, 0.9].map((k, i) => [`glimt/glimt-${1 + i % 2}`, 0.6 + L(53) * k]).concat([[Z('fortjust', 'b'), 1.2 + L(53) + 0.3 + L(42)]]),
