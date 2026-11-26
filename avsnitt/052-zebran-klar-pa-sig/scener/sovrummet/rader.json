@@ -260,6 +260,78 @@
    "bild": "närbild, öronen faller, lite ledsen"
   },
   {
+   "id": "22a",
+   "d": 6.75,
+   "malin": [
+    [
+     37,
+     0.3
+    ]
+   ],
+   "bild": "bred bild mot dörren, stövlarna och pallen"
+  },
+  {
+   "id": "22b",
+   "d": 1.6,
+   "ljud": [
+    [
+     "lysmask/lysmask-1",
+     0.2
+    ]
+   ],
+   "bild": "närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: \"find sock earlier when they are looking\")"
+  },
+  {
+   "id": "23",
+   "d": 3.84,
+   "malin": [
+    [
+     38,
+     0.5
+    ]
+   ],
+   "ljud": [
+    [
+     "tindra/tindra-1",
+     0.5
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-fortjust",
+     2.74
+    ]
+   ],
+   "bild": "strumpan i stöveln skimrar tydligt, zebran skuttar"
+  },
+  {
+   "id": "24",
+   "d": 8.82,
+   "malin": [
+    [
+     39,
+     1.6
+    ],
+    [
+     40,
+     6.170000000000001
+    ]
+   ],
+   "ljud": [
+    [
+     "strumpa/strumpa-2",
+     3.2700000000000005
+    ],
+    [
+     "tindra/tindra-3",
+     3.6700000000000004
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-mysig-suck-c",
+     4.57
+    ]
+   ],
+   "bild": "kudden lutar, strumpan glider fram och på hoven"
+  },
+  {
    "id": "10",
    "d": 5.06,
    "malin": [
@@ -527,126 +599,154 @@
    "bild": "närbild, gosar in mulen i halsduken"
   },
   {
-   "id": "21",
-   "d": 7.16,
+   "id": "J1",
+   "d": 3.42,
    "malin": [
     [
-     36,
+     48,
      0.8
     ]
    ],
    "ljud": [
     [
-     "gnagg-mjuk/gnagg-mjuk-nyfiken",
-     5.86
+     "glimt/glimt-1",
+     0.4
     ]
    ],
-   "bild": "tittar på foten, åt vänster och höger"
+   "bild": "närbild jackan på andra knoppen, den glimtar"
   },
   {
-   "id": "22a",
-   "d": 6.75,
+   "id": "J2",
+   "d": 5.26,
    "malin": [
     [
-     37,
+     49,
+     1.2
+    ]
+   ],
+   "ljud": [
+    [
+     "prassel-tyg/prassel-tyg-1",
+     1.95
+    ],
+    [
+     "tindra/tindra-2",
+     2.85
+    ],
+    [
+     "gnagg-mjuk/gnagg-mjuk-mysig-suck",
+     3.66
+    ]
+   ],
+   "bild": "jackan glider från knoppen in på kroppen, ärmarna kommer, mysig närbild"
+  },
+  {
+   "id": "S1",
+   "d": 7.6,
+   "malin": [
+    [
+     50,
      0.3
     ]
    ],
-   "bild": "bred bild mot dörren, stövlarna och pallen"
-  },
-  {
-   "id": "22b",
-   "d": 1.6,
    "ljud": [
+    [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken-b",
+     2.6
+    ],
     [
      "lysmask/lysmask-1",
-     0.2
+     3.5
     ]
    ],
-   "bild": "närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: \"find sock earlier when they are looking\")"
+   "bild": "zebran tittar på hovarna, klipp till stövlarna vid dörren som skimrar: barnet svarar"
   },
   {
-   "id": "23",
-   "d": 3.84,
+   "id": "S2",
+   "d": 4.12,
    "malin": [
     [
-     38,
-     0.5
+     51,
+     0.3
     ]
    ],
    "ljud": [
-    [
-     "tindra/tindra-1",
-     0.5
-    ],
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust",
-     2.74
+     3.02
     ]
    ],
-   "bild": "strumpan i stöveln skimrar tydligt, zebran skuttar"
+   "bild": "halvnära, zebran nickar och skuttar"
   },
   {
-   "id": "24",
-   "d": 8.82,
+   "id": "S3",
+   "d": 5.5,
    "malin": [
     [
-     39,
-     1.6
-    ],
-    [
-     40,
-     6.170000000000001
+     52,
+     1.4
     ]
    ],
    "ljud": [
     [
-     "strumpa/strumpa-2",
-     3.2700000000000005
+     "swoosh/swoosh-1",
+     1.2
+    ],
+    [
+     "landa-mjuk/landa-mjuk-1",
+     2.83
     ],
     [
      "tindra/tindra-3",
-     3.6700000000000004
+     2.98
     ],
     [
-     "gnagg-mjuk/gnagg-mjuk-mysig-suck-c",
-     4.57
+     "gnagg-mjuk/gnagg-mjuk-langt-fniss",
+     3.9
     ]
    ],
-   "bild": "kudden lutar, strumpan glider fram och på hoven"
+   "bild": "stövlarna hoppar från dörren till hovarna, glad närbild på benen"
   },
   {
    "id": "25",
-   "d": 6.18,
+   "d": 7.76,
    "malin": [
     [
-     41,
+     53,
      0.6
     ],
     [
      42,
-     3.48
+     5.06
     ]
    ],
    "ljud": [
     [
      "glimt/glimt-1",
-     0.8
+     0.808
     ],
     [
      "glimt/glimt-2",
-     1.7610000000000001
+     1.6400000000000001
     ],
     [
      "glimt/glimt-1",
-     2.7800000000000002
+     2.472
+    ],
+    [
+     "glimt/glimt-2",
+     3.1792000000000002
+    ],
+    [
+     "glimt/glimt-1",
+     4.344
     ],
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust-b",
-     5.48
+     7.0600000000000005
     ]
    ],
-   "bild": "halvbild, allt på, plaggen glimtar på färgerna, stolt"
+   "bild": "halvbild, allt på, varje plagg glimtar när det nämns, stolt"
   },
   {
    "id": "26",
@@ -952,13 +1052,45 @@
    "47-hej-da-ses-snart",
    1.96,
    "Hej då! Vi ses snart!"
+  ],
+  [
+   "48-dar-ar-jackan",
+   1.52,
+   "Och där är jackan!"
+  ],
+  [
+   "49-grona-jackan-pa",
+   2.16,
+   "Den gröna jackan … på!"
+  ],
+  [
+   "50-pa-fotterna",
+   2,
+   "Vad ska zebran ha på fötterna?"
+  ],
+  [
+   "51-ja-stovlarna",
+   2.52,
+   "Ja, stövlarna! Såklart!"
+  ],
+  [
+   "52-gula-stovlarna-pa",
+   2.2,
+   "De gula stövlarna … på fötterna!"
+  ],
+  [
+   "53-alla-kladerna",
+   4.16,
+   "Strumpor, mössa, halsduk, jacka … och stövlar!"
   ]
  ],
  "PA": {
   "11": 1.99,
   "30": 1.86,
   "33": 1.97,
-  "39": 1.97
+  "39": 1.97,
+  "49": 1.55,
+  "52": 1.43
  },
  "UPPSKATTAD": []
 }

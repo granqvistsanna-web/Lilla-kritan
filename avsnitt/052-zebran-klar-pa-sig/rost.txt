@@ -45,3 +45,9 @@
 45-hej-da-zebran            [warmly] Hej då, zebran! Hej då, mössan!
 46-roligt-i-snon            [warmly] Ha det så roligt i snön!
 47-hej-da-ses-snart         [warmly] Hej då! Vi ses snart!
+48-dar-ar-jackan            [happy] Och där är jackan!
+49-grona-jackan-pa          [happy] Den gröna jackan … på!
+50-pa-fotterna              [curious] Vad ska zebran ha på fötterna?
+51-ja-stovlarna             [happy] Ja, stövlarna! Såklart!
+52-gula-stovlarna-pa        [happy] De gula stövlarna … på fötterna!
+53-alla-kladerna            [happy] Strumpor, mössa, halsduk, jacka … och stövlar!

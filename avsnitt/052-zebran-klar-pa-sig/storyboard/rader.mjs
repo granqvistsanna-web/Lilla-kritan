@@ -16,7 +16,9 @@ const langd = (namn, text) => existsSync(ROSTER + namn + '.m4a')
   : (UPPSKATTAD.push(namn), gissa(text));
 export const ROST = rader.map(([namn, text]) => [namn, text, langd(namn, text)]);
 const L = n => ROST[n - 1][2];
-const PA = n => ({ 11: 1.99, 30: 1.86, 33: 1.97, 39: 1.97 })[n];   // "på foten / på huvudet / runt halsen" börjar här i tagning 2 (tystnaden efter "…" slutar, mätt 2026-11-25)
+const PA_MATT = { 11: 1.99, 30: 1.86, 33: 1.97, 39: 1.97, 49: 1.55, 52: 1.43 };   // 49, 52: tagning 4 (2026-11-26)
+// nya repliker (49, 52) innan de mätts: uppskattat ur texten fram till "…"
+const PA = n => PA_MATT[n] ?? +(0.35 + ROST[n - 1][1].split('…')[0].length / 14 + 0.4).toFixed(2);   // "på foten / på huvudet / runt halsen" börjar här i tagning 2 (tystnaden efter "…" slutar, mätt 2026-11-25)
 
 // Zebrans röst: gnagg-mjuk (027, Sannas mjukare tagningar), hej/hej då på svenska ur gnagg-gullig, nej ur gnagg-nej.
 const Z = (k, b = '') => `gnagg-mjuk/gnagg-mjuk-${k}${b ? '-' + b : ''}`;
@@ -44,6 +46,13 @@ export const RADER = [
   { id: '8', d: 0.3 + L(15) + 1.2 + L(16) + 0.8, malin: [[15, 0.3], [16, 0.3 + L(15) + 1.2]], ljud: [[Z('nej'), 0.5 + L(15) + 1.2 + L(16)]], bild: 'närbild i korgen: tom' },
   { id: '9', d: 1.6 + L(17) + SVAR + L(18) + 0.8, malin: [[17, 1.6], [18, 1.6 + L(17) + SVAR]], ljud: [[Z('trumpen'), 1.7 + L(17)]], bild: 'närbild, öronen faller, lite ledsen' },
 
+  // --- Barnet hittar strumpan direkt (Sanna 2026-11-25: "put on sock first and find it too not at the end") ---
+  { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild mot dörren, stövlarna och pallen' },
+  { id: '22b', d: 1.6, ljud: [['lysmask/lysmask-1', 0.2]], bild: 'närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: "find sock earlier when they are looking")' },
+  { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'strumpan i stöveln skimrar tydligt, zebran skuttar' },
+  { id: '24', d: 1.6 + L(39) + SVAR + 0.7 + L(40) + 0.8, malin: [[39, 1.6], [40, 1.6 + L(39) + SVAR + 0.7]], ljud: [['strumpa/strumpa-2', 1.6 + PA(39) - 0.3], ['tindra/tindra-3', 1.6 + PA(39) + 0.1], [Z('mysig-suck', 'c'), 1.7 + L(39)]],
+    bild: 'kudden lutar, strumpan glider fram och på hoven' },
+
   // --- Kritan ritar mössan, för liten, för stor, lagom ---
   { id: '10', d: 0.3 + L(19) + 0.5, malin: [[19, 0.3]], ljud: [['swoosh/swoosh-1', 0.1]], bild: 'halvnära, kritan flyger in' },
   { id: '11', d: 0.3 + L(20) + 3.0 + 3.0 + L(21) + 0.6, malin: [[20, 0.3], [21, 0.3 + L(20) + 6.0]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(20)], ['glitter/glitter-2', 0.3 + L(20) + 6.0], [Z('fortjust'), 0.5 + L(20) + 6.0 + L(21)]],
@@ -66,17 +75,16 @@ export const RADER = [
   { id: '19', d: 1.2 + L(33) + 1.4, malin: [[33, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(33) - 0.8], ['tindra/tindra-2', 1.2 + PA(33) + 0.2], [Z('fortjust'), 1.2 + L(33) + 0.2]], bild: 'halsduken glider från kroken runt halsen, glad närbild' },
   { id: '20', d: 0.5 + L(34) + SVAR + L(35) + 0.7, malin: [[34, 0.5], [35, 0.5 + L(34) + SVAR]], ljud: [[Z('mysig-suck'), 0.6 + L(34)]], bild: 'närbild, gosar in mulen i halsduken' },
 
-  // --- Var är strumpan? Barnet hittar den ---
-  { id: '21', d: 0.8 + L(36) + 1.2, malin: [[36, 0.8]], ljud: [[Z('nyfiken'), 1.0 + L(36)]], bild: 'tittar på foten, åt vänster och höger' },
-  { id: '22a', d: 0.3 + L(37) + 2.0, malin: [[37, 0.3]], bild: 'bred bild mot dörren, stövlarna och pallen' },
-  { id: '22b', d: 1.6, ljud: [['lysmask/lysmask-1', 0.2]], bild: 'närbild stöveln, strumpan skimrar direkt (Sanna 2026-11-25: "find sock earlier when they are looking")' },
-  { id: '23', d: 0.5 + L(38) + 1.0, malin: [[38, 0.5]], ljud: [['tindra/tindra-1', 0.5], [Z('fortjust'), 0.7 + L(38)]], bild: 'strumpan i stöveln skimrar tydligt, zebran skuttar' },
-  { id: '24', d: 1.6 + L(39) + SVAR + 0.7 + L(40) + 0.8, malin: [[39, 1.6], [40, 1.6 + L(39) + SVAR + 0.7]], ljud: [['strumpa/strumpa-2', 1.6 + PA(39) - 0.3], ['tindra/tindra-3', 1.6 + PA(39) + 0.1], [Z('mysig-suck', 'c'), 1.7 + L(39)]],
-    bild: 'kudden lutar, strumpan glider fram och på hoven' },
+  // --- Jackan (grön, ritad i kod som strumporna) och stövlarna (Sanna 2026-11-25: "zebra need shoes and jacket too") ---
+  { id: 'J1', d: 0.8 + L(48) + 0.8, malin: [[48, 0.8]], ljud: [['glimt/glimt-1', 0.4]], bild: 'närbild jackan på andra knoppen, den glimtar' },
+  { id: 'J2', d: 1.2 + L(49) + 1.6, malin: [[49, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(49) - 0.8], ['tindra/tindra-2', 1.2 + PA(49) + 0.1], [Z('mysig-suck'), 1.2 + L(49) + 0.3]], bild: 'jackan glider från knoppen in på kroppen, ärmarna kommer, mysig närbild' },
+  { id: 'S1', d: 0.3 + L(50) + HJALP, malin: [[50, 0.3]], ljud: [[Z('nyfiken', 'b'), 0.6 + L(50)], ['lysmask/lysmask-1', 0.3 + L(50) + 1.2]], bild: 'zebran tittar på hovarna, klipp till stövlarna vid dörren som skimrar: barnet svarar' },
+  { id: 'S2', d: 0.3 + L(51) + SVAR, malin: [[51, 0.3]], ljud: [[Z('fortjust'), 0.5 + L(51)]], bild: 'halvnära, zebran nickar och skuttar' },
+  { id: 'S3', d: 1.4 + L(52) + 1.6, malin: [[52, 1.4]], ljud: [['swoosh/swoosh-1', 1.2], ['landa-mjuk/landa-mjuk-1', 1.4 + PA(52)], ['tindra/tindra-3', 1.4 + PA(52) + 0.15], [Z('langt-fniss'), 1.4 + L(52) + 0.3]], bild: 'stövlarna hoppar från dörren till hovarna, glad närbild på benen' },
 
   // --- Färdig, hej då ---
-  { id: '25', d: 0.6 + L(41) + 0.3 + L(42) + 1.0, malin: [[41, 0.6], [42, 0.6 + L(41) + 0.3]], ljud: [['glimt/glimt-1', 0.6 + 0.2], ['glimt/glimt-2', 0.6 + L(41) * 0.45], ['glimt/glimt-1', 0.6 + L(41) - 0.4], [Z('fortjust', 'b'), 1.2 + L(41) + 0.3 + L(42)]],
-    bild: 'halvbild, allt på, plaggen glimtar på färgerna, stolt' },
+  { id: '25', d: 0.6 + L(53) + 0.3 + L(42) + 1.0, malin: [[53, 0.6], [42, 0.6 + L(53) + 0.3]], ljud: [0.05, 0.25, 0.45, 0.62, 0.9].map((k, i) => [`glimt/glimt-${1 + i % 2}`, 0.6 + L(53) * k]).concat([[Z('fortjust', 'b'), 1.2 + L(53) + 0.3 + L(42)]]),
+    bild: 'halvbild, allt på, varje plagg glimtar när det nämns, stolt' },
   { id: '26', d: 0.4 + L(43) + SVAR + L(44) + 1.2, malin: [[43, 0.4], [44, 0.4 + L(43) + SVAR]], ljud: [[Z('hej'), 0.5 + L(43)], [Z('langt-fniss', 'b'), 0.5 + L(43) + SVAR + L(44)]], bild: 'tittar mot snön, nickar' },
   { id: '27', d: 0.6 + L(45) + SVAR + L(46) + 0.6, malin: [[45, 0.6], [46, 0.6 + L(45) + SVAR]], ljud: [[HEJDA, 0.7 + L(45)]], bild: 'vinkar' },
   { id: '28', d: 0.3 + L(47) + 1.6, malin: [[47, 0.3]], ljud: [[Z('hejda'), 0.5 + L(47)]], bild: 'vinkar klart' },
@@ -90,7 +98,7 @@ for (const r of RADER) if (r.malin && !['01a', '01b'].includes(r.id)) r.d += GLE
 for (const r of RADER) r.d = +r.d.toFixed(2);
 
 if (process.argv[1] === new URL(import.meta.url).pathname) {
-  writeFileSync(HAR + '../scener/sovrummet/rader.json', JSON.stringify({ RADER, ROST: ROST.map(([n, t, l]) => [n, l, t]), PA: Object.fromEntries([11, 30, 33, 39].map(n => [n, +PA(n).toFixed(2)])), UPPSKATTAD }, null, 1));
+  writeFileSync(HAR + '../scener/sovrummet/rader.json', JSON.stringify({ RADER, ROST: ROST.map(([n, t, l]) => [n, l, t]), PA: Object.fromEntries([11, 30, 33, 39, 49, 52].map(n => [n, +PA(n).toFixed(2)])), UPPSKATTAD }, null, 1));
   const tot = RADER.reduce((a, r) => a + r.d, 0);
   console.log(`${RADER.length} rader, ${tot.toFixed(1)} s (${Math.floor(tot / 60)}:${String(Math.round(tot % 60)).padStart(2, '0')})${UPPSKATTAD.length ? `, ${UPPSKATTAD.length} repliker uppskattade` : ''}`);
 }
