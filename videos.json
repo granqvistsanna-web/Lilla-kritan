@@ -1628,10 +1628,10 @@
   "name": "Katten tvättar händerna"
  },
  "054": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/054-1126-0756.mp4",
-  "duration": 256.5,
-  "rendered": "2026-11-26 07:56 (Ännu mindre skum: glitterbubblorna borta helt, tussen vid kranen mindre (48 i stället för 78) och lite åt höger så att det röda vredet syns helt, skumtussarna längs kanten lite lägre så att lammets mun syns. Förhandsvisning (--snabb).)",
-  "file": "avsnitt/054-lammet-badar/scener/badet/badet.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/054-1126-0858.mp4",
+  "duration": 266.5,
+  "rendered": "2026-11-26 08:58 (Slutrendering (1080p, 30 fps, molnet): bilderbok-introt, scenen med mindre skum (inga glitterbubblor, liten tuss vid kranen, munnen och vredet syns) och prenumerera-kortet sist. 4:26, −14 LUFS.)",
+  "file": "avsnitt/054-lammet-badar/film/avsnitt-054.mp4",
   "status": "granska",
   "name": "Lammet badar"
  },
