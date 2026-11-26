@@ -10038,5 +10038,225 @@
   "at": 1795674783040,
   "render": "2026-11-25 23:00 (Djup QA fixad: svart slut, hoppet över kanten, skuggan, ankan, borsten bakom pallen, närbilden, irisen)",
   "fixedAt": 1795675231195
+ },
+ "ml8i8w6l6nmwx6tzwd": {
+  "ep": "052",
+  "time": "0:05",
+  "sec": 5,
+  "tags": [],
+  "note": "halsduk do new one, this is hard to guess",
+  "fixed": false,
+  "at": 1795675505917,
+  "render": "2026-11-26 07:41 (Zebran större när andra hoven saknar strumpa (0:58–1:04): närmare utsnitt, båda hovarna i bild. Förhandsvisning (--snabb).)"
+ },
+ "vca8xnl2c1mwx6ug1m": {
+  "ep": "052",
+  "time": "0:37",
+  "sec": 37,
+  "tags": [],
+  "note": "ears look like they are pulsing",
+  "fixed": false,
+  "at": 1795675526842,
+  "render": "2026-11-26 07:41 (Zebran större när andra hoven saknar strumpa (0:58–1:04): närmare utsnitt, båda hovarna i bild. Förhandsvisning (--snabb).)"
+ },
+ "f2ilrwlraamwx6vfad": {
+  "ep": "052",
+  "time": "0:50",
+  "sec": 50,
+  "tags": [],
+  "note": "improve how clothes hanging on krok",
+  "fixed": false,
+  "at": 1795675572517,
+  "render": "2026-11-26 07:41 (Zebran större när andra hoven saknar strumpa (0:58–1:04): närmare utsnitt, båda hovarna i bild. Förhandsvisning (--snabb).)"
+ },
+ "3pidnh08kamwx6vv08": {
+  "ep": "052",
+  "time": "1:07",
+  "sec": 67,
+  "tags": [],
+  "note": "polish how stövlar stands",
+  "fixed": false,
+  "at": 1795675592888,
+  "render": "2026-11-26 07:41 (Zebran större när andra hoven saknar strumpa (0:58–1:04): närmare utsnitt, båda hovarna i bild. Förhandsvisning (--snabb).)"
+ },
+ "qy335xawr1mwx6wzfk": {
+  "ep": "052",
+  "time": "1:55",
+  "sec": 115,
+  "tags": [],
+  "note": "make zebra a bit bigger",
+  "fixed": false,
+  "at": 1795675645280,
+  "render": "2026-11-26 07:41 (Zebran större när andra hoven saknar strumpa (0:58–1:04): närmare utsnitt, båda hovarna i bild. Förhandsvisning (--snabb).)"
+ },
+ "5ws7cll259mwx6xt3o": {
+  "ep": "054",
+  "time": "1:31",
+  "sec": 91,
+  "tags": [],
+  "note": "plish the big bubbles to the irght, polish bubbles in bath overall, looks like duck flying in air outside bath",
+  "fixed": false,
+  "at": 1795675683732,
+  "render": "2026-11-26 07:40 (Färre skumbubblor i karet i hela avsnittet: 8 skumtussar i stället för 15 (lite mindre), 9 glittrande bubblor i stället för 26, 2 stigande såpbubblor i stället för 3. Lammets ansikte och leksakerna syns. Förhandsvisning (--snabb).)"
+ },
+ "6u2yo74dnjmwx74lv9": {
+  "ep": "J06",
+  "time": "0:22",
+  "sec": 22,
+  "tags": [],
+  "note": "make drawing more easy to guess",
+  "fixed": false,
+  "at": 1795676000948,
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+ },
+ "ov96mbq6hzmwx754go": {
+  "ep": "J06",
+  "time": "1:04",
+  "sec": 64,
+  "tags": [],
+  "note": "polish cat tail and make it look better, remove knob",
+  "fixed": false,
+  "at": 1795676025048,
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+ },
+ "ace7b8xgzlmwx75w0h": {
+  "ep": "J03",
+  "time": "0:51",
+  "sec": 51,
+  "tags": [],
+  "note": "polish the sink tap please, ooks a bit not even",
+  "fixed": false,
+  "at": 1795676060753,
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+ },
+ "mymmfqak9cmwx7j7jf": {
+  "ep": "057",
+  "time": "0:38",
+  "sec": 38,
+  "tags": [],
+  "note": "close crop on things mentioned such as röd tass",
+  "fixed": false,
+  "at": 1795676682219,
+  "render": "2026-11-26 08:00 (Förhandsvisning 4: glatt litet hopp med stor glad mun vid 0:26 (skuggan kvar på golvet), kranen hel upptill (kantfiltret klippte svanhalsen), katten nickar ja vid 2:03 och skumskägget försvinner före nicken utan prickar, större glad mun i alla jätteglada ansikten)"
+ },
+ "lv2rspi2m6mwx7xp9l": {
+  "ep": "053",
+  "time": "0:42",
+  "sec": 42,
+  "tags": [],
+  "note": "remove ticking sound",
+  "fixed": false,
+  "at": 1795677358377,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "owgpj7ivk5mwx7y1ha": {
+  "ep": "053",
+  "time": "0:54",
+  "sec": 54,
+  "tags": [],
+  "note": "soften shadows",
+  "fixed": false,
+  "at": 1795677374206,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "jnn8wogopvmwx7yfo6": {
+  "ep": "053",
+  "time": "1:03",
+  "sec": 63,
+  "tags": [],
+  "note": "blocks shadows too dark",
+  "fixed": false,
+  "at": 1795677392598,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "j0gao2eapmwx7yyjx": {
+  "ep": "053",
+  "time": "1:16",
+  "sec": 76,
+  "tags": [],
+  "note": "malin vo before kritan start, start before vo",
+  "fixed": false,
+  "at": 1795677417069,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "k60cnsttjdmwx7zdi8": {
+  "ep": "053",
+  "time": "1:35",
+  "sec": 95,
+  "tags": [],
+  "note": "more sound effect for animal to mix it up",
+  "fixed": false,
+  "at": 1795677436448,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "uxl9a8m7epmwx80h5b": {
+  "ep": "053",
+  "time": "1:57",
+  "sec": 117,
+  "tags": [],
+  "note": "improve animation of block bouning of and rolling to behind kaktus",
+  "fixed": false,
+  "at": 1795677487823,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "vzyo9j3294mwx80owq": {
+  "ep": "053",
+  "time": "2:03",
+  "sec": 123,
+  "tags": [],
+  "note": "bigger leo overall",
+  "fixed": false,
+  "at": 1795677497882,
+  "render": "2026-11-26 08:07 (Feedback 26/11 + QA)"
+ },
+ "labn2kyr2imwxo4go5": {
+  "ep": "006-v2",
+  "time": "0:26",
+  "sec": 26,
+  "tags": [],
+  "note": "add more details to boat easier to guess",
+  "fixed": false,
+  "at": 1795704547685,
+  "render": "2026-11-26 13:10 (Slutrendering 26/11 (full kvalitet, QA ren: −14,1 LUFS, topp −1,8 dB))"
+ },
+ "0yqjypud7bmwxo512b": {
+  "ep": "006-v2",
+  "time": "0:53",
+  "sec": 53,
+  "tags": [],
+  "note": "move camera up a bit",
+  "fixed": false,
+  "at": 1795704574115,
+  "render": "2026-11-26 13:10 (Slutrendering 26/11 (full kvalitet, QA ren: −14,1 LUFS, topp −1,8 dB))"
+ },
+ "vwglem92mgmwxo5hdr": {
+  "ep": "006-v2",
+  "time": "1:04",
+  "sec": 64,
+  "tags": [],
+  "note": "polish sun, white line look odd",
+  "fixed": false,
+  "at": 1795704595263,
+  "render": "2026-11-26 13:10 (Slutrendering 26/11 (full kvalitet, QA ren: −14,1 LUFS, topp −1,8 dB))"
+ },
+ "o67xglnlg0mwxo5ldu": {
+  "ep": "006-v2",
+  "time": "1:04",
+  "sec": 64,
+  "tags": [],
+  "note": "cuts looks too jagged",
+  "fixed": false,
+  "at": 1795704600450,
+  "render": "2026-11-26 13:10 (Slutrendering 26/11 (full kvalitet, QA ren: −14,1 LUFS, topp −1,8 dB))"
+ },
+ "4swy20ea6smwxo5yxi": {
+  "ep": "006-v2",
+  "time": "1:11",
+  "sec": 71,
+  "tags": [],
+  "note": "dont make dinos arm go away ebhind the body",
+  "fixed": false,
+  "at": 1795704618006,
+  "render": "2026-11-26 13:10 (Slutrendering 26/11 (full kvalitet, QA ren: −14,1 LUFS, topp −1,8 dB))"
  }
 }
