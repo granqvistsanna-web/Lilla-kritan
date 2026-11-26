@@ -1,9 +1,10 @@
 #!/bin/bash
 # Avsnitt 049 för YouTube: scenens film (molnrender eller render-delat, med Malin, effekterna och bädden) utan intro, så scentid = filmtid.
 # Mastras i två pass till −14 LUFS / −1,5 dBTP med limiter sist (som 047) → film/avsnitt-049.mp4. Bilden kopieras.
+# Med --snabb (efter render-delat --snabb) → film/avsnitt-049-snabb.mp4, så att den godkända slutfilmen ligger kvar.
 set -e
 cd "$(dirname "$0")/.."
-IN=scener/mottagningen/mottagningen.mp4; UT=film/avsnitt-049.mp4
+IN=scener/mottagningen/mottagningen.mp4; UT=film/avsnitt-049.mp4; [ "$1" = "--snabb" ] && UT=film/avsnitt-049-snabb.mp4
 M=$(ffmpeg -hide_banner -i $IN -vn -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }
 ffmpeg -loglevel error -y -i $IN -filter_complex \

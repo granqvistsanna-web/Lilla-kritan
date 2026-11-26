@@ -19,8 +19,8 @@
 19-nu-kaninen-klick-ljus 4.770680
 20-en-liten-spegel-med 3.682834
 21-forst-elefanten-gapa-oj 5.441315
-22-kan-du-ocksa-gapa 0.877506
-23-aaa 0.278889
+22-kan-du-ocksa-gapa 1.240000
+23-aaa 0.860000
 24-nu-kaninen-gapa-aaa 5.833288
 25-vilka-stora-tander-fina 3.091587
 26-kan-du-visa-dina 1.431746

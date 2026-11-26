@@ -65,3 +65,9 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 
 - Förhandsvisning 5 godkänd. Slutrenderad med `verktyg/render-delat.mjs` (1920×1080, 30 fps, 8309 bildrutor) och mastrad med `film/satt-ihop.sh` (som 046) → `film/avsnitt-049.mp4`, 4:37, −13,8 LUFS, topp −1,3 dBFS.
 - `qa-film.sh`: inget fryst eller tyst, boil 2,6 px/s (gräns 4,5), rösterna rena. Svart 275,6–277 s är outrots iris. `krita kod` flaggar egen krita, men regeln gäller från 052 och förhandsvisning 5 godkändes med den här kritan, så den är kvar.
+
+## Feedback 7 (2026-11-26)
+
+- 1:49 Musiken är lägre: slingan 0,075 → 0,05 (−3,5 dB mot Malin, i pauserna ca 4 dB lägre i den mastrade filmen).
+- 2:15 *"Kan du också gapa?"* klipptes mitt i "gapa": tagningen var delad på fel ställe, så att 22 slutade på "ga-" och 23 (*"Aaa!"*) bara var "pa!". Båda är omklippta ur `malin-tagning.mp3` (22: 58,60–59,84 s, 23: 59,98–60,84 s, −3 dBFS), de gamla ligger i `scener/mottagningen/aldre/*-forra.m4a`. Pausen före *"Aaa!"* är 4 s igen, så rad 19 är 0,94 s längre.
+- `film/satt-ihop.sh --snabb` skriver `film/avsnitt-049-snabb.mp4`, så att den godkända slutfilmen ligger kvar. Förhandsvisning (`--snabb`) renderad, `qa-film.sh` utan anmärkning (utom den kända `krita kod`).

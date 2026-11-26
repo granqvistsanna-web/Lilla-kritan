@@ -529,7 +529,7 @@ function papper(s, tl, d) {
   if (z > 0.6) lagg('papper', `<rect width="1920" height="1080" fill="#fff" opacity="${(del(0.6, 1, z)).toFixed(2)}"/>`);
 }
 
-// --- Ljud: Malin och effekterna ur raderna, kanalens slinga lågt under (som 046) --------------------------------------------------
+// --- Ljud: Malin och effekterna ur raderna, kanalens slinga lågt under (0,05, feedback 26/11: lägre än 046:s 0,075) --------------------------------------------------
 const E = 'assets/ljud/effekter/';
 const VOL = f => /^doktor-/.test(f) ? 0.8 : /^kanin-/.test(f) ? 0.85 : /^(glitter|tindra)/.test(f) ? 0.7 : /^krita-ritar/.test(f) ? 0.9 : /^(smasteg|hopp)/.test(f) ? 0.6 : /^(stol-vvv|borsta)/.test(f) ? 0.7 : 0.75;
 const RITLANGD = { '01a': 7.5, '6a': 4.0, '16a': 3.0, '31a': 2.0 };
@@ -540,7 +540,7 @@ function ljud() {
     for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f),
       ...(/^krita-ritar/.test(f) ? { loop: true, langd: RITLANGD[r.id] ?? 3, fade: 0.4 } : /^smasteg/.test(f) ? { loop: true, langd: 2.8, fade: 0.4 } : {}) });
   }
-  ut.push({ t: 0.2, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.075, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
+  ut.push({ t: 0.2, fil: 'assets/ljud/musik/abc-bad-lang.m4a', vol: 0.05, langd: DURATION - 0.2, loop: true, fadeIn: 1.5, fade: 3.0 });
   return ut.filter(c => c.t < DURATION);
 }
 
