@@ -9979,9 +9979,10 @@
   "sec": 58,
   "tags": [],
   "note": "arms flying in air on picking pu toy",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642146057,
-  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))",
+  "fixedAt": 1795676865653
  },
  "1rpf778c2qmwwmzfkp": {
   "ep": "053",
