@@ -9902,9 +9902,10 @@
   "sec": 24,
   "tags": [],
   "note": "polish fire it looks like some edge animation touch the sock",
-  "fixed": false,
+  "fixed": true,
   "at": 1795638194023,
-  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)",
+  "fixedAt": 1795675570616
  },
  "zl5u9bccqfmwwkn2q9": {
   "ep": "J02",
@@ -9912,9 +9913,10 @@
   "sec": 24,
   "tags": [],
   "note": "the julgran bottom green part looks clipped",
-  "fixed": false,
+  "fixed": true,
   "at": 1795638231441,
-  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)"
+  "render": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)",
+  "fixedAt": 1795675570617
  },
  "jabu3vauaxmwwmkjzu": {
   "ep": "djup-prov",
