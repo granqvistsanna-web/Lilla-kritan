@@ -358,13 +358,16 @@ const SR = {
   '20': (tl, d) => { const o = 0.4 + LN(31) - 0.45, pl = del(o, o + 0.3, tl);
     return RUM({ kam: LADA_VY, f: F(pl > 0 ? 'jatteglad' : 'nyfiken', { titt: [12 - 3 * del(0.5, o - 1.0, tl), 7 + 3 * del(o - 0.6, o, tl)] }), p: P({ rikt: 0.3, oron: UPP(pl), luta: 3 * bump(0.5, o - 0.9, tl) }),
       skimHal: [0.8 * bump(d - 0.4, d + 0.8, tl), 0, 0] }); },
-  '20b': (tl, d) => RUM({ kam: NARA(), lyft: lyft(tl, 0.15, 36), f: F('stolt'), p: skutt(P({ oron: UPP(1), svans: vipp(tl, 0.2) }), tl, 0.15) }),
+  // klappar tassarna på "Ja, cirkeln passade!" (Sanna 2026-11-26: "clapping"): riggens klapp, tassarna möts vid 0,9, 1,4 och 1,9 s
+  '20b': (tl, d) => RUM({ kam: NARA(), f: F('stolt'), p: { ...L.ROR.klappa(kl(tl + 0.1, 0, 2.999))[1], gnista: 0, oron: UPP(1), svans: vipp(tl, 0.2) } }),
   // fyrkanten glimtar, leoparden plockar upp den och kastar den rakt till sitt hål
   '21': (tl, d) => { const t = S0('21') + tl, sk = [VILA.fyrkant[0], VILA.fyrkant[1] - 40, 0.7 * bump(0.05, 2.0, tl), 0.8];
     if (t >= K.f21.t0) return { ...kastRad(K.f21, t, HB_LADA), skim: sk };
     return RUM({ kam: HB_LADA, f: F('ivrig', { titt: [-12, 10] }), p: P({ rikt: -0.2 * del(0.3, 1.0, tl) }), skim: sk }); },
-  '22': (tl, d) => { const n = tl > 0.45 + LN(34);
-    return RUM({ kam: n ? NARA() : LADA_VY, f: F(n ? 'jatteglad' : 'nyfiken', n ? {} : { titt: [12, 7] }), p: P({ oron: UPP(n ? 1 : 0.4), rikt: n ? 0 : 0.3, svans: vipp(tl, 0.5 + LN(34)) }), skimHal: [0, 0.8 * bump(d - 0.9 - 0.3, d + 0.4, tl), 0] }); },
+  // fyrkanten passade: närbild och ett lugnt, glatt skutt (Sanna 2026-11-26: "happy jump"; raden 0,6 s längre för skuttet)
+  '22': (tl, d) => { const n0 = 0.45 + LN(34), n = tl > n0, s0 = n0 + 0.35;
+    return RUM({ kam: n ? NARA() : LADA_VY, lyft: n ? lyft(tl, s0, 36) : 0, f: F(n ? 'jatteglad' : 'nyfiken', n ? {} : { titt: [12, 7] }),
+      p: skutt(P({ oron: UPP(n ? 1 : 0.4), rikt: n ? 0 : 0.3, svans: vipp(tl, 0.5 + LN(34)) }), tl, s0), skimHal: [0, 0.8 * bump(n0 - 0.2, n0 + 1.4, tl), 0] }); },
   // det trekantiga hålet är tomt; tassen till huvudet: hatten är borta
   '23': (tl, d) => { const n = tl > 0.6 + LN(35) * 0.5, h = del(0.6 + LN(35) * 0.5 + 0.1, 0.6 + LN(35) * 0.5 + 0.6, tl);
     return RUM({ kam: n ? NARA() : D_LADA(), f: F('forvanad', { titt: [0, -10 * h] }), p: P({ armar: [0, 140 * h], oron: UPP(0.8) }) }); },
