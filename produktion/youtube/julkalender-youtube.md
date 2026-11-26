@@ -40,21 +40,24 @@ Gissa vad kritan ritar, och räkna strålarna på julstjärnan.
 
 ## Lucka 2 – 2 dec 05:00
 
-Fil: `02-lammet-tittut/02-lammet-tittut.mp4` (2:00)
-YouTube: **inte uppladdad** (den schemalagda uppladdningen 1MOwBd6RWZI raderades permanent 2026-11-20 på Sannas begäran)
+Fil: `07-lammet-julkula/07-lammet-julkula.mp4` (2:44, slutrenderad och mastrad 2026-11-26, J02 på feedbacksidan). Ersätter tittut med lammet (`02-lammet-tittut`, parkerad som JP; den gamla schemalagda uppladdningen 1MOwBd6RWZI raderades 2026-11-20).
+Miniatyr: `07-lammet-julkula/thumbnail/miniatyr-strimma.png` (raden `jul-07`, luckmärket 2, röd strimma)
+YouTube: **inte uppladdad**
 
 ```
-Lucka 2 🐑 Tittut med lammet i snön | Lilla Kritans julkalender
+Lucka 2 🎄 Lammet och julkulan | Lilla Kritans julkalender
 ```
 
 ```
-Borta! … Tittut! Lammet leker tittut bakom luckan, och varje gång har lammet en ny julsak med sig: en tomteluva, en rosett. Men oj, luckan sitter fast! Björnen kommer och hjälper till. Dra, dra, dra – ett, två, tre – tittut! Sedan rullar de en boll till varandra.
+Idag öppnar vi lucka två! Kritan ritar en silverkula till granen. Den glittrar, och lammet syns i kulan! Lammet puttar, och kulan gungar mer och mer. Men oj, kulan gick sönder, och lammet blir ledset. Kritan ritar en spade och en kvast. Sopa, sopa! Hunden kommer och tröstar lammet, och kritan ritar en ny kula. Upp i granen! Hurra! Kan du gunga som kulan?
 
-Tittut för de minsta: borta – paus – tittut, så att barnet vet vad som ska hända och kan säga det själv.
+Inget går så sönder att kompisar inte kan hjälpa till.
 
 [SLUT]
 
-#julkalender #tittut #lillakritan
+Ljud: slide_whistle_down_slow_01 by joedeshon (freesound.org), CC BY 4.0
+
+#julkalender #julgran #lillakritan
 ```
 
 ## Lucka 3 – 3 dec 05:00
@@ -137,23 +140,7 @@ pineforest winter NL by klankbeeld (freesound.org), CC BY 4.0
 
 ## Lucka 7 – 7 dec 05:00
 
-Fil: `07-lammet-julkula/07-lammet-julkula.mp4` (1:59)
-
-```
-Lucka 7 🎄 Lammet och julkulan | Lilla Kritans julkalender
-```
-
-```
-En silverkula i granen! Lammet puttar, och kulan gungar. Men oj, kulan gick sönder, och lammet blir ledset. Spaden och kvasten sopar upp bitarna, och hunden kommer och tröstar. Kritan ritar en ny kula, och upp i granen! Kan du gunga som kulan?
-
-Inget går så sönder att kompisar inte kan hjälpa till.
-
-[SLUT]
-
-Ljud: slide_whistle_down_slow_01 by joedeshon (freesound.org), CC BY 4.0
-
-#julkalender #julgran #lillakritan
-```
+Lammet och julkulan flyttade till lucka 2 (2026-11-22, texten står där). Lucka 7 är nu `07-hunden-ater-julmat` (036 Hunden äter julmat); YouTube-texten är inte skriven än.
 
 ## Lucka 8 – 8 dec 05:00
 
