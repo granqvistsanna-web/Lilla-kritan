@@ -10001,9 +10001,10 @@
   "sec": 121,
   "tags": [],
   "note": "and mae ckaktus bigger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642180827,
-  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))",
+  "fixedAt": 1795676869610
  },
  "zlo172drsgmwwn0fdl": {
   "ep": "053",
