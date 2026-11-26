@@ -9968,9 +9968,10 @@
   "sec": 49,
   "tags": [],
   "note": "better animation of klossar fall of basket",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642129889,
-  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))",
+  "fixedAt": 1795676863551
  },
  "nmo6zzpdedmwwmyz9l": {
   "ep": "053",
