@@ -40,12 +40,17 @@ const OHNEJ1 = 143.6;   // första "(Åh nej!)" (sångtid 2:14,7); T.OHNEJ är d
 const OVD = 5.5, OV0 = T.SLUT - OVD;
 const SX = { lova: G.PLATS.lova, pip: G.PLATS.pip, gurra: G.PLATS.gurra };
 const LOVA_STA = 860, PIP_GOLV = 1250,   // QA 26/11: 1180 lade kycklingen halvt över leoparden
-  UNDER = [1150, 852];   // Lova står vid bänkens vänstra ände; ärtan under bänken
+  UNDER = [1110, 852];   // Lova står vid bänkens vänstra ände; ärtan under bänken
 const TRAKTOR_X = 180, TRAKTOR_FOT = 1000;
 
 // --- hjälp ------------------------------------------------------------------------------------------------------------------------
 const L = n => K.FIG[n].L;
 const fb = (n, a, b, k) => L(n).blanda(a, b, kl(k));                    // ansikte a → b
+// två färdiga ansikten blandas (tal och listor), som riggens blanda men med objekt
+const blandaF = (a, b, k) => Object.fromEntries(Object.keys(a).map(n => [n, Array.isArray(a[n]) ? a[n].map((v, i) => typeof v === 'number' ? lerp(v, b[n]?.[i] ?? v, k) : v) : typeof a[n] === 'number' ? lerp(a[n], b[n] ?? a[n], k) : (k < 0.5 ? a[n] : b[n] ?? a[n])]));
+// Lovas gråt (13c): forvanad → riggens 'gratar' på 0,6 s; tårarna (riggens tar, en i taget, var 1,2:e s) och munnen som darrar
+const grat = t => { const k = mjuk(del(T.NA[1] + 0.6, T.NA[1] + 1.2, t)), f = fb('lova', 'forvanad', 'gratar', k);
+  return { ...f, le: f.le + 0.13 * k * Math.sin(2 * Math.PI * 2.25 * t), tar: [k, Math.max(0, t - T.NA[1] - 0.9) / 1.2 + 0.05] }; };
 const pb = (n, a, b, k, o = {}) => ({ ...L(n).blandaPose(a, b, kl(k)), ...o });   // pose a → b, plus tillägg
 const rp = (n, [x, fot], [px, py], s = S) => [x + (px - 512) * s, fot + (py - L(n).FOTTER) * s];   // riggpunkt → scen
 const bage = (A, B, u, h) => { const m = mjuk(u); return [lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h * Math.sin(Math.PI * kl(u))]; };
@@ -165,12 +170,13 @@ function pipOchGurra(t, lv) {
       const k = mjuk(del(T.NA[0], T.NA[0] + 0.5, t)) * (1 - mjuk(del(T.NA[1], T.NA[1] + 0.6, t))), strack = 0.15 * bump(T.NA[0] + 0.6, T.NA[0] + 1.3, t) + 0.15 * bump(T.NA[0] + 1.3, T.NA[0] + 2.0, t);
       f = t < OHNEJ1 ? K.F('lova', 'ivrig') : fb('lova', 'ivrig', 'forvanad', del(OHNEJ1 - 0.1, OHNEJ1 + 0.2, t));
       p = { ...L('lova').blandaPose('neutral', 'nar', k), strack: -0.1 * k, bred: 0.06 * k, sank: 40 * k, armar: [0, 55 * k + 12 * strack / 0.15], x: 24 * k };
-    } else if (t < T.VEM[0]) {   // ledsen: en tår, sjunker ihop, axlarna rycker per snyft
-      f = fb('lova', 'forvanad', 'ledsen', del(T.NA[1] + 0.6, 145.5, t));
-      const sn = T.SNYFT.reduce((a, s) => a + bump(s, s + 0.35, t), 0);
-      p = { strack: -0.04 - 0.03 * sn, bred: 0.02 + 0.02 * sn, lyft: 4 * sn, ner: 0.6 };
+    } else if (t < T.VEM[0]) {   // feedback 26/11 (2:22): gråter på riktigt men lugnt – riggens gråt-ansikte (tårbula, darrig mun, en tår i taget
+      // rinner över kinden), huvudet sjunker och öronen hänger, tre snyftningar som syns i hela kroppen (nick + axlar)
+      f = grat(t);
+      const sn = [T.NA[1] + 1.5, ...T.SNYFT].reduce((a, s) => a + bump(s - 0.05, s + 0.4, t), 0), ner = mjuk(del(T.NA[1] + 0.6, T.NA[1] + 1.3, t));
+      p = { strack: -0.03 * ner - 0.05 * sn, bred: 0.02 * ner + 0.035 * sn, lyft: 7 * sn, nick: [0.9 * sn, 0.7 * sn], ner: 0.7 * ner, luta: -3 * ner + 1.5 * Math.sin((t - T.NA[1]) * 1.6) };
     } else if (t < T.PIPHOPP[0] - 1.0) {   // "Vem kan hjälpa?": tittar på tittaren och väntar
-      f = t < T.TICK[1] + 0.8 ? fb('lova', 'ledsen', 'nyfiken', del(T.VEM[0], T.VEM[0] + 0.4, t)) : fb('lova', 'nyfiken', 'forvanad', del(T.TICK[1] + 0.8, T.TICK[1] + 1.1, t));
+      f = t < T.TICK[1] + 0.8 ? (t < T.VEM[0] + 0.5 ? blandaF(grat(t), K.F('lova', 'nyfiken'), del(T.VEM[0], T.VEM[0] + 0.5, t)) : K.F('lova', 'nyfiken')) : fb('lova', 'nyfiken', 'forvanad', del(T.TICK[1] + 0.8, T.TICK[1] + 1.1, t));
       p = { luta: 4 * Math.sin((t - T.VEM[0]) * 1.2), rikt: t < T.TICK[0] ? 0.8 * Math.sin((t - T.VEM[0]) * 2.6) * del(T.VEM[0], T.VEM[0] + 0.3, t) : 0, upp: t < T.TICK[0] ? 0.3 : 0 };   // QA 26/11: tittar sig om efter hjälp
     } else if (t < T.GE2[1]) {   // tittar på Pip
       f = t < T.PICK[2] ? fb('lova', 'forvanad', 'nyfiken', del(T.PIPHOPP[0] - 1, T.PIPHOPP[0] - 0.6, t)) : fb('lova', 'nyfiken', 'kawaii', del(T.PICK[2], T.PICK[2] + 0.3, t));
@@ -182,10 +188,6 @@ function pipOchGurra(t, lv) {
     }
     if (t > T.GE2[1] - 0.2 && t < T.TILLBAKA[0]) p = { ...p, armar: [-95, -95], fram: [1, 1] };
     fig('lova', [LOVA_STA, G.STA], f, P('lova', p));
-    if (t > T.NA[1] + 0.9 && t < T.VEM[0] + 0.3) {   // en liten tår rinner ner (13c, enda gången hon är ledsen)
-      const u = del(T.NA[1] + 0.9, T.VEM[0] + 0.3, t), [x, y] = rp('lova', [LOVA_STA, G.STA], [440, 430 + 70 * u]);
-      K.lagg('pynt', `<path d="M${f1(x)} ${f1(y - 16)} Q${f1(x + 9)} ${f1(y - 2)} ${f1(x)} ${f1(y + 5)} Q${f1(x - 9)} ${f1(y - 2)} ${f1(x)} ${f1(y - 16)}Z" fill="#8fd0ef" stroke="#fff" stroke-width="3" opacity="${(1 - del(0.8, 1, u)).toFixed(2)}"/>`);
-    }
   }
 
   // --- Pip ---
@@ -218,13 +220,14 @@ function pipOchGurra(t, lv) {
   } else if (t < T.ARTUT[1] + 0.05) {   // lägger sig platt på magen och pickar in under bänken
     const k = mjuk(del(T.LIGG[0], T.LIGG[1], t)) * (1 - mjuk(del(T.ARTUT[0] + 0.1, T.ARTUT[1] + 0.05, t))), pick = T.PICK.reduce((a, s) => a + bump(s - 0.12, s + 0.18, t), 0);
     const f = t < T.PICK[0] - 0.2 ? fb('pip', 'skrattar', 'ivrig', del(T.LIGG[0], T.LIGG[1], t)) : t < T.PICK[2] + 0.1 ? K.F('pip', 'ivrig') : K.F('pip', 'forvanad');
-    fig('pip', [PIP_GOLV, G.STA], f, { ...L('pip').blandaPose('neutral', 'liggMage', k), x: -40 * pick * k, lyft: 16 * pick, luta: -16 * pick * k, strack: 0.06 * pick });   // QA 26/11: tydligare pick
+    fig('pip', [PIP_GOLV + 70 * k, G.STA], f, { ...L('pip').blandaPose('neutral', 'liggMage', k), rikt: -0.6 * k, x: -60 * pick * k, lyft: 20 * pick, luta: -32 * pick * k, strack: 0.06 * pick });   // feedback 26/11 (2:37): vänd mot ärtan, större pick
     T.PICK.forEach(s => { const u = (t - s + 0.05) / 0.35; if (u < 0 || u > 1) return;   // små pickstreck vid näbben på varje "pick"
-      const [bx, by] = rp('pip', [PIP_GOLV - 40, G.STA], [380, 560]);
+      const [bx, by] = rp('pip', [PIP_GOLV + 30, G.STA], [380, 560]);
       K.lagg('pynt', `<g stroke="#9A6535" stroke-width="6" stroke-linecap="round" opacity="${f1(1 - u)}">${[-0.5, 0, 0.5].map(v => `<path d="M${f1(bx - 18 * Math.cos(v))} ${f1(by - 18 * Math.sin(v) - 10)} L${f1(bx - (30 + 20 * u) * Math.cos(v))} ${f1(by - (30 + 20 * u) * Math.sin(v) - 10)}"/>`).join('')}</g>`); });
   } else if (t < T.TILLBAKA[0]) {   // ger ärtan till Lova, står kvar och tittar
-    const ge = bump(T.GE2[0] - 0.1, T.GE2[1] + 0.2, t);
-    fig('pip', [PIP_GOLV, G.STA], K.F('pip', 'glad'), P('pip', { rikt: -0.7 * ge, armar: [-95, -95], fram: [1, 1] }));
+    const ge = bump(T.GE2[0] - 0.1, T.GE2[1] + 0.2, t), fatt = bump(T.ARTUT[1] - 0.05, T.ARTUT[1] + 0.3, t);   // fångar ärtan: en liten duns
+    const f = t < T.GE2[0] ? fb('pip', 'forvanad', 'jatteglad', del(T.ARTUT[1], T.ARTUT[1] + 0.25, t)) : K.F('pip', 'glad');
+    fig('pip', [PIP_GOLV + pipSteg(t), G.STA], f, P('pip', { rikt: -0.7 * ge, armar: [-95 + 30 * ge, -95 + 30 * ge], fram: [1, 1], luta: -8 * ge, strack: -0.05 * fatt, bred: 0.04 * fatt}));
   } else if (t < T.TILLBAKA[1]) {
     const u = (t - T.TILLBAKA[0]) / (T.TILLBAKA[1] - T.TILLBAKA[0]), pos = bage([PIP_GOLV, G.STA], [SX.pip, G.SITT], u, 110);
     fig('pip', pos, K.F('pip', 'glad'), pb('pip', 'neutral', 'sitter', u, { armar: [-95, -95], fram: [1, 1] }), { lager: u > 0.6 ? 'figurer' : 'pynt' });
@@ -264,6 +267,10 @@ function pipOchGurra(t, lv) {
 // --- skidan och ärtorna -------------------------------------------------------------------------------------------------------
 // var figurens hållpunkt är (sittande på bänken eller stående)
 const hall = (n, sittande, x) => rp(n, [x ?? (sittande ? SX[n] : n === 'lova' ? LOVA_STA : PIP_GOLV), sittande ? G.SITT + 48 * S : G.STA], HALL);
+// feedback 26/11 (2:37): varje pick rubbar ärtan en bit fram mot Pip (ett litet hopp), så att man ser att hon når den
+const rubba = t => { const n = T.PICK.reduce((a, s) => a + mjuk(del(s, s + 0.2, t)), 0), h = T.PICK.reduce((a, s) => a + bump(s, s + 0.25, t), 0); return [-4 * n, 12 * n - 16 * h]; };   // fram ur skuggan, ett litet hopp per pick
+// Pip tar ett litet steg mot Lova när hon ger ärtan (och tillbaka)
+const pipSteg = t => -70 * mjuk(del(T.GE2[0] - 0.2, T.GE2[0] + 0.25, t)) * (1 - mjuk(del(T.TACK[2], T.TACK[2] + 0.5, t)));
 const nos = (n, x = SX[n]) => rp(n, [x, G.SITT + 48 * S], NOS);
 const huvud = n => rp(n, [SX[n], G.SITT + 48 * S], [512, 240]);
 function artor(t, lv) {
@@ -308,9 +315,11 @@ function artor(t, lv) {
     if (i < 3) la = kast(B[i], B[i + 1], (t - a) / (b - a), H[i]); else la = B[4];
     if (i === 0) { const u = (t - a) / (b - a); la = [lerp(B[0][0], B[1][0], u), lerp(B[0][1], B[1][1], u * u) - 70 * Math.sin(Math.PI * u) * (1 - u)]; }
   }
-  else if (t >= T.RULL[0] && t < T.ARTUT[0]) { const u = mjuk(del(T.RULL[0], T.RULL[1], t)); la = [lerp(1165, UNDER[0], u), lerp(975, UNDER[1], u)]; lagr = u > 0.35 ? 'under' : 'pynt'; }
-  else if (t >= T.ARTUT[0] && t < T.GE2[0]) { la = kast(UNDER, [PIP_GOLV - 40, 990], (t - T.ARTUT[0]) / (T.ARTUT[1] - T.ARTUT[0]), 40); if (t > T.ARTUT[1]) la = [PIP_GOLV - 40, 990]; lagr = t < T.ARTUT[0] + 0.15 ? 'under' : 'pynt'; }
-  else if (t >= T.GE2[0] && t < T.GE2[1]) la = bage([PIP_GOLV - 40, 990], hall('lova', false), (t - T.GE2[0]) / (T.GE2[1] - T.GE2[0]), 120);
+  else if (t >= T.RULL[0] && t < T.ARTUT[0]) { const u = mjuk(del(T.RULL[0], T.RULL[1], t)), [nx, ny] = rubba(t); la = [lerp(1165, UNDER[0], u) + nx, lerp(975, UNDER[1], u) + ny]; lagr = u > 0.35 && ny < 30 ? 'under' : 'pynt'; }
+  else if (t >= T.ARTUT[0] && t < T.GE2[0]) {   // feedback 26/11 (2:37): ärtan hoppar ut på sista picket, rakt upp i Pips vingar
+    const [nx, ny] = rubba(T.ARTUT[0]), A = [UNDER[0] + nx, UNDER[1] + ny], B = hall('pip', false, PIP_GOLV + pipSteg(t));
+    la = t < T.ARTUT[1] ? kast(A, B, (t - T.ARTUT[0]) / (T.ARTUT[1] - T.ARTUT[0]), 110) : B; }
+  else if (t >= T.GE2[0] && t < T.GE2[1]) la = bage(hall('pip', false, PIP_GOLV + pipSteg(T.GE2[0])), hall('lova', false), (t - T.GE2[0]) / (T.GE2[1] - T.GE2[0]), 90);
   else if (t >= T.GE2[1] && t < T.TILLBAKA[0]) la = hall('lova', false);
   else if (t >= T.TILLBAKA[0] && t < T.TILLBAKA[1]) { const u = mjuk((t - T.TILLBAKA[0]) / (T.TILLBAKA[1] - T.TILLBAKA[0])); const [x, y] = bage([LOVA_STA, G.STA], [SX.lova, G.SITT + 48 * S], u, 110); la = rp('lova', [x, y], HALL); }
   else if (t >= T.TILLBAKA[1] && t < T.HURRA) la = hallUpp('lova', t);
@@ -345,7 +354,7 @@ const KAM = {
   // grannen på bänken är helt ute; tvåbilderna så breda att alla som syns är helt med.
   HEL: [1, 960, 540], VALV: [2.3, 1260, 250], TVA: [1.55, 1150, 660], LOVA: [1.75, 1180, 600], GURRA: [1.75, 1330, 600],   // alla tre helt med (bänken är för trång för tvåbilder utan att kapa grannen)
   BRED: [1.45, 1255, 640],
-  LAG: [1.45, 1120, 700], LAGV: [1.45, 1060, 700], LNARA: [3.0, 800, 740], PIP: [2.6, 1360, 600], PIPL: [1.45, 1120, 700], TVA2: [1.55, 1040, 720], ALLA: [1.35, 1250, 640], SKIDA: [1.6, 1220, 600],
+  LAG: [1.45, 1120, 700], LAGV: [1.45, 1060, 700], LNARA: [3.0, 800, 740], PIP: [2.6, 1360, 600], PIPL: [1.45, 1120, 700], TVA2: [1.55, 1040, 720], ALLA: [1.35, 1250, 640], SKIDA: [1.6, 1220, 600], PICK: [2.0, 1200, 820],
 };
 const glid = (A, B, k) => [lerp(A[0], B[0], k), lerp(A[1], B[1], k), lerp(A[2], B[2], k)];
 function kamera(t) {
@@ -370,7 +379,7 @@ function kamera(t) {
     case '13d': k = glid(KAM.LNARA, [3.2, 800, 750], mjuk(u / 5.5)); break;
     case '14a': k = KAM.PIP; break;
     case '14a2': k = KAM.PIPL; break;
-    case '14b': k = KAM.PIPL; break;
+    case '14b': k = glid(KAM.PIPL, KAM.PICK, mjuk(u / 0.5)); break;   // feedback 26/11 (2:37): nära och lågt på picket och ärtan
     case '14c': k = KAM.TVA2; break;
     case '14d': k = KAM.ALLA; break;
     case '14e–f': k = glid(KAM.ALLA, [1.5, 1250, 640], mjuk(u / 2.5)); break;

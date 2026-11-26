@@ -38,8 +38,8 @@ const T = { dans: 170.5, hoppa: 172.4, vicka: 173.9, flyga: 175.3, alla: 176.7, 
   gront: 187.5, kor: 189.3, arta: 190.1, bak: 191.9, hopp: 193.3, kor2: 193.9, hej: 194.0, putt: 195.8, slut: 204.0 };
 
 // --- Platserna -------------------------------------------------------------------------------------------------------------------
-const FOT = 1000, S = 0.57;
-const X0 = { pip: 470, lova: 960, gurra: 1450 };
+const FOT = 1010, S = 0.85;   // feedback 26/11 (2:51 "bigger animals"): 0,57 → 0,85, kroppshöjd ca 430 px som format/bildutsnitt.md
+const X0 = { pip: 400, lova: 960, gurra: 1520 };
 
 function disco(t) {
   const g = Math.sin(Math.PI * fas(t));
@@ -102,7 +102,7 @@ const SAKER = [
 ];
 const POP = [T.grodan, T.lampan, T.jacka, T.artor, T.traktor];
 const FLYG = [T.lampan - 0.25, T.jacka - 0.25, T.artor - 0.05, T.traktor - 0.05, T.gront - 0.3];
-const MITT = [960, 300];
+const MITT = [960, 200];   // större figurer: skivan högre så att den inte täcker Lovas huvud
 function klistermarken(t) {
   POP.forEach((p, i) => {
     if (t < p) return;
@@ -144,8 +144,8 @@ function scen(t) {
   if (t >= T.grodan) klistermarken(t);
 
   // 16d: Lova skuttar bakåt till traktorn, hoppar i, traktorn kör fram genom luckan; Pip och Gurra glider isär
-  const isar = mjuk(del(T.kor2, T.kor2 + 3.2, t)), sKrymp = lerp(S, 0.5, isar);
-  const px = lerp(X0.pip, 330, isar), gx = lerp(X0.gurra, 1590, isar);
+  const isar = mjuk(del(T.kor2, T.kor2 + 3.2, t)), sKrymp = lerp(S, 0.72, isar);
+  const px = lerp(X0.pip, 300, isar), gx = lerp(X0.gurra, 1620, isar);
   const tittU = tittUpp(t), rop = ropar(t);
   const vinka = (t0, fas0) => t >= t0 ? { armar: [10, 92 + 20 * Math.sin(2 * Math.PI * 1.4 * (t - t0) + fas0)] } : {};
 
@@ -162,7 +162,7 @@ function scen(t) {
   else if (t < T.gront) { pf = rop ? ansikte('pip', 'jatteglad', t, 'skrattar', 1) : L('pip').blanda('glad', 'forvanad', tittU); pp = pose('pip', 'upp', 0.8 * tittU, rop ? dans('pip', t, { hopp: 10, arm: 60 }) : {}); }
   else { pf = L('pip').blanda('neutral', t < T.hej + 2 ? 'skrattar' : 'glad', 1); pp = pose('pip', 'neutral', 1, vinka(T.hej + 0.25, 0.8)); }
   const narA = t > T.arta - 0.3 && t < T.bak;   // QA 26/11: i Lovas närbild håller grannarna armarna nere, annars sticker spetsarna in i kanten
-  const isarA = narA ? 140 * mjuk(del(T.arta - 0.3, T.arta + 0.4, t)) : 0;   // och glider lite isär medan kameran går in
+  const isarA = narA ? 240 * mjuk(del(T.arta - 0.3, T.arta + 0.4, t)) : 0;   // och glider lite isär medan kameran går in
   if (narA) pp = pose('pip', 'neutral', 1, { armar: [-20, -20] });
   rita('pip', px - isarA, FOT, pf, pp, sKrymp);
 
@@ -174,7 +174,7 @@ function scen(t) {
   } else if (t < T.vicka) {   // Gurra hoppar, ett lugnt hopp per slag (tryck ihop före och vid landningen)
     const f = fas(t) % 1, u = Math.sin(Math.PI * f), land = bump(0.85, 1, f) + bump(0, 0.15, f);
     gf = ansikte('gurra', 'skrattar', t, 'jatteglad', 0.72);
-    gp = pose('gurra', 'hurra', 0.7, { lyft: -190 * u, strack: 0.05 * u - 0.05 * land, bred: 0.04 * land });
+    gp = pose('gurra', 'hurra', 0.7, { lyft: -150 * u, strack: 0.05 * u - 0.05 * land, bred: 0.04 * land });
   } else if (t < T.alla) { gf = L('gurra').blanda('neutral', 'glad', 1); gp = pose('gurra', t > T.flyga ? 'upp' : 'neutral', t > T.flyga ? 0.6 * bump(T.flyga, T.alla + 0.3, t) : 1, t < T.flyga ? { luta: -2 * Math.sin(Math.PI * fas(t)) } : {}); }
   else if (t < T.gront) { gf = rop ? ansikte('gurra', 'jatteglad', t, 'skrattar', 1) : L('gurra').blanda('glad', 'forvanad', tittU); gp = pose('gurra', 'upp', 0.8 * tittU, rop ? dans('gurra', t, { hopp: 10, arm: 60 }) : {});
     if (t > T.grodan && t < T.grodanG + 0.9) { gf = L('gurra').blanda('neutral', 'blinkar', 1);   // Gurra på skivan: han blinkar och skuttar till på "grön!"
@@ -224,7 +224,7 @@ function scen(t) {
     const vx = -Math.sin(v);   // riktning i bågen
     const flax = Math.sin(2 * Math.PI * 4 * t);
     const ff = t > T.alla ? ansikte('fia', 'glad', t, 'jatteglad') : L('fia').blanda('neutral', 'glad', 1);
-    rita('fia', x, y + 140, ff, pose('fia', 'neutral', 1, { luta: 10 * vx * (1 - ut) + 8 * ut, vingar: [16 + 12 * flax, 16 + 12 * flax] }), 0.36);
+    rita('fia', x, y + 140, ff, pose('fia', 'neutral', 1, { luta: 10 * vx * (1 - ut) + 8 * ut, vingar: [16 + 12 * flax, 16 + 12 * flax] }), 0.5);
   }
 
   // kameran: lugn, en liten knuff mot Gurra och Pip i deras solon, långsamt in mot traktorn i hejdå (ingen still bild över 5 s)
@@ -234,7 +234,7 @@ function scen(t) {
   const zP = mjuk(del(T.vicka - 0.3, T.vicka + 0.2, t)) * (1 - mjuk(del(T.flyga - 0.4, T.flyga + 0.2, t)));
   const zA = t >= T.bak ? 0 : mjuk(del(T.arta - 0.3, T.arta + 0.4, t)), zH = mjuk(del(T.hej + 2.5, T.slut, t));
   // solona 1,55 mot kanten (kameran stannar vid plattans kant, så Lova är helt med), Lovas närbild 3,0 (bara hon i bild, ögonen ca 35 % ner)
-  K.kamera(1 + 0.55 * zG + 0.55 * zP + 2.0 * zA + 0.1 * zH, 960 + 490 * zG - 490 * zP, 560 + 110 * zG + 110 * zP + 134 * zA + 80 * zH);
+  K.kamera(1 + 0.25 * zG + 0.4 * zP + 1.0 * zA + 0.1 * zH, 960 + 560 * zG - 560 * zP, 560 + 60 * zP + 30 * zA + 80 * zH);   // större figurer: Gurras hopp 1,25, Pips solo 1,4, Lovas närbild 2,0
 }
 
 const ANIM = { standard: () => scen(K.TID) };
