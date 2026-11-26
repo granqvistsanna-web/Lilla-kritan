@@ -1605,9 +1605,9 @@
   "name": "057 Katten tvättar händerna – förhandsvisning 3"
  },
  "054": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/054-1125-2300.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/054-1126-0740.mp4",
   "duration": 256.5,
-  "rendered": "2026-11-25 23:00 (Djup QA fixad: svart slut, hoppet över kanten, skuggan, ankan, borsten bakom pallen, närbilden, irisen)",
+  "rendered": "2026-11-26 07:40 (Färre skumbubblor i karet i hela avsnittet: 8 skumtussar i stället för 15 (lite mindre), 9 glittrande bubblor i stället för 26, 2 stigande såpbubblor i stället för 3. Lammets ansikte och leksakerna syns. Förhandsvisning (--snabb).)",
   "file": "avsnitt/054-lammet-badar/scener/badet/badet.mp4",
   "status": "granska"
  },
