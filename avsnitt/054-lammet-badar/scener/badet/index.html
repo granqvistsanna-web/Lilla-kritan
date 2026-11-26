@@ -72,14 +72,16 @@ const PALL_X0 = KX - KAR_W / 2 + 25 - 778 * PALL_KS, PALL_Y0 = GOLV - 548 * PALL
 // pallens två steg (pall.png 781 × 551): nedre stegets ovansida y 212, x 40–330; övre y 4, x 360–760
 const STEG1 = [PALL_X0 + 185 * PALL_KS, PALL_Y0 + 238 * PALL_KS], STEG2 = [PALL_X0 + 565 * PALL_KS, PALL_Y0 + 32 * PALL_KS];
 const KROK = [150, 300];
-const ANKA_VID = [KX - 230, KANT - 12];   // QA 26/11: 30 px till höger, så att tassen inte ligger över näbben när lammet står på pallen
+const ANKA_VID = [KX - 230, KANT + 2];   // Sanna 26/11 1:31: 14 px lägre, så att ankan flyter i vattnet (förut KANT − 12, svävade över kanten)   // QA 26/11: 30 px till höger, så att tassen inte ligger över näbben när lammet står på pallen
 const OVER_KANT = x => x > KX - KAR_W / 2 - 46;   // fötterna når karets vänstra kant: lammet ritas bakom karets framsida
 const SKUGGA_KANT = x => kl((KX - KAR_W / 2 - x) / 70);   // kontaktskuggan tonas bort när lammet är över karet
 const ANKA_GOMD = [KX + 250, KANT + 22];
-const GOMSTUSS = [KX + 378, KANT + 4, 48];   // höger om det röda vredet, så att det syns helt   // tussen vid kranen, mindre (Sanna 26/11, förut 78)
+const GOMSTUSS = [KX + 370, KANT + 8, 32];   // Sanna 26/11 1:31 "putsa de stora bubblorna till höger": 32 (förut 48), helt innanför karets högra kant (x 1846)   // höger om det röda vredet, så att det syns helt   // tussen vid kranen, mindre (Sanna 26/11, förut 78)
 let FOT = 930, GS = 0.572;
 // omgång 2: lammet flyttar sig åt höger i badet (LDX) så att båten får plats mellan ankan och lammet
-const LDX = 40, ANKA3 = [1000, KANT - 12], BATP = [1159, KANT - 8], BAT3 = [1137, KANT - 8];
+// Sanna 26/11 1:31 "ankan flyger i luften utanför badkaret": ankan stod på karets vänstra kant (karets kant börjar x 1001). Nu inne i vattnet,
+// båten och lammet flyttade lika mycket åt höger så att avståndet och bonken är som förut
+const LDX = 100, ANKA3 = [1085, ANKA_VID[1]], BATP = [1240, KANT - 8], BAT3 = [1218, KANT - 8];
 // borsten ligger på golvet från början (Sanna 25/11: "brush laying on floor"), lammet tar med den upp i badet och tappar den när båten bonkar
 const BO_GOLV = [STA[0] + 150, GOLV - 18];   // ligger platt på golvet framför pallen (efter borstningen)
 // omgång 2d (Sanna 25/11 "place brush on the floor and lamm dont bring it in to tub", val A "bakom pallen"): borsten ligger på golvet
@@ -118,8 +120,8 @@ function badrum({ handduk = false, gomstuss = true } = {}) {
 }
 const tuss = (x, y, r, kant = '#cfe6ee', fill = '#fff') => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
   .map(([dx, dy, k]) => `<circle cx="${f1(x + dx * r)}" cy="${f1(y + dy * r)}" r="${f1(k * r)}" fill="${fill}" stroke="${kant}" stroke-width="${f1(0.08 * r)}" paint-order="stroke"/>`).join('');
-function skumKant(gomstuss) {   // skummet andas lite. Sanna 26/11 "less bubbles in the bathtub overall": 8 tussar i stället för 15, mindre
-  let h = ''; for (let i = 0; i < 8; i++) { const u = i / 7, x = KX - 470 + 680 * u, r = (20 + 12 * Math.abs(Math.sin(i * 2.3))) * (1 + 0.04 * Math.sin(TT * 1.7 + i));
+function skumKant(gomstuss) {   // skummet andas lite. Sanna 26/11 "less bubbles in the bathtub overall": 8 tussar i stället för 15, mindre. 1:31 (26/11): bara innanför karets kant (x 1055–1645, förut började de utanför vid 950), jämnare storlek
+  let h = ''; for (let i = 0; i < 8; i++) { const u = i / 7, x = KX - 365 + 590 * u, r = (22 + 8 * Math.abs(Math.sin(i * 2.3))) * (1 + 0.04 * Math.sin(TT * 1.7 + i));
     h += tuss(x, KANT + 16 - 0.4 * r, r); }   // lite lägre, så att munnen syns
   if (gomstuss) h += tuss(GOMSTUSS[0], GOMSTUSS[1], GOMSTUSS[2] * (1 + 0.025 * Math.sin(TT * 1.3)));
   lagg('fram', h);
