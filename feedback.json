@@ -10408,9 +10408,10 @@
   "sec": 114,
   "tags": [],
   "note": "some abrbt motion i leo positon please make all movement seamless",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711320466,
-  "render": "2026-11-26 16:31 (Feedback 26/11: kranen vid 0:51 putsad (ritad i kod, jämn båge och vit kant), förhandsvisning (--snabb) med 3D-intro och 3D-outro)"
+  "render": "2026-11-26 16:31 (Feedback 26/11: kranen vid 0:51 putsad (ritad i kod, jämn båge och vit kant), förhandsvisning (--snabb) med 3D-intro och 3D-outro)",
+  "fixedAt": 1795715333209
  },
  "xqijosbgnmmwxs5xxf": {
   "ep": "J03",
@@ -10418,9 +10419,10 @@
   "sec": 127,
   "tags": [],
   "note": "hand drinking looks odd here wrong hand i think",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711335171,
-  "render": "2026-11-26 16:31 (Feedback 26/11: kranen vid 0:51 putsad (ritad i kod, jämn båge och vit kant), förhandsvisning (--snabb) med 3D-intro och 3D-outro)"
+  "render": "2026-11-26 16:31 (Feedback 26/11: kranen vid 0:51 putsad (ritad i kod, jämn båge och vit kant), förhandsvisning (--snabb) med 3D-intro och 3D-outro)",
+  "fixedAt": 1795715333209
  },
  "qmhdoo6g1rmwxs897n": {
   "ep": "052",
