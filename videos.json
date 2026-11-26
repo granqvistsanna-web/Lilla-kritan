@@ -1674,5 +1674,13 @@
   "file": "produktion/three-rum/djup-prov/djup-prov-056.mp4",
   "status": "granska",
   "name": "Djup-kit prov (056)"
+ },
+ "006-v2": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/006-v2-1126-0922.mp4",
+  "duration": 228.7,
+  "rendered": "2026-11-26 09:22 (Grovklipp (snabb render): nytt orange intro, v1:s orange refrängvärld (sjön, solen, regnbågen, fisken, fågeln), större dansare i discot)",
+  "file": "avsnitt/006-orange-baten/v2/film/avsnitt-006-v2-grovklipp.mp4",
+  "status": "granska",
+  "name": "006 v2 Orangea sången"
  }
 }
