@@ -1,6 +1,6 @@
 # Avsnitt 058 – Pandan leker ute (plan)
 
-**Status:** grind 1 (manus) skriven 2026-11-26, **väntar på Sannas godkännande**. Inget är byggt: inga bilder, inga ljud, ingen röst, inga nya saker. Sanna bytte berättelse 2026-11-26: pandan leker ute i stället för att äta gröt (grötmanuset är borttaget), och berättelsen är **021 Hunden leker gjord om med pandan**. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med pandan, pandan svarar med ljud, öron och ansikte. Sikte: ca 3:50 (39 repliker; 021 har 32, 057 har 45 och är 3:57).
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-26 (Sanna: *"godkänn alla manus"*), med förslagen under Öppet som de står (ritintrot ritar lekstugan). Nästa: grind 2. Inget är byggt: inga bilder, inga ljud, ingen röst, inga nya saker. Sanna bytte berättelse 2026-11-26: pandan leker ute i stället för att äta gröt (grötmanuset är borttaget), och berättelsen är **021 Hunden leker gjord om med pandan**. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med pandan, pandan svarar med ljud, öron och ansikte. Sikte: ca 3:50 (39 repliker; 021 har 32, 057 har 45 och är 3:57).
 
 **Förlaga:** [021 Hunden leker](../021-hunden-leker/manus.md), läst i sin byggda form (`storyboard/rader.mjs` och `scener/lekplatsen/index.html`), som skiljer sig lite från 021:s manus. Samma plats, samma uppställning, samma saker och samma händelser i samma ordning: kritan ritar en boll, bollen hamnar i hinken, rullar och gömmer sig tre gånger, barnet hittar den bakom rutschkanan, bollen hamnar på lekstugans tak, kritan ritar en stege, pandan klättrar upp steg för steg och puffar ner bollen.
 
@@ -74,7 +74,7 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 
 | # | Utsnitt och bild (en rörelse) | Malin säger | Pandan svarar, ljud |
 |---|---|---|---|
-| 01 | Papperet: kritan ritar lekstugans kontur, väntar, lekstugan fylls i | Kritan ritar … *(paus)* Hm … vad ritar kritan? *(gisspaus 3 s)* Oj! En lekstuga! | `krita-ritar`, `skogsljud`, `glitter` |
+| 01 | Papperet: kritan ritar lekstugans kontur, väntar, lekstugan fylls i | Kritan ritar … *(paus)* Hm … vad blir det nu? *(gisspaus 3 s)* Oj! En lekstuga! | `krita-ritar`, `skogsljud`, `glitter` |
 | 1 | **H.** Lekplatsen: lekstugan, hinken, stöveln och kullen med rutschkanan. Pandan går in från vänster, stannar, gör ett glatt skutt och vinkar | Hej, pandan! Hej, hej! | `smasteg`, `hopp-mjuk`, pandans hej |
 | 2 | **N.** Pandan tittar på oss. **Pausen:** förtjust ljud, öronen upp, en nick | Vill du leka ute, pandan? *(paus: pandan svarar)* Ja, det vill du! | förtjust ljud i pausen |
 | 3 | **HB.** Pandan tittar åt vänster, sedan åt höger. Inget att leka med. Tyst 2,5 s | – | frågande ljud |
@@ -121,7 +121,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 ```
 [warmly] Kritan ritar …
-[curious] Hm … vad ritar kritan?
+[curious] Hm … vad blir det nu?
 [happy] Oj! En lekstuga!
 [happy] Hej, pandan! Hej, hej!
 [cheerfully] Vill du leka ute, pandan?
@@ -189,7 +189,7 @@ Förslag på namn: `panda-gullig` 1–10. Pandaungar piper och gnyr mjukt på ri
 - [x] 1 figur (pandan), 1 plats (lekplatsen), inget platsbyte, inget kritsvep i berättelsen
 - [x] **Inga nya saker och inga nya poser:** allt finns från 021 och riggen
 - [x] Inga djurnamn i det som sägs eller i filnamnen: "pandan", "bollen", "kritan". Röstmappen heter `pandan-leker-ute`
-- [x] Aldrig *"Vad kan det vara?"* (ritintrot: *"Hm … vad ritar kritan?"*). Aldrig *"Vad säger man?"* (*"Ska vi säga tack?"*, paus 2,5 s)
+- [x] Aldrig *"Vad kan det vara?"* (ritintrot: *"Hm … vad blir det nu?"*). Aldrig *"Vad säger man?"* (*"Ska vi säga tack?"*, paus 2,5 s)
 - [x] Varje replik har en v3-tagg, ingen `[excited]` (021 hade sex). Hej då är `[warmly]`
 - [x] Ritintrot ritar en sak ur berättelsen (lekstugan), inte pandan. Pandan kommer in i rad 1
 - [x] Inga uppmaningar till barnet att göra något med kroppen: kittla och hoppa med är borta. *"Hopp!"* i rad 25 beskriver pandans eget skutt. Barnets del: gissa teckningarna, säga tack, **leta efter bollen**
