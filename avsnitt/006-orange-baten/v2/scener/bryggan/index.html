@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>006 v2 · bryggan (11–14g)</title>
+<style>html,body{margin:0;background:#222;overflow:hidden}svg{display:block;width:100vw;height:auto}</style></head>
+<body>
+<!-- 006 v2, scen bryggan: storyboard-v2 11–14g, avsnittstid 1:59.4–2:50.6 (sångtid 1:50.4–2:41.6). Börjar mitt i det orangea
+     kritsvepet (sjön slutar där), slutar med ett rakt klipp till discot. Disa i båten (kit.js) lägger till vid v2-bryggan, där
+     Agda sitter med korgen. Apelsinen: Agda visar den, räcker den till Disa (nick), den glider ur tassarna, flyter bort ett steg per
+     "längre", Agda hoppar i, simmar ut och knuffar den tillbaka ett kliv per "hit", en halva var (i kod), mums, hurra.
+     Inga repliker (Sanna 2026-11-26). ?t=<avsnittstid> visar en bild. -->
+<svg id="scen" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap id="flytt" in="SourceGraphic" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <clipPath id="vattenytan" clipPathUnits="userSpaceOnUse"><rect id="vy" x="-200" y="-400" width="2400" height="2000"/></clipPath>
+  </defs>
+  <g id="kamera">
+    <image href="/assets/bakgrunder/sjon-v2/sjon-v2.png" width="1920" height="1080"/>
+    <g filter="url(#boil)">
+      <g id="ringar"></g>
+      <g id="brygga"></g>
+      <g id="agda-g" clip-path="url(#vattenytan)"><g id="agda"></g></g>
+      <g id="batlager"></g>
+      <g id="fram"></g>
+    </g>
+  </g>
+  <g id="ram"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="../kit.js"></script>
+<script>
+const E0 = 119.4, E1 = 170.6, DURATION = E1 - E0;
+const R = '/assets/rekvisita/';
+const BRYGGA = R + 'bryggan-v2/cut/bryggan-v2.png', KORG = R + 'korg/cut/korg-v3-tunn.png', APELSIN = R + 'apelsin-v2/cut/apelsin-v2.png',
+  BANAN = R + 'banan/cut/banan-v2-tunn.png', APPLE = R + 'applet-rott/cut/applet-rott-v3-tunn.png';
+
+// Platsen: bryggan (1242 × 400: däckets ovansida y 17–180, framkanten till y 244, stolparna ner till y 381) i skala 0,7 till höger.
+// Agda och korgen står mitt på däckets ovansida (y 110 i bilden), inte på bakkanten.
+// Båten lägger till vid bryggans vänstra ände, vattenlinjen y 800. Agda (skala 0,4) sitter på däcket, korgen bredvid.
+const JS = 0.7, JX = 1010, JY = 629, DACK = JY + 110 * JS, B_X1 = 700, B_Y = 800, AX = 1180, AS = 0.4, VY = 915;
+const KX = 1430, KS = 0.22, KY = DACK - 915 * KS;   // korgen: botten (y 915 i rutan) på däcket
+// Kameror [cx, cy, zoom]
+const HEL = [1075, 560, 1.12], TVA = [960, 600, 1.4], NAR_D = [730, 520, 2], NAR_A = [1270, 520, 2];
+
+let B, A, LA;   // båten med Disa (kit.js), Agda (grupp, rigg)
+const DP = (a, b, k = 1) => B.L.blandaPose(a, b, k), DF = n => B.L.param(n), DB = (a, b, k) => B.L.blanda(a, b, k);
+const AP = (a, b, k = 1) => LA.blandaPose(a, b, k), AF = n => LA.param(n), AB = (a, b, k) => LA.blanda(a, b, k);
+const D0 = () => ({ ...B.L.POSE0 }), A0 = () => ({ ...LA.POSE0 });
+const pekH = k => ({ ...DP('neutral', 'pekar', k), rikt: 0.6 * k });
+const sitt = (o = {}) => ({ ...AP('neutral', 'sitter'), ...o });
+const haller = k => sitt({ rikt: -k, bada: k, armar: [6 + 19 * k, 6] });   // sitter och håller fram apelsinen mot Disa
+const pulsar = (tl, ts, d = 0.3) => ts.reduce((a, t0) => a + (tl >= t0 && tl < t0 + d ? Math.sin(Math.PI * (tl - t0) / d) : 0), 0);
+
+// Skottlistan: [avsnittstid, namn, kamera, (tl) => [[Disa f, p], [Agda f, p]]]
+const S = [
+  [119.4, '11', HEL, () => [[DF('glad'), D0()], [AF('glad'), sitt()]]],
+  [121.0, '11a', HEL, tl => [[DB('glad', 'forvanad', del(0.4, 0.8, tl)), D0()], [AF('stolt'), haller(del(0, 0.5, tl))]]],
+  [125.5, '11b', NAR_D, tl => [[DF('glad'), { ...D0(), ...vink(tl, 2.4, { bas: 34, amp: 18, kropp: 2 }) }], [AF('stolt'), haller(1)]]],   // ritar en cirkel i luften
+  [128.0, '11d', NAR_A, tl => [[DF('nyfiken'), pekH(1)], [AF('nyfiken'), { ...haller(1), luta: 3 * Math.sin(tl * 1.4) }]]],
+  [133.5, '11e', TVA, tl => { const k = del(1.1, 1.5, tl), [nf, np] = tl > 1.3 && tl < 3.7 ? B.L.nicka(DF('glad'), pekH(1), tl - 1.3) : [DF('glad'), pekH(1)];
+    return [[nf, np], [AF('glad'), haller(1 - k)]]; }],
+  [138.0, '13a', TVA, tl => [[DB('glad', 'forvanad', del(0, 0.3, tl)), pekH(1 - del(0.3, 0.8, tl))], [AF('forvanad'), sitt()]]],
+  [140.3, '13b', HEL, () => [[DF('forvanad'), { ...D0(), rikt: 0.6 }], [AF('forvanad'), sitt({ rikt: 0.6 })]]],
+  [142.6, '13c', HEL, tl => [[DB('forvanad', 'ledsen', del(0, 1.5, tl)), { ...D0(), rikt: 0.6 }], [AF('ledsen'), sitt({ rikt: 0.6 })]]],
+  [147.1, '13d', NAR_D, tl => [[DF('ledsen'), { ...D0(), sank: 12 * pulsar(tl, [0.5, 1.2, 1.9], 0.35), upp: 0.3 }], [AF('ledsen'), sitt()]]],
+  [151.8, '13e', NAR_D, tl => [[DB('ledsen', 'nyfiken', del(0, 0.6, tl)), { ...D0(), luta: 5 * del(0.3, 0.9, tl) }], [AF('ledsen'), sitt()]]],
+  [154.3, '13f', HEL, tl => [[DF('nyfiken'), D0()], [AF('nyfiken'), sitt({ ...AP('neutral', 'pekar', del(0.2, 0.6, tl)), ben: [40, 40], benY: [-40, -40], sank: 48 })]]],
+  [156.6, '14a', HEL, tl => [[DF('glad'), D0()], [AF('stolt'), AP('sitter', 'stolt', del(0, 0.6, tl))]]],
+  [158.0, '14b', HEL, tl => [[DF('jatteglad'), { ...D0(), rikt: 0.5 }], [AF('jatteglad'), tl < 0.3 ? AP('stolt', 'huka', tl / 0.3) : { ...AP('neutral', 'hurra', 0.6), rikt: 0.5 }]]],
+  [160.0, '14c', HEL, tl => [[DF('glad'), { ...D0(), rikt: 0.6 }], [AF('glad'), { ...A0(), rikt: 0.8, armar: [-20 + 14 * Math.sin(tl * 9), -20 - 14 * Math.sin(tl * 9)] }]]],
+  [162.1, '14d', HEL, tl => [[DF('jatteglad'), pekH(1)], [AF('glad'), { ...A0(), rikt: -0.8, armar: Array(2).fill(30 * pulsar(tl, [0.5, 1.1, 1.7], 0.4)) }]]],
+  [164.5, '14e', TVA, () => [[DF('glad'), pekH(1)], [AF('glad'), haller(1)]]],
+  [166.8, '14f', TVA, tl => [[pulsar(tl, BETT, 0.35) > 0.2 ? DF('jatteglad') : DF('fnissig'), pekH(1)], [pulsar(tl, BETT, 0.35) > 0.2 ? AF('mums') : AF('fnissig'), haller(1)]]],
+  [168.2, '14g', TVA, tl => [[DB('glad', 'kawaii', del(0, 0.4, tl)), DP('neutral', 'hurra', del(0.1, 0.5, tl))],   // kawaii 3 av 3
+    [AB('jatteglad', 'kawaii', del(0, 0.4, tl)), sitt({ armar: [70 * del(0.1, 0.5, tl), 70 * del(0.1, 0.5, tl)] })]]],
+];
+const BETT = [0.2, 0.7, 1.2];   // mums, mums, mums (sekunder in i 14f)
+
+function lage(E) {
+  const { i, s, tl } = skott(S, E); let [[df, dp], [af, ap]] = s[3](tl);
+  if (i && tl < 0.45 && S[i - 1][2] === s[2]) { const [[df0, dp0], [af0, ap0]] = S[i - 1][3](s[0] - S[i - 1][0]), k = mjuk(tl / 0.45);
+    df = B.L.blanda(df0, df, k); dp = { ...dp, ...B.L.blandaPose(dp0, dp, k) }; af = LA.blanda(af0, af, k); ap = { ...ap, ...LA.blandaPose(ap0, ap, k) }; }
+  return [[df, dp], [af, ap]];
+}
+
+// Båten: puttrar in från vänster och lägger till (119.4–121.0), sedan ligger den still och gungar lätt.
+const batX = E => lerp(260, B_X1, mjuk((E - 119.4) / 1.6)), batFart = E => 1 - del(120.4, 121.2, E);
+
+// Agda: var hon är (gruppens fötter) och om hon är i vattnet.
+function agdaPlats(E) {
+  if (E < 158.3 || E >= 164.5) return [AX, DACK, false];
+  if (E < 159.0) { const u = (E - 158.3) / 0.7; return [lerp(AX, 1330, u), lerp(DACK, VY + 110, u) - 160 * Math.sin(Math.PI * u) * (1 - u * 0.3), u > 0.7]; }
+  const bob = 6 * Math.sin(E * 4);
+  if (E < 160.0) return [1330, VY + 110 + bob, true];
+  if (E < 162.1) return [lerp(1330, 1640, mjuk((E - 160) / 2.1)), VY + 110 + bob, true];
+  const [ox] = apelsinPlats(E); return [ox + 110, VY + 110 + bob, true];
+}
+
+// Apelsinen: korgen → Agdas vinge → Disas tass → vattnet → bort ett steg per "längre" → tillbaka ett kliv per "hit".
+const LANGRE = [142.6, 143.5, 144.4], HIT = [162.6, 163.2, 163.8];
+const steg = (E, ts, xs, d) => { let x = xs[0]; ts.forEach((t0, j) => { x = lerp(x, xs[j + 1], mjuk((E - t0) / d)); }); return x; };
+function apelsinPlats(E) {
+  const bob = 5 * Math.sin(E * 3.1);
+  if (E < 138.6) return null;
+  if (E < 140.3) return [1000, VY - 8 + bob, 1];
+  if (E < 142.6) { const u = mjuk((E - 140.3) / 2.3); return [lerp(1000, 1300, u), VY - 8 + bob, lerp(1, 0.95, u)]; }
+  if (E < 162.1) { const x = steg(E, LANGRE, [1300, 1460, 1610, 1740], 0.5); return [x, VY - 8 - (x - 1300) * 0.03 + bob, 0.95 - (x - 1300) * 0.0005]; }
+  const x = steg(E, HIT, [1740, 1500, 1260, 1040], 0.45); return [x, VY - 8 - Math.max(0, x - 1300) * 0.03 + bob, 0.95 - Math.max(0, x - 1300) * 0.0005];
+}
+const AHAND = [140, 600], DHAND = [885, 600];   // vingens och tassens spets i riggarnas rutor
+const apelsinBild = (x, y, s) => `<image href="${APELSIN}" x="${(x - 781 * 0.14 * s / 2).toFixed(1)}" y="${(y - 713 * 0.14 * s / 2).toFixed(1)}" width="${(781 * 0.14 * s).toFixed(1)}" height="${(713 * 0.14 * s).toFixed(1)}"/>`;
+const halva = (x, y, k) => { const r = 40 * k; if (r < 3) return '';   // en halva i snitt: skal, vitt, ljust fruktkött och klyftorna
+  return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><circle r="${r + 6}" fill="#fff"/><circle r="${r}" fill="#F28C28"/><circle r="${r * 0.86}" fill="#FFF3DC"/>
+    <circle r="${r * 0.78}" fill="#FFB347"/>${[0, 1, 2, 3, 4, 5, 6, 7].map(j => { const a = j * Math.PI / 4; return `<line x2="${(r * 0.78 * Math.cos(a)).toFixed(1)}" y2="${(r * 0.78 * Math.sin(a)).toFixed(1)}" stroke="#FFE2B0" stroke-width="${(r * 0.07).toFixed(1)}"/>`; }).join('')}</g>`; };
+
+function fram(E) {
+  const g = $('fram'), aArm = A.fig.querySelector('.arm-l'), dArm = B.fig.querySelector('.arm-r');
+  const ah = punkt(g, aArm, ...AHAND), dh = punkt(g, dArm, ...DHAND);
+  let h = '';
+  // apelsinen
+  if (E >= 121.0 && E < 164.5) {
+    let p = null;
+    if (E < 121.4) { const u = mjuk((E - 121.0) / 0.4); p = [lerp(KX + 60, ah.x, u), lerp(DACK - 75, ah.y, u) - 50 * Math.sin(Math.PI * u), 1]; }
+    else if (E < 134.6) { const u = mjuk((E - 133.6) / 1.0); p = [lerp(ah.x, dh.x, u), lerp(ah.y, dh.y, u) - 70 * Math.sin(Math.PI * u), 1]; }
+    else if (E < 138.0) p = [dh.x, dh.y, 1];
+    else if (E < 138.6) { const u = (E - 138.0) / 0.6; p = [lerp(dh.x, 1000, u), lerp(dh.y, VY - 8, u * u) - 40 * Math.sin(Math.PI * u), 1]; }
+    else p = apelsinPlats(E);
+    if (p) h += apelsinBild(...p);
+  }
+  // halvorna och tuggorna
+  if (E >= 164.5 && E < 168.3) { const b = j => E >= 166.8 + BETT[j]; const k = 1 - 0.27 * [0, 1, 2].filter(b).length - (E > 168.1 ? 1 : 0);
+    h += halva(dh.x, dh.y, k) + halva(ah.x, ah.y, k); }
+  // plask: apelsinen (138.6), Agda (159.0)
+  const w1 = (E - 138.55) / 0.7, w2 = (E - 158.95) / 0.9;
+  if (w1 > 0 && w1 < 1) h += plaskRita(1000, VY - 8, w1, 0.7);
+  if (w2 > 0 && w2 < 1) h += plaskRita(1330, VY, w2, 1.3);
+  // glimten på apelsinen långt bort (13f) och på halvorna (14e)
+  const o = apelsinPlats(E);
+  if (o && E > 154.3 && E < 156.6) h += gnistor(o[0], o[1], 70, (E - 154.5) * 1.5, 4);
+  if (E > 164.5 && E < 166.6) h += gnistor((ah.x + dh.x) / 2, (ah.y + dh.y) / 2 - 40, 200, E - 164.6);
+  // tåren (13d)
+  if (E > 147.1 && E < 151.9) { const u = ((E - 147.3) % 1.6) / 1.6, oga = punkt(g, B.fig.querySelector('.kropp'), 610, 450);
+    h += `<path d="M0 -14 Q9 0 0 9 Q-9 0 0 -14Z" transform="translate(${oga.x.toFixed(1)} ${(oga.y + 40 * u).toFixed(1)}) scale(1.4)" fill="#8fd3f4" stroke="#fff" stroke-width="2" opacity="${(1 - u).toFixed(2)}"/>`; }
+  g.innerHTML = h;
+  // ringar efter Agda när hon simmar
+  let r = '';
+  if (E > 159.2 && E < 164.5) for (let j = 0; j < 3; j++) { const u = ((E + j * 0.5) % 1.5) / 1.5, [x] = agdaPlats(E - u * 0.6);
+    r += `<ellipse cx="${x.toFixed(0)}" cy="${VY + 6}" rx="${(70 + 90 * u).toFixed(0)}" ry="${(14 + 16 * u).toFixed(0)}" fill="none" stroke="#fff" stroke-width="5" opacity="${(0.7 * (1 - u)).toFixed(2)}"/>`; }
+  $('ringar').innerHTML = r;
+}
+
+function rita(t) {
+  if (!B || !A?.fig) return;
+  const E = E0 + t;
+  const [[df, dp], [af, ap]] = lage(E);
+  batRita(B, E, { x: batX(E), y: B_Y, s: E * 140, fart: batFart(E), f: df, p: dp });
+  const [x, y, vatten] = agdaPlats(E);
+  A.g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
+  $('vy').setAttribute('height', vatten ? VY + 400 + 8 : 2000);
+  LA.rita(A.fig, A.blinka(af, E), ap);
+  fram(E);
+  $('korgen-apelsin').style.display = E < 121.0 ? '' : 'none';
+  const [cx, cy, z] = skott(S, E).s[2]; kamera(cx, cy, z, E);
+  orangesvep((E - 118.6) / 1.6);
+}
+
+const EF = 'assets/ljud/effekter/';
+function ljud() {
+  const ut = [{ t: 119.4, fil: EF + 'tuff-tuff/tuff-tuff-1.m4a', vol: 0.5, langd: 1.8, fade: 0.6 }];
+  ut.push({ t: 138.6, fil: EF + 'plask/plask-1.m4a', vol: 0.9 }, { t: 159.0, fil: EF + 'plask-stor/plask-stor-1.m4a', vol: 0.9 });
+  ut.push({ t: 159.4, fil: EF + 'simma/simma-1.m4a', vol: 0.6, langd: 5, loop: true, fade: 0.5 });
+  ut.push({ t: 154.5, fil: EF + 'tindra/tindra-4.m4a', vol: 0.7 }, { t: 164.6, fil: EF + 'tindra/tindra-3.m4a', vol: 0.8 });
+  return ut.map(c => ({ ...c, t: c.t - E0 }));
+}
+
+window.DURATION = DURATION;
+window.SANG = [E0 - SANG0, E1 - SANG0];
+window.seek = t => { window.stilla = true; rita(t); };
+window.render = window.seek;
+window.ready = (async () => {
+  // bryggan, frukterna (bakom korgen) och korgen
+  $('brygga').innerHTML = `<image href="${BRYGGA}" x="${JX}" y="${JY}" width="${1242 * JS}" height="${400 * JS}"/>
+    <image href="${APPLE}" x="${KX - 95}" y="${DACK - 160}" width="${729 * 0.11}" height="${836 * 0.11}"/>
+    <image href="${BANAN}" x="${KX - 40}" y="${DACK - 178}" width="${1659 * 0.075}" height="${1535 * 0.075}" transform="rotate(-12 ${KX + 20} ${DACK - 120})"/>
+    <g id="korgen-apelsin">${apelsinBild(KX + 60, DACK - 118, 1)}</g>
+    <image href="${KORG}" x="${KX - 512 * KS}" y="${KY}" width="${1024 * KS}" height="${1024 * KS}"/>`;
+  B = await batBygg($('batlager'));
+  LA = await v2rigg('ankan-agda');
+  A = { g: $('agda'), blinka: skapaBlinka(37) };
+  A.fig = LA.figur(0, 0, AS, A.g);
+  A.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none');
+  await Promise.all([BRYGGA, KORG, APELSIN, BANAN, APPLE, KORN, '/assets/bakgrunder/sjon-v2/sjon-v2.png']
+    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.LJUD = ljud();
+  const q = new URLSearchParams(location.search).get('t');
+  rita(q ? +q - E0 : 0);
+  return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && A?.fig) rita(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body></html>

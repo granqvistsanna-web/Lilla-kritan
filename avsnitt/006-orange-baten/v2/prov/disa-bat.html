@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>Disa i båten (006 v2)</title>
+<style>html,body{margin:0;background:#222}svg{display:block;width:100vw;height:auto}</style></head>
+<body>
+<!-- Prov för 006 v2: v2-Disa (live ur uttryck.html) sitter i v2-båten på v2-sjön. Flytvästen och flaggan i kod.
+     12 s slinga: 0–3 sitter, 3–6 vinkar, 6–9 tittar framåt (riktning höger), 9–12 pekar. ?zoom=2 = närbild.
+     Stillbilder: node .claude/skills/lk-figur/scripts/stills.mjs "avsnitt/006-orange-baten/v2/prov/disa-bat.html" <ut>.jpg 1 4.5 7.5 10.5 -->
+<svg id="scen" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap id="flytt" in="SourceGraphic" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g id="kamera">
+    <g id="sjon"><image href="/assets/bakgrunder/sjon-v2/sjon-v2.png" width="1920" height="1080"/><image href="/assets/bakgrunder/sjon-v2/sjon-v2.png" x="1920" width="1920" height="1080"/></g>
+    <g filter="url(#boil)">
+      <g id="baten">
+        <g id="flaggan"></g>
+        <g id="figurer"></g>
+        <g id="skrov"></g>
+        <path id="vag" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="26 18" opacity="0.85"/>
+      </g>
+    </g>
+  </g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const NS = 'http://www.w3.org/2000/svg', $ = id => document.getElementById(id);
+const mjuk = k => (k = Math.max(0, Math.min(1, k)), k * k * (3 - 2 * k));
+const ZOOM = +(new URLSearchParams(location.search).get('zoom') || 1);
+
+// Båten: urklippet 883 × 325 (assets/rekvisita/orange-baten-v2), skala 0,7 (ca 2 gånger Disas bredd; Sanna 2026-11-26: dinon för stor i båten), botten (y 313) i vattnet på y 760.
+const BS = 0.7, BX = 960 - 883 * BS / 2, BY = 760 - 313 * BS;
+// Disa: SKALA 0,5, fötterna så att relingen (båten y ≈ 82 vid x 480) skär henne vid y 720 i hennes ruta, så att armarna (vridpunkt 576) syns ovanför.
+const SK = 0.5, FOT = 921, DX = BX + 480 * BS, DY = BY + 84 * BS + (FOT - 720) * SK;
+
+// Flytvästen i Disas ruta: en mjuk väst från bröstet ner (dold av skrovet under relingen), maskad med kroppens egen form
+// minskad 16 px, så att den aldrig går utanför kroppen eller över den vita kanten. Glipa i mitten, ett vitt band, ett spänne.
+const VAST = `<mask id="vastmask" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024" style="mask-type:alpha">
+    <filter id="vastkrymp"><feMorphology operator="erode" radius="16"/></filter>
+    <image href="/assets/karaktarer/dinon-disa/premium/cut/disa-body.png" width="1024" height="1024" filter="url(#vastkrymp)"/></mask>
+  <g class="vast" mask="url(#vastmask)">
+    <path d="M200 860 L200 600 Q230 552 300 548 Q420 548 470 566 Q494 576 498 600 L498 860Z" fill="#FF7A21"/>
+    <path d="M824 860 L824 600 Q794 552 724 548 Q604 548 554 566 Q530 576 526 600 L526 860Z" fill="#FF7A21"/>
+    <path d="M300 548 Q420 548 470 566 Q494 576 498 600 L486 604 Q480 584 462 578 Q420 562 300 562 Q236 566 206 612 L200 600 Q230 552 300 548Z" fill="#FFA35C" opacity="0.85"/>
+    <path d="M724 548 Q604 548 554 566 Q530 576 526 600 L538 604 Q544 584 562 578 Q604 562 724 562 Q788 566 818 612 L824 600 Q794 552 724 548Z" fill="#FFA35C" opacity="0.85"/>
+    <rect x="200" y="640" width="298" height="15" fill="#FFF6E8"/><rect x="526" y="640" width="298" height="15" fill="#FFF6E8"/>
+  </g>
+  <rect x="490" y="634" width="44" height="27" rx="7" fill="#5b5b66"/>`;
+
+let L, fig;
+(async () => {
+  L = await v2rigg('dinon-disa');
+  fig = L.figur(DX, DY, SK, $('figurer'));
+  // västen sitter i kroppen (sträcks och breddas med den), under ansiktet
+  const kropp = fig.querySelector('.kropp'); kropp.firstElementChild.insertAdjacentHTML('afterend', VAST);
+  // benen syns aldrig: de är dolda av skrovet
+  fig.querySelectorAll('.leg-l, .leg-r, .skugga').forEach(e => e.style.display = 'none');
+  $('skrov').innerHTML = `<g transform="translate(${BX} ${BY}) scale(${BS})">
+    <image href="/assets/rekvisita/orange-baten-v2/cut/orange-baten-v2.png" width="883" height="325"/></g>`;
+  // flaggan i aktern på motorn, bakom Disa (armen går framför den)
+  $('flaggan').innerHTML = `<g transform="translate(${BX} ${BY}) scale(${BS})">
+    <path d="M60 90 L60 -170" stroke="#8a5a36" stroke-width="12" stroke-linecap="round"/>
+    <path id="flagga" fill="#FF7A21" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g>`;
+  window.render = render; render(0);
+  const start = performance.now();
+  (function loop() { if (!window.stilla) render((performance.now() - start) / 1000); requestAnimationFrame(loop); })();
+})();
+
+// Vinkningen som i 033 (godkänd där): armen bakom kroppen, snett ut förbi kanten, 55° ± 12°, upp 0,45 s, svänger 1,2 gånger/s,
+// ner 0,45 s. Inte ARMROR.vinka: den lyfter Disas arm över hennes gömzon (GOM 26–80°) in i UT, där armen skjuts ut 36 px och
+// upp 20 px och roten lossnar från kroppen (Sanna 2026-11-26: "arm flying in the air").
+const del = (a, b, u) => mjuk((u - a) / (b - a));
+const vink = (u, W = 2.9) => { const v = del(0, 0.45, u) - del(W - 0.45, W, u), s = Math.sin(2 * Math.PI * 1.2 * Math.max(0, u - 0.3));
+  return { boj: 2 * v, armar: [0, v * (55 + 12 * s)] }; };
+
+function lage(t) {
+  const T = t % 12, seg = Math.floor(T / 3), tl = T - seg * 3, k = del(0, 0.5, tl) - del(2.5, 3, tl);
+  let f = L.param('glad'), p = { ...L.POSE0 };
+  if (seg === 1) p = { ...L.POSE0, ...vink(tl) };
+  if (seg === 2) { p = L.blandaPose('neutral', 'hoger', k); f = L.blanda('glad', 'nyfiken', k); }
+  if (seg === 3) { p = L.blandaPose('neutral', 'pekar', k); f = L.blanda('glad', 'nyfiken', k); }   // Disas egen pekpose (16°, under gömzonen)
+  return [f, p];
+}
+
+function render(t) {
+  if (!L) return;
+  // vattnet glider åt vänster, båten gungar (Disa följer med eftersom hon sitter i samma grupp)
+  const s = (t * 140) % 1920;
+  $('sjon').setAttribute('transform', `translate(${-s} 0)`);
+  const gung = Math.sin(t * 2.2) * 5, lut = Math.sin(t * 1.7) * 1.2;
+  $('baten').setAttribute('transform', `translate(0 ${gung}) rotate(${lut} 960 740)`);
+  // flaggan fladdrar lugnt
+  const v = Math.sin(t * 6) * 10;
+  $('flagga').setAttribute('d', `M60 -170 Q0 ${-160 + v} -70 ${-130 + v * 0.6} Q0 ${-110 + v} 60 -90Z`);   // fladdrar bakåt, båten kör åt höger
+  // skum längs skrovets botten: en streckad vit våglinje som rör sig bakåt
+  let d = '';
+  for (let x = BX + 90 * BS; x <= BX + 820 * BS; x += 15) d += `${d ? ' L' : 'M'}${x} ${752 + Math.sin(x / 30 + t * 4) * 3}`;
+  $('vag').setAttribute('d', d); $('vag').setAttribute('stroke-dashoffset', t * 120);
+  const [f, p] = lage(t);
+  L.rita(fig, f, p);
+  // line boil: 2,5 px i bild, delat med zoomen, ny brusbild 6 gånger/s
+  $('flytt').setAttribute('scale', 2.5 / ZOOM); $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);
+  const cx = 960, cy = 575;
+  $('kamera').setAttribute('transform', ZOOM === 1 ? '' :
+    `translate(${Math.min(0, Math.max(1920 - 1920 * ZOOM, 960 - cx * ZOOM))} ${Math.min(0, Math.max(1080 - 1080 * ZOOM, 540 - cy * ZOOM))}) scale(${ZOOM})`);
+}
+</script>
+</body></html>

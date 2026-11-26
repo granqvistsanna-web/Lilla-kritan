@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><title>006 v2 · kritan ritar (01a–01e)</title>
+<style>html,body{margin:0;background:#222;overflow:hidden}svg{display:block;width:100vw;height:auto}</style></head>
+<body>
+<!-- 006 v2, scen kritan-ritar: storyboard-v2 01a–01e, avsnittstid 0:09.0–0:33.2 (sångtid 0:00–0:24.2). Introts kritsvep slutar här.
+     Den delade koden verktyg/kritan-ritar.js (skillen kritan-ritar): båtens kontur i ett drag (2,8 s), flaggstången och flaggan på
+     "vad kan det vara?", gissningspausen (kritan svajar på väntplatsen, kameran kryper in 12 %), "En båt!": v2-båten fylls i inifrån
+     med gnistor, kritan flyger ut, båten gungar. "Tut-tut, nu kör vi!": kameran åker in i båten (zoom in), sjön tar vid.
+     Konturen: assets/rekvisita/orange-baten-v2/cut/orange-baten-v2-kontur.json (verktyg/kontur.py --krymp 9). -->
+<svg id="scen" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap id="flytt" in="SourceGraphic" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <g id="kamera">
+    <rect x="-200" y="-200" width="2320" height="1480" fill="#FBF7EE"/>
+    <g filter="url(#boil)"><g id="teckning"></g><g id="gnistor"></g><g id="kritan"></g></g>
+  </g>
+  <g id="ram"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="../kit.js"></script>
+<script>
+const E0 = 9.0, E1 = 33.2, DURATION = E1 - E0;
+const BATEN = '/assets/rekvisita/orange-baten-v2/cut/orange-baten-v2.png';
+// Båten på papperet i skala 1,15, mitt i bild med flaggan; (BX, BY) = bildens övre vänstra hörn.
+const PS = 1.15, BX = 960 - 883 * PS / 2, BY = 451;
+const tillScen = ([x, y]) => [BX + x * PS, BY + y * PS];
+const MITT = [647, 183], FYLL_R = 820;   // fyllningens mitt (kontur.json) och radie som når flaggans spets
+const LINJE = '#8A3E0C';                 // mörk ton av orange (färgsångerna)
+const FLAGG_DRAG = ['M60 90 L60 -170', 'M60 -170 Q0 -160 -70 -130 Q0 -110 60 -90'];
+// Tider (avsnittstid): kontur 9.8–12.6 (2,8 s); står kvar; glider till stången 15.4–15.8; stången och flaggan 15.8–17.4;
+// väntar 17.6–18.4 och svajar genom gissningen (sjungen 13.2 + pausen); svaret 28.1: fyllning 0,7 s, kritan ut 28.1–28.9.
+const T = { in: [9.3, 9.75], rit: [9.8, 17.4], vanta: [17.6, 18.4], ut: [28.1, 28.9] }, R1 = [9.8, 12.6], GLID = [15.35, 15.8], R2 = [15.8, 17.4];
+const SVAR = 28.1, KRYP = [22.2, 28.1], ZOOM = [31.4, 33.2];
+let KONTUR;
+
+function rita(t) {
+  if (!KONTUR) return;
+  const E = E0 + t;
+  const k1 = ritfart((E - R1[0]) / (R1[1] - R1[0])), k2 = ritfart((E - R2[0]) / (R2[1] - R2[0])), f = kl((E - SVAR) / 0.7);
+  const st = `fill="none" stroke="${LINJE}" stroke-width="${(KRITAN.BRED / PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"`;
+  const A = ritBana([KONTUR.d], k1, { attr: st }), B = ritBana(FLAGG_DRAG, k2, { attr: st });
+  // båten gungar till på svaret, sedan lugnt
+  const gung = E > SVAR + 0.2 ? 3 * Math.sin((E - SVAR - 0.2) * 5) * Math.exp(-(E - SVAR - 0.2) * 1.5) + 0.8 * Math.sin(E * 1.7) : 0;
+  const fl = Math.sin(E * 6) * 10 * f;
+  $('teckning').innerHTML = `<defs>${fyllMask('fy', MITT[0], MITT[1], FYLL_R, f)}</defs>
+    <g transform="rotate(${gung.toFixed(2)} 960 ${BY + 300 * PS}) translate(${BX.toFixed(1)} ${BY}) scale(${PS})">
+      <g clip-path="url(#fy)"><path d="M60 90 L60 -170" stroke="#8a5a36" stroke-width="12" stroke-linecap="round"/>
+        <path d="M60 -170 Q0 ${-160 + fl} -70 ${-130 + fl * 0.6} Q0 ${-110 + fl} 60 -90Z" fill="#FF7A21" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>
+        <image href="${BATEN}" width="883" height="325"/></g>
+      ${B.html}${A.html}</g>`;
+  // kritan: kontur, står kvar, glider i en båge till stången, ritar flaggan, väntar, flyger ut
+  let spets = E < R1[1] ? A.spets : B.spets;
+  if (E >= R1[1] && E < R2[0]) { const m = mjuk((E - GLID[0]) / (GLID[1] - GLID[0])); spets = [lerp(A.slut[0], B.start[0], m), lerp(A.slut[1], B.start[1], m) - 40 / PS * Math.sin(Math.PI * m)]; }
+  const z = zoomAt(E);
+  const kr = kritaFas(E, T, { start: tillScen(A.start), spets: tillScen(spets), slut: tillScen(B.slut), vanta: [1640, 250], s: KRITAN.SKALA_PAPPER / z });
+  $('kritan').innerHTML = kr ? kritaBild(kr.x, kr.y, kr) : '';
+  $('gnistor').innerHTML = gnistor(960, BY + 120 * PS, 440, E - SVAR);
+  const [cx, cy] = E < ZOOM[0] ? [960, 540] : kamMix([960, 540], [BX + 480 * PS, BY + 170 * PS], (E - ZOOM[0]) / (ZOOM[1] - ZOOM[0]));
+  kamera(cx, cy, z, E);
+  orangesvep(0.5 + t / 1.6);   // introts orange kritsvep glider undan åt höger
+}
+// gissningen: kryper in 12 %; zoom in i båten på "Tut-tut, nu kör vi!" (accelererar in, klippet till sjön sker i full fart)
+const zoomAt = E => E < ZOOM[0] ? 1 + 0.12 * mjuk((E - KRYP[0]) / (KRYP[1] - KRYP[0])) * (1 - mjuk((E - SVAR) / 0.8))
+  : 1 + 3 * Math.pow(kl((E - ZOOM[0]) / (ZOOM[1] - ZOOM[0])), 2.2);
+
+const EF = 'assets/ljud/effekter/';
+function ljud() {
+  const ut = [{ t: E0, fil: EF + 'skogsljud/skogsljud-1.m4a', vol: 0.4, langd: DURATION, loop: true, fadeIn: 0.5, fade: 1 }];
+  [R1, R2].forEach(([a, b], i) => ut.push({ t: a, fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: b - a + 0.1, loop: true, fade: 0.4 }));
+  ut.push({ t: SVAR, fil: EF + 'pling/pling-1.m4a', vol: 1.0 }, { t: SVAR + 0.2, fil: EF + 'tindra/tindra-3.m4a', vol: 0.7 });
+  ut.push({ t: ZOOM[0], fil: EF + 'swoosh/swoosh-1.m4a', vol: 0.6 });
+  return ut.map(c => ({ ...c, t: c.t - E0 }));
+}
+
+window.DURATION = DURATION;
+window.SANG = [E0 - SANG0, E1 - SANG0];
+window.seek = t => { window.stilla = true; rita(t); };
+window.render = window.seek;
+window.ready = (async () => {
+  KONTUR = await (await fetch('/assets/rekvisita/orange-baten-v2/cut/orange-baten-v2-kontur.json')).json();
+  await Promise.all([BATEN, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.LJUD = ljud();
+  const q = new URLSearchParams(location.search).get('t');
+  rita(q ? +q - E0 : 0);
+  return true;
+})();
+const start = performance.now();
+(function loop() { if (!window.stilla && KONTUR) rita(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(loop); })();
+</script>
+</body></html>

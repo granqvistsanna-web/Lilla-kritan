@@ -15,6 +15,7 @@ Alla platser är byggda på samma sätt: **en färgad vägg och ett vitt golv**,
 | Himlen | himmelsblå, inget golv | [himlen.md](himlen.md) |
 | Glassberget | ljusblå `#A8DCF2`, inget golv | [glassberget.md](glassberget.md) |
 | Sjön | ljusblå `#A8DCF2` himmel, sjöblått vatten (glider, för båten) | [sjon.md](sjon.md) |
+| Sjön (v2) | ljusblå himmel, sjöblått vatten, sömlös i sidled, tom platta (006 v2) | [sjon-v2.md](sjon-v2.md) |
 | Bryggan | ljusblå `#A8DCF2` himmel, sjöblått vatten | [bryggan.md](bryggan.md) |
 | Äppelbacken | teal `#2A8C7A`, en lång grön backe med äppelträd, v2 (refrängen i 013) | [appelbacken.md](appelbacken.md) |
 | Jättesolen | gyllene orange `#F5A33C`, inget golv, jättestor sol utan ansikte (refrängen i 011) | [jattesolen.md](jattesolen.md) |

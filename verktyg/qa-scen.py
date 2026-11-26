@@ -6,14 +6,15 @@
   python3 verktyg/qa-scen.py --pussel [filmnamn ...]                   Malins tider i pussel-prov.py (alla filmer om inga namn)
 Raderna (tomt efter kolon = inget fel):
  boil kod: #boil-skala som är fast, större än 2,5 eller inte delad med kamerazoomen (regeln i CLAUDE.md).
- boil film: boilstegets storlek i px/s (se boil_film): bara hoppet när brusbilden byts 6 gånger/s räknas, jämn rörelse
-   (snö, andning, svans, kamera) tar ut sig själv. Hela filmens median över BOIL_FILM = för stark boil överallt; delar där
-   5 s-medianen går över BOIL_SPANN listas (introts 5 första s räknas inte). Värdet beror också på hur stor del av kanterna
-   som kokar (plattan kokar inte), så ritningar, närbilder och kritirisen läser högre.
-   Kalibrerat 2026-11-23 (det förra måttet räknade rörelse som boil: 035 med snöfall fick 16, gräns 9, fast koden följer regeln):
-   051 median 2,9, 035 3,2, 045 julköket 3,6 (alla 2,5/zoom, 6/s; delar upp till 10, 045:s slut 14). Prov på 035, 3 s:
-   2,5/zoom 2,1–4,2 per sekund, 5/zoom 4,2–5,5. Boil som byter bild i varje ruta (045 före 22/11) går inte att se i filmen
-   (ingen fas sticker ut, 045 då 3,2): koll på takten hör hemma i koden. Måttet är inte px i absoluta tal. Ca 1 min per 4 min film.
+ boil film: boilstegets storlek i px/s (se boil_film): bara hoppet när brusbilden byts 6 gånger/s räknas, i samma fas
+   hela filmen, minus det rörelsens brus ger i de andra faserna. Hela filmens median över BOIL_FILM = för stark boil överallt;
+   delar där 5 s-medianen går över BOIL_SPANN listas (introts 5 första s räknas inte). Värdet beror på hur stor del av kanterna
+   som kokar: bilder utan kokande kanter (ABC:s träklossar, plattan) ger 0, ritningar och närbilder läser högre.
+   Kalibrerat om 2026-11-26 (förra måttet valde största fasen varje sekund, så rörelse gav boil: ABC E läste 4,3 med boilen
+   avstängd och alla ABC-filmer flaggades). Prov ABC E 1:24–1:44, sekunderna med ritningen i bild: av 0–0,3, 2,5/zoom 1,5–3,4,
+   5/zoom 4,1–6,6. Hela filmer med 2,5/zoom: 051 median 2,7 (5 s högst 3,7), 035 1,6 (3,1), ABC A–E 0–0,1 (4,0–4,7).
+   Boil som byter bild i varje ruta (045 före 22/11) går inte att se i filmen (ingen fas sticker ut): koll på takten hör
+   hemma i koden. Måttet är inte px i absoluta tal. Ca 1 min per 4 min film.
  krita kod: kritan ritas med verktyg/kritan-ritar.js (skillen kritan-ritar) och dess bild krita-rod.png. Flaggar scener och
    intron som visar krit-bilden utan att ladda kritan-ritar.js (egen krita: egna vinklar, egen fart). Beslut 2026-11-25: gäller nya avsnitt från KRITA_FRAN; äldre rättas när de ändå renderas om, så ett
    enskilt avsnitt flaggas alltid, men --alla listar bara nya avsnitt och räknar de äldre.
@@ -36,8 +37,8 @@ import numpy as np
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOIL_MAX = 2.5      # px i bild, CLAUDE.md
-BOIL_FILM = 4.5     # px/s, hela filmens median av boilsteget (se ovan)
-BOIL_SPANN = 15     # px/s, 5 s-median för en del av filmen (ritningar och kritiris med 2,5/zoom upp till 14)
+BOIL_FILM = 4.0     # px/s, hela filmens median av boilsteget (se ovan; bra filmer högst 2,7, 5/zoom ca dubbelt)
+BOIL_SPANN = 6      # px/s, 5 s-median för en del av filmen (ritningar och närbilder med 2,5/zoom upp till 4,7)
 KRITA_FRAN = 52     # första avsnittet där kritan måste gå genom kritan-ritar.js
 TVART_DB = 15       # dB fall på 10 ms (en klippt replik över musik föll 19 dB)
 START_DB = 10       # röstfil vars första 10 ms ligger högst så här under talets nivå börjar mitt i ett ord (delad för tidigt)
@@ -94,9 +95,12 @@ def kritfiler(avsnitt=None):
 def boil_film(film, w=640, h=360):
     """Boilstegets storlek i px/s per sekund film. Boil byter brusbild 6 gånger/s (var 5:e ruta i 30 fps), då hoppar alla
     kanter på en gång; rörelse (snö, andning, svans, kamera) flyttar kanterna jämnt i varje ruta. Per pixel och sekund:
-    kantens flytt (skillnaden delad med lutningen, bara kantpunkter under ca 4 px) som medel per fas (ruta mod 5). Fasen med
-    störst flytt är bytet; dess överskott mot de andra fasernas median är boilen, rörelsen tar ut sig själv. 90:e percentilen
-    av överskottet gånger 6 byten/s. Boil som byter bild i varje ruta syns inte här (ingen fas sticker ut): det fångar koden."""
+    kantens flytt (skillnaden delad med lutningen, bara kantpunkter under ca 4 px) som medel per fas (ruta mod 5).
+    Bytesfasen väljs EN gång för hela filmen (fasen med störst flytt totalt), inte per sekund: att välja den största fasen
+    varje sekund gav rörelsen ett överskott även utan boil (ABC E 2026-11-26: 4,3 px/s med boilen avstängd).
+    Per sekund: 90:e percentilen av bytesfasens överskott mot de andra fasernas median, minus samma tal för de andra
+    faserna (deras median), alltså det rörelsens brus ger ändå. Gånger 6 byten/s. Boil som byter bild i varje ruta syns
+    inte här (ingen fas sticker ut): det fångar koden."""
     import cv2
     fps = round(Fraction(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=r_frame_rate',
                                         '-of', 'csv=p=0', film], capture_output=True, text=True).stdout.split(',')[0].strip() or '30'))
@@ -104,7 +108,7 @@ def boil_film(film, w=640, h=360):
     P = fps // 6
     p = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', film, '-vf', f'scale={w}:{h}', '-pix_fmt', 'gray', '-f', 'rawvideo', '-'],
                          stdout=subprocess.PIPE)
-    forra, buf, ut = None, [], []
+    forra, buf, Q, M = None, [], [], []                 # Q: per sekund och fas, p90 av fasens överskott; M: medelflytt per fas
     while len(b := p.stdout.read(w * h)) == w * h:
         a = cv2.GaussianBlur(np.frombuffer(b, np.uint8).reshape(h, w).astype(np.float32), (0, 0), 1.0)
         if forra is not None:
@@ -112,19 +116,25 @@ def boil_film(film, w=640, h=360):
             r = np.minimum(np.abs(a - forra) / np.maximum(g, 1e-3), 1.3); r[g <= 6] = np.nan
             buf.append(r)
         forra = a
-        if len(buf) == fps:
+        if len(buf) == fps:                             # buf[0] är flytten in i sekundens andra ruta: fas k = samma k hela filmen
             with np.errstate(all='ignore'), __import__('warnings').catch_warnings():
                 __import__('warnings').simplefilter('ignore')
                 c = np.stack([np.nanmean(np.stack(buf[k::P]), 0) for k in range(P)])   # medelflytt per fas och pixel
-                mm = np.nanmean(c.reshape(P, -1), 1)
-                v = np.array([])
-                if np.isfinite(mm).any():
-                    k = int(np.nanargmax(mm))
+                q = []
+                for k in range(P):
                     v = c[k] - np.nanmedian(np.delete(c, k, 0), 0); v = v[np.isfinite(v)]
-            ut.append(np.percentile(v, 90) * 1080 / h * 6 if v.size > 300 else 0)
+                    q.append(np.percentile(v, 90) if v.size > 300 else np.nan)
+                Q.append(q); M.append(np.nanmean(c.reshape(P, -1), 1))
             buf = []
     p.wait()
-    return np.array(ut)
+    if not Q: return np.array([])
+    Q, M = np.array(Q), np.array(M)
+    with np.errstate(all='ignore'), __import__('warnings').catch_warnings():
+        __import__('warnings').simplefilter('ignore')
+        k = int(np.nanargmax(np.nansum(M, 0)))          # bytesfasen, en gång för hela filmen
+        ut = (Q[:, k] - np.nanmedian(np.delete(Q, k, 1), 1)) * 1080 / h * 6
+    return np.nan_to_num(np.maximum(ut, 0))
+
 
 def boil_spann(s, grans=BOIL_SPANN, intro=5):
     """[(från, till, max)]: sekunder efter introt där 5 s-medianen ligger över gränsen."""

@@ -1,0 +1,30 @@
+{
+ "storlek": 1024,
+ "kropp": "fagel-kropp.png",
+ "vy": "från sidan, nosen åt höger; spegla med scale(-1 1) när den flyger åt vänster",
+ "ordning": "bakifrån: vinge, kropp, öga",
+ "delar": {
+  "vinge": {
+   "fil": "fagel-vinge.png",
+   "vridpunkt": [
+    514,
+    613
+   ]
+  }
+ },
+ "flax": "som v1: vingen trycks ihop i höjdled runt vridpunktens y, scaleY 1 = uppe (som ritad) till 0.3, ca 2 gånger/s",
+ "oga": {
+  "pos": [
+   818,
+   655
+  ],
+  "skala": 0.9
+ },
+ "bbox": [
+  63,
+  216,
+  960,
+  807
+ ],
+ "not": "Ur Google Flow 2026-11-26 (original/fagel-orange-v2-val.jpg). Kroppen är Flows vinglösa version av samma bild (original/fagel-orange-v2-utan-vinge.jpg), vingen är originalet minus kroppen med en rot i vingens färg som går 35 px ner bakom kroppen."
+}

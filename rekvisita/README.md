@@ -86,6 +86,11 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Röda bussen (v2) | [buss-rod.md](buss-rod.md) | 013 |
 | Röda cykeln | [cykel-rod.md](cykel-rod.md) | Shorts: gissa teckningen |
 | Röda cykeln (v2) | [cykel-v2.md](cykel-v2.md) | Kritans ABC C, recept 3 |
+| Orangea båten (v2) | [orange-baten-v2.md](orange-baten-v2.md) | 006 v2 |
+| Apelsinen (v2) | [apelsin-v2.md](apelsin-v2.md) | 006 v2 |
+| Bryggan (v2) | [bryggan-v2.md](bryggan-v2.md) | 006 v2 |
+| Orange fisken (v2) | [fisk-orange-v2.md](fisk-orange-v2.md) | 006 v2 |
+| Orange fågeln (v2) | [fagel-orange-v2.md](fagel-orange-v2.md) | 006 v2 |
 | Röda flygplanet | [flygplan-rod.md](flygplan-rod.md) | Shorts: gissa teckningen |
 | Röda tåget | [tag-rod.md](tag-rod.md) | Shorts: gissa teckningen |
 | Blå gungan | [gunga-bla.md](gunga-bla.md) | Shorts: gissa teckningen |

@@ -37,7 +37,7 @@
 // Armar flyger inte (art-direction-v2): mellan vila och uppe (GOM.fran–GOM.till grader) glider armen in bakom kroppen
 // (GOM.in px) och vrids där, gömd. Uppe (från UT.fran, fullt vid UT.till) glider den ut 36 px och upp 20 px, och roten
 // stannar ändå inne i kroppens kant. Så syns en arm bara i vila (under ca 26°) eller uppe (över ca 80°), aldrig på väg.
-const GOM = { fran: 26, till: 80, ramp: 12, in: 110 }, UT = { fran: 68, till: 90, ut: 36, upp: 20 };
+const GOM = { fran: 26, till: 80, ramp: 12, in: 110 }, UT = { fran: 68, till: 90, ut: 36, upp: 20 }; const VINK = 24;
 const RIGG = { 'arm-l': [275, 580], 'arm-r': [712, 580], 'leg-l': [428, 809], 'leg-r': [578, 800], 'ear-l': [499, 263], 'tail': [649, 797] };
 // Uppmätt ur original/dinon-bla-1.jpeg mot dinon-bla-faceless.jpg (ansikte_matt.py): ögon (409, 405) och (567, 405) rx 19 ry 26,
 // kinder (379, 454) och (598, 453) rx 28 ry 16, munnen ett litet U kring (488, 453), 58 px brett. Ansiktets mitt CX = 488 (ägget lutar
@@ -112,7 +112,7 @@ const UTTRYCK = {
 // boj kroppen böjer sig från fötterna i grader (+ åt höger): huvudet lutar sig dit, fötterna står kvar platt (luta vrider hela figuren)
 // bada 0–1: båda armarna ut på riktningens sida (riktningsposerna, håller, når); utan den vänder rikt bara ansiktet, magen och öronen
 const POSE0 = { luta: 0, rikt: 0, upp: 0, bred: 0, strack: 0, sank: 0, armar: [0, 0], fram: [0, 0], oron: [0, 0],
-  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0,
+  benFram: 0, ben: [0, 0], benY: [0, 0], benS: [0, 0], lyft: 0, svans: 0, x: 0, klapp: 0, gang: 0, sving: 0, armY: 0, hand: 0, gnista: 0, skak: [0, 0], nick: [0, 0], boj: 0, bada: 0, vink: 0,
   borste: 0, borstV: 0, borstX: -1, borstY: 0, borstNer: 0, skum: 0 };
 // borste 0–1 tandborsten i vänstra handen (bildens vänster) · borstV borstens vinkel, vickar · borstX −1 … 1 borsthuvudet över munnens
 // bredd (−1 = mungipan) · borstY −1 övre raden … 1 nedre · borstNer px borsten och handen sänkta · skum 0–1 (verktyg/rigg-motor.js)
@@ -208,9 +208,13 @@ function rita(fig, f, p = POSE0) {
   del('ear-l', f.oron[0] + p.oron[0] + 6 * r, 18 * r, lyft(RIGG['ear-l'][1]) + 4 * a - 6 * u);
   ['l', 'r'].forEach((n, i) => { const s = i ? -1 : 1, A = f.armar[i] + p.armar[i], vinkel = s * A;
     const sm = x => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); }, bak = 1 - p.fram[i];
-    const gom = bak * sm((A - GOM.fran) / GOM.ramp) * sm((GOM.till - A) / GOM.ramp), ut = bak * sm((A - UT.fran) / (UT.till - UT.fran));
-    let y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i] + p.armY - UT.upp * ut;
-    let dx = s * (p.klapp || 70 * p.fram[i]) + s * GOM.in * gom - s * UT.ut * ut;
+    // vink 0–1 (2026-11-26, 006 v2: "improve dino rigs and waving"): armen göms inte och skjuts inte ut när figuren vinkar. Den
+    // vrids kring sin vridpunkt bakom kroppen och glider VINK px ut längs sig själv, så att tassen går fri från kanten och roten
+    // (ca 75 px lång) stannar under kroppen. Vinka på 50–75°.
+    const vk = (p.vink || 0) * bak, gom = (1 - vk) * bak * sm((A - GOM.fran) / GOM.ramp) * sm((GOM.till - A) / GOM.ramp), ut = (1 - vk) * bak * sm((A - UT.fran) / (UT.till - UT.fran));
+    const ra = A * Math.PI / 180;
+    let y0 = lyft(RIGG['arm-' + n][1]) + 20 * p.fram[i] + p.armY - UT.upp * ut - VINK * vk * Math.sin(ra);
+    let dx = s * (p.klapp || 70 * p.fram[i]) + s * GOM.in * gom - s * UT.ut * ut - s * VINK * vk * Math.cos(ra);
     if (!i && p.borste) [dx, y0] = borstArm(p, grepp, BORSTARM, vinkel, RIGG['arm-l'], sx, dx, y0);   // borstarmen följer borsten    // framför kroppen: händerna in på magen (eller ihop, klapp)
     if (p.gang > 0) {     // gången (som förebilden): bakre armen framför kroppen ut över kanten, främre armen tittar fram, de pendlar i otakt
       const sd = sida || 1, bak = (n === 'l') === (sd > 0), g = p.gang;
