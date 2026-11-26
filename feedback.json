@@ -10023,8 +10023,9 @@
   "sec": 50,
   "tags": [],
   "note": "less bubbles in the bathtub overall",
-  "fixed": false,
+  "fixed": true,
   "at": 1795674783040,
-  "render": "2026-11-25 23:00 (Djup QA fixad: svart slut, hoppet över kanten, skuggan, ankan, borsten bakom pallen, närbilden, irisen)"
+  "render": "2026-11-25 23:00 (Djup QA fixad: svart slut, hoppet över kanten, skuggan, ankan, borsten bakom pallen, närbilden, irisen)",
+  "fixedAt": 1795675231195
  }
 }
