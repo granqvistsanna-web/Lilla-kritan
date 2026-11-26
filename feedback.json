@@ -10428,9 +10428,10 @@
   "sec": 28,
   "tags": [],
   "note": "simplify clothes hanging on krok, they look odd",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711443107,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "td0gozi43tmwxs8jmw": {
   "ep": "052",
@@ -10438,9 +10439,10 @@
   "sec": 35,
   "tags": [],
   "note": "move camera down a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711456616,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "uwhgn99m79mwxs9og2": {
   "ep": "052",
@@ -10448,9 +10450,10 @@
   "sec": 81,
   "tags": [],
   "note": "move camera down a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711509506,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "omzno1cz79mwxsa764": {
   "ep": "052",
@@ -10458,9 +10461,10 @@
   "sec": 129,
   "tags": [],
   "note": "remove ticking noise",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711533772,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "66a6rxu7f2mwxsb72q": {
   "ep": "052",
@@ -10468,9 +10472,10 @@
   "sec": 184,
   "tags": [],
   "note": "remove du tycker om halsduken",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711580305,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "4ij5099ol3mwxsbliz": {
   "ep": "052",
@@ -10478,9 +10483,10 @@
   "sec": 196,
   "tags": [],
   "note": "improve jacket on zebra, more shoulder section",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711599035,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "fnipq8641bmwxsc5of": {
   "ep": "052",
@@ -10488,9 +10494,10 @@
   "sec": 212,
   "tags": [],
   "note": "improve stövlar på fötter, look at bunny getting dressed pulka vide",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711625151,
-  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)"
+  "render": "2026-11-26 16:26 (Förhandsvisning (--snabb) med fixarna 26/11: ny halsduk i ritintrot (ögla, knut, fransar), lugnt nick utan pulserande öron, kläderna utspridda på kroken (jackan i en hängögla), stövlarna står rätt, zebran större när kritan ritar mössorna)",
+  "fixedAt": 1795714806362
  },
  "12nm5i3hpamwxsdmjz": {
   "ep": "053",
