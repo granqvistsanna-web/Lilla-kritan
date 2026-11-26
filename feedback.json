@@ -9946,9 +9946,10 @@
   "sec": 56,
   "tags": [],
   "note": "the sink tap still looks clipped at top",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642017309,
-  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))"
+  "render": "2026-11-25 22:17 (förhandsvisning 5: QA-fynden fixade (tassen gnuggar örat, tydliga tassar, kamerahopp, målningen, kranen, repliktider, mjuka uttryck))",
+  "fixedAt": 1795676411787
  },
  "4o8vgojuapmwwmwshw": {
   "ep": "057",
