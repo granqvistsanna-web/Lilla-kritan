@@ -184,3 +184,5 @@ Den lilla viljan i del 6 är att cykeln saknar ett hjul: *"Vad fattas?"* (barnen
 
 - **Cirkeln som hjul:** ringbilden har ett vitt mittfält, så framhjulet blir en grön ring med vit mitt (bakhjulet har ekrar). Säg till om hjulet ska vara genomskinligt i mitten.
 - **Cirkeln i leken:** när klossarna poppar fram hoppar cirkeln ur cykelns hjul till sin kloss, och cykeln behåller sitt gröna hjul (två cirklar en stund).
+
+**Kritan svarar utan ord (Sanna 2026-11-26):** när Malin frågar eller säger något till kritan svarar den med kroppen och ett kort krit-ljud (`kSvar(t, typ)`, `KSVAR`): ett litet hopp på *"Kritan! Kan du rita …?"*, två nickar på *"Klarar du det, kritan?"* och på *"Kritan, rita något runt!"*, och på *"Busiga kritan!"* tittar den in en kort stund och vickar blygt.

@@ -40,7 +40,7 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 | 6 | Ananasen glider fram till apan, bladen vickar mot apans nos | Oj! Bladen kittlar. | prassel |
 | 6 | Närbild: apan nyser och hoppar bakåt, sedan skrattar den | Atjo! · Prosit, apan! | atjo-ljud? (se Öppet) |
 | 6 | Ananasen krymper bredvid apelsinen, apan gungar | Mums! · Nu är apan mätt och glad. | mums |
-| 7 | Tre bildklossar poppar fram. Blandningen, muren, hunden | Nu leker vi! · Titta noga. Var är apan? · Där är den! · Titta! En till. · Apa! · Apelsin! · Ananas! · Hund. · Vilken ska bort? · Vilken börjar inte på A? *(paus 4 s)* · Hunden! · Hund börjar inte på A. · Hej då, hunden! | som i E |
+| 7 | Tre bildklossar poppar fram. Blandningen, muren, bilen igen | Nu leker vi! · Titta noga. Var är apan? · Där är den! · Titta! En till. · Apa! · Apelsin! · Ananas! · Bil? · Vilken ska bort? · Vilken börjar inte på A? *(paus 4 s)* · Hunden! · Hund börjar inte på A. · Hej då, hunden! | som i E |
 | 8 | Klossarna på rad, discot, pyramiden, hej då | Apa, apelsin, ananas. · Alla börjar på bokstaven A. · Nu dansar vi! · Apan dansar! · Apelsinen snurrar! · Ananasen snurrar! · Det var allt för i dag. · Vad kul det var att leka! · Hej då! | disco |
 
 ## Repliker som skiljer sig från E
@@ -85,7 +85,7 @@ Rörelsen först, Malin efteråt. Delarna 1, 2, 7 och 8 är som i E.
 Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`), på samma sätt som B. Scenen före ändringen ligger i git, filmen i `aldre/abc-a-recept-3-fore-e-riktning.mp4`.
 
 - **Introt är ett samtal:** *"Titta, kritan ritar en bokstav."* → *"Bokstaven A."* → A puffar upp (`a-glad`) → *"Hej, A!"* → `a-halsar` (A vickar) → *"Ska vi leka, A?"* → `a-ja` (två hopp) → *"Ja! Vad kul!"* → A flyger till hörnet medan Malin säger *"Vad ritar kritan nu?"*. *"Det är ju A!"*, *"Hur låter A?"*, *"Kritan ritar något på bokstaven A."*, *"Hej! A! A!"* och *"a, a, A!"* går bort.
-- **A säger bara A, i fem toner**, och tycker till före Malin: `a-ja` efter apan, apelsinen och ananasen (*"Hur låter A i apa?"*, *"Och i apelsin?"* och märkets *"a, a, apa!"* … går bort), `a-undrar` + `a-nej` efter *"En bil!"*, `a-nej` efter hunden i muren, `a-ja` i slutet och `a-halsar` samtidigt som Malins *"Hej då! Vi ses snart!"*.
+- **A säger bara A, i fem toner**, och tycker till före Malin: `a-ja` efter apan, apelsinen och ananasen (*"Hur låter A i apa?"*, *"Och i apelsin?"* och märkets *"a, a, apa!"* … går bort), `a-undrar` + `a-nej` efter *"En bil!"*, `a-nej` efter den udda i muren, `a-ja` i slutet och `a-halsar` samtidigt som Malins *"Hej då! Vi ses snart!"*.
 - **A:s ansikte är större:** `HUVUD` [0, -95, 42, 52] (var [0, -110, 28, 38]), rosa kinder, större mun. Stillbild: ansiktet ryms i A:ets topp.
 - **Snabbare teckningar:** apan `tempo` 0,4 (konturen 2,6 s, hela apan med detaljerna ca 6,5 s, var ca 15), bilen 0,42, apelsinen och ananasen 0,45. Gissningspausen 4 → 3,3 s.
 - **Mjukare skuggor** som E och B (ca 60 % av förra styrkan, klossarnas lite bredare).
@@ -103,3 +103,5 @@ Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`), på sam
 
 - *"Atjo!"* säger Malin. Alternativet är ett nysljud från Openverse och att Malin bara säger *"Prosit, apan!"*.
 - Apan håller inte i maten (receptet: aldrig hålla i något). Apelsinen och ananasen läggs framför tassarna, som ekollonet i E.
+
+**Kritan svarar utan ord (Sanna 2026-11-26):** när Malin frågar eller säger något till kritan svarar den med kroppen och ett kort krit-ljud (`kSvar(t, typ)`, `KSVAR`): ett litet hopp på *"Kritan! Kan du rita …?"*, två nickar på *"Kan du det, kritan?"* och på bönen i del 6, och på *"Busiga kritan!"* tittar den in en kort stund (`KVISA` med [från, till]) och vickar blygt (A fnissar i stället, `KFNISS`).

@@ -109,7 +109,7 @@ Sanna strök *"Kan du också hoppa?"*, *"Bra hoppat!"* och *"Dansar du också?"*
 
 | | Recept 1 | Recept 3 |
 |---|---|---|
-| Saker | 9 (3 ritas, 3 udda, 3 nya bilder) | 5 (3 ritas, 1 ritas fel, 1 udda i leken) |
+| Saker | 9 (3 ritas, 3 udda, 3 nya bilder) | 5 (3 ritas, 1 ritas fel och är udda i leken igen) |
 | Nya bilder ur Flow (E) | 4 | 3 (ekollonet, ekorren, katten) |
 | Malins repliker | 41 | 61, varav ca 20 skrivs nya per bokstav (E: tagning 3, 2026-11-20) |
 | Blandningar av klossar | 3 | 1 |
@@ -127,7 +127,7 @@ De udda sakerna kan vara desamma i många bokstäver. Den som ritas fel behöver
 - **Fälla:** en sak glider mot sin nästa nyckelruta hela tiden fram till den. Lägg en ruta som håller kvar läget precis före (kompisen gled åt höger i en minut innan discot).
 - `kontur(fil, …mått)` läser `<bild>-kontur.json`; `streck: [['kontur', banan, färg, bredd, sekunder / TEMPO]]`.
 - Bilden fylls i inifrån med masken `s.fyll` (`FYLL` 0,7 s).
-- `KVISA` (tider då kritan kommer fram och väntar vid `KFRAM`, x 1330, y 400) och `KNICK` (tider då den nickar två gånger). Se *Kritan syns* nedan.
+- `KVISA` (tider då kritan kommer fram och väntar vid `KFRAM`, x 1330, y 400) och `KSVAR` via `kSvar(t, typ)` (kritans svar utan ord: 'ja', 'hopp', 'busig'). Se *Kritan syns* nedan. Se *Kritan syns* nedan.
 - `ifyllt(cx, cy, r, sy)`: en fylld oval fläck (ögon, nosar) som kritan ritar i en spiral.
 - `delEl` tar delar både som `…-body` → `…-<del>` och med hela filnamnet (B:s `ko-ben1`–`4`).
 - **Klossarnas texturer laddas upp direkt** (`R.initTexture` i `abc-e/klossar.js`, 2026-11-25). Förut laddades de först när klossen syntes, och då kunde en sida få bokstavsmärkets bild eller bli tom (elefantklossen i muren, E 3:07). Rättat för alla scener som använder `klossar.js`.
@@ -141,6 +141,10 @@ Allt här finns i B och har förts in i A, D och E. Den som kopierar B får det 
 **Kompisens skiss ska gå att gissa.** Efter konturen ritar kritan ansiktet: nosen, munnen, fyllda ögon (`ifyllt`, inte ringar) och öronens ljusa insida. Allt mäts i riggens delar eller i `uttryck.html` (`OGON`, näsborrar, munnens båge), inte på ögonmått. Frågan *"Vem är det?"* kommer när nosen ritas (Sanna, B 0:28).
 
 **Det felritade djuret syns mot väggen.** En vit ko försvann mot den vita väggen. Välj en bild med kontrast (B: en beige ko med stora svarta fläckar, `rekvisita/ko-abc`, gjord i Flow) och låt kritan rita det som känns igen efter konturen: fläckarna, mulen och ögonen (Sanna, B 1:11: *"consider the contrast"*). Har det inga lösa ben går det ut vaggande.
+
+**Den udda i leken är det kritan ritade fel (Sanna 2026-11-26, efter C 2026-11-22: "det kan inte vara hund i varje video").** Dess kloss dunsar ner i muren och den går ut med sina egna repliker ur del 4, så det behövs inga nya bilder eller röster. Ingen hund i leken. I `runda` gäller `s.svar ??= 0`, `s.pa = [u - 0.46, u - 0.45]` och `s.syns ??=`, eftersom saken redan har synts.
+
+**Kritan svarar utan ord (Sanna 2026-11-26):** när Malin frågar eller säger något till kritan svarar den med kroppen och ett kort krit-ljud (`kSvar(t, typ)`, `KSVAR`): ett litet hopp på *"Kritan! Kan du rita …?"*, två nickar på *"Kan du det, kritan?"* och på bönen i del 6, och på *"Busiga kritan!"* tittar den in en kort stund (`KVISA` med [från, till]) och vickar blygt (A fnissar i stället, `KFNISS`).
 
 **Kritan syns när Malin pratar med den.** När Malin ber kritan rita (*"Kritan! Kan du rita …"*, och igen i del 6) glider kritan in i bild till höger och väntar där. Den nickar efter *"Kan du det, kritan?"* och går därifrån direkt till sitt första streck (`KVISA`, `KNICK`, `KFRAM`; Sanna, B 0:49).
 
@@ -234,7 +238,7 @@ Bokstavens röst är **Olivia** (*Bright, Youthful and Engaging*, ElevenLabs v4;
 | Ord 2, efter *"E, e, ekorre!"* | `x-ja` | *"Ekorre börjar också på E!"* |
 | Ord 3 | `x-ja` | *"Ekollon börjar också på E!"* |
 | Gömleken | tyst | (kompisens kloss har ledtrådarna) |
-| Muren, efter pausen och den udda | `x-nej` | *"Hund börjar inte på E."* |
+| Muren, efter pausen och den udda | `x-nej` | *"Katt börjar inte på E."* |
 | Slutet, märket i mitten | `x-ja` (stolt) | |
 | *"Hej då!"* | `x-halsar` samtidigt som Malin | (samma ton som hälsningen knyter ihop introt) |
 
@@ -256,7 +260,6 @@ Barnet hör ett glatt *E! E!* för rätt och ett mjukt *E-e.* för fel. I muren 
 
 - Tredje rundan (Sanna 2026-11-18, *"lite svårare"*) och andra rundan är borta ur den långa filmen. De kan bli Shorts, ca 25 s var.
 - Elefanten och dinon låter fortfarande som björnen (`brum-glad`). Sök egna läten på Openverse.
-- Hunden i leken är kvar i den gamla, ritade stilen. Den bör få en ny bild som katten och ekorren.
 - A, C och D har inte *E:s riktning* (introsamtalet, tonerna, de snabbare teckningarna, den lugnare gömleken). B har den sedan 2026-11-25.
 - Muren står fortfarande still ca 12 s medan Malin säger orden. Bokstaven kan titta mot varje kloss när Malin säger ordet, utan ljud.
 - Ingen har lyssnat på E:s blandning. Båda rösterna sa *ekorre* med kort e (nästan "äckorre").

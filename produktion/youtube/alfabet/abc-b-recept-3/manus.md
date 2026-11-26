@@ -10,7 +10,7 @@ Gjord 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur förl
 
 **Meningen:** Björnen vill leka men har inget att leka med. Malin ber kritan rita något, och det måste börja på B. Kritan ritar fel (kon, hej då!). Kritan ritar bollen: bollen studsar och björnen hoppar med. Björnen vill leka mer, och kritan ritar något som flyger: ballongen flyger upp och sjunker ner igen. Den udda i leken är hunden, som i E.
 
-- Björnen är riggen `bjornen-bulle` (v2, ✅). Hunden riggen `hunden-hugo`, som i E.
+- Björnen är riggen `bjornen-bulle` (v2, ✅). Den udda i leken är kon igen, som bollen i C (Sanna 2026-11-26).
 - Kon är `rekvisita/ko-abc` (ny 2026-11-21 efter Sannas feedback, Flow): en vanlig ko från sidan, ljust beige med stora svarta fläckar så att den syns mot väggen, benen fast i bilden (den vaggar ut). Kritan ritar konturen, två fläckar, mulen och ögonen. Gissa teckningens vita kritko (`rekvisita/ko`) används inte längre här.
 - Bollen `boll-rod`, ballongen `ballong-rod` (med ansiktet från recept 1).
 
@@ -47,8 +47,8 @@ Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.
 | 7 | Tre bildklossar poppar fram och hoppar in på sina plattor, björnens kloss hoppar, alla vänder ryggen till och blandas lugnt (tre byten) | Nu leker vi! · Titta noga. | duns, klistra, swoosh |
 | 7 | Paus 3,2 s med ledtrådar: björnen brummar inifrån sin kloss, klossen vickar till två gånger, kameran glider lite mot den | Var är björnen? | brum |
 | 7 | Björnens kloss vänder sig och hoppar till, de andra vänder sig efter | Där är den! | swoosh, pling, brum |
-| 7 | Muren. Hunden dunsar ner, björnen blir förvånad i närbild | Titta! En till. · Björn! · Boll! · Ballong! · Hund. · Vilken ska bort? · Vilken börjar inte på B? *(paus 4 s)* | vov, brum |
-| 7 | Hunden hoppar ner och går ut, björnen vinkar och jublar | Hunden! · Hund börjar inte på B. · Hej då, hunden! | vov, tassar, jippi |
+| 7 | Muren. Kons kloss dunsar ner igen, björnen blir förvånad i närbild | Titta! En till. · Björn! · Boll! · Ballong! · Ko? · Vilken ska bort? · Vilken börjar inte på B? *(paus 4 s)* | mu, brum |
+| 7 | Kon hoppar ner och går ut, björnen vinkar och jublar | En ko! · Ko börjar inte på B. · Hej då, kon! | mu, tassar, jippi |
 | 8 | Klossarna på rad, var och en hoppar på sitt ord | Björn, boll, ballong. · Alla börjar på bokstaven B. | – |
 | 8 | Discot: björnen hoppar ur klossen och dansar stor, de andra snurrar, pyramid | Nu dansar vi! · Björnen dansar! · Bollen snurrar! · Ballongen snurrar! | disco |
 | 8 | Björnen vinkar | Det var allt för i dag. · Vad kul det var att leka! · Hej då! | – |
@@ -101,7 +101,7 @@ Förd in från ABC-c3 (Sanna 2026-11-22: *"i like this new direction"*, se recep
 Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`). Scenen före ändringen ligger i git, filmen i `aldre/abc-b-recept-3-fore-e-riktning.mp4`.
 
 - **Introt är ett samtal:** *"Titta, kritan ritar en bokstav."* → *"Bokstaven B."* → B puffar upp (`x-glad`) → *"Hej, B!"* → `x-halsar` (B vickar) → *"Ska vi leka, B?"* → `x-ja` (två hopp) → *"Ja! Vad kul!"* → B flyger till hörnet medan Malin säger *"Vad ritar kritan nu?"*. *"Det blev ett B!"*, *"Hur låter B?"*, *"Hej! B! B!"* och *"b, b, B!"* går bort.
-- **B säger bara B, i fem toner**, och tycker till före Malin: `x-ja` efter björnen, bollen och ballongen (märkets *"b, b, björn!"* och Malins *"Hur låter B i björn?"* / *"Och i boll?"* går bort), `x-undrar` + `x-nej` efter *"En ko!"*, `x-nej` efter hunden i muren, `x-ja` i slutet och `x-halsar` samtidigt som Malins *"Hej då! Vi ses!"*.
+- **B säger bara B, i fem toner**, och tycker till före Malin: `x-ja` efter björnen, bollen och ballongen (märkets *"b, b, björn!"* och Malins *"Hur låter B i björn?"* / *"Och i boll?"* går bort), `x-undrar` + `x-nej` efter *"En ko!"*, `x-nej` efter den udda i muren, `x-ja` i slutet och `x-halsar` samtidigt som Malins *"Hej då! Vi ses!"*.
 - **B:s ansikte är större:** `HUVUD` [-15, -150, 54, 68] (var [-15, -160, 30, 42]), rosa kinder, större mun.
 - **Snabbare teckningar:** björnen `tempo` 0,4 (konturen 2,6 s), kon 0,42, ballongen 0,5. Gissningspausen 4 → 3,3 s, efter *"Hopp, hopp, hopp!"* 1,0 → 0,6 s.
 - **Lugnare gömlek:** vändningen 0,9 s, varje byte 1,6 s med 0,7 s vila, båda klossarna snurrar ett varv medan de byter, pausen 2,8 s (`VANDSEK`, `BYTSEK`). `krock.mjs`: inga krockar.
@@ -114,3 +114,5 @@ Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`). Scenen 
 - Ingen har lyssnat på B:s toner i blandningen (se E:s riktning ovan).
 - Ballongen svävar bara upp till ca y 20 (överkanten); den kan få flyga högre, ut ur bild, om Sanna vill.
 - `delEl` i scenen tar nu också delar med hela filnamnet (kons `ko-ben1`–`4`); förlagan klarar bara `…-body`. Kan föras in i E om fler bokstäver använder Gissa teckningens djur.
+
+**Kritan svarar utan ord (Sanna 2026-11-26):** när Malin frågar eller säger något till kritan svarar den med kroppen och ett kort krit-ljud (`kSvar(t, typ)`, `KSVAR`): ett litet hopp på *"Kritan! Kan du rita …?"*, två nickar på *"Kan du det, kritan?"* och på bönen i del 6, och på *"Busiga kritan!"* tittar den in en kort stund (`KVISA` med [från, till]) och vickar blygt (A fnissar i stället, `KFNISS`).

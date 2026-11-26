@@ -9,7 +9,7 @@ A–D (och E i den gamla formen) är gjorda med recept 1. De görs om i nya mapp
 Allt som rättas i E följer med när mappen kopieras. Därför görs det före A–D.
 
 1. Lyssna på blandningen, särskilt *"Det är ju E!"*, *"Kan du det, kritan?"*, *"Nu ritar kritan."* och *"E, e, elefant!"*. Klipp om dem som hamnat fel.
-2. **Hunden i leken** får en ny bild ur Flow: ett vanligt litet djur från sidan, med delar (svans, ben) som katten och ekorren. Den används i alla bokstäver, så den görs en gång.
+2. ~~Hunden i leken~~: borta (Sanna 2026-11-26). Den udda i leken är det kritan ritade fel, som i C.
 3. **Muren:** den står fortfarande still ca 12 s. Kolla att `tittaMot()` och den långsamma zoomen räcker, annars lägg till mer liv.
 4. Elefantens ljud: sök ett mjukt trumpetande på Openverse i stället för björnens `brum-glad`.
 5. Feedbacksidan, Sanna godkänner, slutrendering i molnet (`verktyg/molnrender.sh`).
@@ -20,7 +20,6 @@ De udda djuren som kritan ritar fel blir vanliga små djur från sidan, med dela
 
 | Bild | Behövs i | Finns i dag |
 |---|---|---|
-| Hunden (leken) | alla | gammal ritad stil |
 | Kon från sidan | B | `ko.md`, kolla om den är "från sidan" |
 | Grisen från sidan | D | `gris-rosa.md`, kolla stilen |
 | Katten | E (klar) | `katt-abc` |
@@ -136,7 +135,7 @@ En session per bokstav (som i feedbackomgångarna), högst två samtidigt så at
 ## Vad som kostar
 
 - **Malins tagningar:** 4 nya (A–D) à ca 61 rader. Det är den stora kostnaden.
-- **Flow:** hunden, och kanske kon och grisen (Nano Banana, 0 krediter).
+- **Flow:** kanske kon och grisen (Nano Banana, 0 krediter).
 - **Musik:** ingen ny, samma tre spår som i dag.
 - **Rendering:** molnet för slutfilmerna, ca 4 min film per bokstav.
 

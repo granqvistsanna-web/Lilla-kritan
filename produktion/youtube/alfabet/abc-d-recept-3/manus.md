@@ -14,7 +14,7 @@ Gjord 2026-11-21 efter `format/abc-recept-3-kompisen-vill.md`, kopierad ur `../a
 
 - Dinon är riggen `dinon-disa` (v2, uttryck och poser i `premium/uttryck.html`). Den är stor (SKALA 0,5 i sina avsnitt), här `RIGG_SKALA` 0,62, mätt mot dörren med stillbilder: dörren är ca 1,25 gånger så hög som dinon. Dinon har ingen egen röst i ljudbanken och låter med `brum-glad`, som i recept 1.
 - Grisen är `rekvisita/gris-rosa` (Flow, från sidan, fyra ben i egen bild, inget öga: ögat i kod). Ingen ny Flow-bild behövs. Kritan ritar konturen, trynet och ögat.
-- Dörren `dorr-abc`, dockan `docka` (urklippen från recept 1-filmen). Hunden riggen `hunden-hugo`, som i B.
+- Dörren `dorr-abc`, dockan `docka` (urklippen från recept 1-filmen). Den udda i leken är grisen igen, som bollen i C (Sanna 2026-11-26).
 - Ordet är *"dinosaurie"* (som i recept 1). I berättelsen säger Malin *"dinon"*, kort, som i 033 (*"lila dinon"*).
 
 ## Uppslagen
@@ -47,8 +47,8 @@ Tiderna fylls i ur förhandsvisningen. Rörelsen kommer först, Malin efteråt.
 | 6 | Närbild: dinon jublar (hurra) | Nu har dinon en kompis! | – |
 | 7 | Tre bildklossar poppar fram och hoppar in på sina plattor. Blandningen | Nu leker vi! · Titta noga. Var är dinon? | duns, klistra, swoosh |
 | 7 | Dinons kloss hoppar till | Där är den! | pling |
-| 7 | Muren. Hunden dunsar ner, dinon blir förvånad i närbild | Titta! En till. · Dinosaurie! · Dörr! · Docka! · Hund. · Vilken ska bort? · Vilken börjar inte på D? *(paus 4 s)* | vov |
-| 7 | Hunden hoppar ner och går ut, dinon vinkar och jublar | Hunden! · Hund börjar inte på D. · Hej då, hunden! | vov, tassar, jippi |
+| 7 | Muren. Grisens kloss dunsar ner igen, dinon blir förvånad i närbild | Titta! En till. · Dinosaurie! · Dörr! · Docka! · Gris? · Vilken ska bort? · Vilken börjar inte på D? *(paus 4 s)* | noff |
+| 7 | Grisen hoppar ner och går ut, dinon vinkar och jublar | En gris! · Gris börjar inte på D. · Hej då, grisen! | noff, tassar, jippi |
 | 8 | Klossarna på rad, var och en hoppar på sitt ord | Dinosaurie, dörr, docka. · Alla börjar på bokstaven D. | – |
 | 8 | Discot: dinon hoppar ur klossen och dansar stor, de andra snurrar, pyramid | Nu dansar vi! · Dinon dansar! · Dörren snurrar! · Dockan snurrar! | disco |
 | 8 | Dinon vinkar | Det var allt för i dag. · Vad kul det var att leka! · Hej då! | – |
@@ -121,7 +121,7 @@ Efter receptets *E:s riktning* (`format/abc-recept-3-kompisen-vill.md`), som B f
 | Dörren, efter *"D, d, dörr!"* | `x-ja` | *"Dörr börjar också på D!"* |
 | Dockan, efter *"En docka!"* | `x-ja` | *"Docka börjar också på D!"* |
 | Gömleken | tyst | |
-| Muren, efter *"Hunden!"* | `x-nej` | *"Hund börjar inte på D."* |
+| Muren, efter *"En gris!"* | `x-nej` | *"Gris börjar inte på D."* |
 | Slutet, märket i mitten | `x-ja` (stolt) | |
 | *"Hej då!"* | `x-halsar` samtidigt som Malin | |
 
@@ -153,3 +153,5 @@ Kontrollerat 6 bilder/s 1:47–2:39 (dinon går till dörren, knackningarna, kri
 ## Öppet
 
 - *"Gris?"* är tyst i båda tagningarna (topp ca −14 dB, de andra frågorna ca −11). Lyssna om den behöver höjas.
+
+**Kritan svarar utan ord (Sanna 2026-11-26):** när Malin frågar eller säger något till kritan svarar den med kroppen och ett kort krit-ljud (`kSvar(t, typ)`, `KSVAR`): ett litet hopp på *"Kritan! Kan du rita …?"*, två nickar på *"Kan du det, kritan?"* och på bönen i del 6, och på *"Busiga kritan!"* tittar den in en kort stund (`KVISA` med [från, till]) och vickar blygt (A fnissar i stället, `KFNISS`).

@@ -358,7 +358,14 @@ t = flyttaK(A, t + 0.3, AHORN, AHS, 1.0, 40); fx(t - 1.0, 'swoosh', 0.6);
 // RECEPT 3: KOMPISEN VILL NÅGOT. Slagen per ord är desamma som förut (kritan ritar, "Hmm …", frågan, pausen, svaret, närbilden,
 // saken gör sitt, "… börjar på E"), men saken blir ingen kloss efteråt: den står kvar i bilden tills leken börjar.
 const RITA = [1180, 590, 1.2];     // där ord 2 och det felritade ritas: till höger om kompisen
-const KVISA = [], KNICK = [];   // när kritan kommer fram och väntar i bild, och när den nickar
+const KVISA = [], KSVAR = [];   // när kritan kommer fram och väntar i bild (ett tal: tills nästa streck; [från, till]: ett kort besök)
+// Kritan svarar utan ord när Malin frågar eller säger något till den (Sanna 2026-11-26, som E): 'ja' nickar två gånger, 'hopp' ett litet
+// glatt hopp, 'busig' vickar blygt. Varje svar får ett kort krit-ljud som kritans röst. Lugnt, inte studsigt.
+function kSvar(t0, typ) { KSVAR.push([t0, typ]); fxf(t0 + 0.05, 'krita-ritar/krita-ritar-3', 0.45, { langd: typ === 'busig' ? 0.8 : 0.4, fade: 0.15 }); }
+const kSvarY = t => KSVAR.reduce((n, [t0, typ]) => n + (typ === 'ja' ? 26 * (bage(clamp((t - t0) / 0.35)) + bage(clamp((t - t0 - 0.4) / 0.35)))
+  : typ === 'hopp' ? -35 * bage(clamp((t - t0) / 0.5)) : typ === 'busig' ? 10 * bage(clamp((t - t0) / 1.2)) : 0), 0);
+const kSvarV = t => KSVAR.reduce((v, [t0, typ]) => v + (typ === 'busig' ? 8 * Math.sin((t - t0) * Math.PI * 5) * bage(clamp((t - t0) / 1.2))
+  : typ === 'hopp' ? -6 * bage(clamp((t - t0) / 0.5)) : 0), 0);
 const KOMPIS = [400, 700, 0.95];   // här står kompisen kvar, stor, med fötterna på golvet (y + 252 · skalan = 940)
 const hoppLjud = t0 => { fx(t0 + 0.1, 'hopp-mjuk', 0.8); fx(t0 + 0.5, 'dunk', 0.5); fx(t0 + 1.0, 'dunk', 0.5); };   // elefantens två hopp
 function ritaOchGissa(s, rit) {   // kritan ritar, "Hmm …", frågan, pausen och svaret: teckningen blir bilden
@@ -414,14 +421,14 @@ citron.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-citronen'] + 0.4]); t 
   t = sag(t, 'n-inget-att-aka') + 0.6;   // samma närbild, clownen är fortfarande blyg
   kamTill(t, 960, 540, 1, 1.0);
   KVISA.push(t + 0.2);   // kritan kommer fram när Malin pratar med den och står kvar tills den ritar
-  t = sag(t + 0.6, 'n-rita-aka') + 0.5;   // Malin ber kritan
+  t = sag(t + 0.6, 'n-rita-aka') + 0.5; kSvar(t - 0.4, 'hopp');   // Malin ber kritan, kritan hoppar till: ja!
   // Clownen lutar sig fram och "viskar" (Malin lyssnar): hon upprepar vad den vill, och clownen nickar: ja!
   kanner(t, t + 1.9 + D['n-vad-sa-du'] + 0.5, 'nyfiken', 'lutaH');
   fxf(t + 0.35, 'hej-babbel/hej-babbel-5', 0.5, { fade: 0.3 });   // clownen "viskar" något (ABC-c3 1:07)
   t = sag(t + 1.9, 'n-vad-sa-du') + 0.4;
   t = sag(t, 'n-maste-c'); citron.levande.push([t, 'nicka']); fxf(t + 0.15, BRUM(4), 0.8, { langd: 1.2, fade: 0.3 });
   t += 0.9;
-  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3; KNICK.push(t - 0.1);   // kritan nickar: ja!
+  t = sag(t + 0.9, 'n-kan-du-kritan') + 0.3; kSvar(t - 0.1, 'ja');   // kritan nickar: ja!
   fxf(t, 'mus-fniss-kort/mus-fniss-kort-1', 0.6);   // och fnissar (ABC-c3 1:15)
   t = sag(t + 0.9, 'n-nu-ritar') - 1.0; }   // kritan börjar rita (t + 0.6) när repliken tar slut
 
@@ -433,6 +440,7 @@ citron.levande.push([t + 0.1, 'vinka', t + 0.5 + D['n-hej-citronen'] + 0.4]); t 
   u = eTon(u + 0.2, 'x-undrar', 'x-nej');   // C? C-c. (E:s riktning)
   u = narbild(Math.max(u, boll.svar + 1.7) + 0.2, { ansikte: 'forvanad', ljud: 5 });
   kanner(u, u + D['n-busiga'] + 0.4, 'skrattar');
+  KVISA.push([u - 0.6, u + D['n-busiga'] + 1.4]); kSvar(u + D['n-busiga'] - 0.3, 'busig');   // kritan tittar in och vickar blygt: oj!
   u = sag(u, 'n-busiga') + 0.3;
   boll.hopp.push(u + 0.1);
   u = sag(u, 'p-boll-inte') + 0.3;
@@ -461,7 +469,7 @@ t = sag(t, 'n-vad-fattas') + 2.0;   // paus för barnet: hjul!
 //    cykeln rätar upp sig och rullar, och clownen hoppar bredvid (den sitter aldrig på cykeln).
 citron.levande.push([t + 0.1, 'titta', t + 0.4 + D['n-ett-hjul-till'] + 0.4, 'nyfiken', { upp: 1 }]);
 t = sag(t + 0.4, 'n-ett-hjul-till') + 0.2;
-KVISA.push(t); t = sag(t + 0.4, 'n-rita-runt') - 0.3;   // kritan kommer fram när Malin ber den
+KVISA.push(t); t = sag(t + 0.4, 'n-rita-runt') - 0.3; kSvar(t - 0.2, 'ja');   // kritan kommer fram när Malin ber den och nickar: ja!
 const CIRKEL_RIT = [1500, 660, 0.9];
 gissning(cirkel, 'rulla', 'gunga', 2.0, CIRKEL_RIT, [1500, 650, 1.1]); fx(cirkel.svar + 0.4, 'rull', 0.6, { langd: 1.6, fade: 0.4 });
 kanner(cirkel.svar + 0.3, cirkel.svar + 2.4, 'jatteglad', 'hurra');
@@ -814,9 +822,9 @@ function kritan(t) {
     return [x + sk * rs * (lx + rx), y + sk * rs * (ly + ry)]; };
   if (nu) { const p = pa(nu, inUt(del([nu[2], nu[3]], t))); return [p[0], p[1] + Math.sin(t * 107) * 1.2, nu[4]]; }
   const fore = STRECK.filter(x => x[3] <= t).at(-1), efter = STRECK.find(x => x[2] > t);
-  const fram = KVISA.reduce((m, t0) => !fore || fore[3] < t0 ? Math.max(m, inUt(clamp((t - t0) / 1.0))) : m, 0);   // in i bild från t0 tills nästa streck
-  const nick = KNICK.reduce((n, t0) => n + 26 * (bage(clamp((t - t0) / 0.35)) + bage(clamp((t - t0 - 0.4) / 0.35))), 0);
-  const vila = [lerp(VILA[0], KFRAM[0], fram), lerp(VILA[1], KFRAM[1], fram) + Math.sin(t * 3.7) * 8 + nick];
+  const fram = KVISA.reduce((m, v) => { const [t0, t1] = [].concat(v);   // in i bild från t0 tills nästa streck, eller till t1
+    return !fore || fore[3] < t0 ? Math.max(m, inUt(clamp((t - t0) / 1.0)) * (t1 ? inUt(clamp((t1 - t) / 0.9)) : 1)) : m; }, 0);
+  const vila = [lerp(VILA[0], KFRAM[0], fram), lerp(VILA[1], KFRAM[1], fram) + Math.sin(t * 3.7) * 8 + kSvarY(t)];
   if (fore && efter && efter[2] - fore[3] < 1) {   // lyfter till nästa streck
     const q = pa(fore, 1), r = pa(efter, 0), k = inUt(del([fore[3], efter[2]], t));
     return [lerp(q[0], r[0], k), lerp(q[1], r[1], k) - 50 * Math.sin(Math.PI * k), efter[4]];
@@ -1051,7 +1059,7 @@ function rita(t) {
   const [kx, ky, kf] = kritan(t), syns = t > A.rita[1] + 0.6 && t < STRECK.at(-1)[3] + 1.2;   // kritan går när allt är ritat
   kritaG.style.display = syns ? '' : 'none';
   smulor(t, kx, ky, syns && STRECK.some(([, , a, b]) => t >= a && t < b) && (kf === F.svart ? '#3B3431' : kf));
-  kritaG.innerHTML = kritaBild(kx, ky, { s: kritaSkala(z) * clamp((t - A.rita[1] - 0.6) / 0.4), v: kritVinkel(t) });
+  kritaG.innerHTML = kritaBild(kx, ky, { s: kritaSkala(z) * clamp((t - A.rita[1] - 0.6) / 0.4), v: kritVinkel(t) + kSvarV(t) });
   gissa.boil(t, z);   // 2,5 px i bild, 6 gånger/s (CLAUDE.md)
   kant.uppdatera();
 }

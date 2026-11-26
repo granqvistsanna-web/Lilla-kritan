@@ -4,7 +4,7 @@ Gjord 2026-11-20 efter `format/abc-recept-3-kompisen-vill.md`, byggd ur `../abc-
 
 - Scenen: `index.html`. Filmen: `abc-e-recept-3.mp4` (snabb förhandsvisning, 960 × 540, 3:46). Förra versionen (43 rader, 3:30) ligger i `aldre/`.
 - Rösten: Malin, tagning 3 (ElevenLabs v3, 61 rader ur `malin-e-recept-3.txt`), delad med `verktyg/dela-tagning.py` till `assets/ljud/roster/alfabet/abc-e-recept-3-v2/`. Originalet: `produktion/ljud-original/roster/abc-e-recept-3/tagning-3.mp3`. Ingen replik är klippt om för hand.
-- Bilderna: elefanten är riggen `elefanten-elsa`, hunden riggen `hunden-hugo`. Ekorren (`karaktarer/ekorren/premium/`, `ekorre-sida-1` ur Flow) och katten (`rekvisita/katt-abc/`) är vanliga små djur från sidan, delade i kropp, svans och ben (`verktyg/delar.py`) så att svansen svajar, tassarna och benen rör sig och ögat blinkar (Sanna 2026-11-20). Ekollonet som förut.
+- Bilderna: elefanten är riggen `elefanten-elsa`. Den udda i leken är katten igen, som bollen i C (Sanna 2026-11-26). Ekorren (`karaktarer/ekorren/premium/`, `ekorre-sida-1` ur Flow) och katten (`rekvisita/katt-abc/`) är vanliga små djur från sidan, delade i kropp, svans och ben (`verktyg/delar.py`) så att svansen svajar, tassarna och benen rör sig och ögat blinkar (Sanna 2026-11-20). Ekollonet som förut.
 - Kritan ritar fler detaljer i elefanten (öronens insidor, snabeln, ögonen) och ögat i katten och ekorren. Elefanten nickar som svar på *"Måste den börja på E?"*. Kritsmulorna är svagare. Filmen är 3:54.
 
 **Meningen:** Elefanten vill leka men har ingen kompis. Malin ber kritan rita en, och den måste börja på E. Kritan ritar fel (katten, hej då!). Kritan ritar ekorren, och de hoppar. Ekorren är hungrig, och kritan ritar ett ekollon.
@@ -38,8 +38,8 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 | 2:21 | Närbild: elefanten jublar (hurra) | – | brum |
 | 2:23 | Tre bildklossar poppar fram och hoppar in på sina plattor. Blandningen | Nu leker vi! · Titta noga. Var är elefanten? | duns, klistra, swoosh |
 | 2:32 | Elefantens kloss hoppar till | Där är den! | pling |
-| 2:33 | Muren. Hunden dunsar ner, elefanten blir förvånad i närbild | Titta! En till. · Elefant! · Ekorre! · Ekollon! · Hund. · Vilken ska bort? · Vilken börjar inte på E? *(paus 4 s)* | vov, brum |
-| 2:57 | Hunden hoppar ner och går ut, elefanten vinkar och jublar | Hunden! · Hund börjar inte på E. · Hej då, hunden! | vov, tassar, jippi |
+| 2:33 | Muren. Kattens kloss dunsar ner igen, elefanten blir förvånad i närbild | Titta! En till. · Elefant! · Ekorre! · Ekollon! · Katt? · Vilken ska bort? · Vilken börjar inte på E? *(paus 4 s)* | mjau, brum |
+| 2:57 | Katten hoppar ner och går ut, elefanten vinkar och jublar | En katt! · Katt börjar inte på E. · Hej då, katten! | mjau, tassar, jippi |
 | 3:09 | Klossarna på rad, var och en hoppar på sitt ord | Elefant, ekorre, ekollon. · Alla börjar på bokstaven E. | – |
 | 3:15 | Discot: elefanten hoppar ur klossen och dansar stor, de andra snurrar, pyramid | Nu dansar vi! · Elefanten dansar! · Ekorren snurrar! · Ekollonet snurrar! | disco |
 | 3:35 | Elefanten vinkar | Det var allt för i dag. · Vad kul det var att leka! · Hej då! | – |
@@ -61,7 +61,7 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 - Inga djurnamn, inga utdragna ord, ingen *"Lyssna!"*, inget *"Säg du"*, aldrig *"Vad kan det vara?"*.
 - *"Vem är det?"* för djuren, *"Vad blir det?"* för ekollonet.
 - En rörelse per uppslag, Malin efter handlingen, ett reaktionsslag per händelse (närbilderna 0:37, 1:05, 2:21).
-- Fem djur syns sammanlagt (elefanten, katten, ekorren, hunden), men högst två samtidigt. `regler.md` säger högst tre figurer; ABC-filmerna följer inte den regeln i recept 1 heller.
+- Fem djur syns sammanlagt (elefanten, katten, ekorren), men högst två samtidigt. `regler.md` säger högst tre figurer; ABC-filmerna följer inte den regeln i recept 1 heller.
 
 ## B:s ändringar 2026-11-21 (Sannas feedback på B, flyttad hit)
 
@@ -91,7 +91,6 @@ Tiderna är ur förhandsvisningen. Rörelsen kommer först, Malin efteråt. Krit
 
 - Muren står fortfarande still ca 12 s medan Malin säger orden och frågar.
 - Elefanten brummar fortfarande som björnen i närbilderna (`brum-glad`).
-- Hunden är kvar i den gamla, ritade stilen.
 - Ingen har lyssnat på blandningen. Lyssna särskilt på *"Det är ju E!"*, *"Kan du det, kritan?"*, *"Nu ritar kritan."* och *"E, e, elefant!"*: whisper hörde dem lite fel i tagning 3.
 - Stillbilder tagna långt isär i samma körning kan visa bokstavsmärket en extra gång bredvid elefantens kloss. I den renderade filmen syns det inte.
 
@@ -146,7 +145,7 @@ Idag pratar E på tre ställen (introt, efter varje ord, slutet) och säger ord 
 | Ekorren | *"Och i ekorre?"* → *"e, e, ekorre!"* | Efter *"E, e, ekorre!"*: E `x-ja` → *"Ekorre börjar också på E!"* (`n-och-ekorre` går bort) |
 | Ekollonet | *"e, e, ekollon!"* | E `x-ja` → *"Ekollon börjar också på E!"* |
 | Gömleken | E tyst | E tyst (kompisens kloss har ledtrådarna) |
-| Muren | E tyst | Efter pausen och *"Hunden!"*: E `x-nej` → *"Hund börjar inte på E."* → *"Hej då, hunden!"* |
+| Muren | E tyst | Efter pausen och *"En katt!"*: E `x-nej` → *"Katt börjar inte på E."* → *"Hej då, katten!"* |
 | Slutet, märket i mitten | *"e, e, E!"* | `x-ja` (stolt) |
 | *"Hej då!"* | inget efter hej då (22/11) | E vinkar med `x-halsar` samtidigt som Malin, inte efter. Samma ton som när E hälsade, så slutet knyter ihop introt |
 
@@ -180,3 +179,5 @@ Idag tar elefanten ca 13 s att rita: konturen 6,5 × `TEMPO` 0,8 = 5,2 s, sedan 
 
 - **0:33, musiken:** introts och berättelsens bädd (`abc-bad-lang`) 0,5 → 0,38.
 - **2:37, gömleken lättare att gissa:** klossarna vänder ryggen till på 0,9 s (var 0,5), varje byte tar 1,6 s (var 0,8) med 0,7 s vila emellan, och båda klossarna i ett byte snurrar ett varv medan de flyttar, så bilden syns en stund mitt i bytet och man ser vart elefanten går (`VANDSEK`, `BYTSEK`). Filmen är 4:14.
+
+**Kritan svarar utan ord (Sanna 2026-11-26):** när Malin frågar eller säger något till kritan svarar den med kroppen och ett kort krit-ljud (`kSvar(t, typ)`, `KSVAR`): ett litet hopp på *"Kritan! Kan du rita …?"*, två nickar på *"Kan du det, kritan?"* och på bönen i del 6, och på *"Busiga kritan!"* tittar den in en kort stund (`KVISA` med [från, till]) och vickar blygt (A fnissar i stället, `KFNISS`).
