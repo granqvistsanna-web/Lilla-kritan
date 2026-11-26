@@ -73,6 +73,11 @@ const PULKA = R_ + 'pulka/cut/pulka.png', PULKA_O = [512, 392];
 // Ritintrot: kritan ritar paketet (J06 22/11: "draw julklapp istället för katt"), det gröna med röd rosett (paket 1). Bildens botten (y 939) på y 870.
 const PAK_PS = 0.7, PAK_X = 960 - 512 * PAK_PS, PAK_Y = 870 - 939 * PAK_PS, HAL = [960, 600];
 const pakTill = ([x, y]) => [PAK_X + x * PAK_PS, PAK_Y + y * PAK_PS];
+// Teckningen har bildens delar (Sanna 26/11 "gör teckningen lättare att gissa"): efter konturen rosettens knut, snibbarna, locket och bandkorset,
+// två lodräta streck (bandet x 478–546) och fyra vågräta (y 553–627) som stannar vid bandet. I paket-hog.png:s pixlar.
+const PAK_DRAG = () => [KONT.paket.d, 'M482 205 a30 30 0 1 0 60 0 a30 30 0 1 0 -60 0', 'M497 232 L445 318', 'M527 232 L580 318', 'M706 305 L590 305', 'M440 305 L318 305',
+  'M478 326 L478 906', 'M546 906 L546 326',
+  'M546 553 L706 553', 'M706 627 L546 627', 'M478 627 L316 627', 'M316 553 L478 553'];
 // tre olika paket med rosetten i bilden (Sanna 2026-11-14: "generate 3 new packages with bows", "a round, wide, tall", mönstrat papper):
 // o = bottenmitten i bildens px, h = lådans höjd under rosetten (så djupt sjunker den i snön)
 const PAKETB = [
@@ -566,7 +571,7 @@ function rita(t) {
 function ritaPapper(st, t) {
   papper(); kamera(st.kam);
   const k = ritfart((t - 2.5) / 7), f = st.fyll, lo = linjeOpacitet(f), tr = `translate(${f1(PAK_X)} ${f1(PAK_Y)}) scale(${PAK_PS})`;
-  const RB = ritBana([KONT.paket.d], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / PAK_PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` });
+  const RB = ritBana(PAK_DRAG(), k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / PAK_PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` });
   if (f > 0) lagg('saker', `<defs>${fyllMask('fyp', KONT.paket.mitt[0], KONT.paket.mitt[1], 620, f)}</defs><g transform="${tr}"><image href="${PAKETB[0].bild}" width="1024" height="1024" clip-path="url(#fyp)"/></g>`);
   if (t >= 2.5 && lo > 0) lagg('kontur', `<g filter="url(#vax)" opacity="${lo.toFixed(3)}"><g transform="${tr}">${RB.html}</g></g>`);
   const kr = kritaFas(t, T_RIT(), { start: pakTill(RB.start), spets: pakTill(RB.spets), slut: pakTill(RB.slut), vanta: [1450, 330], s: KRITAN.SKALA_PAPPER });

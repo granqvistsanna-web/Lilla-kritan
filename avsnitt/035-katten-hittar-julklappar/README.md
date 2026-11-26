@@ -80,6 +80,13 @@ Lämnat, med skäl:
 - Vinkningen är ARMRORs (30° ± 16°), alltså liten.
 - Ritintrot följer inte den nya korta regeln (konturen 7 s, 01a–01c ca 18,5 s mot 2,8 s och 7–8 s). Inte ändrat enligt uppdraget.
 
+## Feedback J06 2026-11-26
+
+Luckan renderad 25/11 17:29 (3D-intro och 3D-outro).
+
+- **0:22 teckningen lättare att gissa:** kritan ritade bara paketets ytterform (en hög ruta med två pucklar, såg ut som en burk). Nu ritar den efter konturen bildens delar: rosettens knut, de två snibbarna, locket och bandkorset (två lodräta streck och fyra vågräta som stannar vid bandet), som extra streck i `ritBana` (`PAK_DRAG` i `snogarden/index.html`). Samma 7 s ritning, kritan glider mellan strecken.
+- **1:04 svansens knöl:** scenfilmen renderades 25/11 14:42, innan Kajs svans med jämn rot (`cut-tunn/kaj-tail.png`, 14:35, renderingen hade redan startat) kom med, så den gamla roten med knölen syntes. Nu med den nya svansen, och en liten ljus prick i svansens böj borttagen.
+
 ## Kimis granskning av replikerna (2026-11-13)
 
 Sanna bad om en granskning av Kimi innan Malins röst görs. Kimi hade fem anmärkningar. Ingen ändrades, för alla fem är val som serien redan gjort och Sanna godkänt i 020–024:
