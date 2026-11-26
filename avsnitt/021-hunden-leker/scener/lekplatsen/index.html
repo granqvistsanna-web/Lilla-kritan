@@ -535,7 +535,7 @@ const VOVJA = {};
 // De nya vov-ja ("ja!") och vov-hejda är mastrade mycket hetare (−6 / −9 LUFS) än resten av hundens röst (vov-babbel, vov-fniss ca −19 vid 1,6):
 // vov-ja sänks till ca −15 LUFS, vov-hejda ytterligare ner (ca −16, Sanna 2026-11-11 "turn down dog hejdå"). Malin ligger på ca −7.
 const VOL = f => /^vov-hejda/.test(f) ? 0.38 : /^vov-ja/.test(f) ? 0.55 : /^vov|flamt/.test(f) ? 1.6 :
-   /^(glitter|tindra)/.test(f) ? 0.9 : /^lysmask/.test(f) ? 0.5 : /^nos/.test(f) ? 2.0 : /^landa-mjuk/.test(f) ? 0.8 : /^gasp/.test(f) ? 0.7 : /^smasteg/.test(f) ? 0.9 : /^(rull|svansvift|boing|trav|smasteg|hopp-mjuk|hink-dunk)/.test(f) ? 1.0 : 1.2;   // nos +6 dB (QA: −22 dBFS, hördes knappt)
+   /^(glitter|tindra)/.test(f) ? 0.9 : /^(lysmask|glimt)/.test(f) ? 0.5 : /^nos/.test(f) ? 2.0 : /^landa-mjuk/.test(f) ? 0.8 : /^gasp/.test(f) ? 0.7 : /^smasteg/.test(f) ? 0.9 : /^(rull|svansvift|boing|trav|smasteg|hopp-mjuk|hink-dunk)/.test(f) ? 1.0 : 1.2;   // nos +6 dB (QA: −22 dBFS, hördes knappt)
 function ljud() {
   const ut = [];
   for (const r of RAD) {

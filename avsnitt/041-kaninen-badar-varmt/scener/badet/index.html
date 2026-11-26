@@ -514,7 +514,7 @@ function rita(t) {
 // --- Ljudet -----------------------------------------------------------------------------------------------------------------------
 const E = 'assets/ljud/effekter/';
 const VOL = f => /^kanin-gullig\/kanin-hejda/.test(f) ? 0.5 : /^kanin-gullig\/kanin-hej/.test(f) ? 1.2 : /^kanin-gullig/.test(f) ? 0.75 :
-  /^(glitter|tindra)/.test(f) ? 0.85 : /^(tass|plask)/.test(f) ? 0.7 : /^droppar/.test(f) ? 0.8 : 1.0;
+  /^(glitter|tindra|glimt)/.test(f) ? 0.85 : /^(tass|plask)/.test(f) ? 0.7 : /^droppar/.test(f) ? 0.8 : 1.0;
 function ljud() {
   const ut = [];
   for (const r of RAD) {

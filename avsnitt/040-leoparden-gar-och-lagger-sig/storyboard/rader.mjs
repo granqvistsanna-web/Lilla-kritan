@@ -63,7 +63,7 @@ export const RADER = [
     bild: 'Leoparden ler nöjt med munnen stängd, borsten nere. **Nickar**', ljudtext: 'förtjust (2)', ansikte: 'glad' },
   { id: '18', d: 0.3 + L(23) + 0.6, plats: 'Närbild, munnen', malin: [[23, 0.3]], ljud: [['skrubb/skrubb-1', 0.3 + L(23)]],
     bild: 'Gapar igen, de nedre tänderna matta, borsten nere', ljudtext: '`skrubb`', ansikte: 'gap' },
-  { id: '19', d: 0.2 + L(24) + 0.8, plats: 'Närbild, munnen', malin: [[24, 0.2]], ljud: [['tindra/tindra-1', 0.3]],
+  { id: '19', d: 0.2 + L(24) + 0.8, plats: 'Närbild, munnen', malin: [[24, 0.2]], ljud: [['tindra/tindra-3', 0.3]],
     bild: 'De nedre tänderna blir blanka, en stor glimt', ljudtext: '`tindra`', ansikte: 'gap' },
   { id: '20', d: 0.3 + L(25) + 1.4, plats: 'Ansiktsbild', malin: [[25, 0.3]], ljud: [[S(3), 0.5 + L(25)]],
     bild: 'Tandleendet (`flinar`)', ljudtext: 'fniss (3)', ansikte: 'visar tänderna' },
@@ -106,7 +106,7 @@ export const RADER = [
     bild: 'Leoparden lutar sig mot ljusstaken och blåser: lågorna slocknar en i taget med en liten rökpuff', ljudtext: '`puff` ×4', ansikte: 'blåser' },
   { id: '38', d: 0.3 + L(44) - 1.22 + 1.2, plats: 'Halvbild', malin: [[44, 0.3, { ss: 1.22 }]], ljud: [],   // J03: ingen lampa, inget klick   // J03: utan "God natt, lampan" (repliken börjar på "God natt, nallen")
     bild: 'Lampan släcks på *"lampan"*, nallen blundar på *"nallen"*, snön faller lugnt. Rummet blir varmt blått', ljudtext: '`lampa-klick`', ansikte: 'sömnig' },
-  { id: '39', d: 0.6 + L(45) + 1.4, plats: 'Halvbild, mörkt rum', malin: [[45, 0.6]], ljud: [['tindra/tindra-2', 0.3]],
+  { id: '39', d: 0.6 + L(45) + 1.4, plats: 'Halvbild, mörkt rum', malin: [[45, 0.6]], ljud: [['tindra/tindra-4', 0.3]],
     bild: 'Bara stjärnan lyser, skenet dämpas och växer', ljudtext: '`tindra`', ansikte: 'sömnig' },
   { id: '40', d: 1.2 + L(46) + 0.6, plats: 'Ansiktsbild', malin: [[46, 1.2]], ljud: [['gaspning/gaspning-1', 0.1]],
     bild: 'Leoparden gäspar stort', ljudtext: '`gaspning`', ansikte: 'sömnig, gäspar' },

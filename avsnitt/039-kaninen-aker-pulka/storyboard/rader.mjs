@@ -103,9 +103,9 @@ export const RADER = [
     bild: 'Kaninen tittar åt vänster, sedan åt höger (ögonen, huvudet vänds inte)', ljudtext: 'frågande pip (7b)', ansikte: 'nyfiken' },
   { id: '28a', d: 0.3 + L(34) + 0.4, plats: 'Julhallen, helbild', malin: [[34, 0.3]],
     bild: 'Bred bild på frågan: kaninen, hängaren och korgen', ljudtext: '–', ansikte: 'nyfiken' },
-  { id: '28b', d: 4.0, plats: 'Närbild, korgen (klipp)', ljud: [['tindra/tindra-1', 1.9]],
+  { id: '28b', d: 4.0, plats: 'Närbild, korgen (klipp)', ljud: [['tindra/tindra-3', 1.9]],
     bild: 'Paus 5 s: tummen sticker fram vid korgens högra kant. Efter 3 s skimrar den svagt', ljudtext: 'tyst, ett svagt `tindra`', ansikte: '–' },
-  { id: '29', d: L(35) + 1.4, plats: 'Halvbild', malin: [[35, 0.0]], ljud: [['tindra/tindra-2', 0.0], [K(2), 0.2 + L(35)]],
+  { id: '29', d: L(35) + 1.4, plats: 'Halvbild', malin: [[35, 0.0]], ljud: [['tindra/tindra-4', 0.0], [K(2), 0.2 + L(35)]],
     bild: 'Vanten skimrar tydligt, kaninen gör ett lugnt skutt', ljudtext: '`tindra`, förtjust pip (2)', ansikte: 'jätteglad' },
   { id: '30', d: 0.9 + L(36) + 0.8, plats: 'Halvbild', malin: [[36, 0.9]], ljud: [['prassel-tyg/prassel-tyg-1', 0.9 + ORD[36].pa - 0.1]],   // Sanna 18/11 kväll: "dra dra" senare (0,3 → 0,9 s), vanten hinner fram först
     bild: 'Vanten glider fram ur gömstället och upp på andra tassen', ljudtext: '`prassel-tyg`', ansikte: 'glad' },

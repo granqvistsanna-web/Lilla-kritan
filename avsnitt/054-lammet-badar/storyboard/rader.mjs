@@ -101,7 +101,7 @@ export const RADER = [
   { id: '16', d: 1.7 + L(26) + 0.3 + L(27) + 0.6, plats: 'Badrummet, helbild', malin: [[26, 1.7], [27, 1.7 + L(26) + 0.3]],
     ljud: [['prassel-tyg/prassel-tyg-1', 0.6], ['handduk-gnugg/handduk-gnugg-4', 1.7 + L(26) + 0.3 + 2.8], ['puff/puff-1', 1.7 + L(26) + 0.3 + TORRT(27)], ['tindra/tindra-3', 1.7 + L(26) + 0.3 + TORRT(27) + 0.1]],
     bild: 'Handduken glider ner från kroken och lägger sig tvärs över lammets hjässa och öron (ansiktet syns). Den torkar med en lugn gungning. På "torrt!" lyfts den: öronen är fluffiga', ljudtext: '`prassel-tyg` när den glider, `handduk-gnugg`, `puff` + `tindra` på "torrt!"', ansikte: 'blundar nöjt → glad' },
-  { id: '17', d: 1.6, plats: 'Närbild öronen', ljud: [['tindra/tindra-1', 0.2], [B(2, 'b'), 0.6]],
+  { id: '17', d: 1.6, plats: 'Närbild öronen', ljud: [['tindra/tindra-3', 0.2], [B(2, 'b'), 0.6]],
     bild: 'Reaktion: lammet tittar upp på sina fluffiga öron, blinkar och ler', ljudtext: 'förtjust (2)', ansikte: 'jätteglad' },
   { id: '18', d: 0.8 + L(28) + 0.6, plats: 'Halvnära', malin: [[28, 0.8]],
     ljud: [['prassel-tyg/prassel-tyg-1', 0.2], ['handduk-gnugg/handduk-gnugg-4', 0.8 + 2.7], ['puff/puff-2', 0.8 + TORRT(28)], ['tindra/tindra-4', 0.8 + TORRT(28) + 0.1]],

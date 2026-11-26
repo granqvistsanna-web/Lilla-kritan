@@ -687,7 +687,7 @@ window.ready = (async () => {
   const S = 'assets/ljud/effekter/';
   // Bara kalenderns egna ljud. I den skarvade filmen (skarva.sh) ligger den gamla filmens ljud under (samma tider), och de nya
   // effekterna läggs ovanpå: tindra när guldramen tänds, glitter när ljuset strömmar ut.
-  window.LJUD_NYA = [{ t: PEK + 0.05, fil: S + 'tindra/tindra-2.m4a', vol: 0.9 }, { t: OPP0 + 0.05, fil: S + 'glitter/glitter-1.m4a', vol: 0.8 }];
+  window.LJUD_NYA = [{ t: PEK + 0.05, fil: S + 'tindra/tindra-4.m4a', vol: 0.9 }, { t: OPP0 + 0.05, fil: S + 'glitter/glitter-1.m4a', vol: 0.8 }];
   window.LJUD = [
     { t: VINK + 0.4, fil: 'assets/ljud/roster/tittut/kanin-hej.m4a', vol: 2.5 }, { t: LATE, fil: S + 'kanin-ny/kanin-ny-hej-2.m4a', vol: 1.3 },
     { t: FRAGA, fil: `${ROST}/vilken-dag.m4a`, vol: 2.5 }, { t: PEK + 0.5, fil: `${ROST}/just-det-${N}.m4a`, vol: 2.5 },

@@ -21,7 +21,7 @@ const M = n => `mjau-gullig/mjau-gullig-${n}`, OOO = 'mjau-ooo/mjau-ooo-1', TRIL
 // Bussen (godkänd, grind 4): brum som matta (loopas med 1 s övertoning i bygg.mjs) i bygg.mjs, broms, dörren, kortläsaren, blinkers, plogen, stoppknappen, bron.
 const BROMS = 'buss/buss-broms', DORR = 'buss/buss-dorr-pschhh', PIP = 'buss/kortlasare-pip', BLINK = 'buss/blinkers-tick',
   SKRAP = 'buss/snoplog-skrap', PLING = 'buss/stoppknapp-pling', BRO = 'buss/bro-dunk';
-const STEG = n => `knarr-sno/knarr-sno-${n}`, HOPP = 'hopp-mjuk/hopp-mjuk-1', POP = 'pop/pop-1', TINDRA = 'tindra/tindra-1',
+const STEG = n => `knarr-sno/knarr-sno-${n}`, HOPP = 'hopp-mjuk/hopp-mjuk-1', POP = 'pop/pop-1', TINDRA = 'tindra/tindra-3',
   GLITTER = 'glitter/glitter-1', RITAR = 'krita-ritar/krita-ritar-1', KNACK = 'knack/knack-1', KVITTER = 'fagelkvitter/fagelkvitter-2',
   FAGEL = 'fagel-pip/fagel-pip-1', KANIN = 'kanin-gullig/kanin-hej-1', DORRHUS = 'buss-dorr/buss-dorr-1';
 

@@ -72,7 +72,7 @@ const NAR_ARM = 0, NAR_LUTA = 9;   // högra armen till flaskan (grader, + upp) 
 kit.ljud('pling', T.glimt[0] - 0.2, { vol: 0.45 });
 kit.ljud('gaspning', T.gasp - 0.1, { vol: 0.6 });   // 17: gäspningen
 kit.ljud('lagga-sig', T.nSomnar, { vol: 0.6 });   // 20: Nicke lägger sig
-kit.ljud('lysmask', T.lMys, { vol: 0.35 });   // 21: Lage myser
+kit.ljud('glimt', T.lMys, { vol: 0.35 });   // 21: Lage myser
 kit.ljud('syrsor', R[2], { loop: true, langd: R[3] - R[2], vol: 0.25, fade: 1.2 });
 kit.ljud('glitter', T.sista[0] + 0.2, { vol: 0.4 });
 for (const d of T.diamant) kit.ljud('tindra', d, { vol: 0.45 });   // klang när stjärnan blir diamant och tillbaka
