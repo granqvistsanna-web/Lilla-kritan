@@ -18,7 +18,7 @@
      Avsnitt 013, bild 00: introt "Mintgolv" (Sanna 2026-11-08, skissrunda 5 i Grisen Gris-andan: platt kritvägg, handtextade
      versaler, inget avsnittsnummer). Samma tider som förut, 11,3 s, tajmad mot jingel.m4a: kritan ritar "LILLA KRITAN" som röda
      handtextade versaler med vit klistermärkeskant, en bokstav per sextondel, och varje bokstav studsar när den är klar; Fia hoppar
-     fram längs bokstäverna, flyger ett varv och landar på sista bokstaven. Titeln på en klottrad kritfläck i avsnittets färg. En röd krita ligger på golvet. Bakgrunden är blå himmel med moln och gräsgolv (?bg=mint ger den gamla mintväggen). 10–11,3 s: Fia flyger iväg, allt krymper bort och
+     fram längs bokstäverna och landar på sista bokstaven (varvet runt kortet borttaget 2026-11-26). Titeln på en klottrad kritfläck i avsnittets färg. En röd krita ligger på golvet. Bakgrunden är blå himmel med moln och gräsgolv (?bg=mint ger den gamla mintväggen). 10–11,3 s: Fia flyger iväg, allt krymper bort och
      papperet växer ur mitten tills det fyller bilden (osynligt klipp till kritan-ritar). Förra versionerna: intro-forra.mp4. -->
 <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
   <defs>
@@ -178,7 +178,8 @@ FARGER.turkos = { f: '#2FB5A8', sv: 'Borsta, borsta', en: 'Brush, Brush' };
 const EP = FARGER[Q.get('farg')] || FARGER.turkos, KLOTTER = Q.get('klotter') || 'snurr', ETIK = Q.get('etikett') || 'klotter';   // förval: klottrad kritfläck (Sanna 2026-11-08)
 const TEXT = EN ? { ord: 'tiny crayon tv', avsnitt: 'Episode', titel: EP.en } : { ord: 'lilla kritan', avsnitt: 'Avsnitt', titel: EP.sv };
 const EX = EN ? 1.25 : 0;   // engelska jingeln sjunger "TV!" ca 1,25 s senare än "Kom och se!": allt efter skrivandet flyttas lika mycket
-const DURATION = 6.5 + EX;   // var 11,3, sedan 9,0; 6,5 från 2026-11-23 (regelboken: referenserna är inne i sången efter 0–8 s). "se!" slutar ca 5,9; jingelns musik tonas ut 6,0–6,5 i satt-ihop.sh
+const DURATION = EN ? 7.75 : 7.3;   // var 11,3, sedan 9,0, sedan 6,5 (2026-11-23). 7,3 från 2026-11-26 (Sanna: 6,5 kändes stressigt, musiken klipptes mitt i):
+// jingel-kort.m4a = jingel.m4a utan två taktslag efter "Kom och se!" (6,29 → 7,495), så att slutslagen finns kvar; sista slaget ca 6,8, efterklangen borta 7,3
 // ---------- tider (s) = jingelns klocka (jingel.m4a, ca 98 bpm, åttondel 0,305 s; musiken klingar av 7,5–8,2) ----------
 const STEG = 0.305;
 const T = {
@@ -186,12 +187,12 @@ const T = {
   tejp: 1.2,
   skriv: 1.39,             // "Rita, rita, ...": en bokstav per sextondel (POP_STEG), hela ordet inne ~3,3 s; Fia hoppar på åttondelar
   kom: EN ? 6.2 : 4.95,    // "Kom och se!": kortet gör ett litet hopp (engelska jingeln: på "TV!" ca 6,3)
-  varv: [3.75, 5.3 + EX],       // Fia flyger ett varv runt kortet och landar på hörnet
+  // Fia hoppar längs bokstäverna (ett hopp per fjärdedel) och landar på sista bokstaven; inget varv runt kortet längre (Sanna 2026-11-26: för mycket och för snabbt)
   avsnitt: 4.05 + EX,           // *pling*
   titel: 4.2 + EX,              // ett ord i taget, ORD_PAUS isär
-  lyft: [5.6 + EX, 6.15 + EX],       // Fia flyger iväg uppåt
-  ut: [5.75 + EX, 6.05 + EX],          // texten och tejpen krymper bort, i omvänd ordning
-  zoom: [5.95 + EX, 6.5 + EX],       // kortet växer tills det fyller bilden
+  lyft: [DURATION - 0.95, DURATION - 0.1],    // Fia flyger lugnt iväg uppåt
+  ut: [DURATION - 0.75, DURATION - 0.45],     // texten och tejpen krymper bort, i omvänd ordning (kritsvepet börjar DURATION − 0,8)
+  zoom: [DURATION - 0.55, DURATION],          // används inte (z = 0)
 };
 const ORD_PAUS = 0.32, POP_STEG = STEG / 2;
 const KORT = [960, 480], KORT_VRID = 0;
@@ -379,8 +380,8 @@ const FIA = (() => {   // Fia v2 (premium/cut), ansiktet som i premium/uttryck.h
 })();
 // snabbt fladder i luften, 0.35..1
 // mjukare och lugnare vingslag (Sanna: "smoother more premium animation"): en ren sinus, 3,4 slag/s, vingarna fälls aldrig helt
-const flaxa = (t, hz = 3.4) => 0.6 + 0.4 * Math.cos(t * 2 * Math.PI * hz);
-const svava = (t, a = 9) => a * Math.sin(t * 2 * Math.PI * 1.7);   // lugn guppning i luften, i takt med vingarna (halva)
+const flaxa = (t, hz = 2.8) => 0.6 + 0.4 * Math.cos(t * 2 * Math.PI * hz);
+const svava = (t, a = 7) => a * Math.sin(t * 2 * Math.PI * 1.4);   // lugn guppning i luften, i takt med vingarna (halva)
 // mjuk kurva genom punkter (Catmull-Rom), u 0..1
 function bana(P, u) {
   const n = P.length - 1, f = clamp(u) * n, i = Math.min(Math.floor(f), n - 1), k = f - i;
@@ -394,14 +395,16 @@ function kortPunkt([x, y]) {
 }
 // Fia hoppar fram längs ordmärket: ovanför bokstaven som ritas, ett hopp per åttondel
 let LANDA = [0, 0];   // på sista bokstaven (sätts när ordmärket byggts)
-function fiaLangsOrdet(t) {
-  const s = clamp((t - T.skriv) / STEG, 0, bokst.length - 1);
-  const i = Math.floor(s), k = s - i, a = bokst[i], b = bokst[Math.min(i + 1, bokst.length - 1)];
-  const bx = (q, kk) => (q.x + q.mitt[0]) * ORDS + 50 * kk;   // lite före bokstaven
-  const x = lerp(bx(a, 1), bx(b, 1), inUt(k)), topp = lerp(a.topp, b.topp, k) * ORDS;
-  const hojd = i >= 3 && i <= 5 ? 80 : 40;   // de tre hoppen som landar på "ett, två, tre" (2,61 / 2,92 / 3,22 s) är stora
-  return kortPunkt([x, 20 + topp - 110 - hojd * Math.sin(k * Math.PI)]);
+function fiaLangsOrdet(t) {   // ett lugnt hopp per fjärdedel (två bokstäver), sista hoppet landar på LANDA
+  const n = bokst.length - 1, q = Math.max(0, (t - T.skriv) / (2 * STEG)), j = Math.floor(q), k = q - j;
+  const vila = i => { const b = bokst[i]; return kortPunkt([(b.x + b.mitt[0]) * ORDS + 50, 20 + b.topp * ORDS - 110]); };
+  const i0 = Math.min(2 * j, n), i1 = Math.min(2 * j + 2, n);
+  if (2 * j >= n) return LANDA;
+  const a = vila(i0), b = i1 === n ? LANDA : vila(i1), e = inUt(k);
+  const hojd = j === 1 || j === 2 ? 55 : 35;   // hoppen som landar på "två" och "tre" (2,61 / 3,22 s) är lite större
+  return [lerp(a[0], b[0], e), lerp(a[1], b[1], e) - hojd * Math.sin(k * Math.PI)];
 }
+const LANDAR = () => T.skriv + Math.ceil((bokst.length - 1) / 2) * 2 * STEG;   // när sista hoppet landar (ca 4,4 s)
 const IN = [[-260, 820], [180, 420], [kortPunkt([-560, -380])[0], kortPunkt([-560, -380])[1]]];
 
 // ---------- glimtar på väggen och sakerna på golvet ----------
@@ -520,7 +523,7 @@ function svepIn(k) {
   g.innerHTML = h;
 }
 // ---------- en bildruta ----------
-let byggd = false, varvBana = null;
+let byggd = false;
 function render(t) {
   if (!byggd) return;
 
@@ -580,20 +583,12 @@ function render(t) {
   if (t < T.skriv) {                                   // flyger in från vänster medan kortet färgläggs
     const k = inUt(del([0.35, T.skriv], t));
     [x, y] = bana(IN, k); y += svava(t); tilt = 10 * (1 - k); titt = 1;
-  } else if (t < T.varv[0]) {                          // hoppar fram längs bokstäverna
+  } else if (t < LANDAR()) {                          // hoppar fram längs bokstäverna, ett hopp per fjärdedel
     [x, y] = fiaLangsOrdet(t); tittY = 1; titt = 0.4;
-    const r = (t - T.skriv) / STEG;   // "ett, två, tre": glad, vingarna slår på varje landning
-    if (r > 3 && r < 6.5) { lage = 'happy'; flax = 0.6 + 0.4 * Math.abs(Math.cos((r % 1) * Math.PI)); }
-  } else if (t < T.varv[1]) {                          // ett varv runt kortet, landar på hörnet
-    if (!varvBana) {
-      const s = fiaLangsOrdet(T.varv[0]);
-      varvBana = [s, [1790, 470], [1600, 860], [960, 930], [330, 760], [180, 430], [520, 150], [1100, 110], [LANDA[0] - 40, LANDA[1] - 70], LANDA];
-    }
-    const k = inUt(del(T.varv, t)), [x0, y0] = bana(varvBana, k), [x1] = bana(varvBana, Math.min(k + 0.01, 1));
-    x = x0; y = y0 + svava(t) * (1 - k); tilt = clamp((x1 - x0) / 6, -14, 14);
-    titt = clamp((960 - x) / 300, -1, 1); tittY = clamp((560 - y) / 300, -1, 1);
+    const q = (t - T.skriv) / (2 * STEG);   // "två, tre": glad, vingarna slår på varje landning
+    if (q > 1 && q < 3) { lage = 'happy'; flax = 0.6 + 0.4 * Math.abs(Math.cos((q % 1) * Math.PI)); }
   } else if (t < T.lyft[0]) {                          // sitter på hörnet och tittar på titeln
-    const e = t - T.varv[1];
+    const e = t - LANDAR();
     [x, y] = LANDA; y += e < 0.6 ? Math.exp(-e * 8) * Math.sin(e * 30) * 8 : 0;
     flax = 0.78 + 0.22 * Math.cos(e * 4.2);
     titt = -0.8; tittY = 0.7;

@@ -2,9 +2,9 @@
 
 Görs **en gång** och sparas i `assets/format/`. Varje avsnitt byter bara titeln och numret på titelkortet.
 
-## Intro (6,5 sekunder)
+## Intro (7,3 sekunder)
 
-Från 2026-11-23 är sångintrot det gemensamma `produktion/youtube/sang-intro/` (6,5 s, engelska 7,75 s): kopiera mappen till `avsnitt/NNN/intro/`. Hela jingeln sjungs ("se!" slutar ca 5,9 s), titeln kommer på "Kom och se!", kritsvepet täcker bilden från 5,7 s, och jingelns musik tonas ut 6,0–6,5 s i `satt-ihop.sh` (`atrim=0:6.5,afade=t=out:st=6.0:d=0.5`). Bilderboksintrot är redan 3,3 s. Tabellen nedan är den första versionen.
+Från 2026-11-23 är sångintrot det gemensamma `produktion/youtube/sang-intro/` (7,3 s, engelska 7,75 s): kopiera mappen till `avsnitt/NNN/intro/`. Från 2026-11-26 används `jingel-kort.m4a`: jingeln utan två taktslag efter "Kom och se!" (6,29 → 7,495 s), så att slutslagen och efterklangen finns kvar och musiken slutar av sig själv vid ca 7,3 s (6,5 s med jingeln avklippt mitt i kändes stressigt, Sanna). I `satt-ihop.sh`: `-i intro/jingel-kort.m4a` med `atrim=0:7.3,afade=t=out:st=6.95:d=0.35`. Fia hoppar lugnt längs bokstäverna (ett hopp per fjärdedel), landar på sista bokstaven och flyger iväg när kritsvepet börjar (7,3 − 0,8 s); inget varv runt kortet. Bilderboksintrot är redan 3,3 s. Tabellen nedan är den första versionen.
 
 | Tid | Bild | Ljud |
 |---|---|---|

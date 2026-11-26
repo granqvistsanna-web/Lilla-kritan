@@ -18,18 +18,18 @@ const RITA = n => `krita-ritar/krita-ritar-${n}`, GLITTER = 'glitter/glitter-1',
 const STEG = 'smasteg/smasteg-1', HOPP = n => `hopp-mjuk/hopp-mjuk-${n}`, KLICK = 'lampa-klick/lampa-klick-1';
 const STOL_UPP = 'stol-vvv/stol-vvv-2', STOL_NER = 'stol-vvv/stol-vvv-4', BORSTA = n => `borsta/borsta-${n}`;
 // Tandläkarens små ljud = doktorns (Sanna 2026-11-21: återanvänd doktor-*); tandläkaren säger inga meningar
-const DV = { hej: 2, hmm: 2, ooo: 2, aaa: 4, mhm: 1, fniss: 5, oj: 2, bra: 1, hejda: 1 }, DOK = n => `doktor-${n}/doktor-${n}-${DV[n]}`;
+const DV = { hej: 2, hmm: 2, ooo: 2, aaa: 4, mhm: 1, fniss: 5, oj: 2, bra: 1, hejda: 1 }, DOK = (n, i = DV[n]) => `doktor-${n}/doktor-${n}-${i}`;   // i: annan tagning (feedback 26/11: bra-1 och hmm-2 hördes för ofta)
 const G = 1.6;   // glest tempo som 046: extra luft på varje rad med en replik
 
 export const RADER = [
   { id: '00', d: 1.0, plats: 'Logotypen', bild: 'Lilla Kritans logotyp i 1 s, sedan papperet', ljudtext: '–', ansikte: '–' },
 
   // --- Kritan ritar tandborsten (papperet) ---
-  { id: '01a', d: 8.0, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [[RITA(1), 0.3]],
+  { id: '01a', d: 3.4, plats: 'Papperet, helbild', malin: [[1, 0.3]], ljud: [[RITA(1), 0.3]],
     bild: 'Kritan ritar tandborstens kontur i ett lugnt drag: skaftet, borsthuvudet, borststråna', ljudtext: 'kritan ritar', ansikte: '–' },
-  { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
+  { id: '01b', d: L(2) + 1.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
     bild: 'Konturen klar, kritan väntar bredvid och svajar: barnet gissar', ljudtext: 'tyst', ansikte: '–' },
-  { id: '01c', d: 0.6 + L(3) + 1.6, plats: 'Papperet → zoom in', malin: [[3, 0.6]], ljud: [[GLITTER, 0.6]],
+  { id: '01c', d: 0.2 + L(3) + 1.2, plats: 'Papperet → zoom in', malin: [[3, 0.2]], ljud: [[GLITTER, 0.2]],
     bild: 'Tandborsten fylls i inifrån, kritan flyger ut. Zoom in i teckningen, in i mottagningen', ljudtext: '`glitter`', ansikte: '–' },
 
   // --- Mottagningen: hej, den stora stolen ---
@@ -46,7 +46,7 @@ export const RADER = [
     bild: 'Kaninen orolig: bryn snett upp, blicken ner, öronen nere', ljudtext: '–', ansikte: 'orolig' },
 
   // --- Kritan ritar elefanten ---
-  { id: '6a', d: 0.3 + L(10) + 3.0, plats: 'Halvbild: kaninen', malin: [[10, 0.3]], ljud: [[RITA(2), 0.4]],
+  { id: '6a', d: 7.0, plats: 'Halvbild: kaninen', malin: [[10, 0.3]], ljud: [[RITA(2), 0.4]],
     bild: 'Kritan kommer in och ritar elefantens kontur bredvid kaninen (4 s): öronen, snabeln och armarna som egna drag. Gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '6b', d: 0.6 + L(11) + G, plats: 'Halvbild: kaninen', malin: [[11, 0.6]], ljud: [[GLITTER, 0.1]],
     bild: 'Elefanten fylls i inifrån', ljudtext: '`glitter`', ansikte: 'glittriga ögon' },
@@ -80,21 +80,20 @@ export const RADER = [
     bild: 'Spegeln framför elefantens snabel. Tandläkarens hand i bild', ljudtext: '`doktor-fniss`', ansikte: '–' },
   { id: '19', d: 0.3 + L(22) + 4.0 + L(23) + G, plats: 'Halvbild: kaninen', malin: [[22, 0.3], [23, 4.3 + L(22)]],
     bild: 'Kaninen visar: gapar själv först. Paus 4 s: barnet gapar', ljudtext: '–', ansikte: 'gapar' },
-  { id: '20', d: 0.4 + L(24) + G, plats: 'Närbild: kaninens mun', malin: [[24, 0.4]], ljud: [[DOK('hmm'), 0.5 + L(24)]],
+  { id: '20', d: 0.4 + L(24) + G, plats: 'Närbild: kaninens mun', malin: [[24, 0.4]], ljud: [[DOK('hmm', 1), 0.5 + L(24)]],
     bild: 'Kaninen gapar stort, spegeln framför munnen. Tänderna lyser upp en i taget på *"En, två, tre"*', ljudtext: '`doktor-hmm`', ansikte: 'gapar' },
-  { id: '21', d: 0.4 + L(25) + G + 1.2, plats: 'Närbild: kaninens mun', malin: [[25, 0.4]], ljud: [[DOK('bra'), 0.5 + L(25)], [K(2), 1.5 + L(25)]],
+  { id: '21', d: 0.4 + L(25) + G + 1.2, plats: 'Närbild: kaninens mun', malin: [[25, 0.4]], ljud: [[DOK('bra', 2), 0.5 + L(25)], [K(2), 1.5 + L(25)]],
     bild: 'De två stora framtänderna glittrar', ljudtext: 'förtjust (2)', ansikte: 'glad' },
-  { id: '22', d: 0.3 + L(26) + 4.0 + L(27) + G + 0.6, plats: 'Halvbild: kaninen', malin: [[26, 0.3], [27, 4.3 + L(26)]], ljud: [[KN('ja'), 4.5 + L(26) + L(27)]],
-    bild: 'Kaninen stänger munnen, ler stort med tänderna, stolt. Paus 4 s: barnet visar tänderna', ljudtext: 'ja', ansikte: 'stolt' },
+  // rad 22 ("Kan du visa dina tänder?" … "Där!") borttagen 26/11: avsnittet var 4:37, formatet 3:45–4:15
 
   // --- Var är tandborsten? ---
   { id: '23', d: 0.4 + L(28) + G + 0.6, plats: 'Närbild: tandläkaren', malin: [[28, 0.4]], ljud: [[DOK('oj'), 0.6 + L(28)]],
     bild: 'Tandläkaren tittar på sin tomma hand, förvånad (stora ögon, liten rund mun)', ljudtext: '`doktor-oj`', ansikte: 'tandläkaren förvånad' },
-  { id: '23b', d: 0.3 + L(29) + G + 1.2, plats: 'Tandläkaren och kaninen', malin: [[29, 0.3]], ljud: [[DOK('hmm'), 0.5 + L(29)], [K(7), 1.6 + L(29)]],
+  { id: '23b', d: 0.3 + L(29) + G + 1.2, plats: 'Tandläkaren och kaninen', malin: [[29, 0.3]], ljud: [[DOK('hmm', 3), 0.5 + L(29)], [K(7), 1.6 + L(29)]],
     bild: 'Tandläkaren tittar vänster, höger, vänster (bara huvudet). Kaninen tittar också', ljudtext: '`doktor-hmm`, frågande (7)', ansikte: 'frågande' },
   { id: '23c', d: 0.3 + L(30) + 5.0, plats: 'Helbild → närbild på fickan', malin: [[30, 0.3]], ljud: [[TINDRA, 0.3 + L(30) + 3.0]],
     bild: 'Bred bild för frågan, efter 3 s klipp till närbild: tandborsten sticker upp ur bröstfickan och skimrar', ljudtext: 'tyst, sedan `tindra`', ansikte: '–' },
-  { id: '23d', d: 0.3 + L(31) + G + 1.4, plats: 'Närbild: tandläkaren', malin: [[31, 0.3]], ljud: [[DOK('oj'), 0.5 + L(31)], [DOK('fniss'), 1.4 + L(31)]],
+  { id: '23d', d: 0.3 + L(31) + G + 1.8, plats: 'Närbild: tandläkaren', malin: [[31, 0.3]], ljud: [[DOK('oj'), 0.5 + L(31)], [DOK('fniss'), 1.4 + L(31)]],
     bild: 'Tandläkaren tittar ner på fickan, förvånad, tar upp tandborsten och fnissar', ljudtext: '`doktor-oj`, `doktor-fniss`', ansikte: 'tandläkaren glad' },
 
   // --- Borsta ---
@@ -106,9 +105,9 @@ export const RADER = [
   // --- Godis och tandborstning ---
   { id: '25b', d: 0.4 + L(34) + G, plats: 'Tandläkaren och kaninen', malin: [[34, 0.4]], ljud: [[DOK('hmm'), 0.2]],
     bild: 'Tandläkaren lutar huvudet. En liten tankebubbla med en godisbit bredvid kaninen', ljudtext: '`doktor-hmm`', ansikte: 'nyfiken' },
-  { id: '25c', d: 0.4 + L(35) + G + 0.6, plats: 'Närbild: kaninen', malin: [[35, 0.4]], ljud: [[KN('ja', 3), 0.1], [DOK('bra'), 0.6 + L(35)]],
+  { id: '25c', d: 0.4 + L(35) + G + 0.6, plats: 'Närbild: kaninen', malin: [[35, 0.4]], ljud: [[KN('ja', 3), 0.1], [DOK('bra', 3), 0.6 + L(35)]],
     bild: 'Kaninen nickar lite, en tass lyfts lite. Bubblan krymper', ljudtext: 'ja, `doktor-bra`', ansikte: 'glad' },
-  { id: '25d', d: 0.4 + L(36) + G, plats: 'Tandläkaren och kaninen', malin: [[36, 0.4]], ljud: [[DOK('hmm'), 0.2]],
+  { id: '25d', d: 0.4 + L(36) + G, plats: 'Tandläkaren och kaninen', malin: [[36, 0.4]], ljud: [[DOK('hmm', 4), 0.2]],
     bild: 'Ny bubbla: tandborsten med en liten sol och en måne', ljudtext: '`doktor-hmm`', ansikte: 'nyfiken' },
   { id: '25e', d: 0.8 + L(37) + G + 0.4, plats: 'Närbild: kaninen', malin: [[37, 0.8]], ljud: [[KN('jippi', 2), 0.1], [DOK('bra'), 0.9 + L(37)]],
     bild: 'Kaninen nickar stort, glatt skutt i sätet. Malin efter', ljudtext: 'jippi, `doktor-bra`', ansikte: 'jätteglad' },
@@ -130,7 +129,7 @@ export const RADER = [
     bild: 'Kaninen tittar ner på klistermärket, glatt skutt', ljudtext: 'jippi', ansikte: 'stolt' },
 
   // --- Tack och hej då ---
-  { id: '35', d: 0.6 + L(46) + 2.5 + L(47) + G, plats: 'Mottagningen, helbild', malin: [[46, 0.6], [47, 3.1 + L(46)]], ljud: [[KN('ja', 3), 0.9 + L(46)], [DOK('bra'), 3.3 + L(46) + L(47)]],
+  { id: '35', d: 0.6 + L(46) + 2.5 + L(47) + G, plats: 'Mottagningen, helbild', malin: [[46, 0.6], [47, 3.1 + L(46)]], ljud: [[KN('ja', 3), 0.9 + L(46)], [DOK('bra', 2), 3.3 + L(46) + L(47)]],
     bild: 'Kaninen vänder sig mot tandläkaren och nickar, tandläkaren nickar tillbaka. Paus 2,5 s', ljudtext: 'ja, `doktor-bra`', ansikte: 'glad' },
   { id: '36', d: 0.6 + L(48) + G, plats: 'Närbild: tandläkaren', malin: [[48, 0.6]], ljud: [[DOK('hejda'), 0.7 + L(48)]],
     bild: 'Tandläkaren vinkar', ljudtext: '`doktor-hejda`', ansikte: 'tandläkaren glad' },

@@ -71,3 +71,20 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 - 1:49 Musiken är lägre: slingan 0,075 → 0,05 (−3,5 dB mot Malin, i pauserna ca 4 dB lägre i den mastrade filmen).
 - 2:15 *"Kan du också gapa?"* klipptes mitt i "gapa": tagningen var delad på fel ställe, så att 22 slutade på "ga-" och 23 (*"Aaa!"*) bara var "pa!". Båda är omklippta ur `malin-tagning.mp3` (22: 58,60–59,84 s, 23: 59,98–60,84 s, −3 dBFS), de gamla ligger i `scener/mottagningen/aldre/*-forra.m4a`. Pausen före *"Aaa!"* är 4 s igen, så rad 19 är 0,94 s längre.
 - `film/satt-ihop.sh --snabb` skriver `film/avsnitt-049-snabb.mp4`, så att den godkända slutfilmen ligger kvar. Förhandsvisning (`--snabb`) renderad, `qa-film.sh` utan anmärkning (utom den kända `krita kod`).
+
+## Feedback 8 (2026-11-26 kväll, granskningslistan)
+
+- **Ritintrot** 17 s → 8,9 s (regeln sedan 23/11 är 7–8 s): konturen 2,8 s, gisspausen 1 s, fyllning och zoom. Tiderna i `papper()` räknas nu ur radernas längder (`RR['01a']`, `RR['01b']`).
+- **Elefantteckningen** (6a): konturen och sedan öronens insida, snabeln och ögonen som egna streck (`ELE_DELAR`, ritas med `bana()` som spegeln), som 056 och 035. Ritningen 4,6 s och gisspausen ca 2,6 s (förut ca 1 s), rad 6a 7,0 s.
+- **Tack, kritan!**: kritan väntar kvar i 6b och 7, gungar glatt på tacket och åker först efter det (förut borta före repliken). Den väntar ovanför stolsitsen, inte på tandläkarens rock.
+- **Stolen åker upp** (11): kameran närmare (1,3 → 1,5) och följer sätet, så att rummet glider ner under kaninen.
+- **Spegeln** (20, 21) står bredvid munnen, så att alla tänderna syns när Malin räknar.
+- **Klistermärkena** (31–39): kaninens tand på magen till vänster om elefanten (elefanten 26 px åt sidan när det finns klistermärken), större (22 → 28, elefantens 13 → 21), 32–33 i närmare bild (`kaninHel`).
+- **Stilla rader**: 5 (tittar upp på stolen, suckar, öronen sjunker, tittar ut mot barnet på "Hm …"), 23b (tydligare vändning, ögonen följer), 23c (tandläkaren och kaninen letar vidare tills kameran går till fickan), 25f (lutar huvudet, öronen spetsas, nickar i pausen, skutt på "Bra!").
+- **Hej då** (37, 38): öppna ögon (`jatteglad` med `glad: [0, 0]`).
+- **Tandläkarens ljud**: `doktor-bra` 1/2/3 och `doktor-hmm` 1–4 omväxlande (`DOK(n, tagning)` i `rader.mjs`).
+- **Längden**: rad 22 (*"Kan du visa dina tänder?" … "Där!"*) borttagen. Scenen 4:23 (förut 4:38); med bilderbok-introt och prenumerera-kortet är filmen 4:33, fortfarande över formatets 4:15.
+- 23d 0,4 s längre: tandläkarens fniss (2,2 s) gick in i nästa klipp (`qa-film.sh`: röst tvärt vid klipp).
+- Förhandsvisning (`--snabb`) 4:33, −14,7 LUFS; `qa-film.sh` utan anmärkning utom den kända `krita kod`.
+- **Småsaker**: pratbubblan i 25b/25d lägre (nuddade överkanten), tanden i 31a längre ner (nuddade hyllan), spegeln i 16a längre från håret.
+- Parallellt i en annan session: `HALL()` (armarna håller elefanten), lampan på elefanten i 14, handen tar tandborsten ur fickan i 23d, satt-ihop.sh med intro och prenumerera-kort.

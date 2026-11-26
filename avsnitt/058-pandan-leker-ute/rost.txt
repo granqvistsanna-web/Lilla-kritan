@@ -1,0 +1,39 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-ritar-kritan  [curious] Hm … vad ritar kritan?
+03-oj-en-lekstuga  [happy] Oj! En lekstuga!
+04-hej-pandan  [happy] Hej, pandan! Hej, hej!
+05-vill-du-leka-ute  [cheerfully] Vill du leka ute, pandan?
+06-ja-det-vill-du  [happy] Ja, det vill du!
+07-inget-att-leka-med  [gently] Oj då. Pandan har visst inget att leka med.
+08-vad-ska-pandan-leka-med  [curious] Hm … vad ska pandan leka med?
+09-kritan-ritar-nagot  [happy] Titta! Kritan ritar något på marken.
+10-en-boll  [happy] En boll! Varsågod, pandan.
+11-saga-tack  [warmly] Ska vi säga tack?
+12-tack-kritan  [happy] Tack, kritan!
+13-puffar-pa-bollen  [surprised] Oj! Du puffar på bollen med tassen!
+14-ni-pratar-visst  [giggles] Ni pratar visst med varandra.
+15-ner-i-hinken  [laughs] Oj! Bollen hoppade ner i hinken!
+16-ska-bollen-rulla  [cheerfully] Ska bollen rulla nu, pandan?
+17-ja-bra-ide  [happy] Ja, bra idé!
+18-rulla-bakom-stoveln  [happy] Bollen rullar. Rulla, rulla … där! Bakom stöveln.
+19-rulla-bakom-lekstugan  [happy] Rulla, rulla … där! Bakom lekstugan.
+20-bollen-ar-borta  [curious] Oj, nu är bollen borta. Pandan vet inte var.
+21-kan-du-hjalpa  [warmly] Kan du hjälpa pandan? Kan du se var bollen är?
+22-ja-dar-bakom-rutschkanan  [happy] Ja, där! Bakom rutschkanan!
+23-rullar-fram  [happy] Bollen rullar fram. Rulla, rulla … där!
+24-bollen-ar-tillbaka  [happy] Bollen är tillbaka! Nu är pandan glad.
+25-studsar-pa-huvudet  [playfully] Du studsar bollen på huvudet. Studs, studs!
+26-bollen-pa-taket  [surprised] Oj! Bollen hamnade på taket!
+27-nar-du-bollen  [curious] Når du bollen, pandan?
+28-taket-ar-for-hogt  [gently] Nej, taket är för högt.
+29-kritan-ritar-igen  [happy] Titta! Kritan ritar igen. Vid lekstugan.
+30-en-stege  [happy] En stege! Varsågod, pandan.
+31-tack-for-stegen  [happy] Tack för stegen, kritan!
+32-kliv-kliv-kliv  [playfully] Du klättrar upp på stegen. Kliv … kliv … kliv!
+33-puffar-ner-bollen  [happy] Där är bollen! Du puffar ner den från taket.
+34-ner-fran-stegen  [cheerfully] Och ner från stegen igen. Hopp!
+35-puff-och-tillbaka  [playfully] Du puffar bollen mot väggen. Puff … och tillbaka!
+36-roligt-att-leka-ute  [warmly] Var det roligt att leka ute?
+37-jag-ocksa  [happy] Ja, det tyckte jag också!
+38-hej-da-pandan  [happy] Hej då, pandan! Hej då, bollen!
+39-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

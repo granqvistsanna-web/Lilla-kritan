@@ -4,8 +4,10 @@
 //
 //   kritaBild(x, y, {s, v, bak})   kritan med spetsen i (x, y), vriden v grader, skala s; bak: vänd, baksidan i (x, y) (kritan suddar)
 //   kritaSkala(zoom)              kritans skala i en scen med kamerazoom (lika stor i bild hur nära kameran än går)
-//   ritBana(drag, k, {vikt, attr}) linjen ritas streck för streck fram till k (0–1); kritan glider mellan strecken i en liten båge.
-//                                 Ger { html, spets, start, slut }. Ett drag (en kontur) = ett streck.
+//   ritBana(drag, k, {vikt, vila, attr}) linjen ritas streck för streck fram till k (0–1); kritan glider mellan strecken i en liten båge.
+//                                 Varje streck börjar och slutar mjukt (ingen tvärstopp före glidningen). vila[i]: kritan står still
+//                                 i strecket i:s slut (vikt som i vikt), t.ex. mellan konturen och detaljerna.
+//                                 Ger { html, spets, start, slut }. Ett drag (en kontur) = ett streck. Lägg kontur + detaljer i SAMMA anrop.
 //   kritaFas(t, T, spets, slut)   var kritan är under hela förloppet: in, ritar, glider till väntplatsen, svajar, flyger ut.
 //                                 Ger { x, y, v } eller null (kritan är borta).
 //   ritfart(k)                    jämn fart med mjuk start (0,6 linjär + 0,4 mjuk)
@@ -23,12 +25,16 @@ const KRITAN = {
   SKALA_PAPPER: 0.42,        // på ritpapperet (ritintrot)
   SKALA_SCEN: 0.33,          // i en scen, delas med √zoom
   SVAJ: { ax: 5, ay: 4, fx: 1.2, fy: 1.7, av: 1.5, fv: 1.0 },   // lugnt (Sanna 2026-11-21: "a bit less wobbly crayon")
-  RESA: { bas: 0.25, perPx: 1 / 900, bage: 40 },   // glidningen mellan två streck: vikt och båge
+  RESA: { bas: 0.4, perPx: 1 / 700, bage: 40 },    // glidningen mellan två streck: vikt och båge (lugn, inte snabbare än ritandet; 2026-11-26)
+  RAMP: 0.12, RAMP_MIN: 0.3, // varje streck: mjuk start och mjukt slut på 12 % av strecket (minst vikt 0,3, så korta detaljstreck också), jämn fart däremellan (Sanna 2026-11-26: "smooth")
   MJUK: { rund: 0.045, darr: 0.006 },   // varje drag rundas (hörnradie ≈ rund × kortsidan) och darrar lite (darr × långsidan), så att linjen ser handritad ut
 };
 
 const _kl = x => Math.max(0, Math.min(1, x)), _lerp = (a, b, t) => a + (b - a) * t, _mjuk = t => (t = _kl(t), t * t * (3 - 2 * t));
 const _f1 = x => (+x).toFixed(1);
+// Läge längs ett streck med mjuk start och mjukt slut (trapetsformad fart): farten går från 0 upp till jämn och ner till 0 igen.
+const _ramp = (u, r = KRITAN.RAMP) => { u = _kl(u); const v = 1 / (1 - r);
+  return u < r ? v * u * u / (2 * r) : u > 1 - r ? 1 - v * (1 - u) * (1 - u) / (2 * r) : v * (u - r / 2); };
 
 function kritaBild(x, y, { s = KRITAN.SKALA_PAPPER, v = KRITAN.VINKEL_RITAR, bak = false } = {}) {
   const [ax, ay] = bak ? KRITAN.BAK : KRITAN.SPETS;   // suddar: kritan vänd, baksidan mot linjen (Sanna 2026-11-25: "kritan suddar med baksidan")
@@ -71,19 +77,21 @@ function _mat(drag) {
   _matt.set(key, m); return m;
 }
 
-function ritBana(drag, k, { vikt = null, attr = '' } = {}) {
+function ritBana(drag, k, { vikt = null, vila = null, attr = '' } = {}) {
   const M = _mat(drag), steg = [], R = KRITAN.RESA;
   const st = attr || `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" stroke-linecap="round" stroke-linejoin="round"`;
   drag.forEach((d, i) => {
     if (i) { const [x0, y0] = M[i - 1].b, [x1, y1] = M[i].a, dist = Math.hypot(x1 - x0, y1 - y0); if (dist > 4) steg.push({ resa: i, w: R.bas + dist * R.perPx }); }
     steg.push({ rita: i, w: vikt ? vikt[i] : M[i].L / 300 });
+    if (vila && vila[i] > 0) steg.push({ vila: i, w: vila[i] });
   });
   const sum = steg.reduce((a, x) => a + x.w, 0); let acc = 0, html = '', spets = M.at(-1).b;
   for (const s of steg) {
-    const a = acc / sum, b = (acc += s.w) / sum, u = _kl((k - a) / (b - a));
+    const a = acc / sum, b = (acc += s.w) / sum, u = s.rita != null ? _ramp((k - a) / (b - a), Math.min(0.45, Math.max(KRITAN.RAMP, KRITAN.RAMP_MIN / s.w))) : _kl((k - a) / (b - a));
     if (s.rita != null && u > 0) html += `<path d="${M[s.rita].d}" pathLength="1" ${st} stroke-dasharray="1 1" stroke-dashoffset="${(1 - u).toFixed(4)}"/>`;
     if (k >= a && k < b) {
       if (s.rita != null) { const q = M[s.rita].e.getPointAtLength(M[s.rita].L * u); spets = [q.x, q.y]; }
+      else if (s.vila != null) spets = M[s.vila].b;
       else { const P0 = M[s.resa - 1].b, P1 = M[s.resa].a, m = _mjuk(u); spets = [_lerp(P0[0], P1[0], m), _lerp(P0[1], P1[1], m) - R.bage * Math.sin(Math.PI * m)]; }
     }
   }

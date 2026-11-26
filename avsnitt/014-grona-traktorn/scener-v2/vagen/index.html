@@ -43,7 +43,7 @@ const LOVA_HUVUD = () => K.iTraktor([470, 351], { x: TX, fot: FOT });
 const NARA = () => K.kamera(1.8, 825, 560);
 const HEL = (z = 1) => K.kamera(z, 900, 540);
 const L = () => K.FIG.lova.L;
-const ans = (a, b = a, k = 1) => L().blanda(a, b, kl(k));
+const ans = (a, b = a, k = 1) => K.skarp(L(), a, b, k);   // QA 26/11: inga halvblandade ögon
 const pose = (...namn) => Object.assign({}, ...namn.map(n => { const { namn: _, ...p } = L().POSER[n]; return p; }));
 // skumpet: ett litet gupp per slag när den kör (sångtid = TID − 9), lugnt
 const gupp = (t, h = 5) => h * Math.pow(Math.abs(Math.sin(Math.PI * (t - 9.0) / K.BEAT)), 6) * kl(fart(t) / 150);
@@ -143,7 +143,7 @@ function refrang(R) {
     if (t > R.gbk) trafikljus(lx, 880 + 60 * (1 - up), 470 * up, t >= R.kor ? 'gron' : 'rod', 1, t >= R.kor ? (t - R.kor) / 0.8 : -1);
     K.traktor({ x, fot: FOT - gupp(t, 9), rull: o + 600 * ruta, lut: -3 * ruta, flagg: 14 * ruta });
     const hej = R.gront.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.6, t)), 0);
-    lova(t >= R.kor ? 'jatteglad' : ans('glad', 'jatteglad', hej), { armar: [6 + 60 * hej, 6 + 60 * hej] }, 6 * hej);
+    lova(t >= R.kor ? 'jatteglad' : ans('glad', 'jatteglad', 1.4 * hej), { armar: [6 + 60 * hej, 6 + 60 * hej] }, 6 * hej);
     HEL();
     return;
   }
@@ -171,11 +171,11 @@ function refrang(R) {
   puffar(R.putt);
   // Lova: armarna upp per "Grönt!", tittar upp mot ärtan och fnissar, kawaii på taket (bara refräng 1), spanar på "Titta ut!"
   const hej = R.ekon.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.6, t)), 0);
-  let f = ans('glad', 'jatteglad', hej), p = { armar: [6 + 60 * hej, 6 + 60 * hej] };
+  let f = ans('glad', 'jatteglad', 1.4 * hej), p = { armar: [6 + 60 * hej, 6 + 60 * hej] };
   if (t >= R.tak) { const upp = del(R.tak + 0.3, R.tak + 0.8, t) * (1 - del(R.putt[0] - 0.4, R.putt[0], t));
     f = R.kawaii && t > R.tak + 0.9 && t < R.putt[0] ? ans('fnissig', 'kawaii', del(R.tak + 0.9, R.tak + 1.2, t)) : ans('glad', 'fnissig', upp);
     p = { upp: 0.9 * upp, armar: [6, 6] }; }
-  if (t >= R.putt[0]) { f = ans('glad', 'skrattar', R.putt.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.35, t)), 0)); p = { armar: [6, 6] }; }
+  if (t >= R.putt[0]) { f = ans('glad', 'skrattar', 1.4 * R.putt.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.35, t)), 0)); p = { armar: [6, 6] }; }
   if (t >= R.titta) { const sp = Math.sin(Math.PI * 2 * (t - R.titta) / 1.6); f = ans('nyfiken'); p = { rikt: sp, armar: [6, 50] }; }
   lova(f, p);
   narbild ? K.kamera(lerp(1.4, 1.7, del(R.tak, R.tak + 1.5, t)), x - 40, 470) : HEL();
@@ -213,7 +213,7 @@ const ANIM = {
     else { const k = del(b, b + 0.8, t); bx = hx + 300 * Math.cos(0.2 * Math.PI) - 900 * k; by = hy - 40 - 300 * k; }
     K.figur('humle', [bx, by + 14 * Math.sin(t * 7)], K.F('humle', 'glad'), K.P('humle'), { s: 0.24, lager: fram ? 'framfor' : 'bakom' });
     const skratt = PUTT.reduce((m, p) => Math.max(m, bump(p - 0.05, p + 0.35, t)), 0);
-    lova(t > PUTT[0] ? ans('glad', 'skrattar', 0.3 + 0.7 * skratt) : 'glad', { rikt: kl((bx - hx) / 300, -1, 1) * 0.8 * (w > 0 && w < 1 ? 1 : 0.3), upp: kl((hy - by) / 300, -0.3, 0.6) });
+    lova(t > PUTT[0] ? ans('glad', 'skrattar', 1.4 * skratt) : 'glad', { rikt: kl((bx - hx) / 300, -1, 1) * 0.8 * (w > 0 && w < 1 ? 1 : 0.3), upp: kl((hy - by) / 300, -0.3, 0.6) });
     HEL(); },
   // 04: närbild: tittar sig om, ser jackan (tittar ner, litet skutt), pekar på tittaren
   '04': (u, s) => { const t = K.TID; kor(); zipp();
@@ -235,7 +235,7 @@ const ANIM = {
     const sista = fas >= 2 && t > HOPP[2] + 0.55;
     K.figur('gurra', [gx, gy - hojd], gf, K.P('gurra', iLuft ? { strack: 0.08 } : {}), { s: gs, lager: sista ? 'bakom' : 'framfor' });
     const studs = HOPP.reduce((m, a) => Math.max(m, bump(a, a + 0.45, t)), 0);
-    const f = t < 65.0 ? ans('glad', 'nyfiken', del(62.5, 62.9, t)) : t < HOPP[0] ? ans('nyfiken', 'forvanad', del(65.4, 65.8, t)) : ans('forvanad', 'skrattar', 0.4 + 0.6 * studs);
+    const f = t < 65.0 ? ans('glad', 'nyfiken', del(62.5, 62.9, t)) : t < HOPP[0] ? ans('nyfiken', 'forvanad', del(65.4, 65.8, t)) : ans('forvanad', 'skrattar', 1.4 * studs);
     lova(f, { rikt: 0.5 * titt, armar: [6, 6] }, 10 * studs);
     HEL(); },
   // 07a: trafikljuset glider in och lyser rött, traktorn stannar mjukt
@@ -253,7 +253,7 @@ const ANIM = {
   '07c': () => { const t = K.TID; kor(); zipp();
     trafikljus(varld(1480, 72.6), 885, 470, t >= 75.2 ? 'gron' : 'rod', 1, t >= 75.2 ? (t - 75.2) / 0.9 : -1);
     const pump = KOR.reduce((m, a) => Math.max(m, bump(a - 0.05, a + 0.45, t)), 0);
-    lova(t < KOR[0] ? ans('nyfiken', 'forvanad', del(75.2, 75.4, t)) : ans('glad', 'jatteglad', 0.5 + 0.5 * pump), { armar: [6 + 64 * pump, 6 + 64 * pump], upp: 0.4 * (t < KOR[0]) }, 8 * pump);
+    lova(t < KOR[0] ? ans('nyfiken', 'forvanad', del(75.2, 75.4, t)) : ans('glad', 'jatteglad', 1.4 * pump), { armar: [6 + 64 * pump, 6 + 64 * pump], upp: 0.4 * (t < KOR[0]) }, 8 * pump);
     HEL(); },
   // 08a (feedback 26/11, 1:19 "more drama and expressions, more smoothness, better flow"): "Vad mer är grönt?" lutar sig fram mot
   // tittaren med tassen upp; "Kan du se?" tassen över ögonen, spanar åt vänster och höger; i pausen tänker hon; på "tick, tack"
@@ -265,7 +265,7 @@ const ANIM = {
     const ner = del(87.3, 87.9, t), gasp = del(87.9, 88.15, t);
     let f;
     if (t < 81.7) f = ans('glad', 'nyfiken', del(79.3, 79.7, t));
-    else if (t < 83.6) f = ans('nyfiken', 'kisar', 0.55 * spana);
+    else if (t < 83.6) f = ans('nyfiken');   // QA 26/11: 'kisar' (sänkta bryn) såg sur ut; hon spanar med stora ögon under tassen
     else if (t < 85.1) f = ans('nyfiken', 'tanker', tank);
     else if (t < 87.9) f = ans('tanker', 'nyfiken', del(85.0, 85.3, t));
     else f = ans('nyfiken', 'forvanad', gasp);

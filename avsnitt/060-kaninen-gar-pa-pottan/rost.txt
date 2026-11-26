@@ -1,0 +1,47 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-oj-en-potta  [happy] Oj! En potta!
+04-hej-kaninen  [happy] Hej, kaninen! Hej, hej!
+05-vad-gor-du  [warmly] Vad gör du, kaninen?
+06-leker-med-bollen  [happy] Jaså, du leker med bollen!
+07-behover-du-kissa  [curious] Oj! Du vickar på dig. Behöver du kissa?
+08-leka-mer  [chuckles] Nähä? Du vill leka mer med bollen.
+09-vickar-annu-mer  [warmly] Oj, oj. Nu vickar du ännu mer!
+10-bollen-kan-vanta  [cheerfully] Bollen kan vänta på dig. Bredvid pottan.
+11-satta-dig-pa-pottan  [warmly] Ska du sätta dig på pottan nu?
+12-ja-vad-bra  [happy] Ja, vad bra!
+13-nu-sitter-du  [warmly] Nu sitter du på pottan.
+14-vanta-inget-an-1  [curious] Vänta, vänta … inget än.
+15-svart-att-sitta-still  [warmly] Hm. Det är svårt att sitta still och vänta.
+16-kritan-ritar-nagot  [happy] Titta! Kritan ritar något vid pottan.
+17-en-bok  [happy] En bok! En bilderbok! Varsågod, kaninen.
+18-saga-tack  [warmly] Ska vi säga tack?
+19-tack  [happy] Tack!
+20-en-morot  [happy] Du tittar i boken. Oj! En morot!
+21-tycker-du-om-morotter  [curious] Tycker du om morötter?
+22-det-tror-jag  [chuckles] Mm, det tror jag!
+23-vanta-inget-an-2  [playfully] Vänta, vänta … inget än.
+24-kanin-pa-potta  [happy] Du vänder blad. Titta! En liten kanin på en potta.
+25-precis-som-du  [laughs] Precis som du!
+26-vanta-plink  [playfully] Vänta, vänta … plink!
+27-kissade-i-pottan  [happy] Ja! Du kissade i pottan!
+28-vad-stolt  [warmly] Oj, vad stolt du är!
+29-var-ar-toarullen  [curious] Nu behöver du papper. Men … var är toarullen?
+30-kan-du-hjalpa  [warmly] Kan du hjälpa kaninen? Kan du se toarullen?
+31-ja-dar-bakom-badkaret  [happy] Ja, där! Bakom badkaret!
+32-hamtar-toarullen  [cheerfully] Du hämtar toarullen. Hopp, hopp!
+33-torka-klart  [warmly] Nu torkar du dig med papperet. Torka, torka … klart!
+34-tommer-pottan  [cheerfully] Nu tömmer du pottan i toaletten.
+35-spolar  [playfully] Och så spolar du. Schhh!
+36-hej-da-kisset  [chuckles] Hej då, kisset!
+37-tvattar-tassarna  [happy] Nu tvättar du tassarna med tvål och vatten. Gnugga, gnugga!
+38-torkar-tassarna  [happy sigh] Och torkar tassarna på handduken. Så!
+39-kritan-ritar-igen  [happy] Titta! Kritan ritar igen.
+40-en-stjarna  [happy] En stjärna! Ett klistermärke till dig.
+41-var-vill-du-satta  [curious] Var vill du sätta stjärnan?
+42-pa-pottan  [happy] På pottan! Bra idé!
+43-tack-kritan  [warmly] Tack, kritan!
+44-leka-igen  [cheerfully] Vill du leka med bollen igen?
+45-bollen-har-vantat  [happy] Ja, bollen har väntat på dig!
+46-hej-da-kaninen  [happy] Hej då, kaninen! Hej då, pottan!
+47-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

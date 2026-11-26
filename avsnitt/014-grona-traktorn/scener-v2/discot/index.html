@@ -57,14 +57,14 @@ function noter(t, synlig = 1) {
   const not = (x, y, k, dubbel) => `<g transform="translate(${x} ${f1(y - 10 * g)}) rotate(${f1(8 * g)}) scale(${k * synlig})" fill="#3F8F3A" stroke="#3F8F3A" stroke-width="7" stroke-linecap="round">
     ${(dubbel ? [0, 44] : [0]).map(dx => `<ellipse cx="${dx}" cy="0" rx="14" ry="10" transform="rotate(-22 ${dx} 0)" stroke="none"/><path d="M${dx + 12} -4V-64" fill="none"/>`).join('')}
     <path d="${dubbel ? 'M12 -64L56 -72' : 'M12 -64Q16 -48 34 -42'}" fill="none"/></g>`;
-  lagg('pynt', `<g stroke="#fff" stroke-width="0">${not(1730, 400, 1.2) + not(1610, 520, 0.9, true) + not(1820, 590, 0.85)}</g>`);
+  lagg('pynt', `<g stroke="#fff" stroke-width="0">${not(1800, 150, 1.0) + not(1850, 300, 0.75) + not(110, 190, 0.8, true)}</g>`);   // QA 26/11: i hörnen, inte över Gurras ansikte
 }
 
 // rörelsesymbolen i hörnet: en vit kritskiva med en studsande grön boll (hoppa) eller en vickande ärta (vicka)
 function symbol(t, namn, a, b) {
   const k = mjuk(del(a, a + 0.25, t)) * (1 - mjuk(del(b - 0.2, b, t)));
   if (k <= 0.01) return 0;
-  const x = 1720, y = 450, st = k * (1 + 0.15 * bump(a, a + 0.4, t)), g = Math.abs(Math.sin(Math.PI * fas(t)));
+  const x = 190, y = 180, st = k * (1 + 0.15 * bump(a, a + 0.4, t)), g = Math.abs(Math.sin(Math.PI * fas(t)));
   const inne = namn === 'hoppa'
     ? `<ellipse cx="0" cy="44" rx="${f1(26 - 6 * g)}" ry="6" fill="#2F7A33" opacity="0.25"/><circle cx="0" cy="${f1(14 - 46 * g)}" r="26" fill="#5FB84E"/><circle cx="-8" cy="${f1(6 - 46 * g)}" r="7" fill="#fff" opacity="0.6"/>`
     : `<g transform="rotate(${f1(16 * Math.sin(Math.PI * fas(t)))} 0 30)"><circle cx="0" cy="0" r="34" fill="#7CC85A"/><circle cx="-11" cy="-10" r="8" fill="#fff" opacity="0.5"/>
@@ -102,11 +102,11 @@ const SAKER = [
 ];
 const POP = [T.grodan, T.lampan, T.jacka, T.artor, T.traktor];
 const FLYG = [T.lampan - 0.25, T.jacka - 0.25, T.artor - 0.05, T.traktor - 0.05, T.gront - 0.3];
-const MITT = [960, 200];   // större figurer: skivan högre så att den inte täcker Lovas huvud
+const MITT = [960, 172];   // större figurer: skivan högre så att den inte täcker Lovas huvud
 function klistermarken(t) {
   POP.forEach((p, i) => {
     if (t < p) return;
-    const stor = i < 2 ? 185 : 165, liten = 62,   // stora på sitt ord (QA 26/11), sedan upp i raden
+    const stor = i < 2 ? 150 : 140, liten = 62,   // QA 26/11: 185 täckte Lovas öron   // stora på sitt ord (QA 26/11), sedan upp i raden
     ut = mjuk(del(FLYG[i], FLYG[i] + 0.55, t));
     const inn = mjuk(del(p, p + 0.3, t)), studs = 1 + 0.18 * bump(p + 0.15, p + 0.55, t) + 0.12 * bump(FLYG[i] + 0.5, FLYG[i] + 0.8, t);
     const [px, py] = PLATS[i], x = lerp(MITT[0], px, ut), y = lerp(MITT[1], py, ut) - 90 * Math.sin(Math.PI * ut);
@@ -125,7 +125,9 @@ const ropar = t => GRON_ROP.some(g => t > g - 0.1 && t < g + 0.7);
 // --- Figurerna -----------------------------------------------------------------------------------------------------------------
 const L = n => K.FIG[n].L;
 const pose = (n, namn = 'neutral', k = 1, o = {}) => ({ ...L(n).blandaPose('neutral', namn, k), ...o });
-const ansikte = (n, bas, t, oppna = 'skrattar', k = 0.72) => L(n).blanda(bas, oppna, k * oppen(t));
+// QA 26/11: munnen öppnas på slaget, men ögonen står kvar som i grunduttrycket (förut blandades de 72 % mot glada bågar på varje
+// slag och såg suddiga ut)
+const ansikte = (n, bas, t, oppna = 'skrattar', k = 0.72) => { const A = L(n).blanda(bas, bas, 1); return { ...L(n).blanda(bas, oppna, k * oppen(t)), glad: A.glad, lock: A.lock, ogonY: A.ogonY }; };
 // lugn dans: gung i sidled, armarna upp och ner i takt, ett litet skutt på slaget (sw växlar tecken varje slag)
 function dans(n, t, { upp = 1, hopp = 14, arm = 40 } = {}) {
   const f = fas(t), sw = Math.sin(Math.PI * f), h = Math.abs(sw);
@@ -157,7 +159,7 @@ function scen(t) {
   } else if (t < T.vicka) { pf = L('pip').blanda('neutral', 'glad', 1); pp = pose('pip', 'neutral', 1, { luta: 2 * Math.sin(Math.PI * fas(t)) }); }
   else if (t < T.flyga) {   // Pip vickar på slaget
     const sw = Math.sin(Math.PI * fas(t)); pf = ansikte('pip', 'fnissig', t, 'jatteglad');
-    pp = pose('pip', 'neutral', 1, { luta: 18 * sw, armar: [40 - 30 * sw, 40 + 30 * sw], bred: 0.03 * Math.abs(sw) });
+    pp = pose('pip', 'neutral', 1, { luta: 10 * sw, armar: [40 - 30 * sw, 40 + 30 * sw], bred: 0.03 * Math.abs(sw) });   // QA 26/11: 18° tippade henne ur bild och in i Lova
   } else if (t < T.alla) { pf = L('pip').blanda('neutral', 'glad', 1); pp = pose('pip', 'upp', 0.6 * bump(T.flyga, T.alla + 0.3, t)); }
   else if (t < T.gront) { pf = rop ? ansikte('pip', 'jatteglad', t, 'skrattar', 1) : L('pip').blanda('glad', 'forvanad', tittU); pp = pose('pip', 'upp', 0.8 * tittU, rop ? dans('pip', t, { hopp: 10, arm: 60 }) : {}); }
   else { pf = L('pip').blanda('neutral', t < T.hej + 2 ? 'skrattar' : 'glad', 1); pp = pose('pip', 'neutral', 1, vinka(T.hej + 0.25, 0.8)); }
@@ -197,8 +199,8 @@ function scen(t) {
   if (t < T.bak) {
     let lf, lp;
     if (t < T.hoppa) { lf = ansikte('lova', 'glad', t); lp = pose('lova', 'neutral', 1, dans('lova', t)); }
-    else if (t < T.flyga) { lf = L('lova').blanda('glad', 'skrattar', 0.4); lp = pose('lova', 'neutral', 1, { luta: 2 * Math.sin(Math.PI * fas(t)), armar: [12, 12] }); }
-    else if (t < T.alla) { lf = L('lova').blanda('glad', 'forvanad', 0.6); lp = pose('lova', 'upp', 0.7 * bump(T.flyga, T.alla + 0.3, t)); }
+    else if (t < T.flyga) { lf = ansikte('lova', 'glad', t); lp = pose('lova', 'neutral', 1, { luta: 2 * Math.sin(Math.PI * fas(t)), armar: [12, 12] }); }
+    else if (t < T.alla) { lf = L('lova').blanda('glad', 'forvanad', 1); lp = pose('lova', 'upp', 0.7 * bump(T.flyga, T.alla + 0.3, t)); }
     else if (t < T.grodan) { lf = ansikte('lova', 'glad', t); lp = pose('lova', 'neutral', 1, dans('lova', t, { arm: 70, hopp: 40 })); }
     else if (t < T.gront) {   // tittar upp förvånad mot varje klistermärke, ropar på "grön!"
       lf = rop ? ansikte('lova', 'jatteglad', t, 'skrattar', 1) : L('lova').blanda('glad', 'forvanad', tittU);
@@ -218,9 +220,9 @@ function scen(t) {
   // Fia: flyger in från vänster i en båge över bilden ("Flyga runt!"), svävar till höger under "grön dans", flyger ut
   if (t > T.flyga - 0.3 && t < T.grodan) {
     const u = del(T.flyga - 0.3, T.alla + 0.4, t), v = Math.PI * (1 - mjuk(u));   // π (vänster) → 0 (höger)
-    let x = 960 + 820 * Math.cos(v), y = 600 - 380 * Math.sin(v);
+    let x = lerp(-200, 1690, (1 + Math.cos(v)) / 2), y = 205 - 70 * Math.sin(v);   // QA 26/11: över huvudena (förut över Pips och Gurras ansikten och halvt ute vid kanten)
     const ut = mjuk(del(T.grodan - 1.1, T.grodan - 0.1, t));
-    x += 600 * ut; y -= 160 * ut + 18 * Math.sin(2 * Math.PI * 0.9 * t) * (1 - ut);
+    x += 500 * ut; y -= 300 * ut + 12 * Math.sin(2 * Math.PI * 0.9 * t) * (1 - ut);
     const vx = -Math.sin(v);   // riktning i bågen
     const flax = Math.sin(2 * Math.PI * 4 * t);
     const ff = t > T.alla ? ansikte('fia', 'glad', t, 'jatteglad') : L('fia').blanda('neutral', 'glad', 1);
@@ -234,13 +236,13 @@ function scen(t) {
   const zP = mjuk(del(T.vicka - 0.3, T.vicka + 0.2, t)) * (1 - mjuk(del(T.flyga - 0.4, T.flyga + 0.2, t)));
   const zA = t >= T.bak ? 0 : mjuk(del(T.arta - 0.3, T.arta + 0.4, t)), zH = mjuk(del(T.hej + 2.5, T.slut, t));
   // solona 1,55 mot kanten (kameran stannar vid plattans kant, så Lova är helt med), Lovas närbild 3,0 (bara hon i bild, ögonen ca 35 % ner)
-  K.kamera(1 + 0.25 * zG + 0.4 * zP + 1.0 * zA + 0.1 * zH, 960 + 560 * zG - 560 * zP, 560 + 60 * zP + 30 * zA + 80 * zH);   // större figurer: Gurras hopp 1,25, Pips solo 1,4, Lovas närbild 2,0
+  K.kamera(1 + 0.05 * zG + 0.05 * zP + 1.0 * zA + 0.1 * zH, 960 + 20 * zG - 20 * zP, 560 + 30 * zA + 80 * zH);   // QA 26/11: solona 1,25/1,4 kapade grannen vid kanten; med stora figurer räcker en knuff   // större figurer: Gurras hopp 1,25, Pips solo 1,4, Lovas närbild 2,0
 }
 
 const ANIM = { standard: () => scen(K.TID) };
 window.ready = K.starta({ ANIM,
   figurer: [['lova', 'leoparden-lova', 14], ['pip', 'kycklingen-pip', 3], ['gurra', 'grodan-gurra', 5], ['fia', 'fjarilen-fia', 9]],
-  forladda: [DISCO, KULA],
+  forladda: [DISCO, KULA, R + 'trafikljus-v2/cut/trafikljus-v2.png', R + 'artskida/cut/artskida.png', R + 'traktor-gron-v2/cut/traktor-gron-v2.png'],   // QA 26/11: klistermärkenas bilder laddas före första bildrutan
   ljud: () => {
     K.ljud('boing', SLAG.find(s => s > T.hoppa - 0.05) + 0.05, { vol: 0.25 });
     slagMellan(T.vicka, T.flyga).slice(0, 2).forEach((s, i) => K.ljud('vick', s, { vol: 0.22 }));

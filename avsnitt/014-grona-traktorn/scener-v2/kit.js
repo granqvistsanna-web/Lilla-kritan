@@ -144,6 +144,9 @@ export function zipp(k = 1) {   // handtagets läge: 1 uppe (stängd), 0 nere (�
   G.querySelector('.jk-dra').setAttribute('transform', `translate(512 ${f1(ty)})`);
 }
 // ansikte/pose ur namn eller objekt; glada uttryck får öppna ögon som standard (som 053)
+// QA 26/11: ett ansikte som vilar mitt emellan två uttryck (t.ex. 0,5 av glad → jätteglad) får halva glada bågar, som ser ut som
+// suddiga ögon. skarp() blandar munnen och resten mjukt med k, men ögonen (glad, lock) slår om fort runt k = 0,5.
+export const skarp = (L, a, b, k) => { k = kl(k); const f = L.blanda(a, b, k), o = L.blanda(a, b, mjuk((k - 0.4) / 0.2)); return { ...f, glad: o.glad, lock: o.lock }; };
 export const F = (n, f, o = {}) => typeof f === 'string' ? { ...FIG[n].L.blanda('neutral', f, 1), ...o } : { ...f, ...o };
 export const P = (n, o = {}) => typeof o === 'string' ? FIG[n].L.blandaPose('neutral', o, 1) : { ...FIG[n].L.POSE0, ...o };
 // ritar figuren n med fötterna i (x, fot) i lagret (standard #figurer), skala s (scenens px per riggpx)

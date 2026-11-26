@@ -1,13 +1,33 @@
 #!/bin/bash
-# Avsnitt 049 för YouTube: scenens film (molnrender eller render-delat, med Malin, effekterna och bädden) utan intro, så scentid = filmtid.
-# Mastras i två pass till −14 LUFS / −1,5 dBTP med limiter sist (som 047) → film/avsnitt-049.mp4. Bilden kopieras.
+# Sätter ihop avsnitt 049: det gemensamma bilderbok-introt (produktion/youtube/bilderbok-intro: intro.mp4 och intro-effekter.wav
+# med jingeln, popp och glitter), sedan scenens film (scener/mottagningen/mottagningen.mp4, där Malin, effekterna och bädden redan
+# ligger mixade i filmens eget ljudspår) och sist prenumerera-kortet (produktion/youtube/prenumerera, svart in och svart ut efter kritirisen).
+# Introts och kortets effekter +6 dB som i 052, scenens ljud oförändrat, scenens förskjutna med introts längd (läses ur filen);
+# mastras till −14 LUFS / −1,5 dBTP (loudnorm i två pass, limiter sist) → film/avsnitt-049.mp4.
 # Med --snabb (efter render-delat --snabb) → film/avsnitt-049-snabb.mp4, så att den godkända slutfilmen ligger kvar.
 set -e
 cd "$(dirname "$0")/.."
-IN=scener/mottagningen/mottagningen.mp4; UT=film/avsnitt-049.mp4; [ "$1" = "--snabb" ] && UT=film/avsnitt-049-snabb.mp4
-M=$(ffmpeg -hide_banner -i $IN -vn -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
+UT=film/avsnitt-049.mp4; [ "$1" = "--snabb" ] && UT=film/avsnitt-049-snabb.mp4
+SCEN=scener/mottagningen/mottagningen.mp4
+INTRO=../../produktion/youtube/bilderbok-intro
+PREN=../../produktion/youtube/prenumerera
+langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
+T=film/.tmp; mkdir -p $T
+V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"
+ffmpeg -loglevel error -y -i $INTRO/intro.mp4 -vf scale=1920:1080 $V $T/00.mp4
+ffmpeg -loglevel error -y -i $SCEN -vf scale=1920:1080 $V $T/01.mp4
+ffmpeg -loglevel error -y -i $PREN/prenumerera.mp4 -vf scale=1920:1080 $V $T/02.mp4
+printf "file '00.mp4'\nfile '01.mp4'\nfile '02.mp4'\n" > $T/bild.txt
+ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bild.txt -c copy $T/bild.mp4
+IN=$(langd $T/00.mp4); SC=$(langd $T/01.mp4); TOT=$(langd $T/bild.mp4)
+MS=$(awk "BEGIN{printf \"%d\", $IN*1000}"); PS=$(awk "BEGIN{printf \"%d\", ($IN+$SC)*1000}")
+ffmpeg -loglevel error -y -i $INTRO/intro-effekter.wav -i $SCEN -i $PREN/prenumerera-effekter.wav -filter_complex \
+  "[0:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,apad[i];[1:a]aformat=sample_rates=48000:channel_layouts=stereo,adelay=$MS|$MS[e];[2:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=6dB,adelay=$PS|$PS[p];[i][e][p]amix=inputs=3:duration=longest:normalize=0,apad,atrim=0:$TOT[a]" \
+  -map "[a]" -c:a pcm_s24le $T/mix.wav
+M=$(ffmpeg -hide_banner -i $T/mix.wav -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | awk '/^\{/,/^\}/')
 v() { echo "$M" | sed -n "s/.*\"$1\" : \"\(.*\)\".*/\1/p"; }
-ffmpeg -loglevel error -y -i $IN -filter_complex \
-  "[0:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,volume=1dB,alimiter=limit=0.80:level=false,volume=-0.3dB,alimiter=limit=0.84:level=false[a]" \
+ffmpeg -loglevel error -y -i $T/bild.mp4 -i $T/mix.wav -filter_complex \
+  "[1:a]loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(v input_i):measured_TP=$(v input_tp):measured_LRA=$(v input_lra):measured_thresh=$(v input_thresh):offset=$(v target_offset):linear=true,aresample=48000,alimiter=limit=0.76:level=false[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -movflags +faststart $UT
-ffprobe -v error -show_entries format=duration -of csv=p=0 $UT
+rm -rf $T
+langd $UT

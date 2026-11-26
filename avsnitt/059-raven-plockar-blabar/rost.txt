@@ -1,0 +1,44 @@
+01-kritan-ritar  [warmly] Kritan ritar …
+02-vad-blir-det  [curious] Hm … vad blir det nu?
+03-en-blabarsbuske  [happy] Oj! En blåbärsbuske!
+04-hej-raven  [happy] Hej, räven! Hej, hej!
+05-vad-ska-du-gora  [curious] Vad ska du göra i skogen i dag?
+06-plocka-blabar  [happy] Jaså, plocka blåbär! Vad kul!
+07-sa-manga-blabar  [happy] Titta, så många blåbär på busken!
+08-plockar-med-tassarna  [cheerfully] Räven plockar blåbär med tassarna.
+09-tassarna-ar-fulla  [surprised] Oj! Tassarna är fulla. Ett blåbär rullar iväg!
+10-ett-till-rullar  [chuckles] Oj då. Ett blåbär till rullar iväg.
+11-far-inte-plats  [warmly] Blåbären får inte plats i tassarna, va?
+12-for-manga  [softly] Nej, det är för många blåbär.
+13-var-ska-raven-lagga  [curious] Hm … var ska räven lägga blåbären?
+14-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
+15-en-korg  [happy] En korg! Varsågod, räven.
+16-ska-vi-saga-tack  [warmly] Ska vi säga tack?
+17-tack  [happy] Tack!
+18-lagger-i-korgen  [cheerfully] Räven lägger blåbären i korgen. Plopp, plopp!
+19-ska-du-smaka  [curious] Ska du smaka på ett blåbär?
+20-mums  [playfully] Mums!
+21-vad-gott  [warmly] Mm, vad gott blåbäret var!
+22-bla-tunga  [giggles] Ha ha! Räven har blå tunga!
+23-plocka-fler  [cheerfully] Ska du plocka fler blåbär i korgen?
+24-ja-bra-ide  [happy] Ja, bra idé!
+25-lilla-busken  [happy] Först den lilla busken. Plocka, plocka … i korgen!
+26-sitter-hogt  [surprised] Oj! Blåbären sitter högt uppe på den stora busken.
+27-nar-du-inte  [warmly] Når du inte blåbären, räven?
+28-for-hogt  [softly] Nej, blåbären sitter för högt.
+29-kritan-ritar-igen  [happy] Titta! Kritan ritar igen.
+30-en-pall  [happy] En pall! Varsågod, räven.
+31-tack-kritan  [happy] Tack, kritan!
+32-upp-pa-pallen  [cheerfully] Räven kliver upp på pallen. Ett steg … två steg.
+33-stora-busken  [happy] Och den stora busken. Plocka, plocka … i korgen!
+34-sa-manga-i-korgen  [happy] Titta, så många blåbär i korgen!
+35-finns-det-fler  [curious] Finns det fler blåbär? Räven vet inte var.
+36-ser-du-fler-blabar  [warmly] Kan du hjälpa räven? Ser du fler blåbär?
+37-ja-dar  [happy] Ja, där! Bakom stubben!
+38-sista-busken  [happy] Och den sista busken. Plocka, plocka … i korgen!
+39-korgen-ar-full  [happy] Nu är korgen full av blåbär!
+40-smakar-pa-blabaren  [playfully] Räven smakar på blåbären. Mums, mums!
+41-bla-nos  [laughs] Ha ha! Blå nos … och blå tunga!
+42-borsta-tanderna  [warmly] Sedan får du borsta tänderna, räven.
+43-hej-da-raven  [happy] Hej då, räven! Hej då, korgen!
+44-vi-ses-snart  [warmly] Hej då! Vi ses snart!
