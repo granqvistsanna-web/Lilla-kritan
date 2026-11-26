@@ -10498,9 +10498,10 @@
   "sec": 139,
   "tags": [],
   "note": "calpping",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711693679,
-  "render": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)"
+  "render": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)",
+  "fixedAt": 1795714554538
  },
  "gbyp0jioyrmwxsdyyi": {
   "ep": "053",
@@ -10508,9 +10509,10 @@
   "sec": 152,
   "tags": [],
   "note": "happy jump",
-  "fixed": false,
+  "fixed": true,
   "at": 1795711709754,
-  "render": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)"
+  "render": "2026-11-26 16:25 (Förhandsvisning 26/11 (--snabb): tickljudet borta, mjukare och ljusare skuggor (klossarna också), kritan börjar rita före Malins replik, fler och olika ljud för leoparden (mjau-ooo, trill, fråga, spinn, fniss), hatten studsar på lådan, landar, tippar två gånger och glider in bakom krukan, leoparden ca 18 % större)",
+  "fixedAt": 1795714554538
  },
  "6ip8979d6ymwxsgk20": {
   "ep": "006-v2",
