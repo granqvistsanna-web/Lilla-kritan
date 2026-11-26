@@ -20,7 +20,7 @@ done
 n=$((n+1)); in+=(-i ../../produktion/youtube/prenumerera/prenumerera-effekter.wav); d=$(python3 -c "print(round($start*1000))"); fx="$fx[$((n+1)):a]adelay=$d|$d[e$n];"; fl="$fl[e$n]"
 # sången där introt slutar (det gemensamma sångintrot, 7,3 s med jingel-kort.m4a; scenerna räknar avsnittstid med 9,0, filmen är 1,7 s kortare), hela tagningen; mastras till ca −14 LUFS, toppen under −1,5 dBFS
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i sang.m4a "${in[@]}" -filter_complex \
-  "${fx}[1:a]volume=0.9,adelay=$sd|$sd[s];[s]${fl}amix=inputs=$((1 + n)):normalize=0:duration=longest,loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,apad[a]" \
+  "${fx}[1:a]volume=0.9,adelay=$sd|$sd[s];[s]${fl}amix=inputs=$((1 + n)):normalize=0:duration=longest,loudnorm=I=-14:TP=-2.5:LRA=11,aresample=48000,apad[a]" \
   -map 0:v -map "[a]" -shortest -c:v copy -c:a aac -b:a 192k film/avsnitt-014-v2-grovklipp.mp4
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 film/avsnitt-014-v2-grovklipp.mp4

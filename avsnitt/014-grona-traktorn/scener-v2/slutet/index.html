@@ -36,10 +36,10 @@ function planta(x, fot, h, k) {
     ${sk > 0.01 ? `<g transform="translate(8 -40) scale(${sk.toFixed(2)})"><path d="M0 0 C 8 12 6 30 -2 44 C -12 34 -14 12 0 0Z" fill="#86CF6E"/></g>` : ''}</g></g>`);
 }
 // traktorns x: kör in lugnt från vänster och saktar in till stopp mitt i bild
-const START_X = 880, STOPP_X = 1260;
+const START_X = 1040, STOPP_X = 1340;   // QA 26/11: 880 lade vagnen och Pip halvt utanför vänsterkanten i början
 const traktorX = t => lerp(START_X, STOPP_X, mjuk(del(T.START, T.STANNA[1], t) ** 0.8));
 // plantorna: en per slag, där vagnen just passerat (fast x, sorterat)
-const PLANTOR = Array.from({ length: 11 }, (_, i) => ({ x: 640 - i * 62 + (i % 2) * 14, fot: 915 + (i % 3) * 32, h: 150 + (i * 37) % 70 }));   // från vagnens startplats och bakåt (vänster)
+const PLANTOR = Array.from({ length: 11 }, (_, i) => ({ x: 720 - i * 62 + (i % 2) * 14, fot: 915 + (i % 3) * 32, h: 150 + (i * 37) % 70 }));   // från vagnens startplats och bakåt (vänster)
 const BAK = 560;   // vagnens bakkant ligger ca så här långt bakom traktorns mitt
 
 // kritirisen (013:s scen-kit): svart runt en ring kring (cx, cy) i skärmens koordinater
