@@ -76,7 +76,7 @@ const ANKA_VID = [KX - 230, KANT - 12];   // QA 26/11: 30 px till höger, så at
 const OVER_KANT = x => x > KX - KAR_W / 2 - 46;   // fötterna når karets vänstra kant: lammet ritas bakom karets framsida
 const SKUGGA_KANT = x => kl((KX - KAR_W / 2 - x) / 70);   // kontaktskuggan tonas bort när lammet är över karet
 const ANKA_GOMD = [KX + 250, KANT + 22];
-const GOMSTUSS = [KX + 330, KANT - 4, 78];
+const GOMSTUSS = [KX + 378, KANT + 4, 48];   // höger om det röda vredet, så att det syns helt   // tussen vid kranen, mindre (Sanna 26/11, förut 78)
 let FOT = 930, GS = 0.572;
 // omgång 2: lammet flyttar sig åt höger i badet (LDX) så att båten får plats mellan ankan och lammet
 const LDX = 40, ANKA3 = [1000, KANT - 12], BATP = [1159, KANT - 8], BAT3 = [1137, KANT - 8];
@@ -119,12 +119,11 @@ function badrum({ handduk = false, gomstuss = true } = {}) {
 const tuss = (x, y, r, kant = '#cfe6ee', fill = '#fff') => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
   .map(([dx, dy, k]) => `<circle cx="${f1(x + dx * r)}" cy="${f1(y + dy * r)}" r="${f1(k * r)}" fill="${fill}" stroke="${kant}" stroke-width="${f1(0.08 * r)}" paint-order="stroke"/>`).join('');
 function skumKant(gomstuss) {   // skummet andas lite. Sanna 26/11 "less bubbles in the bathtub overall": 8 tussar i stället för 15, mindre
-  let h = ''; for (let i = 0; i < 8; i++) { const u = i / 7, x = KX - 470 + 880 * u, r = (20 + 12 * Math.abs(Math.sin(i * 2.3))) * (1 + 0.04 * Math.sin(TT * 1.7 + i));
-    h += tuss(x, KANT + 10 - 0.5 * r, r); }
+  let h = ''; for (let i = 0; i < 8; i++) { const u = i / 7, x = KX - 470 + 680 * u, r = (20 + 12 * Math.abs(Math.sin(i * 2.3))) * (1 + 0.04 * Math.sin(TT * 1.7 + i));
+    h += tuss(x, KANT + 16 - 0.4 * r, r); }   // lite lägre, så att munnen syns
   if (gomstuss) h += tuss(GOMSTUSS[0], GOMSTUSS[1], GOMSTUSS[2] * (1 + 0.025 * Math.sin(TT * 1.3)));
   lagg('fram', h);
-  // skumbubblor som glittrar i ljuset (djup-kit): en låg rad längs vattenytan, ljuset uppifrån vänster
-  lagg('fram', djup.skum({ x: KX - 30, y: KANT + 16, w: 860, hojd: 22, n: 9, rmin: 9, rmax: 17, ljus: [KX - 700, KANT - 700], t: TT }));
+  // glitterbubblorna (djup.skum) borttagna helt, Sanna 26/11 "still too much foam"
 }
 const droppe = (x, y, s = 1, o = 1) => `<path d="M${f1(x)} ${f1(y - 14 * s)} Q${f1(x + 9 * s)} ${f1(y)} ${f1(x)} ${f1(y + 6 * s)} Q${f1(x - 9 * s)} ${f1(y)} ${f1(x)} ${f1(y - 14 * s)}Z" fill="#a9dcf0" stroke="#fff" stroke-width="${f1(3 * s)}" opacity="${kl(o).toFixed(2)}"/>`;
 const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" opacity="${kl(o).toFixed(2)}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
