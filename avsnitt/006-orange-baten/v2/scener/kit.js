@@ -21,7 +21,7 @@ const kamMix = (a, b, k) => a.map((v, i) => lerp(v, b[i], mjuk(k)));
 // mellan 26° och 80° (GOM), så 033:s 55° ± 12° syntes knappt. Nu sätts riggens vink: 1 (armen göms inte, glider 24 px ut längs
 // sig själv, roten under kroppen) och armen vinkar på ca 62° ± 14° (riggen lägger till uttryckets armar, jätteglad 20).
 // Rörelsen: en liten dipp före lyftet, lyft med översväng (pop), svängar 1,25/s som saktar in i ändarna, kroppen gungar emot,
-// ansiktet lutar lite mot handen, ner med efterstuds. vinkFart (±1) styr rörelsestrecken (vinkStreck). Aldrig ARMROR.vinka.
+// ansiktet lutar lite mot handen, ner med efterstuds. Inga rörelsestreck (Sanna 2026-11-26). Aldrig ARMROR.vinka.
 const sving = u => { const x = Math.sin(2 * Math.PI * 1.25 * u); return Math.sign(x) * Math.pow(Math.abs(x), 0.7); };
 function vink(u, W = 2.9, { bas = 42, amp = 14, kropp = 3 } = {}) {
   const upp = pop(Math.max(0, u - 0.12) * 1.1) * (1 - del(W - 0.5, W, u)), dipp = -6 * Math.sin(Math.PI * kl(u / 0.14));
@@ -29,18 +29,6 @@ function vink(u, W = 2.9, { bas = 42, amp = 14, kropp = 3 } = {}) {
   return { armar: [0, upp * (bas + amp * sv) + dipp], luta: -kropp * sv * upp, boj: 2 * upp, rikt: 0.12 * upp, upp: -0.15 * upp,
     vink: kl(upp * 1.5), vinkFart: Math.cos(2 * Math.PI * 1.25 * v) * env * upp };
 }
-// Rörelsestreck vid den vinkande tassen: två korta kritbågar runt vridpunkten, på sidan armen kommer ifrån, medan den svänger
-// (starkast mitt i svängen, borta i ändarna). Ritas i g (en grupp i samma koordinater som figuren, t.ex. bredvid den i kameran).
-function vinkStreck(g, fig, fart, farg = '#5b4690') {
-  const k = Math.abs(fart); if (k < 0.15) { g.innerHTML = ''; return; }
-  const arm = fig.querySelector('.arm-r'), m = g.getCTM().inverse().multiply(arm.getCTM()), P = (x, y) => new DOMPoint(x, y).matrixTransform(m);
-  const pv = P(807, 570), tip = P(892, 596), R = Math.hypot(tip.x - pv.x, tip.y - pv.y), th = Math.atan2(tip.y - pv.y, tip.x - pv.x), sida = fart > 0 ? 1 : -1;
-  const bage = (r, a0, a1) => `M${(pv.x + r * Math.cos(a0)).toFixed(1)} ${(pv.y + r * Math.sin(a0)).toFixed(1)} A${r.toFixed(1)} ${r.toFixed(1)} 0 0 ${a1 > a0 ? 1 : 0} ${(pv.x + r * Math.cos(a1)).toFixed(1)} ${(pv.y + r * Math.sin(a1)).toFixed(1)}`;
-  const w = R * 0.1, o = (0.9 * kl((k - 0.15) / 0.4)).toFixed(2);
-  g.innerHTML = [[1.2, 0.18, 0.75], [1.5, 0.24, 0.62]].map(([rr, a, b]) =>
-    `<path d="${bage(R * rr, th + sida * a, th + sida * b)}" fill="none" stroke="${farg}" stroke-width="${w.toFixed(1)}" stroke-linecap="round" opacity="${o}"/>`).join('');
-}
-
 // --- Båten med Disa -------------------------------------------------------------------------------------------------------
 // I båtens egna koordinater: urklippet 883 × 325 i skala 0,7 med övre vänstra hörnet i (0, 0). Botten (y 313) är vattenlinjen.
 // Disa SKALA 0,5, relingen (y ≈ 84 vid x 480) skär henne vid y 720 i hennes ruta. Flaggan i aktern på motorn, bakom Disa.
@@ -63,11 +51,11 @@ async function batBygg(parent) {
   const g = document.createElementNS(NS, 'g'); parent.appendChild(g);
   g.innerHTML = `<g class="flaggan"><g transform="scale(${BS})"><path d="M60 90 L60 -170" stroke="#8a5a36" stroke-width="12" stroke-linecap="round"/>
       <path class="flagga" fill="#FF7A21" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g></g>
-    <g class="figurer"></g><g class="streck"></g>
+    <g class="figurer"></g>
     <g class="skrov"><image href="/assets/rekvisita/orange-baten-v2/cut/orange-baten-v2.png" width="883" height="325" transform="scale(${BS})"/></g>
     <path class="vag" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="26 18" opacity="0.85"/>
     <g class="mast"></g>`;
-  const B = { g, streck: g.querySelector('.streck'), flagga: g.querySelector('.flagga'), vag: g.querySelector('.vag'), mast: g.querySelector('.mast'), blinka: skapaBlinka(11) };
+  const B = { g, flagga: g.querySelector('.flagga'), vag: g.querySelector('.vag'), mast: g.querySelector('.mast'), blinka: skapaBlinka(11) };
   B.L = await v2rigg('dinon-disa');
   B.fig = B.L.figur(DISA[0], DISA[1], SK, g.querySelector('.figurer'));
   B.fig.querySelector('.kropp').firstElementChild.insertAdjacentHTML('afterend', VAST);   // västen sitter i kroppen, under ansiktet
@@ -83,8 +71,7 @@ function batRita(B, t, { x = 960, y = 760, s = 0, fart = 1, hopp = 0, f, p }) {
   B.flagga.setAttribute('d', `M60 -170 Q0 ${-160 + v} -70 ${-130 + v * 0.6} Q0 ${-110 + v} 60 -90Z`);   // fladdrar bakåt, båten kör åt höger
   let d = ''; for (let x0 = 90 * BS; x0 <= 820 * BS; x0 += 15) d += `${d ? ' L' : 'M'}${x0.toFixed(0)} ${(BH - 8 + Math.sin(x0 / 30 + t * 4) * 3).toFixed(1)}`;
   B.vag.setAttribute('d', d); B.vag.setAttribute('stroke-dashoffset', (s * 0.85).toFixed(1)); B.vag.setAttribute('opacity', (0.25 + 0.6 * fart).toFixed(2));
-  B.L.rita(B.fig, B.blinka(f, t), p);
-  vinkStreck(B.streck, B.fig, p.vinkFart || 0);
+  B.L.rita(B.fig, B.blinka(f, t), p);   // inga rörelsestreck när hon vinkar (Sanna 2026-11-26)
 }
 // En punkt i båtens koordinater → scenens (utan gungningen, räcker för att sikta).
 const batPunkt = (x, y, [lx, ly]) => [x - BW / 2 + lx, y - BH + ly];

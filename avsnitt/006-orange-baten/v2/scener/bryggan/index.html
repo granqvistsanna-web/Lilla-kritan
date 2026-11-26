@@ -76,7 +76,8 @@ const S = [
   [160.0, '14c', HEL, tl => [[DF('glad'), { ...D0(), rikt: 0.6 }], [AF('glad'), { ...A0(), rikt: 0.8, armar: [-20 + 14 * Math.sin(tl * 9), -20 - 14 * Math.sin(tl * 9)] }]]],
   [162.1, '14d', HEL, tl => [[DF('jatteglad'), pekH(1)], [AF('glad'), { ...A0(), rikt: -0.8, armar: Array(2).fill(30 * pulsar(tl, [0.5, 1.1, 1.7], 0.4)) }]]],
   [164.5, '14e', TVA, () => [[DF('glad'), pekH(1)], [AF('glad'), haller(1)]]],
-  [166.8, '14f', TVA, tl => [[pulsar(tl, BETT, 0.35) > 0.2 ? DF('jatteglad') : DF('fnissig'), pekH(1)], [pulsar(tl, BETT, 0.35) > 0.2 ? AF('mums') : AF('fnissig'), haller(1)]]],
+  // mums på varje tugga: uttrycket glider fram och tillbaka med tuggan i stället för att byta tvärt
+  [166.8, '14f', TVA, tl => { const k = pulsar(tl, BETT, 0.42); return [[DB('fnissig', 'jatteglad', k), pekH(1)], [AB('fnissig', 'mums', k), haller(1)]]; }],
   [168.2, '14g', TVA, tl => [[DB('glad', 'kawaii', del(0, 0.4, tl)), DP('neutral', 'hurra', del(0.1, 0.5, tl))],   // kawaii 3 av 3
     [AB('jatteglad', 'kawaii', del(0, 0.4, tl)), sitt({ armar: [70 * del(0.1, 0.5, tl), 70 * del(0.1, 0.5, tl)] })]]],
 ];
