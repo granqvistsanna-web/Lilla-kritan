@@ -118,13 +118,13 @@ function badrum({ handduk = false, gomstuss = true } = {}) {
 }
 const tuss = (x, y, r, kant = '#cfe6ee', fill = '#fff') => [[0, 0, 1], [-0.8, 0.25, 0.7], [0.8, 0.2, 0.75], [-0.35, -0.55, 0.65], [0.4, -0.5, 0.6]]
   .map(([dx, dy, k]) => `<circle cx="${f1(x + dx * r)}" cy="${f1(y + dy * r)}" r="${f1(k * r)}" fill="${fill}" stroke="${kant}" stroke-width="${f1(0.08 * r)}" paint-order="stroke"/>`).join('');
-function skumKant(gomstuss) {   // skummet andas lite
-  let h = ''; for (let i = 0; i < 15; i++) { const u = i / 14, x = KX - 480 + 900 * u, r = (24 + 16 * Math.abs(Math.sin(i * 2.3))) * (1 + 0.04 * Math.sin(TT * 1.7 + i));
+function skumKant(gomstuss) {   // skummet andas lite. Sanna 26/11 "less bubbles in the bathtub overall": 8 tussar i stället för 15, mindre
+  let h = ''; for (let i = 0; i < 8; i++) { const u = i / 7, x = KX - 470 + 880 * u, r = (20 + 12 * Math.abs(Math.sin(i * 2.3))) * (1 + 0.04 * Math.sin(TT * 1.7 + i));
     h += tuss(x, KANT + 10 - 0.5 * r, r); }
   if (gomstuss) h += tuss(GOMSTUSS[0], GOMSTUSS[1], GOMSTUSS[2] * (1 + 0.025 * Math.sin(TT * 1.3)));
   lagg('fram', h);
   // skumbubblor som glittrar i ljuset (djup-kit): en låg rad längs vattenytan, ljuset uppifrån vänster
-  lagg('fram', djup.skum({ x: KX - 30, y: KANT + 16, w: 860, hojd: 22, n: 26, rmin: 9, rmax: 19, ljus: [KX - 700, KANT - 700], t: TT }));
+  lagg('fram', djup.skum({ x: KX - 30, y: KANT + 16, w: 860, hojd: 22, n: 9, rmin: 9, rmax: 17, ljus: [KX - 700, KANT - 700], t: TT }));
 }
 const droppe = (x, y, s = 1, o = 1) => `<path d="M${f1(x)} ${f1(y - 14 * s)} Q${f1(x + 9 * s)} ${f1(y)} ${f1(x)} ${f1(y + 6 * s)} Q${f1(x - 9 * s)} ${f1(y)} ${f1(x)} ${f1(y - 14 * s)}Z" fill="#a9dcf0" stroke="#fff" stroke-width="${f1(3 * s)}" opacity="${kl(o).toFixed(2)}"/>`;
 const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${r.toFixed(2)})" opacity="${kl(o).toFixed(2)}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
@@ -174,8 +174,8 @@ const bue = (pos, c, rx, ry, a0, a1) => u => { const a = a0 + (a1 - a0) * u, r =
 const linje = (pos, A, B, rot) => u => [iFig(pos, lerp2(A, B, u)), rot];
 const BO_HALL = () => iFig(STA, [990, 480]);
 // små såpbubblor stiger ur skummet och spricker mjukt
-function bubblor(t) { let h = '';   // omgång 3 (Sanna 26/11 "less bubbles in bath"): 3 i stället för 7, svagare
-  for (let i = 0; i < 3; i++) { const P = 3.4 + 0.5 * (i % 3), u = (t / P + i * 0.37) % 1, x = 1010 + (i * 283) % 760 + 10 * Math.sin(t * 1.6 + i), y = KANT - 6 - 150 * u, r = 7 + 3 * (i % 3), o = Math.sin(Math.PI * u);
+function bubblor(t) { let h = '';   // Sanna 26/11 "less bubbles": 2 (förut 7, sedan 3), svagare
+  for (let i = 0; i < 2; i++) { const P = 3.4 + 0.5 * (i % 3), u = (t / P + i * 0.37) % 1, x = 1010 + (i * 283) % 760 + 10 * Math.sin(t * 1.6 + i), y = KANT - 6 - 150 * u, r = 7 + 3 * (i % 3), o = Math.sin(Math.PI * u);
     h += `<g opacity="${(0.6 * o).toFixed(2)}"><circle cx="${f1(x)}" cy="${f1(y)}" r="${r}" fill="#fff" fill-opacity=".3" stroke="#cfe6ee" stroke-width="2.5"/><circle cx="${f1(x - r * 0.35)}" cy="${f1(y - r * 0.35)}" r="${f1(r * 0.25)}" fill="#fff"/></g>`; }
   lagg('fram', h); }
 // varm ånga (Sanna 25/11 "nice hot steam from bath", "soften steam and only show when hot is mentioned"): djup-kitets mjuka moln,
