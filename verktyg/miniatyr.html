@@ -211,6 +211,18 @@ const MINIATYRER = [
   // Kritans ABC: hjälten är apan ur filmen vid 0:41 (vinkar och skrattar), större, framför tre bildklossar ur leken (2:00); recept-1/thumbnail/hjalte.py. Röd strimma som A:et
   { id:'abc-a', ut:'produktion/youtube/alfabet/abc-prov/recept-1/thumbnail', bild:'produktion/youtube/alfabet/abc-prov/recept-1/thumbnail/miniatyr-utan-text.png', farg:'#E5302A',
     sv:{ tid:'3:36', titel:['A','Kritans ABC'], yt:'Kritans ABC: Bokstaven A 🐒🍊 Apa, apelsin och ananas | lilla kritan' } },
+  // Kritans ABC recept 3 (2026-11-26): seriens märke är bokstavsklossen (abc.bokstav) med "Kritans ABC" under, strimman i bokstavens färg.
+  // Hjälten är kompisens jubelnärbild ca 2:30 (miniatyr-hjalte.mjs: hörnmärket gömt, spegelvänd), zoomad 1,12 så att alla kompisar är lika stora med mitten vid x 870.
+  { id:'abc-a-r3', bild:'produktion/youtube/alfabet/abc-a-recept-3/thumbnail/miniatyr-utan-text.png', farg:'#E5302A', abc:{ bokstav:'A' }, hjalte:[1.12, 825, 660],
+    sv:{ tid:'4:20', titel:['Kritans','ABC'], yt:'Kritans ABC: Bokstaven A 🐒🍍 Apa, apelsin och ananas | lilla kritan' } },
+  { id:'abc-b-r3', bild:'produktion/youtube/alfabet/abc-b-recept-3/thumbnail/miniatyr-utan-text.png', farg:'#2E78D2', abc:{ bokstav:'B' }, hjalte:[1.12, 825, 660],
+    sv:{ tid:'4:19', titel:['Kritans','ABC'], yt:'Kritans ABC: Bokstaven B 🐻🎈 Björn, boll och ballong | lilla kritan' } },
+  { id:'abc-c-r3', bild:'produktion/youtube/alfabet/abc-c-recept-3/thumbnail/miniatyr-utan-text.png', farg:'#8E5BD0', abc:{ bokstav:'C' }, hjalte:[1.12, 830, 660], // cykeln gömd i stillbilden ('#saker > g:nth-child(3)')
+    sv:{ tid:'4:17', titel:['Kritans','ABC'], yt:'Kritans ABC: Bokstaven C 🍋🚲 Citron, cykel och cirkel | lilla kritan' } },
+  { id:'abc-d-r3', bild:'produktion/youtube/alfabet/abc-d-recept-3/thumbnail/miniatyr-utan-text.png', farg:'#E0803A', abc:{ bokstav:'D' }, hjalte:[1.22, 715, 670],   // dinon står längre till vänster: mer zoom; dörren gömd i stillbilden ('#saker > g:nth-child(2)')
+    sv:{ tid:'4:17', titel:['Kritans','ABC'], yt:'Kritans ABC: Bokstaven D 🦕🚪 Dino, dörr och docka | lilla kritan' } },
+  { id:'abc-e-r3', bild:'produktion/youtube/alfabet/abc-e-recept-3/thumbnail/miniatyr-utan-text.png', farg:'#3E9E4F', abc:{ bokstav:'E' }, hjalte:[1.05, 835, 700],   // elefanten är högst (öronen): lite mindre zoom så att fötterna och öronen får luft
+    sv:{ tid:'4:14', titel:['Kritans','ABC'], yt:'Kritans ABC: Bokstaven E 🐘🐿️ Elefant, ekorre och ekollon | lilla kritan' } },
   // Gissa teckningen-mixarna: den färdiga teckningen ur den liggande mixen. Samma bild till den stående mixen (längden avrundas lika).
   { id:'gissa-bondgarden', bild:'produktion/youtube/mix/gissa-bondgarden-liggande/thumbnail/miniatyr-utan-text.png', farg:'#4FAE4A', hjalte:[1.25, 680, 590],
     sv:{ tid:'3:52', titel:['Gissa!','bondgården'], yt:'Gissa teckningen: Bondgården 🐄🚜 Vad kan det vara? | lilla kritan' },
@@ -262,7 +274,7 @@ async function rita() {
   }
   for (const svg of document.querySelectorAll('svg[data-id]')) {
     const m = MINIATYRER.find(x => x.id === svg.dataset.id);
-    await miniatyr.strimma(svg.querySelector('.topp'), { farg: m.farg, titel: m[lang].titel, cirkel: m[lang].cirkel || [minuter(m[lang].tid), 'min'], jul: m.jul, kanal: medKanal ? KANAL[lang] : '' });
+    await miniatyr.strimma(svg.querySelector('.topp'), { farg: m.farg, titel: m[lang].titel, cirkel: m[lang].cirkel || [minuter(m[lang].tid), 'min'], jul: m.jul, abc: m.abc, kanal: medKanal ? KANAL[lang] : '' });
   }
   document.body.dataset.klar = '1';
 }

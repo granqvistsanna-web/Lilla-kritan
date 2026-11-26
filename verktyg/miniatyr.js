@@ -113,7 +113,18 @@ function julpynt(g, lucka) {
   text(String(lucka), x + w / 2 - 4, y + h - 38, 136, w - 76, '#fff', m);
 }
 
-async function strimma(parent, { farg, titel, kanal = '', cirkel = [], jul = null }) {
+// Kritans ABC (Sanna 2026-11-26): seriens märke är bokstavsklossen ur filmernas intro, en träkloss med krämvit sida,
+// en ram i bokstavens färg och bokstaven stor, med "Kritans ABC" under. Den ersätter titeln; cirkeln med längden står kvar.
+function abcKloss(g, farg, bokstav) {
+  const [x, y, s] = [104, 262, 232], m = el('g', { transform: `rotate(-7 ${x + s / 2} ${y + s / 2})`, filter: 'url(#mi-skugga)' }, g);
+  el('rect', { x: x - 12, y: y - 12, width: s + 40, height: s + 40, rx: 36, fill: '#fff' }, m);
+  el('rect', { x: x + 16, y: y + 16, width: s, height: s, rx: 26, fill: '#b9814c', filter: 'url(#mi-vax-latt)' }, m);   // klossens sida, djupet
+  el('rect', { x, y, width: s, height: s, rx: 26, fill: '#dba56c', filter: 'url(#mi-vax-latt)' }, m);
+  el('rect', { x: x + 20, y: y + 20, width: s - 40, height: s - 40, rx: 16, fill: '#fbf4e4', stroke: farg, 'stroke-width': 12 }, m);
+  text(bokstav, x + s / 2, y + s / 2 + 58, 168, s - 64, farg, m, { stroke: '#fff', 'stroke-width': 6, 'paint-order': 'stroke' });
+}
+
+async function strimma(parent, { farg, titel, kanal = '', cirkel = [], jul = null, abc = null }) {
   if (jul) cirkel = [];
   const svg = parent.ownerSVGElement; defs(svg);
   await document.fonts.load('600 100px Fredoka', titel.join(' ') + kanal + '0123456789 min');
@@ -138,7 +149,11 @@ async function strimma(parent, { farg, titel, kanal = '', cirkel = [], jul = nul
 
   // titeln och kanalnamnet, lutade som strimmans kant
   const t = el('g', { transform: `translate(0 ${jul ? 36 : 0}) rotate(-7 222 453)`, filter: ljus ? '' : 'url(#mi-skugga-text)' }, g);
-  if (titel.length === 3) {   // tre rader, alla stora: för långa titlar som annars blir små på andra raden (Sanna 2026-11-13)
+  if (abc) {
+    abcKloss(g, farg, abc.bokstav);
+    text(titel[0], 222, 590, 64, 330, fg, t);   // "Kritans" mindre, "ABC" stort: seriens namn läses i 168 px
+    if (titel[1]) text(titel[1], 222, 686, 112, 320, fg, t);
+  } else if (titel.length === 3) {   // tre rader, alla stora: för långa titlar som annars blir små på andra raden (Sanna 2026-11-13)
     text(titel[0], 222, 352, 132, 370, fg, t);
     text(titel[1], 222, 476, 132, 350, fg, t);
     text(titel[2], 222, 600, 132, 330, fg, t);
