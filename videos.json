@@ -53,14 +53,16 @@
   "file": "avsnitt/014-grona-traktorn/film/avsnitt-014.mp4",
   "rendered": "2026-11-07 13:22",
   "status": "live",
-  "youtube": "https://youtu.be/t9DABoy7yw4"
+  "youtube": "https://youtu.be/t9DABoy7yw4",
+  "name": "Gröna sången"
  },
  "015": {
   "duration": 89.5,
   "file": "avsnitt/015-ba-ba-vita-lamm/film/avsnitt-015.mp4",
   "rendered": "2026-11-09 15:09",
   "status": "live",
-  "youtube": "https://youtu.be/T4rOmKyDu9g"
+  "youtube": "https://youtu.be/T4rOmKyDu9g",
+  "name": "Bä, bä, vita lamm"
  },
  "016": {
   "duration": 159,
@@ -69,7 +71,8 @@
   "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/e3c8350bcfa0042429b24b2046e490ad.mp4",
   "videoId": "e3c8350bcfa0042429b24b2046e490ad",
-  "youtube": "https://youtu.be/lYuuZQYO4WY"
+  "youtube": "https://youtu.be/lYuuZQYO4WY",
+  "name": "Blinka lilla stjärna"
  },
  "017": {
   "duration": 144,
@@ -77,10 +80,12 @@
   "rendered": "2026-11-15 22:20",
   "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9862da75dfb1c1baa210174374340438.mp4",
-  "youtube": "https://youtu.be/rKKJeOT4a8k"
+  "youtube": "https://youtu.be/rKKJeOT4a8k",
+  "name": "Mors lilla Olle"
  },
  "018": {
-  "status": "pagar"
+  "status": "pagar",
+  "name": "Bada bada"
  },
  "019": {
   "duration": 217.3,
@@ -95,38 +100,44 @@
   "rendered": "2026-11-14 07:28",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/020.mp4",
-  "youtube": "https://youtu.be/3x3jkDgNNTs"
+  "youtube": "https://youtu.be/3x3jkDgNNTs",
+  "name": "Grisen badar"
  },
  "021": {
   "duration": 214.3,
   "file": "avsnitt/021-hunden-leker/film/avsnitt-021.mp4",
   "rendered": "2026-11-12 07:26",
   "status": "live",
-  "youtube": "https://youtu.be/b526lG6ptUA"
+  "youtube": "https://youtu.be/b526lG6ptUA",
+  "name": "Hunden leker"
  },
  "022": {
   "duration": 176.5,
   "file": "avsnitt/022-kaninen-ater-frukost/film/avsnitt-022.mp4",
   "rendered": "2026-11-11 19:58",
   "status": "live",
-  "youtube": "https://youtu.be/dPtPVL8wsD0"
+  "youtube": "https://youtu.be/dPtPVL8wsD0",
+  "name": "Kaninen äter frukost"
  },
  "023": {
   "duration": 199.5,
   "file": "avsnitt/023-bjornen-tvattar-handerna/film/avsnitt-023.mp4",
   "rendered": "2026-11-11 19:37",
   "status": "live",
-  "youtube": "https://youtu.be/oNqsUKwfdJM"
+  "youtube": "https://youtu.be/oNqsUKwfdJM",
+  "name": "Björnen tvättar händerna"
  },
  "024": {
   "duration": 166,
   "file": "avsnitt/024-lammet-klar-pa-sig/film/avsnitt-024.mp4",
   "rendered": "2026-11-11 19:10",
   "status": "live",
-  "youtube": "https://youtu.be/dWbjucD0HxE"
+  "youtube": "https://youtu.be/dWbjucD0HxE",
+  "name": "Lammet klär på sig"
  },
  "025": {
-  "status": "pagar"
+  "status": "pagar",
+  "name": "Katten borstar tänderna"
  },
  "026": {
   "duration": 247.3,
@@ -134,7 +145,8 @@
   "rendered": "2026-11-14 07:28",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/026-v2.mp4",
-  "youtube": "https://youtu.be/PLi6DDMyiGw"
+  "youtube": "https://youtu.be/PLi6DDMyiGw",
+  "name": "Zebran går och lägger sig"
  },
  "027": {
   "duration": 260.6,
@@ -142,7 +154,8 @@
   "rendered": "2026-11-15 17:04",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/027-v5.mp4",
-  "youtube": "https://youtu.be/NT1lrXPVHWs"
+  "youtube": "https://youtu.be/NT1lrXPVHWs",
+  "name": "Zebran plockar undan"
  },
  "028": {
   "duration": 239,
@@ -151,7 +164,8 @@
   "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/980d839bce091ace3d2617f5f4381e79.mp4",
   "videoId": "980d839bce091ace3d2617f5f4381e79",
-  "youtube": "https://youtu.be/Frmw_b7umAg"
+  "youtube": "https://youtu.be/Frmw_b7umAg",
+  "name": "Leoparden bygger i sanden"
  },
  "029": {
   "duration": 240,
@@ -160,7 +174,8 @@
   "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/1795515e637bbba85dde4c659a2cfb49.mp4",
   "videoId": "1795515e637bbba85dde4c659a2cfb49",
-  "youtube": "https://youtu.be/tIbOVrBrcok"
+  "youtube": "https://youtu.be/tIbOVrBrcok",
+  "name": "Leoparden plockar äpplen"
  },
  "030": {
   "duration": 173.5,
@@ -169,18 +184,20 @@
   "status": "arkiv",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/7b020d03d9cb5fe5f44f1c39d7672f7f.mp4",
   "videoId": "7b020d03d9cb5fe5f44f1c39d7672f7f",
-  "youtube": "https://youtu.be/TV9IVLGtR6w"
+  "youtube": "https://youtu.be/TV9IVLGtR6w",
+  "name": "Borsta, borsta (gulliga djur)"
  },
  "031": {
   "duration": 166.9,
   "file": "avsnitt/031-borsta-borsta-bondgarden/film/avsnitt-031.mp4",
-  "name": "Borsta borsta, bondgården",
+  "name": "Borsta, borsta (bondgården)",
   "rendered": "2026-11-15 21:30",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/031.mp4"
  },
  "032": {
-  "status": "pagar"
+  "status": "pagar",
+  "name": "Borsta, borsta (busiga apan)"
  },
  "033": {
   "duration": 148.6,
@@ -189,7 +206,8 @@
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9ae5e75827f3e433aaa776fe92f7a10a.mp4",
   "videoId": "9ae5e75827f3e433aaa776fe92f7a10a",
-  "youtube": "https://youtu.be/IwpsFBglFiU"
+  "youtube": "https://youtu.be/IwpsFBglFiU",
+  "name": "Borsta, borsta (dinosaurier)"
  },
  "035": {
   "duration": 239.1,
@@ -218,7 +236,7 @@
  "038": {
   "duration": 178.7,
   "file": "avsnitt/038-borsta-borsta-jul/film/avsnitt-038.mp4",
-  "name": "Borsta, borsta jul",
+  "name": "Borsta, borsta (jul)",
   "rendered": "2026-11-18 09:45 (halsduken nästan dubbelt så stor)",
   "status": "klar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/038-1118-0945.mp4",
@@ -793,7 +811,8 @@
     "label": "Vinterlekplatsen",
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/0f6a3ed4b2c45fbfac2fe3a0d5c3c0c2.jpg"
    }
-  ]
+  ],
+  "name": "Grisen åker pulka – bakgrund"
  },
  "JP-leoparden-ljus": {
   "duration": 129.4,
@@ -859,7 +878,8 @@
   "duration": 163.9,
   "rendered": "2026-11-26 08:19 (Slutrendering 26/11 (mastrad, papperstextur, 3D-intro och 3D-outro): elden under strumporna, granen hel, line boil efter zoomen. QA utan anmärkningar.)",
   "file": "produktion/youtube/shorts/jul/07-lammet-julkula/07-lammet-julkula.mp4",
-  "status": "granska"
+  "status": "granska",
+  "name": "Lammet julkula"
  },
  "J02-bg": {
   "layout": "rader",
@@ -882,7 +902,8 @@
     "label": "Röda sovrummet",
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b7483df5db3d3c4a6422e86f06811b08.jpg"
    }
-  ]
+  ],
+  "name": "Lammet julkula – bakgrund"
  },
  "JP-hunden-snogubbe": {
   "duration": 176.0,
@@ -961,7 +982,8 @@
    }
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J05-1125-1716.mp4",
-  "videoId": "25192c977627e63999ca2b731aaec1dd"
+  "videoId": "25192c977627e63999ca2b731aaec1dd",
+  "name": "Tre pussel"
  },
  "JP-bruna-sangen": {
   "duration": 238.6,
@@ -1050,7 +1072,7 @@
   ],
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1125-1715.mp4",
   "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
-  "name": "Lucka 1: Kaninen ska åka pulka"
+  "name": "Kaninen åker pulka"
  },
  "JP-bjornen-fyra-ljus-bg": {
   "layout": "rader",
@@ -1316,7 +1338,7 @@
   "rendered": "2026-11-18 20:55 (julkarolen börjar medan kritan ritar vantarna; ligger nu i julkalendern som lucka 20)",
   "file": "avsnitt/039-kaninen-aker-pulka/film/avsnitt-039.mp4",
   "status": "klar",
-  "name": "Kaninen ska åka pulka"
+  "name": "Kaninen åker pulka"
  },
  "JP-hunden-snogubbe-bg": {
   "stills": [
@@ -1351,7 +1373,7 @@
  },
  "J06": {
   "status": "granska",
-  "name": "Lucka 6: Katten hittar julklappar",
+  "name": "Katten hittar julklappar",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J06-1125-1729.mp4",
   "duration": 249.1,
   "rendered": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)",
@@ -1362,7 +1384,8 @@
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J03-1125-1729.mp4",
   "duration": 247.7,
   "rendered": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)",
-  "file": "produktion/youtube/shorts/jul/21-leoparden-gar-och-lagger-sig/21-leoparden-gar-och-lagger-sig.mp4"
+  "file": "produktion/youtube/shorts/jul/21-leoparden-gar-och-lagger-sig/21-leoparden-gar-och-lagger-sig.mp4",
+  "name": "Leoparden går och lägger sig"
  },
  "J12": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J12-1125-1718.mp4",
@@ -1394,7 +1417,7 @@
   "rendered": "2026-11-25 17:18 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/10-tre-pussel-till/10-tre-pussel-till.mp4",
   "status": "granska",
-  "name": "Lucka 10: Tre pussel till"
+  "name": "Tre pussel till"
  },
  "J18": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J18-1125-1720.mp4",
@@ -1426,7 +1449,7 @@
   "rendered": "2026-11-25 17:30 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/11-roda-sangen/11-roda-sangen.mp4",
   "status": "granska",
-  "name": "J14 boil 2,5 px (förhandsvisning)"
+  "name": "Röda sången"
  },
  "J08": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1125-1717.mp4",
@@ -1434,7 +1457,7 @@
   "rendered": "2026-11-25 17:17 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/08-katten-snogubbe/08-katten-snogubbe.mp4",
   "status": "granska",
-  "name": "Lucka 8: Katten gör en snögubbe"
+  "name": "Katten gör en snögubbe"
  },
  "J09": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J09-1125-1729.mp4",
@@ -1442,7 +1465,7 @@
   "rendered": "2026-11-25 17:30 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/09-kaninen-badar-varmt/09-kaninen-badar-varmt.mp4",
   "status": "granska",
-  "name": "Lucka 9: Kaninen badar varmt"
+  "name": "Kaninen badar varmt"
  },
  "J15": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J15-1125-1730.mp4",
@@ -1450,7 +1473,7 @@
   "rendered": "2026-11-25 17:30 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/15-lammet-bakar-pepparkakor/15-lammet-bakar-pepparkakor.mp4",
   "status": "granska",
-  "name": "Lucka 15: Lammet bakar pepparkakor"
+  "name": "Lammet bakar pepparkakor"
  },
  "J16": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J16-1125-1720.mp4",
@@ -1458,7 +1481,7 @@
   "rendered": "2026-11-25 17:20 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/16-grisen-matar-faglarna/16-grisen-matar-faglarna.mp4",
   "status": "granska",
-  "name": "Lucka 16: Grisen matar fåglarna"
+  "name": "Grisen matar fåglarna"
  },
  "J17": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J17-1125-1720.mp4",
@@ -1466,7 +1489,7 @@
   "rendered": "2026-11-25 17:20 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/17-hunden-gar-pa-pottan/17-hunden-gar-pa-pottan.mp4",
   "status": "granska",
-  "name": "Lucka 17: Hunden går på pottan"
+  "name": "Hunden går på pottan"
  },
  "ABC-e3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-e3-1125-2249.mp4",
@@ -1474,7 +1497,7 @@
   "rendered": "2026-11-25 22:49 (förhandsvisning, delade kritan)",
   "file": "produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4",
   "status": "granska",
-  "name": "Kritans ABC: E recept 3 (kompisen vill leka)"
+  "name": "Kritans ABC: E (kompisen vill leka)"
  },
  "J19": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J19-1125-1721.mp4",
@@ -1482,7 +1505,7 @@
   "rendered": "2026-11-25 17:21 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/19-katten-aker-buss/19-katten-aker-buss.mp4",
   "status": "granska",
-  "name": "Lucka 19: Katten åker buss"
+  "name": "Katten åker buss"
  },
  "ABC-e3-tiny": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-e3-tiny-1121-0410.mp4",
@@ -1506,7 +1529,7 @@
   "rendered": "2026-11-25 22:49 (förhandsvisning, delade kritan)",
   "file": "produktion/youtube/alfabet/abc-b-recept-3/abc-b-recept-3.mp4",
   "status": "granska",
-  "name": "Kritans ABC: B recept 3 (björnen vill leka)"
+  "name": "Kritans ABC: B (björnen vill leka)"
  },
  "ABC-a3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-a3-1125-2248.mp4",
@@ -1514,7 +1537,7 @@
   "rendered": "2026-11-25 22:48 (förhandsvisning, delade kritan)",
   "file": "produktion/youtube/alfabet/abc-a-recept-3/abc-a-recept-3.mp4",
   "status": "granska",
-  "name": "Kritans ABC: A recept 3 (apan är hungrig)"
+  "name": "Kritans ABC: A (apan är hungrig)"
  },
  "ABC-d3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-d3-1125-2249.mp4",
@@ -1522,7 +1545,7 @@
   "rendered": "2026-11-25 22:49 (förhandsvisning, delade kritan)",
   "file": "produktion/youtube/alfabet/abc-d-recept-3/abc-d-recept-3.mp4",
   "status": "granska",
-  "name": "Kritans ABC D (recept 3)"
+  "name": "Kritans ABC: D"
  },
  "ABC-c3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-c3-1125-2249.mp4",
@@ -1530,7 +1553,7 @@
   "rendered": "2026-11-25 22:49 (förhandsvisning, delade kritan)",
   "file": "produktion/youtube/alfabet/abc-c-recept-3/abc-c-recept-3.mp4",
   "status": "granska",
-  "name": "Kritans ABC: C recept 3 (citronen vill cykla)"
+  "name": "Kritans ABC: C (citronen vill cykla)"
  },
  "049": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/049-1125-2038.mp4",
@@ -1538,7 +1561,7 @@
   "rendered": "2026-11-25 20:38 (feedback 6: repliken före den nervösa kaninen (0:39))",
   "file": "avsnitt/049-kaninen-gar-till-tandlakaren/film/avsnitt-049.mp4",
   "status": "granska",
-  "name": "Förhandsvisning 5"
+  "name": "Kaninen går till tandläkaren"
  },
  "J22": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1125-1721.mp4",
@@ -1546,7 +1569,7 @@
   "rendered": "2026-11-25 17:22 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen.mp4",
   "status": "granska",
-  "name": "Lucka 22: Musen pyntar granen"
+  "name": "Musen pyntar granen"
  },
  "MIX-tittut": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/MIX-tittut-1122-1313.mp4",
@@ -1578,7 +1601,7 @@
   "rendered": "2026-11-25 17:22 (3D-intro och 3D-outro, handtaget rättat)",
   "file": "produktion/youtube/shorts/jul/24-bjornen-vaknar-pa-julafton/24-bjornen-vaknar-pa-julafton.mp4",
   "status": "granska",
-  "name": "J24 · 051 Leoparden vaknar på julafton"
+  "name": "Leoparden vaknar på julafton"
  },
  "MIX-5": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/MIX-5-1125-1955.mp4",
@@ -1602,14 +1625,15 @@
   "rendered": "2026-11-26 08:00 (Förhandsvisning 4: glatt litet hopp med stor glad mun vid 0:26 (skuggan kvar på golvet), kranen hel upptill (kantfiltret klippte svanhalsen), katten nickar ja vid 2:03 och skumskägget försvinner före nicken utan prickar, större glad mun i alla jätteglada ansikten)",
   "file": "avsnitt/057-katten-tvattar-handerna/film/avsnitt-057.mp4",
   "status": "granska",
-  "name": "057 Katten tvättar händerna – förhandsvisning 3"
+  "name": "Katten tvättar händerna"
  },
  "054": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/054-1126-0756.mp4",
   "duration": 256.5,
   "rendered": "2026-11-26 07:56 (Ännu mindre skum: glitterbubblorna borta helt, tussen vid kranen mindre (48 i stället för 78) och lite åt höger så att det röda vredet syns helt, skumtussarna längs kanten lite lägre så att lammets mun syns. Förhandsvisning (--snabb).)",
   "file": "avsnitt/054-lammet-badar/scener/badet/badet.mp4",
-  "status": "granska"
+  "status": "granska",
+  "name": "Lammet badar"
  },
  "056": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/056-1125-2245.mp4",
@@ -1617,28 +1641,31 @@
   "rendered": "2026-11-25 22:45 (Feedback 25/11 22:04 fixad: ny säng och sovbild, måne, regn, nya repliker)",
   "file": "avsnitt/056-raven-gar-och-lagger-sig/film/avsnitt-056.mp4",
   "status": "granska",
-  "name": "animatik"
+  "name": "Räven går och lägger sig"
  },
  "053": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1126-0807.mp4",
   "duration": 215.9,
   "rendered": "2026-11-26 08:07 (Feedback 26/11 + QA: klossarna faller lugnare ur korgen (tippar sakta över kanten, båge, liten studs, skugga); armen går ner till klossen och följer med upp, far inte i luften; kaktusen närmare väggen och större; trekanten lila (syns mot väggen och kaktusen). QA: fyrkanten går inte längre ner i golvet när den tumlar, trekanten glider fram framför krukan före bågen till lådan, hyllans lila kloss olivbrun. Snabb förhandsvisning.)",
   "file": "avsnitt/053-leoparden-stadar/film/avsnitt-053.mp4",
-  "status": "granska"
+  "status": "granska",
+  "name": "Leoparden städar"
  },
  "055": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/055-1125-2016.mp4",
   "duration": 205.4,
   "rendered": "2026-11-25 20:16 (Grind 6, förhandsvisning (--snabb): 16 tydligare repliker inspelade, snabbare tempo (3:25), fler närbilder och reaktioner, kittlet på nosen och vicket i muggen i närbild, varierade rävljud)",
   "file": "avsnitt/055-raven-borstar-tanderna/scener/badet/badet.mp4",
-  "status": "granska"
+  "status": "granska",
+  "name": "Räven borstar tänderna"
  },
  "052": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/052-1126-0749.mp4",
   "duration": 235.8,
   "rendered": "2026-11-26 07:50 (QA: det långa fnisset efter stövlarna (3:26) byttes mot ett kort på klippet till närbilden, så det inte längre går in under Malins 'Strumpor, mössa …'. Förhandsvisning (--snabb).)",
   "file": "avsnitt/052-zebran-klar-pa-sig/scener/sovrummet/sovrummet.mp4",
-  "status": "granska"
+  "status": "granska",
+  "name": "Zebran klär på sig"
  },
  "djup-prov": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/djup-prov-1125-2211.mp4",
