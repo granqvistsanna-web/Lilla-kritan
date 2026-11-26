@@ -10013,9 +10013,10 @@
   "sec": 57,
   "tags": [],
   "note": "make zebra bigger",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642321573,
-  "render": "2026-11-25 22:31 (Halsduken högre upp under mulen (inte ett bälte), knuten åt sidan. Halvnära när andra strumpan saknas, strumpan i stöveln skimrar redan medan vi letar (kortare väntan), dörren stängs igen när kläderna ska på. Förhandsvisning (--snabb).)"
+  "render": "2026-11-25 22:31 (Halsduken högre upp under mulen (inte ett bälte), knuten åt sidan. Halvnära när andra strumpan saknas, strumpan i stöveln skimrar redan medan vi letar (kortare väntan), dörren stängs igen när kläderna ska på. Förhandsvisning (--snabb).)",
+  "fixedAt": 1795675318880
  },
  "m9pg1yww6jmwx6ei4g": {
   "ep": "054",
