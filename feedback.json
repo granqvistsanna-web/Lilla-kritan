@@ -9990,9 +9990,10 @@
   "sec": 113,
   "tags": [],
   "note": "place kaktus closer to wall",
-  "fixed": false,
+  "fixed": true,
   "at": 1795642167193,
-  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))"
+  "render": "2026-11-25 22:05 (djup QA: klossen framför magen med tassen ovanpå, cirkeln ner i hålet, landar bredvid fyrkanten, hatten bakom krukan, en arm, hyllans klossar lila/bruna (förhandsvisning))",
+  "fixedAt": 1795676867642
  },
  "okpbwk8akemwwmzq3f": {
   "ep": "053",
