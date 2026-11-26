@@ -138,7 +138,6 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Och där är halsduken!
 [happy] Den röda halsduken … runt halsen!
 [happy sigh] Mmm … halsduken är varm och mjuk.
-[warmly] Mm, du tycker om halsduken.   🆕
 [curious] Men strumpan då? Zebran vet inte var.
 [warmly] Kan du hjälpa zebran? Ser du den blå strumpan?
 [happy] Ja, där! I stöveln!

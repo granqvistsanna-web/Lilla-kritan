@@ -73,7 +73,8 @@ export const RADER = [
   // --- Halsduken ---
   { id: '18', d: 0.8 + L(32) + 0.8, malin: [[32, 0.8]], ljud: [['glimt/glimt-2', 0.4]], bild: 'närbild halsduken på kroken, den glimtar' },
   { id: '19', d: 1.2 + L(33) + 1.4, malin: [[33, 1.2]], ljud: [['prassel-tyg/prassel-tyg-1', 1.2 + PA(33) - 0.8], ['tindra/tindra-4', 1.2 + PA(33) + 0.2], [Z('fortjust'), 1.2 + L(33) + 0.2]], bild: 'halsduken glider från kroken runt halsen, glad närbild' },
-  { id: '20', d: 0.5 + L(34) + SVAR + L(35) + 0.7, malin: [[34, 0.5], [35, 0.5 + L(34) + SVAR]], ljud: [[Z('mysig-suck'), 0.6 + L(34)]], bild: 'närbild, gosar in mulen i halsduken' },
+  { id: '20', d: 0.5 + L(34) + SVAR + 0.9, malin: [[34, 0.5]],   // "Mm, du tycker om halsduken." (35) borttagen (Sanna 2026-11-26)
+    ljud: [[Z('mysig-suck'), 0.6 + L(34)]], bild: 'närbild, gosar in mulen i halsduken' },
 
   // --- Jackan (grön, ritad i kod som strumporna) och stövlarna (Sanna 2026-11-25: "zebra need shoes and jacket too") ---
   { id: 'J1', d: 0.8 + L(48) + 0.8, malin: [[48, 0.8]], ljud: [['glimt/glimt-1', 0.4]], bild: 'närbild jackan på andra knoppen, den glimtar' },
