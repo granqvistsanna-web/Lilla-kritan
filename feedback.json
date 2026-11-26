@@ -10587,9 +10587,10 @@
   "sec": 12,
   "tags": [],
   "note": "much better drawing , must look like tractor",
-  "fixed": false,
+  "fixed": true,
   "at": 1795712851071,
-  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)"
+  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)",
+  "fixedAt": 1795714860999
  },
  "d8atk7kjxbmwxt2ptk": {
   "ep": "014",
@@ -10597,9 +10598,10 @@
   "sec": 42,
   "tags": [],
   "note": "close jacket",
-  "fixed": false,
+  "fixed": true,
   "at": 1795712864312,
-  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)"
+  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)",
+  "fixedAt": 1795714860999
  },
  "dp0eqbx4i9mwxt369d": {
   "ep": "014",
@@ -10607,9 +10609,10 @@
   "sec": 49,
   "tags": [],
   "note": "more clear spouts and more growing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795712885617,
-  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)"
+  "render": "2026-11-26 18:03 (nytt intro 7,3 s: jingeln slutar av sig själv, lugnare fjäril utan varv)",
+  "fixedAt": 1795714860999
  },
  "t2inbhaithmwxt6tjz": {
   "ep": "049",
