@@ -2,6 +2,8 @@
 
 **Status:** ✅ grind 1 (manus) godkänd av Sanna 2026-11-27 (*"Ja, grind 1 godkänd för 063 med dina förslag i Öppet"*). Samma dag ändrade Sanna figuren från igelkotten till **räven**. Hon skrev också om replikerna: tittut stryks, *"Hopp!"* utan *"prassel"*, *"Löv på huvudet!"*, ekorren kommer fram vid ekollonen och svampen är giftig. Replikblocket nedan är hennes text, putsad. Sanna bad sedan om mer att gissa, lite pedagogik och ett lugnt tempo, så det är också inarbetat (se *Gissa, lära, lugnt*). Grind 2 (rekvisita) klar, se [`bildlista.md`](bildlista.md). ✅ **Grind 3 (rösten) godkänd av Sanna 2026-11-27** (*"Yes, approved"*) med tagning 1 och omtagningen av 07, 08, 11, 28 och 30. Replikerna ligger i `assets/ljud/roster/hosten-i-boken/` (49 filer). Grind 5 (storyboarden) gjord 2026-11-27 i [`storyboard/`](storyboard/storyboard.md): 43 stillbilder i three.js-boken, kontaktark och animatik (3:48). ✅ **Grind 5 godkänd av Sanna 2026-11-27** (*"Approved"*), med längden 3:48 som den är. Nästa: grind 6, scenen i `scener/boken/`. Andra avsnittet i **Kritans bok** (receptet `format/kritans-bok.md`, temabladets rad **Höst**, förlagan `avsnitt/062-sommaren-i-boken/`). Ingen sång. Malin pratar med räven, och räven svarar med sina ljud, ögon, öron, svans och små hopp.
 
+**Feedback grind 6 (Sanna 2026-11-27):** eken är **grön** från början (`popupbok/bilder/ek-gron.png`, `ek.png` i ek-host:s ruta) och höstfärgen breder ut sig från kritans löv på *"Så många löv … röda och gula"*, lövet sitter kvar i kronan. Därför är rad 02 bara *"Titta, trädet."* (`03-titta-tradet.m4a`, klippt ur `03-var-ar-loven`). Räkningen går fortare (`34-vi-raknar-snabb.m4a`, pauserna kortade, −1,1 s) och siffrorna 1, 2, 3 ritas i krita över ekollonen. Räven darrar mindre, löven på huvudet faller av när den luktar på ekollonen, svampen fälls upp på *"Titta, vid stubben"* och glimtarnas gnistor är mindre. Längd 3:44,5.
+
 | | |
 |---|---|
 | **Titel** | Hösten i boken (avsnitt 63) |
@@ -80,7 +82,7 @@ Lilla Kritans logotyp 1 s, sedan skrivbordet med den stängda bruna boken (recep
 |---|---|---|---|
 | 01a | Helbild, skrivbordet: den bruna boken med lövets siluett, kameran driver mot den | Titta! En bok. | matta lågt, `glimt` |
 | 01b | Pärmen slås upp, korten fälls upp, kameran glider in | Oj! Det är höst i boken! | `prassel-tyg`, `pop` mjukt |
-| 02 | Halvbild mot eken. Den är kal, molnen glider | Titta, trädet. Men var är löven? | – |
+| 02 | Halvbild mot eken. Den är grön, molnen glider | Titta, trädet. | – |
 | 03 | Närbild: kritan kommer in och ritar lövets kontur på en gren, svajar sedan | Kritan ritar … *(paus)* Vad blir det nu? *(paus 3 s)* | `krita-ritar` |
 | 04 | Lövet fylls i och glimtar | Oj! Ett löv! | `glitter` |
 | 05 | Kameran glider långsamt ut till halvbild: kronan fylls av röda och gula löv på *"Så många löv."* | Så många löv. På hösten blir löven röda och gula. | `tindra` mjukt |
