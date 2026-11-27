@@ -30,21 +30,17 @@ jobs:
       I: ${{ matrix.i }}
       PLAYWRIGHT_MJS: /tmp/pw/node_modules/playwright/index.mjs
     steps:
-      # Utan mix-1:s kritsvepsbilder (800 MB, bara mixarnas skript läser dem). Behöver en scen något som saknas
-      # här stoppar molnrender.sh på saknas-kontrollen.
+      # Hela repot: gles checkout (utan mix-1:s 800 MB kritsvepsbilder) provades 27/11 och blev inte snabbare,
+      # eftersom git då hämtar filerna en och en.
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/produktion/youtube/mix/mix-1/kritsvep/bilder-opak/
+        with: { fetch-depth: 1 }
       - uses: actions/cache@v4
         with: { path: ~/.cache/ms-playwright, key: chromium-pw-1.49.1 }
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: Chromium och ffmpeg
         run: |
+          sudo rm -f /etc/apt/sources.list.d/microsoft-prod.list   # behövs inte; gav 403 och stoppade apt 27/11
           npm i -s --prefix /tmp/pw playwright@1.49.1
           npx --prefix /tmp/pw playwright install --with-deps chromium   # hoppar över nedladdningen när cachen finns
           command -v ffmpeg || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }

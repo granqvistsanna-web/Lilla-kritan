@@ -135,5 +135,6 @@ Själva renderingen kostar inga tokens, men sättet sessionerna väntar på, lä
 Mätt på körning 45979442239 (8 bitar): checkout 150–234 s per maskin (repot har vuxit till 5,9 GB), Chromium 37–68 s, rendering 10–17 min per bit, totalt 22 min.
 
 - **16 bitar som standard** (förut 8) i `render.yml` och `molnrender.sh`. Gratis, eftersom repot är publikt. Högst 20 maskiner kör samtidigt, så två scener samtidigt köar delvis.
-- **Glesare checkout:** `produktion/youtube/mix/mix-1/kritsvep/bilder-opak/` (800 MB bildrutor, bara mixarnas skalskript läser dem) hämtas inte. Behöver en scen något som saknas stoppar `molnrender.sh` på saknas-kontrollen.
+- **Gles checkout provad och borttagen:** utan `mix-1/kritsvep/bilder-opak/` (800 MB) tog checkout ändå ca 220 s, eftersom git med `--filter=blob:none` hämtar filerna en och en.
+- **Microsofts apt-källa tas bort** före installationen. Den gav 403 den 27/11 och stoppade alla bitar.
 - **Chromium cachas** (`~/.cache/ms-playwright`, nyckel per Playwright-version). Systempaketen installeras fortfarande varje gång.
