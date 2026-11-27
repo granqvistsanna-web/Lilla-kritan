@@ -39,6 +39,13 @@ ffps=$(python3 -c "print($(sond v:0 r_frame_rate $film))")   # filmens bildfrekv
 f0=$(python3 -c "print(round($fran * $ffps))")   # första bildrutan som spelas
 ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$f0)" -frames:v 1 -fps_mode passthrough $mapp/forst.png
 till=$(sed -n "s/.*till: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: kapa filmens slut
+# Kritirisen (Sanna 2026-11-27, J11): slutar filmen med irisen mot svart, slutar bilden en bildruta innan irisens kant syns, scenen står
+# stilla 1 s (IRIS_HALL bildrutor) och 3D-dörren stänger över den, medan filmens ljud (sångens sista ackord) fortsätter under stängningen och
+# tonas ut sista 0,8 s. Hittas av sig själv (verktyg/iris-start.py); `iris: 152.23` i index.html sätter tiden för hand, `iris: nej` stänger av.
+iris=$(sed -nE "s/.*iris: *([0-9.]+|nej).*/\1/p" $mapp/index.html | head -1)
+[[ -z $iris ]] && iris=$(python3 verktyg/iris-start.py $film $till)
+[[ $iris == nej ]] && iris=""
+[[ -n $iris ]] && till=$iris
 nb=$(sond v:0 nb_frames $film)
 sist=$(sed -n "s/.*sist: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: bilden bakom stängningen tas vid sist (s) i stället för filmens sista bild
 if [[ -n $till ]]; then   # sista bilden är bild nb-1 av den kapade filmen
@@ -47,7 +54,7 @@ if [[ -n $till ]]; then   # sista bilden är bild nb-1 av den kapade filmen
 else
   ffmpeg -hide_banner -loglevel error -y -sseof -1 -i $film -update 1 $mapp/sist.png   # skriver varje bild, den sista blir kvar
 fi
-[[ -n $sist ]] && ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$(python3 -c "print(round($sist * $ffps))"))" -frames:v 1 -fps_mode passthrough $mapp/sist.png
+[[ -n $sist && -z $iris ]] && ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$(python3 -c "print(round($sist * $ffps))"))" -frames:v 1 -fps_mode passthrough $mapp/sist.png
 nb=$((nb - f0)); fdur=$(python3 -c "print($nb / $ffps)")   # det som spelas, i hela bildrutor
 
 # 2. tider: sidans längd är OPPEN + 3 + 2,4 s (video.js), och --bara-ljud skriver en wav av exakt den längden
@@ -62,7 +69,8 @@ t = sys.stdin.read(); s = re.findall(r"silence_start: ([\d.]+)", t); e = re.find
 tyst = s and (len(e) < len(s) or float(e[-1]) > 3.9)   # sista tystnaden varar till filmens slut
 print(f"{4 - float(s[-1]):.2f}" if tyst else "0.00")   # sekunder med tystnad i slutet av filmen (0 = ljud till sista bilden)')
 [[ -n $till ]] && ljudslut=0.00   # kapad film: tonas ut precis vid snittet
-hall=$(python3 -c "import math; print(max(1, math.ceil((0.3 - $ljudslut) * 30)))")   # bildrutor med stilla bild före stängningen (minst 1: render.mjs ger ffmpeg ett ogiltigt -ss när ett ljud börjar exakt vid första bildrutan)
+hall=$(python3 -c "import math; print(max(1, math.ceil((0.3 - $ljudslut) * 30)))")
+[[ -n $iris ]] && hall=${IRIS_HALL:-30}   # bildrutor med stilla bild före stängningen (minst 1: render.mjs ger ffmpeg ett ogiltigt -ss när ett ljud börjar exakt vid första bildrutan)
 (( hall <= 60 )) || { echo "filmen slutar med ljud ($ljudslut s tystnad): stäng inte luckan över det" >&2; exit 1; }
 
 # 3. rendera de två delarna (bara bilderna och ramens ljud, filmen kommer sedan)
@@ -85,13 +93,13 @@ if [[ $w != 1920 || $h != 1080 ]]; then
   else echo "OBS: filmen är ${w}x$h, inte 16:9: skalas med svarta kanter"; anpassa="scale=1920:1080:force_original_aspect_ratio=decrease:flags=lanczos,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,$anpassa"; fi
 fi
 klipp="trim=start_frame=${f0}:end_frame=$((f0 + nb)),setpts=PTS-STARTPTS,"; tona=""; borjan=""
-[[ -n $till ]] && tona=",afade=t=out:st=$(python3 -c "print($fdur - 0.3)"):d=0.3"
+[[ -n $till && -z $iris ]] && tona=",afade=t=out:st=$(python3 -c "print($fdur - 0.3)"):d=0.3"
 (( f0 > 0 )) && borjan="atrim=start=${fran},asetpts=PTS-STARTPTS,afade=t=in:d=0.15,"
 ljudlangd() { echo "aformat=sample_rates=48000:channel_layouts=stereo,apad=whole_dur=$1,atrim=0:$1,asetpts=PTS-STARTPTS"; }
 ffmpeg -hide_banner -loglevel error -y -i $tmp/oppning.mp4 -i $film -i $tmp/stang.mp4 -filter_complex "
   [0:v]format=yuv420p,setsar=1[v0]; [1:v]${klipp}${anpassa}[v1]; [2:v]format=yuv420p,setsar=1[v2];
   [0:a]$(ljudlangd $opdur),$justera,afade=t=out:st=$(python3 -c "print($opdur - 0.06)"):d=0.06[a0];
-  [1:a]${borjan}$(ljudlangd $fdur)${tona}[a1]; [2:a]$(ljudlangd $stdur),${justera}[a2];
+  $(if [[ -n $iris ]]; then echo "[1:a]asplit[fa][fs]; [fa]${borjan}$(ljudlangd $fdur)[a1]; [fs]atrim=start=${iris},asetpts=PTS-STARTPTS,$(ljudlangd $stdur),afade=t=out:st=$(python3 -c "print($stdur - 0.8)"):d=0.8[sv]; [2:a]$(ljudlangd $stdur),${justera}[st]; [st][sv]amix=inputs=2:normalize=0:duration=first[a2];"; else echo "[1:a]${borjan}$(ljudlangd $fdur)${tona}[a1]; [2:a]$(ljudlangd $stdur),${justera}[a2];"; fi)
   [v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[v][a]" -map '[v]' -map '[a]' -r 30 -c:v libx264 -preset medium -crf 16 -pix_fmt yuv420p \
   -colorspace bt470bg -color_range tv -c:a aac -b:a 192k -movflags +faststart $ut
 zsh ${0:A:h}/mastra.sh $mapp > $tmp/mastra.txt   # -16 LUFS och -liten.mp4
