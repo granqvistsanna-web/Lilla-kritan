@@ -1,6 +1,6 @@
 # Avsnitt 060 – Kaninen går på pottan (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-26 (Sanna: *"Ja, med toaletten"*): manuset som det står, med toaletten (Öppet 1, alternativ A), övriga Öppet-punkter som manuset står (också *"Du kissade i pottan!"* och *"Hej då, kisset!"*). **⏳ Grind 2 (saker) väntar på Sannas val 2026-11-27:** 4 tagningar av bilderboken (`assets/rekvisita/bilderbok/original/jamforelse.jpg`) och 4 av toaletten (`assets/rekvisita/toalett/original/jamforelse.jpg`), Flow Nano Banana 2.1, 0 krediter, prompterna under *Saker: finns och nya*. Stjärnan och toarullen finns redan och används som de är. Inget urklipp, ingen `rekvisita/`-fil, ingen röst förrän Sanna valt. Nästa: grind 3 (Malins röst). Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med kaninen, kaninen svarar med ljud, öron och ansikte. Förlagor för formen: 057 Katten tvättar händerna och 054 Lammet badar (samma badrum). `harriets-favoriter.md` och README-filerna uppdateras av huvudsessionen.
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-26 (Sanna: *"Ja, med toaletten"*): manuset som det står, med toaletten (Öppet 1, alternativ A), övriga Öppet-punkter som manuset står (också *"Du kissade i pottan!"* och *"Hej då, kisset!"*). **✅ Grind 2 (saker) godkänd 2026-11-27 (Sanna: *"Bok 4, toalett 2"*):** [bilderboken](../../rekvisita/bilderbok.md) nr 4 och [toaletten](../../rekvisita/toalett.md) nr 2, utklippta med 1 % kant (`cut/bilderbok.png` 7 px, `cut/toalett.png` 8 px), bokens kritkontur `cut/bilderbok-kontur.json`. Stjärnan och toarullen finns redan och används som de är. README-raderna i `rekvisita/README.md` läggs till av huvudsessionen. **Nästa: grind 3 (Malins röst), inte påbörjad** (ElevenLabs kostar krediter, fråga först).  Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med kaninen, kaninen svarar med ljud, öron och ansikte. Förlagor för formen: 057 Katten tvättar händerna och 054 Lammet badar (samma badrum). `harriets-favoriter.md` och README-filerna uppdateras av huvudsessionen.
 
 **Skillnaden mot 042 Hunden går på pottan:** 042 är julversionen (två platser, tre glas vatten, bråttom, kritan ritar pottan och toarullen, *"Gnugga, gnugga … ren!"*). 060 är tidlös och handlar om **att vänta**: kaninen vill inte sluta leka, och när den väl sitter kommer det inget. Pottan och toarullen står i badrummet från början. Kritan ritar i stället en **bilderbok** att titta i medan man väntar, och till sist ett **stjärnklistermärke**. Det som görs tre gånger är väntan: *"Vänta, vänta … inget än."* – *"Vänta, vänta … inget än."* – *"Vänta, vänta … plink!"* Ingen brådska, inget vatten att dricka, ingen jul.
 
@@ -10,7 +10,7 @@
 | **Figurer (1)** | **Kaninen Kanel** (v2, riggad, [`karaktarer/kaninen-kanel.md`](../../karaktarer/kaninen-kanel.md), `assets/karaktarer/kaninen-kanel/premium/` med `cut-tunn`, `✅ Referensark klart`, ändras inte) |
 | **Platser (1)** | **Badrummet** (`bakgrunder/badrummet.md`). Inget platsbyte |
 | **Saker som finns** | [pottan](../../rekvisita/potta.md) (v3, röd, kontur för ritintrot finns), [toarullen](../../rekvisita/toarulle.md), [badkaret](../../rekvisita/badkar.md), [handfatet](../../rekvisita/handfatet.md), [pallen](../../rekvisita/pall.md), [handduken](../../rekvisita/handduk.md), [tvålen](../../rekvisita/tval.md) (i kod), [blå bollen](../../rekvisita/boll-bla.md), [gula stjärnan](../../rekvisita/stjarna-gul.md) (som klistermärke, liten, utan ansikte), [moroten](../../rekvisita/morot.md) (bild i boken) |
-| **Nya saker (grind 2)** | **bilderboken** (kritan ritar den) och **toaletten** (står i badrummet). Se listan längst ner |
+| **Nya saker (grind 2 ✅)** | [**bilderboken**](../../rekvisita/bilderbok.md) (kritan ritar den) och [**toaletten**](../../rekvisita/toalett.md) (står i badrummet) |
 | **Kritan ritar (3)** | **pottan** i ritintrot · **bilderboken** vid pottan (hjälpsaken) · **stjärnan** (belöningen) |
 | **I kod** | bokens uppslag (moroten, en liten kanin på en potta), pappersfliken som sticker fram bakom badkaret, papperslappen, vattenstrålen och skummet vid handfatet, skimret, krit-gnistorna |
 | **Musik** | ingen ny musik. `badrumsljud-2` lågt under, `kran` bara när vattnet rinner |
@@ -228,7 +228,7 @@ Kaninens familjer finns i `assets/ljud/effekter/` (`kanin-gullig/`, `kanin-ny/`,
 | Moroten | `rekvisita/morot.md` | bilden på bokens första uppslag |
 | Badrummet | `bakgrunder/badrummet.md` | platsen |
 
-**Nya (görs med Sanna på grind 2, inget skapat än):**
+**Nya (grind 2 godkänd 2026-11-27: bok nr 4, toalett nr 2):**
 
 | Sak | Hur | Roll |
 |---|---|---|
