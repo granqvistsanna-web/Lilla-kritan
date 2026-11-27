@@ -100,7 +100,7 @@
   "duration": 256.8,
   "file": "avsnitt/020-grisen-badar/film/avsnitt-020.mp4",
   "rendered": "2026-11-14 07:28",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/020.mp4",
   "youtube": "https://youtu.be/3x3jkDgNNTs",
   "name": "Grisen badar"
@@ -145,7 +145,7 @@
   "duration": 247.3,
   "file": "avsnitt/026-zebran-gar-och-lagger-sig/film/avsnitt-026.mp4",
   "rendered": "2026-11-14 07:28",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/026-v2.mp4",
   "youtube": "https://youtu.be/PLi6DDMyiGw",
   "name": "Zebran går och lägger sig"
@@ -154,7 +154,7 @@
   "duration": 260.6,
   "file": "avsnitt/027-zebran-plockar-undan/film/avsnitt-027.mp4",
   "rendered": "2026-11-15 17:04",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/027-v5.mp4",
   "youtube": "https://youtu.be/NT1lrXPVHWs",
   "name": "Zebran plockar undan"
