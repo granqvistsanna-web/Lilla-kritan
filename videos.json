@@ -1642,24 +1642,27 @@
   "duration": 260.0,
   "rendered": "2026-11-27 10:22 (Slutrendering 27/11: tack-frågan och 'pratar med varandra' strukna, full kvalitet)",
   "file": "avsnitt/054-lammet-badar/film/avsnitt-054.mp4",
-  "status": "granska",
-  "name": "Lammet badar"
+  "status": "live",
+  "name": "Lammet badar",
+  "youtube": "https://youtu.be/jqqfrSXKnsA"
  },
  "056": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/056-1127-1002.mp4",
   "duration": 201.9,
   "rendered": "2026-11-27 10:02 (slutrendering efter sista QA: full upplösning, prenumerera-kortet sist)",
   "file": "avsnitt/056-raven-gar-och-lagger-sig/film/avsnitt-056.mp4",
-  "status": "granska",
-  "name": "Räven går och lägger sig"
+  "status": "live",
+  "name": "Räven går och lägger sig",
+  "youtube": "https://youtu.be/L_FBP0kAXxw"
  },
  "053": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/053-1127-1022.mp4",
   "duration": 218.5,
   "rendered": "2026-11-27 10:22 (Slutfilm efter djup QA 27/11: utan \"Ska vi säga tack?\", prenumerera-kortet sist)",
   "file": "avsnitt/053-leoparden-stadar/film/avsnitt-053.mp4",
-  "status": "granska",
-  "name": "Leoparden städar"
+  "status": "live",
+  "name": "Leoparden städar",
+  "youtube": "https://youtu.be/QXmL56ugviU"
  },
  "055": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/055-1125-2016.mp4",
@@ -1674,8 +1677,9 @@
   "duration": 242.0,
   "rendered": "2026-11-27 10:30 (Sista QA 27/11: \"Tack, kritan!\" i stället för tack-frågan, ljudfixar. Redo för YouTube.)",
   "file": "avsnitt/052-zebran-klar-pa-sig/film/avsnitt-052.mp4",
-  "status": "granska",
-  "name": "Zebran klär på sig"
+  "status": "live",
+  "name": "Zebran klär på sig",
+  "youtube": "https://youtu.be/v6Y2bV8Q9Us"
  },
  "djup-prov": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/djup-prov-1125-2211.mp4",
