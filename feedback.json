@@ -11530,9 +11530,10 @@
   "sec": 70,
   "tags": [],
   "note": "better animation postion on potta for bunny",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808129756,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812838456
  },
  "64ore5phsmmwzdstk2": {
   "ep": "060",
