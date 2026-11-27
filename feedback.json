@@ -11574,9 +11574,10 @@
   "sec": 188,
   "tags": [],
   "note": "better torka hands animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808215772,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812851245
  },
  "0imucuc5tumwzelvoa": {
   "ep": "060",
