@@ -96,7 +96,8 @@ export const RADER = [
     bild: 'Kaninen tittar upp, ovanför tornen', ljudtext: 'frågande', ansikte: 'nyfiken' },
   { id: '24', d: 0.3 + L(28) + 1.0, plats: 'Halvbild', malin: [[28, 0.3]], ljud: fkv(0.3, 28),
     bild: 'Fyll, klappa, vänd: hinken vänder sig i en högre båge och landar ovanpå båda tornen', ljudtext: '`puff`, `klapp`, `sno-duns`', ansikte: 'koncentrerad' },
-  { id: '25', d: 0.5 + L(29) + G + 0.4, plats: 'Helbild', malin: [[29, 0.5]], ljud: [[GLITTER(1), 0.2]],
+  // Sanna 27/11 (QA J23): detalj på tornen när hinken landar högst upp, sedan närbild på kaninens reaktion (+0,6 s)
+  { id: '25', d: 0.5 + L(29) + G + 1.0, plats: 'Detalj: tornen → närbild: kaninen', malin: [[29, 0.5]], ljud: [[GLITTER(1), 0.2], [KN('fortjust', 2), 0.5 + L(29) + 0.5]],
     bild: 'Tre torn i en trekant, glipan mellan de två nedre under det översta', ljudtext: '`glitter`, förvånad min', ansikte: 'förvånad' },
   // QA 27/11 (J23, Bilden på orden): drömmen tänds på "julgran" (1,8 s in i repliken), Malin direkt efter tornet, kortare tyst slut
   { id: '25b', d: 0.6 + L(30) + 2.3, plats: 'Närbild → helbild', malin: [[30, 0.6]], ljud: [[TINDRA(3), 0.6 + 1.8], [KN('mmm', 1), 0.8 + L(30)]],

@@ -85,7 +85,9 @@ function kamera(z = 1, cx = 960, cy = 540) {
 // QA 25/11: halv 1010 → 900, så att kaninens vänstra arm har luft till vänsterkanten (rad 26 använder också halv)
 // QA 25/11 (Sanna): glipa 1225 → 1360, så att kaninens arm och spade inte sticker in vid vänsterkanten i detaljen på lyktan
 const KAM = { hel: [1], halv: [1.5, 900, MARK - 230], glipa: [2.1, GLIPA[0] + 135, MARK - 160], glipaHalv: [1.8, GLIPA[0] - 90, MARK - 170],
-  fonster: [1.2, 1150, 560], hoger: [1.6, 1480, MARK - 250], lykta: [1.7, 1330, MARK - 210], hog: [1.7, 560, MARK - 240], kaninHalv: [1.6, STA[0] + 80, MARK - 260] };
+  fonster: [1.2, 1150, 560], hoger: [1.6, 1480, MARK - 250], lykta: [1.7, 1330, MARK - 210], hog: [1.7, 560, MARK - 240], kaninHalv: [1.6, STA[0] + 80, MARK - 260],
+  // Sanna 27/11 (QA J23): detalj på tornen i tittut och när hinken landar högst upp (tornen ca 50 % av H)
+  torn: [1.8, GLIPA[0], MARK - 170], tornH: [2.0, 1440, MARK - 170] };   // tornH: tornen (57 % av H) på vänstra tredjedelen, högerkanten mot scenens kant, kaninens spade (x < 900) utanför
 const nara = (pos, dy = 0) => kamera(2.0, pos[0], pos[1] - 345 + dy);
 
 // --- Saker -------------------------------------------------------------------------------------------------------------------
@@ -371,21 +373,25 @@ function S(id, tl, d) {
     case '21': { const h = LT('hopp-mjuk')[0] ?? 0.2, mal = [GLIPA[0], MARK], land = h + 0.7;
       if (tl < land) return { kam: 'hel', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'mark2', k: { pos: skutt(VID, mal, tl, h - 0.1, land, 120), f: F('jatteglad'), p: P({}) } };
       const sjunk = del(land, land + 0.35, tl), vipp = Math.sin((tl - land) * 3.2) * del(land + 0.4, land + 0.9, tl);
-      return { kam: 'hel', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'mark2', bakom: lerp(MARK, MARK + 380, sjunk),
+      return { kam: tl < land + 0.35 ? 'hel' : 'torn', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'mark2', bakom: lerp(MARK, MARK + 300, sjunk),   // 380 → 300: öronen en bit över tornen; detalj: öronen tydliga (Sanna 27/11)
         k: { pos: mal, f: F('fnissig'), p: P({ oron: [12 * vipp, -12 * vipp] }) } }; }
     case '22': { const h = LT('hopp-mjuk')[0] ?? 0, fn = LT('kanin-ny/kanin-ny-fniss')[0] ?? 99;
-      if (tl < h + 0.25) return { kam: 'hel', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'mark2', bakom: lerp(MARK + 380, MARK, del(h - 0.1, h + 0.25, tl)), k: { pos: [GLIPA[0], MARK], f: F('jatteglad'), p: P({}) } };
+      if (tl < h + 0.25) return { kam: 'hel', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'mark2', bakom: lerp(MARK + 300, MARK, del(h - 0.1, h + 0.25, tl)), k: { pos: [GLIPA[0], MARK], f: F('jatteglad'), p: P({}) } };
       return { kam: 'hel', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'mark2', k: { pos: skutt([GLIPA[0], MARK - 120], HO, tl, h + 0.25, h + 0.85, 60), ...fniss(F('jatteglad'), P({ rikt: -0.3 }), tl, fn) } }; }
 
     // --- tredje tornet, drömmen, snölyktan ---
     case '23': { const tit = del(0, 0.6, tl); return { kam: 'halv', hog: 1, n: 2, hink: [HINK, 0, 0], spade: 'tass', k: { pos: VID, f: F('nyfiken', { titt: [14 * tit, -14 * tit] }), p: P({ rikt: 0.4 * tit, upp: 0.3 * tit }) },
       skugg3: 0.25 + 0.15 * Math.sin(tl * 3) }; }
     case '24': { const t = fkv(28), b = bygg(HINK, [T3[0], T3[1], 200], 240, t), st = spadtag(tl, t.p - 0.1), kl_ = spadKlapp(tl, t.k);
-      return { kam: 'halv', hog: 1, n: 2, tornSk3: b.landat ? 1 + 0.05 * bump(t.v, t.v + 0.3, tl) : 1, hink: b.landat ? [[T3[0], T3[1], 200], 180, 0, T3[1]] : [b.hink[0], b.hink[1], st.fall >= 0 ? del(0.3, 1, st.fall) : tl > t.p + SPADTAG ? 1 : 0],
+      return { kam: b.landat ? 'tornH' : 'halv', hog: 1, n: 2, tornSk3: b.landat ? 1 + 0.05 * bump(t.v, t.v + 0.3, tl) : 1, hink: b.landat ? [[T3[0], T3[1], 200], 180, 0, T3[1]] : [b.hink[0], b.hink[1], st.fall >= 0 ? del(0.3, 1, st.fall) : tl > t.p + SPADTAG ? 1 : 0],
         spadtag: st, klapp: kl_, spadeRot: st.rot + kl_.rot - 14, k: { pos: VID, f: F('glad', { titt: [14, b.landat ? -10 : 8] }), p: P({ rikt: 0.3, armar: [0, st.arm + kl_.arm], luta: 3 * kl_.k }) } }; }
     case '25': {   // hinken lyfts av det översta tornet och vänder tillbaka till kaninen
-      const lyft = del(0, 0.5, tl), hem = del(0.5, 1.4, tl), x = lerp(T3[0], HINK[0], hem), fot = T3[1] - 150 * lyft * (1 - hem) - 60 * Math.sin(Math.PI * hem) + (MARK - T3[1]) * hem;
-      return { kam: 'hel', hog: 1, n: 3, tv: [0, 0, bump(0.3, 1.8, tl)], hink: [[x, fot, 200], 180 * (1 - hem), 0, lerp(T3[1], MARK, hem)], spade: 'tass', k: { pos: VID, f: FB(glad, F('forvanad', { titt: [14, -6] }), del(0.1, 0.4, tl)), p: P({ rikt: 0.4 }) } }; }
+      // Sanna 27/11: detalj på tornen, sedan närbild på kaninens reaktion. Hinken lyfts och flyger upp ur detaljen (0–0,9 s, så att den inte
+      // landar halvt i bild vid kanten) och landar hos kaninen i närbilden (re … re + 0,6)
+      const re = MSLUT() + 0.1, fj = LT('kanin-ny/kanin-ny-fortjust')[0] ?? 99, lyft = del(0, 0.9, tl), ner = del(re, re + 0.6, tl);
+      const [x, fot, rot] = tl < re ? [lerp(T3[0], 1060, lyft), lerp(T3[1], 120, lyft), 180 - 90 * lyft] : [HINK[0], lerp(220, MARK, ner), 90 * (1 - ner)];
+      return { kam: tl < re ? 'tornH' : 'nara', hog: 1, n: 3, tv: [0, 0, bump(0.3, 1.8, tl)], hink: [[x, fot, 200], rot, 0, tl < re ? T3[1] : MARK], spade: 'tass',
+        k: { pos: VID, f: FB(FB(glad, F('forvanad', { titt: [14, -6] }), del(0.1, 0.4, tl)), 'jatteglad', del(fj - 0.2, fj + 0.1, tl)), p: PN({ rikt: 0.4 * (1 - del(re, re + 0.3, tl)) }, nicka(tl, fj, 2)) } }; }
     case '25b': { const j = MT() + 1.8, inn = del(j, j + 0.5, tl), ut = del(d - 1.3, d - 0.2, tl), dr = inn * (1 - ut);   // tonar över på "julgran" (QA 27/11), står kvar, tonar tillbaka
       return { kam: 'hel', hog: 1, n: 3, tornO: 1 - dr, drom: dr, spade: 'tass', k: { pos: VID, f: FB(glad, F('kawaii', { titt: [14, -10] }), del(j - 0.1, j + 0.4, tl)), p: P({ rikt: 0.4, luta: 3 * dr }) } }; }
     // kritan ritar ljuset (RIT[3]) 0,4 s in i rad 26, väntar bredvid lyktan och flyger ut i rad 30; ljuset fylls i rad 28
