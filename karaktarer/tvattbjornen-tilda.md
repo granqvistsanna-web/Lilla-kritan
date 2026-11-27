@@ -1,6 +1,6 @@
 # Tvättbjörnen Tilda
 
-**Art:** tvättbjörn · **Favoritsak:** – · **Status:** ⏳ Bilden vald av Sanna (B, 2026-11-27), riggen klar men inte godkänd än
+**Art:** tvättbjörn · **Favoritsak:** – · **Status:** ✅ Referensark klart (B vald och riggen godkänd av Sanna 2026-11-27)
 
 > **Art direction v2 (2026-11-27, för 061 Tvättbjörnen bygger i sanden):** gjord som Pim och Rut ([`stil/art-direction-v2.md`](../stil/art-direction-v2.md), skillen `lk-figur`). Tvåbent, **stor figur: SKALA 0,5** som de andra tvåbenta (kroppen ca 745 px från fötterna till äggets topp i 1024-rutan, öronen sticker upp ovanför), alla delar med 10 px vit kant i `cut/` och 6,5 px i `cut-tunn/` (som `uttryck.html` använder). Riggen ligger i [`assets/karaktarer/tvattbjornen-tilda/premium/`](../assets/karaktarer/tvattbjornen-tilda/premium/): kropp, ansiktsfläck (`tilda-nos.png`), mage, öron, armar, ben och svans i `cut/`, vridpunkter i `tilda-rigg.json`. Hon har inga v1-bilder.
 >

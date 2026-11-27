@@ -1,13 +1,13 @@
 # Avsnitt 061 – Tvättbjörnen bygger i sanden (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd 2026-11-26 (Sanna: *"godkänn alla manus"*), med förslagen under Öppet som de står (slutet med vågorna, ingen badring). Tvättbjörnen är gjord med `lk-figur` 2026-11-27 (Sanna valde provbild B); **riggen väntar på Sannas godkännande**, sedan grind 2. Sanna 2026-11-26: *"dont do tvättar strumpor, building in beach instead"*. Strumpmanuset är borttaget, och det här är [028 Leoparden bygger i sanden](../028-leoparden-bygger-i-sanden/manus.md) med tvättbjörnen, skriven i den nyaste formen från 052–057. Inget är byggt: inga bilder, inget ljud, ingen röst, inga saker i `rekvisita/`. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med tvättbjörnen, tvättbjörnen svarar med kurr, öron och svans. Förlagor: 028 (berättelsen), [050 Kaninen bygger torn](../050-kaninen-bygger-torn/manus.md) (fyll, klappa, vänd med en rigg som håller spaden) och [057 Katten tvättar händerna](../057-katten-tvattar-handerna/manus.md) (form och ton).
+**Status:** ✅ grind 1 (manus) godkänd 2026-11-26 (Sanna: *"godkänn alla manus"*), med förslagen under Öppet som de står (slutet med vågorna, ingen badring). Tvättbjörnen är gjord med `lk-figur` 2026-11-27 (Sanna valde provbild B) och **riggen godkänd av Sanna 2026-11-27**. Nästa steg: grind 2. Sanna 2026-11-26: *"dont do tvättar strumpor, building in beach instead"*. Strumpmanuset är borttaget, och det här är [028 Leoparden bygger i sanden](../028-leoparden-bygger-i-sanden/manus.md) med tvättbjörnen, skriven i den nyaste formen från 052–057. Inget är byggt: inga bilder, inget ljud, ingen röst, inga saker i `rekvisita/`. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med tvättbjörnen, tvättbjörnen svarar med kurr, öron och svans. Förlagor: 028 (berättelsen), [050 Kaninen bygger torn](../050-kaninen-bygger-torn/manus.md) (fyll, klappa, vänd med en rigg som håller spaden) och [057 Katten tvättar händerna](../057-katten-tvattar-handerna/manus.md) (form och ton).
 
-> **⚠️ Före grind 2: tvättbjörnens rigg ska godkännas.**
-> - `karaktarer/tvattbjornen-tilda.md`: Sanna valde provbild B 2026-11-27 (masken i två rundade fläckar, vita ögon). Riggen finns i `assets/karaktarer/tvattbjornen-tilda/premium/` (`uttryck.html`, `cut/`, `cut-tunn/`, sovbild, testfilm), men är **inte godkänd än**.
+> **✅ Tvättbjörnen finns (riggen godkänd 2026-11-27).**
+> - `karaktarer/tvattbjornen-tilda.md`: Sanna valde provbild B 2026-11-27 (masken i två rundade fläckar, vita ögon). Riggen finns i `assets/karaktarer/tvattbjornen-tilda/premium/` (`uttryck.html`, `cut/`, `cut-tunn/`, sovbild, testfilm), **godkänd av Sanna 2026-11-27** (*"Ja, godkänd"*).
 > - Masken och ögonen sitter mitt på kroppen (y 305–566 i 1024-rutan), så de syns under hinkkanten i hinkhatten.
 > - Hjulbilderna som låg i `premium/original/` är flyttade till `premium/aldre/`.
 > - Tvättbjörnen har **ingen ljudfamilj**. I `assets/ljud/effekter/` finns bara `kurr/kurr-1.m4a` (ett enda kurr, inte gjort för tvättbjörnen). En familj på 8 känslor behövs (grind 4).
-> - Figuren är gjord med skillen `lk-figur` (som räven och pandan) och godkänns av Sanna före grind 2.
+> - Figuren är gjord med skillen `lk-figur` (som räven och pandan).
 > - Rörelserna nedan är skrivna för en vanlig v2-rigg: korta raka armar, inget böjs och inget vänds, riggens gång, klapp, vink och uttryck.
 
 ## Vad som är samma som 028 och vad som är ändrat
@@ -30,7 +30,7 @@
 | | |
 |---|---|
 | **Titel** | Tvättbjörnen bygger i sanden (avsnitt 61). Introt *"Djuren hittar på!"* |
-| **Figurer (1)** | **Tvättbjörnen** ([`karaktarer/tvattbjornen-tilda.md`](../../karaktarer/tvattbjornen-tilda.md)), v2-rigg klar 2026-11-27, väntar på godkännande |
+| **Figurer (1)** | **Tvättbjörnen** ([`karaktarer/tvattbjornen-tilda.md`](../../karaktarer/tvattbjornen-tilda.md)), v2-rigg godkänd 2026-11-27 |
 | **Platser (1)** | **Stranden** (`bakgrunder/stranden.md`, `stranden-v2.png`). Inget platsbyte |
 | **Saker som finns** | [gula hinken](../../rekvisita/hink-gul.md) (kritan ritar den, `hink-gul-kontur.json` finns), [röda spaden](../../rekvisita/spade-rod.md) (ritintrot, `spade-rod-kontur.json` finns) |
 | **Nya saker** | **inga** |
@@ -225,12 +225,12 @@ Fniss-kurr på rad 6, 13 och 28 (receptets 3–4, aldrig två rader i följd). V
 - [ ] **Bara en teckning av kritan i scenen** (hinken). Lärdomen från 021–024 säger två. 028:s andra teckning var badringen, som inte är med här (Öppet 2)
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt, seriens intro i stället för titel och nummer
 - [ ] Avsteg mot receptets "tre frågor till barnet": här två (tack 2,5 s, spaden 5 s) plus gisspauserna i ritintrot och vid hinken, enligt 25/11-regeln
-- [ ] **Förutsättning som inte är uppfylld:** riggen väntar på Sannas godkännande, och figuren har ingen ljudfamilj (rutan överst)
+- [ ] **Förutsättning som inte är uppfylld:** figuren har ingen ljudfamilj (rutan överst)
 - [ ] `harriets-favoriter.md` och README-rader: görs av huvudsessionen, inte här
 
 ## Öppet (Sanna bestämmer)
 
-1. ~~Tvättbjörnen måste göras först.~~ Gjord 2026-11-27: Sanna valde provbild B, riggen klar och väntar på godkännande. Hjulbilderna ligger i `premium/aldre/`.
+1. ~~Tvättbjörnen måste göras först.~~ Gjord 2026-11-27: Sanna valde provbild B, riggen godkänd samma dag. Hjulbilderna ligger i `premium/aldre/`.
 2. **Slutet: vågorna eller badringen?** Det här manuset slutar med vågorna, som uppdraget säger. Men den **byggda** 028-filmen fortsätter: vattnet är stort, leoparden vågar inte, kritan ritar en badring (*"Varsågod!"* – *"Tack, kritan!"*), och hon flyter och plaskar. Vill du ha med det också blir det kritans andra teckning, ca 7 repliker och 30–40 s till (över 4:15), och [badringen](../../rekvisita/badring.md) finns redan i två delar. Mitt förslag: sluta med vågorna, så att 061 inte blir en ren kopia och längden håller.
 3. **Tvättbjörnen sköljer hinken i vågen** (rad 25–26) är nytt mot 028. Det ger en anledning att gå ner till vattnet och passar en tvättbjörn. Stryk de två raderna om du vill ha det precis som 028 (*"Titta, små vågor! Hopp!"* direkt efter sandkakorna).
 4. **Samma berättelse som 028 med ett annat djur.** Lägg inte 028 och 061 efter varandra på kanalen eller i samma mix. 050 (kaninen bygger torn i snön) är också nära.
