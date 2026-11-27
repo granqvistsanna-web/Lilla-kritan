@@ -11508,9 +11508,10 @@
   "sec": 17,
   "tags": [],
   "note": "bigger toilet",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808095560,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812833204
  },
  "4l7jiv5l8smwzds0y3": {
   "ep": "060",
