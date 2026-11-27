@@ -11431,9 +11431,10 @@
   "sec": 9,
   "tags": [],
   "note": "better drawing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808369852,
-  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))",
+  "fixedAt": 1795809074892
  },
  "ofzv7283zfmwzdyk6d": {
   "ep": "058",
@@ -11441,9 +11442,10 @@
   "sec": 103,
   "tags": [],
   "note": "bigger tree",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808408485,
-  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))",
+  "fixedAt": 1795809074892
  },
  "g5rkstgygfmwzdzws8": {
   "ep": "058",
@@ -11451,9 +11453,10 @@
   "sec": 238,
   "tags": [],
   "note": "better ball in bucket, not behind bottom",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808471480,
-  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))",
+  "fixedAt": 1795809074892
  },
  "8mpbnr6s3gmwze064v": {
   "ep": "058",
@@ -11461,8 +11464,9 @@
   "sec": 252,
   "tags": [],
   "note": "bigger sandlåda",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808483598,
-  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))",
+  "fixedAt": 1795809074892
  }
 }
