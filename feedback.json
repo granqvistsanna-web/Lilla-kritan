@@ -11541,9 +11541,10 @@
   "sec": 97,
   "tags": [],
   "note": "better book animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808140706,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812843486
  },
  "a7tr22c2ewmwzdt92i": {
   "ep": "060",
