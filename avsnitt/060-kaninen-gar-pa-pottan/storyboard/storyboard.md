@@ -1,6 +1,6 @@
 # Storyboard 060 – Kaninen går på pottan (grind 5)
 
-**Status:** animatiken 2026-11-27, byggd ur `../manus.md` (grind 1–3 godkända, ljuden valda bland befintliga) och Malins tagning 2026-11-27.
+**Status:** ✅ godkänd 2026-11-27 (grind 5). Animatiken 2026-11-27, byggd ur `../manus.md` (grind 1–3 godkända, ljuden valda bland befintliga) och Malins tagning 2026-11-27.
 
 **Längd:** 3:56.6 med loggan (1 s), utan outro (räknat av bygg.mjs ur raderna).
 
