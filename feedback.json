@@ -11402,5 +11402,25 @@
   "at": 1795804903518,
   "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))",
   "fixedAt": 1795805958756
+ },
+ "kqvw186mwumwzdv7js": {
+  "ep": "061",
+  "time": "1:27",
+  "sec": 87,
+  "tags": [],
+  "note": "ears look jagged on sad",
+  "fixed": false,
+  "at": 1795808252152,
+  "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)"
+ },
+ "rvami719gvmwzdvqs5": {
+  "ep": "061",
+  "time": "1:21",
+  "sec": 81,
+  "tags": [],
+  "note": "better placement of hands and water",
+  "fixed": false,
+  "at": 1795808277077,
+  "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)"
  }
 }
