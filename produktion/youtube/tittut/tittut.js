@@ -99,7 +99,7 @@ async function tittut(g) {
   const LJUD = g.ljud ?? 'fniss', FNISS = g.fniss ?? LJUD, JA = g.ja ?? FNISS;   // ljudet när den kommer fram, och det busiga småljudet
 
   // ---------- duken: platsen, världen i 1920-mått; figuren ligger bland sakerna i djupordning ----------
-  const lager = kit.duk(g.plats);
+  const lager = kit.duk(g.platta ?? g.plats);   // g.platta: annan bild för samma plats (J12 2026-11-27: julskogen-v3/julskogen-v3.jpeg), sakerna och ljudet följer g.plats
   const defs = lager.plate.ownerSVGElement.querySelector('defs');
   // gräset och blommorna framför figuren (Sanna 2026-11-07): urklippta ur plattan, ritas över figurerna och följer kameran
   const fgFil = `assets/bakgrunder/${g.plats}/${g.plats}-forgrund.png`;
