@@ -1042,9 +1042,9 @@
   "name": "Jul (parkerad): Tittut lammet"
  },
  "J01": {
-  "duration": 274.6,
-  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka-qa2711.mp4",
-  "rendered": "2026-11-27 07:55 (QA 26/11 rättad: ritintrot med detaljstreck, ingen vind/inga streck (dörren gläntar med kallt ljus), riktig närbild 0:39, vanten hänger på kroken och faller sedan bakom korgen, dörren glider upp när kaninen går ut, klipp till krönet i andra åket, tindra-4 i 3D-introt. Förhandsvisning (--snabb), 4:35)",
+  "duration": 272.8,
+  "file": "produktion/youtube/shorts/jul/20-kaninen-aker-pulka/20-kaninen-aker-pulka.mp4",
+  "rendered": "2026-11-27 11:20 (slutrendering 27/11)",
   "status": "granska",
   "stills": [
    {
@@ -1072,7 +1072,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/08a27278f2566aab991a7e4e18fc8a43.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1127-0754.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J01-1127-1119.mp4",
   "videoId": "d9317d5aeafb90b0249f9fa3fd410530",
   "name": "Kaninen åker pulka"
  },
