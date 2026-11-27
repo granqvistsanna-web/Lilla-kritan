@@ -325,7 +325,8 @@ async function lage(parent) {
   const LAGGA = R.kroppTal('lagga'), LIGGPOSE = { ...R.POSER[R.kroppTal('satta').pose], ...LAGGA.pose }, LIGG_X = m.LIGG_LAGE_X - 20;   // 20 till vänster: huvudet på kudden och luft till nyckelpigan (närbilderna)
   const o = { st: V, fas: 1.3 };
   o.pose = (p = {}) => {
-    const vis = p.synlig !== false, blink = p.blink ?? autoBlink(o.fas), humor = p.humor || 'glad', lk = p.ligger ? 1 : clamp(p.lagg || 0);
+    const lk = p.ligger ? 1 : clamp(p.lagg || 0), vis = p.synlig !== false, humor = p.humor || 'glad';
+    const blink = p.blink ?? Math.max(autoBlink(o.fas), 0.5 * mjuk(clamp((lk - 0.6) / 0.4)));   // QA 2026-11-27: liggande = tunga, halvslutna ögon (sömnig), inte pigga
     V.g.style.display = vis ? '' : 'none';
     V.g.setAttribute('opacity', p.opacity ?? 1);
     const andas = Math.sin(2 * Math.PI * ((kit.nu + kit.sang0) / (lk ? 3.6 : 3.2) + 0.3)) * (p.andas ?? 1);

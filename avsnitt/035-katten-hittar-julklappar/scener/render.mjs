@@ -7,6 +7,8 @@
 //                                                       Samma filnamn, så grovklippet tar den; slutrenderingen körs utan --snabb.
 //   --en (var som helst): engelska versionen, tajmad till ../en/sang.m4a via ../en/rader.txt (kit.js ?en);
 //        filerna får -en: <scen>-en.mp4, <scen>-en-effekter.wav, stills-en/. Utan --en är allt som förut.
+//   --lucka: sidan med ?lucka (035: julkalenderns lucka 6 utan Malins "Vi ses snart!"), filerna får -lucka, t.ex.
+//        node render.mjs snogarden --bara-ljud --lucka -> snogarden-lucka-effekter.wav
 // Sidan hämtas via en liten lokal server från repots rot, så att kit.js kan läsa riggarnas json.
 import { createServer } from 'node:http';
 import { readFile, mkdir } from 'node:fs/promises';
@@ -17,8 +19,9 @@ import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import(process.env.PLAYWRIGHT_MJS ?? join(homedir(), '.claude/skills/launch-video/scripts/node_modules/playwright/index.mjs'));
 const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../../..'), SANG = join(HAR, '../sang-v5.m4a');
-const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1), dir = resolve(args.shift());
-const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = EN ? '-en' : '', STILLS = join(dir, `stills${X}`);
+const args = process.argv.slice(2), EN = args.includes('--en') && !!args.splice(args.indexOf('--en'), 1);
+const LUCKA = args.includes('--lucka') && !!args.splice(args.indexOf('--lucka'), 1), dir = resolve(args.shift());
+const SANG_FIL = EN ? join(HAR, '../en/sang.m4a') : SANG, X = (EN ? '-en' : '') + (LUCKA ? '-lucka' : ''), STILLS = join(dir, `stills${X}`);
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const baraLjud = args.includes('--bara-ljud') && !!args.splice(args.indexOf('--bara-ljud'), 1);
 const snabb = args.includes('--snabb') && !!args.splice(args.indexOf('--snabb'), 1);
@@ -32,7 +35,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYP[extname(fil)] || 'application/octet-stream' }); res.end(data); }
   catch { console.error('saknas:', req.url); res.writeHead(404); res.end(); }
 }).listen(0);
-const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : ''}`;
+const url = `http://localhost:${server.address().port}/${relative(ROT, dir)}/index.html${EN ? '?en' : LUCKA ? '?lucka' : ''}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: VY });

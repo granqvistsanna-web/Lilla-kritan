@@ -1,0 +1,9 @@
+# Ordtider (s från filens början), whisper large-v3-turbo ord för ord, 2026-11-27. Bilden på orden.
+18-lagger-i-korgen   Plopp 2.16  plopp 2.36  (slut 2.98)
+20-mums              Mums 0.05–0.88
+25-lilla-busken      Plocka 1.60  plocka 2.12  i korgen 2.69–3.50
+32-upp-pa-pallen     ett steg 1.83–2.70  två steg 2.70–3.40
+33-stora-busken      Plocka 1.50  plocka 2.04  i korgen 2.51–3.22
+37-ja-dar            Ja 0.05  där 0.39–1.12  bakom stubben 1.12–2.10
+38-sista-busken      Plocka 1.48  plocka 2.03  i korgen 2.53–3.24
+40-smakar-pa-blabaren  Mums 1.88  mums 2.31  (slut 2.90)

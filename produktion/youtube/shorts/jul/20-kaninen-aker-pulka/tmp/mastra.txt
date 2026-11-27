@@ -1,1 +1,0 @@
-20-kaninen-aker-pulka.mp4: -14.34 LUFS, topp -1.95 dBTP  ->  -16.01 LUFS, topp -3.72 dBTP

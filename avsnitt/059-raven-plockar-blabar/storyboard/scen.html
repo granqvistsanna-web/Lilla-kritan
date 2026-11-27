@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Räven plockar blåbär scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 059 Räven plockar blåbär: kodscenerna för storyboarden (förlaga: 056 storyboard/scen.html).
+     window.rad(id) ritar radens stillbild (id som i rader.mjs). Serveras från repots rot (bygg.mjs).
+     Räven ur sin v2-rigg (uttryck.html via v2-rigg.js). Gröna skogen (platta + förgrund), blåbärsbusken i tre storlekar, stubben, korgen, pallen.
+     I kod: blåbären, blå tunga och nos, blått på tänderna, skimret, pilarna. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
+    <radialGradient id="vinjett" cx="0.5" cy="0.5" r="0.75"><stop offset="0.55" stop-color="#2a1c12" stop-opacity="0"/><stop offset="1" stop-color="#2a1c12" stop-opacity="1"/></radialGradient>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+    <clipPath id="korgfram" clipPathUnits="userSpaceOnUse"><rect x="0" y="540" width="1024" height="484"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g id="skugga"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g id="mitt"></g>
+    <g id="fram"></g>
+    <g id="forgrund"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => (+v).toFixed(1);
+
+// --- Bilderna och måtten (manus.md, Uppställningen; golvlinjen y ≈ 816) -----------------------------------------------------
+const PLATTA = A + 'bakgrunder/skogen-gron/skogen-gron.png', FORGRUND = A + 'bakgrunder/skogen-gron/skogen-gron-forgrund.png';
+const BUSKE = { bild: A + 'rekvisita/blabarsbuske/cut/blabarsbuske.png', w: 1018, h: 713, fot: [509, 699] };
+const STUBBE = { bild: A + 'rekvisita/stubbe/cut/stubbe.png', w: 1113, h: 742, fot: [556, 718] };
+const KORG = { bild: A + 'rekvisita/korg/cut/korg-v3-tunn.png', w: 1024, h: 1024, fot: [512, 915] };
+const PALL = { bild: A + 'rekvisita/pall/cut/pall-tunn.png', w: 781, h: 551, fot: [390, 530] };
+const GS = 0.59;                                   // kroppen 430 px i plattan (format/bildutsnitt.md)
+const FOT = 880;                                   // rävens fötter (framför golvlinjen)
+// buskarna: x = mitt, y = underkant, h = höjd i plattan; bär = [x, y] i buskens egen 0–1-ruta (0,0 = uppe till vänster)
+const LILLA = { x: 400, y: 862, h: 250, bar: [[0.22, 0.42], [0.4, 0.3], [0.62, 0.36], [0.78, 0.5], [0.33, 0.62], [0.58, 0.6]] };
+const STORA = { x: 1590, y: 872, h: 500, bar: [[0.3, 0.16], [0.48, 0.1], [0.66, 0.15], [0.4, 0.24], [0.58, 0.22], [0.75, 0.27], [0.22, 0.27]] };
+const SISTA = { x: 1000, y: 884, h: 210, bar: [] };
+const STUBB = { x: 990, y: 906, w: 310 };
+const KVIST = [1162, 845];                         // kvisten med bäret vid stubbens högra sida (syns från rad 1)
+const VID_LILLA = [660, FOT], VID_STORA = [1300, FOT], VID_STUBBE = [1330, FOT];
+const KORG_LILLA = [530, 902], KORG_STORA = [1160, 904], KORG_STUBBE = [1190, 912];
+const PALLPOS = [1440, 896], PALL_H = 170;          // pallen vid stora busken, rävens fötter på översta steget
+const BAR = { r: 15, farg: '#3A4FB8', mork: '#22307A' };
+
+let L, G;
+const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));   // line boil 2,5 px i bild, delat med zoomen
+}
+const HEL = () => kamera(1);
+const HALV = ([x, y]) => kamera(1.6, x - 60, y - 230);
+const ANS = ([x, y]) => kamera(2.6, x, y - (L.FOTTER - 440) * GS);
+
+// --- Skogen och sakerna -----------------------------------------------------------------------------------------------------
+function skog({ stora = true, sista = true } = {}) {
+  $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  $('forgrund').innerHTML = `<image href="${FORGRUND}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  buske(LILLA, 'bak');
+  if (sista) buske(SISTA, 'bak');
+  if (stora) buske(STORA, 'bak');
+  stubbe();
+}
+const bar = (x, y, r = BAR.r, o = 1) => `<g opacity="${o}"><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r + 3)}" fill="#FFFDF6"/><circle cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="${BAR.farg}"/>
+  <path d="M${f1(x - r * 0.35)} ${f1(y - r * 0.7)} L${f1(x)} ${f1(y - r * 0.45)} L${f1(x + r * 0.35)} ${f1(y - r * 0.7)}" fill="none" stroke="${BAR.mork}" stroke-width="${f1(r * 0.22)}" stroke-linecap="round"/>
+  <circle cx="${f1(x - r * 0.38)}" cy="${f1(y - r * 0.2)}" r="${f1(r * 0.22)}" fill="#fff" opacity=".75"/></g>`;
+// busken; uta = bär som redan är plockade (index) visas inte
+function buske(B, lager = 'bak', uta = []) {
+  const s = B.h / (BUSKE.fot[1] - 13), w = BUSKE.w * s, x0 = B.x - BUSKE.fot[0] * s, y0 = B.y - BUSKE.fot[1] * s;
+  lagg(lager, `<ellipse cx="${B.x}" cy="${B.y - 4}" rx="${f1(w * 0.42)}" ry="${f1(B.h * 0.05)}" fill="#2f5a22" opacity="0.22" filter="url(#mjukskugga)"/>
+    <image href="${BUSKE.bild}" x="${f1(x0)}" y="${f1(y0)}" width="${f1(w)}" height="${f1(BUSKE.h * s)}"/>`);
+  lagg(lager, B.bar.filter((_, i) => !uta.includes(i)).map(([u, v]) => bar(x0 + u * w, y0 + v * BUSKE.h * s)).join(''));
+}
+const barPos = (B, i) => { const s = B.h / (BUSKE.fot[1] - 13); return [B.x - BUSKE.fot[0] * s + B.bar[i][0] * BUSKE.w * s, B.y - BUSKE.fot[1] * s + B.bar[i][1] * BUSKE.h * s]; };
+function stubbe() {
+  const s = STUBB.w / (1090 - 22), x0 = STUBB.x - STUBBE.fot[0] * s, y0 = STUBB.y - STUBBE.fot[1] * s;
+  // kvisten bakom stubbens högra kant: två blad och ett bär
+  const [kx, ky] = KVIST;
+  lagg('mitt', `<path d="M${kx - 30} ${ky + 20} Q${kx - 6} ${ky - 6} ${kx + 18} ${ky - 18}" fill="none" stroke="#6b4a2a" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="${kx + 4}" cy="${ky - 26}" rx="16" ry="9" transform="rotate(-35 ${kx + 4} ${ky - 26})" fill="#5FA845" stroke="#FFFDF6" stroke-width="3"/>
+    <ellipse cx="${kx + 28}" cy="${ky - 8}" rx="15" ry="8" transform="rotate(20 ${kx + 28} ${ky - 8})" fill="#86C25C" stroke="#FFFDF6" stroke-width="3"/>
+    ${bar(kx + 20, ky - 30, 13)}`);
+  lagg('mitt', `<ellipse cx="${STUBB.x}" cy="${STUBB.y - 4}" rx="${STUBB.w * 0.48}" ry="16" fill="#3a2a1a" opacity="0.2" filter="url(#mjukskugga)"/>
+    <image href="${STUBBE.bild}" x="${f1(x0)}" y="${f1(y0)}" width="${f1(STUBBE.w * s)}" height="${f1(STUBBE.h * s)}"/>`);
+}
+// korgen med foten i (x, y), höjden h; n bär i korgen (högen syns över kanten när n är stort), framkanten framför bären
+function korg([x, y], h = 150, n = 0, { kontur = null, lager = 'fram' } = {}) {
+  const s = h / (915 - 105), t = `translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(4)}) translate(${-KORG.fot[0]} ${-KORG.fot[1]})`;
+  if (kontur != null) {
+    const d = 'M150 520 C150 760 260 915 512 915 C764 915 874 760 874 520 Z M150 520 C150 470 874 470 874 520 M220 520 C200 180 824 180 804 520 M300 640 L420 820 M620 640 L740 820';
+    lagg(lager, `<g transform="${t}"><path d="${d}" pathLength="1" fill="none" stroke="#6b4a2a" stroke-width="${f1(7 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${kontur} 2"/></g>`); return;
+  }
+  const hog = Array.from({ length: n }, (_, i) => { const k = i % 9, rad = Math.floor(i / 9);
+    return bar(280 + k * 58 + (rad % 2) * 28, 520 - rad * 42 - Math.sin(k / 8 * Math.PI) * 18 * Math.min(rad, 2), 46); }).join('');
+  lagg(lager, `<ellipse cx="${x}" cy="${y}" rx="${f1(h * 0.42)}" ry="${f1(h * 0.06)}" fill="#3a2a1a" opacity="0.2" filter="url(#mjukskugga)"/>
+    <g transform="${t}"><image href="${KORG.bild}" width="1024" height="1024"/>${hog}<image href="${KORG.bild}" width="1024" height="1024" clip-path="url(#korgfram)"/></g>`);
+}
+// pallen med foten (mitt, underkant) i (x, y), höjd h
+function pall([x, y], h = PALL_H, { kontur = null } = {}) {
+  const s = h / (530 - 21), t = `translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(4)}) translate(${-PALL.fot[0]} ${-PALL.fot[1]})`;
+  if (kontur != null) { lagg('fram', `<g transform="${t}"><path d="${PK.d}" pathLength="1" fill="none" stroke="#6b4a2a" stroke-width="${f1(7 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${kontur} 2"/></g>`); return; }
+  lagg('fram', `<ellipse cx="${x}" cy="${y}" rx="${f1(h * 0.75)}" ry="${f1(h * 0.06)}" fill="#3a2a1a" opacity="0.2" filter="url(#mjukskugga)"/><g transform="${t}"><image href="${PALL.bild}" width="${PALL.w}" height="${PALL.h}"/></g>`);
+}
+const PALL_TOPP = () => [PALLPOS[0] + PALL_H * 0.42, PALLPOS[1] - PALL_H * 0.96];   // mitt på översta steget
+
+// --- Räven ---------------------------------------------------------------------------------------------------------------
+function rav([x, fot], f, p, { s = GS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+}
+// tassens spets (sida 'l' = bildens vänster) i kamerans koordinater, ur armens synliga del (fram-kopian om den syns)
+function tass(sida = 'l') {
+  const spets = sida === 'l' ? [162, 672] : [862, 672];
+  for (const c of [`arm-${sida}-fram`, `arm-${sida}2`, `arm-${sida}`]) {
+    const e = G.querySelector('.' + c); if (!e) continue;
+    let syns = true; for (let n = e; n && n !== G; n = n.parentNode) if (getComputedStyle(n).display === 'none' || +getComputedStyle(n).opacity === 0 || n.getAttribute('opacity') === '0') syns = false;
+    if (!syns) continue;
+    const m = $('kamera').getCTM().inverse().multiply(e.getCTM()), pt = new DOMPoint(...spets).matrixTransform(m);
+    return [pt.x, pt.y];
+  }
+  return iFig(VID_LILLA, spets);
+}
+const P = o => ({ ...L.POSE0, ...o });
+const POSE = (n, o = {}) => ({ ...L.POSE0, ...L.POSER[n], ...o });
+const F = (n, o = {}) => ({ ...L.blanda('neutral', n, 1), ...(['glad', 'jatteglad', 'fnissig', 'stolt', 'flinar'].includes(n) ? { glad: [0, 0] } : {}), ...o });
+const VINK = { armar: [0, 95] };
+// blått i ansiktet (i kod, riggen ändras inte): nosen, tungan, fläckar på tänderna
+const NOS = [512, 452], TUNGA = [512, 520];
+const blaNos = pos => { const [x, y] = iFig(pos, NOS); lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(34 * GS)}" ry="${f1(22 * GS)}" fill="#4A5AC8" opacity="0.85"/>`); };
+const blaTunga = pos => { const [x, y] = iFig(pos, TUNGA); lagg('fram', `<path d="M${f1(x - 22 * GS)} ${f1(y - 8 * GS)} Q${f1(x - 24 * GS)} ${f1(y + 40 * GS)} ${f1(x)} ${f1(y + 42 * GS)} Q${f1(x + 24 * GS)} ${f1(y + 40 * GS)} ${f1(x + 22 * GS)} ${f1(y - 8 * GS)}Z" fill="#5868D0" stroke="#3A4FB8" stroke-width="${f1(3 * GS)}"/>`); };
+const blaTander = pos => { const [x, y] = iFig(pos, [512, 492]); lagg('fram', [-30, -2, 26].map(dx => `<circle cx="${f1(x + dx * GS)}" cy="${f1(y)}" r="${f1(6 * GS)}" fill="#3B4A8C" opacity="0.8"/>`).join('')); };
+// bär i tassarna (posen magen): n bär på tassarna
+const tassBar = (n, r = BAR.r) => { const [lx, ly] = tass('l'), [rx, ry] = tass('r');
+  lagg('fram', Array.from({ length: n }, (_, i) => bar(lx + (rx - lx) * (0.2 + 0.3 * i) , Math.min(ly, ry) - r * 0.6 - (i === 1 ? r * 1.1 : 0), r)).join('')); };
+
+// --- Pilar, kritan, skimmer --------------------------------------------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const bage = (x0, y0, x1, y1, h, s = 4) => pil(`M${x0} ${y0} Q${(x0 + x1) / 2} ${Math.min(y0, y1) - h} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - (Math.min(y0, y1) - h), x1 - (x0 + x1) / 2), s);
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', kritaBild(x, y, { v, s }));
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${f1(r)})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+const skimmer = (x, y, k, v = 1) => lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
+  .map(([dx, dy, s]) => stjarna(x + dx * 46 * v, y + dy * 40 * v, 18 * s * k * v, Math.min(1, 0.4 + k))).join(''));
+const oronpilar = pos => { const [x, y] = iFig(pos, [512, 150]); lagg('pilar', rakpil(x - 140, y + 10, x - 160, y - 30, 3) + rakpil(x + 140, y + 10, x + 160, y - 30, 3)); };
+const text = (x, y, t, s = 30) => lagg('pilar', `<text x="${x}" y="${y}" style="font:700 ${s}px system-ui;fill:#fff;text-anchor:middle;paint-order:stroke;stroke:#c0392b;stroke-width:6">${t}</text>`);
+const iris = ([cx, cy], r = 380) => {
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+    return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+  lagg('pilar', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`); };
+const varm = () => lagg('ram', '<rect x="-50" y="-50" width="2020" height="1180" fill="#FFB46A" opacity="0.07" style="mix-blend-mode:soft-light"/><rect width="1920" height="1080" fill="url(#vinjett)" opacity="0.12"/>');
+
+// --- Ritintrot: kritan ritar blåbärsbusken -------------------------------------------------------------------------------------
+let BK, PK;
+function papperBuske(k, fyll) {
+  $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/><rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`;
+  kamera(1);
+  const s = 0.8, x0 = 960 - 509 * s, y0 = 560 - 356 * s, t = `translate(${x0} ${y0}) scale(${s})`;
+  const barI = [[0.4, 0.3], [0.62, 0.36], [0.33, 0.62]].map(([u, v]) => [u * BUSKE.w, v * BUSKE.h]);
+  const detalj = k >= 1 ? barI.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="26" fill="none" stroke="#6b4a2a" stroke-width="9"/>`).join('') : '';
+  lagg('bak', `<g transform="${t}"><g opacity="${1 - 0.8 * fyll}"><path d="${BK.d}" pathLength="1" fill="none" stroke="#6b4a2a" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${Math.min(k, 1)} 2"/>${detalj}</g>
+    <g clip-path="url(#fyllklipp)"><image href="${BUSKE.bild}" width="${BUSKE.w}" height="${BUSKE.h}"/>${fyll >= 1 ? barI.map(([x, y]) => bar(x, y, 26)).join('') : ''}</g></g>`);
+  $('fyllcirkel').setAttribute('cx', 509); $('fyllcirkel').setAttribute('cy', 356); $('fyllcirkel').setAttribute('r', 640 * fyll);
+  const p = $('bak').querySelector('path'), pt = p.getPointAtLength(p.getTotalLength() * Math.min(k, 0.999));
+  if (k < 1) krita(x0 + pt.x * s, y0 + pt.y * s, 125, 0.42);
+  else if (fyll < 1) krita(1460, 330, 140, 0.42);
+  if (fyll >= 1) lagg('fram', [[700, 300], [1240, 360], [720, 780]].map(([x, y]) => stjarna(x, y, 22, 0.9)).join(''));
+}
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const vidLilla = (f, p = {}) => rav(VID_LILLA, f, P({ rikt: -0.4, ...p }));
+const ansLilla = () => ANS(VID_LILLA);
+
+const RAD = {
+  '00': () => lagg('ram', `<rect width="1920" height="1080" fill="#FBF7EE"/><text x="960" y="580" style="font:700 120px Fredoka,'Arial Rounded MT Bold',system-ui;fill:#e2574c;text-anchor:middle">Lilla Kritan</text>`),
+  '01a': () => papperBuske(0.55, 0),
+  '01b': () => papperBuske(1, 0),
+  '01c': () => { papperBuske(1, 1); lagg('pilar', `<rect x="560" y="260" width="800" height="560" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { skog(); HEL(); rav(VID_LILLA, F('glad'), P({ ...VINK, svans: 10 })); lagg('pilar', rakpil(60, 900, 520, 900, 8)); varm(); },
+  '1b': () => { skog(); ansLilla(); vidLilla(F('nyfiken', { titt: [-12, 0] }), { rikt: -0.3 }); oronpilar(VID_LILLA); varm(); },
+  '2': () => { skog(); kamera(2.4, LILLA.x, LILLA.y - LILLA.h * 0.55); const [x, y] = barPos(LILLA, 2); skimmer(x, y, 0.6, 0.4); varm(); },
+  '2r': () => { skog(); ansLilla(); vidLilla(F('kawaii'), { oron: [-8, -8], rikt: -0.3 }); varm(); },
+  '3': () => { skog(); buske(LILLA, 'bak'); HALV(VID_LILLA); $('bak').innerHTML = ''; buske(LILLA, 'bak', [1, 2, 4]); buske(SISTA, 'bak'); buske(STORA, 'bak');
+    vidLilla(F('glad'), POSE('magen', { rikt: -0.3 })); tassBar(3);
+    const [bx, by] = barPos(LILLA, 0); const [tx, ty] = tass('l'); lagg('pilar', bage(bx, by, tx, ty - 20, 60)); varm(); },
+  '4': () => { skog(); $('bak').innerHTML = ''; buske(LILLA, 'bak', [1, 2, 4, 5]); buske(SISTA, 'bak'); buske(STORA, 'bak');
+    vidLilla(F('forvanad'), POSE('magen', { rikt: -0.2 })); const [tx, ty] = tass('l'); kamera(3.0, tx + 40, ty - 10); tassBar(3);
+    lagg('fram', bar(tx - 90, FOT + 6)); lagg('pilar', bage(tx, ty - 10, tx - 80, FOT - 10, 40) + rakpil(tx - 110, FOT + 6, tx - 200, FOT + 6, 3)); },
+  '4r': () => { skog(); ansLilla(); vidLilla(F('forvanad'), { oron: [-12, -12], rikt: -0.2 }); varm(); },
+  '5': () => { skog(); $('bak').innerHTML = ''; buske(LILLA, 'bak', [1, 2, 4, 5]); buske(SISTA, 'bak'); buske(STORA, 'bak'); HALV(VID_LILLA);
+    vidLilla(F('ledsen', { titt: [-14, 10] }), POSE('magen', { oron: [12, 12], svans: -14, rikt: -0.3 })); tassBar(2);
+    lagg('fram', bar(VID_LILLA[0] - 300, FOT + 6) + bar(VID_LILLA[0] - 190, FOT + 4)); lagg('pilar', rakpil(VID_LILLA[0] - 180, FOT + 30, VID_LILLA[0] - 300, FOT + 30, 4)); varm(); },
+  '5b': () => { skog(); ansLilla(); vidLilla(F('ledsen', { titt: [0, 10] }), POSE('magen', { oron: [12, 12], upp: -0.4 })); tassBar(2);
+    const [x, y] = iFig(VID_LILLA, [512, 300]); lagg('pilar', rakpil(x - 30, y, x - 90, y, 3) + rakpil(x + 30, y, x + 90, y, 3)); varm(); },
+
+  '6a': () => { skog(); HALV(VID_LILLA); vidLilla(F('nyfiken', { titt: [-10, 14] }), POSE('magen', { upp: -0.3 })); tassBar(2);
+    korg(KORG_LILLA, 150, 0, { kontur: 0.6 }); krita(KORG_LILLA[0] + 40, KORG_LILLA[1] - 80, 125, 0.33); varm(); },
+  '6b': () => { skog(); HALV(VID_LILLA); vidLilla(F('nyfiken', { titt: [-10, 14] }), POSE('magen', { upp: -0.3 })); tassBar(2);
+    korg(KORG_LILLA, 150, 0, { kontur: 1 }); krita(KORG_LILLA[0] + 130, KORG_LILLA[1] - 190, 140, 0.33); varm(); },
+  '6c': () => { skog(); HALV(VID_LILLA); vidLilla(F('kawaii'), POSE('magen', { upp: -0.3 })); tassBar(2); korg(KORG_LILLA, 150);
+    lagg('fram', [[-80, -150], [70, -170], [100, -60]].map(([dx, dy]) => stjarna(KORG_LILLA[0] + dx, KORG_LILLA[1] + dy, 16, 0.9)).join('')); varm(); },
+  '6r': () => { skog(); ansLilla(); vidLilla(F('kawaii', { titt: [-10, 12] }), POSE('magen', { oron: [-8, -8] })); tassBar(2); varm(); },
+  '7': () => { skog(); HALV(VID_LILLA); vidLilla(F('jatteglad'), POSE('stolt', POSE('magen'))); korg(KORG_LILLA, 150);
+    const [x, y] = iFig(VID_LILLA, [512, 260]); lagg('pilar', rakpil(x, y - 30, x, y + 20, 4)); varm(); },
+  '8': () => { skog(); vidLilla(F('glad', { titt: [-10, 14] }), POSE('magen', { luta: -3, upp: -0.4 })); korg(KORG_LILLA, 150, 2);
+    kamera(2.6, KORG_LILLA[0] + 40, KORG_LILLA[1] - 110); const [tx, ty] = tass('l'); lagg('pilar', bage(tx, ty, KORG_LILLA[0], KORG_LILLA[1] - 110, 40)); text(KORG_LILLA[0] - 20, KORG_LILLA[1] - 220, 'plopp, plopp'); varm(); },
+  '9': () => { skog(); HALV(VID_LILLA); vidLilla(F('nyfiken', { titt: [-12, 4] }), POSE('haller', { armar: [40, 0] })); korg(KORG_LILLA, 150, 3);
+    const [tx, ty] = tass('l'); lagg('fram', bar(tx, ty - 14)); varm(); },
+  '9b': () => { skog(); ansLilla(); vidLilla(F('mums'), { oron: [-4, -4] }); text(VID_LILLA[0], FOT - 300, 'bäret borta på “Mums!”', 18); varm(); },
+  '9c': () => { skog(); ansLilla(); vidLilla(F('fnissig', { glad: [1, 1] }), { svans: 14 }); blaTunga(VID_LILLA); varm(); },
+
+  '10': () => { skog(); HALV(VID_LILLA); vidLilla(F('glad', { titt: [-14, 6] }), { rikt: -0.5 }); korg(KORG_LILLA, 150, 2); oronpilar(VID_LILLA); varm(); },
+  '11': () => { skog(); $('bak').innerHTML = ''; buske(LILLA, 'bak', [1, 2, 4]); buske(SISTA, 'bak'); buske(STORA, 'bak');
+    kamera(1.9, (LILLA.x + VID_LILLA[0]) / 2, FOT - 200); vidLilla(F('glad', { titt: [-12, 0] }), POSE('nar', { rikt: -1, armar: [0, 0], bada: 1 }));
+    const k = [KORG_LILLA[0] - 40, KORG_LILLA[1]]; korg(k, 150, 5); const [bx, by] = barPos(LILLA, 5);
+    lagg('pilar', bage(bx, by, k[0], k[1] - 110, 30) + `<text x="${bx}" y="${by - 50}" style="font:700 22px system-ui;fill:#fff;text-anchor:middle;paint-order:stroke;stroke:#c0392b;stroke-width:5">1 plocka · 2 plocka · 3 i korgen!</text>`); varm(); },
+
+  '12a': () => { skog(); HEL(); $('bak').innerHTML = ''; buske(LILLA, 'bak', [0, 1, 2, 3, 4, 5]); buske(SISTA, 'bak'); buske(STORA, 'bak');
+    rav(VID_STORA, F('glad'), P({ rikt: 0.4 })); korg(KORG_STORA, 150, 6); lagg('pilar', rakpil(VID_LILLA[0], 960, VID_STORA[0] - 40, 960, 7)); varm(); },
+  '12b': () => { skog(); kamera(2.4, STORA.x, STORA.y - STORA.h * 0.82); text(STORA.x, STORA.y - STORA.h - 20, 'högt uppe', 24); varm(); },
+  '13': () => { skog(); HALV([VID_STORA[0] + 120, FOT - 60]); rav(VID_STORA, F('tanker', { titt: [12, -16] }), POSE('strack', { upp: 0.8, rikt: 0.3 })); korg(KORG_STORA, 150, 6);
+    const [tx, ty] = tass('r'), [bx, by] = barPos(STORA, 3); lagg('pilar', `<line x1="${tx}" y1="${ty}" x2="${bx}" y2="${by}" stroke="#c0392b" stroke-width="4" stroke-dasharray="10 8"/>`); text((tx + bx) / 2 + 90, (ty + by) / 2, 'når inte', 22); varm(); },
+  '14a': () => { skog(); HALV([VID_STORA[0] + 80, FOT - 60]); rav(VID_STORA, F('nyfiken', { titt: [12, 10] }), P({ rikt: 0.3, upp: -0.3 })); korg(KORG_STORA, 150, 6);
+    pall(PALLPOS, PALL_H, { kontur: 0.6 }); krita(PALLPOS[0] + 60, PALLPOS[1] - 130, 125, 0.33); varm(); },
+  '14b': () => { skog(); HALV([VID_STORA[0] + 80, FOT - 60]); rav(VID_STORA, F('nyfiken', { titt: [12, 10] }), P({ rikt: 0.3, upp: -0.3 })); korg(KORG_STORA, 150, 6);
+    pall(PALLPOS, PALL_H, { kontur: 1 }); krita(PALLPOS[0] + 160, PALLPOS[1] - 240, 140, 0.33); varm(); },
+  '14c': () => { skog(); HALV([VID_STORA[0] + 80, FOT - 60]); rav(VID_STORA, F('kawaii'), P({ rikt: 0.3, upp: -0.3 })); korg(KORG_STORA, 150, 6); pall(PALLPOS);
+    lagg('fram', [[-90, -150], [80, -200], [120, -60]].map(([dx, dy]) => stjarna(PALLPOS[0] + dx, PALLPOS[1] + dy, 16, 0.9)).join('')); varm(); },
+  '14r': () => { skog(); ANS(VID_STORA); rav(VID_STORA, F('jatteglad'), P({ rikt: 0.2 })); const [x, y] = iFig(VID_STORA, [512, 260]); lagg('pilar', rakpil(x, y - 30, x, y + 20, 4)); varm(); },
+  '15': () => { skog(); HEL(); pall(PALLPOS); rav(PALL_TOPP(), F('glad'), P({ rikt: 0.3 })); korg(KORG_STORA, 150, 6);
+    lagg('pilar', bage(VID_STORA[0] - 60, FOT - 40, PALLPOS[0] - 30, PALLPOS[1] - PALL_H * 0.55, 60) + bage(PALLPOS[0] - 20, PALLPOS[1] - PALL_H * 0.6, PALL_TOPP()[0], PALL_TOPP()[1] - 10, 50)); text(PALLPOS[0], PALLPOS[1] - 420, 'ett steg … två steg', 26); varm(); },
+  '16': () => { skog(); $('bak').innerHTML = ''; buske(LILLA, 'bak', [0, 1, 2, 3, 4, 5]); buske(SISTA, 'bak'); buske(STORA, 'bak', [3, 4]);
+    kamera(1.7, PALL_TOPP()[0] + 60, PALL_TOPP()[1] - 230); pall(PALLPOS); rav(PALL_TOPP(), F('glad', { titt: [12, -10] }), POSE('nar', { upp: 0.6 })); korg(KORG_STORA, 150, 9);
+    const [bx, by] = barPos(STORA, 5); lagg('pilar', bage(bx, by, KORG_STORA[0] + 20, KORG_STORA[1] - 110, 40)); varm(); },
+  '17a': () => { skog(); HALV(VID_STORA); pall(PALLPOS); rav(VID_STORA, F('glad'), P({ rikt: 0.2 })); korg(KORG_STORA, 150, 12);
+    lagg('pilar', bage(PALL_TOPP()[0], PALL_TOPP()[1] - 20, VID_STORA[0] + 30, FOT - 20, 40)); varm(); },
+  '17': () => { skog(); korg(KORG_STORA, 150, 14); kamera(3.0, KORG_STORA[0], KORG_STORA[1] - 90); skimmer(KORG_STORA[0] + 40, KORG_STORA[1] - 150, 0.6, 0.4); },
+  '17r': () => { skog(); ANS(VID_STORA); rav(VID_STORA, F('stolt'), POSE('stolt')); varm(); },
+
+  '18': () => { skog(); HALV(VID_STORA); pall(PALLPOS); rav(VID_STORA, F('nyfiken', { titt: [-16, 4] }), P({ rikt: -0.3 })); korg(KORG_STORA, 150, 14);
+    const [x, y] = iFig(VID_STORA, [512, 380]); lagg('pilar', rakpil(x - 40, y, x - 120, y, 3) + rakpil(x + 40, y, x + 120, y, 3)); varm(); },
+  '19a': () => { skog(); HEL(); pall(PALLPOS); rav(VID_STORA, F('nyfiken', { titt: [-16, 4] }), P({ rikt: -0.3 })); korg(KORG_STORA, 150, 14);
+    lagg('pilar', `<ellipse cx="${KVIST[0] + 10}" cy="${KVIST[1] - 20}" rx="70" ry="60" fill="none" stroke="#c0392b" stroke-width="5" stroke-dasharray="12 9"/>`); varm(); },
+  '19b': () => { skog(); kamera(3.2, KVIST[0] - 40, KVIST[1] - 40); skimmer(KVIST[0] + 20, KVIST[1] - 30, 0.25, 0.4); text(KVIST[0] - 40, KVIST[1] - 150, 'paus ca 5 s, skimrar svagt efter 3 s', 14); },
+  '20': () => { skog(); kamera(3.2, KVIST[0] - 40, KVIST[1] - 40); skimmer(KVIST[0] + 20, KVIST[1] - 30, 1, 0.45); },
+  '20r': () => { skog(); ANS(VID_STORA); rav(VID_STORA, F('jatteglad'), P({ lyft: -20, svans: 14 })); varm(); },
+  '21': () => { skog(); $('bak').innerHTML = ''; buske(LILLA, 'bak', [0, 1, 2, 3, 4, 5]); buske(SISTA, 'bak'); buske(STORA, 'bak', [0, 1, 2, 3, 4, 5, 6]);
+    kamera(1.8, (STUBB.x + VID_STUBBE[0]) / 2, FOT - 190); rav(VID_STUBBE, F('glad', { titt: [-14, 8] }), POSE('nar', { rikt: -1, armar: [0, -10], bada: 1 })); korg(KORG_STUBBE, 150, 16);
+    lagg('pilar', bage(KVIST[0] + 20, KVIST[1] - 30, KORG_STUBBE[0], KORG_STUBBE[1] - 110, 40) + rakpil(KVIST[0] - 10, KVIST[1] + 10, KVIST[0] - 90, KVIST[1] + 10, 3)); text(STUBB.x, STUBB.y - 260, 'tassen bakom stubben', 18); varm(); },
+  '22': () => { skog(); korg(KORG_STUBBE, 150, 26); kamera(3.0, KORG_STUBBE[0], KORG_STUBBE[1] - 90); skimmer(KORG_STUBBE[0] + 30, KORG_STUBBE[1] - 170, 0.7, 0.4); },
+  '22r': () => { skog(); ANS(VID_STUBBE); rav(VID_STUBBE, F('stolt'), POSE('stolt', { svans: 16 })); varm(); },
+
+  '23': () => { skog(); HALV(VID_STUBBE); rav(VID_STUBBE, F('mums'), P({ rikt: -0.4, luta: -6, upp: -0.8 })); korg(KORG_STUBBE, 150, 26);
+    const [x, y] = iFig(VID_STUBBE, [512, 300]); lagg('pilar', rakpil(x + 20, y - 60, x - 30, y + 10, 4)); varm(); },
+  '23b': () => { skog(); ANS(VID_STUBBE); rav(VID_STUBBE, F('skrattar'), P({ oron: [-10, -10] })); blaNos(VID_STUBBE); blaTunga(VID_STUBBE); varm(); },
+  '24': () => { skog(); ANS(VID_STUBBE); rav(VID_STUBBE, F('flinar'), P({})); blaNos(VID_STUBBE); blaTander(VID_STUBBE); varm(); },
+  '25': () => { skog(); HALV(VID_STUBBE); rav(VID_STUBBE, F('glad'), P({ ...VINK, svans: 10 })); blaNos(VID_STUBBE); korg(KORG_STUBBE, 150, 26); varm(); },
+  '26': () => { skog(); HALV(VID_STUBBE); rav(VID_STUBBE, F('glad'), P({ armar: [0, 40], svans: 8 })); blaNos(VID_STUBBE); korg(KORG_STUBBE, 150, 26); varm(); },
+  '27': () => { RAD['26'](); $('pilar').innerHTML = ''; kamera(1); iris([VID_STUBBE[0] - 60, FOT - 220], 330); },
+};
+
+window.rad = id => {
+  ['platta', 'bak', 'skugga', 'mitt', 'fram', 'forgrund', 'pilar', 'ram'].forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G); kamera(1);
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('raven-rut');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  [BK, PK] = await Promise.all(['/assets/rekvisita/blabarsbuske/cut/blabarsbuske-kontur.json', '/assets/rekvisita/pall/cut/pall-tunn-kontur.json'].map(f => fetch(f).then(r => r.json())));
+  const finns = u => new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = u; });
+  await Promise.all([PLATTA, FORGRUND, BUSKE.bild, STUBBE.bild, KORG.bild, PALL.bild].map(finns));
+  window.kant?.lagg(G);
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>

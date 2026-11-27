@@ -228,3 +228,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Kaktusen (i kruka) | [kaktus.md](kaktus.md) | 053 |
 | Formlådan | [formlada.md](formlada.md) | 053 |
 | Klossarna (cirkel, fyrkant, trekant) | [klossar.md](klossar.md) | 053 |
+| Blåbärsbusken | [blabarsbuske.md](blabarsbuske.md) | 059 |
+| Stubben | [stubbe.md](stubbe.md) | 059 |

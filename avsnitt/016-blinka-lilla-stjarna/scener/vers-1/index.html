@@ -42,7 +42,7 @@ async function bygg() {
        M.rad('Blinka lilla stjärna där', 1), M.rad('hur jag undrar', 1)].map(r => r.t);
   // klippen [sångtid, kamera]: radstarterna plus ett klipp inne i varje rad utom R3, på närmaste slag
   KLIPP = [[S0 + 1e-3, K.stj], [kit.takt(R[0] + 2.4), K.tva], [kit.takt(R[1] + 2.4), K.nicke], [R[2], K.hel],
-           [R[3], K.stj], [R[4] - 0.01, K.stj], [R[4], K.nicke], [kit.takt(R[4] + 2.4), K.lage],
+           [R[3], K.stj], [R[4] - 0.01, K.stj], [R[4], K.stj], [kit.takt(R[4] + 2.4), K.lage],   // QA 2026-11-27: "Blinka lilla stjärna där" visar stjärnan (bilden på orden), inte Nicke
            [R[5], K.stj], [kit.takt(R[5] + 2.4), K.lage]];
   // himmelsbilden: inne i R3, på slaget efter att Lage har pekat upp; bara himlen (kullens kant längst ner)
   HIM = { a: kit.takt(R[2] + 2.2), b: R[3] };
@@ -66,7 +66,8 @@ async function bygg() {
     skimmer: [[R[3] + 1.8, R[3] + 2.6], [R[3] + 3.9, R[3] + 4.7]],   // glansen sveper över fasetterna två gånger
     fortjust: KLIPP[5][0],                       // R4: Lage skrattar
     nBlink: R[4] + 0.3, lBlink: KLIPP[7][0] + 0.3,   // R5: långsamma blinkningar
-    svar: R[5] + 0.6,                            // R6: stjärnan blinkar tillbaka
+    svar: R[5] + 0.6,
+    blinka2: R[4] + 0.3,                         // R5 (QA 2026-11-27): stjärnan blinkar ^ ^ och tindrar på andra "Blinka"                            // R6: stjärnan blinkar tillbaka
   };
   N.kudde.pose({ x: 565, y: m.FILT_Y - 4, h: 80, synlig: true });
 
@@ -76,6 +77,7 @@ async function bygg() {
   kit.ljud('glitter', t(T.vandra[0]), { vol: 0.6 });
   for (const d of T.diamant) kit.ljud('tindra', t(d), { vol: 0.55 });   // klang när stjärnan blir diamant och tillbaka (tills ett eget diamantljud finns)
   kit.ljud('pling', t(T.svar + 0.1), { vol: 0.8 });
+  kit.ljud('pling', t(T.blinka2 + 0.1), { vol: 0.6 });
   kit.kor(render, SLUT - S0, { sang: [S0, SLUT] });
 }
 
@@ -87,10 +89,10 @@ function render(t) {
   // tittar ner på dem efter första blinkningen, tillbaka till 0/0 i slutet (S2)
   const ner = mjuk(del(T.blinka + 0.9, T.blinka + 1.4, s)) * (1 - mjuk(del(SLUT - 2.5, SLUT - 1, s)));
   let sHumor = 'glad', sm = 0, sBlink;
-  if ((s >= T.blinka && s < T.blinka + 0.8) || (s >= T.svar && s < T.svar + 0.8)) sHumor = 'blinkar';
+  if ((s >= T.blinka && s < T.blinka + 0.8) || (s >= T.svar && s < T.svar + 0.8) || (s >= T.blinka2 && s < T.blinka2 + 0.8)) sHumor = 'blinkar';
   else if ((s >= T.ler && s < T.ler + 1.6) || (s >= T.vandra[0] && s < T.fortjust) || (s >= T.svar + 0.8 && s < SLUT - 2.5)) { sHumor = 'skrattar'; sm = 0.5; }
   if (s < S0 + 0.5 || s > SLUT - 1) sBlink = 0;   // ingen självblinkning i skarvarna
-  const tind = [tindra(s, T.blinka), tindra(s, T.svar)];
+  const tind = [tindra(s, T.blinka), tindra(s, T.svar), tindra(s, T.blinka2)];
   let g = Math.max(...tind.map(x => x.g));
   const vq = del(...T.vandra, s);
   g = Math.max(g, 0.5 * Math.sin(Math.PI * del(T.vandra[0], T.vandra[1] + 1.0, s)));   // lite glans medan glimten vandrar

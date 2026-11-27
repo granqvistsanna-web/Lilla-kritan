@@ -152,16 +152,16 @@ function render(t) {
 
   // Lage: tittar upp; sömnig från rad 5 (tunga ögonlock), tittar mot Nicke och blinkar långsamt (20), blundar, myser och sover (21)
   if (t < T.lBlund) {
-    const tung = t < k(7) ? 0 : 0.35;   // ögonlocken blir tunga på klippet till närbilden
+    const tung = 0.5;   // QA 2026-11-27: tunga ögonlock hela tiden han ligger (samma som natt.js liggande)
     const tk = mjuk(del(T.lTitt, T.lTitt + 1.0, t)) * (1 - mjuk(del(k(9) - 0.9, k(9) - 0.1, t)));   // tittar på Nicke och upp igen
     const lb = Math.sin(Math.PI * mjuk(del(T.lBlink, T.lBlink + 1.6, t)));
     const nar = 0.6 * Math.sin(Math.PI * del(k(7) + 0.6, k(7) + 1.5, t));   // en långsam blinkning i närbilden
     N.lage.pose({ ligger: true, humor: 'glad', titt: lerp(0.5, 1, tk), tittY: lerp(-1, 0.3, tk),
-      blink: t < k(7) ? undefined : Math.min(1, tung + (1 - tung) * Math.max(lb, nar)) });
+      blink: Math.min(1, tung + (1 - tung) * Math.max(lb, nar)) });
   } else {
     const bq = del(T.lBlund, T.lBlund + 0.9, t), mys = Math.sin(Math.PI * mjuk(del(T.lMys, T.lMys + 1.5, t)));
     N.lage.pose({ ligger: true, humor: t < T.lBlund + 0.9 ? 'glad' : t < k(10) ? 'njuter' : 'sleep', titt: 0.5, tittY: -1,
-      blink: 0.35 + 0.65 * mjuk(bq), tilt: -2.5 * mys, sy: 1 - 0.02 * mys });
+      blink: 0.5 + 0.5 * mjuk(bq), tilt: -2.5 * mys, sy: 1 - 0.02 * mys });
   }
 
   // flaskan: står bredvid Nicke; hon tar den (handen nere vid den), den följer med upp till munnen (nappen i munnen, lutad −30°),

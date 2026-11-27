@@ -4,4 +4,6 @@
 <script src="/verktyg/blinka.js"></script><script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/produktion/youtube/shorts/jul/lucka.js"></script><script src="/produktion/youtube/shorts/jul/video.js"></script>
 <!-- Hela 035 i stället för tittut med björnen (Sanna 2026-11-22). fran hoppar över julvarianten av bilderboksintrot (3,31 s), scenen börjar på tomt papper. -->
-<script>video.kor({ lucka: 6, film: 'avsnitt/035-katten-hittar-julklappar/film/avsnitt-035.mp4', fran: 3.34 })</script>
+<!-- J06 QA 26/11: avsnitt-035-lucka.mp4 är samma film utan Malins "Hej då! Vi ses snart!" (kalenderns "Vi ses imorgon!" är enda avskedet),
+     och till kapar den när kritirisen just slutits (intro 3,31 + scenens 243,11, 0,25 s innan irisen är helt stängd: hel-video.sh håller sista bilden 0,3 s, så det blir knappt svart), så att det svarta före 3D-ramen blir högst 0,3 s. -->
+<script>video.kor({ lucka: 6, film: 'avsnitt/035-katten-hittar-julklappar/film/avsnitt-035-lucka.mp4', fran: 3.34, till: 246.42 })</script>

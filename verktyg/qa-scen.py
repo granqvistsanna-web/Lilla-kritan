@@ -170,6 +170,8 @@ def rost_rader(rj):
             rid, dur = ROST[nr - 1][0], ROST[nr - 1][1]
             f = mapp and os.path.join(mapp, rid + '.m4a')
             if f and os.path.exists(f): dur = langd(f)
+            if del_ and isinstance(del_[0], dict):               # [nr, tid, {"ss": …, "langd": …}] (040 rad 38)
+                del_ = [del_[0].get('ss', 0), del_[0].get('langd')]
             ss = del_[0] if del_ else 0                          # [nr, tid, ss, längd]: en del av repliken (045 rad 16 och 29)
             dur = del_[1] if len(del_) > 1 and del_[1] else dur - ss
             rep.append((t + o, dur, rid, r['id'], r['d'], o))

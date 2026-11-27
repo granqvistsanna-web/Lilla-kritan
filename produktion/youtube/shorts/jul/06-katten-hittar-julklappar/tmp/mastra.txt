@@ -1,0 +1,1 @@
+06-katten-hittar-julklappar.mp4: -15.20 LUFS, topp -0.83 dBTP  ->  -16.17 LUFS, topp -2.59 dBTP

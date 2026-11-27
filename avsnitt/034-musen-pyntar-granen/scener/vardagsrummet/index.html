@@ -16,6 +16,7 @@
      spegelbilden i kulan (musen ritad en gång till, liten, i en cirkel), skimret, glittret. -->
 <script src="/verktyg/blinka.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>   <!-- kritan som i alla avsnitt (QA 2026-11-27) -->
 <script type="module">
 import { RADER, ROST, L as LANGD, ord, MUS_FIL, R3 } from '/avsnitt/034-musen-pyntar-granen/storyboard/rader.mjs';
 const PROV = JSON.parse(new URLSearchParams(location.search).get('prov') || '{}');
@@ -31,7 +32,7 @@ const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 // --- Bilderna och måtten (scenen 1920 × 1080) ---------------------------------------------------------------------------
 const PLATTA = A + 'bakgrunder/brasrummet-rent/brasrummet-rent.jpeg';   // brasrummet utan krans och strumpor (Sanna 2026-11-21: röd 1; förut vardagsrummet-v2)
 const ELD = { x: 323, y: 766 }, OPPNING = [181, 545, 285, 228];   // spisens öppning i scenen (uppmätt)
-const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
+const KRITA = KRITAN.BILD;   // kritan, vinklarna, svajet och linjen ur verktyg/kritan-ritar.js (QA 2026-11-27)
 const GRAN = { bild: A + 'rekvisita/julgran/cut/julgran.png', fot: [512, 951], s: PROV.gs ?? 0.82, x: 1450, y: 829 };   // stammen ner i skålen
 const FOT = { bild: A + 'rekvisita/julgransfot/cut/julgransfot-tunn.png', fot: [512, 801], s: 0.30, x: 1450, y: 935 };
 const KULA = { bild: A + 'rekvisita/julkula/cut/julkula.png', ogla: [511, 160], botten: 950, mitt: [512, 620], r: 330, s: PROV.ks ?? 0.13 };
@@ -278,22 +279,22 @@ function bana(pts, nyckel = pts) {
   return BANOR.get(nyckel);
 }
 const banPunkt = (b, f) => { const q = b.el.getPointAtLength(kl(f) * b.L); return [q.x, q.y]; };
-const ritTakt = f => 0.5 * kl(f) + 0.5 * mjuk(f);
-// konturen och sedan detaljerna (sakens det), en i taget. kk 0–1. Ritar i 'kontur', returnerar spetsen i scenen medan det ritas.
-function ritKontur(pts, det, kk, [x0, y0], s, farg, bredd, op) {
-  const delar = det?.length ? [[pts, 0.72], ...det.map(d => [d, 0.28 / det.length])] : [[pts, 1]];
-  let a = 0, spets = null, sist = null, h = '';
-  for (const [i, [d, w]] of delar.entries()) { const u = kl((kk - a) / w); a += w; if (u <= 0) break;
-    const b = bana(d, d), r = ritTakt(u), q = banPunkt(b, 1); sist = [x0 + q[0] * s, y0 + q[1] * s];
-    h += `<path d="${b.d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(bredd * (i ? 0.65 : 1) / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${r.toFixed(4)} 2"/>`;
-    if (u < 1) { const p = banPunkt(b, r); spets = [x0 + p[0] * s, y0 + p[1] * s]; } }
-  lagg('kontur', `<g filter="url(#vax)" opacity="${op.toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})">${h}</g></g>`);
-  return kk > 0 && kk < 1 ? spets ?? sist : null;
+// konturen och sedan detaljerna (sakens det) med ritBana (verktyg/kritan-ritar.js): ett streck per drag, kritan glider i en båge
+// mellan strecken. kk 0–1. Ritar i 'kontur', returnerar { spets, slut } i scenen (spets null när inget ritas just nu).
+function ritKontur(pts, det, kk, [x0, y0], s, bredd, op) {
+  const drag = [typeof pts === 'string' ? pts : bana(pts).d, ...(det || []).map(d => typeof d === 'string' ? d : bana(d).d)];
+  const r = ritBana(drag, kl(kk), { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(bredd / s)}" stroke-linecap="round" stroke-linejoin="round"` });
+  lagg('kontur', `<g filter="url(#vax)" opacity="${op.toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})">${r.html}</g></g>`);
+  const i = p => [x0 + p[0] * s, y0 + p[1] * s];
+  return { spets: kk > 0 && kk < 1 ? i(r.spets) : null, slut: i(r.slut), start: i(r.start) };
 }
-const kritaVanta = ([x, y], tw) => [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6)], 125 + 4 * Math.sin(tw * 1.3)];
-const krita = ([x, y], v = 125, s = 0.33 * (KAM && KAM[0] > 1.5 ? 0.7 : 1)) =>
-  lagg('krita', `<image href="${KRITA}" width="755" height="265" transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
-function ritKrita(p, v = 125, redan = false, s) {
+// väntplatsen: kritan svajar lugnt med 140° (KRITAN.SVAJ); dit glider den i en båge från sista strecket (som kritaFas)
+const kritaVanta = ([x, y], tw) => { const S = KRITAN.SVAJ; return [[x + S.ax * Math.sin(tw * S.fx), y + S.ay * Math.sin(tw * S.fy)], KRITAN.VINKEL_VANTAR + S.av * Math.sin(tw * S.fv)]; };
+const kritaTillVanta = (slut, vant, tw, s) => { const [p, v] = kritaVanta(vant, tw), m = mjuk(tw / 0.6);
+  krita([lerp(slut[0], p[0], m), lerp(slut[1], p[1], m) - 60 * Math.sin(Math.PI * m)], lerp(KRITAN.VINKEL_RITAR, v, m), s); return [p, v]; };
+const kritSkala = () => kritaSkala(KAM ? KAM[0] : 1);
+const krita = ([x, y], v = KRITAN.VINKEL_RITAR, s = kritSkala()) => lagg('krita', kritaBild(x, y, { s, v }));
+function ritKrita(p, v = KRITAN.VINKEL_RITAR, redan = false, s) {
   if (!redan) krita(p, v, s);
   const z = KAM ? KAM[0] : 1, e = 1 / Math.sqrt(z); let h = '';
   for (let j = 0; j < 8; j++) { const b = Math.floor(TT * 14) - j, age = TT - b / 14, r = slump(b * 7.13), r2 = slump(b * 3.31 + 1.7), op = Math.max(0, 0.7 - age * 1.4);
@@ -305,14 +306,15 @@ function ritKrita(p, v = 125, redan = false, s) {
 }
 // kritan ritar en sak på golvet: konturen (ritad 0–1), sedan fylls den riktiga bilden i inifrån (fyll 0–1). sak = { bild, pts,
 // fot: bildens punkt som står på (x, y), s, farg, filter }. Returnerar inget; ritar i lagren kontur, golvsak och krita.
+const vantPlats = ([x, y]) => [x + 95, y - 165];   // till höger om saken, bort från musen (QA 2026-11-27)
 function ritSak(sak, [x, y], { ritad = 1, fyll = 1, vanta = null }) {
   const x0 = x - sak.fot[0] * sak.s, y0 = y - sak.fot[1] * sak.s;
-  let spets = null;
-  if ((ritad < 1 || fyll < 1) && ritad > 0) spets = ritKontur(sak.pts, sak.det, ritad, [x0, y0], sak.s, sak.farg, 8, 1 - del(0, 0.5, fyll));
+  let rb = null;
+  if ((ritad < 1 || fyll < 1) && ritad > 0) rb = ritKontur(sak.pts, sak.det, ritad, [x0, y0], sak.s, KRITAN.BRED * 0.75, 1 - del(0, 0.5, fyll));
   if (fyll > 0) { $('cirkel-sak').setAttribute('cx', 512); $('cirkel-sak').setAttribute('cy', 512); $('cirkel-sak').setAttribute('r', fyll >= 1 ? 3000 : f1(760 * fyll));
     lagg(sak.lager || 'golvsak', `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${sak.s})"${sak.filter ? ` filter="url(#${sak.filter})"` : ''}><image href="${sak.bild}" width="${sak.w || 1024}" height="${sak.h || 1024}" clip-path="url(#fyll-sak)"/>${sak.dekor ? `<g clip-path="url(#fyll-sak)">${sak.dekor}</g>` : ''}</g>`); }
-  if (spets) ritKrita(spets, 125, false, 0.33 * 0.7);
-  else if (vanta != null) { const [p, v] = kritaVanta([x - 50, y - 160], vanta); krita(p, v, 0.33 * 0.7); }
+  if (rb?.spets) ritKrita(rb.spets, KRITAN.VINKEL_RITAR, false, kritSkala());
+  else if (vanta != null && rb) kritaTillVanta(rb.slut, vantPlats([x, y]), vanta, kritSkala());
 }
 
 // --- Ritintrot: kritan ritar en röd julkula (Sanna 2026-11-21 kväll: "måla inte musen måla en julkula"). Konturen i ett lugnt drag
@@ -321,17 +323,17 @@ const KT = 9.4,   /* konturen ca 6,8 s, detaljerna 2,6 s (2026-11-22) */ IK = { 
 function ritaPapper(st, t) {
   papper(); kamera(st.kam);
   const s = IK.s, x0 = IK.mitt[0] - KULA.mitt[0] * s, y0 = IK.mitt[1] - KULA.mitt[1] * s, iP = p => [x0 + p[0] * s, y0 + p[1] * s];
-  const b = bana(KONT.kula, KONT.kula), kk = kl(st.kontur), KS = 0.45;
-  const spets = kk > 0 ? ritKontur(KONT.kula, KULA.det, kk, [x0, y0], s, '#3a2a24', 15, 1 - del(0.5, 1, st.fyll)) : null;
+  const b = bana(KONT.kula, KONT.kula), kk = kl(st.kontur), KS = KRITAN.SKALA_PAPPER;
+  const rb = kk > 0 ? ritKontur(KONT.kula, KULA.det, kk, [x0, y0], s, KRITAN.BRED * 1.25, 1 - del(0.5, 1, st.fyll)) : null, spets = rb?.spets;
   if (st.fyll > 0) { $('cirkel-sak').setAttribute('cx', KULA.mitt[0]); $('cirkel-sak').setAttribute('cy', KULA.mitt[1]); $('cirkel-sak').setAttribute('r', st.fyll >= 1 ? 3000 : f1(560 * st.fyll));
     lagg('golvsak', `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><image href="${KULA.bild}" width="1024" height="1024" clip-path="url(#fyll-sak)"/><g clip-path="url(#fyll-sak)">${KULA.dekor}</g></g>`); }
   const start = iP(banPunkt(b, 0)), vant = [IK.mitt[0] + 300, IK.mitt[1] - 60];
   if (st.inn != null && kk <= 0) {   // kritan glider in och landar där konturen börjar
     const u = mjuk(st.inn / 1.6), w = kritaVanta([start[0] + 140, start[1] + 10], st.inn), sist = mjuk((st.inn - 2.1) / 0.4);
     krita(st.inn < 1.6 ? [lerp(2200, start[0] + 140, u), lerp(-80, start[1] + 10, u)] : [lerp(w[0][0], start[0], sist), lerp(w[0][1], start[1], sist)], lerp(150, 125, u), KS);
-  } else if (spets) { krita(spets, 125, KS); ritKrita(spets, 125, true); }
-  else if (st.vanta >= 0) { const [p, v] = kritaVanta(vant, st.vanta); krita(p, v, KS); }
-  else if (kk >= 1 && st.fyll < 1) { const u = del(0, 0.8, st.fyll); krita([lerp(vant[0], vant[0] + 700, u), lerp(vant[1], vant[1] - 600, u)], 135, KS); }
+  } else if (spets) { krita(spets, KRITAN.VINKEL_RITAR, KS); ritKrita(spets, KRITAN.VINKEL_RITAR, true); }
+  else if (st.vanta >= 0 && rb) kritaTillVanta(rb.slut, vant, st.vanta, KS);
+  else if (kk >= 1 && st.fyll < 1) { const u = del(0, 0.8, st.fyll), [p, v] = kritaVanta(vant, 0); krita([lerp(p[0], 2100, mjuk(u)), lerp(p[1], 60, mjuk(u))], v, KS); }   // flyger ut uppe till höger
   if (st.glitter > 0.01) skimmer(IK.mitt[0], IK.mitt[1] - 20, st.glitter, t, 3.0);
 }
 
@@ -690,8 +692,10 @@ function ritaRum(st, t) {
     if (st.rit.inn != null) { const [z, tx, ty] = KAM, x0 = var_[0] - sak.fot[0] * sak.s, y0 = var_[1] - sak.fot[1] * sak.s,
       p0 = banPunkt(bana(sak.pts, sak), 0), mal = [x0 + p0[0] * sak.s, y0 + p0[1] * sak.s], fr = [mal[0] + 180 / z, (-90 - ty) / z],
       u = 1 - (1 - kl(st.rit.inn)) ** 3;
-      krita([lerp(fr[0], mal[0], u), lerp(fr[1], mal[1], u) - 30 * Math.sin(Math.PI * u) ], lerp(150, 125, u), 0.33 * 0.7); }
-    if (st.rit.ut != null && st.rit.fyll > 0) { const u = del(0.2, 1.4, st.rit.ut); if (u < 1) krita([lerp(var_[0] - 50, -300, u), lerp(var_[1] - 160, -200, u)], 125, 0.33 * 0.7); } }
+      krita([lerp(fr[0], mal[0], u), lerp(fr[1], mal[1], u) - 30 * Math.sin(Math.PI * u) ], lerp(150, KRITAN.VINKEL_RITAR, u), kritSkala()); }
+    // QA 2026-11-27: ut uppe till höger (förut uppe till vänster, rakt över musens ansikte)
+    if (st.rit.ut != null && st.rit.fyll > 0) { const u = del(0.2, 1.4, st.rit.ut), [p, v] = kritaVanta(vantPlats(var_), st.rit.ut), [z, tx, ty] = KAM;
+      if (u < 1) krita([lerp(p[0], (2100 - tx) / z, u), lerp(p[1], (60 - ty) / z, u)], v, kritSkala()); } }
   if (st.glitter > 0.01) { const v = st.glitterVar, p = v === 'stj' ? [STJ_GOLV[0], STJ_GOLV[1] - 60] : v === 'pall' ? [PALL.x + 40, GOLV - 140] : [KG[v][0], KG[v][1] - 45]; skimmer(p[0], p[1], st.glitter, t, 1.4); }
   if (st.gomdSkimmer > 0.01) skimmer(GOMD[0] + 10, GOMD[1] - 45, st.gomdSkimmer, t, 1.2);
   if (st.glimt > 0.01) for (const n of st.glimtVar === 'alla' ? ['rod', 'gul', 'bla'] : [st.glimtVar]) { const p = KT_[n]; skimmer(p[0], p[1] + 50, st.glimt, t + n.length, 0.9); }

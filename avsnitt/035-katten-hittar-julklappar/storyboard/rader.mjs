@@ -36,7 +36,12 @@ export const ROST = [
   ['32b-saga-god-jul', 'Kan du säga god jul?', 1.78],
   ['33-god-jul', 'God jul!', 1.09],
   ['34-hej-da-katten', 'Hej då, katten! Hej då, paketen!', 2.81],
-  ['35-vi-ses-snart', 'Hej då! Vi ses snart!', 2.56]];
+  ['35-vi-ses-snart', 'Hej då! Vi ses snart!', 2.56],
+  // J06 QA 26/11: replik 30 delad i tre (klippt ur 30-ett-tva-tre i tystnaderna 1,30 och 3,30 s), så att varje tal kommer när katten
+  // lagt sitt paket på pulkan. Talet börjar 0, 0,19 och 0,23 s in i filen.
+  ['30a-ett-paket', 'Ett paket …', 1.30],
+  ['30b-tva-paket', 'två paket …', 1.60],
+  ['30c-tre-paket', 'tre paket!', 1.56]];
 
 const r2 = x => Math.round(x * 100) / 100;
 export const L = n => ROST[n - 1][2];
@@ -44,6 +49,12 @@ export const L = n => ROST[n - 1][2];
 export const GRAV = { 20: [1.42, 2.57], 21: [1.24, 2.57], 25: [0.0, 1.24] };
 export const PAKET = { 20: 3.85, 21: 3.92, 25: 2.57 };
 export const TRE = [0.5, 2.2, 4.0];
+// Rad 25 (J06 QA 26/11): katten lastar paketen själv. LANDAR = när paket 1, 2, 3 vilar på pulkan (sekunder in i raden), ur
+// scenens LAST (index.html räknar dem ur avstånden och varnar om de inte stämmer). TAL = när Malin säger talet (0,3 s efter).
+export const LANDAR = [3.968, 7.971, 12.439];
+export const TAL = LANDAR.map(t => r2(t + 0.3));
+// Rad 26: katten tar snöret (GREPP) och drar pulkan (DRA, DRA1), sekunder in i raden; ur scenens DRA på samma sätt.
+export const DRAR = { grepp: 2.0, dra: 2.74, dra1: 5.04 };
 
 // Kattens röst: mjau-gullig, en känsla per nummer (format/bilderbok.md): 1 hej, 2 förtjust, 3 fniss, 4 mysig suck, 5 nyfiken,
 // 6 trumpen, 7 pratar, 8 hej då.
@@ -88,8 +99,10 @@ export const RADER = [
   { id: '23b', d: 7.0, plats: 'Närbild snön', bild: 'Kritan ritar pulkan (4 s), gisspaus 3 s', ljudtext: 'kritan ritar' },
   { id: '23c', d: 0.6 + L(28) + 0.6, plats: 'Närbild snön', malin: [[28, 0.6]], ljud: [['glitter/glitter-2', 0.0]], bild: 'Pulkan fylls i', ljudtext: 'glitter' },
   { id: '24', d: 0.3 + L(29) + 1.6, plats: 'Halvbild', malin: [[29, 0.3]], ljud: [['mjau-aah/mjau-aah-1', 0.6 + L(29)]], bild: 'Katten nickar, kritan flyger ut', ljudtext: 'förtjust mjau' },
-  { id: '25', d: 0.6 + L(30) + 1.6, plats: 'Helbild', malin: [[30, 0.6]], ljud: TRE.map((t, i) => ['duns/duns-' + (i + 1), 0.6 + t + 0.1]), bild: 'Paketen hoppar upp på pulkan, ett i taget på orden', ljudtext: 'duns ×3' },
-  { id: '26', d: 0.6 + L(31) + 2.6, plats: 'Helbild', malin: [[31, 0.6]], ljud: [['mjau-puttar/mjau-puttar-1', 0.9 + L(31)], ['fagel-pip/fagel-pip-2', 0.6 + L(31) + 1.55]], bild: 'Katten drar pulkan tre steg åt höger, fågeln flyger ner på paketen', ljudtext: 'tass, förtjust mjau' },
+  { id: '25', d: TAL[2] - 0.23 + L(38) + 0.9, plats: 'Vid bild', malin: [[36, TAL[0]], [37, TAL[1] - 0.19], [38, TAL[2] - 0.23]], ljud: LANDAR.map((t, i) => ['duns/duns-' + (i + 1), t - 0.03]),
+    bild: 'Katten bär paketen till pulkan, ett i taget, och lägger dem på sitsen; Malin räknar när varje paket landat', ljudtext: 'tass, duns ×3' },
+  { id: '26', d: DRAR.dra + 0.4 + L(31) + 0.65, plats: 'Vid bild', malin: [[31, DRAR.dra + 0.4]], ljud: [['mjau-puttar/mjau-puttar-1', DRAR.dra + 0.55 + L(31)], ['fagel-pip/fagel-pip-2', DRAR.dra + 1.6]],
+    bild: 'Katten tar snöret och drar pulkan några lugna steg åt höger, fågeln flyger ner på paketen', ljudtext: 'tass, förtjust mjau' },
   { id: '27', d: 0.6 + L(32) + 4.0, plats: 'Halvbild', malin: [[32, 0.6]], ljud: [['mjau-prat/mjau-prat-1', 2.6 + L(32)]], bild: 'Tittar på oss, mjauar som om hon säger god jul', ljudtext: 'pratar-mjau' },
   { id: '28', d: L(33) + 1.4, plats: 'Halvbild', malin: [[33, 0.0]], ljud: [['mjau-trill/mjau-trill-2', L(33) + 0.2]], bild: 'Litet glatt skutt', ljudtext: 'förtjust mjau' },
   { id: '29', d: 0.6 + L(34) + 1.6, plats: 'Halvbild', malin: [[34, 0.6]], ljud: [[MJ.hejda, 0.9 + L(34)]], bild: 'Vinkar, pulkan bredvid', ljudtext: 'hej då-mjau' },

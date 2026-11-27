@@ -74,12 +74,12 @@ const TX0 = rb.TOPP[0], TY = rb.TOPP[1], [[FX, FY], [TOX, TOY]] = rb.STEGE, X = 
 const PLAN = {
   B: [[0, 'topp', TX0, TX0], [49.3, 'ak', X.B], [52.0, 'flyt', X.B],
       [58.6, 'topp', TX0, TX0], [59.2, 'ak', X.B], [61.4, 'flyt', X.B],   // "Brunt är den godaste färgen": klipp till toppen, åker igen (Sanna 2026-11-09, runda 5)
-      [93, 'vada', X.B, FX], [96.5, 'klattra'], [99.5, 'topp', TOX, TX0], [104.6, 'ak', X.B], [106.6, 'flyt', X.B],
+      [93, 'vada', X.B, FX], [96.5, 'klattra'], [99.5, 'topp', TOX, TX0], [103.6, 'ak', X.B], [105.8, 'flyt', X.B],   // QA 2026-11-27: sätter sig på "mums" och åker på "Åka rutschkana" (104), syns före och efter närbilden v2-fart3
       [110, 'vada', X.B, 370], [111.6, 'flyt', 370], [123.3, 'vada', 370, X.B], [124.2, 'flyt', X.B],
       [158, 'vada', X.B, FX], [160.5, 'klattra'], [162.5, 'topp', TOX, TX0], [167.0, 'ak', X.B], [169.0, 'flyt', X.B]],
   L: [[0, 'flyt', X.L], [58.6, 'klattra'], [61.0, 'topp', TOX, TX0], [62.0, 'ak', X.L], [64.0, 'flyt', X.L], [67, 'flyt', FX], [75.0, 'klattra', [75.1, 75.8, 77.2, 77.7, 78.1]], [78.5, 'topp', TOX, TX0],   /* QA 2026-11-25: klättrar på "Uppför trappan – ett, två, tre", ett ryck per ord (sångtid ur whisper) */
       [86.0, 'ak', X.L], [89.0, 'flyt', X.L],
-      [97, 'vada', X.L, FX], [100, 'klattra', [100.4, 101.3, 104.75, 104.95, 105.15, 105.35]], [105.6, 'topp', TOX, TX0], [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
+      [102.8, 'vada', X.L, FX], [104.4, 'klattra', [104.75, 104.95, 105.15, 105.35]], [105.6, 'topp', TOX, TX0],   // QA 2026-11-27: väntar utanför toppbilden (var kapat vid nederkanten), vadar fram i helbilden och klättrar efter grodan [106.6, 'ak', X.L], [108.3, 'flyt', X.L],
       [110, 'vada', X.L, 600], [111.6, 'flyt', 600], [123.3, 'vada', 600, X.L], [124.2, 'flyt', X.L],
       [158.4, 'vada', X.L, FX - 170], [160.9, 'flyt', FX - 170], [165.0, 'vada', FX - 170, FX], [165.6, 'klattra'], [168.6, 'topp', TOX, TX0],   // i kö: på stegen tills grodan åkt (QA 2026-11-09)
       [169.2, 'ak', X.L], [170.9, 'flyt', X.L]],
@@ -124,7 +124,7 @@ const LYSSNAR = [[55, 55.95], [57, 57.95], [126, 127], [129.2, 130], [131, 132],
 const KLAPP = [135.2, 150], RING = [150, 151], HOPPA = [151, 151.5], PLASK = 152.4, DANSA = [152.8, 158];
 const VINK = { L: [0, 0], alla: [187, 197.4] };
 const KAST = [[117.9, 118.6, 'B'], [119.4, 120.1, 'L']], AT = { B: 121.6, L: 121.9 };
-const LANDA = [[52.0, X.B], [61.4, X.B], [64.0, X.L], [89.0, X.L], [89.6, X.L + 25], [90.2, X.L - 20], [106.6, X.B], [108.3, X.L], [123.8, X.I],
+const LANDA = [[52.0, X.B], [61.4, X.B], [64.0, X.L], [89.0, X.L], [89.6, X.L + 25], [90.2, X.L - 20], [105.8, X.B], [108.3, X.L], [123.8, X.I],
   [PLASK, X.B], [PLASK + 0.05, X.L], [PLASK + 0.1, X.I], [169.0, X.B], [170.9, X.L], [172.6, X.I]];
 
 // arkets hopp (grodans uttryck.html, ROR.hoppa): huk, sträckt i luften med armarna ut och fötterna indragna, landningen trycker ihop
@@ -189,7 +189,7 @@ const STEG = [(FX + TOX) / 2 - 60, (FY + TOY) / 2 - 100, 1.36];   /* 1,36: träd
 const DANS = [(X.B + X.I) / 2 - 10, 600, 2.05];   // tätare på de tre som dansar (Sanna 2026-11-09, runda 5: "closer crop to animals dancing")
 const KAM = [[0, HEL], [44.6, rb.TOPPBILD],   // scenen börjar på "Med chokladträd" (0:42.4) i helbild; vägens moln har redan zoomat in på landet
   [48.6, HEL], [54.4, NARB], [58.6, rb.TOPPBILD], [62.0, HEL], [63.8, ANS(X.L)], [66.8, HEL], [72.0, [X.B - 20, 600, 1.8]], [75.0, STEG], [78.5, rb.TOPPBILD], [81.8, TOPPNARA], [85.2, HEL], [87.4, [X.L + 80, 560, 1.45]],
-  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [96.5, STEG], [99.5, rb.TOPPBILD], [104.4, HEL], [106.4, ANS(X.B, 2.0)], [108.6, HEL], [110.6, [360, 500, 1.5]], [111.2, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
+  [90.8, ANS(X.L, 1.9)], [92.8, HEL], [96.5, STEG], [99.5, rb.TOPPBILD], [103.0, HEL], [106.4, ANS(X.B, 2.0)], [108.6, HEL], [110.6, [360, 500, 1.5]], [111.2, IGGE], [116.6, [360, 500, 1.5]], [121.2, [480, 576, 1.9]],
   [123.4, TRE], [125.8, ANS(X.B)], [127.6, TRE], [128.9, ANS(X.L)], [130.6, ANS(X.I)], [132.2, TRE], [157.4, HEL], [160.6, STEG], [162.3, rb.TOPPBILD], [166.8, HEL],
   [172.4, DANS], [177.2, ANS(X.B, 2.0)], [180.6, DANS], [183.4, [420, 560, 1.15]], [186.6, [500, 576, 1.8]], [194.6, [420, 560, 1.15]]];   // vinket i närbild (QA)
 

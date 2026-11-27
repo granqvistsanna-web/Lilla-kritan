@@ -21,7 +21,7 @@
   '18-vi-tittar-ut-genom': 5.33,   // -3.0 dB
   '19-roda-hus-med-ljus': 3.27,   // -3.0 dB
   '20-och-en-sjo-med': 4.01,   // -3.0 dB
-  '21-titta-dar-aker-nagon': 3.71,   // -3.0 dB
+  '21-titta-dar-aker-nagon': 4.02,   // -3.0 dB, tagning-2 (QA 27/11: förra slutade mitt i "kaninen")
   '22-vinka-till-kaninen': 1.29,   // -3.0 dB
   '23-hej-kaninen': 1.07,   // -3.0 dB
   '24-bussen-stannar-titta-vad': 4.03,   // -3.0 dB, samma tagning som 38 (gamla slutade på "katt?")

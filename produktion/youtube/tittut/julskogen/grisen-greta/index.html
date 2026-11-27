@@ -20,6 +20,7 @@
 <script>
 tittut({
   plats: 'julskogen',
+  badd: 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', baddVol: 0.2,   // QA 2026-11-27 (J12): "xmas soundtrack on low" (Sanna), fyller hålen av tystnad
   platsVol: 0,                    // inget vindljud (Sanna 2026-11-19, J06: "remove winter wind sound", samma för grisen); förr vinterljud-2 på 0,6
   voEfter: 0.5,                   // Sanna 2026-11-19 (J12 0:02): "match VO with animations" – Malin 0,5 s efter att rörelsen landat
   figur: 'grisen-greta-v2',
@@ -30,16 +31,17 @@ tittut({
   start: [1090, 1060],            // hej och hej då: fri snö mellan snögubben och granen
   kant: -1,                       // kommer in och går ut till vänster (björnen till höger)
   saker: {                        // egen komposition (Sanna 2026-11-13: "change up composition and add some new item"), spegelvänd mot björnens
-    pepparkakshus: [560, 945, { h: 460, farg: '#B5743B' }],   // vänster, bakom gången (högst ca 460, annars hoppar figuren över taket)
-    snogubbe:      [160, 990, { h: 560, farg: '#F7F9FC', fil: 'assets/rekvisita/snogubbe/cut/snogubbe.png' }],   // ny stor sak (rekvisita/snogubbe.md, lucka 8), står bara i bild
+    pepparkakshus: [560, 945, { h: 460, farg: '#B5743B', inSida: true }],   // vänster, bakom gången; inSida (QA 2026-11-27, som björnen): går runt hörnet och in bakom, inget högt hopp över taket
+    snogubbe:      [235, 990, { h: 560, farg: '#F7F9FC', fil: 'assets/rekvisita/snogubbe/cut/snogubbe.png' }],   // x 160 → 235 (QA 2026-11-27: klipptes av vid vänsterkanten); ny stor sak (rekvisita/snogubbe.md, lucka 8), står bara i bild
     gran:          [1420, 900, { h: 1450, farg: '#397653' }],  // höger, toppen tydligt utanför bild (Sanna 2026-11-19 J12 1:00: "bigger tree, better crop"; förr h 1100, bara spetsen avskuren)
-    sack:          [1690, 950, { h: 420, farg: '#D9382E' }],   // framför granens nedersta gren till höger
+    sack:          [1690, 950, { h: 420, farg: '#D9382E', inSida: true }],   // inSida: QA 2026-11-27, inget högt hopp in i säcken   // framför granens nedersta gren till höger
   },
   retas: 'oron',                  // första kiken är öronspetsarna (grisens hängöron), sedan huvudet
   svansKik: true,                 // "Jag ser en liten svans…": knorren sticker upp ur säcken
   svansSkala: 3.2,                // knorren större än standard 1,7, annars syntes den knappt ovanför säcken (Sanna 2026-11-13); kräver g.svansSkala i tittut.js
   retasSkala: 0.7,                // kortare kikar där inget sägs, som hunden
   gang: true,                     // v2-gången
+  tydligVink: true,               // QA 2026-11-27: vinkar tydligt tillbaka efter "Kan du vinka till grisen?" (armen syntes knappt)
   mjukaSteg: true, klattra: false,   // mjuka tassteg; går på snön framför sakerna, aldrig uppe på taket (som björnen)
   varv: 2,
   // Sanna 2026-11-19 (som J06 björnen): ingen "Var gömmer du dig nu?", "tittut" lite senare, tätare närbilder, fler reaktionsansikten,

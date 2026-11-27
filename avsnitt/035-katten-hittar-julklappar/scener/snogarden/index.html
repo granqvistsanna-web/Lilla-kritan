@@ -34,8 +34,6 @@
     <filter id="blaare" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="gamma" amplitude="1" exponent="3.2" offset="0"/><feFuncG type="gamma" amplitude="1" exponent="1.75" offset="0"/><feFuncB type="gamma" amplitude="1" exponent="1.05" offset="0"/></feComponentTransfer></filter>
     <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
     <clipPath id="fyll-sak"><circle id="cirkel-sak" r="0"/></clipPath>
-    <filter id="gulblad" color-interpolation-filters="sRGB"><feColorMatrix type="hueRotate" values="52"/><feColorMatrix type="saturate" values="1.3"/><feComponentTransfer><feFuncR type="linear" slope="1.45" intercept="0.04"/><feFuncG type="linear" slope="1.6" intercept="0.06"/><feFuncB type="linear" slope="0.7"/></feComponentTransfer></filter>   <!-- tydligt gult blad (Sanna 22/11: "spaden ser brunaktig ut") -->
-    <clipPath id="spadblad"><rect x="0" y="850" width="1024" height="600"/></clipPath>
     <clipPath id="ovansno"><rect x="-500" y="-2000" width="3000" height="2892"/></clipPath>
   </defs>
   <rect width="1920" height="1080" fill="#FAF8F2"/>
@@ -45,6 +43,7 @@
     <g filter="url(#boil)"><g id="sakerbak"></g></g>
     <g id="kontur"></g>
     <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="hall"></g></g>
     <g filter="url(#boil)"><g id="saker"></g></g>
     <g id="fram" filter="url(#boil)"></g>
     <g id="sno"></g>
@@ -62,14 +61,15 @@
 <script src="/avsnitt/043-grisen-matar-faglarna/fagel.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script type="module">
-import { RADER, ROST, L as LANGD, GRAV, PAKET, TRE } from '/avsnitt/035-katten-hittar-julklappar/storyboard/rader.mjs';
+import { RADER, ROST, L as LANGD, GRAV, PAKET, LANDAR, TAL, DRAR } from '/avsnitt/035-katten-hittar-julklappar/storyboard/rader.mjs';
 const $ = id => document.getElementById(id);
 const A = '/assets/', R_ = A + 'rekvisita/';
 const PLATTA = A + 'bakgrunder/bjorkdungen/bjorkdungen-platt-bla.jpeg';   // blå björkdungen (Sanna 2026-11-22: "more bold blue bg", "maybe the one with björk"); förut snogarden/snogarden.jpeg
 const KRITA = '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/krita-rod-tunn.png', KRITA_SPETS = [742, 132];
 KRITAN.BILD = KRITA;   // samma krita (tunn kant) i introt som i scenen
 const LUVA = R_ + 'tomteluva/cut/tomteluva.png', LUVA_O = [450, 845];
-const PULKA = R_ + 'pulka/cut/pulka.png', PULKA_O = [512, 392];
+// J06 QA 26/11: pulkan, paketen och spaden med tunn kant (1 % av höjden, vita-kanter) ur _bilder/; hålen (under sitsen, snöret) är kvar
+const PULKA = '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/pulka-tunn.png', PULKA_UTAN = '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/pulka-utan-snore-tunn.png', PULKA_O = [512, 392];
 // Ritintrot: kritan ritar paketet (J06 22/11: "draw julklapp istället för katt"), det gröna med röd rosett (paket 1). Bildens botten (y 939) på y 870.
 const PAK_PS = 0.7, PAK_X = 960 - 512 * PAK_PS, PAK_Y = 870 - 939 * PAK_PS, HAL = [960, 600];
 const pakTill = ([x, y]) => [PAK_X + x * PAK_PS, PAK_Y + y * PAK_PS];
@@ -81,9 +81,9 @@ const PAK_DRAG = () => [KONT.paket.d, 'M482 205 a30 30 0 1 0 60 0 a30 30 0 1 0 -
 // tre olika paket med rosetten i bilden (Sanna 2026-11-14: "generate 3 new packages with bows", "a round, wide, tall", mönstrat papper):
 // o = bottenmitten i bildens px, h = lådans höjd under rosetten (så djupt sjunker den i snön)
 const PAKETB = [
-  { bild: R_ + 'paket/cut/paket-hog.png', o: [512, 906], h: 756 },    // trappan: "Något rött i snön" (den röda rosetten)
-  { bild: R_ + 'paket/cut/paket-bred.png', o: [512, 902], h: 633 },   // under granen
-  { bild: R_ + 'paket/cut/paket-rund.png', o: [511, 904], h: 654 }];  // bakom katten: bara den guldgula rosetten syns
+  { bild: '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/paket-hog-tunn.png', o: [512, 906], h: 756 },    // trappan: "Något rött i snön" (den röda rosetten)
+  { bild: '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/paket-bred-tunn.png', o: [512, 902], h: 633 },   // under granen
+  { bild: '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/paket-rund-tunn.png', o: [511, 904], h: 654 }];  // bakom katten: bara den guldgula rosetten syns
 // småsaker i förgrunden (Sanna 2026-11-14: "add some small things to fg"): snötussar, en julkula, en pepparkaksstjärna och en grankvist
 // i snön längst ner; [bild, x, y (fotpunkt i scenen), skala, vridning, bildens botten-px, bildens mitt-x]
 // J06 2026-11-22: julkulan, pepparkaksstjärnan, grankvisten och den gula stjärnan bort ("remove pepparkak", "odd julpynt laying around"); snötussarna kvar
@@ -92,7 +92,8 @@ const FG = [['snotuss/cut/snotuss.png', 150, 1050, 0.13, 0, 804], ['snotuss/cut/
 const ROSETT = R_ + 'rosett/cut/rosett.png', ROSETT_O = [512, 815];
 // spaden (J06 22/11: "better digging animation", "maybe cat needs a spade?"): rekvisita/spade, bladet i guld (hueRotate) så att det
 // inte blir en till röd sak i snön. G = greppet (D-handtaget), SPETS = bladets spets, i bildens px.
-const SPADE = R_ + 'spade/cut/spade.png', SPADE_WH = [1024, 1371], SPADE_G = [512, 160], SPADE_SPETS = [512, 1265], SPADE_K = 0.16 * 430 / 707 / 0.46;   // växer som katten (F, se Mått i scenen)
+// spade-guld-tunn.png: bladet guldfärgat i bilden (samma färg som gulblad-filtret gav) och en vit kant runt, i stället för filtret som gav kanten ett gulgrönt sken (J06 QA 26/11)
+const SPADE = '/avsnitt/035-katten-hittar-julklappar/scener/_bilder/spade-guld-tunn.png', SPADE_WH = [1024, 1371], SPADE_G = [512, 160], SPADE_SPETS = [512, 1265], SPADE_K = 0.16 * 430 / 707 / 0.46;   // växer som katten (F, se Mått i scenen)
 // tassens mitt i armbilden (figurens 1024-ruta), där handtaget sitter
 const HAND = { l: [152, 624], r: [867, 624] };
 const FLINGA = R_ + 'snoflinga/cut/snoflinga.png';
@@ -112,12 +113,12 @@ const GOLV = 880, KROPP = 430, GS = KROPP / 707, F = GS / 0.46;
 // paket 2 står 40 px längre in från holken än förut (1700), så att spaden syns hela grävandet i halvnära
 const C_MITT = 1000, P_X = [310, 1660, Math.round(C_MITT + 250 * F)], P_K = [0.14, 0.12, 0.13].map(k => k * F), P_Y = GOLV + 10;
 const C_TRAPPA = Math.round(P_X[0] + 160 * F), C_GRAN = Math.round(P_X[1] - 160 * F),   // björkarna till vänster, fågelholken till höger
-  C_P3 = Math.round(P_X[2] + 140 * F), C_DRAG = 1580;   // J06 22/11: paket 3 längre bort från katten, katten går dit och gräver
-const PK = 0.42 * F, PULKA_X = 850, PULKA_DRAG = 200;   // pulkan lite till vänster och kortare drag, så att katten inte står framför holkens stolpe
+  C_P3 = Math.round(P_X[2] + 140 * F), C_DRAG = 1530;   // C_DRAG: där katten står när den dragit hem pulkan (rad 26)   // J06 22/11: paket 3 längre bort från katten, katten går dit och gräver
+const PK = 0.42 * F, PULKA_X = 850, PULKA_DRAG = 221;   // PULKA_DRAG: så långt pulkan dras i rad 26 (lika långt som katten går med snöret)   // pulkan lite till vänster och kortare drag, så att katten inte står framför holkens stolpe
 // en punkt på pulkan (pulkbildens px) i scenen, med draget dx
 const iPulka = ([x, y], dx = 0) => [PULKA_X + dx + (x - 512) * PK, GOLV + 8 + (y - 392) * PK];
 // platserna på pulkans sits (i pulkbilden; sitsen y 244, x 291–891): stora till vänster, mellan till höger, lilla ovanpå
-const SITS = [[286, 249], [524, 249], [405, 54]].map(q => iPulka(q)), SPADE_PA = [640, 205];   // spadens grepp när den ligger på pulkan
+const SITS = [[286, 249], [524, 249], [405, 54]].map(q => iPulka(q)), SPADE_PA = [640, 205], SPADE_PA_V = 88;   // spadens grepp när den ligger på pulkan
 const LUVA_SNO = [640, GOLV + 12], LUVA_K = 0.17 * F, LUVA_VANT = [480, GOLV - 250];   // kritans väntplats vänster om luvan, bort från kattens ansikte; ut uppåt vänster
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 // Kameran: de fyra utsnitten ur verktyg/utsnitt.js (format/bildutsnitt.md). tx = var katten står i sidled (1/3, 1/2, 2/3).
@@ -131,6 +132,8 @@ const K_NARA_LUVA = (x, tx = 0.5) => utsnitt('nara', { x, golv: GOLV, kropp: GOL
 // Ingen halv katt vid kanten: spåren och hörnet i snön har katten helt utanför bilden, pulkan likaså.
 const K_SPAR = [3.3, 1660, 862], K_LUVA = [2.6, 416, 800], K_HORN = [2.6, 380, 790],
   K_PULKA = [1.8, PULKA_X - 95, 760];
+// J06 QA 26/11 punkt 2: när pulkan är ritad syns hela pulkan och katten (och alla tre paketen) i samma bild, från "En pulka!" till dragningen
+const K_LADDA = K_HEL;   // hela björkdungen: katten når paketen vid björkarna (x 310) och vid holken (x 1660) utan att klippas av kanten
 const kamMix = (a, b, k) => k < 0.5 ? a : b;
 // rosettnärbilderna (Sanna 22/11: vidare och högre, huvudet och luvan med) är halvnära: katten till vänster, rosetten till höger
 // C_ROS: där katten står när paket 3 ligger bakom den (rad 18–20). Spaden är i vänster tass då (bytet sker innan katten går i rad 18),
@@ -164,8 +167,27 @@ function snofall(t, z) {
 // --- Kattens gång och tassavtryck ------------------------------------------------------------------------------------------------
 // Gångarna: rad, start och slut i raden, från x, till x. Avtrycken ligger kvar där katten gått (ett per steg, 46 px isär).
 const GANGAR = [['1', 0, 2.6, 2200, C_MITT], ['15b', 0.2, 2.8, C_MITT, C_TRAPPA], ['16b', 0.7, 3.5, C_TRAPPA, C_GRAN],
-  ['18', 0.6, 2.8, C_GRAN, C_ROS], ['21', 0.1, 1.2, C_ROS, C_P3], ['26', 0.2, 0.2 + 2.4, C_P3, C_DRAG]];   // gången börjar före "Nu kan katten dra hem paketen" (Malin 0,4 s efter handlingen)
+  ['18', 0.6, 2.8, C_GRAN, C_ROS], ['21', 0.1, 1.2, C_ROS, C_P3]];
 const STEG = 46 * F;
+// --- Rad 25 (J06 QA 26/11 punkt 3): katten lastar paketen själv, ett per siffra. Den går till paketet, lyfter det till magen med båda
+// tassarna (0,8 s), bär det bakom pulkan och sätter ner det på sitsen framför sig (0,8 s). Malin säger talet 0,3 s efter att paketet
+// landat (rader.mjs: LANDAR). Ordning: det breda (vid holken), det höga (vid björkarna), det runda överst. Pulkan är närmare oss än
+// katten (medarna lägre), så katten går bakom den och benen skyms. Inga hopp, inget snurr; gången är riggens trippgång.
+const LAST_V = 400, LAST_P = 0.8, LAND = 0.5, LAST_UT = 1160;   // gångfart px/s, plocka/lägga s, paketet vilar på pulkan 0,5 s in i läggningen
+const LAST = (() => { const ut = []; let t = 0.3, x = C_P3;
+  const ga = x1 => { const d = Math.abs(x1 - x) / LAST_V; ut.push({ typ: 'ga', a: t, b: t + d, x0: x, x1 }); t += d; x = x1; };
+  for (const i of [1, 0, 2]) { ga(P_X[i]); ut.push({ typ: 'plocka', a: t, b: t + LAST_P, i, x }); t += LAST_P;
+    ga(SITS[i][0]); ut.push({ typ: 'lagg', a: t, b: t + LAST_P, i, x }); t += LAST_P; }
+  t += 0.2; ga(LAST_UT);   // går åt sidan efter det sista paketet, så att ansiktet inte står bakom det runda paketet
+  ut.slut = t; ut.x = x; return ut; })();
+const lastSteg = (typ, i) => LAST.find(s => s.typ === typ && s.i === i);
+// --- Rad 26 (J06 QA 26/11 punkt 1): katten går till pulkans nos, böjer sig och tar snörets ände, rätar på sig och drar pulkan
+// några lugna steg åt höger. Snöret i kod bara medan katten håller det (pulkbilden utan snöre då), i samma guld och tjocklek som bildens.
+const HAND_R_X = 867, SNORE_ANDE = iPulka([948, 396]), SNORE_FAST = [790, 288];   // snörets ände i bildens ögla (på snön) och var det sitter i nosen
+const DRA = { x0: LAST.x, xg: Math.round(SNORE_ANDE[0] + (HAND_R_X - 512) * GS), ga: 0.2, plock: 0, dra: 0 };
+DRA.ga1 = DRA.ga + (DRA.xg - DRA.x0) / LAST_V; DRA.plock = DRA.ga1 + 0.05; DRA.grepp = DRA.plock + 0.46; DRA.dra = DRA.plock + 1.2; DRA.dra1 = DRA.dra + 2.3;
+for (const s of LAST) if (s.typ === 'ga') GANGAR.push(['25', s.a, s.b, s.x0, s.x1]);
+GANGAR.push(['26', DRA.ga, DRA.ga1, DRA.x0, DRA.xg], ['26', DRA.dra, DRA.dra1, DRA.xg, C_DRAG]);
 function gangX(id, tl) { const g = GANGAR.find(g => g[0] === id); if (!g) return null; const u = kl((tl - g[1]) / (g[2] - g[1]));
   return { x: lerp(g[3], g[4], u), dir: Math.sign(g[4] - g[3]), gar: u > 0 && u < 1, vag: Math.abs(g[4] - g[3]) * u }; }
 function tassar(t) {
@@ -178,9 +200,34 @@ function tassar(t) {
   lagg('bak', h);
 }
 // en lugn trippgång: benen lyfts i tur och ordning, kroppen gungar lite, armarna svänger (riggens gang)
-function trippa(p, vag, dir) {
-  const ph = vag / STEG * Math.PI, s = Math.sin(ph);
-  return { ...p, rikt: dir, gang: 1, sving: s, benY: [-14 * Math.max(0, s), -14 * Math.max(0, -s)], lyft: -4 * Math.abs(s), svans: 9 * Math.sin(ph - 0.7) };   // svansen släpar efter stegen (J06 0:26 "polish cat tail")
+// e 0–1 tonar stegen in och ut (kuvert), rikt och gang kan sättas (gang 0: armarna följer posen, t.ex. när katten bär eller drar)
+function trippa(p, vag, dir, e = 1, rikt = dir * e, gang = e) {
+  const ph = vag / STEG * Math.PI, s = Math.sin(ph) * e;
+  return { ...p, rikt, gang, sving: s, benY: [-14 * Math.max(0, s), -14 * Math.max(0, -s)], lyft: -4 * Math.abs(s), svans: 9 * Math.sin(ph - 0.7) };   // svansen släpar efter stegen (J06 0:26 "polish cat tail")
+}
+
+// stegen tonas in och ut på 0,15 s i början och slutet av en gång, så att benen inte hoppar när gången börjar eller slutar
+const kuvert = (tl, a, b) => mjuk(Math.min((tl - a) / 0.15, (b - tl) / 0.15));
+// katten i rad 25 (LAST): går, plockar upp (huk, tassarna fram till magen och ner till paketet), bär framför magen (gang 0, armarna
+// håller), lägger (huk, tassarna ner; det runda lyfts först), och efter det sista en glad stund
+function lastKatt(tl) {
+  const s = [...LAST].reverse().find(s => tl >= s.a), glad = ANS('glad'), ner = ANS('nyfiken', { titt: [0, 12] });
+  if (!s) return { x: C_P3, f: glad, p: POS({ rikt: -0.3 }) };
+  const bar = i => i != null && tl >= lastSteg('plocka', i).b && tl < lastSteg('lagg', i).a;
+  const haller = [0, 1, 2].find(bar), BAR = { fram: [1, 1], armar: [-105, -105] };
+  if (s.typ === 'ga') { const u = kl((tl - s.a) / (s.b - s.a)), x = lerp(s.x0, s.x1, u), dir = Math.sign(s.x1 - s.x0), e = kuvert(tl, s.a, s.b);
+    const f = ANS('glad', { titt: [12 * dir * e, 4] });
+    if (haller == null) return { x, f, p: trippa(POS(), Math.abs(x - s.x0), dir, e) };
+    return { x, f, p: { ...trippa(POS(), Math.abs(x - s.x0), dir, e, 0.4 * dir * e, 0), ...BAR, sving: 0 } }; }
+  const u = (tl - s.a) / LAST_P;
+  if (s.typ === 'plocka') { const sq = del(0, 0.4, u) * (1 - del(0.5, 0.95, u)), fr = del(0, 0.3, u);
+    return { x: s.x, f: L.blanda(ner, glad, del(0.6, 0.9, u)), p: POS({ fram: [fr, fr], armar: [-105 * fr, -105 * fr], armY: 210 * sq, sank: 34 * sq, strack: -0.06 * sq, bred: 0.03 * sq }) }; }
+  if (s.typ === 'lagg' && tl < s.b) { const top = s.i === 2, sq = del(0.05, 0.45, u) * (1 - del(0.62, 0.95, u)), fr = 1 - del(0.62, 0.95, u);
+    const lo = top ? -45 * del(0.05, 0.3, u) * (1 - del(0.35, 0.6, u)) : 0;
+    return { x: s.x, f: L.blanda(ner, ANS('jatteglad'), del(0.6, 0.9, u)), p: POS({ fram: [fr, fr], armar: [-105 * fr, -105 * fr], armY: (top ? 25 : 70) * sq + lo, sank: (top ? 8 : 18) * sq, strack: -0.04 * sq }) }; }
+  // efter det sista paketet: en glad stund (riggens STUNDER.glad), öronen vippar
+  const st = STUND('glad', tl - LAST.slut, 2.4);
+  return { x: LAST.x, f: ANS('jatteglad'), p: { ...st.p, oron: [oronVipp(tl, LAST.slut + 0.3), -oronVipp(tl, LAST.slut + 0.3)] } };
 }
 
 // --- Kritlinjer -----------------------------------------------------------------------------------------------------------------
@@ -217,14 +264,14 @@ const krita = ([x, y], v = 125, s = 0.33 * (KAM && KAM[0] > 1.5 ? 0.7 : 1)) =>
 // --- Saker som kritan ritar: luvan och pulkan (konturen ur <sak>-kontur.json, ett drag) -------------------------------------
 // sak = { bild, w, h, o, kontur }. pos = originets plats i scenen, k = skala. ritad 0–1 konturen, fyll 0–1 bilden inifrån.
 const SAK = { luva: { bild: LUVA, w: 1024, h: 1024, o: LUVA_O, fc: [470, 520], fr: 600 }, pulka: { bild: PULKA, w: 1024, h: 572, o: PULKA_O, fc: [520, 280], fr: 520 } };
-function sakRitad(namn, [x, y], k, { ritad = 1, fyll = 1, r = 0, lager = 'saker' } = {}) {
+function sakRitad(namn, [x, y], k, { ritad = 1, fyll = 1, r = 0, lager = 'saker', bild = null } = {}) {
   const S = SAK[namn], t = `translate(${f1(x)} ${f1(y)}) rotate(${r.toFixed(2)}) scale(${k.toFixed(4)}) translate(${-S.o[0]} ${-S.o[1]})`;
   let spets = null;
   if (fyll < 1 && ritad > 0) { const b = bana(namn, KONT[namn].d), f = ritTakt(ritad);
     lagg('fram', `<g filter="url(#vax)"><g transform="${t}"><path d="${b.d}" pathLength="1" fill="none" stroke="${namn === 'luva' ? '#6e1e16' : '#5a3418'}" stroke-width="${f1(10 / k)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${f.toFixed(4)} 2"/></g></g>`);
     if (ritad < 1) { const [px, py] = banPunkt(b, f); spets = [x + (px - S.o[0]) * k, y + (py - S.o[1]) * k]; } }
   if (fyll > 0) { const c = $('cirkel-sak'); c.setAttribute('cx', S.fc[0]); c.setAttribute('cy', S.fc[1]); c.setAttribute('r', fyll >= 1 ? 3000 : S.fr * fyll);
-    lagg(lager, `<g transform="${t}" ${fyll < 1 ? 'clip-path="url(#fyll-sak)"' : ''}><image href="${S.bild}" width="${S.w}" height="${S.h}"/></g>`); }
+    lagg(lager, `<g transform="${t}" ${fyll < 1 ? 'clip-path="url(#fyll-sak)"' : ''}><image href="${bild || S.bild}" width="${S.w}" height="${S.h}"/></g>`); }
   return spets;
 }
 const luvaBild = () => `<g transform="scale(${(LUVA_K / GS).toFixed(4)}) rotate(-8) translate(${-LUVA_O[0]} ${-LUVA_O[1]})"><image href="${LUVA}" width="1024" height="1024"/></g>`;
@@ -239,27 +286,49 @@ function paketSvg([x, y], k, r = 0, i = 0) {
 const UPP_D = 1.3;   // sekunder som ett paket glider upp ur snön
 function paketen(t) {
   const ut = [];
-  const pulkaDx = pulkaDrag(t);
-  const sitt = (i, t0) => { const u = del(t0, t0 + 0.55, t), fr = [P_X[i], P_Y], til = [SITS[i][0] + pulkaDx, SITS[i][1]];
-    return { pos: [lerp(fr[0], til[0], u), lerp(fr[1], til[1], u) - 90 * Math.sin(Math.PI * u)], r: 0, sank: 0 }; };
   // J06 22/11 "not pop up but fade up": paketen glider lugnt upp ur snön på UPP_D s (förr 0,6 s) och är uppe på "ett paket!"
   const F = UPP_D - 0.35 - 0.25;
   const def = [
-    { i: 0, fram: M0('14') + 0.3, upp: M0('16') + 0.7 + PAKET[20] - 0.35 - F, hopp: M0('25') + 0.6 + TRE[0] - 0.45 },
-    { i: 1, fram: M0('16b') + 0.3, upp: M0('17') + 0.7 + PAKET[21] - 0.35 - F, hopp: M0('25') + 0.6 + TRE[1] - 0.45 },
-    { i: 2, fram: M0('18') + 0.5, upp: M0('21') + 1.4 + PAKET[25] - 0.35 - F, hopp: M0('25') + 0.6 + TRE[2] - 0.45 }];
+    { i: 0, fram: M0('14') + 0.3, upp: M0('16') + 0.7 + PAKET[20] - 0.35 - F },
+    { i: 1, fram: M0('16b') + 0.3, upp: M0('17') + 0.7 + PAKET[21] - 0.35 - F },
+    { i: 2, fram: M0('18') + 0.5, upp: M0('21') + 1.4 + PAKET[25] - 0.35 - F }];
   for (const d of def) { const i = d.i, k = P_K[i], hojd = PAKETB[i].h * k;
+    if (t >= M0('25')) { ut.push(lastPaket(i, t)); continue; }
     if (t < d.fram) { ut.push(null); continue; }
     let q;
     if (t < d.upp) q = { pos: [P_X[i], P_Y], r: i === 2 ? 0 : 18, sank: i === 2 ? hojd * 0.45 : hojd * 0.78, in: del(d.fram, d.fram + 0.6, t) };
-    else if (t < d.hopp) { const u = del(d.upp, d.upp + UPP_D, t); q = { pos: [P_X[i], P_Y], r: (i === 2 ? 0 : 18) * (1 - u), sank: (i === 2 ? hojd * 0.45 : hojd * 0.78) * (1 - u) }; }
-    else q = sitt(i, d.hopp);
+    else { const u = del(d.upp, d.upp + UPP_D, t); q = { pos: [P_X[i], P_Y], r: (i === 2 ? 0 : 18) * (1 - u), sank: (i === 2 ? hojd * 0.45 : hojd * 0.78) * (1 - u) }; }
     ut.push({ ...q, k, rosett: i === 2 || t >= d.upp, i, upp: d.upp }); }
   return ut;
 }
-const pulkaDrag = t => R['26'] ? PULKA_DRAG * del(M0('26') + 0.2, M0('26') + 2.6, t) : 0;
+// rad 25 och framåt: på snön tills katten plockar det, i tassarna (läget räknas i ritaPaket när tassarna är ritade), sedan på pulkan
+function lastPaket(i, t) {
+  const tl = t - M0('25'), pl = lastSteg('plocka', i), lg = lastSteg('lagg', i), pa = { k: P_K[i], rosett: true, i, r: 0, sank: 0 };
+  if (tl < pl.a) return { ...pa, pos: [P_X[i], P_Y], lager: 'saker' };
+  const pulka = [SITS[i][0] + pulkaDrag(t), SITS[i][1]];
+  if (tl >= lg.b) return { ...pa, pos: pulka, lager: 'saker' };
+  return { ...pa, tl, pl, lg, pulka, hall: true };
+}
+// i tassarna: lådans mitt mellan tassarna. Plocka: glider upp ur snön till tassarna när katten rätar på sig. Lägga: ner på sitsen
+// framför katten; bakom pulkan (lagret hall) tills det vilar på sitsen, sedan framför. Det runda lyfts först över de två andra
+// (botten över det höga paketets topp) och läggs sedan ovanpå, så att det aldrig går genom dem.
+function iTassarna(p) {
+  const a = tass('l'), b = tass('r'), H = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2 + PAKETB[p.i].h * p.k / 2 + 4];
+  const { tl, pl, lg, pulka: S } = p, lu = LAND / LAST_P;
+  if (tl < pl.b) { const u = del(pl.a + 0.45 * LAST_P, pl.b, tl); return { pos: [lerp(P_X[p.i], H[0], u), lerp(P_Y, H[1], u)], lager: u > 0 ? 'hall' : 'saker' }; }
+  if (tl < lg.a) return { pos: H, lager: 'hall' };
+  const u = (tl - lg.a) / LAST_P;
+  if (p.i !== 2) return { pos: [lerp(H[0], S[0], del(0.1, lu, u)), lerp(H[1], S[1], del(0.1, lu, u))], lager: u >= lu ? 'saker' : 'hall' };
+  const W = [S[0], S[1] - 60];
+  return u < 0.35 ? { pos: [lerp(H[0], W[0], del(0.05, 0.35, u)), lerp(H[1], W[1], del(0.05, 0.35, u))], lager: 'hall' }
+    : { pos: [W[0], lerp(W[1], S[1], del(0.35, lu, u))], lager: 'saker' };
+}
+// pulkan dras i rad 26: lika långt som katten går med snöret, 0,15 s efter (snöret sträcks först)
+const pulkaDrag = t => R['26'] && t > M0('26') ? PULKA_DRAG * del(DRA.dra + 0.15, DRA.dra1 + 0.1, t - M0('26')) : 0;
 function ritaPaket(t) {
-  for (const p of paketen(t)) { if (!p) continue;
+  for (let p of paketen(t)) { if (!p) continue;
+    if (p.hall) p = { ...p, ...iTassarna(p) };
+    if (p.lager) { lagg(p.lager, paketSvg(p.pos, p.k, p.r, p.i)); continue; }
     const pos = [p.pos[0], p.pos[1] + p.sank], svg = paketSvg(pos, p.k, p.r, p.i);
     if (p.sank > 0.5) { lagg('sakerbak', `<g clip-path="url(#ovansno)" opacity="${(p.in ?? 1).toFixed(3)}">${svg}</g>`);
       lagg('sakerbak', `<ellipse cx="${f1(p.pos[0])}" cy="${f1(P_Y + 2)}" rx="${f1(70 * p.k / 0.15)}" ry="9" fill="#f6f8fb" opacity="${(0.9 * (p.in ?? 1)).toFixed(2)}"/>`); }
@@ -275,7 +344,7 @@ function fagel([x, y], { flax = 0, tilt = 0, lyft = 0, ben = flax, vanster = tru
     ${fagelSvg('rod', { t: TT, flax, blink, ben })}</g>`);
 }
 const fagelPulka = t => [SITS[2][0] + pulkaDrag(t) + 6, SITS[2][1] - PAKETB[2].h * P_K[2] + 6];
-const fagelFlyg = () => { const a = M0('26') + 0.6 + LANGD(31) + 0.1; return [a, a + 1.4]; };
+const fagelFlyg = () => { const a = M0('26') + DRA.dra + 0.25; return [a, a + 1.4]; };
 function fagelNu(t) {
   const [a, b] = fagelFlyg();
   if (t < a) { const t17 = M0('17') + 0.7 + PAKET[21] + 0.3, fl = bump(t17 - 0.1, t17 + 0.6, t), c = t % 5.5;
@@ -288,10 +357,11 @@ function fagelNu(t) {
 // siffrorna 1, 2, 3 på "Ett paket … två paket … tre paket!" (J06 22/11 "add numbers 1 2 3"): en rad ovanför pulkan, poppar upp
 // på sitt ord och står kvar tills pulkan börjar dras (som 050:s siffror)
 function siffror(t) {
-  const t0 = M0('25') + 0.6, ut = del(M0('26') + 0.3, M0('26') + 0.9, t); if (t < t0 || ut >= 1) return;
-  lagg('fram', [['1', '#E5533D', -6], ['2', '#F2B632', 5], ['3', '#4FA44F', -3]].map(([n, farg, v], i) => { const a = t - t0 - TRE[i]; if (a < 0) return '';
+  // J06 QA 26/11: en rad högt ovanför pulkan (ovanför kattens luva, som står bakom pulkan när den lastar), poppar upp när Malin säger talet
+  const t0 = M0('25'), ut = del(M0('26') + DRA.dra, M0('26') + DRA.dra + 0.6, t); if (t < t0 || ut >= 1) return;
+  lagg('fram', [['1', '#E5533D', -6], ['2', '#F2B632', 5], ['3', '#4FA44F', -3]].map(([n, farg, v], i) => { const a = t - t0 - TAL[i]; if (a < 0) return '';
     const sc = a < 0.22 ? 1.18 * mjuk(a / 0.22) : 1 + 0.18 * Math.exp(-(a - 0.22) * 6) * Math.cos((a - 0.22) * 16);
-    return `<g opacity="${f1(1 - ut)}" transform="translate(${f1(SITS[2][0] + 120 * F * (i - 1))} ${f1(SITS[2][1] - 171 * F + 3 * Math.sin(t * 2 + i * 1.7))}) rotate(${v}) scale(${sc.toFixed(3)})"><text y="34" text-anchor="middle"
+    return `<g opacity="${f1(1 - ut)}" transform="translate(${f1(SITS[2][0] + 130 * (i - 1))} ${f1(250 + 3 * Math.sin(t * 2 + i * 1.7))}) rotate(${v}) scale(${sc.toFixed(3)})"><text y="34" text-anchor="middle"
       font-family="Fredoka, 'Arial Rounded MT Bold', sans-serif" font-weight="700" font-size="100" fill="${farg}" stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke">${n}</text></g>`; }).join(''));
 }
 // snöpuffar vid grävandet: små vita tussar som sprids och tonar på 0,6 s
@@ -376,9 +446,9 @@ const nosen = () => iM(matris('.drag'), [509, 432]);
 // --- Spaden -----------------------------------------------------------------------------------------------------------------
 // g = greppets plats i scenen, v = vinkel (+ = bladet ut åt vänster), sno 0–1 en snöklump på bladet
 function spadeSvg({ g, v, sno = 0 }) {
-  const im = `<image href="${SPADE}" width="${SPADE_WH[0]}" height="${SPADE_WH[1]}"/>`;
+  const im = `<image href="${SPADE}" width="${SPADE_WH[0]}" height="${SPADE_WH[1]}"/>`;   // bladet är redan guld i bilden
   return `<g clip-path="url(#ovansno)"><g transform="translate(${f1(g[0])} ${f1(g[1])}) rotate(${v.toFixed(2)}) scale(${SPADE_K}) translate(${-SPADE_G[0]} ${-SPADE_G[1]})">${im}
-    <g clip-path="url(#spadblad)" filter="url(#gulblad)">${im}</g>${sno > 0.02 ? `<g opacity="${kl(sno).toFixed(2)}">${[[512, 1040, 120], [430, 1090, 85], [600, 1085, 80]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#c9d8e8" stroke-width="10"/>`).join('')}</g>` : ''}</g></g>`;
+    ${sno > 0.02 ? `<g opacity="${kl(sno).toFixed(2)}">${[[512, 1040, 120], [430, 1090, 85], [600, 1085, 80]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#c9d8e8" stroke-width="10"/>`).join('')}</g>` : ''}</g></g>`;
 }
 // tassen: den arm som syns just nu (bakom, framför eller klapp-kopian) genom kameran
 const tass = n => { const e = [...G.querySelectorAll('.arm-' + n)].find(a => a.getAttribute('opacity') !== '0') || G.querySelector('.arm-' + n);
@@ -392,7 +462,8 @@ const spadHand = t => { const T = spadeT(); return t < T.upp || t > T.lagg + 0.9
 function spadeLage(t, st) {
   const ita = n => { const s = n === 'l' ? 1 : -1, d = st.dig && st.dig.n === n ? st.dig : { luta: 0, fore: 0, ner: 0, kast: 0, sno: 0 };
     return { g: tass(n), v: s * (35 - 27 * d.luta - 10 * d.fore + 6 * d.ner + 62 * d.kast), sno: d.sno }; };
-  const PA = () => ({ g: iPulka(SPADE_PA, pulkaDrag(t)), v: -88 });   // ligger på sitsens högra del, bladet fram över kälkens krok, där inget paket landar
+  // ligger på sitsen bakom paketen, bladet bakåt (J06 QA 26/11: med bladet fram över kroken låg det där katten tar snöret)
+  const PA = () => ({ g: iPulka(SPADE_PA, pulkaDrag(t)), v: SPADE_PA_V });
   const T = spadeT();
   if (t < T.upp) return { ...SPADE_STAR, lager: 'sakerbak' };
   if (t < T.upp + 0.7) return { ...blandaSpade(SPADE_STAR, ita('l'), mjuk((t - T.upp) / 0.7)), lager: 'sakerbak' };
@@ -402,8 +473,9 @@ function spadeLage(t, st) {
   if (t < T.b2) return { ...ita('r'), lager: 'sakerbak' };
   if (t < T.b2 + 0.6) return byt(T.b2, 'r', 'l');
   if (t < T.lagg) return { ...ita('l'), lager: 'sakerbak' };
-  if (t < T.lagg + 0.9) return { ...blandaSpade(ita('l'), PA(), mjuk((t - T.lagg) / 0.9), 150), lager: 'sakerbak' };   // högt över paket 3, inte genom det
-  return { ...PA(), lager: 'sakerbak' };
+  // högt över paket 3, inte genom det; framför pulkan (lagret saker) från bågens topp, där den är fri från katten
+  if (t < T.lagg + 0.9) { const u = (t - T.lagg) / 0.9; return { ...blandaSpade(ita('l'), PA(), mjuk(u), 150), lager: u < 0.5 ? 'sakerbak' : 'saker' }; }
+  return null;   // ligger på pulkan: ritas med pulkan (ritaPulka), före paketen
 }
 // byta tass: båda tassarna fram till magen och tillbaka (riggens fram, som posen "magen"), 0,6 s
 const bytTass = (p, tl, t0) => { const k = bump(t0, t0 + 0.6, tl); return k > 0 ? { ...p, fram: [k, k], armar: [-105 * k, -105 * k], rikt: (p.rikt || 0) * (1 - k) } : p; };
@@ -507,17 +579,25 @@ const S = {
     return MED({ pos: [C_P3, GOLV], f: ANS('nyfiken', { titt: [-12, 4] }), p: POS({ rikt: -0.6 * del(0.8, 1.4, tl) }), krita: [[lerp(2100, st[0], u), lerp(-80, st[1], u ** 3)], lerp(150, 125, u)] }); },
   '23b': tl => MED({ kam: K_PULKA, pos: [C_P3, GOLV], f: ANS('nyfiken', { titt: [-14, 8] }), p: POS({ rikt: -0.6 }), pulkaRit: { ritad: tl / 4, fyll: 0, krita: tl < 4 },
     krita: tl >= 4 ? kritaVanta(PK_VANT, tl - 4) : null }),
-  '23c': tl => MED({ kam: tl < 0.9 ? K_PULKA : K_HALV(C_P3, 2 / 3), pos: [C_P3, GOLV], f: L.blanda(ANS('forvanad'), ANS('jatteglad'), del(1.0, 1.4, tl)), p: POS({ rikt: -0.6 }), pulkaRit: { ritad: 1, fyll: del(0, 0.8, tl) },
+  '23c': tl => MED({ kam: tl < 0.9 ? K_PULKA : K_LADDA, pos: [C_P3, GOLV], f: L.blanda(ANS('forvanad'), ANS('jatteglad'), del(1.0, 1.4, tl)), p: POS({ rikt: -0.6 }), pulkaRit: { ritad: 1, fyll: del(0, 0.8, tl) },
     glitterP: [PULKA_X, GOLV - 60], glitter: del(0, 0.4, tl) - del(1.4, 2.0, tl), krita: tl < 1.4 ? kritaVanta(PK_VANT, tl + 3) : null }),
-  '24': tl => { const n = bump(0.3, 0.85, tl), lagg = bump(1.6, 2.7, tl); return MED({ kam: K_HALV(C_P3, 2 / 3), pos: [C_P3, GOLV], f: ANS('jatteglad', { titt: [-14 * lagg, 6 * lagg] }), p: POS({ rikt: -0.3, strack: -0.06 * n, bred: 0.04 * n, luta: -3 * lagg }), pulka: true,
+  '24': tl => { const n = bump(0.3, 0.85, tl), lagg = bump(1.6, 2.7, tl); return MED({ kam: K_LADDA, pos: [C_P3, GOLV], f: ANS('jatteglad', { titt: [-14 * lagg, 6 * lagg] }), p: POS({ rikt: -0.3, strack: -0.06 * n, bred: 0.04 * n, luta: -3 * lagg }), pulka: true,
     peka: { mal: iPulka(SPADE_PA, 0), k: lagg, hand: 0 },
     krita: tl < 1.6 ? [[lerp(PK_VANT[0], PK_VANT[0] + 1000, mjuk(tl / 1.6)), lerp(PK_VANT[1], PK_VANT[1] - 760, mjuk(tl / 1.6))], 135] : null }); },
-  // paketen hoppar upp på pulkan på orden; katten följer med blicken
-  '25': tl => { const x = tl - 0.6, i = TRE.findIndex(t0 => x < t0 + 0.2), mal = i < 0 ? SITS[2] : [P_X[i], P_Y];
-    return MED({ pos: [C_P3, GOLV], f: ANS('jatteglad', { titt: [kl((mal[0] - C_P3) / 14, -16, 0), 6] }), p: POS({ rikt: -0.5 }), pulka: true,
-      gnista: TRE.map((t0, k) => ({ p: [SITS[k][0], SITS[k][1] - 100 * F], age: x - t0 - 0.1, R: 60 * F })) }); },
-  // tar repet och drar pulkan tre steg åt höger
-  '26': tl => { const g = gangX('26', tl); return MED({ pos: [g.x, GOLV], f: ANS('glad', { titt: [12, 0] }), p: g.gar ? trippa(POS(), g.vag, 1) : POS({ rikt: 0.5 * (1 - del(2.8, 3.4, tl)) }), pulka: true }); },
+  // katten lastar paketen själv (LAST), ett per tal; Malin räknar när paketet landat. En liten gnista på varje paket när det landar
+  '25': tl => { const k = lastKatt(tl); return MED({ kam: K_LADDA, pos: [k.x, GOLV], f: k.f, p: k.p, pulka: true,
+      gnista: LANDAR.map((t0, j) => { const S = SITS[[1, 0, 2][j]]; return { p: [S[0], S[1] - 100 * F], age: tl - t0 - 0.05, R: 60 * F }; }) }); },
+  // går till pulkans nos, böjer sig och tar snörets ände (riggens plockaUpp), rätar på sig och drar pulkan några lugna steg åt höger.
+  // Armen med snöret pekar bakåt mot nosen medan den drar, kroppen lutar lite framåt. Malin säger repliken 0,4 s in i dragningen.
+  '26': tl => { const D = DRA;
+    if (tl < D.plock) { const u = kl((tl - D.ga) / (D.ga1 - D.ga)), x = lerp(D.x0, D.xg, u), e = kuvert(tl, D.ga, D.ga1);
+      return MED({ kam: K_LADDA, pos: [x, GOLV], f: ANS('glad', { titt: [12, 6] }), p: e > 0 ? trippa(POS(), Math.abs(x - D.x0), 1, e) : POS(), pulka: true }); }
+    if (tl < D.dra) { const [f2, p2] = L.ARMROR.plockaUpp(Math.min(tl - D.plock, 1.0), 1.0, { fri: iRuta(SNORE_ANDE, [D.xg, GOLV]), hand: 0 }), r = 0.6 * del(D.plock + 1.0, D.dra, tl);
+      return MED({ kam: K_LADDA, pos: [D.xg, GOLV], f: { ...ANS('glad'), titt: tl < D.plock + 0.9 ? f2.titt : [12 * r / 0.6, 2] },
+        p: POS({ luta: p2.luta, boj: p2.boj, strack: p2.strack, bred: p2.bred, armar: p2.armar, oron: p2.oron, rikt: r }), pulka: true }); }
+    const u = del(D.dra, D.dra1, tl), x = lerp(D.xg, C_DRAG, u), e = kuvert(tl, D.dra, D.dra1), A = iPulka(SNORE_FAST, pulkaDrag(M0('26') + tl));
+    return MED({ kam: K_LADDA, pos: [x, GOLV], f: ANS('glad', { titt: [14 * (1 - del(D.dra1, D.dra1 + 0.6, tl)), 2] }),
+      p: trippa(POS({ luta: 3 * e }), Math.abs(x - D.xg), 1, e, 0.6 * (1 - del(D.dra1, D.dra1 + 0.6, tl)), 0), peka: { mal: A, k: 1 - del(D.dra1 + 0.1, D.dra1 + 0.6, tl), hand: 0 }, pulka: true }); },
   '27': tl => { const a = 2.0 + LANGD(32), st = STUND('glad', tl - a + 0.45, 2.2 + 0.9);
     return MED({ kam: K_DRAG, pos: [C_DRAG, GOLV], f: tl > a && tl < a + 2.2 ? ANS('jatteglad') : ANS('glad'), p: { ...st.p, oron: [oronVipp(tl, 2.6 + LANGD(32)), -oronVipp(tl, 2.6 + LANGD(32))] }, pulka: true }); },
   '28': tl => MED({ kam: K_DRAG, pos: [C_DRAG, GOLV], f: ANS('jatteglad'), p: STUND('studs', tl, 2.0).p, luva: { y: 0, vipp: vipp(tl, 0.85, 3) + vipp(tl, 1.55, 2) }, pulka: true, gnista: [{ p: [C_DRAG, GOLV - 330 * F], age: tl - 0.6, R: 160 * F }] }),
@@ -559,7 +639,7 @@ function blinkaLugnt(fro) {
 
 // --- En bildruta ---------------------------------------------------------------------------------------------------------
 function rita(t) {
-  ['bak', 'sakerbak', 'kontur', 'saker', 'fram', 'sno', 'krita', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
+  ['bak', 'sakerbak', 'kontur', 'hall', 'saker', 'fram', 'sno', 'krita', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
   $('gomda').appendChild(G); G.removeAttribute('clip-path');
   TT = t; const st = lage(t); $('ton').setAttribute('opacity', del(0.5, 2.5, t).toFixed(3));
   if (st.plats === 'papper' && st.hal != null) { const r1 = R['1']; ritaGard({ ...S['1'](0, r1.d), id: '1', tl: 0, d: r1.d }, t); papperHal(st.hal); }
@@ -590,6 +670,23 @@ function papperHal(k) {
       <rect x="-3000" y="-2000" width="8000" height="5000" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>
       <g opacity="${(1 - del(0.12, 0.36, k)).toFixed(3)}" transform="${tr}"><image href="${PAKETB[0].bild}" width="1024" height="1024"/></g></g></g>`);
 }
+// Snöret (rad 26–31): null = bildens ögla på snön; annars var änden är. Katten tar änden (DRA.grepp), håller den till rad 29,
+// släpper den där innan den vinkar (änden faller till snön på 0,35 s) och snöret ligger kvar på snön.
+const SNORE_SNO = () => [iPulka(SNORE_FAST, PULKA_DRAG)[0] + 110, GOLV + 12];
+function snoret(t) {
+  if (!R['26'] || t < M0('26') + DRA.grepp) return null;
+  if (t < M0('29')) return { hand: 1 };
+  const u = mjuk((t - M0('29')) / 0.35); return { hand: 1 - u, u };
+}
+function ritaSnore(t) {
+  const sn = snoret(t); if (!sn) return;
+  const A = iPulka(SNORE_FAST, pulkaDrag(t)), P = tass('l'), G = SNORE_SNO(), E = sn.hand >= 1 ? P : sn.hand <= 0 ? G : [lerp(G[0], P[0], sn.hand), lerp(G[1], P[1], sn.hand) + 40 * Math.sin(Math.PI * sn.u)];
+  // slakt när katten just tagit det och när det ligger, nästan sträckt medan pulkan dras
+  const t26 = t - M0('26'), slak = sn.hand < 1 ? 1 : t26 < DRA.dra1 + 0.3 ? 1 - 0.8 * del(DRA.dra - 0.2, DRA.dra + 0.25, t26) : 0.6;
+  const C = sn.hand <= 0 ? [(A[0] + E[0]) / 2, GOLV + 16] : [(A[0] + E[0]) / 2, Math.max(A[1], E[1]) + 10 + 60 * slak];
+  const d = `M${f1(A[0])} ${f1(A[1])} Q${f1(C[0])} ${f1(C[1])} ${f1(E[0])} ${f1(E[1])}`;
+  lagg('saker', `<path d="${d}" fill="none" stroke="#8f6a22" stroke-width="7.5" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#C49634" stroke-width="4.5" stroke-linecap="round"/>`);
+}
 function ritaGard(st, t) {
   gard(); kamera(st.kam); tassar(t);
   let p = st.p, f = st.f;
@@ -603,18 +700,19 @@ function ritaGard(st, t) {
   // liv: katten andas alltid (3,6 s per andetag)
   { const a = (1 - Math.cos(2 * Math.PI * t / 3.6)) / 2; p = { ...p, strack: (p.strack || 0) + 0.012 * a, bred: (p.bred || 0) + 0.006 * a, svans: (p.svans || 0) + 4 * Math.sin(2 * Math.PI * t / 2.6) + 2 * Math.sin(2 * Math.PI * t / 1.1) }; }   // och svansen vickar lugnt
   skugga(st.pos[0], GOLV - 2, 110 * F);
-  // pulkan (efter att den ritats) ligger bakom katten och paketen
-  if (st.pulka) { const pp = PULKA_POS(t); sakRitad('pulka', pp, PK, { lager: 'sakerbak' });
-    if (st.rep) { const kr = [pp[0] + (930 - 512) * PK, pp[1] + (400 - 392) * PK], h = iFig(st.pos, [215, 640]);
-      lagg('sakerbak', `<path d="M${f1(kr[0])} ${f1(kr[1])} Q${f1((kr[0] + h[0]) / 2)} ${f1(Math.max(kr[1], h[1]) + 18)} ${f1(h[0])} ${f1(h[1])}" fill="none" stroke="#e2b04a" stroke-width="5" stroke-linecap="round"/>`); } }
-  ritaPaket(t); fagelNu(t); siffror(t);
+  // pulkan (efter att den ritats) står närmare oss än katten (medarna lägre): lagret saker, framför katten, med spaden på och sedan
+  // paketen. Medan katten håller snöret är det pulkbilden utan snöre och snöret ritas i kod (ritaSnore). J06 QA 26/11.
+  if (st.pulka) { sakRitad('pulka', PULKA_POS(t), PK, { lager: 'saker', bild: snoret(t) ? PULKA_UTAN : null });
+    if (t >= spadeT().lagg + 0.9) lagg('saker', spadeSvg({ g: iPulka(SPADE_PA, pulkaDrag(t)), v: SPADE_PA_V })); }
   katt(st.pos, BLINKA(f, t), p, { luva: st.luva });
-  { const sp = spadeLage(t, st); lagg(sp.lager, spadeSvg(sp)); }
+  ritaPaket(t); fagelNu(t); siffror(t);
+  if (st.pulka) ritaSnore(t);
+  { const sp = spadeLage(t, st); if (sp) lagg(sp.lager, spadeSvg(sp)); }
   (st.klump || []).forEach(snoklump);
   if (st.luvaRit) { const m = st.luvaRit, sp = sakRitad('luva', LUVA_SNO, LUVA_K, { ritad: m.ritad ?? 1, fyll: m.fyll ?? 1, r: -8 }); if (m.krita && sp) ritKrita(sp); }
   if (st.luvaGlid != null) { const M = matris('.luva'), mal = iM(M, LUVA_PA), u = st.luvaGlid;
     sakRitad('luva', [lerp(LUVA_SNO[0], mal[0], u), lerp(LUVA_SNO[1], mal[1], u) - 160 * Math.sin(Math.PI * u)], LUVA_K, { r: lerp(-8, mVinkel(M) - 8, u) }); }
-  if (st.pulkaRit) { const m = st.pulkaRit, sp = sakRitad('pulka', [PULKA_X, GOLV + 8], PK, { ritad: m.ritad ?? 1, fyll: m.fyll ?? 1, lager: 'sakerbak' }); if (m.krita && sp) ritKrita(sp); }
+  if (st.pulkaRit) { const m = st.pulkaRit, sp = sakRitad('pulka', [PULKA_X, GOLV + 8], PK, { ritad: m.ritad ?? 1, fyll: m.fyll ?? 1, lager: 'saker' }); if (m.krita && sp) ritKrita(sp); }
   if (st.flinga) { const { p: fp, r } = st.flinga; lagg('fram', `<image href="${FLINGA}" width="1024" height="1024" transform="translate(${f1(fp[0])} ${f1(fp[1])}) rotate(${f1(r)}) scale(0.05) translate(-512 -512)"/>`); }
   if (st.nosFlinga) { const { t: tl, land, nys } = st.nosFlinga, n = nosen(), fr = [n[0] - 70, n[1] - 260];
     let fp, r = 30 * tl;
@@ -639,10 +737,13 @@ function ritaGard(st, t) {
 
 // --- Ljud: Malin, effekterna ur rader.mjs, kritan, vintermattan, stegen och grävandet --------------------------------------------
 const E = 'assets/ljud/effekter/';
+// ?lucka (render.mjs --lucka): julkalenderns lucka 6 har bara ett avsked, kalenderns "Vi ses imorgon!", så Malins "Hej då! Vi ses snart!"
+// (replik 35) är borta ur ljudet där (J06 QA 26/11). Bilden är densamma; satt-ihop.sh gör avsnitt-035-lucka.mp4 med det ljudet.
+const LUCKA = new URLSearchParams(location.search).has('lucka');
 function ljud() {
   const ut = [];
   for (const r of RAD) {
-    for (const [n, o] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/katten-hittar-julklappar/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
+    for (const [n, o] of r.malin || []) if (!(LUCKA && n === 35)) ut.push({ t: r.s + o, fil: `assets/ljud/roster/katten-hittar-julklappar/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
     for (const [f, o] of r.ljud || []) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: /^mjau/.test(f) ? 0.85 : /^glimt/.test(f) ? 2.0 : /^huttra/.test(f) ? 0.7 : 1.0 });
   }
   ut.push({ t: M0('01a') + 2.5, fil: E + 'krita-ritar/krita-ritar-1.m4a', vol: 1.1, langd: 7, loop: true, fade: 0.4 });
@@ -668,6 +769,9 @@ function ljud() {
   return ut.filter(c => c.t < DURATION);
 }
 
+// rader.mjs har LAST:s och DRA:s tider som tal (Malins repliker läggs på dem); säg till om de inte stämmer längre
+{ const l = LAST.filter(s => s.typ === 'lagg').map(s => s.a + LAND), d = [DRA.grepp, DRA.dra, DRA.dra1], r = [DRAR.grepp, DRAR.dra, DRAR.dra1];
+  if (l.some((v, i) => Math.abs(v - LANDAR[i]) > 0.02) || d.some((v, i) => Math.abs(v - r[i]) > 0.02)) console.error('rader.mjs LANDAR/DRAR stämmer inte:', l, d); }
 window.DURATION = DURATION;
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
@@ -680,9 +784,9 @@ window.ready = (async () => {
   G.querySelectorAll('.ear-l path:first-child, .ear-r g > path:first-child').forEach(e => e.setAttribute('stroke-width', 26));
   G.querySelector('.kropp').insertAdjacentHTML('beforeend', `<g class="luva"></g>`);
   BLINKA = blinkaLugnt(35);
-  window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('saker'));
+  window.kant?.lagg(G); window.kant?.lagg($('sakerbak')); window.kant?.lagg($('hall')); window.kant?.lagg($('saker'));
   KONT = { paket: await (await fetch(R_ + 'paket/cut/paket-hog-kontur.json')).json(), luva: await (await fetch(R_ + 'tomteluva/cut/tomteluva-kontur.json')).json(), pulka: await (await fetch(R_ + 'pulka/cut/pulka-kontur.json')).json() };
-  await Promise.all([PLATTA, KRITA, KRITAN.BILD, SPADE, LUVA, PULKA, ...PAKETB.map(p => p.bild), ...FG.map(p => p.bild), FLINGA, '/assets/rekvisita/smafaglar/cut/fagel-kropp-rod-kod.png'].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, KRITA, KRITAN.BILD, SPADE, LUVA, PULKA, PULKA_UTAN, ...PAKETB.map(p => p.bild), ...FG.map(p => p.bild), FLINGA, '/assets/rekvisita/smafaglar/cut/fagel-kropp-rod-kod.png'].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
