@@ -3,27 +3,13 @@
 // rörelserna som manus.md "Så rör det sig". Scenens t = 0 är rad 01 (loggan, rad 00, läggs på i sammansättningen).
 //   node avsnitt/065-varen-i-boken/scener/render.mjs avsnitt/065-varen-i-boken/scener/boken --snabb
 import * as THREE from 'three';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { kameraplan } from '/verktyg/kamera3d.mjs';
 import { duk, kritYta, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
-
-const $ = id => document.getElementById(id);
-const kl = (a, b, x) => Math.min(b, Math.max(a, x)), k01 = x => kl(0, 1, x), lerp = (a, b, k) => a + (b - a) * k;
-const mjuk = k => (k = k01(k), k * k * (3 - 2 * k));
-const bump = (a, b, t, r = 0.3) => mjuk((t - a) / r) * mjuk((b - t) / r);   // 0 → 1 → 0
-const reser = k => { k = k01(k); const s = 0.9; return 1 + (s + 1) * (k - 1) ** 3 + s * (k - 1) ** 2; };   // fälls upp med en liten efterstudsning
-const v3 = (...a) => new THREE.Vector3(...a);
+import { $, kl, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, dataUrl, kontur, bredare, mat, djup, mark, vik, stall, kortmotor,
+  PARM, fallning, figurKort, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
 
 // ---- raderna ----
-const { RADER, ROST, GLES } = await import('/avsnitt/065-varen-i-boken/storyboard/rader.mjs'); let acc = 0;
-const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, st: r.s, s }; });
-const RR = Object.fromEntries(RAD.map(r => [r.id, r])), S = id => RR[id].s, LN = n => ROST[n - 1][1];
-const DURATION = acc, rad = t => RAD[Math.max(0, RAD.findLastIndex(r => r.s <= t))];
-const SVAR = (id, n) => S(id) + RR[id].malin.find(m => m[0] === n)[1] + LN(n) + 0.2;   // musens svar: 0,2 s efter Malins replik n
-const ORD = (id, n, s) => S(id) + RR[id].malin.find(m => m[0] === n)[1] + s;   // ett ord i replik n, s in i röstfilen
+const RD = rader(await import('/avsnitt/065-varen-i-boken/storyboard/rader.mjs')), { RAD, RR, S, LN, MAL, SVAR, DURATION, rad, GLES } = RD;
+const ORD = (id, n, s) => MAL(id, n) + s;   // ett ord i replik n, s in i röstfilen
 
 // Orden, uppmätta 2026-11-27 (whisper-cli large-v3-turbo + ljudets energi, sekunder in i röstfilen)
 const UPP = { rod: ORD('14', 22, 2.35), gul: ORD('15', 24, 2.48), lila: ORD('19', 29, 2.39) };   // "upp": blomman reser sig
@@ -34,17 +20,10 @@ const ORD_FJARIL = ORD('22', 34, 0.24), ORD_PIGA = ORD('22b', 35, 0.59), ORD_BO 
 const HEJ_BLOMMOR = ORD('26b', 45, 0.3), HEJ_FJARIL = ORD('26c', 46, 0.45), HEJ_PIGA = ORD('26c', 46, 2.8), HEJ_BO = ORD('26d', 47, 0.45);
 
 // ---- renderaren ----
-const SNABB = location.search.includes('snabb'), W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, PR = SNABB ? 1 : 1.5;
-const R = new THREE.WebGLRenderer({ canvas: $('bild'), antialias: true, preserveDrawingBuffer: true });
-R.setPixelRatio(PR); R.setSize(W, H, false);
-R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
-const scen = new THREE.Scene(); scen.background = new THREE.Color('#E9D9C2');
-const cam = new THREE.PerspectiveCamera(30, W / H, 0.05, 40);
+const SC = scenen(), { scen, cam } = SC;
 
 // ---- bilderna ----
 const P = '/produktion/three-rum/popupbok/bilder/', B = '/assets/bakgrunder/', RQ = '/assets/rekvisita/';
-const bild = src => new THREE.ImageLoader().loadAsync(src);
-const lad = src => bild(src).then(i => tex(trim(i)));
 const [GRAN, BUSKE, TRAD1, APPEL, EK, HIMMEL, KULLE_BAK, KULLE_FRAM, MOLN1, MOLN2, MOLN3, SOL, BO, ROSA_B, GULA_B] = await Promise.all([
   B + 'skogen-gron-saker/gran.png', B + 'skogen-saker/buske.png', B + 'skogen-saker/trad.png', B + 'lekplatsen-saker/appeltrad.png', RQ + 'ek/cut/ek.png',
   ...['himmel', 'kulle-bak', 'kulle-fram', 'moln-stor', 'moln-mellan', 'moln-liten', 'sol', 'fagelbo'].map(n => P + n + '.png'),
@@ -53,62 +32,17 @@ const TB = {};   // tulpanerna: knopp, uppe, hanger per färg (den gula utslagna
 await Promise.all(['rod', 'gul', 'lila'].flatMap(f => [['knopp', `${P}tulpan-${f}-knopp.png`], ['uppe', f === 'gul' ? `${RQ}tulpan-gul/cut/tulpan-gul.png` : `${P}tulpan-${f}.png`],
   ['hanger', `${P}tulpan-${f}-hanger.png`]].map(async ([l, src]) => { const i = await bild(src); (TB[f] ??= {})[l] = { i, map: tex(trim(i)) }; })));
 const KANNA_I = await bild(RQ + 'vattenkanna/cut/vattenkanna.png'), KANNA = tex(trim(KANNA_I));
-// kritans teckningar: konturen (bildens egna px) läggs på den beskurna bilden, ruta = beskärningen
-function ruta(i) {
-  const c = duk(i.width, i.height), x = c.getContext('2d'); x.drawImage(i, 0, 0);
-  const a = x.getImageData(0, 0, c.width, c.height).data; let y0 = c.height, y1 = 0, x0 = c.width, x1 = 0;
-  for (let y = 0; y < c.height; y++) for (let u = 0; u < c.width; u++) if (a[(y * c.width + u) * 4 + 3] > 128) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); x0 = Math.min(x0, u); x1 = Math.max(x1, u); }
-  return { ox: x0 - 1, oy: y0 - 1, w: x1 - x0 + 3, h: y1 - y0 + 3, W: i.width, H: i.height };
-}
-const KONTUR = Object.fromEntries(await Promise.all(['tulpan-gul', 'vattenkanna'].map(async s => { const j = await (await fetch(`${RQ}${s}/cut/${s}-kontur.json`)).json(); return [s, [j.d, ...(j.detaljer || [])]]; })));
-const dataUrl = async src => { const b = await (await fetch(src)).blob(); return new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(b); }); };
+const KONTUR = Object.fromEntries(await Promise.all(['tulpan-gul', 'vattenkanna'].map(async s => [s, await kontur(`${RQ}${s}/cut/${s}-kontur.json`)])));
 const KANNA_URL = await dataUrl(RQ + 'vattenkanna/cut/vattenkanna.png');
-
-function bredare(map, bredd) {
-  const i = map.image, h = i.height, w = Math.round(h * bredd), s = Math.round(i.width * 0.3), c = duk(w, h), x = c.getContext('2d');
-  x.drawImage(i, 0, 0, s, h, 0, 0, s, h); x.drawImage(i, i.width - s, 0, s, h, w - s, 0, s, h);
-  x.drawImage(i, s, 0, i.width - 2 * s, h, s, 0, w - 2 * s, h); return tex(c);
-}
-const mat = (map, o = {}) => new THREE.MeshLambertMaterial({ map, ...o });
-const urklipp = map => mat(map, { alphaTest: 0.5, alphaToCoverage: true, shadowSide: THREE.DoubleSide });
-function baksida(map) {
-  const i = map.image, c = duk(i.width, i.height), x = c.getContext('2d'); x.drawImage(i, 0, 0);
-  x.globalCompositeOperation = 'source-in'; x.fillStyle = '#F4ECDD'; x.fillRect(0, 0, c.width, c.height);
-  return mat(tex(c), { alphaTest: 0.5, alphaToCoverage: true, side: THREE.BackSide });
-}
-const djup = map => new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, blending: THREE.NoBlending, map, alphaTest: 0.5, side: THREE.DoubleSide });
-const skugga = m => { m.castShadow = m.receiveShadow = true; return m; };
-
 // boken lika stor som 062 runda 5 (1,3), grön pärm med den gula tulpanen i knopp
 const BOK = 1.3;
 skrivbord(scen, [['#E2563F', 2.15, 0.75, 0.5], ['#F2C23A', 2.35, 0.98, 0.35], ['#3F8FD2', -2.25, 1.15, -0.25]]);
-const PARM0 = 0.5, PARM1 = 1.4;
-const { insida, satt } = await skapaBok(scen, { farg: '#4FA845', figur: TB.gul.knopp.i, doodles: true, oppna: [PARM0, PARM1], storlek: BOK });
+const { insida, satt } = await skapaBok(scen, { farg: '#4FA845', figur: TB.gul.knopp.i, doodles: true, oppna: PARM, storlek: BOK });
 
 // ---- uppslaget ----
-const KSKUGGA = (() => { const c = duk(256, 64), x = c.getContext('2d'), g = x.createRadialGradient(128, 32, 0, 128, 32, 128);
-  g.addColorStop(0, 'rgba(28,52,18,0.42)'); g.addColorStop(0.55, 'rgba(28,52,18,0.16)'); g.addColorStop(1, 'rgba(28,52,18,0)');
-  x.fillStyle = g; x.fillRect(0, 0, 256, 64); return new THREE.MeshBasicMaterial({ map: tex(c), transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 }); })();
-const KORT = [];
-// kort: står på sidan med foten i (x, z). dx flyttar bilden i sidled (den hängande tulpanens fot sitter inte mitt i bilden).
-function kort(map, h, x, z, o = {}) {
-  const w = h * map.image.width / map.image.height, g = new THREE.PlaneGeometry(w, h); g.translate(o.dx ?? 0, h / 2, 0);
-  const m = skugga(new THREE.Mesh(g, urklipp(map))); m.customDepthMaterial = djup(map);
-  m.add(new THREE.Mesh(g, baksida(map)));
-  m.position.set(x, o.y ?? SIDA, z); scen.add(m);
-  const k = { m, x, y: m.position.y, z, h, w, hog: 0.002 };
-  if (o.flik !== false) { const f = new THREE.Mesh(new THREE.PlaneGeometry(w * 0.9, 0.07), KSKUGGA); f.rotation.x = -Math.PI / 2;
-    f.position.set(x, SIDA + 0.0009, z + 0.012); f.renderOrder = 1; scen.add(f); k.flik = f; }
-  KORT.push(k); return k;
-}
-const vik = (k, e) => { k.m.rotation.x = Math.PI / 2 * (1 - e); k.m.position.y = k.y + k.hog * (1 - k01(e * 4)); };   // e 0 = nedfälld framåt, 1 = står
-function platt(map, w, x, z, d = w * map.image.height / map.image.width, y = SIDA + 0.001) {
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), urklipp(map)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scen.add(m); return m;
-}
-function pa(map, h, x, upp, ut = 0.01, w = h * map.image.width / map.image.height) {
-  const m = skugga(new THREE.Mesh(new THREE.PlaneGeometry(w, h), urklipp(map)));
-  m.customDepthMaterial = djup(map); m.rotation.x = Math.PI / 2; m.position.set(x, -ut, upp); insida.add(m); return m;
-}
+// molnen och solen kastar skugga på himlen (paSkuggsida, som 062). dx i kort() flyttar bilden i sidled (den hängande tulpanens fot
+// sitter inte mitt i bilden).
+const { kort, platt, pa } = kortmotor(scen, insida, { kskugga: ['28,52,18', 0.42, 0.16], paSkuggsida: true });
 const BAK = [kort(bredare(KULLE_BAK, 5.2 * BOK), 2.15 / 5.2, 0, -0.6), kort(bredare(KULLE_FRAM, 6.2 * BOK), 1.95 / 6.2, 0.05, -0.47)];
 pa(bredare(HIMMEL, 1.5), 2.03, 0, 0.07 + 2.03 / 2, 0.004, 2.3 * BOK);
 // solen: liten, högt upp till höger, utan ansikte (huvudsaken är tulpanen)
@@ -120,16 +54,9 @@ const SKOG = [[-1.0, -0.4, 0.5, GRAN], [-1.24, -0.42, 0.56, GRAN], [-1.42, -0.16
 const TRADET = [-0.68, -0.24], LOVTRAD = kort(TRAD1, 0.78, ...TRADET);
 const BUSKE_K = kort(BUSKE, 0.26, 1.06, -0.12);
 // marken: vårgrönt kritark med små vita prickblommor
-{
-  const Wc = 2048, D = 1440, c = duk(Wc, D), x = c.getContext('2d'), form = (p, r) => { x.beginPath(); x.roundRect(p, p, Wc - 2 * p, D - 2 * p, r); };
-  x.fillStyle = '#FFF'; form(8, 90); x.fill();
-  const g = duk(Wc, D); kritYta(g.getContext('2d'), Wc, D, '#7CCB4E', '#A2DE72', '#5DB040', 0.7);
-  x.save(); form(30, 70); x.clip(); x.drawImage(g, 0, 0);
+platt(tex(mark('#7CCB4E', '#A2DE72', '#5DB040', (x, Wc, D) => {
   x.fillStyle = '#FFFDF4'; for (let i = 0; i < 200; i++) { const px = 60 + ((i * 733) % (Wc - 120)), py = 60 + ((i * 397) % (D - 120)); x.beginPath(); x.arc(px, py, 4 + (i % 3) * 2, 0, 7); x.fill();
-    if (i % 4 === 0) { x.fillStyle = '#F6D24A'; x.beginPath(); x.arc(px, py, 2.5, 0, 7); x.fill(); x.fillStyle = '#FFFDF4'; } }
-  x.restore();
-  platt(tex(c), 2.26 * BOK, 0, 0.0, 1.5 * BOK, SIDA + 0.0004);
-}
+    if (i % 4 === 0) { x.fillStyle = '#F6D24A'; x.beginPath(); x.arc(px, py, 2.5, 0, 7); x.fill(); x.fillStyle = '#FFFDF4'; } } })), 2.26 * BOK, 0, 0.0, 1.5 * BOK, SIDA + 0.0004);
 // rabatten: tre tulpaner i tre lägen på samma fot. Den hängande bilden är bredare med foten vid 0,39–0,40 av bredden (bildlista.md):
 // dx flyttar den så att foten hamnar på samma punkt, höjden i samma px-skala som den stående.
 const TH = 0.38, TPOS = { rod: [-0.42, 0.0], gul: [0.0, -0.02], lila: [0.42, 0.06] }, FOTFR = { rod: 0.396, gul: 0.388, lila: 0.404 };
@@ -221,59 +148,28 @@ function ritaInsekter(t, steg) {   // ny brusbild 6 gånger/s, kanten och boilen
 // HAND finns inte i musens uttryck.html: händerna mätta ur mille-arm-l/-r.png (punkten längst från axeln, en bit in), munnen ur
 // munbågen (y ca 460). Bara i den här scenen, riggen ändras inte.
 window.HAND = { l: [172, 624], r: [851, 623], kant: 8, mun: [511, 460] };
-const VB = { x: -150, y: -200, w: 1324, h: 1200 }, FOT = 924, TOPP = 103;   // TOPP: öronens topp (mille-ear-r.png)
+const FOT = 924, TOPP = 103;   // TOPP: öronens topp (mille-ear-r.png)
 const L = await v2rigg('musen-mille'), G = L.figur(512, FOT, 1, $('figurer'));
-G.querySelector('.skugga')?.setAttribute('display', 'none');
 // kannan i höger hand: greppet mitt på handtagets ovankant, upprätt (folj 0), pipen åt höger mot blommorna
 const PIP = [368, 78], KSKALA = KH / (0.26 / (FOT - TOPP)) / 339;
 const SAK = L.sakBild(KANNA_URL, 388, 339, { grepp: [144, 36], fot: [194, 323], skala: KSKALA, folj: 0, kant: 4 });
 L.sakIn(G, SAK);
-await Promise.all([...$('kort').querySelectorAll('image')].map(async im => { const h = im.getAttribute('href'); if (!h.startsWith('data:')) im.setAttribute('href', await dataUrl(h)); }));
-window.kant.lagg(G); const kantF = $('defs').lastElementChild;
-const BL = skapaBlinka(31);
+const MH = 0.26;   // musens höjd (öronen till fötterna) som storyboardens kort
+const MUSKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: MH, blink: 31, hog: 0.008 }), { m: mus, ENHET, fig2varld, BL, nick } = MUSKORT;
 G.insertAdjacentHTML('beforeend', '<g id="dropparG"></g>');
 L.rita(G, L.NEUTRAL, L.POSE0);
-const MH = 0.26, ENHET = MH / (FOT - TOPP);   // musens höjd (öronen till fötterna) som storyboardens kort
-const kortCanvas = duk(VB.w, VB.h), kortCtx = kortCanvas.getContext('2d'), kortTex = tex(kortCanvas);
-const gg = new THREE.PlaneGeometry(VB.w * ENHET, VB.h * ENHET);
-gg.translate((VB.x + VB.w / 2 - 512) * ENHET, (FOT - (VB.y + VB.h / 2)) * ENHET, 0);   // origo i fötterna
-const mus = new THREE.Mesh(gg, new THREE.MeshLambertMaterial({ map: kortTex, emissiveMap: kortTex, emissive: new THREE.Color(0.3, 0.3, 0.3), alphaTest: 0.5, side: THREE.FrontSide }));
-mus.add(new THREE.Mesh(gg, new THREE.MeshLambertMaterial({ map: kortTex, color: 0x000000, emissive: '#F4ECDD', alphaTest: 0.5, side: THREE.BackSide })));
-mus.castShadow = mus.receiveShadow = true;
-mus.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: kortTex, alphaTest: 0.5 });
-scen.add(mus);
-const MUSKORT = { m: mus, y: SIDA + 0.004, hog: 0.008 };
-const fig2varld = ([x, y], pos = mus.position) => v3(pos.x + (x - 512) * ENHET, pos.y + (FOT - y) * ENHET, pos.z + 0.01);
-const stillBild = new Image();
 
-// ---- ljuset ----
-scen.add(new THREE.HemisphereLight('#FFFAF0', '#D8B892', 2.3));
-const ljus = new THREE.DirectionalLight('#FFF0DC', 2.2); ljus.position.set(-2.2, 4, 3); ljus.castShadow = true;
-Object.assign(ljus.shadow.camera, { left: -2.6, right: 2.6, top: 2.6, bottom: -2.6, near: 0.5, far: 12 });
-ljus.shadow.mapSize.set(4096, 4096); ljus.shadow.bias = -0.0004; ljus.shadow.normalBias = 0.01; ljus.shadow.radius = 4; scen.add(ljus);
-
-// ---- skärpedjup (som 062) ----
-const rt = new THREE.WebGLRenderTarget(W * PR, H * PR, { samples: 4, type: THREE.HalfFloatType });
-const komp = new EffectComposer(R, rt); komp.setPixelRatio(PR); komp.setSize(W, H);
-const bokeh = new BokehPass(scen, cam, { focus: 2, aperture: 0.002, maxblur: 0.006 });
-bokeh.materialDepth = null;
-const DJUP0 = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, blending: THREE.NoBlending }), bokehRender = bokeh.render.bind(bokeh);
-bokeh.render = (...a) => {
-  const byt = []; scen.traverse(o => { if (o.isMesh) { byt.push([o, o.material]); o.material = o.customDepthMaterial ?? DJUP0; } });
-  const bg = scen.background; scen.background = null; bokehRender(...a); scen.background = bg;
-  for (const [o, m] of byt) o.material = m;
-};
-komp.addPass(new RenderPass(scen, cam)); komp.addPass(bokeh); komp.addPass(new OutputPass());
+// ---- ljuset och skärpedjupet ----
+ljuset(scen);
+const DOF = djupskarpa(SC);
 
 // ---- tiderna ----
 const OPPNA = S('02'), STANG = S('28');
 // korten upp bakifrån och fram när pärmen slås upp; ner framifrån när boken stängs (musen först)
 const SLOT = f => TULPAN[f].knopp;
-const ORDNING = [...BAK, ...SKOG, LOVTRAD, BUSKE_K, ...['rod', 'gul', 'lila'].map(SLOT), ROSA_K, GULA_K].sort((a, b) => a.z - b.z);
-ORDNING.forEach((k, i, a) => { k.upp = OPPNA + 0.6 + i * 0.8 / (a.length - 1); k.hog = 0.004 + 0.001 * (a.length - i); });
-const NER = [...ORDNING, KANNA_K].sort((a, b) => b.z - a.z);
-NER.forEach((k, i, a) => k.ner = STANG + 0.3 + i * 0.5 / (a.length - 1));
-const PARM_NER = [STANG + 1.05, STANG + 1.75];
+const FALL = fallning(satt, OPPNA, STANG);
+const ORDNING = FALL.upp([...BAK, ...SKOG, LOVTRAD, BUSKE_K, ...['rod', 'gul', 'lila'].map(SLOT), ROSA_K, GULA_K]);
+FALL.ner([...ORDNING, KANNA_K]);
 const MUS_UPP = S('06') + 0.2;   // musens kort sist, på pop
 // den gula: knoppen fälls ner när kritan kommer (rad 04), teckningen ligger på sidan, fylls i och fälls upp (rad 05)
 const GUL_NER = S('04') + 0.05, GUL_KLAR = S('05') + 0.7, GUL_UPP = S('05') + 0.85;
@@ -304,40 +200,12 @@ const HUVUD = [512, 212];   // mellan öronen, huvudets topp
 const KLAPP = S('20') + 0.3 + LN(31) + 0.1 - 1.0;   // riggens klapp möts vid 1, 1,5 och 2 s
 const HEJ = [[S('06') + 0.6, S('06b') - 0.4, 1, false], [S('26') + 0.3, S('26b') - 0.1, 0, true], [S('27') + 0.2, STANG + 0.25, 0, true]];
 
-// ---- kritan ritar (som 062: konturen läggs på 3D-ytan med en affin avbildning ur kamerans projektion) ----
-const skarm = p => { const q = p.clone().project(cam); return [(q.x + 1) * 960, (1 - q.y) * 540]; };
-function affin(mesh, r) {
-  mesh.updateMatrixWorld(true); const g = mesh.geometry; g.computeBoundingBox(); const b = g.boundingBox;
-  const varld = (ix, iy) => mesh.localToWorld(v3(lerp(b.min.x, b.max.x, (ix - r.ox) / r.w), lerp(b.max.y, b.min.y, (iy - r.oy) / r.h), 0));
-  const cx = r.W / 2, cy = r.H / 2, d = r.W / 4, [x0, y0] = skarm(varld(cx, cy)), [x1, y1] = skarm(varld(cx + d, cy)), [x2, y2] = skarm(varld(cx, cy + d));
-  const a = (x1 - x0) / d, b2 = (y1 - y0) / d, c = (x2 - x0) / d, e = (y2 - y0) / d;
-  return { m: [a, b2, c, e, x0 - a * cx - c * cy, y0 - b2 * cx - e * cy], p: ([x, y]) => [a * x + c * y + x0 - a * cx - c * cy, b2 * x + e * y + y0 - b2 * cx - e * cy] };
-}
-const RIT = [];
-function teckning(namn, href, r, mesh, T, fyll, vanta) { RIT.push({ namn, href, r, mesh, T, fyll, vanta, drag: KONTUR[namn] }); }
-const KS = KRITAN.SKALA_SCEN * 1.25;   // kritan i närbild (062 runda 4)
-function ritaKritan(t) {
-  let h = '';
-  for (const D of RIT) {
-    const { T, fyll: [f0, f1], r } = D;
-    if (t < T.in[0] || t > Math.max(T.ut[1], f1 + 0.5)) continue;
-    const A = affin(D.mesh, r), f = k01((t - f0) / (f1 - f0)), k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
-    const Rb = ritBana(D.drag, k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
-    const cx = r.W / 2, cy = r.H / 2, op = 1 - k01((t - f1) / 0.2);
-    h += `<g transform="matrix(${A.m.map(x => x.toFixed(4)).join(' ')})">`;
-    if (f > 0 && op > 0) h += fyllMask('fy' + D.namn, cx, cy, Math.hypot(r.W, r.H) / 2, f) + `<image href="${D.href}" width="${r.W}" height="${r.H}" opacity="${op.toFixed(3)}" ${f < 1 ? `clip-path="url(#fy${D.namn})"` : ''}/>`;
-    if (k > 0 && f < 1) h += Rb.html;
-    h += '</g>';
-    const [sx, sy] = A.p([cx, cy]), kr = kritaFas(t, T, { start: A.p(Rb.start), spets: A.p(Rb.spets), slut: A.p(Rb.slut), vanta: [sx + D.vanta[0], sy + D.vanta[1]], s: KS });
-    if (kr) h += kritaBild(kr.x, kr.y, kr);
-    if (f > 0) h += gnistor(sx, sy, Math.hypot(...A.p([r.W, cy]).map((v, i) => v - [sx, sy][i])) * 1.1, t - f0);
-  }
-  return h;
-}
+// ---- kritan ritar ----
+const KR = kritan(cam), { skarm } = KR;
 { const a = S('04'), b = S('05'), c = S('09'), d = S('10');
-  teckning('tulpan-gul', RQ + 'tulpan-gul/cut/tulpan-gul.png', GUL_R, TULPAN.gul.uppe.m,
+  KR.teckning('tulpan-gul', RQ + 'tulpan-gul/cut/tulpan-gul.png', KONTUR['tulpan-gul'], GUL_R, TULPAN.gul.uppe.m,
     { in: [a + 0.5, a + 0.9], rit: [a + 1.0, a + 4.3], vanta: [a + 4.4, a + 5.1], ut: [b + 0.1, b + 0.9] }, [b + 0.1, b + 0.7], [330, -60]);
-  teckning('vattenkanna', RQ + 'vattenkanna/cut/vattenkanna.png', KANNA_R, KANNA_K.m,
+  KR.teckning('vattenkanna', RQ + 'vattenkanna/cut/vattenkanna.png', KONTUR.vattenkanna, KANNA_R, KANNA_K.m,
     { in: [c + 0.1, c + 0.5], rit: [c + 0.6, c + 3.2], vanta: [c + 3.3, c + 4.0], ut: [d + 0.1, d + 0.9] }, [d + 0.05, d + 0.55], [300, 20]); }
 // siffrorna 1, 2, 3 i krita: bara linjen (ritBana ur kritan-ritar.js), ritas på ordet vid blomman, i en 100 × 140-ruta
 const SIFFRA_D = [['M30 38 L56 14 L56 128'], ['M20 46 C20 6 88 4 86 46 C84 78 40 96 18 128 L90 128'],
@@ -359,7 +227,6 @@ function siffror(t) {
 // ---- musens rörelser per rad ----
 const BU = n => L.blanda('neutral', n, 1);
 const OPPEN = { ...L.param('jatteglad'), glad: [0, 0] };   // glad med öppna ögon och munnen synlig (Sannas regel)
-const nick = (f, p, tl) => tl >= 0 && tl < 2 ? L.nicka(f, p, tl) : [f, p];
 // vinkar: armen bakom kroppen, snett upp och ut förbi kanten (som 034:s mus, 86° ± 12°); hej då lite högre och tydligare
 function vink(f, p, tl, d, i, stor) {   // armens hela vinkel (uttrycket + posen) blir 70° ± 14°: snett upp och ut förbi kroppens kant
   if (tl < 0 || tl > d) return [f, p];
@@ -453,17 +320,7 @@ async function ritaMus(t) {
   for (const [i, a] of FOTDROPPAR.entries()) { const w = (t - a - 0.35) / 1.2, mal = [[575, 884], [628, 888], [600, 880]][i];   // pärlan rinner av foten
     if (w > 0 && w < 1) d += dr(mal[0] + 12 * mjuk(w), mal[1] + 30 * mjuk(w), 1.3, Math.min(1, (1 - w) * 4)); }
   $('dropparG').innerHTML = d;
-  // boil 2,5 px i bild och vit kant 3 px i bild, räknat mot 3D-kamerans skala
-  const mitt = mus.position.clone().add(v3(0, 0.13, 0)), dd = mitt.clone().sub(cam.position).dot(cam.getWorldDirection(v3())) || 3;
-  const s = 540 / (dd * Math.tan(cam.fov * Math.PI / 360)) * ENHET;
-  $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1); $('boilStyrka').setAttribute('scale', (2.5 / s).toFixed(2));
-  const ru = 3 / s;
-  kantF.querySelector('feMorphology[result="d"]')?.setAttribute('radius', ru.toFixed(3));
-  kantF.querySelector('feDisplacementMap')?.setAttribute('scale', (0.35 * ru).toFixed(3));
-  const tu = kantF.querySelectorAll('feTurbulence'); tu[0]?.setAttribute('baseFrequency', (0.05 * s).toFixed(5)); tu[1]?.setAttribute('baseFrequency', (0.35 * s).toFixed(5));
-  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString($('kort'))], { type: 'image/svg+xml' }));
-  stillBild.src = url; await stillBild.decode(); URL.revokeObjectURL(url);
-  kortCtx.clearRect(0, 0, VB.w, VB.h); kortCtx.drawImage(stillBild, 0, 0, VB.w, VB.h); kortTex.needsUpdate = true;
+  await MUSKORT.textur(t);
 }
 
 // vattnet ur kannan: små droppar i en båge från pipen ner på bladen vid stjälkens fot, framför kortet
@@ -482,10 +339,9 @@ function vattna(t) {
 
 const glimt = (t, a, d = 0.6) => bump(a, a + d, t, 0.2);
 async function bildruta(t) {
-  const oppen = t < STANG ? k01((t - OPPNA) / 0.9) : 1 - mjuk((t - PARM_NER[0]) / (PARM_NER[1] - PARM_NER[0]));
-  satt(PARM0 + (PARM1 - PARM0) * oppen);
-  const fallE = k => { let e = k.upp != null ? reser((t - k.upp) / 0.45) : 0; if (k.ner != null) e *= 1 - mjuk((t - k.ner) / 0.35); return e; };
-  for (const k of ORDNING) { const e = fallE(k); vik(k, e); if (k.flik) k.flik.visible = e > 0.6; k.m.rotation.z = 0; k.m.scale.setScalar(1); }
+  FALL.parm(t);
+  const fallE = k => FALL.e(k, t);
+  for (const k of ORDNING) { stall(k, fallE(k)); k.m.rotation.z = 0; k.m.scale.setScalar(1); }
   // tulpanerna: samma fällning för alla tre lägen, bildbyte mellan dem
   const svaj = t >= S('20') && t < S('21') || t >= S('26b') && t < S('26c') ? 1 : 0;
   ['rod', 'gul', 'lila'].forEach((fl, i) => {
@@ -550,13 +406,11 @@ async function bildruta(t) {
   ritaInsekter(t, kryp > 0.1 ? Math.floor(t * 4) % 2 : 0);
   await ritaMus(t);
   vattna(t);
-  // fokus på vyns mål
-  const v = VYER[Math.max(0, VYER.findLastIndex(w => w.t <= t))];
-  bokeh.uniforms.focus.value = cam.position.distanceTo(v.mal); bokeh.uniforms.maxblur.value = v.blur; bokeh.uniforms.aperture.value = v.blur > 0.003 ? 0.012 : 0.002;
+  DOF.fokus(KAM.aktiv(t));
   scen.updateMatrixWorld(true);
   // kritan, siffrorna och glimtarnas gnistor i #ov
-  let ov = ritaKritan(t) + siffror(t);
-  const gn = (t0, p, R = 90, n = 4) => { if (t < t0 || t > t0 + 1.2) return ''; const [x, y] = skarm(p); return gnistor(x, y, R, t - t0, n); };
+  let ov = KR.rita(t) + siffror(t);
+  const gn = (t0, p, R = 90, n = 4) => KR.glimt(t, t0, p, R, n);
   ov += gn(SLAR_UT.rod, TULPAN.rod.krona) + gn(SLAR_UT.lila, TULPAN.lila.krona);
   for (const fl of ['rod', 'gul', 'lila']) ov += gn(UPP[fl], TULPAN[fl].krona, 110, 5);
   SOLEN.updateMatrixWorld(true); const solp = SOLEN.getWorldPosition(v3());
@@ -569,14 +423,13 @@ async function bildruta(t) {
   AGG.forEach((a, i) => { if (t < a || t > a + 1.0) return; const p = BOET.m.localToWorld(v3((-0.25 + 0.25 * i) * 0.085 * 404 / 293, 0.085 * 0.72, 0.006)), [x, y] = skarm(p), k = bump(a, a + 0.9, t, 0.25);
     ov += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(40 * k).toFixed(1)}" fill="#FFF" opacity="${(0.35 * k).toFixed(2)}"/>` + gnistor(x, y, 60, t - a, 3); });
   $('ov').innerHTML = ov;
-  komp.render();
+  DOF.komp.render();
 }
 
 // ---- kameran: storyboardens vyer, glid mellan närliggande vyer, klipp när platsen byts ----
 const BOPOS = [TRADET[0] + BO_OFF.x, SIDA + BO_OFF.y, TRADET[1] + BO_OFF.z];
 const tulpanNara = f => () => { const [x, z] = TPOS[f]; return [v3(x - 0.1, 0.4, z + 1.0), v3(x - 0.1, 0.2, z + 0.08), 30]; };
 const VY = {
-  bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32],
   bred: () => [v3(0, 0.7, 1.8), v3(0, 0.3, -0.2), 32],
   rabatt: () => [v3(0.04, 0.42, 1.22), v3(0.02, 0.15, 0.05), 30],
   'rabatt-hel': () => [v3(0.06, 0.52, 1.5), v3(0.06, 0.14, 0.08), 32],
@@ -594,62 +447,27 @@ const VY = {
   bo: () => [v3(BOPOS[0] + 0.1, BOPOS[1] + 0.06, BOPOS[2] + 0.55), v3(...BOPOS).add(v3(0, 0.03, 0)), 26],
   'bo-nara': () => [v3(BOPOS[0] + 0.04, BOPOS[1] + 0.06, BOPOS[2] + 0.34), v3(...BOPOS).add(v3(0, 0.04, 0)), 22],
   hejda: g => [g.clone().add(v3(-0.06, 0.28, 0.8)), g.clone().add(v3(-0.02, 0.15, -0.1)), 32],   // närmare, så att vinkningen syns
-  slut: () => [v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), 32],
 };
-const lage = (pos, mal, P) => [Math.atan2(pos.x - P[0], pos.z - P[2]) * 180 / Math.PI, Math.hypot(pos.x - P[0], pos.z - P[2]), pos.y - P[1], mal.x - P[0], mal.y - P[1]];
-const fran3 = (l, P) => { const a = l[0] * Math.PI / 180; return [v3(P[0] + l[1] * Math.sin(a), P[1] + l[2], P[2] + l[1] * Math.cos(a)), v3(P[0] + l[3], P[1] + l[4], P[2])]; };
-const skjut = l => [l[0] + 1.2, l[1] * 0.965, l[2] * 0.985, l[3], l[4]];   // svag push in i varje vy
-satt(PARM1); scen.updateMatrixWorld(true);
-const platser = {}, VYER = [];
-const blurFor = n => /nara|rita|nyckelpiga|fjaril/.test(n) ? 0.008 : /halv|kanna|bo|hejda|insekter/.test(n) ? 0.006 : 0.003;
-function vy(t, namn, g, o = {}) {
-  const [pos, mal, fov] = VY[namn](g), P = o.P || [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
-  if (!o.fran) pos.y += 0.06;
-  const fran = o.fran || lage(pos, mal, P);
-  VYER.push({ t, mot: key, fran, till: o.till || skjut(fran), fov, mal: o.mal || mal, blur: blurFor(namn) });
-}
-function glid(t0, d, namn, g) {
-  const f = VYER.at(-1), [p0, m0] = fran3(f.till ?? f.fran, platser[f.mot]), [pos, mal, fov] = VY[namn](g); pos.y += 0.06;
-  const P = [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
-  VYER.push({ t: t0, mot: key, fran: lage(p0, m0, P), till: lage(pos, mal, P), fov, mal, blur: blurFor(namn), rorelse: 'glid' });
-  vy(t0 + d, namn, g);
-}
+satt(PARM[1]); scen.updateMatrixWorld(true);
+const KAM = kamera(cam, VY, { lyft: () => 0.06, blur: n => /nara|rita|nyckelpiga|fjaril/.test(n) ? 0.008 : /halv|kanna|bo|hejda|insekter/.test(n) ? 0.006 : 0.003 }), { vy, glid } = KAM;
 // 05 klipps i stället för att glida: gul-rita tittar på z -0.19 och glidningen (bana runt den nya punkten) hoppade
 const GLID = { '03': 1.4, '05b': 1.0, '06': 1.0, '07': 1.1, '07b': 1.0, '08': 0.9, '09': 0.9, '11': 0.8, '12': 0.8, '14': 0.8, '16': 0.9, '17': 1.0,
   '20': 1.0, '20b': 1.1, '21': 1.2, '24b': 0.8, '24c': 0.6, '26': 0.8 };
 const gPos = n => v3(MUSPOS[n][0], SIDA, MUSPOS[n][1]);
-const P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0), bredL = lage(...VY.bred().slice(0, 2), P0);
 let forra = '';
 for (const r of RAD) {
   const namn = r.st.vy === 'in' ? 'bred' : r.st.vy, g = gPos(r.st.pos), key = namn + r.st.pos;
-  if (r.id === '01') { vy(r.s, 'bord', g, { P: P0, fran: [bordL[0] - 7, bordL[1] * 1.07, bordL[2] * 1.05, bordL[3], bordL[4]], till: bordL, mal: v3(0, 0.25, -0.1) }); forra = 'bord'; continue; }
-  if (r.id === '02') { VYER.at(-1).till = bordL; vy(r.s + 0.9, 'bred', g, { P: P0, fran: bordL, till: bredL, mal: v3(0, 0.3, -0.2) }); forra = 'bred'; continue; }
-  if (r.id === '28') {   // ut ur boken medan korten fälls ner och pärmen slås igen
-    const f = VYER.at(-1), [pos, mal] = fran3(f.till, platser[f.mot]);
-    VYER.push({ t: r.s + 0.1, mot: 'pBord', fran: lage(pos, mal, P0), till: lage(...VY.slut().slice(0, 2), P0), fov: 32, mal: v3(0, 0.2, -0.1), blur: 0.003, rorelse: 'glid' }); platser.pBord = P0; continue; }
+  if (r.id === '01') { KAM.oppning(r.s, S('02') + 0.9, 'bred'); forra = 'bred'; continue; }
+  if (r.id === '02') continue;
+  if (r.id === '28') { KAM.stangning(r.s + 0.1); continue; }   // ut ur boken medan korten fälls ner och pärmen slås igen
   if (r.id === '13') { vy(r.s, 'halv', gPos('start')); glid(GA[0][0], GA[0][1] - GA[0][0], 'halv', gPos('rod')); forra = 'halvrod'; continue; }   // följer musen till den röda
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s, GLID[r.id], namn, g); else vy(r.s, namn, g);
 }
-VYER.sort((a, b) => a.t - b.t);
-
-const planK = kameraplan({ cam, canvas: $('bild'), platser, vyer: VYER, langd: DURATION });
+const planK = KAM.plan(DURATION);
 
 // ---- ljudet: Malin, musen och effekterna ur raderna, kritans ritljud som slinga, fågelkvitter lågt under allt ----
-const EF = 'assets/ljud/effekter/';
 const VOL = f => /mus-|oj-oj|ooh/.test(f) ? 1.5 : /(glitter|glimt)/.test(f) ? 0.85 : /tindra/.test(f) ? 0.6 : /prassel-tyg/.test(f) ? 0.9
   : /(pop|swoosh|hopp-mjuk|landa-mjuk)/.test(f) ? 0.7 : /regn-droppar|fagel-pip/.test(f) ? 0.5 : /droppar/.test(f) ? 0.8 : 1.0;
-const LJUD = [];
-for (const r of RAD) {
-  for (const [n, o] of r.malin || []) LJUD.push({ t: r.s + o, fil: `assets/ljud/roster/varen-i-boken/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
-  for (const [f, o] of r.ljud || []) if (!/^(krita-ritar|fagelkvitter)\//.test(f)) LJUD.push({ t: r.s + o, fil: EF + f + '.m4a', vol: VOL(f) });
-}
-for (const [i, D] of RIT.entries()) LJUD.push({ t: D.T.rit[0], fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: D.T.rit[1] - D.T.rit[0] + 0.3, loop: true, fade: 0.4 });
-LJUD.push({ t: 0, fil: EF + 'fagelkvitter/fagelkvitter-1.m4a', vol: 0.3, langd: DURATION, loop: true, fadeIn: 1.0, fade: 2.0 });
-LJUD.push(...[0.5, 1.0].map((k, i) => ({ t: KLAPP + 1.0 + k, fil: EF + `klapp/klapp-${2 - i}.m4a`, vol: 1.0 })));   // riggens andra och tredje klapp
-LJUD.push(...planK.ljud);
-window.LJUD = LJUD.filter(c => c.t < DURATION).sort((a, b) => a.t - b.t);
-window.DURATION = DURATION;
-window.TIDER = Object.fromEntries(RAD.map(r => [r.id, +r.s.toFixed(2)]));
-window.seek = t => planK.rita(t, () => bildruta(t));
-window.ready = window.seek(+(new URLSearchParams(location.search).get('t') || 0)).then(() => true);
+starta(RD, planK, bildruta, { rost: 'varen-i-boken', vol: VOL, matta: ['fagelkvitter/fagelkvitter-1', 0.3], RIT: KR.RIT,
+  extra: [0.5, 1.0].map((k, i) => ({ t: KLAPP + 1.0 + k, fil: `assets/ljud/effekter/klapp/klapp-${2 - i}.m4a`, vol: 1.0 })) });   // riggens andra och tredje klapp
