@@ -11255,9 +11255,10 @@
   "sec": 38,
   "tags": [],
   "note": "kan grodan bada?",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794479850,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795803151276
  },
  "20r9ndc1cqmwz5ohgi": {
   "ep": "062",
