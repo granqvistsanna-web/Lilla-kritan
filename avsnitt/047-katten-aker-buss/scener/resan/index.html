@@ -47,6 +47,7 @@
 <script src="/produktion/youtube/shorts/godnatt/nalle-v2.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script src="/avsnitt/043-grisen-matar-faglarna/fagel.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script src="kaj34.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -54,7 +55,6 @@ const A = '/assets/', R = A + 'rekvisita/', B = A + 'bakgrunder/', HAR = '/avsni
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const bild = (href, w, h, t, extra = '') => `<image href="${href}" width="${w}" height="${h}" transform="${t}" ${extra}/>`;
 const f1 = x => (+x).toFixed(1);
-const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
 const NALLE = R + 'nalle/cut/nalle-v2-ljus-tunn.png',   // v2-nallen som leoparden har i 040 (Sanna 2026-11-20), kanten inbakad, ansiktet i kod (nalle-v2.js)
       GUBBE = R + 'snogubbe/cut/snogubbe.png';
 const BUSS = { fil: R + 'buss/cut/buss.png', w: 1042, h: 498 }, PLOG = { fil: R + 'snoplog/cut/snoplog.png', w: 1081, h: 579 };
@@ -102,11 +102,6 @@ const GNISTOR = [[420, 320, 78], [730, 255, 62], [1040, 280, 86], [1370, 305, 66
   [760, 870, 64], [340, 650, 82], [880, 540, 54], [1260, 600, 60], [560, 470, 50]];
 const bussGnistor = tl => lagg('fram', GNISTOR.map(([x, y, r], i) => { const a = 0.15 + 0.11 * i, o = del(a, a + 0.35, tl) * (1 - del(a + 1.1, a + 1.6, tl));
   return o > 0.02 ? glans(x, y, r * (0.6 + 0.4 * o), o, i * 1.9) : ''; }).join(''));
-const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s.toFixed(3)}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
-const svajP = (x, y, tl) => [x + 14 * Math.sin(tl * 1.6), y + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3)];
-const kritaGlid = (P0, P1, k, s, bage = 40) => { const m = mjuk(k), h = Math.min(1, Math.hypot(P1[0] - P0[0], P1[1] - P0[1]) / 300) * bage * Math.sin(Math.PI * m);
-  krita(lerp(P0[0], P1[0], m), lerp(P0[1], P1[1], m) - h, lerp(P0[2] ?? 125, P1[2] ?? 125, m), s); };
-const ritfart = k => (k = kl(k), 0.6 * k + 0.4 * mjuk(k));
 const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
 function kritiris(r, [cx, cy]) {
   if (r >= 1500) return;
@@ -618,31 +613,24 @@ const hjul = (x, y, r) => `M${x - r} ${y} A${r} ${r} 0 1 0 ${x + r} ${y} A${r} $
 // bussen i ritintrot utan snö: buss-utan-sno.png (buss.png med snöpixlarna överst genomskinliga), klippt till konturens mjuka tak
 // (dSlat) med takets röda under, så att taket blir helt där snön låg
 const BUSS_INTRO = HAR + 'buss-utan-sno.png';
-let SKISS = null;
-function skiss() {
-  if (SKISS) return SKISS;
-  // Taket som en jämn rundad linje (buss-kontur.json dSlat: konturens knöliga snörand ersatt med en mjuk kurva på det röda taket),
-  // utan snö på taket (Sanna 2026-11-20: "ta bort snö på bussens tak i intro ritning"), varken i konturen eller i bilden
-  const D = [[KONTUR.buss.dSlat, 0.40], [hjul(230, 440, 56), 0.06], [hjul(882, 440, 56), 0.06],
-    [rr(69, 92, 207, 236), 0.05], [rr(224, 92, 355, 236), 0.05], [rr(378, 92, 509, 236), 0.05], [rr(532, 92, 664, 236), 0.05],
-    [rr(684, 88, 812, 424), 0.07], [rr(697, 104, 734, 242), 0.03], [rr(760, 104, 797, 242), 0.03], [rr(829, 92, 894, 236), 0.04],
-    ['M18 290 H680', 0.05], ['M18 340 H680', 0.05], ['M814 288 H1012', 0.02], ['M814 340 H1018', 0.02]];   // dörrens två fönster och den gula randen som i bilden (Sanna 2026-11-22 "polish rita bussen")
-  const LYFT = 0.02, sum = D.reduce((a, [, w]) => a + w, 0) + LYFT * (D.length - 1); let t = 0;
-  SKISS = D.map(([d, w, farg, bredd]) => { const a = t / sum, b = (t + w) / sum; t += w + LYFT; return [d, a, b, farg, bredd]; });
-  return SKISS;
-}
-const skPunkt = (i, f) => { const p = $('sk' + i); if (!p) return null; const q = p.getPointAtLength(p.getTotalLength() * Math.min(0.999, f)), pt = new DOMPoint(q.x, q.y).matrixTransform($('kamera').getCTM().inverse().multiply(p.getCTM())); return [pt.x, pt.y]; };
-function papperBuss(k, fyll) { papper(); let spets = null;
-  if (fyll > 0) lagg('saker', `<g transform="${pbT()}"><clipPath id="pb"><circle cx="521" cy="249" r="${f1(620 * fyll)}"/></clipPath><clipPath id="pbform"><path d="${KONTUR.buss.dSlat}"/></clipPath>
+// QA 27/11 (Sanna: ja): kritan ritar bussen med den delade verktyg/kritan-ritar.js (ritBana + kritaFas + fyllMask), som alla nya scener.
+// Konturen först (taket som en jämn rundad linje, buss-kontur.json dSlat, utan snö: Sanna 2026-11-20), en kort vila, sedan detaljerna
+// som Sanna godkände 22/11 ("polish rita bussen"): hjulen, fönstren, dörren med sina två fönster, framrutan och den gula randen.
+// Strecken är i bussbildens pixlar; tillPB räknar om dem till papperet (PB).
+const DRAG = () => [KONTUR.buss.dSlat, hjul(230, 440, 56), hjul(882, 440, 56),
+  rr(69, 92, 207, 236), rr(224, 92, 355, 236), rr(378, 92, 509, 236), rr(532, 92, 664, 236),
+  rr(684, 88, 812, 424), rr(697, 104, 734, 242), rr(760, 104, 797, 242), rr(829, 92, 894, 236),
+  'M18 290 H680', 'M18 340 H680', 'M814 288 H1012', 'M814 340 H1018'];
+const RIT_T = () => ({ in: [0, 0.45], rit: [0.5, 6.7], vanta: [at('01b', 0.2), at('01b', 1.0)], ut: [at('01c', 0.2), at('01c', 1.0)] });
+const tillPB = ([x, y]) => [PB[0] + (x - 521) * PB[2], PB[1] + (y - 249) * PB[2]];
+function ritintro(fyll = 0) {   // TT = scenens tid
+  papper(); const T = RIT_T(), k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0])), lo = linjeOpacitet(fyll);
+  const R = ritBana(DRAG(), k, { vila: [0.8], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PB[2])}" stroke-linecap="round" stroke-linejoin="round" opacity="${lo.toFixed(3)}"` });
+  if (fyll > 0) lagg('saker', `<g transform="${pbT()}">${fyllMask('pb', 521, 249, 620, fyll)}<clipPath id="pbform"><path d="${KONTUR.buss.dSlat}"/></clipPath>
     <g clip-path="url(#pb)"><g clip-path="url(#pbform)"><rect x="0" y="0" width="${BUSS.w}" height="90" fill="#c84e3c"/><image href="${BUSS_INTRO}" width="${BUSS.w}" height="${BUSS.h}"/></g></g></g>`);
-  if (fyll < 1 && k > 0) skiss().forEach(([d, a, b, farg = '#3a2c28', bredd = 13], i) => { const f = kl((k - a) / (b - a));
-    lagg('pilar', `<g transform="${pbT()}"><path id="sk${i}" d="${d}" pathLength="1" fill="none" stroke="${f > 0 ? farg : 'none'}" stroke-width="${f1(bredd / PB[2])}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${ritfart(f).toFixed(4)} 2" opacity="${(1 - fyll).toFixed(3)}"/></g>`);
-    if (f > 0 && f < 1) spets = skPunkt(i, ritfart(f)); });
-  if (!spets && k > 0 && k < 1) { const S2 = skiss(), i = S2.findIndex(([, a]) => a > k);
-    if (i > 0) { const E = skPunkt(i - 1, 1), Bp = skPunkt(i, 0), u = mjuk((k - S2[i - 1][2]) / (S2[i][1] - S2[i - 1][2]));
-      const h = Math.min(1, Math.hypot(Bp[0] - E[0], Bp[1] - E[1]) / 200) * 30 * Math.sin(Math.PI * u); spets = [lerp(E[0], Bp[0], u), lerp(E[1], Bp[1], u) - h]; } }
-  if (k >= 1 && fyll < 1) spets = skPunkt(skiss().length - 1, 1);
-  return spets;
+  if (lo > 0 && R.html) lagg('pilar', `<g transform="${pbT()}">${R.html}</g>`);
+  const kr = kritaFas(TT, T, { start: tillPB(R.start), spets: tillPB(R.spets), slut: tillPB(R.slut), vanta: [1500, 300] });
+  if (kr) lagg('pilar', kritaBild(kr.x, kr.y, kr));
 }
 
 // påstigningen: halvbild mot dörren; katten går från hållplatsen (KH) mot dörren och blir mindre (in mot bussen),
@@ -668,13 +656,12 @@ const hallKatt = (f, p = {}, o = {}) => katt(f, { ...ENHAND, ...p }, { x: KH, fo
 const fragaSkimmer = (x, y, vidd = 1) => { const e = mo(0) + L_(CUR.malin[0][0]), tl = TT - CUR.s; skimmer(x, y, 0.8 * del(e + 1.3, e + 2.1, tl) * (1 - del(CUR.d - 0.7, CUR.d - 0.15, tl)), vidd); };
 const gungBuss = () => { const v = fart(TT) / V; GUNG = 2 * v * Math.sin(TT * 7.3) + 1.2 * v * Math.sin(TT * 3.1); };
 const S = {
-  '01a': tl => { kamera(1); const k = kl((tl - 0.3) / 6.4), sp = papperBuss(k, 0); if (sp) krita(sp[0], sp[1], 125, 0.42 * (0.7 + 0.3 * del(0, 0.4, tl))); },
-  '01b': tl => { kamera(1); const E = papperBuss(1, 0); kritaGlid([...E, 125], svajP(1500, 300, tl), del(0, 1.1, tl), 0.42, 60); },
+  '01a': tl => { kamera(1); ritintro(); },
+  '01b': tl => { kamera(1); ritintro(); },
   // fylls i inifrån, kritan far iväg; efter "Oj! En buss!" zoom in i teckningen som tonar till vitt, och hållplatsen tonar fram
   '01c': (tl, d) => { const z0 = mo(0) + L_(3) + 0.3, klipp = z0 + 1.0;
     if (tl < klipp) { const z = mjuk((tl - z0) / (klipp - z0)); kamera(lerp(1, 2.6, z), 960, lerp(560, 480, z));
-      papperBuss(1, del(0, 0.9, tl));
-      kritaGlid(svajP(1500, 300, RR['01b'].d + tl), [2100, 60, 140], del(0.2, 1.4, tl), 0.42, 0); bussGnistor(tl);
+      ritintro(del(0, 0.8, tl)); bussGnistor(tl);
       vit(del(klipp - 0.45, klipp, tl)); return; }
     hall(); HEL(); hallKatt(ANS('glad'), {}); snofall(); vit(1 - del(klipp, klipp + 0.6, tl)); },
 
@@ -917,9 +904,9 @@ function ljud() {
   // kritan låter hela ritningen (Sanna 2026-11-21 "0:06 missing sound for crayon"): krita-ritar-1 är 4 s, en andra tagning tar resten av konturen
   ut.push({ t: at('01a', 4.15), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 0.75, langd: 3.0, fadeIn: 0.2, fade: 0.5 });
   // QA 27/11: 4 s tyst medan kritan väntade efter "Hm, vad blir det?" (01b 1,8 s till fyllningen). Kritan krafsar svagt vidare
-  // (lägre än ritningen, under Malin) ända in i fyllningen, så att kritljudet hörs genom hela ritningen
-  ut.push({ t: at('01b', 0.9), fil: E + 'krita-ritar/krita-ritar-3.m4a', vol: 0.32, langd: 3.6, fadeIn: 0.4, fade: 0.4 });
-  ut.push({ t: at('01b', 4.2), fil: E + 'krita-ritar/krita-ritar-4.m4a', vol: 0.32, langd: RR['01b'].d - 4.2 + 0.6, fadeIn: 0.3, fade: 0.5 });
+  // (som ritningen, ca −44 dB, under Malin) ända in i fyllningen, så att kritljudet hörs genom hela ritningen
+  ut.push({ t: at('01b', 0.9), fil: E + 'krita-ritar/krita-ritar-3.m4a', vol: 0.6, langd: 3.6, fadeIn: 0.4, fade: 0.4 });
+  ut.push({ t: at('01b', 4.2), fil: E + 'krita-ritar/krita-ritar-4.m4a', vol: 0.6, langd: RR['01b'].d - 4.2 + 0.6, fadeIn: 0.3, fade: 0.5 });
   // vinden (vinterljud) ca 15 dB lägre än förut (två omgångar) (Sanna 2026-11-20: "turn down the wind sound"): svag bakgrund under Malin och bussen
   const ute = at('01c') + RR['01c'].d - 1.0;
   ut.push({ t: 0.2, fil: E + 'vinterljud/vinterljud-1.m4a', vol: 0.06, langd: ute - 0.2 + 0.8, fadeIn: 1.5, fade: 1.2 });       // svagt under ritintrot
@@ -988,7 +975,7 @@ window.ready = (async () => {
   RYGG_G = document.createElementNS('http://www.w3.org/2000/svg', 'g'); $('gomda').appendChild(RYGG_G); window.kant?.lagg(RYGG_G);
   GRAN_G = document.createElementNS('http://www.w3.org/2000/svg', 'g'); $('gomda').appendChild(GRAN_G); window.kant?.lagg(GRAN_G, { andel: 0.01 }); ['sakerbak', 'saker'].forEach(n => window.kant?.lagg($(n)));
   KONTUR.buss = await (await fetch(HAR + 'buss-kontur.json')).json();
-  const bilder = [BUSS_INTRO, HAR + 'skylt-framfor.png', RYGG, BAKIFRAN, HALL, INNE, HAL, DORR, DORR_OPPEN, KRITA, NALLE, GUBBE, BUSS.fil, PLOG.fil, PULKA.fil, GRAN.fil, STJARNA, ...KAJ34.BILDER, ...['hus', 'sjo', 'pulkabacke', 'skog-bro', 'stan', 'farmors-hus', 'gran'].map(RP)];
+  const bilder = [BUSS_INTRO, HAR + 'skylt-framfor.png', RYGG, BAKIFRAN, HALL, INNE, HAL, DORR, DORR_OPPEN, KRITAN.BILD, NALLE, GUBBE, BUSS.fil, PLOG.fil, PULKA.fil, GRAN.fil, STJARNA, ...KAJ34.BILDER, ...['hus', 'sjo', 'pulkabacke', 'skog-bro', 'stan', 'farmors-hus', 'gran'].map(RP)];
   // avkodas i förväg och ligger kvar dolda i bilden (QA 25/11: första rutan inne i bussen saknade fönsterhålets bild, ljust fält till höger)
   await Promise.all(bilder.map(u => { const i = new Image(); i.src = u; return i.decode().catch(() => {}); }));
   $('ram').insertAdjacentHTML('afterend', `<g id="forladda" opacity="0.001">${bilder.map(u => `<image href="${u}" width="4" height="4"/>`).join('')}</g>`);

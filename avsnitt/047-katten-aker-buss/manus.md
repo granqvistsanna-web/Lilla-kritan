@@ -2,6 +2,8 @@
 
 **Status:** plan 2026-11-20, **grind 1 (manus) godkänd av Sanna 2026-11-20**, **version 2 godkänd 2026-11-20**, **version 3** (Sanna 2026-11-20): slutet är vid farmors dörr, farmor öppnar och kramar och sedan är det slut; kritan ritar en buss i introt, katten är inte osäker och har nallen med sig från början, kaninen åker pulka och vinkar i fönstret och en fågel landar på snögubben. **Grind 3 (röst) godkänd 2026-11-20**, **grind 4 (ljud) godkänd 2026-11-20** (rekommendationerna i `assets/ljud/effekter/buss/`, alla CC0), **grind 5 (animatik) godkänd 2026-11-20** (större katt och buss). Nästa: grind 6, snabb förhandsvisning: Malins tagning i `assets/ljud/roster/katten-aker-buss/` (tagning 1, rad 22–23 från tagning 2), längder i `rost-langder.txt`. Nästa: grind 4 (ljud) och bilderna som v3 behöver (pulkabacken, farmors hus i fönstret, farmors dörr). Version 2: Sanna lade till mer att se utanför (*"more outside shots like what bus will pass"*), vad katten ser när den kliver på och att katten vill trycka på knappen redan då (rader 13a–c, 16a–b, 20a, 26a, 29a). Rad 13a görs i samma platta som resten av bussen, inte som en perspektivbild längs gången. Nästa: grind 2 (plattan i bussen, hållplatsen i vinter, bussen, farmor och farfar). Ett **Besöket**-avsnitt ([`format/besoket.md`](../../format/besoket.md)) till julkalendern (lucka 19 eller 20, Sanna 2026-11-20: *"cat going bus and seeing things outside window, going to visit farmor och farfar"*). Avsnittet förbereder små barn för en bussresa: vänta, kliva på, blippa, sitta, titta ut, trycka på knappen, kliva av. Malin berättar och katten svarar med ljud, öron och ansikte. **Farmor och farfar säger inget** (som doktorn). Ca 4 min.
 
+**27/11 (Sanna):** bara farmor – farfar nämns inte i repliken (rad 05, 35, 40 klippta, rad 46 ny tagning "Farmors hus!"). Farfar finns inte i filmen.
+
 | | |
 |---|---|
 | **Titel** | Katten åker buss (avsnitt 47) |
@@ -46,7 +48,7 @@ Kritan ritar **bussen** (Sanna 2026-11-20: *"intro rita en buss"*): konturen i l
 |---|---|---|---|
 | 01 | Papperet: kritan ritar bussens kontur | Kritan ritar … *(paus)* Hm … vad blir det nu? *(paus)* Oj! En buss! | krita-ritar |
 | 1 | Helbild. Katten står vid hållplatsen i snön med nallen i famnen och vinkar | Hej, katten! Hej, hej! | katt-hej |
-| 2 | Halvbild. Katten tittar bort längs vägen | Idag ska katten åka buss. Till farmor och farfar! | katt glad |
+| 2 | Halvbild. Katten tittar bort längs vägen | Idag ska katten åka buss. Till farmor! | katt glad |
 | 3 | Närbild, katten kramar nallen, huvudet lutar mot den | Och nallen är med! | katt mysig |
 | 4 | Samma. Katten gungar lite från fot till fot | Nu väntar vi på bussen. Vänta, vänta … | `smasteg` (mjukt) |
 | 5 | Helbild. Långt borta hörs bussen. Öronen reser sig | Hör du? Där kommer bussen! Brum, brum. | buss-brum (långt bort), katt förtjust |
@@ -77,17 +79,17 @@ Kritan ritar **bussen** (Sanna 2026-11-20: *"intro rita en buss"*): konturen i l
 | 27 | Samma. Snöplogen poppar till och skjuter lite snö åt sidan | En snöplog! Den skjuter undan snön. | `pop`, snöplog-skrap (mjukt) |
 | 29 | Bild A. Landskapet glider igen. Fönstret immar sakta från kanterna | Bussen åker igen. Oj! Fönstret blev alldeles vitt. | buss-brum |
 | 29b | Närbild. Den vita rutan, katten tittar på den nyfiket | Det är imma. Man kan rita i imman! | |
-| 30 | Samma. Katten ritar ett hjärta i imman med tassen (Sanna 2026-11-20). Genom hjärtat syns det klart | Titta! Katten ritar. *(gisspaus 3 s)* Ett hjärta! Till farmor och farfar. | krita-ritar, `glitter` |
+| 30 | Samma. Katten ritar ett hjärta i imman med tassen (Sanna 2026-11-20). Genom hjärtat syns det klart | Titta! Katten ritar. *(gisspaus 3 s)* Ett hjärta! Till farmor. | krita-ritar, `glitter` |
 | 31 | Bild B. Katten tittar på hjärtat, stolt | Kan du också rita ett hjärta? Med fingret. *(paus 4 s)* | katt nyfiken |
 | 32 | Bild A, genom hjärtat. Hus och affärer med ljusslingor och stjärnor i fönstren glider förbi | Nu är vi i stan. Så många ljus! | buss-brum |
 | 33 | Bild A, genom hjärtat. Landskapet saktar in. En stor julgran med ljus på ett torg | Bussen stannar. Titta! Vad ser katten? *(paus 4 s)* | broms (mjukt), tyst |
 | 34 | Samma. Julgranens ljus tindrar | En julgran! Med massor av ljus. | `tindra`, katt mysig |
-| 35 | Bild B. Katten vaggar lite med nallen | Snart är katten hos farmor och farfar. | katt glad |
+| 35 | Bild B. Katten vaggar lite med nallen | Snart är katten hos farmor. | katt glad |
 | 36 | Bild B. Katten tittar på knappen och sedan upp mot tittaren, öronen högt | Är det dags nu? Ja! Nu får katten trycka! | katt jippi |
 | 37 | Närbild på den röda stoppknappen. Kattens tass kommer in | Tryck på knappen, så vet bussen att vi ska av. | – |
 | 38 | Samma. Tassen trycker, knappen lyser | Kan du också trycka? Tryck! *(paus 3 s)* Pling! | `pling` |
 | 39 | Bild A. Landskapet saktar in. Ett rött hus med en krans på dörren glider in och stannar mitt i fönstret | Bussen stannar. Titta! Vems hus är det? *(paus 4 s)* | broms (mjukt), tyst |
-| 40 | Samma. Öronen reser sig högt, vickar | Farmors och farfars hus! | katt jippi |
+| 40 | Samma. Öronen reser sig högt, vickar | Farmors hus! | katt jippi |
 
 ## FARMORS DÖRR
 
@@ -111,7 +113,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [curious] Hm … vad blir det nu?
 [surprised] Oj! En buss!
 [happy] Hej, katten! Hej, hej!
-[cheerfully] Idag ska katten åka buss. Till farmor och farfar!
+[cheerfully] Idag ska katten åka buss. Till farmor!
 [happy] Och nallen är med!
 [warmly] Nu väntar vi på bussen. Vänta, vänta …
 [curious] Hör du? Där kommer bussen! Brum, brum.
@@ -140,18 +142,18 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 [warmly] Det är imma. Man kan rita i imman!
 [excited] Titta! Katten ritar.
-[delighted] Ett hjärta! Till farmor och farfar.
+[delighted] Ett hjärta! Till farmor.
 [warmly] Kan du också rita ett hjärta? Med fingret.
 [delighted] Nu är vi i stan. Så många ljus!
 [curious] Bussen stannar. Titta! Vad ser katten?
 [delighted] En julgran! Med massor av ljus.
-[warmly] Snart är katten hos farmor och farfar.
+[warmly] Snart är katten hos farmor.
 [excited] Är det dags nu? Ja! Nu får katten trycka!
 [cheerfully] Tryck på knappen, så vet bussen att vi ska av.
 [warmly] Kan du också trycka? Tryck!
 [excited] Pling!
 [curious] Bussen stannar. Titta! Vems hus är det?
-[delighted] Farmors och farfars hus!
+[delighted] Farmors hus!
 [playfully] Pschhh … och ner! Nu går vi till dörren.
 [cheerfully] Knacka på! Knack, knack.
 [warmly] Kan du också knacka?

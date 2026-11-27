@@ -2,7 +2,7 @@
 02-hm-vad-blir-det  [curious] Hm … vad blir det nu?
 03-oj-en-buss  [surprised] Oj! En buss!
 04-hej-katten-hej-hej  [happy] Hej, katten! Hej, hej!
-05-idag-ska-katten-aka  [cheerfully] Idag ska katten åka buss. Till farmor och farfar!
+05-idag-ska-katten-aka  [cheerfully] Idag ska katten åka buss. Till farmor!
 06-och-nallen-ar-med  [happy] Och nallen är med!
 06b-du-har-ryggsacken  [happy] Du har ryggsäcken på dig!
 07-nu-vantar-vi-pa  [warmly] Nu väntar vi på bussen. Vänta, vänta …
@@ -34,18 +34,18 @@
 33-bussen-aker-igen-oj  [surprised] Bussen åker igen. Oj! Fönstret blev alldeles vitt.
 33b-det-ar-imma  [warmly] Det är imma. Man kan rita i imman!
 34-titta-katten-ritar  [excited] Titta! Katten ritar.
-35-ett-hjarta-till-farmor  [delighted] Ett hjärta! Till farmor och farfar.
+35-ett-hjarta-till-farmor  [delighted] Ett hjärta! Till farmor.
 36-kan-du-ocksa-rita  [warmly] Kan du också rita ett hjärta? Med fingret.
 37-nu-ar-vi-i  [delighted] Nu är vi i stan. Så många ljus!
 38-bussen-stannar-titta-vad  [curious] Bussen stannar. Titta! Vad ser katten?
 39-en-julgran-med-massor  [delighted] En julgran! Med massor av ljus.
-40-snart-ar-katten-hos  [warmly] Snart är katten hos farmor och farfar.
+40-snart-ar-katten-hos  [warmly] Snart är katten hos farmor.
 41-ar-det-dags-nu  [excited] Är det dags nu? Ja! Nu får katten trycka!
 42-tryck-pa-knappen-sa  [cheerfully] Tryck på knappen, så vet bussen att vi ska av.
 43-kan-du-ocksa-trycka  [warmly] Kan du också trycka? Tryck!
 44-pling  [excited] Pling!
 45-bussen-stannar-titta-vems  [curious] Bussen stannar. Titta! Vems hus är det?
-46-farmors-och-farfars-hus  [delighted] Farmors och farfars hus!
+46-farmors-hus  [delighted] Farmors hus!
 47-pschhh-och-ner-nu  [playfully] Pschhh … och ner! Nu går vi till dörren.
 48-knacka-pa-knack-knack  [cheerfully] Knacka på! Knack, knack.
 49-kan-du-ocksa-knacka  [warmly] Kan du också knacka?
