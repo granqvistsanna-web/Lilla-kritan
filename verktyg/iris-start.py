@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Var börjar kritirisen? Skriver tiden (s) för sista bildrutan före irisen, eller inget om filmen inte slutar med iris.
   python3 verktyg/iris-start.py <film.mp4> [slut-s]   slut: där det spelade slutar (till), annars filmens slut
-Irisen är en krympande krit-cirkel mot svart: alla fyra hörnen blir svarta och förblir det till slutet. Strax före syns
+Irisen är en krympande krit-cirkel mot svart (Y under 34: lokala filmer har svart på 16, molnets tv-omfång på 30): alla fyra hörnen blir svarta och förblir det till slutet. Strax före syns
 cirkelns ljusa kant i hörnen, så snittet läggs på bildrutan före den första som avviker från scenen (Sanna 27/11, J11)."""
 import subprocess, sys, re, statistics
 film = sys.argv[1]
@@ -15,9 +15,9 @@ def horn(x, y):   # YAVG per bildruta i ett hörn 24×24
 forsta = []; n = 0
 for x, y in (('0', '0'), ('iw-24', '0'), ('0', 'ih-24'), ('iw-24', 'ih-24')):
     Y = horn(x, y); n = len(Y)
-    if len(Y) < 40 or Y[-1] >= 30: sys.exit(0)   # hörnet är inte svart i slutet: ingen iris
+    if len(Y) < 40 or Y[-1] >= 34: sys.exit(0)   # hörnet är inte svart i slutet: ingen iris
     b = len(Y) - 1
-    while b > 0 and Y[b - 1] < 30: b -= 1        # svarta svansen börjar vid b
+    while b > 0 and Y[b - 1] < 34: b -= 1        # svarta svansen börjar vid b
     if b < 31: sys.exit(0)
     med = statistics.median(Y[b - 31:b - 6])
     while b > 0 and abs(Y[b - 1] - med) > 8: b -= 1   # irisens kant före det svarta

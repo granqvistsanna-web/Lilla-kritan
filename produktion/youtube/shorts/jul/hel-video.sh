@@ -45,6 +45,7 @@ till=$(sed -n "s/.*till: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # va
 iris=$(sed -nE "s/.*iris: *([0-9.]+|nej).*/\1/p" $mapp/index.html | head -1)
 [[ -z $iris ]] && iris=$(python3 verktyg/iris-start.py $film $till)
 [[ $iris == nej ]] && iris=""
+[[ -z $iris ]] && python3 -c "import sys; sys.exit(0 if $(ffmpeg -hide_banner -sseof -0.2 -i $film -frames:v 1 -vf signalstats,metadata=print:key=lavfi.signalstats.YAVG -f null - 2>&1 | sed -n 's/.*YAVG=\([0-9.]*\).*/\1/p' | head -1 || echo 99) < 40 else 1)" && echo "OBS: filmen slutar mörkt men ingen kritiris hittades: kolla slutet, eller sätt iris: <tid> i index.html" >&2
 [[ -n $iris ]] && till=$iris
 nb=$(sond v:0 nb_frames $film)
 sist=$(sed -n "s/.*sist: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: bilden bakom stängningen tas vid sist (s) i stället för filmens sista bild
