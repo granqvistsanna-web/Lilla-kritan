@@ -11581,8 +11581,9 @@
   "sec": 71,
   "tags": [],
   "note": "bunny higher up on potty",
-  "fixed": false,
+  "fixed": true,
   "at": 1795809496474,
-  "render": "2026-11-27 20:46 (slutrendering 1080p med intro och prenumerera-kort)"
+  "render": "2026-11-27 20:46 (slutrendering 1080p med intro och prenumerera-kort)",
+  "fixedAt": 1795812841283
  }
 }
