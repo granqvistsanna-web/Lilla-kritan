@@ -64,8 +64,8 @@ export function skrivbord(scen, kritor = [['#E2563F', 1.75, 0.55, 0.5], ['#F2C23
 
 // ---- mått (1 enhet ≈ 10 cm) ----
 export const SIDA = 0.075;                    // sidornas ovansida, där uppslaget ligger
-export const PARM_H = 0.12, PARM_Z = -0.835;  // gångjärnets höjd (över de nedfällda korten) och bakkant
-const BR = 2.46, DJ = 1.67, T = 0.03, FAS = 0.003, HORN = 0.035;   // pärmen sticker ut ca 3 mm förbi sidorna (2,40 × 1,62)
+export const PARM_H = 0.12; export let PARM_Z = -0.835;   // PARM_Z följer bokens storlek (skapaBok storlek)  // gångjärnets höjd (över de nedfällda korten) och bakkant
+let BR = 2.46, DJ = 1.67; const T = 0.03, FAS = 0.003, HORN = 0.035;   // pärmen sticker ut ca 3 mm förbi sidorna (2,40 × 1,62)
 const KRAM = '#F6EAD0', PAPPER = '#FBF6EA';
 
 function rundRekt(w, d, r) {
@@ -216,7 +216,9 @@ function kritSymbol(slinga = true) {
 }
 
 const slaUpp = k => (k = kl(0, 1, k), k < 0.5 ? 4 * k ** 3 : 1 - (-2 * k + 2) ** 3 / 2);
-export async function skapaBok(scen, { farg = '#E8683A', figur = 'kritan', doodles: med = true, ram = true, fargbild = false, oppna = [0.5, 1.4], vinkel = 0.53 * Math.PI } = {}) {
+export async function skapaBok(scen, { farg = '#E8683A', figur = 'kritan', doodles: med = true, ram = true, fargbild = false, oppna = [0.5, 1.4], vinkel = 0.53 * Math.PI, storlek = 1 } = {}) {
+  // storlek: hela boken (pärmarna, bladbunten, ryggen) större, så att uppslaget får plats med mer runt sig (062 runda 5: 1,3)
+  BR = 2.46 * storlek; DJ = 1.67 * storlek; PARM_Z = -0.835 * storlek;
   const bild = figur === 'kritan' ? kritSymbol() : typeof figur === 'string' ? (await new THREE.TextureLoader().loadAsync(figur)).image : figur;
   const o = { farg, doodles: med, ram, fargbild, rygg: ton(farg, -0.13, -0.05), siluett: ton(farg, -0.17) };
   const bok = new THREE.Group(); scen.add(bok);
@@ -224,8 +226,8 @@ export async function skapaBok(scen, { farg = '#E8683A', figur = 'kritan', doodl
   const bak = skiva(farg); bok.add(bak);
   const kant = mat(tex(sidkanter())), yta = mat(tex(kritDuk(512, 512, PAPPER, 0.3)));
   for (const s of [-1, 1]) {
-    const blad = skugga(new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.045, 1.62), [kant, kant, yta, kant, kant, kant]));
-    blad.position.set(s * 0.602, T + 0.0225, 0); bok.add(blad);
+    const blad = skugga(new THREE.Mesh(new THREE.BoxGeometry(1.2 * storlek, 0.045, 1.62 * storlek), [kant, kant, yta, kant, kant, kant]));
+    blad.position.set(s * 0.602 * storlek, T + 0.0225, 0); bok.add(blad);
   }
   // tygryggen: en rundad rygg i pärmens mörka ton, från bakpärmens undersida till framärmens ovansida
   const HY = PARM_H + T, rygg = new THREE.Shape(); rygg.moveTo(0, 0); rygg.absellipse(0, HY / 2, 0.05, HY / 2, -Math.PI / 2, Math.PI / 2, false); rygg.lineTo(0, 0);

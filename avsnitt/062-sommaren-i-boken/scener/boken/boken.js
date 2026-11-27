@@ -86,9 +86,11 @@ function baksida(map) {
 const djup = map => new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, blending: THREE.NoBlending, map, alphaTest: 0.5, side: THREE.DoubleSide });
 const skugga = m => { m.castShadow = m.receiveShadow = true; return m; };
 
-skrivbord(scen);
+// runda 5 (Sanna 27/11 "can the book scene be bigger?"): boken 1,3 gånger större, sakerna lika stora, mer uppslag runt dem
+const BOK = 1.3;
+skrivbord(scen, [['#E2563F', 2.15, 0.75, 0.5], ['#F2C23A', 2.35, 0.98, 0.35], ['#3F8FD2', -2.25, 1.15, -0.25]]);
 const PARM0 = 0.5, PARM1 = 1.4;
-const { insida, satt } = await skapaBok(scen, { farg: '#E8683A', figur: SOL_I, doodles: true, oppna: [PARM0, PARM1] });
+const { insida, satt } = await skapaBok(scen, { farg: '#E8683A', figur: SOL_I, doodles: true, oppna: [PARM0, PARM1], storlek: BOK });
 
 // ---- uppslaget (som storyboarden) ----
 // Kontaktskuggan vid kortets fot: en mjuk, rund skugga i stället för den gröna vikfliken, som såg ut som en fyrkantig skugga (Sanna 27/11)
@@ -111,15 +113,17 @@ const vik = (k, e) => { k.m.rotation.x = Math.PI / 2 * (1 - e); k.m.position.y =
 function platt(map, w, x, z, d = w * map.image.height / map.image.width, y = SIDA + 0.001) {
   const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), urklipp(map)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scen.add(m); return m;
 }
-const BAK = [kort(bredare(KULLE_BAK, 5.2), 2.15 / 5.2, 0, -0.6, { skala: false }), kort(bredare(KULLE_FRAM, 6.2), 1.95 / 6.2, 0.05, -0.47, { skala: false })];
+const BAK = [kort(bredare(KULLE_BAK, 5.2 * BOK), 2.15 / 5.2, 0, -0.6, { skala: false }), kort(bredare(KULLE_FRAM, 6.2 * BOK), 1.95 / 6.2, 0.05, -0.47, { skala: false })];
 function pa(map, h, x, upp, ut = 0.01, w = h * map.image.width / map.image.height) {
   const m = skugga(new THREE.Mesh(new THREE.PlaneGeometry(w, h), urklipp(map)));
   m.customDepthMaterial = djup(map); m.rotation.x = Math.PI / 2; m.position.set(x, -ut, upp); insida.add(m); return m;
 }
-pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.07 + 1.53 / 2, 0.004, 2.3);
+pa(bredare(HIMMEL, 1.5), 2.03, 0, 0.07 + 2.03 / 2, 0.004, 2.3 * BOK);   // himlen upp till pärmens kant (större bok)
 const SOLEN = pa(SOL, 0.5, 0.12, 0.9);   // större (runda 4)
 const MOLNEN = [[MOLN1, 0.22, -0.66, 0.9], [MOLN2, 0.16, -0.26, 1.05], [MOLN3, 0.13, 0.62, 1.0]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
-const SKOG = [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6]].map(([x, z, h], i) => TRAD && i % 2 ? kort([TRAD1, APPEL, EK][(i - 1) / 2], h * 0.95, x, z) : kort(GRAN, h, x, z));
+// runda 5: fler träd ut mot de större sidornas kanter
+const SKOG = [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6],
+  [-1.24, -0.42, 0.56], [1.22, -0.36, 0.52], [-1.42, -0.16, 0.44], [1.42, -0.2, 0.46]].map(([x, z, h], i) => TRAD && i % 2 ? kort([TRAD1, APPEL, EK][((i - 1) / 2) % 3], h * 0.95, x, z) : kort(GRAN, h, x, z));
 // Blommorna bakom busken (Sanna 27/11: "dont hide flowers as much"): högre och bredare än i storyboarden, ungefär halva blomhuvudena syns
 // Runda 3 (Sanna 27/11 "place flowers more clearly"): ännu högre och lite åt sidan, så att blomhuvudena syns tydligt över busken
 const BLOMMOR_BAK = kort(BLOMMOR, 0.52, 1.07, -0.22, { flik: false }); BLOMMOR_BAK.m.scale.x = 0.85; BLOMMOR_BAK.m.visible = !BLOM;
@@ -131,7 +135,7 @@ const BUSKAR = [kort(BUSKE, 0.3, -0.12, -0.3), kort(BUSKE, 0.26, 1.02, -0.14)];
   x.fillStyle = '#FFF'; form(8, 90); x.fill();
   const g = duk(Wc, D); kritYta(g.getContext('2d'), Wc, D, '#6CC04A', '#8ED46A', '#56A83A', 0.7);
   x.save(); form(30, 70); x.clip(); x.drawImage(g, 0, 0); x.restore();
-  platt(tex(c), 2.26, 0, 0.0, 1.5, SIDA + 0.0004);
+  platt(tex(c), 2.26 * BOK, 0, 0.0, 1.5 * BOK, SIDA + 0.0004);
 }
 platt(DAMM, 1.45, -0.02, 0.06, 0.7);
 const BLADPOS = { 1: [-0.24, 0.08], 2: [0.45, -0.07], 3: BLOM ? [0.68, -0.2] : [0.79, 0.04], bad: [0.1, 0.0] };   // 3 = stranden vid blommorna, bad = mitt i dammen
@@ -548,7 +552,7 @@ const VY = {
   glass: () => [v3(-0.42, 0.75, 1.15), v3(-0.45, 0.16, 0.24), 30],   // glassteckningen och grodan i samma bild
   damm: () => [v3(0.12, 0.85, 1.55), v3(0.12, 0.06, 0.02), 32],
   hopp: () => [v3(-0.1, 0.72, 1.15), v3(-0.06, 0.12, 0.02), 34],   // högre, så att hinken inte skymmer
-  buske: () => [v3(0.55, 0.45, 0.98), v3(0.74, 0.12, -0.08), 32],
+  buske: () => [v3(0.98, 0.5, 1.04), v3(0.6, 0.17, -0.04), 32],   // snett från höger, så att uppslaget är bakgrunden (runda 5)
   'buske-nara': () => [v3(0.95, 0.3, 0.55), v3(1.02, 0.22, -0.14), 28],
   helhet: () => [v3(0.12, 0.78, 1.62), v3(0.12, 0.18, -0.02), 32],   // närmare (runda 4, Sanna 27/11 "dont see the edges outside book")   // barnet letar blommorna: hela uppslaget i bild (Sanna 27/11 "show full scene")
   slut: () => [v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), 32],   // boken stängs närmare (Sanna 27/11 "closer close book")
@@ -574,7 +578,7 @@ function vy(t, namn, g, o = {}) {
   VYER.push({ t, mot: key, fran, till: o.till || skjut(fran), fov, mal: o.mal || mal, blur: blurFor(namn) });
 }
 // mjuka byten (Sanna 27/11 "more smooth camera shots"): i stället för ett klipp glider kameran från förra vyns läge till nästa vy
-const GLID = { '05': [-1.0, 1.6], '06': [0, 1.0], '07': [0, 1.1] };   // [start rel. radens början, längd]
+const GLID = { '06': [0, 1.0], '07': [0, 1.1] };   // 05: klipp från solen till grodan (glidningen svängde ut förbi den större pärmen, runda 5)   // [start rel. radens början, längd]
 function glid(t0, d, namn, g) {
   const f = VYER.at(-1), [p0, m0] = fran3(f.till ?? f.fran, platser[f.mot]), [pos, mal, fov] = VY[namn](g); pos.y += 0.09;
   const P = [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
