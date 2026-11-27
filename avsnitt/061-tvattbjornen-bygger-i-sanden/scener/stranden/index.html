@@ -90,6 +90,7 @@ const SPADE_STAR = [440, MARK + 6];                  // spaden i sanden bredvid 
 const SPADE_NED = [95, MARK + 6];                    // spaden står i sanden till vänster om gropen efter grävandet (rad 5–22)
 const SPADE_SLUT = [1250, MARK + 6];                 // spaden i slutet, bredvid hinken
 const HINK_H = 130;
+const HINK_TIPP = [1150, 1700];                     // bottenkanten som tassen håller när hinken tippas (bildens pixlar)
 const HINKPOS = [900, MARK + 75], HINKPOS_H = 140;   // hinken som kritan ritar i sanden framför tvättbjörnen
 const HINK_BAK = [1500, MARK + 4];                   // hinken på sanden bakom tvättbjörnen vid vattnet (rad 18)
 const HINK_UTE = [1760, 640], HINK_UTE_H = 84;       // hinken som guppar i vågorna
@@ -145,22 +146,23 @@ const vagY = k => KANT + (MARK + 30 - KANT) * k;
 const vagKant = (x0, x1, k, n = 28) => Array.from({ length: n + 1 }, (_, i) => { const u = i / n, x = lerp(x0, x1, u);
   return [x, KANT - 4 + (vagY(k) - KANT + 4) * Math.sin(Math.PI * u) ** 0.6 + 6 * Math.sin(u * 9 + k * 3) * Math.sin(Math.PI * u)]; });
 const sp = pts => pts.map(([x, y]) => `${f1(x)} ${f1(y)}`).join(' L');
-function vag(x0, x1, k) {
+function vag(x0, x1, k, mx = VAG_MAX) {
   if (k <= 0.01) return;
-  const b = vagKant(x0, x1, k);
+  const b = vagKant(x0, x1, k * mx);
   lagg('bak', `<path d="M${sp(b)} Z" fill="#a9d9f4" opacity="${f1(0.9 * Math.min(1, k * 3))}"/>
     <path d="M${sp(b.slice(2, -2))}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(0.9 * Math.min(1, k * 3))}"/>`);
 }
 // vågens framkant (en remsa längs linsens kant) framför fötterna, hinkens botten eller spadens blad
 function vagFram(x0, x1, k, h = 44, fx = null) {
   if (k <= 0.01) return;
-  const b = vagKant(x0, x1, k), o = b.map(([x, y], i) => [x, y - h * Math.sin(Math.PI * i / (b.length - 1)) ** 1.5]);
+  const b = vagKant(x0, x1, k * VAG_MAX), o = b.map(([x, y], i) => [x, y - h * Math.sin(Math.PI * i / (b.length - 1)) ** 1.5]);
   // vågen kommer bakifrån: framför figuren bara nedanför fotlinjen, annars ligger vattnet över benen och magen
   lagg('fram', `<clipPath id="vagFot"><rect x="-2000" y="${MARK - VAG_FOT}" width="6000" height="2000"/>${fx == null ? '' : `<rect x="-2000" y="-2000" width="${f1(fx - VAG_FIG[0] + 2000)}" height="6000"/><rect x="${f1(fx + VAG_FIG[1])}" y="-2000" width="6000" height="6000"/>`}</clipPath>
     <g clip-path="url(#vagFot)"><path d="M${sp(b)} L${sp(o.reverse())} Z" fill="#a9d9f4" opacity="${f1(0.88 * Math.min(1, k * 3))}"/>
     <path d="M${sp(b.slice(2, -2))}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(0.9 * Math.min(1, k * 3))}"/></g>`);
 }
-const VAG_FOT = 22;   // hur högt över MARK (fotsulorna) vågen får ligga framför figuren: bara över tårna
+const VAG_FOT = 0;    // vågen ligger aldrig framför figuren (Sanna 27/11 'wave still goes over racoon, need to be behind')
+const VAG_MAX = 0.8;  // vågens längsta räckvidd: KANT + 0,8 · 165 = 932, precis bakom fotsulorna
 const VAG_FIG = [150, 260];   // figurens bredd åt vänster/höger (svansen) från pos: utanför den täcker vågen spadens blad och hinkens botten som förut
 // vågen som rullar upp och drar sig tillbaka: 0 → 1 → 0 mellan a och a + d
 const svall = (tl, a, d) => bump(a, a + d, tl) ** 0.8;
@@ -174,6 +176,11 @@ function fallande(x, y, y1, tl, a, b, n = 3) {
 // ett stänk (droppar i en båge ut från (x, y)), u 0–1
 const stank = (x, y, u, s = 1) => { if (u <= 0 || u >= 1) return;
   lagg('glans', [[-1, -1.4], [-0.45, -1.9], [0.45, -1.9], [1, -1.4], [0, -2.2]].map(([dx, dy]) => droppe(x + dx * 55 * s * u, y + dy * 60 * s * (u - u * u * 1.6), 0.8 * s, 1 - del(0.7, 1, u))).join('')); };
+const KRONA = [[-100, 70, 0.9], [-62, 105, 0.7], [-24, 125, 0.6], [16, 118, 0.75], [52, 98, 0.65], [92, 66, 0.85], [-4, 85, 0.5]];
+const krona = (x, y, u, s = 1) => { if (u <= 0 || u >= 1) return;
+  const c = del(0, 0.12, u) * (1 - del(0.25, 0.5, u)), w = 26 + 40 * u;
+  lagg('glans', `<path d="M${f1(x - w * s)} ${f1(y)} Q${f1(x - w * 0.7 * s)} ${f1(y - 30 * s * c)} ${f1(x - w * 0.45 * s)} ${f1(y - 4)} M${f1(x + w * 0.45 * s)} ${f1(y - 4)} Q${f1(x + w * 0.7 * s)} ${f1(y - 30 * s * c)} ${f1(x + w * s)} ${f1(y)}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(c)}"/>`
+    + KRONA.map(([vx, h, z]) => { const q = u / 0.9; return droppe(x + vx * s * q, y - h * s * 4 * q * (1 - q) + 30 * s * q * q, z * s, 1 - del(0.7, 1, q)); }).join('')); };
 // sandpuffar vid spadens blad
 const puff = (x, y, u) => { if (u <= 0 || u >= 1) return;
   lagg('fram', [[-1, -0.6], [0, -1], [1, -0.5], [-0.4, -0.2]].map(([dx, dy], i) => `<circle cx="${f1(x + dx * 40 * u)}" cy="${f1(y + dy * 40 * u)}" r="${f1(9 + 6 * u - i)}" fill="#d9c9ad" opacity="${f1(0.9 * (1 - u))}"/>`).join('')); };
@@ -201,8 +208,8 @@ function spade(pos, { rot = 4, tass = false, lager = 'mitt', h = SPADE_H, k = 1,
   return { blad: i([512, 940]), ...(Rb ? { spets: i(Rb.spets), start: i(Rb.start), slut: i(Rb.slut) } : {}) };
 }
 // hinken: står (pos = foten) eller hänger i en tass (pos = tassen, ankare handtaget). full = vatten inne i hinken.
-function hink(pos, { rot = 0, tass = false, lager = 'mitt', h = HINK_H, full = 0, k = 1, f = 1, flyter = 0, skuggan = true } = {}) {
-  const s = sHink(h), ank = tass ? HINK.grepp : HINK.fot, t = tr(pos, rot, s, ank);
+function hink(pos, { rot = 0, tass = false, lager = 'mitt', h = HINK_H, full = 0, k = 1, f = 1, flyter = 0, skuggan = true, ankare = null } = {}) {
+  const s = sHink(h), ank = ankare || (tass ? HINK.grepp : HINK.fot), t = tr(pos, rot, s, ank);
   if (!tass && !flyter && skuggan && f > 0.5) skugga(pos[0], pos[1], h * 0.36, lager);
   let html = '', Rb = null;
   if (f > 0) { const mask = f < 1 ? fyllMask('fyH', 729, 900, 1100, f) : '', cl = f < 1 ? ' clip-path="url(#fyH)"' : '';
@@ -218,7 +225,7 @@ function hink(pos, { rot = 0, tass = false, lager = 'mitt', h = HINK_H, full = 0
     lagg('fram', `${hav ? `<path d="M${f1(bx - w)} ${f1(by)} Q${f1(bx)} ${f1(by - w * 0.16)} ${f1(bx + w)} ${f1(by)} L${f1(bx + w * 0.8)} ${f1(by + h * 0.42)} L${f1(bx - w * 0.8)} ${f1(by + h * 0.42)}Z" fill="#4389cf" opacity="${o}"/>` : ''}
       <path d="M${f1(bx - w * 0.9)} ${f1(by + 2)} q${f1(w * 0.3)} -9 ${f1(w * 0.6)} 0 M${f1(bx + w * 0.15)} ${f1(by + 1)} q${f1(w * 0.3)} -8 ${f1(w * 0.6)} 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="${o}"/>`); }
   const i = iSak(pos, rot, s, ank);
-  return { mun: i([175, 650]), mitt: i([729, 1000]), ...(Rb ? { spets: i(Rb.spets), start: i(Rb.start), slut: i(Rb.slut) } : {}) };
+  return { mun: i([175, 650]), mitt: i([729, 1000]), botten: i([729, 1770]), ...(Rb ? { spets: i(Rb.spets), start: i(Rb.start), slut: i(Rb.slut) } : {}) };
 }
 // vattnet som rinner ur hinken ner i gropen (u 0–1: strålen växer fram, rinner, tar slut)
 function strale(fran, u) {
@@ -226,8 +233,15 @@ function strale(fran, u) {
   const [x0, y0] = fran, [x1, y1] = [GROP[0] + 60, GROP[1] - 4], a = del(0, 0.25, u), b = del(0.7, 1, u);
   const p = k => [lerp(x0, x1, k) - 40 * Math.sin(Math.PI * k), lerp(y0, y1, k * k)];
   const pts = Array.from({ length: 13 }, (_, i) => p(lerp(b, a, i / 12)));
-  lagg('fram', `<path d="M${pts.map(q => q.map(f1).join(' ')).join(' L')}" fill="none" stroke="${VATTEN_F}" stroke-width="15" stroke-linecap="round" opacity=".92"/>
-    <path d="M${pts.map(q => q.map(f1).join(' ')).join(' L')}" fill="none" stroke="#bfe3f8" stroke-width="4" stroke-linecap="round" opacity=".8"/>`);
+  const d = `M${pts.map(q => q.map(f1).join(' ')).join(' L')}`, bred = 8 + 12 * del(0.1, 0.3, u) * (1 - del(0.6, 0.85, u));
+  lagg('fram', `<path d="${d}" fill="none" stroke="#fff" stroke-width="${f1(bred + 6)}" stroke-linecap="round" opacity=".85"/>
+    <path d="${d}" fill="none" stroke="${VATTEN_F}" stroke-width="${f1(bred)}" stroke-linecap="round"/>
+    <path d="${d}" fill="none" stroke="#bfe3f8" stroke-width="${f1(bred * 0.3)}" stroke-linecap="round" opacity=".8"/>`);
+  // där strålen landar: ringar som växer ut i gropen och små droppar som hoppar upp
+  if (u > 0.22 && u < 0.85) { const ring = (w, o) => `<ellipse cx="${x1}" cy="${y1 + 2}" rx="${f1(14 + 60 * w)}" ry="${f1(5 + 18 * w)}" fill="none" stroke="#fff" stroke-width="3.5" opacity="${f1(o * (1 - w))}"/>`;
+    const w = ((u - 0.22) * 4) % 1;
+    lagg('fram', ring(w, 0.9) + ring((w + 0.5) % 1, 0.9) + [-1, 1, -0.4].map((dx, i) => { const q = ((u * 5 + i * 0.37) % 1);
+      return droppe(x1 + dx * 26 * q, y1 - 34 * (q - q * q) * 4 + 6, 0.55, 1 - q); }).join('')); }
 }
 
 // --- Tvättbjörnen ------------------------------------------------------------------------------------------------------------
@@ -265,6 +279,10 @@ function skutt(a, b, tl, t1, d = 0.45, h = 60) {
   return { pos: [lerp(a[0], b[0], mjuk(u)), lerp(a[1], b[1], u) - h * Math.sin(Math.PI * u)], luft: u > 0 && u < 1,
     strack: -0.06 * bump(t1 - d - 0.2, t1 - d + 0.02, tl) + 0.04 * Math.sin(Math.PI * u) * (u > 0 && u < 1 ? 1 : 0) - 0.05 * bump(t1 - 0.02, t1 + 0.28, tl) };
 }
+const STAMP = (tl, ts) => ts.reduce((o, [a, i]) => { const up = del(a - 0.34, a - 0.14, tl) * (1 - del(a - 0.1, a, tl)), ned = bump(a - 0.02, a + 0.3, tl);
+  o.benY[i] -= 22 * up; o.ben[i] += 38 * up; o.luta += (i ? 3 : -3) * up; o.strack += 0.015 * up - 0.03 * ned; o.oron -= 6 * up - 4 * ned; o.vipp += up; return o; },
+  { ben: [0, 0], benY: [0, 0], luta: 0, strack: 0, oron: 0, vipp: 0 });
+const stampStank = (tl, ts) => ts.map(([a, i]) => [SJO[0] + (i ? 40 : -55), GROP[1] - 16, (tl - a) / 0.75, 1.3, true]);
 const GANG = (tl, a, b, d) => lerp(a, b, 1 - (1 - kl(tl / d)) ** 1.6);
 const SKAL = (o = {}) => POSE('magen', { klapp: 60, ...o });                       // tassarna framför magen som en skål
 const GNUGG = (tl, ts, o = {}) => SKAL({ klapp: 60 - 26 * ts.reduce((s, a) => s + bump(a - 0.05, a + 0.4, tl), 0), luta: 2 * ts.reduce((s, a) => s + Math.sin(2 * Math.PI * (tl - a) / 0.45) * bump(a - 0.05, a + 0.4, tl), 0), ...o });
@@ -313,8 +331,10 @@ const spadeVid = t => t < RR['3b'].s ? SPADE_STAR : t < RR['23'].s ? SPADE_NED :
 //   hink: null, { pos, h, rot, flyter } (står/flyter), { tass: 'l'|'r', rot, full, strale }, { rit: true } (kritan ritar den)
 const ST = o => ({ plats: 'strand', kam: HALV(STA), pos: STA, spade: 'sand', ...o });
 const VI = o => ({ plats: 'strand', kam: HALV(VID), pos: VID, spade: 'sand', ...o });
-const HALLER = (tl, a, b, extra = {}) => { const k = del(a, a + 0.5, tl) * (1 - del(b, b + 0.5, tl));   // vänstra tassen lyfts och hinken tippar mot gropen
-  return { p: P({ rikt: -0.4, armar: [30 * k, 0], luta: -3 * k, ...extra }), hink: { tass: 'l', rot: 75 * k, strale: (tl - a - 0.45) / (b - a - 0.25) } }; };
+const HALLER = (tl, a, b, extra = {}) => {   // vänstra tassen lyfts, hinken tippar med öppningen mot gropen (Sanna 27/11 'polish pouring')
+  const lyft = del(a - 0.35, a + 0.15, tl) * (1 - del(b + 0.1, b + 0.6, tl)), k = del(a, a + 0.55, tl) * (1 - del(b, b + 0.5, tl));
+  const skak = 7 * Math.sin(2 * Math.PI * (tl - b + 0.45) / 0.22) * bump(b - 0.45, b + 0.05, tl);
+  return { p: P({ rikt: -0.4, armar: [14 * lyft + 22 * k, 0], luta: -5 * k, sank: 6 * k, ...extra }), hink: { tass: 'l', tipp: k, skak, strale: (tl - a - 0.45) / (b - a - 0.25) } }; };
 const DOPP = (tl, a, d = 1.0) => { const k = bump(a, a + d, tl);   // hinken/spaden doppas i vågen: kroppen sjunker lite
   return P({ sank: 26 * k, luta: 3 * k, upp: -0.5 * k }); };
 const RS = {
@@ -344,8 +364,10 @@ const RS = {
     return ST({ kam: K_GRAV, f: F('glad', { titt: [-14, 14] }), p: P({ rikt: -0.4, sank: 20 + 16 * tag, luta: -4 * tag, armar: [12 * tag, 0], svans: vipp(tl, 3.0, 2.0) }), spade: { tass: 20 + 30 * tag },
       puffar: [0.3, 1.3, 2.3].map(a => (tl - a) / 0.6) }); },
   // vattnet stiger i gropen (klart på "vatten"); klipp till tvättbjörnen: förvånad, 0,3 s still
-  '5': (tl, d) => { const klipp = M('5', 11) + LN(11) + 0.1;
-    return ST({ kam: tl < klipp ? K_GROP : NARA(STA), f: F(tl < klipp + 0.3 ? 'forvanad' : 'glad', { titt: [-14, 14] }), p: P({ rikt: -0.3, oron: [-10, -10] }) }); },
+  // en våg glider upp över sanden och sköljer in i gropen (vattnet i gropen kommer från havet, Sanna 27/11), drar sig tillbaka, vattnet blir kvar
+  '5': (tl, d) => { const klipp = M('5', 11) + LN(11) + 0.1, v = M('5', 11) + J.VATTEN[11];
+    return ST({ kam: tl < klipp ? K_GROP : NARA(STA), f: F(tl < klipp + 0.3 ? 'forvanad' : 'glad', { titt: [-14, 14] }), p: P({ rikt: -0.3, oron: [-10, -10] }),
+      vagor: [[90, 660, svall(tl, v - 1.5, 2.3), 1.0, true]], stank: (tl - v + 0.55) / 0.7 }); },
   // den lilla pölen skimrar; klipp till tvättbjörnen, öronen upp
   '6': (tl, d) => { const klipp = M('6', 12) + LN(12), up = oronUpp(tl, klipp + 0.1, d, 14);
     return ST({ kam: tl < klipp ? K_GROP : NARA(STA), f: F('jatteglad', { titt: [-14, 12] }), p: P({ rikt: -0.3, oron: [up, up], svans: vipp(tl, klipp + 0.2, 1.2) }),
@@ -384,7 +406,7 @@ const RS = {
     return ST({ kam: HALV(STA, 100), f, p, hink: ta < 1 && tl < 0.6 ? { pos: HINKPOS, lyft: ta } : { tass: 'r', lyft: ta } }); },
 
   // vid vågen: hinken doppas, vågen täcker hinkens nederkant, hinken lyfts full
-  '15a': (tl, d) => VI({ f: F('glad', { titt: [10, 14] }), p: DOPP(tl, 0.2), hink: { tass: 'r', full: del(0.7, 1.0, tl) }, vagor: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]], vagFram: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]] }),
+  '15a': (tl, d) => VI({ f: F('glad', { titt: [10, 14] }), p: DOPP(tl, 0.2), hink: { tass: 'r', full: del(0.7, 1.0, tl), vag: svall(tl, 0.1, 1.4) }, vagor: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]], vagFram: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]] }),
   // vid gropen: hinken tippar, vattnet rinner ner i gropen, stänk på "plask"
   '15b': (tl, d) => { const pl = M('15b', 30) + J.PLASK[30], h = HALLER(tl, pl - 0.9, pl + 0.7);
     return ST({ kam: K_HALL, f: F('glad', { titt: [-14, 14] }), p: h.p, hink: { ...h.hink, full: 1 - del(pl - 0.3, pl + 0.6, tl) }, stank: (tl - pl) / 0.7 }); },
@@ -393,7 +415,7 @@ const RS = {
     return ST({ kam: tl < klipp ? K_GROP : NARA(STA), f: F('jatteglad'), p: P({ rikt: -0.2, svans: vipp(tl, klipp + 0.1, 1.4) }), hink: { tass: 'l' }, skim: [[GROP[0] - 30, GROP[1] - 4, 0.5 * bump(0, klipp + 0.4, tl), 0.9]] }); },
   // fyller vid vågen på "En gång till", klipp på "Vatten i hinken", häller i gropen på "plask"
   '17': (tl, d) => { const klipp = M('17', 32) + 1.45, pl = M('17', 32) + J.PLASK[32];
-    if (tl < klipp) return VI({ f: F('glad', { titt: [10, 14] }), p: DOPP(tl, 0.2), hink: { tass: 'r', full: del(0.7, 1.0, tl) }, vagor: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]], vagFram: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]] });
+    if (tl < klipp) return VI({ f: F('glad', { titt: [10, 14] }), p: DOPP(tl, 0.2), hink: { tass: 'r', full: del(0.7, 1.0, tl), vag: svall(tl, 0.1, 1.4) }, vagor: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]], vagFram: [[VID[0] - 230, VID[0] + 400, svall(tl, 0.1, 1.4)]] });
     const h = HALLER(tl, pl - 0.9, pl + 0.7);
     return ST({ kam: K_HALL, f: F('glad', { titt: [-14, 14] }), p: h.p, hink: { ...h.hink, full: 1 - del(pl - 0.3, pl + 0.6, tl) }, stank: (tl - pl) / 0.7 }); },
   // vid vågen: tvättar spaden, gnugg gnugg, droppar; hinken står bakom tvättbjörnen nära vattnet
@@ -423,7 +445,7 @@ const RS = {
     return VI({ kam: HALV(VID, 60), f: F(tl < 2.0 ? 'nyfiken' : 'glad', { titt: [14, tl < 2.0 ? -4 : 12] }), p: P({ rikt: 0.4, armar: [0, 26 * bump(2.1, 3.1, tl)] }), spade: { tass: 6 }, hink: hinken, vagor: [[VID[0] - 80, 1940, 0.9 * bump(0.0, 2.6, tl)]] }); },
   // fyller, klipp, häller: vattnet stiger till kanten
   '23': (tl, d) => { const klipp = 1.1, pl = M('23', 38) + J.PLASK[38];
-    if (tl < klipp) return VI({ spade: 'sand', f: F('glad', { titt: [10, 14] }), p: DOPP(tl, 0.0, 0.9), hink: { tass: 'r', full: del(0.5, 0.8, tl) }, vagor: [[VID[0] - 230, VID[0] + 400, svall(tl, 0, 1.1)]], vagFram: [[VID[0] - 230, VID[0] + 400, svall(tl, 0, 1.1)]] });
+    if (tl < klipp) return VI({ spade: 'sand', f: F('glad', { titt: [10, 14] }), p: DOPP(tl, 0.0, 0.9), hink: { tass: 'r', full: del(0.5, 0.8, tl), vag: svall(tl, 0, 1.1) }, vagor: [[VID[0] - 230, VID[0] + 400, svall(tl, 0, 1.1)]], vagFram: [[VID[0] - 230, VID[0] + 400, svall(tl, 0, 1.1)]] });
     const h = HALLER(tl, pl - 0.7, pl + 0.7);
     return ST({ kam: K_HALL, f: F('glad', { titt: [-14, 14] }), p: h.p, hink: { ...h.hink, full: 1 - del(pl - 0.3, pl + 0.6, tl) }, stank: (tl - pl) / 0.7 }); },
   // gropen är en liten rund sjö, den glittrar på tre ställen; stolt kurr
@@ -431,13 +453,17 @@ const RS = {
     skim: [[GROP[0] - 90, GROP[1] - 6, bump(0.2, 1.3, tl), 0.5], [GROP[0] + 30, GROP[1] + 10, bump(0.8, 1.9, tl), 0.5], [GROP[0] + 110, GROP[1] - 10, bump(1.4, 2.5, tl), 0.5]] }),
   '24b': (tl, d) => ST({ kam: NARA(STA), f: F('jatteglad'), p: P({ svans: vipp(tl, 0.1, 1.8) }), hink: { pos: HINK_SLUT } }),
   // kliver ner i sjön (ett lugnt skutt), plaskar med fötterna på "Plask, plask"
+  // kliver ner i sjön och stampar glatt med fötterna, höger, vänster, höger, vänster: foten upp ur vattnet och ner, stänk och ringar (Sanna 27/11 'more playful splashes')
   '25': (tl, d) => { const t1 = M('25', 41) + J.PLASK[41][0], t2 = M('25', 41) + J.PLASK[41][1], h = skutt(STA, SJO, tl, t1, 0.55, 50), i = tl >= t1;
-    const st = bump(t2 - 0.2, t2 + 0.2, tl);
-    return ST({ kam: HALV(SJO, 120), pos: h.pos, luft: h.luft, sjo: i, f: F(tl < t1 ? 'glad' : 'fnissig'), p: P({ strack: h.strack, ben: [0, 10 * st], benY: [0, -18 * st], svans: vipp(tl, t1, 1.6) }), hink: { pos: HINK_SLUT },
-      stankar: [[SJO[0] - 60, GROP[1] - 20, (tl - t1) / 0.7], [SJO[0] + 60, GROP[1] - 20, (tl - t2) / 0.7]] }); },
+    const ts = [[t2, 1], [t2 + 0.55, 0], [t2 + 1.1, 1], [t2 + 1.65, 0]], s = STAMP(tl, ts);
+    return ST({ kam: HALV(SJO, 120), pos: h.pos, luft: h.luft, sjo: i, f: F(tl < t1 ? 'glad' : 'fnissig'), p: P({ strack: h.strack + s.strack, ben: s.ben, benY: s.benY, luta: s.luta, oron: [s.oron, s.oron], svans: vipp(tl, t1, 1.6) + 8 * s.vipp }), hink: { pos: HINK_SLUT },
+      stankar: [[SJO[0] - 60, GROP[1] - 16, (tl - t1) / 0.75, 1.1, true], [SJO[0] + 50, GROP[1] - 16, (tl - t1) / 0.75, 1.1, true], ...stampStank(tl, ts)] }); },
   '26': (tl, d) => { const sv = M('26', 42) + LN(42), [f, p] = nick(prata(F('glad'), tl, sv + 0.4, sv + 1.2), P(), tl - sv - 0.2);
     return ST({ kam: NARA(SJO), pos: SJO, sjo: true, f, p, hink: { pos: HINK_SLUT } }); },
-  '26b': (tl, d) => ST({ kam: NARA(SJO), pos: SJO, sjo: true, f: F('fnissig'), p: P({ luta: 4 * del(0.2, 0.8, tl), oron: [-6, -6] }), hink: { pos: HINK_SLUT } }),
+  // "Ja, det tyckte jag också!": fnissar och stampar tre gånger till i sjön
+  '26b': (tl, d) => { const ts = [[1.0, 1], [1.55, 0], [2.1, 1]], s = STAMP(tl, ts);
+    return ST({ kam: NARA(SJO), pos: SJO, sjo: true, f: F('fnissig'), p: P({ luta: 4 * del(0.2, 0.8, tl) + s.luta, strack: s.strack, ben: s.ben, benY: s.benY, oron: [-6 + s.oron, -6 + s.oron], svans: 8 * s.vipp }), hink: { pos: HINK_SLUT },
+      stankar: stampStank(tl, ts) }); },
   // hej då: vinkar (armen bakom kroppen, snett ut förbi kanten); hinken och spaden på sanden
   '27': (tl, d) => { const v = del(0.2, 0.6, tl); return ST({ kam: HALV(SJO, 120), pos: SJO, sjo: true, f: F('jatteglad'), p: L.blandaPose(P({ svans: vipp(tl, 0.4, 2) }), vink(tl, 1), v), hink: { pos: HINK_SLUT } }); },
   '28': (tl, d) => { const v = 1 - del(d - 1.4, d - 0.7, tl); return ST({ kam: HALV(SJO, 120), pos: SJO, sjo: true, f: F('glad'), p: L.blandaPose(P({ svans: vipp(tl, 0.2, 1.4) }), vink(tl, 1), v), hink: { pos: HINK_SLUT } }); },
@@ -461,8 +487,9 @@ const LAGER = ['platta', 'bak', 'mitt', 'fram', 'glans', 'krita', 'ram'];
 function ritaStrand(st, t) {
   kamera(djup.kamera(typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL, t));
   $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
-  (st.vagor || []).forEach(([a, b, k]) => vag(a, b, k));
+  (st.vagor || []).forEach(([a, b, k, mx, over]) => !over && vag(a, b, k, mx));
   grop(gropK(t), vattnet(t), t);
+  (st.vagor || []).forEach(([a, b, k, mx, over]) => over && vag(a, b, k, mx));
   if (st.spar) spar(STA[0] + 140, VID[0] - 140, MARK + 14, 0.8);
   // spaden i sanden (kritans svar i introt syns här först)
   if (st.spade === 'sand') { const sp = spadeVid(t); spade(sp, { rot: sp === SPADE_STAR ? -6 : 5 }); }
@@ -488,14 +515,20 @@ function ritaStrand(st, t) {
   // hinken i en tass (handtaget i tassen, tassen framför): l vid gropen, r vid vågen
   if (hk?.tass || hk?.lyft > 0) { const sida = hk.tass || 'r', [x, y] = tass(sida), u = hk.lyft ?? 1;
     const stod = hk.pos || HINKPOS, fran = [stod[0], stod[1] - (HINK.fot[1] - HINK.grepp[1]) * sHink()];
-    const b = hink(u < 1 ? lerp2(fran, [x, y], mjuk(u)) : [x, y], { tass: true, rot: hk.rot || 0, full: hk.full || 0, lager: sida === 'r' || (stod === HINKPOS && u < 1) ? 'fram' : 'mitt' });
-    if (hk.strale != null) strale(b.mun, hk.strale); }
+    const tp = mjuk(hk.tipp || 0), ankare = tp > 0 ? lerp2(HINK.grepp, HINK_TIPP, tp) : null;
+    const b = hink(u < 1 ? lerp2(fran, [x, y], mjuk(u)) : [x, y], { tass: true, ankare, rot: (hk.rot || 0) - 105 * tp + (hk.skak || 0), full: (hk.full || 0) * (1 - del(0.15, 0.45, tp)), lager: sida === 'r' || (stod === HINKPOS && u < 1) ? 'fram' : 'mitt' });
+    if (hk.strale != null) strale(b.mun, hk.strale);
+    if (hk.vag > 0.05) { const [bx, by] = b.botten, w = 70, o = f1(kl(hk.vag * 1.6));   // hinken doppas i vågen: skum runt botten
+      lagg('fram', `<path d="M${f1(bx - w)} ${f1(by - 4)} q${f1(w * 0.5)} -12 ${f1(w)} 0 q${f1(w * 0.5)} 12 ${f1(w)} 0" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity="${o}"/>
+        <ellipse cx="${f1(bx)}" cy="${f1(by + 2)}" rx="${f1(w * 0.9)}" ry="9" fill="#a9d9f4" opacity="${f1(0.7 * kl(hk.vag * 1.6))}"/>`); } }
   if (st.stank != null) stank(GROP[0] + 40, GROP[1] - 16, st.stank, 1.2);
-  (st.stankar || []).forEach(([x, y, u]) => stank(x, y, u, 1));
+  (st.stankar || []).forEach(([x, y, u, s = 1, ring]) => ring ? krona(x, y + 10, u, s) : stank(x, y, u, s));
   // i sjön: vattenytan ritas framför benen
   if (st.sjo) { const k = gropK(t), rx = GRX * k * 0.98, ry = GRY * k;
     lagg('fram', `<ellipse cx="${GROP[0]}" cy="${f1(GROP[1] + 4)}" rx="${f1(rx)}" ry="${f1(ry)}" fill="${VATTEN_F}" stroke="${VATTEN_K}" stroke-width="3" opacity=".97"/>
-      <path d="M${GROP[0] - 110} ${GROP[1] + 14} q40 -8 80 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>`); }
+      <path d="M${GROP[0] - 110} ${GROP[1] + 14} q40 -8 80 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>`);
+    (st.stankar || []).forEach(([x, y, u, s, ring]) => { if (!ring || u <= 0 || u >= 1) return;   // ringar som växer ut från foten
+      lagg('fram', [0, 0.3].map(w0 => { const w = kl((u - w0) / 0.7); return w <= 0 || w >= 1 ? '' : `<ellipse cx="${f1(x)}" cy="${f1(y + 22)}" rx="${f1(30 + 80 * w)}" ry="${f1(8 + 16 * w)}" fill="none" stroke="#fff" stroke-width="4" opacity="${f1(0.85 * (1 - w))}"/>`; }).join('')); }); }
   // vatten i tassarna (skålen) och droppar som faller
   if (st.skal > 0.01) { const [x, y] = skalMitt(); lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(y - 10)}" rx="${f1(30 * st.skal)}" ry="${f1(11 * st.skal)}" fill="${VATTEN_F}" stroke="#fff" stroke-width="3"/>`); }
   if (st.droppar) { const [x, y] = skalMitt(); fallande(x, y, st.sjo || st.pos[0] < GROP[0] + 100 ? GROP[1] : MARK + 10, st.tl, ...st.droppar); }
