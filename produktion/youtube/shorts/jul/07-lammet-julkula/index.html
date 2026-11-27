@@ -160,7 +160,7 @@ julDjur.kor({ kamBas: KE,
   hall.before(fot(false)); hall.after(fot(true));
   // Sanna 2026-11-18: "krit wobble effect looks a bit much": boilen halverad (scale 3 → 1,5) i lucka 7. QA 26/11 (CLAUDE.md, som J04): skalan delad
   // med kamerazoomen och satt varje bildruta, och ny brusbild 6 gånger/s (djur.js: fast skala, 8/s; orörd). 1,5 px i bild, inte 2,5: Sannas
-  // halvering gäller, och 2,5 gav boil film 4,6 px/s (gräns 4,5)
+  // halvering gäller, och 2,5 gav boil film 4,6 px/s (gräns 4,5) · Sanna 27/11: "höj till 2,5", nu 2,5 px i bild som övriga
   const boilD = svg.querySelector('#boil feDisplacementMap'), boilB = svg.querySelector('#boil-brus'), kamera = svg.querySelector('#kamera');
   // Sanna 2026-11-18: "animate the fire subtle": lågorna i brasan (bakgrundens pixlar, ca x 235–395, y 600–712) kopieras ovanpå sig själva och
   // fladdrar lugnt (sträcks 0–7 % uppåt från foten och lutar ±2°), och ett varmt sken i brasan andas. Bara större än originalet, så det syns aldrig under
@@ -259,7 +259,7 @@ julDjur.kor({ kamBas: KE,
   window.seek = window.render = t => { tNu = t; const f = 0.5 + 0.25 * sv(t, 1.3, 0) + 0.15 * sv(t, 3.1, 1) + 0.1 * sv(t, 5.7, 2);   // 0–1
     eld.setAttribute('transform', `translate(316 712) skewX(${(4.5 * sv(t, 1.1, 0.5)).toFixed(2)}) scale(${(1 + 0.03 * sv(t, 1.7, 2)).toFixed(4)} ${(1 + 0.1 * f).toFixed(4)}) translate(-316 -712)`);
     eldSken.setAttribute('opacity', (0.25 + 0.5 * f).toFixed(3)); seek0(t);
-    boilD?.setAttribute('scale', (1.5 / (kamera.transform.baseVal.consolidate()?.matrix.a ?? 1)).toFixed(3));
+    boilD?.setAttribute('scale', (2.5 / (kamera.transform.baseVal.consolidate()?.matrix.a ?? 1)).toFixed(3));
     boilB?.setAttribute('seed', 1 + Math.floor(t * 6) % 4);
     lagra(t); sopArm(t); ritKrita(t); if (t > KVUT) kvastH?.setAttribute('display', 'none');   // lagra efter djur.js, som lägger tillbaka gästen i #gaster varje bildruta
     window.TRE?.(); };
