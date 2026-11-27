@@ -1697,5 +1697,13 @@
   "file": "avsnitt/014-grona-traktorn/film/avsnitt-014-v2-grovklipp.mp4",
   "status": "arkiv",
   "name": "014 v2 Gröna sången"
+ },
+ "059": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/059-1127-0824.mp4",
+  "duration": 187.2,
+  "rendered": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)",
+  "file": "avsnitt/059-raven-plockar-blabar/scener/skogen/skogen.mp4",
+  "status": "granska",
+  "name": "Räven plockar blåbär"
  }
 }
