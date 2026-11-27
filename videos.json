@@ -1815,5 +1815,13 @@
   "file": "produktion/youtube/shorts/abc/abc-e-1-vem-ar-det/abc-e-1-vem-ar-det.mp4",
   "status": "granska",
   "name": "Kritans ABC E, Short 1: Vem är det?"
+ },
+ "ABC-SH-e2": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-SH-e2-1127-1612.mp4",
+  "duration": 23.5,
+  "rendered": "2026-11-27 16:12 (stående, kritan ritar en katt)",
+  "file": "produktion/youtube/shorts/abc/abc-e-2-busiga-kritan/abc-e-2-busiga-kritan.mp4",
+  "status": "granska",
+  "name": "Kritans ABC E, Short 2: Busiga kritan!"
  }
 }
