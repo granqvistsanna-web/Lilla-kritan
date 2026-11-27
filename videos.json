@@ -953,9 +953,9 @@
   "name": "Jul (parkerad): Kaninen äter frukost"
  },
  "J05": {
-  "duration": 133.6,
+  "duration": 129.0,
   "file": "produktion/youtube/shorts/jul/13-tre-pussel/13-tre-pussel.mp4",
-  "rendered": "2026-11-25 17:16 (3D-intro och 3D-outro, handtaget rättat)",
+  "rendered": "2026-11-27 07:29 (QA 26/11: första biten på Ja!, gissningspauserna orörda)",
   "status": "granska",
   "stills": [
    {
@@ -983,7 +983,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/94b1cf67115732a2b4be6f379838bc63.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J05-1125-1716.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J05-1127-0728.mp4",
   "videoId": "25192c977627e63999ca2b731aaec1dd",
   "name": "Tre pussel"
  },
