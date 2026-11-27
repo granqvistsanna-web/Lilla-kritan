@@ -11519,9 +11519,10 @@
   "sec": 20,
   "tags": [],
   "note": "no tub",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808103627,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812835851
  },
  "kiz8746bkgmwzdsl3w": {
   "ep": "060",
