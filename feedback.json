@@ -11219,9 +11219,10 @@
   "sec": 10,
   "tags": [],
   "note": "better sun drawing so it matches movement of kritan",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794367450,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795796481372
  },
  "6ufj2k454amwz5ls1z": {
   "ep": "062",
