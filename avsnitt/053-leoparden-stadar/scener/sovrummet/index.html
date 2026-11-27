@@ -334,9 +334,7 @@ const SR = {
   '11b': (tl, d) => { const n = tl > 0.35 + LN(21);
     return RUM({ kam: n ? NARA() : D_LADA(), f: F(tl > 0.3 + LN(21) + 1.4 ? 'glad' : 'nyfiken', { titt: tl < 0.3 + LN(21) + 1.4 ? [10, 6] : [0, 0] }), p: P({ rikt: 0.3 * (n ? 0.4 : 1), oron: UPP(0.4) }),
       skimHal: [0.5 * bump(0.2, 1.4, tl), 0.5 * bump(0.6, 1.8, tl), 0.5 * bump(1.0, 2.2, tl)] }); },
-  // tittar på lådan, sedan på oss; paus för barnets tack
-  '12': (tl, d) => { const k = del(0.2 + LN(23) - 0.4, 0.2 + LN(23), tl);
-    return RUM({ kam: NARA(), f: F('nyfiken', { titt: [12 * (1 - k), 6 * (1 - k)] }), p: P({ rikt: 0.3 * (1 - k), luta: 3 * k }) }); },
+  // (rad 12 "Ska vi säga tack?" borttagen 2026-11-27: Malin säger direkt "Tack, kritan!")
   // nickar, kritan flyger ut
   '13': (tl, d) => { const [f, p] = nick(F('jatteglad'), P({ oron: UPP(del(0.05, 0.3, tl)) }), tl - 0.1);
     return RUM({ kam: HB, f, p }); },
@@ -375,7 +373,7 @@ const SR = {
     return RUM({ kam: NARA(), f: F('tanker', { titt: [-14 * v, 0] }), p: P({ rikt: -0.3 * v }) }); },
   '25a': (tl, d) => RUM({ kam: HEL, f: F('nyfiken', { titt: [-4, 4] }), p: P({ luta: 3 }) }),
   // bakom kaktusen: paus 5 s, efter 3 s skimrar hörnet svagt
-  '25b': (tl, d) => { const g = 0.3 + LN(37) - 2.0 + 3.0;
+  '25b': (tl, d) => { const g = 0.3 + LN(37) - 2.0 + 2.7;
     return RUM({ kam: D(UNDER[0] - 30 * del(0, d, tl), UNDER[1] - 40, 3 + 0.25 * del(0, d, tl)), f: F('nyfiken'), p: P(), skim: [UNDER[0] + 22, UNDER[1] - 22, 0.35 * del(g, g + 0.6, tl), 0.8] }); },
   '26': (tl, d) => { const n = tl > 0.4 + LN(38);
     return RUM({ kam: n ? NARA() : D(UNDER[0] - 30, UNDER[1] - 40, 3.25 + 0.1 * del(0, 0.4 + LN(38), tl)), f: F(n ? 'ivrig' : 'nyfiken', n ? { titt: [12, 6] } : {}), p: P({ oron: UPP(n ? 1 : 0), rikt: n ? 0.3 : 0 }), skim: [UNDER[0] + 22, UNDER[1] - 22, n ? 0 : 0.35 + 0.55 * del(0.05, 0.4, tl), 0.9] }); },
