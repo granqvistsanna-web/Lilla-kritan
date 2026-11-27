@@ -1705,8 +1705,8 @@
   "name": "Räven plockar blåbär"
  },
  "062": {
-  "duration": 163.2,
-  "rendered": "2026-11-27 14:56",
+  "duration": 163.1,
+  "rendered": "2026-11-27 14:57 (Runda 3b: klippet till dammen 0,4 s senare, grodans kvak vid 1:49 klipps inte längre av (resten som runda 3))",
   "file": "avsnitt/062-sommaren-i-boken/scener/boken/boken.mp4",
   "status": "granska",
   "name": "Stillbildsprov runda 4",
@@ -1723,6 +1723,7 @@
     "label": "Bad 1, 2, 3 (rader)",
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1127-1456-3.jpg"
    }
-  ]
+  ],
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1127-1457.mp4"
  }
 }
