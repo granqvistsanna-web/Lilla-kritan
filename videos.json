@@ -1625,9 +1625,9 @@
   "name": "Mix 5: Sjung, pussla och gissa"
  },
  "J20": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1127-1433.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J20-1127-1817.mp4",
   "duration": 180.4,
-  "rendered": "2026-11-27 14:34 (--snabb QA 27/11: alla tre syns hela i 'Var är tänderna?' (zoom 2,1→1,55), kaninens tass håller borsten i närbilden, kattens borste sjunker lugnt ner i handfatet, pandans borste går under nosen, fran 8.8 så att sångens förspel är med, irisslutet utan svart kant, gamla boilen borta)",
+  "rendered": "2026-11-27 18:17 (Slutrendering 27/11: scenen från molnet (1080p), introt slutrenderat, fran 8.8 med förspelet, pallen flyttad åt vänster så att kaninen och pandan kliver upp utan foten framför pallen. qa-film.sh ren, täta bilder runt pallen och borsten kollade.)",
   "file": "produktion/youtube/shorts/jul/17-borsta-borsta-jul/17-borsta-borsta-jul.mp4",
   "status": "granska",
   "name": "Borsta, borsta jul"
