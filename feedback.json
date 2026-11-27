@@ -11299,8 +11299,9 @@
   "sec": 145,
   "tags": [],
   "note": "make sure all blueberries are plockade extept the on eby stubbe and the one on ground rolled off earlier",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794650574,
-  "render": "2026-11-27 16:34 (--snabb 27/11)"
+  "render": "2026-11-27 16:34 (--snabb 27/11)",
+  "fixedAt": 1795795452345
  }
 }
