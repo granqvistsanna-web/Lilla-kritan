@@ -10694,9 +10694,10 @@
   "sec": 7,
   "tags": [],
   "note": "must be easier to guess, better drawing",
-  "fixed": false,
+  "fixed": true,
   "at": 1795764430688,
-  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)"
+  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)",
+  "fixedAt": 1795767494297
  },
  "6osx6zws17mwynstx2": {
   "ep": "059",
@@ -10704,9 +10705,10 @@
   "sec": 31,
   "tags": [],
   "note": "improve anmation, slower and no blueberry flying in air",
-  "fixed": false,
+  "fixed": true,
   "at": 1795764471158,
-  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)"
+  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)",
+  "fixedAt": 1795767494297
  },
  "33xywibj91mwynuh8q": {
   "ep": "059",
@@ -10714,9 +10716,10 @@
   "sec": 126,
   "tags": [],
   "note": "polish shadow and draw pall in front of räv",
-  "fixed": false,
+  "fixed": true,
   "at": 1795764548042,
-  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)"
+  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)",
+  "fixedAt": 1795767494297
  },
  "vo58a5t8p3mwynv07a": {
   "ep": "059",
@@ -10724,9 +10727,10 @@
   "sec": 152,
   "tags": [],
   "note": "place basket on top of stubbe",
-  "fixed": false,
+  "fixed": true,
   "at": 1795764572614,
-  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)"
+  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)",
+  "fixedAt": 1795767494297
  },
  "a0683fydltmwynvjjg": {
   "ep": "059",
@@ -10734,8 +10738,9 @@
   "sec": 157,
   "tags": [],
   "note": "more clear graphics of sista buske, looks like a random twig on the ground",
-  "fixed": false,
+  "fixed": true,
   "at": 1795764597676,
-  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)"
+  "render": "2026-11-27 08:24 (Förhandsvisning (--snabb) av kodscenen, utan bilderboksintrot. 27/11)",
+  "fixedAt": 1795767494297
  }
 }
