@@ -2,16 +2,14 @@
 
 Till grind 2. Det fasta (logotypen, skrivbordet, boken, kritan, prenumerera, outro) finns redan och listas inte. Sanna gör landskapskorten i Flow (Nano Banana, 0 krediter), och de hamnar i `produktion/three-rum/popupbok/bilder/` med originalen i `bilder/original/`, som 062:s.
 
-## Nya landskapskort (Sanna i Flow)
+## Nya landskapskort
 
-Sanna 2026-11-27: *"consider what can be drawn in code"*. Bara det som är stort, har kritstruktur och inte kan mätas fram ur en bild som redan finns görs i Flow. Resten står under *Ritas i kod*.
+Inga. Sanna 2026-11-27: *"consider what can be drawn in code"*, och sedan *"Snö i kod"* för granen och *"draw in code"* för det kala trädet. Allt nytt på uppslaget ritas i kod, se nedan.
 
-| # | Fil | Vad | Referensbild i Flow | Klar |
-|---|---|---|---|---|
-| 2 | `gran-sno-bok.png` | 062:s gran med snö på grenarna, samma form (snökuddarna följer granens våningar, svårt att rita snyggt i kod) | bild 1 = `assets/bakgrunder/skogen-gron-saker/gran.png` | ☐ |
-| 3 | `trad-kalt.png` | ett litet kalt lövträd utan löv och utan snö, tre tydliga vågräta grenar där fåglarna sitter | bild 1 = `gran.png`, bild 2 = `kullar-a.jpg` (bara stilen) | ☐ |
+- **Granen med snö:** alla fyra Flow-tagningarna ritade om granen med 5–6 våningar i stället för 4, så de gick inte att tona över. Tagningarna och jämförelsen ligger kvar i `produktion/three-rum/popupbok/bilder/original/064/` (`jamforelse-gran.jpg`).
+- **Det kala trädet:** [`prov/trad/trad.js`](prov/trad/trad.js), `kaltTrad({ sno })` ger kortet (800 × 1000, vit kant och kritkant inräknade) utan snö (`sno: 0`) eller med snö (upp till 1), och `sittplats(i, sno)` ger fåglarnas plats ovanpå grenen eller snön. Provbild: [`prov/trad/stills/0.jpg`](prov/trad/stills/0.jpg) (utan snö, halvvägs, full snö; röda prickar = fåglarna), ✅ godkänd av Sanna 2026-11-27 (*"Ja, trädet är bra"*), gjord med `node avsnitt/062-sommaren-i-boken/scener/render.mjs avsnitt/064-vintern-i-boken/prov/trad 0`.
 
-Efter Flow: urklipp med vit kant, kanten tunnad till ca 1 % (`verktyg/tunn_kant.py`, minnet *Vita kanter för tjocka*). Granen med snö ska ligga exakt på granen utan snö (samma storlek, samma kontur) så att den kan tonas över. Om Flow ändrar formen: gör om redigeringen, eller lägg snön på granen i kod som på trädet. Prompterna för kullarna och trädet med snö och för vinterhimlen ligger kvar längst ner som **reserv** om koden inte räcker.
+Prompterna för granen och trädet ligger kvar längst ner som **reserv**.
 
 ## Ritas i kod
 
@@ -22,7 +20,8 @@ Allt i kod ska se ut som Lilla Kritan v2: kritkorn (`kritYta` i `produktion/thre
 | **Snöfallet** | små platta vita krit-flingor (`THREE.Points` med en mjuk rund prick, flera storlekar, några större nära kameran och suddiga) | faller långsamt (en sidhöjd på ca 8 s) och vajar; varje flinga stannar på marken, en kortöverkant eller kaninens öron och tonas bort där inom 1 s, så att den smälter in i snötäcket. Tätare i 05–05b, glesare resten av avsnittet | julkalender-introts snö i `produktion/three-rum/julkalender-intro/rum.js` (tre djup, samma flingor varje gång, inte där figuren står) och 062:s droppar |
 | **Marken blir vit** | markarket i `kritYta` får två dukar, frostgrön och snövit (`#F7F9FC`, ljusblå skugga `#BFD3EA` mot kanterna), som blandas nerifrån och upp med en mjuk, lite ojämn kant | ca 5 s i 05b | 062:s markark |
 | **Snön på kullarna** | en snövit kritduk maskad med kullkortets egen alfa (samma form, samma vita kant), ljusblå längs nederkanten och i dalarna | snön växer in **uppifrån och ner** över kullen på ca 4 s i 05b; den gröna syns under tills den är täckt | 062:s `kulle-bak.png`, `kulle-fram.png` (ersätter Flow-bilderna `kulle-*-sno`) |
-| **Snön på det kala trädet** | tre mjuka snökuddar i kritvitt med ljusblå undersida, en per gren, ritade längs grenarnas ovankant (mäts ur `trad-kalt.png` när Sanna valt tagning), och små tussar på kvistarna | kuddarna växer upp ur grenen under snöfallet; fåglarna sitter ovanpå snön, aldrig i den | ersätter Flow-bilden `trad-kalt-sno` |
+| **Snön på granarna** | fyra mjuka snökuddar i kritvitt (`#F7F9FC`) med ljusblå undersida (`#BFD3EA`), en per våning, lagda längs våningens ovankant och lite ut över kanterna (mäts ur `gran.png`: våningarnas överkanter och bredd), plus en liten mössa på toppen. Kuddarna är vågiga i underkanten som i Flow-tagning 2, kornet från `kritYta`, vit kant med `kant.js`. Det gröna syns mellan kuddarna | kuddarna växer upp ur våningarna uppifrån och ner (ca 4 s i 05b) | `gran.png` (ersätter Flow-bilden `gran-sno-bok`) |
+| **Snön på det kala trädet** | i `kaltTrad({ sno })`: en bucklig snökudde i kritvitt med ljusblå undersida längs varje grens ovankant, högst på mitten, och små tussar på kvistarna och toppen | kuddarna växer upp ur grenen under snöfallet; fåglarna sitter ovanpå snön, aldrig i den | ersätter Flow-bilden `trad-kalt-sno` |
 | **Vinterhimlen** | 062:s `himmel.png` färgad kallare och blekare i kod (lägre mättnad, lite grått) | – | 062:s himmel (ersätter `himmel-vinter`) |
 | **Snöbollarna** | `assets/rekvisita/snoboll/cut/snoboll.png`, vriden och skalad i kod | rullar framför kaninen (vrids, den är rund) och växer från liten till sin storlek; stannar på *"snöboll"*. Stor, mellan, liten | 044:s `boll(x, y, r, v)` och rullningen i rad 6–8 (`avsnitt/044-katten-gor-en-snogubbe/scener/bjorkdungen/index.html`), där katten skjuter med båda tassarna |
 | **Spåret efter bollen** | ett mjukt, lite blåare band i snön bakom bollen (bollens bredd), ritat på markarket | växer bakom bollen medan den rullar och ligger kvar | – |
@@ -41,13 +40,13 @@ Allt i kod ska se ut som Lilla Kritan v2: kritkorn (`kritYta` i `produktion/thre
 
 ## Flow-prompter
 
-### 2. Granen med snö (Flow)
+### Reserv: granen med snö (Flow, valdes bort 2026-11-27)
 
 ```prompt
 Edit this image. Keep the fir tree sticker EXACTLY the same: same outline, same size, same position, same trunk, same white sticker border, same plain white background. Only add snow: a soft thick layer of fresh snow lying on top of every layer of branches, like little white pillows that follow the branch tiers, and a small cap of snow on the very top. The snow is warm white wax crayon (#F7F9FC) with fine speckled paper grain and soft mottled crayon strokes, with gentle pale icy-blue shading (#BFD3EA) underneath each snow pillow. The green under the snow stays the same colour. Flat, even crayon fill like the original, no dark outline, no snowflakes in the air, no ground, no text, no 3D, no shine.
 ```
 
-### 3. Det kala trädet (Flow)
+### Reserv: det kala trädet (Flow, ritas i kod sedan 2026-11-27)
 
 ```prompt
 Images 1 and 2 are STYLE references only: copy their drawing technique exactly (flat, even wax-crayon and oil-pastel fill with fine speckled paper grain and soft mottled crayon strokes, only a faint slightly darker crayon edge, no dark outline, no smooth digital shading, clean white sticker border), not their subjects. Draw ONE small bare winter tree with no leaves, very simple and childish like a toddler picture-book drawing: a short, sturdy, slightly curved warm brown trunk (#8A5A34) and exactly three thick, rounded, almost horizontal branches spread out at different heights (one low to the left, one in the middle to the right, one high to the left), each branch long and flat enough on top for a small round bird to sit on, plus a few short stubby twigs at the branch tips. The branches are thick and soft like crayon strokes, not thin or spiky. No leaves, no snow, no birds, no face, no grass, no ground, no text, no 3D, no shine. A thick, clean, even white sticker border all around the whole tree. Centered, the tree fills about 80 percent of the frame height, plain pure solid white background, no shadow.
