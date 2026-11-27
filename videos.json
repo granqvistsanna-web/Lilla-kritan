@@ -1430,9 +1430,9 @@
   "name": "Bruna sången"
  },
  "J21": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J21-1125-1721.mp4",
-  "duration": 219.4,
-  "rendered": "2026-11-25 17:21 (3D-intro och 3D-outro, handtaget rättat)",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J21-1127-1419.mp4",
+  "duration": 215.6,
+  "rendered": "2026-11-27 14:19 (--snabb QA 27/11: ritintrot ritas nu med kritan-ritar.js (kontur + mitten och kronbladens skarvar, fylls inifrån på \"En blomma!\"), krita-ritar-ljud i st.f. skrrrt; irisslutet: 3D-dörren stänger över ballongen, inget svart; nya 3D-introt (tindra). Bara ritintrot omrenderat, resten av 019 som 25/11. Inte slutrenderad.)",
   "file": "produktion/youtube/shorts/jul/18-rosa-sangen/18-rosa-sangen.mp4",
   "status": "granska",
   "name": "Rosa sången"
