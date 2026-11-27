@@ -131,7 +131,7 @@ const borstePaFat = (v = 0, dy = 0, rand = 1, fran = 0) => lagg('pafat', [2, 1, 
 // muggen ovanpå (bild från Flow, rekvisita/tandborstmuggen.md) och tre borstar i den, en färg var. Allt ritas i lagret 'bakom' (bakom djuren) och
 // tonas ut med rummet när discot tar över. Borstarna står bakom muggens framsida, så att bara huvud och skaft sticker upp.
 const PALL = R + 'pall/cut/pall.png', MUGG = R + 'tandborstmuggen/cut/tandborstmuggen.png';
-const BORD_X = 405, BORD_W = 320, BORD_H = BORD_W * 551 / 781, BORD_TOPP = MARK + 6 - BORD_H;      // pallens höga del är den högra (ca 55 % av bredden)
+const BORD_X = 270, BORD_W = 320, BORD_H = BORD_W * 551 / 781, BORD_TOPP = MARK + 6 - BORD_H;      // pallens höga del är den högra (ca 55 % av bredden); QA 27/11 (Sanna): 405 → 270, så att kaninen och pandan inte har foten framför pallen när kroppen är bakom handfatet
 const KOPP_X = BORD_X + 0.73 * BORD_W, KOPP_B = BORD_TOPP + 6, KOPP_W = 150, KOPP_H = 100;          // muggens mitt och underkant, bredd och höjd
 const KOPP_LUT = [-11, 0, 11], KOPP_DX = [-42, 0, 42], BL = 877 * BS;                               // borstarnas lutning, plats i muggen och längd
 const KOPP_PLATS = i => { const l = KOPP_LUT[i] * Math.PI / 180, bx = KOPP_X + KOPP_DX[i], by = KOPP_B - 16; return [bx + 0.5 * BL * Math.sin(l), by - 0.5 * BL * Math.cos(l), 90 + KOPP_LUT[i]]; };   // [x, y, vinkel] för borstens mitt: huvudet uppåt
