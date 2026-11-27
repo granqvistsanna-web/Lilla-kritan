@@ -1753,12 +1753,12 @@
   "name": "Kritans ABC A, Short 2: Busiga kritan! (prov)"
  },
  "061": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/061-1127-1600.mp4",
-  "duration": 46.8,
-  "rendered": "2026-11-27 16:00 (riggens testfilm (riggen godkänd 27/11), inget avsnitt byggt än)",
-  "file": "assets/karaktarer/tvattbjornen-tilda/premium/tilda-testfilm.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/061-1127-1725.mp4",
+  "duration": 208.2,
+  "rendered": "2026-11-27 17:25 (grind 6: snabb förhandsvisning, hela scenen)",
+  "file": "avsnitt/061-tvattbjornen-bygger-i-sanden/scener/stranden/stranden.mp4",
   "status": "granska",
-  "name": "Tvättbjörnen bygger i sanden"
+  "name": "Tvättbjörnen bygger i sanden – förhandsvisning"
  },
  "ABC-SH-b1": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-SH-b1-1127-1610.mp4",
