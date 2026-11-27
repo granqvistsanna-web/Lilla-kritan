@@ -11211,9 +11211,10 @@
   "sec": 17,
   "tags": [],
   "note": "change to new version of gröna sången",
-  "fixed": false,
+  "fixed": true,
   "at": 1795780660878,
-  "render": "2026-11-27 11:31 (irisslutet 27/11: dörren stänger över scenen, inget svart)"
+  "render": "2026-11-27 11:31 (irisslutet 27/11: dörren stänger över scenen, inget svart)",
+  "fixedAt": 1795799710060
  },
  "jlr0tb1f5mmwz5lm1m": {
   "ep": "062",
