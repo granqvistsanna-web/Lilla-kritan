@@ -1470,10 +1470,10 @@
   "name": "Kaninen badar varmt"
  },
  "J15": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J15-1125-1730.mp4",
-  "duration": 249.0,
-  "rendered": "2026-11-25 17:30 (3D-intro och 3D-outro, handtaget rättat)",
-  "file": "produktion/youtube/shorts/jul/15-lammet-bakar-pepparkakor/15-lammet-bakar-pepparkakor.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J15-1127-0744.mp4",
+  "duration": 232.6,
+  "rendered": "2026-11-27 07:45 (QA 27/11: närbilderna visar hela huvudet, kritan via kritan-ritar.js (pepparkaksgubben och klockan); --snabb, bara julköket)",
+  "file": "avsnitt/045-lammet-bakar-pepparkakor/scener/julkoket/julkoket.mp4",
   "status": "granska",
   "name": "Lammet bakar pepparkakor"
  },
