@@ -1570,8 +1570,9 @@
   "duration": 272.3,
   "rendered": "2026-11-27 07:28 (feedback 27/11: rad 4 – 'Du ska få sitta i den här tandläkarstolen …' först, kaninen blir orolig, sedan 'Oj. Det är en stor stol.', 4:32)",
   "file": "avsnitt/049-kaninen-gar-till-tandlakaren/film/avsnitt-049.mp4",
-  "status": "granska",
-  "name": "Kaninen går till tandläkaren"
+  "status": "live",
+  "name": "Kaninen går till tandläkaren",
+  "youtube": "https://youtu.be/5tLmreNCAJQ"
  },
  "J22": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1127-1415.mp4",
