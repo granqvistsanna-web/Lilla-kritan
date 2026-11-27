@@ -335,7 +335,7 @@ const OLD = { "vit-kant":["bild","Vit kant för tjock"], stump:["bild","Stump/ro
   "for-lang":["tempo","För långsamt"], "for-kort":["tempo","För snabbt"], klipp:["tempo","Klipp/övergång"], miniatyr:["text","Miniatyr/YouTube-text"] };
 const catOf = k => TAGS.some(t => t[0] === k) ? k : (OLD[k] || [""])[0];
 const tagName = k => (TAGS.find(t => t[0] === k) || [, (OLD[k] || [, k])[1]])[1];
-const TYPES = [["alla","Alla"],["avsnitt","Avsnitt"],["jul","Julkalender"],["bg","Bakgrunder"],["ovrigt","Övrigt"]];
+const TYPES = [["alla","Alla"],["avsnitt","Avsnitt"],["jul","Julkalender"],["bg","Bakgrunder"],["ovrigt","Övrigt"],["arkiv","Arkiv"]];
 const typeOf = id => /^\d{3}/.test(id) ? "avsnitt" : /^J\d\d/.test(id) ? "jul" : id.startsWith("B-") ? "bg" : "ovrigt";
 const ORDER = ["avsnitt", "jul", "ovrigt", "bg"];
 
@@ -487,10 +487,12 @@ function renderJul() {
       <span>${c ? `<span class="cnt hot">${c}</span>` : ""}</span></button>`; }).join(""));
 }
 function renderAlla() {
-  put($("#fchips"), TYPES.map(([k, l]) => `<button class="chip" type="button" data-filter="${k}" aria-pressed="${k === filter}">${l} <span class="cnt">${k === "alla" ? ALL.length : ALL.filter(e => typeOf(e.id) === k).length}</span></button>`).join(""));
+  // Archived (old) videos only show under the Arkiv chip
+  const inF = (e, k) => k === "arkiv" ? statusOf(e.id) === "arkiv" : statusOf(e.id) !== "arkiv" && (k === "alla" || typeOf(e.id) === k);
+  put($("#fchips"), TYPES.map(([k, l]) => `<button class="chip" type="button" data-filter="${k}" aria-pressed="${k === filter}">${l} <span class="cnt">${ALL.filter(e => inF(e, k)).length}</span></button>`).join(""));
   const q = fold($("#q").value).trim();
-  const list = ALL.filter(e => (filter === "alla" || typeOf(e.id) === filter) && (!q || fold(e.id + " " + e.name).includes(q))).sort(byType);
-  $("#allaLead").textContent = `${list.length} av ${ALL.length}`;
+  const list = ALL.filter(e => inF(e, filter) && (!q || fold(e.id + " " + e.name).includes(q))).sort(byType);
+  $("#allaLead").textContent = `${list.length} av ${ALL.filter(e => inF(e, filter)).length}`;
   const n = id => openItems().filter(i => i.ep === id).length;
   put($("#rows"), list.length ? list.map(e => { const st = statusOf(e.id), d = rDate(V(e.id).rendered), c = n(e.id);
     return `<button class="vrow" type="button" data-go="${esc(e.id)}"><span class="num">${/^B-/.test(e.id) ? "" : esc(e.id)}</span><span class="name">${esc(shortName(e.id))}</span>
