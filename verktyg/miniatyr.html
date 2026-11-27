@@ -44,6 +44,55 @@
 // ut: mappen bilderna sparas i (standard: hjältebildens mapp). hjalte: [skala, x, y] = hjältens nederkant mitt i bilden; den hamnar vid (870, 705) och bilden zoomas in. Utan = bilden som den är.
 const MINIATYRER = [
   // Julkalendern 2026: luckmärket (jul.lucka) i stället för cirkeln, snöflingor och ljusslinga (Sanna 2026-11-14). Udda luckor grön strimma, jämna röd.
+  // Julkalendern 2026 som den är 27/11: luckorna J01–J24 i julkalender-parkerade.md. tid = luckans längd (ffprobe på luckans mp4); ändra när slutfilmen är byggd.
+  { id:'jk-01', ut:'produktion/youtube/shorts/jul/20-kaninen-aker-pulka/thumbnail', bild:'produktion/youtube/shorts/jul/20-kaninen-aker-pulka/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:1 },   // 039 vid 3:42, spegelvänd
+    sv:{ tid:'4:32', titel:['Kaninen','åker pulka'], yt:'Lucka 1 🛷 Kaninen åker pulka | Lilla Kritans julkalender' } },
+  { id:'jk-02', ut:'produktion/youtube/shorts/jul/07-lammet-julkula/thumbnail', bild:'produktion/youtube/shorts/jul/07-lammet-julkula/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:2 },
+    sv:{ tid:'2:44', titel:['Lammet och','julkulan'], yt:'Lucka 2 🎄 Lammet och julkulan | Lilla Kritans julkalender' } },
+  { id:'jk-03', ut:'produktion/youtube/shorts/jul/21-leoparden-gar-och-lagger-sig/thumbnail', bild:'produktion/youtube/shorts/jul/21-leoparden-gar-och-lagger-sig/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', hjalte:[1.35, 1067, 600], jul:{ lucka:3 },   // 040 vid 2:48: leoparden ler i sängen
+    sv:{ tid:'3:59', titel:['Leoparden','lägger sig'], yt:'Lucka 3 🌙 Leoparden går och lägger sig | Lilla Kritans julkalender' } },
+  { id:'jk-04', ut:'produktion/youtube/shorts/jul/05-grisen-pulka/thumbnail', bild:'produktion/youtube/shorts/jul/05-grisen-pulka/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:4 },
+    sv:{ tid:'3:05', titel:['Grisen','åker pulka'], yt:'Lucka 4 🛷 Grisen åker pulka | Lilla Kritans julkalender' } },
+  { id:'jk-05', ut:'produktion/youtube/shorts/jul/13-tre-pussel/thumbnail', bild:'produktion/youtube/shorts/jul/13-tre-pussel/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', hjalte:[1.4, 640, 600], jul:{ lucka:5 },   // pusslet vid 0:29: pepparkaksgubben klar
+    sv:{ tid:'2:09', titel:['Tre','julpussel'], yt:'Lucka 5 🧩 Tre julpussel | Lilla Kritans julkalender' } },
+  { id:'jk-06', ut:'produktion/youtube/shorts/jul/06-katten-hittar-julklappar/thumbnail', bild:'avsnitt/035-katten-hittar-julklappar/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:6 },
+    sv:{ tid:'4:15', titel:['Katten hittar','julklappar'], yt:'Lucka 6 🎁 Katten hittar julklappar | Lilla Kritans julkalender' } },
+  { id:'jk-07', ut:'produktion/youtube/shorts/jul/07-hunden-ater-julmat/thumbnail', bild:'produktion/youtube/shorts/jul/07-hunden-ater-julmat/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:7 },
+    sv:{ tid:'3:55', titel:['Hunden','äter julmat'], yt:'Lucka 7 🍖 Hunden äter julmat | Lilla Kritans julkalender' } },
+  { id:'jk-08', ut:'produktion/youtube/shorts/jul/08-katten-snogubbe/thumbnail', bild:'produktion/youtube/shorts/jul/08-katten-snogubbe/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:8 },
+    sv:{ tid:'4:33', titel:['Katten och','snögubben'], yt:'Lucka 8 ⛄ Katten gör en snögubbe | Lilla Kritans julkalender' } },
+  { id:'jk-09', ut:'produktion/youtube/shorts/jul/09-kaninen-badar-varmt/thumbnail', bild:'produktion/youtube/shorts/jul/09-kaninen-badar-varmt/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:9 },
+    sv:{ tid:'3:54', titel:['Kaninen','badar varmt'], yt:'Lucka 9 🛁 Kaninen badar varmt | Lilla Kritans julkalender' } },
+  { id:'jk-10', ut:'produktion/youtube/shorts/jul/10-tre-pussel-till/thumbnail', bild:'produktion/youtube/shorts/jul/10-tre-pussel-till/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:10 },   // pusslet vid 1:08: snögubben, spegelvänd
+    sv:{ tid:'2:07', titel:['Fler','julpussel'], yt:'Lucka 10 🧩 Tre julpussel till | Lilla Kritans julkalender' } },
+  { id:'jk-11', ut:'produktion/youtube/shorts/jul/21-blinka-lilla-stjarna/thumbnail', bild:'avsnitt/016-blinka-lilla-stjarna/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:11 },
+    sv:{ tid:'2:37', titel:['Blinka','lilla stjärna'], yt:'Lucka 11 ⭐ Blinka lilla stjärna | Lilla Kritans julkalender' } },
+  { id:'jk-12', ut:'produktion/youtube/shorts/jul/12-tittut-grisen/thumbnail', bild:'produktion/youtube/shorts/jul/12-tittut-grisen/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', hjalte:[1.4, 640, 693], jul:{ lucka:12 },   // tittut-filmen vid 2:49
+    sv:{ tid:'2:59', titel:['Tittut!','i julskogen'], yt:'Lucka 12 🐷 Tittut i julskogen | Lilla Kritans julkalender' } },
+  { id:'jk-13', ut:'produktion/youtube/shorts/jul/13-grona-sangen/thumbnail', bild:'avsnitt/014-grona-traktorn/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:13 },
+    sv:{ tid:'3:38', titel:['Gröna','sången'], yt:'Lucka 13 💚 Gröna sången | Lilla Kritans julkalender' } },
+  { id:'jk-14', ut:'produktion/youtube/shorts/jul/11-roda-sangen/thumbnail', bild:'avsnitt/013-rod-brandbil/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:14 },
+    sv:{ tid:'2:41', titel:['Röda','sången'], yt:'Lucka 14 ❤️ Röda sången | Lilla Kritans julkalender' } },
+  { id:'jk-15', ut:'produktion/youtube/shorts/jul/15-lammet-bakar-pepparkakor/thumbnail', bild:'produktion/youtube/shorts/jul/15-lammet-bakar-pepparkakor/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:15 },
+    sv:{ tid:'4:04', titel:['Lammet','bakar'], yt:'Lucka 15 🍪 Lammet bakar pepparkakor | Lilla Kritans julkalender' } },
+  { id:'jk-16', ut:'produktion/youtube/shorts/jul/16-grisen-matar-faglarna/thumbnail', bild:'produktion/youtube/shorts/jul/16-grisen-matar-faglarna/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', hjalte:[1.4, 573, 600], jul:{ lucka:16 },   // 043 vid 3:40: fågeln på luvan
+    sv:{ tid:'4:31', titel:['Grisen matar','fåglarna'], yt:'Lucka 16 🐦 Grisen matar fåglarna | Lilla Kritans julkalender' } },
+  { id:'jk-17', ut:'produktion/youtube/shorts/jul/17-hunden-gar-pa-pottan/thumbnail', bild:'produktion/youtube/shorts/jul/17-hunden-gar-pa-pottan/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:17 },
+    sv:{ tid:'4:00', titel:['Hunden','på pottan'], yt:'Lucka 17 🐶 Hunden går på pottan | Lilla Kritans julkalender' } },
+  { id:'jk-18', ut:'produktion/youtube/shorts/jul/14-bruna-sangen/thumbnail', bild:'avsnitt/007-bruna-ladbilen/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', hjalte:[1.12, 945, 650], jul:{ lucka:18 },
+    sv:{ tid:'3:51', titel:['Bruna','sången'], yt:'Lucka 18 🤎 Bruna sången | Lilla Kritans julkalender' } },
+  { id:'jk-19', ut:'produktion/youtube/shorts/jul/19-katten-aker-buss/thumbnail', bild:'produktion/youtube/shorts/jul/19-katten-aker-buss/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:19 },
+    sv:{ tid:'5:21', titel:['Katten','åker buss'], yt:'Lucka 19 🚌 Katten åker buss | Lilla Kritans julkalender' } },
+  { id:'jk-20', ut:'produktion/youtube/shorts/jul/17-borsta-borsta-jul/thumbnail', bild:'produktion/youtube/shorts/jul/17-borsta-borsta-jul/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', hjalte:[1.15, 640, 720], jul:{ lucka:20 },   // 038 vid 2:04: pandan borstar
+    sv:{ tid:'3:00', titel:['Borsta,','borsta jul'], yt:'Lucka 20 🪥 Borsta, borsta jul | Lilla Kritans julkalender' } },
+  { id:'jk-21', ut:'produktion/youtube/shorts/jul/18-rosa-sangen/thumbnail', bild:'avsnitt/019-rosa-favoritfarg/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', hjalte:[1.08, 860, 650], jul:{ lucka:21 },
+    sv:{ tid:'3:35', titel:['Rosa','sången'], yt:'Lucka 21 💗 Rosa sången | Lilla Kritans julkalender' } },
+  { id:'jk-22', ut:'produktion/youtube/shorts/jul/22-musen-pyntar-granen/thumbnail', bild:'avsnitt/034-musen-pyntar-granen/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:22 },
+    sv:{ tid:'4:29', titel:['Musen','pyntar granen'], yt:'Lucka 22 🎄 Musen pyntar granen | Lilla Kritans julkalender' } },
+  { id:'jk-23', ut:'produktion/youtube/shorts/jul/23-kaninen-bygger-torn/thumbnail', bild:'produktion/youtube/shorts/jul/23-kaninen-bygger-torn/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', jul:{ lucka:23 },   // 050 vid 0:56
+    sv:{ tid:'3:11', titel:['Kaninen','bygger torn'], yt:'Lucka 23 ❄️ Kaninen bygger torn | Lilla Kritans julkalender' } },
+  { id:'jk-24', ut:'produktion/youtube/shorts/jul/24-bjornen-vaknar-pa-julafton/thumbnail', bild:'produktion/youtube/shorts/jul/24-bjornen-vaknar-pa-julafton/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', hjalte:[1.1, 747, 613], jul:{ lucka:24 },   // 051 vid 2:54, spegelvänd
+    sv:{ tid:'4:05', titel:['Leoparden','vaknar'], yt:'Lucka 24 🎁 Leoparden vaknar på julafton | Lilla Kritans julkalender' } },
   { id:'jul-01', ut:'produktion/youtube/shorts/jul/01-stjarna/thumbnail', bild:'produktion/youtube/shorts/jul/01-stjarna/thumbnail/miniatyr-utan-text.png', farg:'#2F7D4A', hjalte:[1.5, 600, 537], jul:{ lucka:1 },   // filmen 1:54: stjärnan ler i toppen på granen
     sv:{ tid:'2:10', titel:['Stjärnan','och molnet'], yt:'Lucka 1 ⭐ Stjärnan och molnet | Lilla Kritans julkalender' } },
   { id:'jul-02', ut:'produktion/youtube/shorts/jul/02-lammet-tittut/thumbnail', bild:'produktion/youtube/shorts/jul/02-lammet-tittut/thumbnail/miniatyr-utan-text.png', farg:'#C8332B', jul:{ lucka:2 },   // filmen 1:12 spegelvänd: lammet skrattar med stjärnan, björnen under strimman

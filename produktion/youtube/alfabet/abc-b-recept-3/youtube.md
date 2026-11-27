@@ -1,6 +1,6 @@
 # YouTube – Kritans ABC B (Björnen vill leka)
 
-**Inte uppladdad än.** Godkänd 2026-11-27. Kanal: **lilla kritan**. Fil: `abc-b-recept-3.mp4` (4:18, 1920×1080). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, "4 min"). Ställ in **Ja, det är gjort för barn**.
+**Offentlig sedan 2026-11-27:** https://youtu.be/ICHa597AIiE. Godkänd 2026-11-27. Kanal: **lilla kritan**. Fil: `abc-b-recept-3.mp4` (4:18, 1920×1080). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman, "4 min"). Ställ in **Ja, det är gjort för barn**.
 
 Kapitlen är mätta med whisper (large-v3-turbo) mot `abc-b-recept-3.mp4` 2026-11-27, alla minst 10 s.
 
@@ -46,7 +46,7 @@ alfabetet, ABC, bokstäver, lära sig bokstäver, bokstavsljud, alfabetet för b
 ## Inställningar
 
 - Målgrupp: Ja, det är gjort för barn
-- Spellistor: **lilla kritan – alla avsnitt** och en ny, **Kritans ABC** (A–E nu, fler bokstäver läggs till)
+- Spellistor: **lilla kritan – alla avsnitt** och **Kritans ABC – lär dig alfabetet** (skapad 2026-11-27, ordning: tillagd äldst först, A–E nu, fler bokstäver läggs till)
 - Språk: svenska. Undertexter: inga
 - Synlighet: Offentlig
 - Ljudkredit: ingen. Musiken är egen (Suno: `abc-bad-lang`, `stada-radion-slinga`, `disco-funkig`), och scenen använder inga CC BY-effekter ur `assets/ljud/effekter/README.md` (kollat 2026-11-27)

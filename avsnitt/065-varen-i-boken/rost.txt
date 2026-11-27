@@ -1,0 +1,48 @@
+01-titta-en-bok  [warmly] Titta! En bok.
+02-var-i-boken  [happy] Det är vår i boken.
+03-var-ar-blommorna  [curious] Gräset är grönt. Men var är blommorna?
+04-kritan-ritar  [warmly] Kritan ritar …
+05-vad-blir-det  [curious] Hm … vad blir det nu?
+06-en-gul-tulpan  [happy] En gul tulpan!
+07-knopparna-blir-blommor  [warmly] Titta. Knopparna blir blommor.
+08-hej-musen  [happy] Hej, musen! Hej, hej!
+09-tycker-du-om-blommorna  [curious] Tycker du om blommorna?
+10-nu-ar-det-var  [happy] Ja, nu är det vår!
+11-solen-skiner  [warmly] Solen skiner.
+12-blommorna-hanger-ner  [curious] Men blommorna hänger ner.
+13-behover-vatten  [warmly] De är törstiga. Blommor behöver vatten.
+14-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+15-kritan-ritar-nagot  [warmly] Titta. Kritan ritar något.
+16-vattenkanna-varsagod  [happy] En vattenkanna! Varsågod, musen.
+17-tack-kritan  [happy] Tack, kritan!
+18-vatten-pa-fotterna  [surprised] Oj! Vatten på fötterna!
+19-blota-fotter  [laughs] Ha ha, blöta fötter!
+20-ska-du-vattna  [cheerfully] Ska du vattna blommorna?
+21-vi-hjalper-dem  [warmly] Kom, vi hjälper dem!
+22-vattna-upp-1  [playfully] Vattna, vattna … upp!
+23-den-roda-en  [happy] Den röda står upp. En!
+24-vattna-upp-2  [playfully] Vattna, vattna … upp!
+25-den-gula-tva  [happy] Den gula. Två!
+26-hanger-fortfarande  [curious] En blomma hänger fortfarande ner.
+27-vilken-ar-torstig  [curious] Vilken blomma är törstig?
+28-ja-den-lila  [happy] Ja, den lila!
+29-vattna-upp-3  [playfully] Vattna, vattna … upp!
+30-den-lila-tre  [happy] Den lila. Tre!
+31-en-tva-tre  [warmly] En, två, tre. Nu står alla blommorna upp.
+32-vatten-och-sol  [warmly] Vatten och sol. Så växer blommorna.
+33-sma-djur  [curious] Ser du några små djur på blommorna?
+34-en-fjaril  [happy] En fjäril!
+35-en-nyckelpiga  [warmly] Och en nyckelpiga. Röd med svarta prickar.
+36-fjarilen-pa-huvudet  [chuckles] Fjärilen sitter på huvudet!
+37-det-kittlas  [giggles] Ha ha, det kittlas!
+38-vad-finns-i-tradet  [curious] Titta upp i trädet. Vad finns där?
+39-ett-fagelbo  [happy] Ett fågelbo!
+40-tre-sma-agg  [warmly] Ett, två, tre små ägg.
+41-fagler-lagger-agg  [warmly] På våren lägger fåglarna ägg.
+42-fin-vardag  [warmly] Var det en fin vårdag, musen?
+43-det-tycker-jag  [warmly] Ja, det tycker jag!
+44-hej-da-musen  [warmly] Hej då, musen!
+45-hej-da-blommorna  [warmly] Hej då, blommorna!
+46-hej-da-fjarilen  [warmly] Hej då, fjärilen! Hej då, nyckelpigan!
+47-hej-da-fagelboet  [warmly] Hej då, fågelboet!
+48-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

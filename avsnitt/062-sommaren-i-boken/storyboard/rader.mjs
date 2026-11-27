@@ -72,7 +72,7 @@ export const RADER = [
   { id: '01a', d: 0.3 + L(1) + 0.3, plats: 'Skrivbordet, helbild', malin: [[1, 0.3]], ljud: [['skogsljud/skogsljud-1', 0], ['glimt/glimt-1', 0.2]],
     bild: 'Den stängda boken med grodans siluett, ljuset glimtar över pärmen', ljudtext: 'skogsljud lågt, glimt', s: { ...START } },
   { id: '01b', d: 0.5 + L(2) + 0.4, plats: 'Skrivbordet, kameran börjar glida in', malin: [[2, 0.5]], ljud: [['prassel-tyg/prassel-tyg-1', 0], ['pop/pop-1', 0.6]],
-    bild: 'Pärmen slås upp till stående med himlen på insidan, korten fälls upp (grodan ligger kvar nedfälld)', ljudtext: 'prassel-tyg, pop mjukt', s: { vy: 'in', parm: 1, kort: 1 } },
+    bild: 'Pärmen slås upp till stående med himlen på insidan, alla kort fälls upp, också grodan och sandslottet (Sanna 27/11 runda 5 "flip up all")', ljudtext: 'prassel-tyg, pop mjukt', s: { vy: 'in', parm: 1, kort: 1 } },
   { id: '02', d: 0.2 + L(3) + 0.6, plats: 'Inne i boken, bred', malin: [[3, 0.2]],
     bild: 'Kameran har glidit in och stannar. Himlen är tom, molnen glider', ljudtext: '–', s: { vy: 'bred' } },
   { id: '03', d: 0.4 + L(4) + 0.6 + L(5) + 3.0, plats: 'Himlen, nära', malin: [[4, 0.4], [5, 0.4 + L(4) + 0.6]], ljud: [['krita-ritar/krita-ritar-1', 0.2]],
@@ -81,8 +81,8 @@ export const RADER = [
     bild: 'Solen fylls i inifrån och glimtar, ljuset blir varmare', ljudtext: 'glitter, tindra', s: { sol: 'ja', kritan: false } },
 
   // --- Hej, grodan ---
-  { id: '05', d: 0.7 + L(7) + 1.2, plats: 'Grodans blad, halvbild', malin: [[7, 0.7]], ljud: [['pop/pop-2', 0.2], G('groda-hej-2', 0.7 + L(7) + 0.2)],
-    bild: 'Grodans kort fälls upp på bladet. Grodan vinkar', ljudtext: 'pop, kvak (hej)', s: { vy: 'halv', groda: 'uppe', vink: true } },
+  { id: '05', d: 0.7 + L(7) + 1.2, plats: 'Grodans blad, halvbild', malin: [[7, 0.7]], ljud: [G('groda-hej-2', 0.7 + L(7) + 0.2)],
+    bild: 'Grodan står på bladet (kortet fälldes upp med boken). Grodan vinkar', ljudtext: 'pop, kvak (hej)', s: { vy: 'halv', groda: 'uppe', vink: true } },
   { id: '05b', d: 0.2 + L(8) + SVAR + L(9) + 0.8, plats: 'Grodans blad, halvbild', malin: [[8, 0.2], [9, 0.2 + L(8) + SVAR]], ljud: [G('groda-fortjust-1', 0.2 + L(8) + 0.2)],
     bild: 'Grodan tittar runt och sedan på oss. Pausen: glatt kvak', ljudtext: 'kvak-dubbel (förtjust)', s: { vink: false } },
   { id: '06', d: 2.0, plats: 'Grodans blad, halvbild', ljud: [['tindra/tindra-2', 0.2]],   // utan "Solen skiner. Det blir varmt!" (Sanna 27/11 "vo a bit too repetative")
@@ -140,8 +140,8 @@ export const RADER = [
 
   // --- Sanden och hej då ---
   { id: '22', d: 0.3 + L(35) + 0.4 + L(36) + 1.4, plats: 'Sanden, halvbild', malin: [[35, 0.3], [36, 0.3 + L(35) + 0.4]],
-    ljud: [['pop/pop-2', 0.3 + L(35) + 0.4 + 1.0], ['klapp/klapp-1', 0.3 + L(35) + 0.4 + L(36) + 0.1], G('groda-fniss-2', 0.3 + L(35) + 0.4 + L(36) + 0.5)],
-    bild: 'Sandslottets kort fälls upp på "sandslott", hinken bredvid. Grodan klappar glatt', ljudtext: 'pop på "sandslott", klapp, olle-fniss', s: { vy: 'sand', slott: true, luktar: false } },
+    ljud: [['glimt/glimt-1', 0.3 + L(35) + 0.4 + 1.0], ['klapp/klapp-1', 0.3 + L(35) + 0.4 + L(36) + 0.1], G('groda-fniss-2', 0.3 + L(35) + 0.4 + L(36) + 0.5)],
+    bild: 'Sandslottet (uppe sedan boken öppnades) studsar och glimtar på "sandslott", hinken bredvid. Grodan klappar glatt', ljudtext: 'glimt på "sandslott", klapp, olle-fniss', s: { vy: 'sand', slott: true, luktar: false } },
   { id: '23', d: 0.2 + L(37) + 1.4, plats: 'Grodan, närbild', malin: [[37, 0.2]], ljud: [G('groda-fortjust-2', 0.2 + L(37) + 0.2)],
     bild: 'Grodan tittar på oss. Pausen: glatt kvak, nick', ljudtext: 'kvak-dubbel (förtjust)', s: { vy: 'nara3' } },
   { id: '24', d: 0.5 + L(38) + 1.4, plats: 'Uppslaget, halvbild', malin: [[38, 0.5]], ljud: [['glimt/glimt-2', 0.5 + 1.2], G('groda-hejda-1', 0.5 + L(38) + 0.2)],

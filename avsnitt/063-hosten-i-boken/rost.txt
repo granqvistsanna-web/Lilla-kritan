@@ -1,0 +1,49 @@
+01-titta-en-bok  [warmly] Titta! En bok.
+02-host-i-boken  [happy] Oj! Det är höst i boken!
+03-var-ar-loven  [curious] Titta, trädet. Men var är löven?
+04-kritan-ritar  [warmly] Kritan ritar …
+05-vad-blir-det  [curious] Vad blir det nu?
+06-oj-ett-lov  [happy] Oj! Ett löv!
+07-sa-manga-lov  [warmly] Så många löv.
+08-roda-och-gula  [warmly] På hösten blir löven röda och gula.
+09-faller-ner  [warmly] Och sedan faller de ner … sakta, sakta.
+10-hej-raven  [happy] Hej, räven! Hej, hej!
+11-nu-ar-det-host  [warmly] Räven, nu är det höst.
+12-nu-blaser-det  [surprised] Oj! Nu blåser det!
+13-brr-fryser  [warmly] Brr. Räven fryser.
+14-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+15-kritan-ritar-varmt  [warmly] Titta, kritan ritar något varmt …
+16-vad-blir-det-2  [curious] Vad blir det?
+17-en-halsduk-varsagod  [happy] En halsduk! Varsågod, räven.
+18-tack-kritan  [happy] Tack, kritan!
+19-tar-pa-halsduken  [warmly] Räven tar på sig halsduken. Så där.
+20-mjuk-och-varm  [curious] Är halsduken mjuk och varm?
+21-kall-och-varm  [happy sigh] Mmm. Vinden är kall, men halsduken är varm.
+22-en-lovhog  [warmly] Titta, en stor lövhög.
+23-hoppa-i-loven  [cheerfully] Ska du hoppa i löven?
+24-bra-ide  [happy] Ja, bra idé!
+25-hopp  [playfully] Hopp!
+26-en-gang-till  [warmly] En gång till … hopp!
+27-lov-pa-huvudet  [chuckles] Ha ha, löv på huvudet.
+28-vad-mer-finns  [curious] Vad mer finns på hösten?
+29-ser-du-lov  [curious] Ser du några löv på marken?
+30-ett-rott-lov  [warmly] Ett rött löv.
+31-ett-gult-lov  [warmly] Ett gult löv.
+32-ett-brunt-lov  [warmly] Och ett brunt löv.
+33-ser-du-ekollonen  [curious] Och ser du ekollonen?
+34-vi-raknar  [warmly] Där är ekollonen. Vi räknar. Ett … två … tre.
+35-vad-fina-ekollon  [warmly] Vad fina ekollon.
+36-luktar-skog  [happy sigh] Mmm … de luktar skog.
+37-ekorren-samlar  [warmly] Ekorren tycker om ekollon. Den samlar dem till vintern.
+38-hej-ekorren  [happy] Titta, där är den ju! Hej, ekorren! Hej, hej!
+39-vad-vaxer-dar  [curious] Titta, vid stubben. Vad växer där?
+40-en-svamp  [happy] En svamp! En röd svamp med vita prickar.
+41-giftig  [warmly] Den är giftig. Den ska man inte äta.
+42-titta-pa-den  [warmly] Men man kan titta på den.
+43-fin-hostdag  [warmly] Var det en fin höstdag, räven?
+44-hej-da-raven  [warmly] Hej då, räven!
+45-hej-da-ekorren  [warmly] Hej då, ekorren!
+46-hej-da-loven  [warmly] Hej då, löven!
+47-hej-da-lovhogen  [warmly] Hej då, lövhögen!
+48-hej-da-svampen  [warmly] Hej då, svampen!
+49-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

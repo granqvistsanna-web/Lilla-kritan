@@ -95,7 +95,8 @@ const LAMPH = { liten: 70, stor: 820, lagom: 300 };
 const GOLVSTA = [430, GOLV];
 const LITEN_VID_FOTEN = [1300, TAK + 30], LITEN_VID_NALLE = [1255, TAK + 6];
 const BULA = [1220, TAK];   // där nallen tippar över täckets kant och ramlar ner bakom sängen
-const UNDER = [1180, 1002];   // nallens haka på golvet under sängen (täckets kant ca y 950, benen 1000; Sanna 2026-11-26: "nalle peeking ... on floor under bed")
+const UNDER = [1180, 1068];   // nallens fötter på golvet under sängkanten, hela nallen syns (Sanna 2026-11-27: "full nalle under bed not just head"; täckets kant y 934, benen 980:
+                              // glipan är för låg för en hel nalle bakom sängen, så den sitter på golvet precis under täckets kant, framför benen, inget går igenom)
 const NALLE_SOV = [1004, 732], LITEN_SOV = [1085, TAK - 8];   // där nallen ligger i sovbilden (under täcket bredvid rävens kind)
 const SVART = 0.6;
 
@@ -210,10 +211,10 @@ function nalle([x, y], { blund = 0, lager = 'bak', v = 0, klipp = null, o = 1 } 
   if (klipp != null) lagg(lager, `<clipPath id="nalleklipp" clipPathUnits="userSpaceOnUse"><rect x="-200" y="-400" width="2400" height="${f1(klipp + 400)}"/></clipPath>`);
   lagg(lager, `<g opacity="${o.toFixed(3)}"${klipp != null ? ' clip-path="url(#nalleklipp)"' : ''}><g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${NALLE.s}) translate(${-NALLE.fot[0]} ${-NALLE.fot[1]})"><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${ans}</g></g>`);
 }
-// nallens huvud på golvet under sängen (kroppen ligger under sängen): bakom sängen, så att täckets kant döljer öronen och ögonen syns under den.
-// haka = hakans y; v = vickning i grader
-function nalleUnder({ x, haka, v = 0 }) {
-  lagg('bak', `<clipPath id="huvudklipp" clipPathUnits="userSpaceOnUse"><ellipse cx="425" cy="236" rx="262" ry="180"/></clipPath><g transform="translate(${f1(x)} ${f1(haka)}) rotate(${f1(v)}) scale(${NALLE.s}) translate(-425 -414)"><g clip-path="url(#huvudklipp)"><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${nalleAns()}</g></g>`);
+// hela nallen sitter på golvet under sängkanten (fötterna i (x, y)), med en mjuk skugga; v = vickning i grader kring fötterna
+function nalleUnder({ x, y, v = 0 }) {
+  lagg('golvskugga', `<ellipse cx="${f1(x)}" cy="${f1(y + 2)}" rx="62" ry="9" fill="#5a3e2a" opacity="0.22" filter="url(#mjukskugga)"/>`);
+  nalle([x, y], { lager: 'golv', v });
 }
 // sovbilden: räven sover i sängen under täcket med nallen, samma bild och läge som den bäddade sängen; tonas in över den.
 // Andas som 051: bara räven och täcket (en mjuk mask), skalas lite i höjd kring täckets underkant.
@@ -304,9 +305,9 @@ function lagen(t) {
   if (t >= s19 + 1.0 && t < s23) { const upp = del(s19 + 1.0, s19 + 1.5, t), fall = del(s19 + 1.5, s19 + 1.9, t);
     np = [lerp(NALLE_BREDVID[0], BULA[0], upp), t < s19 + 1.5 ? lerp(NALLE_BREDVID[1], KANT, upp) - 14 * bump(s19 + 1.0, s19 + 1.5, t) : KANT + 190 * fall * fall];
     if (t >= s19 + 1.5) nklipp = KANT; nalleSyns = t < s19 + 1.95;
-    if (t >= s21) under = { x: UNDER[0], haka: lerp(UNDER[1] - 62, UNDER[1], del(s21 + 2.2, s21 + 3.0, t)) }; }
+    if (t >= s21) under = { x: UNDER[0], y: UNDER[1], luta: -12 * (1 - del(s21 + 2.2, s21 + 3.0, t)) }; }   // lutar sig fram under kanten, rätar upp sig
   if (t >= s23) { const h = del(s23, s23 + 0.7, t);
-    np = [lerp(UNDER[0], NALLE_BREDVID[0], h), lerp(UNDER[1] + 60, NALLE_BREDVID[1], h) - 110 * bump(s23, s23 + 0.7, t)]; }
+    np = [lerp(UNDER[0], NALLE_BREDVID[0], h), lerp(UNDER[1], NALLE_BREDVID[1], h) - 110 * bump(s23, s23 + 0.7, t)]; }
   // täcket: platt på sängen → upp över magen (rad 5) → till hakan (rad 27, i det mörkaste)
   return { rums, natt, ljust, lit, luft, litR, litTand, lagom, lagomTand, sk, np, under, nalleSyns, nklipp, stor };
 }
@@ -436,9 +437,9 @@ const RS = {
   // frågan över sängen, klipp till golvet under sängen: nallen kikar fram under täcket (rad 21 i pilarna); skimrar svagt efter 3 s
   '21': (tl, d) => { const c = 1.6,   // klippet efter "räven?" (QA: förut mitt i ordets slut)
     g = tl - (0.3 + LN(36) + 3.0);
-    return SOV({ kam: tl < c ? K_HALV : K_UNDER, f: F('ledsen', { le: -0.2, titt: [-6, 6] }), p: P({ oron: [8, 8] }), skim: [[UNDER[0] + 40, UNDER[1] - 40, 0.4 * del(0, 0.6, g), 0.4]], vick: 3 * Math.sin(tl * 2) * del(2.4, 3.2, tl) }); },
+    return SOV({ kam: tl < c ? K_HALV : K_UNDER, f: F('ledsen', { le: -0.2, titt: [-6, 6] }), p: P({ oron: [8, 8] }), skim: [[UNDER[0] + 40, UNDER[1] - 110, 0.4 * del(0, 0.6, g), 0.4]], vick: 3 * Math.sin(tl * 2) * del(2.4, 3.2, tl) }); },
   // skimrar tydligt, nallen vickar på huvudet
-  '22': (tl, d) => SOV({ kam: K_UNDER, f: F('ledsen'), p: P(), skim: [[UNDER[0] + 40, UNDER[1] - 40, 0.5 + 0.5 * del(0, 0.3, tl), 0.5]], vick: 8 * Math.sin(2 * Math.PI * tl / 0.8) * bump(0, 1.6, tl) }),
+  '22': (tl, d) => SOV({ kam: K_UNDER, f: F('ledsen'), p: P(), skim: [[UNDER[0] + 40, UNDER[1] - 110, 0.5 + 0.5 * del(0, 0.3, tl), 0.5]], vick: 8 * Math.sin(2 * Math.PI * tl / 0.8) * bump(0, 1.6, tl) }),
   // nallen hoppar upp från golvet och sätter sig bredvid; räven tittar ner, sedan lättad
   '23': (tl, d) => SOV({ f: tl < 0.9 ? F('forvanad', { titt: [12, 10] }) : LATTAD(), p: P({ rikt: 0.3 * (1 - del(0.9, 1.4, tl)), oron: [-8, -8] }) }),
   // reaktion: jätteglad, armarna lugnt upp (hurra, inget hopp)
@@ -490,7 +491,7 @@ function ritaRum(st, t) {
   if (sov) sovbild(sovO);   // sovbilden ovanpå sängen, nallen i bilden tar över efter nallen i kod
   const np = sov ? lerp2(z.np, NALLE_SOV, del(0, 0.6, st.nalleGlid ?? 1)) : z.np;
   if (z.nalleSyns && sovO < 1) nalle(np, { lager: 'patacke', klipp: z.nklipp, o: 1 - sovO });   // sitter ovanpå det bäddade täcket
-  if (z.under) nalleUnder({ ...z.under, v: st.vick || 0 });
+  if (z.under) nalleUnder({ ...z.under, v: z.under.luta + (st.vick || 0) });
   // räven
   if (st.f && sovO < 1) {
     rav(st.pos, BLINKA(st.f, t), liv(st.p, t), { bakom: st.bakom, luft: st.luft, o: 1 - sovO });

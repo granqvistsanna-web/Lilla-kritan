@@ -5,43 +5,41 @@
 05-hur-ar-det  [warmly] Hur är det, tvättbjörnen?
 06-tycker-om-stranden  [happy] Jaså, du tycker om stranden!
 07-spade-i-sanden  [happy] Titta, en spade i sanden!
-08-bygga-i-sanden  [cheerfully] Ska du bygga i sanden med spaden?
+08-grava-med-spaden  [cheerfully] Ska du gräva med spaden?
 09-ja-vad-kul  [happy] Ja, vad kul!
-10-graver-med-spaden  [warmly] Du gräver med spaden. En hög med sand!
-11-sandhogen-rasar  [surprised] Oj då. Sandhögen rasar!
-12-rasar-igen  [chuckles] En gång till … Oj! Den rasar igen!
-13-vill-inte-sta-kvar  [warmly] Sanden vill visst inte stå kvar.
-14-inte-roligt  [warmly] Mm, det var inte roligt.
-15-hur-ska-sanden  [curious] Hm … hur ska sanden stå kvar?
-16-kritan-ritar-nagot  [happy] Titta! Kritan ritar något i sanden.
-17-en-hink-varsagod  [happy] En hink! Varsågod, tvättbjörnen.
-18-fin-hink  [happy] Oj, vilken fin hink!
-19-saga-tack  [warmly] Ska vi säga tack?
-20-tack  [happy] Tack!
-21-hinken-pa-huvudet  [surprised] Oj! Du sätter hinken på huvudet!
-22-en-hinkhatt  [laughs] Ha ha! En hinkhatt!
-23-din-hinkhatt  [chuckles] Jaså, tycker du om din hinkhatt?
-24-bygga-en-sandkaka  [cheerfully] Ska du bygga en sandkaka med hinken?
-25-ja-det-gor-vi  [happy] Ja, det gör vi!
-26-fyller-hinken  [warmly] Först fyller du hinken med sand.
-27-klapp-sandkaka-1  [happy] Klapp, klapp … sandkaka!
-28-sa-fin-den-blev  [happy] Oj, så fin den blev!
-29-och-en-till  [cheerfully] Och en till. Mer sand i hinken.
-30-klapp-sandkaka-2  [happy] Klapp, klapp … sandkaka!
-31-tva-sandkakor  [happy] Två sandkakor!
-32-var-ar-spaden  [curious] En sandkaka till? Men var är spaden? Tvättbjörnen vet inte var.
-33-kan-du-hjalpa  [warmly] Kan du hjälpa tvättbjörnen? Kan du se spaden?
-34-ja-dar-bakom-hinken  [happy] Ja, där! Bakom hinken!
-35-du-hittade-spaden  [happy] Du hittade spaden!
-36-sand-i-hinken-igen  [cheerfully] Sand i hinken igen.
-37-klapp-sandkaka-3  [happy] Klapp, klapp … sandkaka!
-38-tre-sandkakor  [happy sigh] Tre sandkakor i rad!
-39-vad-bra-det-blev  [happy] Vad bra det blev!
-40-skolja-hinken  [curious] Nu är hinken sandig. Ska du skölja hinken i vattnet?
-41-skoljer-plask  [playfully] Du sköljer hinken i vågen. Plask, plask!
-42-liten-vag-hopp  [surprised] Oj! En liten våg! Hopp!
-43-en-vag-till-hopp  [playfully] En våg till … hopp!
-44-roligt-att-hoppa  [warmly] Var det roligt att hoppa över vågorna?
-45-jag-ocksa  [happy] Ja, det tyckte jag också!
-46-hej-da-tvattbjornen  [happy] Hej då, tvättbjörnen! Hej då, hinken!
-47-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
+10-graver-en-grop  [warmly] Du gräver en grop i sanden. En djup grop!
+11-vatten-i-gropen  [surprised] Oj! Det kommer vatten i gropen!
+12-en-liten-pol  [happy] En liten pöl!
+13-tvattar-tassarna  [playfully] Du tvättar tassarna i pölen. Gnugg, gnugg!
+14-riktig-tvattbjorn  [chuckles] Ja, du är en riktig tvättbjörn!
+15-mer-vatten  [curious] Vill du ha mer vatten i pölen?
+16-dar-borta  [warmly] Där borta finns mycket vatten.
+17-vatten-i-tassarna  [cheerfully] Du tar vatten i tassarna.
+18-rinner-ut  [surprised] Oj då! Vattnet rinner ut!
+19-rinner-ut-igen  [chuckles] En gång till … Oj! Det rinner ut igen!
+20-vill-inte-stanna  [warmly] Vattnet vill inte stanna i tassarna.
+21-inte-latt  [warmly] Mm, det var inte lätt.
+22-hur-ska-vattnet  [curious] Hm … hur ska vattnet komma till gropen?
+23-kritan-ritar-nagot  [happy] Titta! Kritan ritar något i sanden.
+24-en-hink-varsagod  [happy] En hink! Varsågod, tvättbjörnen.
+25-fin-hink  [happy] Oj, vilken fin hink!
+26-tack-kritan  [happy] Tack, kritan!
+27-bara-vatten  [cheerfully] Ska du bära vatten i hinken?
+28-ja-det-gor-vi  [happy] Ja, det gör vi!
+29-fyller-hinken  [warmly] Först fyller du hinken i vågen.
+30-vatten-plask-1  [happy] Vatten i hinken … plask!
+31-mer-vatten-i-gropen  [happy] Oj, mer vatten i gropen!
+32-vatten-plask-2  [cheerfully] En gång till. Vatten i hinken … plask!
+33-tvattar-spaden  [playfully] Nu tvättar du spaden i vågen. Gnugg, gnugg!
+34-var-ar-hinken  [curious] Men … var är hinken? Tvättbjörnen vet inte var.
+35-kan-du-hjalpa  [warmly] Kan du hjälpa tvättbjörnen? Kan du se hinken?
+36-ja-dar-i-vagorna  [happy] Ja, där! I vågorna!
+37-fick-tillbaka  [happy] Vågen kommer med hinken. Du fick tillbaka den!
+38-vatten-plask-3  [happy] Vatten i hinken … plask!
+39-en-liten-sjo  [happy sigh] Nu är gropen full med vatten. En liten sjö!
+40-vad-bra-det-blev  [happy] Vad bra det blev!
+41-plaskar-med-fotterna  [playfully] Plask, plask! Du plaskar med fötterna.
+42-roligt-gora-sjo  [warmly] Var det roligt att göra en sjö?
+43-jag-ocksa  [happy] Ja, det tyckte jag också!
+44-hej-da-tvattbjornen  [happy] Hej då, tvättbjörnen! Hej då, hinken!
+45-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

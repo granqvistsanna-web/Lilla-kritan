@@ -1,0 +1,167 @@
+// Storyboardens rader för 061 Tvättbjörnen bygger i sanden (manus version 2, förlaga för formen: 057): en stillbild per uppslag
+// i ../manus.md (01 och 20 är delade, för att bilden byts mitt i uppslaget). bygg.mjs räknar starttiderna (summan av d), ritar
+// stillbilderna ur scen.html, skriver tabellen i storyboard.md, index.html och animatiken.
+// d = radens längd i s. malin = [[replikens nr i ROST, s in i raden]]. ljud = [[fil under assets/ljud/effekter/ utan .m4a,
+// s in i raden, volym (valfri, 0,7)]].
+//
+// Malins repliker, tagning 1 2026-11-27 (godkänd), normaliserade till −3 dBFS. Filnamn och text ur ../rost.txt, längderna ur
+// ../rost-langder.txt. Mät om om tagningen byts. Pauserna är manusets.
+export const UPPSKATTAD = false;
+export const ROST = [
+  ['01-kritan-ritar', 1.76, 'Kritan ritar …'],
+  ['02-vad-blir-det', 2.19, 'Hm … vad blir det nu?'],
+  ['03-oj-en-spade', 2.01, 'Oj! En spade!'],
+  ['04-hej-tvattbjornen', 2.00, 'Hej, tvättbjörnen! Hej, hej!'],
+  ['05-hur-ar-det', 1.28, 'Hur är det, tvättbjörnen?'],
+  ['06-tycker-om-stranden', 2.01, 'Jaså, du tycker om stranden!'],
+  ['07-spade-i-sanden', 2.21, 'Titta, en spade i sanden!'],
+  ['08-grava-med-spaden', 1.66, 'Ska du gräva med spaden?'],
+  ['09-ja-vad-kul', 1.08, 'Ja, vad kul!'],
+  ['10-graver-en-grop', 3.76, 'Du gräver en grop i sanden. En djup grop!'],
+  ['11-vatten-i-gropen', 2.51, 'Oj! Det kommer vatten i gropen!'],
+  ['12-en-liten-pol', 1.28, 'En liten pöl!'],
+  ['13-tvattar-tassarna', 3.61, 'Du tvättar tassarna i pölen. Gnugg, gnugg!'],
+  ['14-riktig-tvattbjorn', 2.26, 'Ja, du är en riktig tvättbjörn!'],
+  ['15-mer-vatten', 1.73, 'Vill du ha mer vatten i pölen?'],
+  ['16-dar-borta', 1.84, 'Där borta finns mycket vatten.'],
+  ['17-vatten-i-tassarna', 1.48, 'Du tar vatten i tassarna.'],
+  ['18-rinner-ut', 2.15, 'Oj då! Vattnet rinner ut!'],
+  ['19-rinner-ut-igen', 3.73, 'En gång till … Oj! Det rinner ut igen!'],
+  ['20-vill-inte-stanna', 2.02, 'Vattnet vill inte stanna i tassarna.'],
+  ['21-inte-latt', 1.70, 'Mm, det var inte lätt.'],
+  ['22-hur-ska-vattnet', 2.91, 'Hm … hur ska vattnet komma till gropen?'],
+  ['23-kritan-ritar-nagot', 3.16, 'Titta! Kritan ritar något i sanden.'],
+  ['24-en-hink-varsagod', 3.10, 'En hink! Varsågod, tvättbjörnen.'],
+  ['25-fin-hink', 1.80, 'Oj, vilken fin hink!'],
+  ['26-tack-kritan', 0.99, 'Tack, kritan!'],
+  ['27-bara-vatten', 1.77, 'Ska du bära vatten i hinken?'],
+  ['28-ja-det-gor-vi', 1.18, 'Ja, det gör vi!'],
+  ['29-fyller-hinken', 2.17, 'Först fyller du hinken i vågen.'],
+  ['30-vatten-plask-1', 2.66, 'Vatten i hinken … plask!'],
+  ['31-mer-vatten-i-gropen', 2.32, 'Oj, mer vatten i gropen!'],
+  ['32-vatten-plask-2', 4.20, 'En gång till. Vatten i hinken … plask!'],
+  ['33-tvattar-spaden', 3.61, 'Nu tvättar du spaden i vågen. Gnugg, gnugg!'],
+  ['34-var-ar-hinken', 4.54, 'Men … var är hinken? Tvättbjörnen vet inte var.'],
+  ['35-kan-du-hjalpa', 3.70, 'Kan du hjälpa tvättbjörnen? Kan du se hinken?'],
+  ['36-ja-dar-i-vagorna', 1.95, 'Ja, där! I vågorna!'],
+  ['37-fick-tillbaka', 3.56, 'Vågen kommer med hinken. Du fick tillbaka den!'],
+  ['38-vatten-plask-3', 2.58, 'Vatten i hinken … plask!'],
+  ['39-en-liten-sjo', 4.01, 'Nu är gropen full med vatten. En liten sjö!'],
+  ['40-vad-bra-det-blev', 1.27, 'Vad bra det blev!'],
+  ['41-plaskar-med-fotterna', 3.24, 'Plask, plask! Du plaskar med fötterna.'],
+  ['42-roligt-gora-sjo', 1.74, 'Var det roligt att göra en sjö?'],
+  ['43-jag-ocksa', 1.75, 'Ja, det tyckte jag också!'],
+  ['44-hej-da-tvattbjornen', 2.78, 'Hej då, tvättbjörnen! Hej då, hinken!'],
+  ['45-vi-ses-snart', 3.24, 'Hej då! Vi ses snart! [giggles]'],
+];
+export const L = n => ROST[n - 1][1];
+// ordtider i replikerna (whisper ord för ord, tagning 1, 2026-11-27): vattnet kommer på "vatten", tassarna gnids på "gnugg",
+// tassarna är tomma på "rinner", stänket i gropen på "plask". Mät om om tagningen byts.
+export const VATTEN = { 11: 1.05 };
+export const GNUGG = { 13: [2.34, 2.85], 33: [2.44, 2.95] };
+export const RINNER = { 18: 1.31, 19: 2.0 };
+export const PLASK = { 30: 1.85, 32: 3.42, 38: 1.80, 41: [0.05, 0.77] };
+
+// 1 hej, 2 förtjust, 3 fniss, 4 mysig suck, 5 nyfiken, 6 trumpen, 7 pratar, 8 hej då. Tagning: '2', '2b', '2c', '2d' (hej: 1–1c)
+const TB = (n, o, v) => [`tvattbjorn-gullig/tvattbjorn-gullig-${n}`, o, v];
+const VAG = (n = 1, v = 0.22) => [`vagor/vagor-${n}`, 0, v];
+
+export const RADER = [
+  { id: '00', d: 3.3, plats: 'Intro', bild: 'Seriens standardintro *Djuren hittar på!* (`produktion/youtube/bilderbok-intro/`, 3,3 s). ⚠ Platshållare i storyboarden: introt läggs in i filmen', ljudtext: 'introts jingel och röst', ansikte: '–' },
+
+  { id: '01a', d: 6.0, plats: 'Papperet, helbild', malin: [[1, 3.0]], ljud: [['skogsljud/skogsljud-1', 0, 0.35], ['krita-ritar/krita-ritar-1', 0.3]],
+    bild: 'Kritan ritar spadens ytterkontur i ett lugnt drag (ca 2,8 s), sedan öglans hål', ljudtext: 'kritan ritar, skogsljud under', ansikte: '–' },
+  { id: '01b', d: 7.0, plats: 'Papperet, helbild', malin: [[2, 0.3]], ljud: [['skogsljud/skogsljud-1', 0, 0.35]],
+    bild: 'Konturen är klar. Kritan väntar bredvid och vajar lugnt i ca 3 s: barnet gissar', ljudtext: 'skogsljud', ansikte: '–' },
+  { id: '01c', d: 0.6 + L(3) + 0.6, plats: 'Papperet → zoom in', malin: [[3, 0.6]], ljud: [['glitter/glitter-1', 0.0]],
+    bild: 'Den riktiga spaden fylls i inifrån. Sista 0,8 s: zoom in i teckningen, in på stranden', ljudtext: '`glitter`', ansikte: '–' },
+
+  { id: '1', d: 2.5 + L(4) + 1.2, plats: 'Stranden, helbild', malin: [[4, 2.5]], ljud: [VAG(1), ['tass/tass-1', 0.3], ['tass/tass-2', 1.0], ['tass/tass-3', 1.7], TB(1, 2.8 + L(4))],
+    bild: 'Spaden står i sanden. Tvättbjörnen trippar in från vänster, stannar och vinkar. **Hej med vinkning**', ljudtext: '`tass`, hej', ansikte: 'glad' },
+  { id: '1b', d: 0.5 + L(5) + 1.7 + L(6) + 0.8, plats: 'Halvbild', malin: [[5, 0.5], [6, 0.5 + L(5) + 1.7]], ljud: [TB(2, 0.8 + L(5)), ['svansvift/svansvift-1', 0.9 + L(5), 0.4]],
+    bild: 'Tvättbjörnen tittar ut över havet, sedan på oss, svansen vippar. **Pausen:** glatt kurr, öronen upp', ljudtext: 'förtjust i pausen', ansikte: 'nyfiken → jätteglad' },
+  { id: '2', d: 0.4 + L(7) + 1.3, plats: 'Närbild spaden → tvättbjörnen', malin: [[7, 0.4]], ljud: [['glimt/glimt-1', 0.2, 0.5], TB(5, 0.6 + L(7))],
+    bild: 'Spaden i sanden glimtar. Klipp till tvättbjörnen som ser den, öronen upp', ljudtext: '`glimt`, nyfiken', ansikte: 'nyfiken' },
+  { id: '3', d: 0.3 + L(8) + 1.7, plats: 'Halvbild, tvättbjörnen och spaden', malin: [[8, 0.3]], ljud: [TB('2b', 0.8 + L(8))],
+    bild: 'Tvättbjörnen tittar på spaden. **Pausen:** glatt kurr och en nick', ljudtext: 'förtjust', ansikte: 'nyfiken → glad' },
+  { id: '3b', d: 0.6 + L(9) + 0.8, plats: 'Närbild ansiktet', malin: [[9, 0.6]], ljud: [['swoosh/swoosh-1', 0.2, 0.4]],
+    bild: 'Spaden glider upp i tasspetsen', ljudtext: '`swoosh` mjukt', ansikte: 'jätteglad' },
+  { id: '4', d: 1.0 + L(10) + 1.0, plats: 'Närbild sanden', malin: [[10, 1.0]], ljud: [['sand/sand-1', 0.3], ['sand/sand-2', 1.3], ['sand/sand-3', 2.3]],
+    bild: 'Tvättbjörnen gräver (armen vrids ner och upp), tre sandpuffar, gropen växer i tre steg', ljudtext: '`sand` ×3', ansikte: 'ivrig' },
+  { id: '5', d: 0.6 + L(11) + 1.3, plats: 'Närbild gropen → tvättbjörnen', malin: [[11, 0.6]], ljud: [['blubb/blubb-1', 0.6 + VATTEN[11] - 0.2, 0.5], TB('5b', 0.9 + L(11))],
+    bild: 'Gropens botten blir blank, vattnet stiger (klart på *"vatten"*). Klipp till tvättbjörnen: förvånad, 0,3 s still', ljudtext: '`blubb`, nyfiken', ansikte: 'förvånad' },
+  { id: '6', d: 0.4 + L(12) + 1.2, plats: 'Närbild pölen → tvättbjörnen', malin: [[12, 0.4]], ljud: [['glimt/glimt-2', 0.1, 0.5], TB('2c', 0.6 + L(12))],
+    bild: 'Den lilla pölen skimrar. Klipp till tvättbjörnen, öronen upp', ljudtext: '`glimt`, förtjust', ansikte: 'jätteglad' },
+  { id: '7', d: 0.6 + L(13) + 1.0, plats: 'Halvbild vid pölen', malin: [[13, 0.6]], ljud: [['droppar/droppar-1', 0.6 + GNUGG[13][0]], ['droppar/droppar-1', 0.6 + GNUGG[13][1]], TB(3, 0.7 + L(13))],
+    bild: 'Spaden står i sanden. Tassarna framför magen gnids mot varandra över pölen **på "Gnugg, gnugg"**, droppar faller', ljudtext: '`droppar`, fniss', ansikte: 'fnissig' },
+  { id: '7b', d: 0.4 + L(14) + 1.1, plats: 'Närbild ansiktet', malin: [[14, 0.4]], ljud: [TB(7, 0.6 + L(14))],
+    bild: 'Tvättbjörnen nöjd, svansen vippar', ljudtext: 'pratar', ansikte: 'stolt' },
+  { id: '8', d: 0.3 + L(15) + 1.8 + L(16) + 0.8, plats: 'Närbild pölen, tvättbjörnen tittar mot havet', malin: [[15, 0.3], [16, 0.3 + L(15) + 1.8]], ljud: [TB('5c', 0.6 + L(15))],
+    bild: 'Den lilla pölen. Tvättbjörnen tittar ner i den, **pausen:** kurr och nick, sedan tittar den mot havet', ljudtext: 'nyfiken', ansikte: 'nyfiken' },
+
+  { id: '9', d: 1.0 + L(17) + 0.8, plats: 'Vid vågen, halvbild', malin: [[17, 1.0]], ljud: [VAG(2, 0.4), ['plask/plask-1', 0.5, 0.5]],
+    bild: 'En liten våg glider upp. Tassarna framför magen som en skål, vatten i skålen', ljudtext: '`vagor`, `plask` litet', ansikte: 'ivrig' },
+  { id: '10', d: 0.4 + L(18) + 1.2, plats: 'Klipp: vid gropen, halvbild', malin: [[18, 0.4]], ljud: [['droppar/droppar-1', 0.2], TB('5d', 0.6 + L(18))],
+    bild: 'Tassarna är tomma (tomt på *"rinner"*), ett spår av droppar i sanden bakom. Förvånad', ljudtext: '`droppar`, nyfiken', ansikte: 'förvånad' },
+  { id: '11', d: 1.2 + L(19) + 1.2, plats: 'Vid vågen → klipp till gropen', malin: [[19, 1.2]], ljud: [VAG(3, 0.4), ['plask/plask-2', 0.3, 0.5], ['droppar/droppar-1', 1.2 + RINNER[19]], TB('3b', 1.4 + L(19))],
+    bild: 'Samma två bilder igen, snabbare: vatten i skålen, klipp, tomt igen. Fniss', ljudtext: '`plask`, `droppar`, fniss', ansikte: 'fnissig' },
+  { id: '12', d: 0.6 + L(20) + 1.8, plats: 'Närbild, tvättbjörnen och de tomma tassarna', malin: [[20, 0.6]], ljud: [TB(6, 0.9 + L(20))],
+    bild: 'Tvättbjörnen tittar på sina tomma tassar, öronen faller. **Pausen:** trumpet kurr', ljudtext: 'trumpen', ansikte: 'lite ledsen' },
+  { id: '12b', d: 0.6 + L(21) + 1.0 + L(22) + 1.1, plats: 'Samma', malin: [[21, 0.6], [22, 0.6 + L(21) + 1.0]], ljud: [TB('5', 0.8 + L(21) + 1.0 + L(22), 0.7)],
+    bild: 'Tvättbjörnen tittar upp på oss. Paus 1 s mellan replikerna', ljudtext: 'frågande', ansikte: 'ledsen → nyfiken' },
+  { id: '13', d: 0.8 + L(23) + 3.0, plats: 'Sanden bredvid tvättbjörnen, nära bild', malin: [[23, 0.8]], ljud: [['krita-ritar/krita-ritar-2', 0.9]],
+    bild: 'Kritan flyger in och ritar hinkens kontur i sanden (3 drag), väntar och vajar: gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
+  { id: '13b', d: 0.6 + L(24) + 1.2, plats: 'Samma', malin: [[24, 0.6]], ljud: [['glitter/glitter-2', 0.0], TB('2d', 0.9 + L(24))],
+    bild: 'Den riktiga gula hinken fylls i inifrån. Öronen upp. *Varsågod*', ljudtext: '`glitter`, förtjust', ansikte: 'förvånad → glad' },
+  { id: '13c', d: 0.6 + L(25) + 1.0, plats: 'Närbild', malin: [[25, 0.6]], ljud: [TB('5b', 0.8 + L(25))],
+    bild: 'Tvättbjörnen lutar sig mot hinken, stora glada ögon', ljudtext: 'nyfiken', ansikte: 'kawaii' },
+  { id: '13d', d: 0.4 + L(26) + 1.1, plats: 'Halvbild', malin: [[26, 0.4]], ljud: [TB(2, 0.6 + L(26))],
+    bild: 'Tvättbjörnen nickar glatt mot kritan, som flyger ut uppe till höger', ljudtext: 'förtjust', ansikte: 'jätteglad' },
+  { id: '14', d: 0.3 + L(27) + 1.8 + L(28) + 0.8, plats: 'Halvbild', malin: [[27, 0.3], [28, 0.3 + L(27) + 1.8]], ljud: [TB('7b', 0.6 + L(27))],
+    bild: 'Tvättbjörnen tar hinken i handtaget och tittar mot vågorna. **Pausen:** glatt kurr, nick', ljudtext: 'pratar', ansikte: 'glad' },
+
+  { id: '15a', d: 0.8 + L(29) + 0.8, plats: 'Vid vågen, halvbild', malin: [[29, 0.8]], ljud: [VAG(4, 0.4), ['plask/plask-3', 0.4, 0.5]],
+    bild: 'Hinken doppas, en våg täcker nederkanten (vågen framför hinken), hinken lyfts full', ljudtext: '`vagor`, `plask` litet', ansikte: 'ivrig' },
+  { id: '15b', d: 0.4 + L(30) + 1.0, plats: 'Klipp: vid gropen, närbild', malin: [[30, 0.4]], ljud: [['plask-stor/plask-stor-1', 0.4 + PLASK[30], 0.6], ['glimt/glimt-1', 0.6 + PLASK[30], 0.4]],
+    bild: 'Hinken lutar i bildplanet, vatten rinner ner i gropen, stänk **på "plask"**, pölen växer. **Shorten börjar här**', ljudtext: '`plask` på "plask"', ansikte: 'glad' },
+  { id: '16', d: 0.5 + L(31) + 1.2, plats: 'Närbild pölen → tvättbjörnen', malin: [[31, 0.5]], ljud: [TB('2b', 0.7 + L(31))],
+    bild: 'Den större pölen. Klipp till tvättbjörnen, jätteglad', ljudtext: 'förtjust', ansikte: 'jätteglad' },
+  { id: '17', d: 0.4 + L(32) + 1.0, plats: 'Vid vågen → klipp till gropen', malin: [[32, 0.4]], ljud: [VAG(1, 0.4), ['plask/plask-4', 0.3, 0.5], ['plask-stor/plask-stor-2', 0.4 + PLASK[32], 0.6]],
+    bild: 'Fyller vid vågen på *"En gång till"*, klipp på *"Vatten i hinken"*, häller i gropen på *"plask"*', ljudtext: '`vagor`, `plask`', ansikte: 'glad' },
+  { id: '18', d: 0.6 + L(33) + 1.0, plats: 'Vid vågen, halvbild', malin: [[33, 0.6]], ljud: [VAG(2, 0.35), ['plask/plask-1', 0.3, 0.4], ['droppar/droppar-1', 0.6 + GNUGG[33][0]], TB(4, 0.8 + L(33))],
+    bild: 'Hinken på sanden bakom tvättbjörnen, nära vattnet. Spaden doppas i vågen och lyfts ren, droppar', ljudtext: '`plask` litet, `droppar`, mysig suck', ansikte: 'blundar, ler' },
+  { id: '19', d: 2.5, plats: 'Samma', ljud: [VAG(3, 0.5)],
+    bild: 'Tvättbjörnen tittar på spaden. Bakom den glider en våg upp runt hinken, och hinken flyter lugnt ut. Barnet ser det', ljudtext: '`vagor`', ansikte: 'nöjd, tittar på spaden' },
+  { id: '19b', d: 0.4 + L(34) + 1.3, plats: 'Halvbild', malin: [[34, 0.4]], ljud: [TB('5c', 0.6 + L(34))],
+    bild: 'Tvättbjörnen vänder blicken mot platsen där hinken stod, tittar åt vänster och åt höger', ljudtext: 'frågande', ansikte: 'nyfiken' },
+  { id: '20a', d: 2.0, plats: 'Bred bild med havet', malin: [[35, 0.3]], ljud: [VAG(4, 0.3)],
+    bild: '*Kan du hjälpa tvättbjörnen?* Hinken guppar en bit ut. Klipp efter 2 s', ljudtext: '`vagor`', ansikte: 'nyfiken' },
+  { id: '20b', d: 0.3 + L(35) - 2.0 + 4.6, plats: 'Närbild hinken i vågorna (klipp)', ljud: [['glimt/glimt-2', 0.3 + L(35) - 2.0 + 3.0, 0.35]],
+    bild: 'Hinken guppar. Paus 5 s; efter ca 3 s skimrar den svagt', ljudtext: 'tyst, `glimt-2` svagt', ansikte: '–' },
+  { id: '21', d: 0.4 + L(36) + 1.2, plats: 'Samma → tvättbjörnen', malin: [[36, 0.4]], ljud: [['glimt/glimt-1', 0.2, 0.6], ['hopp-mjuk/hopp-mjuk-1', 0.5 + L(36), 0.3], TB('2c', 0.7 + L(36))],
+    bild: 'Hinken skimrar tydligt. Klipp till tvättbjörnen: glatt lugnt skutt', ljudtext: '`glimt`, förtjust', ansikte: 'jätteglad' },
+  { id: '22', d: 0.6 + L(37) + 1.2, plats: 'Vid vågen, halvbild', malin: [[37, 0.6]], ljud: [VAG(1, 0.45), ['swoosh/swoosh-2', 0.3, 0.35], TB('7c', 0.8 + L(37))],
+    bild: 'En våg bär hinken lugnt tillbaka och lägger den vid tassarna. Tvättbjörnen tar den', ljudtext: '`vagor`, pratar', ansikte: 'glad' },
+  { id: '23', d: 0.4 + L(38) + 1.2, plats: 'Vid vågen → klipp till gropen', malin: [[38, 0.4]], ljud: [['plask/plask-2', 0.1, 0.5], ['plask-stor/plask-stor-3', 0.4 + PLASK[38], 0.6]],
+    bild: 'Fyller, klipp, häller: vattnet stiger till kanten. **Shorten slutar här**', ljudtext: '`plask`', ansikte: 'glad' },
+  { id: '24', d: 0.6 + L(39) + 1.8, plats: 'Helbild', malin: [[39, 0.6]], ljud: [['glimt/glimt-1', 0.3, 0.4], ['glimt/glimt-2', 0.9, 0.4], ['glimt/glimt-1', 1.5, 0.4], TB('4b', 0.9 + L(39))],
+    bild: 'Gropen är en liten rund sjö, den glittrar på tre ställen. **Pausen:** stolt kurr', ljudtext: '`glimt` ×3, mysig suck', ansikte: 'stolt' },
+  { id: '24b', d: 0.6 + L(40) + 0.8, plats: 'Närbild ansiktet', malin: [[40, 0.6]], ljud: [['svansvift/svansvift-2', 0.2, 0.4]],
+    bild: 'Svansen vippar', ljudtext: '–', ansikte: 'jätteglad' },
+  { id: '25', d: 0.6 + L(41) + 1.2, plats: 'Halvbild sjön', malin: [[41, 0.6]], ljud: [['plask/plask-3', 0.6 + PLASK[41][0]], ['plask/plask-4', 0.6 + PLASK[41][1]], TB('3c', 0.8 + L(41))],
+    bild: 'Tvättbjörnen kliver ner i sjön (vattnet framför benen), två stänk vid fötterna på *"Plask, plask"*', ljudtext: '`plask` ×2, fniss', ansikte: 'fnissig' },
+  { id: '26', d: 0.3 + L(42) + 1.6, plats: 'Närbild', malin: [[42, 0.3]], ljud: [TB('2d', 0.8 + L(42))],
+    bild: 'Tvättbjörnen tittar på oss. **Pausen:** glatt kurr och en nick', ljudtext: 'förtjust', ansikte: 'glad' },
+  { id: '26b', d: 0.6 + L(43) + 0.9, plats: 'Samma', malin: [[43, 0.6]], ljud: [TB('4c', 0.7 + L(43))],
+    bild: 'Tvättbjörnen myser', ljudtext: 'mysig suck', ansikte: 'blundar, ler' },
+  { id: '27', d: 0.7 + L(44) + 1.3, plats: 'Halvbild', malin: [[44, 0.7]], ljud: [TB(8, 0.9 + L(44))],
+    bild: 'Tvättbjörnen i sjön vinkar (armen bakom kroppen, snett ut förbi kanten), hinken och spaden på sanden. **Hej då med vinkning**', ljudtext: 'hej då', ansikte: 'jätteglad' },
+  { id: '28', d: 0.6 + L(45) + 1.4, plats: 'Samma', malin: [[45, 0.6]], ljud: [TB('8b', 0.8 + L(45))],
+    bild: 'Tvättbjörnen vinkar klart, armen sjunker', ljudtext: 'hej då', ansikte: 'glad' },
+  { id: '29', d: 2.5, plats: 'Stranden → kritirisen', bild: 'Kritirisen drar ihop sig runt tvättbjörnen i sjön', ljudtext: '–', ansikte: 'glad' },
+];
+
+// Malin efter handlingen: rörelsen först, repliken 0,4–0,8 s in eller när det landar; frågor före.
+// 0,15 s extra luft på varje rad med en replik (som 057), inte i ritintrot och inte före klippet i 20a.
+export const GLES = 0.15;
+for (const r of RADER) if (r.malin && !['01a', '01b', '20a'].includes(r.id)) r.d += GLES;

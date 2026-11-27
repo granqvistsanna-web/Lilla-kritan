@@ -1,0 +1,1 @@
+23-kaninen-bygger-torn.mp4: -25.46 LUFS, topp -9.23 dBTP  ->  -16.13 LUFS, topp -2.82 dBTP

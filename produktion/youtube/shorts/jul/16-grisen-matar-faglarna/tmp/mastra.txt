@@ -1,0 +1,1 @@
+16-grisen-matar-faglarna.mp4: -26.62 LUFS, topp -11.07 dBTP  ->  -16.18 LUFS, topp -2.55 dBTP

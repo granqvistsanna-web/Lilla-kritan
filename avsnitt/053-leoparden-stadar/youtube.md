@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 053 Leoparden städar
 
-Kanal: **lilla kritan**. Fil: `film/avsnitt-053.mp4` (3:38, slutrenderingen 27 nov i molnet, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i trekantens lila, "4 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+**Offentlig sedan 2026-11-27:** https://youtu.be/QXmL56ugviU. Kanal: **lilla kritan**. Fil: `film/avsnitt-053.mp4` (3:38, slutrenderingen 27 nov i molnet, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i trekantens lila, "4 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 En bilderbok utan sång, som 020 Grisen badar: Malin berättar och leoparden svarar med ljud. Titel och beskrivning kallar det därför aldrig en sång.
 

@@ -15,3 +15,7 @@ Används i: 039 Kaninen ska åka pulka.
 ```prompt
 Images 1 and 2 are STYLE references only: copy their drawing technique exactly (clean, smooth, even colour fill with only a very subtle fine crayon grain, soft premium toddler picture-book look, no dark outline, clean white sticker border), not their subjects. Image 3 shows the round egg-shaped head of the bunny who will wear it. Draw ONE knitted winter headband (ear warmer band) for that bunny, seen exactly straight from the front as it looks when worn: one thick, soft, chunky knitted band shaped as a wide smooth arch, like an upside-down U that would hug the top of a round head, with both ends cut straight and level at the bottom. Warm Christmas green (#2F7D46) with short, gentle vertical knit rib lines across the band in a slightly darker green, and one thin cream-white (#FFF4E2) stripe running along the middle of the band. The band is the same thickness all the way round, about one sixth as thick as the arch is wide. No pompom, no bow, no flower, no ears, no head, no face, no pattern, no text, no shading, no 3D, no shine, no outline. A thick, clean, even white sticker border all around the whole band. Centered with space around, plain pure solid white background, no shadow, no ground, no text.
 ```
+
+**Kontur för kritan (064, 2026-11-27):** `cut/pannband-kontur.json` (`kontur.py --krymp 9 --mitt`, mitt flyttad till bågens topp 447, 95), detaljstreck: den ljusa randen och fem ribbor. Används i 064 Vintern i boken.
+
+**Vald (Sanna 2026-11-27, 064):** tagning 1 (*"Ja, tagning 1"*).

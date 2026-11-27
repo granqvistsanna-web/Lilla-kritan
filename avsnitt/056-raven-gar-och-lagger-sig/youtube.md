@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 056 Räven går och lägger sig
 
-Kanal: **lilla kritan**. Fil: `film/avsnitt-056.mp4` (3:22, slutrenderingen 27 nov, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i nattlampans gula, "3 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+**Offentlig sedan 2026-11-27:** https://youtu.be/L_FBP0kAXxw. Kanal: **lilla kritan**. Fil: `film/avsnitt-056.mp4` (3:22, slutrenderingen 27 nov, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i nattlampans gula, "3 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 En bilderbok utan sång, som 020 Grisen badar: Malin berättar och räven svarar med ljud. Titel och beskrivning kallar det därför aldrig en sång.
 

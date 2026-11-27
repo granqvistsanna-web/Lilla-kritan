@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Tvättbjörnen bygger i sanden scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 061 Tvättbjörnen bygger i sanden (manus version 2): kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som
+     i rader.mjs). Serveras från repots rot (bygg.mjs). Gjord ur 050:s scen.html: stranden-v2, tvättbjörnen Tilda (v2-rigg).
+     Hinken och spaden är urklipp; gropen, vattnet, vågorna, dropparna och stänken är kod. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak"></g>
+    <g id="golv" filter="url(#boil)"></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', R = A + 'rekvisita/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => v.toFixed(1);
+
+// --- Filer -----------------------------------------------------------------------------------------------------------------
+const STRAND = A + 'bakgrunder/stranden/stranden-v2.png';
+const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+// Sakerna: [fil, bildens storlek, alfarutan x0 y0 x1 y1] (godkända på grind 2 2026-11-27)
+const SAK = {
+  hink:  [R + 'hink-gul/cut/hink-gul-tunn.png', [1458, 1817], [29, 30, 1429, 1789]],
+  spade: [R + 'spade-rod/cut/spade-rod-tunn.png', [1024, 1024], [275, 41, 750, 981]],
+};
+
+// --- Mått i scenen (1920 × 1080) -----------------------------------------------------------------------------------------
+// Plattan: himmel, havet ner till strandkanten ca y 790–805, sanden nedanför.
+const DS = 0.62;                                   // tvättbjörnens skala (kroppen ca 430 px hög, format/bildutsnitt.md)
+const MARK = 935;                                  // fötterna i sanden
+const KANT = 800;                                  // strandkanten (där vågen börjar)
+const GROP = [360, MARK + 40];                     // gropen, framför och till vänster
+const STA = [820, MARK];                           // tvättbjörnen vid gropen
+const VID = [1380, MARK];                          // tvättbjörnen vid vågen
+const SPADE_STAR = [600, MARK + 6, 200];           // spaden i sanden, mellan gropen och tvättbjörnen
+const SPADE_SLUT = [1250, MARK + 6, 200];          // spaden i slutet, bredvid hinken (inte i sjön)
+const HINK_BAK = [1180, MARK + 4, 150];            // hinken bakom tvättbjörnen vid vattnet (rad 18)
+const HINK_UTE = [1050, 700, 92];                  // hinken som guppar i vågorna
+
+let L, G;
+const iFig = ([x, fot], [px, py], s = DS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+const HAND = pos => iFig(pos, [845, 668]);         // högra tassens spets (bildens höger)
+const SKAL = pos => iFig(pos, [512, 690]);
+const VHAND = pos => iFig(pos, [179, 668]);        // vänstra tassens spets (bildens vänster, mot gropen)         // mellan tassarna framför magen
+
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));
+}
+const HEL = () => kamera(1);
+const HALV = (pos, dx = 0) => kamera(1.6, pos[0] + dx, MARK - 190);
+const NARA = (pos, dy = 0) => kamera(2.4, pos[0], pos[1] - 270 + dy);
+
+// --- Saker ----------------------------------------------------------------------------------------------------------------
+const sak = (namn, x, fot, hojd, { lager = 'saker', rot = 0, o = 1, klipp = '' } = {}) => {
+  const [f, [w, h], [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0);
+  lagg(lager, `<image href="${f}" width="${w}" height="${h}" opacity="${o}" ${klipp} transform="translate(${f1(x)} ${f1(fot)}) rotate(${rot}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`);
+};
+const bredd = (namn, hojd) => { const [, , [x0, y0, x1, y1]] = SAK[namn]; return hojd * (x1 - x0) / (y1 - y0); };
+const skugga = (x, fot, rx, lager = 'bak') => lagg(lager, `<ellipse cx="${x}" cy="${fot - 2}" rx="${rx}" ry="${rx * 0.12}" fill="#6b5a40" opacity="0.12"/>`);
+const stalla = (namn, [x, fot, h], lager = 'saker') => { skugga(x, fot, bredd(namn, h) * 0.42); sak(namn, x, fot, h, { lager }); };
+
+// gropen: en mörkare oval med en kant av uppkastad sand; k = hur stor (0–1), v = vatten (0–1), sjo = full till kanten
+function grop([x, y] = GROP, k = 1, v = 0, { glim = false } = {}) {
+  if (k <= 0) return;
+  const rx = 170 * k, ry = 40 * k;
+  lagg('golv', `<ellipse cx="${x}" cy="${y}" rx="${f1(rx + 26)}" ry="${f1(ry + 12)}" fill="#ddd0bd" stroke="#cbb99f" stroke-width="4"/>
+    <ellipse cx="${x}" cy="${y + 4}" rx="${f1(rx)}" ry="${f1(ry)}" fill="#b9a487"/>`);
+  if (v > 0) lagg('golv', `<ellipse cx="${x}" cy="${f1(y + 4 + ry * (1 - v) * 0.4)}" rx="${f1(rx * (0.45 + 0.55 * v))}" ry="${f1(ry * (0.45 + 0.55 * v))}" fill="#5fb0e8" stroke="#8fcaf0" stroke-width="3"/>
+    <path d="M${f1(x - rx * 0.4 * v)} ${y - 2} q${f1(rx * 0.2)} -6 ${f1(rx * 0.4)} 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>`);
+  if (glim) [[-0.5, -0.1], [0.1, 0.2], [0.55, -0.05]].forEach(([dx, dy]) => skimmer(x + dx * rx, y + dy * ry, 0.5, 22));
+}
+// en liten våg som glider upp på sanden från strandkanten; k = hur långt (0–1)
+function vag(x0, x1, k = 1, lager = 'golv') {
+  const y = KANT + (MARK + 20 - KANT) * k, m = (x0 + x1) / 2;
+  lagg(lager, `<path d="M${x0} ${KANT} C${x0 + 40} ${f1(y)} ${m - 120} ${f1(y + 14)} ${m} ${f1(y + 12)} C${m + 120} ${f1(y + 14)} ${x1 - 40} ${f1(y)} ${x1} ${KANT} Z"
+    fill="#9fd3f2" opacity=".85" stroke="#fff" stroke-width="8" stroke-linejoin="round"/>`);
+}
+const droppe = (x, y, s = 1, lager = 'fram') => lagg(lager, `<path transform="translate(${f1(x)} ${f1(y)}) scale(${s})" d="M0 -12 C5 -4 8 0 8 4 A8 8 0 0 1 -8 4 C-8 0 -5 -4 0 -12Z" fill="#5fb0e8" stroke="#fff" stroke-width="2"/>`);
+const droppar = (x, y, n = 3) => { for (let i = 0; i < n; i++) droppe(x + (i - (n - 1) / 2) * 16, y + 20 + i * 18, 0.9); };
+const spar = (x0, x1, y) => lagg('golv', Array.from({ length: 9 }, (_, i) => `<circle cx="${f1(x0 + (x1 - x0) * i / 8)}" cy="${f1(y + (i % 2) * 8)}" r="5" fill="#c7b496"/>`).join(''));
+const stank = (x, y, s = 1) => lagg('fram', [[-30, -26], [-12, -40], [10, -38], [30, -22]].map(([dx, dy]) => droppe(x + dx * s, y + dy * s, 0.7 * s) || '').join(''));
+const skalVatten = pos => { const [x, y] = SKAL(pos); lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(y - 8)}" rx="34" ry="12" fill="#5fb0e8" stroke="#fff" stroke-width="3"/>`); };
+// saker i tasspetsen
+const spadeITass = (pos, rot = 14) => { const [x, y] = HAND(pos); sak('spade', x + 18, y + 110, 200, { rot }); };
+const hinkITass = (pos, rot = 0, full = false) => { const [x, y] = HAND(pos); sak('hink', x + 30, y + 120, 130, { rot });
+  if (full) lagg('saker', `<ellipse cx="${f1(x + 30)}" cy="${f1(y + 18)}" rx="46" ry="8" fill="#5fb0e8"/>`); };
+// hinken som häller i gropen: lutar i bildplanet, en stråle ner i gropen
+function haller(pos, k = 1) {   // vänstra tassen håller hinken, den lutar åt vänster mot gropen
+  const [x, y] = VHAND(pos), hx = x - 40, hy = y + 30;
+  sak('hink', hx, hy + 70, 130, { rot: -70 * k });
+  lagg('fram', `<path d="M${f1(hx - 95)} ${f1(hy + 10)} C${f1(hx - 150)} ${f1(hy + 30)} ${f1(GROP[0] + 90)} ${f1(GROP[1] - 70)} ${f1(GROP[0] + 50)} ${f1(GROP[1])}" fill="none" stroke="#5fb0e8" stroke-width="16" stroke-linecap="round" opacity=".9"/>`);
+}
+
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k, R = 40) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * R, y + dy * R * 0.87, R * 0.39 * s * k, Math.min(1, 0.4 + k))).join('')); }
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s = 6) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const bage = (x0, y0, x1, y1, h, s = 6) => pil(`M${x0} ${y0} Q${(x0 + x1) / 2} ${Math.min(y0, y1) - h} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - (Math.min(y0, y1) - h), x1 - (x0 + x1) / 2), s);
+const text = (t, x = 960, y = 80, s = 30) => lagg('pilar', `<text x="${x}" y="${y}" style="font:700 ${s}px system-ui;fill:#c0392b;stroke:#fff;stroke-width:${s / 6};paint-order:stroke;text-anchor:middle">${t}</text>`);
+const tittVH = (pos, y = 400) => lagg('pilar', rakpil(...iFig(pos, [440, y]), ...iFig(pos, [300, y]), 5) + rakpil(...iFig(pos, [585, y]), ...iFig(pos, [725, y]), 5));
+const nick = pos => { const [x, y] = iFig(pos, [760, 380]); lagg('pilar', rakpil(x, y - 30, x, y + 30, 4) + rakpil(x + 18, y + 30, x + 18, y - 30, 4)); };
+const hopp = (x, y, s = 4) => lagg('pilar', rakpil(x, y, x, y - 40, s));
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${f1(x)} ${f1(y)}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+const klippEtikett = t => text(t, 960, 1040, 26);
+
+// --- Platsen ---------------------------------------------------------------------------------------------------------------
+function strand({ grp = 0, v = 0, glim = false, spade = false, slut = false, hink = null } = {}) {
+  $('platta').innerHTML = `<image href="${STRAND}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  grop(GROP, grp, v, { glim });
+  if (spade || slut) { const S = slut ? SPADE_SLUT : SPADE_STAR; skugga(S[0], S[1], 30); sak('spade', ...S, { rot: 6 }); }
+  if (hink) stalla('hink', hink);
+}
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };
+
+// --- Kritan ritar en sak (kontur ur cut/*-kontur.json: drag[] eller d), returnerar spetsen -----------------------------------
+const KONTUR = {};
+function ritaSak(namn, [x, fot, hojd], k, farg) {
+  const [, , [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0), t = `translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})`;
+  const drag = KONTUR[namn].drag || [KONTUR[namn].d], n = drag.length, kk = k * n;
+  lagg('pilar', `<g transform="${t}">${drag.map((d, i) => `<path ${i === Math.min(n - 1, Math.floor(kk)) ? 'id="ritkontur"' : ''} d="${d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(5 / s)}" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${Math.max(0, Math.min(1, kk - i))} 2"/>`).join('')}</g>`);
+  const p = $('ritkontur'), q = p.getPointAtLength(Math.min(Math.max(kk - Math.min(n - 1, Math.floor(kk)), 0), 0.999) * p.getTotalLength());
+  return [x + (q.x - (x0 + x1) / 2) * s, fot + (q.y - y1) * s];
+}
+function papperSpade(k, fyll) {
+  papper(); kamera(1);
+  const P = [960, 960, 820], [, , [x0, y0, x1, y1]] = SAK.spade, s = P[2] / (y1 - y0);
+  if (fyll > 0) { $('fyllcirkel').setAttribute('cx', 512); $('fyllcirkel').setAttribute('cy', 520); $('fyllcirkel').setAttribute('r', 640 * fyll);
+    lagg('saker', `<image href="${SAK.spade[0]}" width="1024" height="1024" clip-path="url(#fyllklipp)" transform="translate(${P[0]} ${P[1]}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`); }
+  const spets = ritaSak('spade', P, k, '#c0392b');
+  if (k < 1) krita(...spets, 125, 0.45); else if (fyll < 1) krita(P[0] + 300, P[1] - 600, 140, 0.45);
+}
+
+// --- Tvättbjörnen ----------------------------------------------------------------------------------------------------------
+const ANS = n => L.blanda('neutral', n, 1);
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+const VINKA = { armar: [0, 150] };
+const TRYCK = { luta: 8, sank: 30, armar: [0, 40] };          // rak tass ner (gräva, doppa)
+const SKALP = { armar: [-72, -72], fram: [1, 1], klapp: 60 }; // tassarna framför magen (skål, gnugga)
+function tb([x, fot], f, p, { s = DS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+}
+// i sjön: vattenytan ritas framför benen
+const iSjon = pos => { const [x] = pos; lagg('fram', `<ellipse cx="${x}" cy="${GROP[1] - 2}" rx="230" ry="62" fill="#5fb0e8" stroke="#8fcaf0" stroke-width="4" opacity=".96"/>
+  <path d="M${x - 90} ${GROP[1] - 20} q40 -8 80 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>`); };
+
+// --- Kritirisen ------------------------------------------------------------------------------------------------------------
+function iris(cx, cy, r) {
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+    return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+  lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`);
+}
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const HINKPOS = [STA[0] + 300, MARK + 4, 130];    // hinken som kritan ritar, bredvid tvättbjörnen vid gropen
+const SJOPOS = [GROP[0] + 30, GROP[1] - 20];      // tvättbjörnen står i sjön
+const RAD = {
+  '01a': () => papperSpade(0.55, 0),
+  '01b': () => papperSpade(1, 0),
+  '01c': () => { papperSpade(1, 1); lagg('pilar', `<rect x="660" y="110" width="600" height="870" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { strand({ spade: true }); HEL(); tb(STA, F('jatteglad'), P({ ...VINKA })); lagg('pilar', rakpil(80, 880, STA[0] - 220, 880, 8)); },
+  '1b': () => { strand({ spade: true }); HALV(STA); tb(STA, F('jatteglad'), P({ oron: [-8, -8], svans: 20 })); lagg('pilar', rakpil(...iFig(STA, [700, 300]), ...iFig(STA, [900, 200]), 5)); text('tittar ut över havet, sedan på oss', STA[0], MARK - 460, 18); },
+  '2': () => { strand({ spade: true }); kamera(2.4, SPADE_STAR[0], MARK - 120); skimmer(SPADE_STAR[0], MARK - 200, 0.7, 40); klippEtikett('klipp → tvättbjörnen ser spaden, öronen upp'); },
+  '3': () => { strand({ spade: true }); HALV(STA, -60); tb(STA, F('nyfiken', { titt: [-14, 8] }), P({ rikt: -0.3 })); nick(STA); },
+  '3b': () => { strand(); NARA(STA); tb(STA, F('jatteglad'), P({})); spadeITass(STA); lagg('pilar', bage(SPADE_STAR[0], MARK - 60, ...HAND(STA), 60, 4)); },
+  '4': () => { strand({ grp: 0.6 }); kamera(1.6, (GROP[0] + STA[0]) / 2 + 40, MARK - 170); tb(STA, F('ivrig', { titt: [-14, 12] }), P({ ...TRYCK, rikt: -0.3 })); spadeITass(STA, 30);
+    lagg('pilar', bage(GROP[0] + 40, GROP[1] - 30, GROP[0] - 160, GROP[1] - 40, 80, 4)); text('gräver: tre sandpuffar, gropen växer', GROP[0] + 120, MARK - 300, 16); },
+  '5': () => { strand({ grp: 1, v: 0.45 }); kamera(2.4, GROP[0] + 60, GROP[1] - 120); text('vattnet stiger (klart på "vatten")', GROP[0], GROP[1] - 150, 14); klippEtikett('klipp → tvättbjörnen förvånad, 0,3 s still'); },
+  '6': () => { strand({ grp: 1, v: 0.5, glim: true }); kamera(1.9, (GROP[0] + STA[0]) / 2, MARK - 160); tb(STA, F('jatteglad', { titt: [-14, 12] }), P({ rikt: -0.3, oron: [-8, -8] })); },
+  '7': () => { strand({ grp: 1, v: 0.5, spade: true }); HALV([620, MARK]); tb(STA, F('fnissig'), P({ ...SKALP, luta: -6 })); droppar(...SKAL(STA)); text('Gnugg, gnugg!', STA[0], MARK - 480, 22); },
+  '7b': () => { strand({ grp: 1, v: 0.5, spade: true }); NARA(STA); tb(STA, F('stolt'), P({ svans: 25 })); },
+  '8': () => { strand({ grp: 1, v: 0.5, spade: true }); kamera(1.6, 980, MARK - 220); tb(STA, F('nyfiken', { titt: [14, -10] }), P({ rikt: 0.4 })); lagg('pilar', rakpil(STA[0] + 200, MARK - 300, 1500, KANT - 30, 5)); text('tittar ner i pölen, sedan mot havet', 1100, MARK - 440, 18); },
+
+  '9': () => { strand({ grp: 1, v: 0.5, spade: true }); vag(1150, 1720, 0.85); HALV(VID); tb(VID, F('ivrig', { titt: [0, 12] }), P({ ...SKALP })); skalVatten(VID); },
+  '10': () => { strand({ grp: 1, v: 0.5, spade: true }); spar(STA[0] + 120, 1300, MARK + 10); HALV(STA, 60); tb(STA, F('forvanad', { titt: [0, 12] }), P({ ...SKALP })); droppar(...SKAL(STA), 2);
+    lagg('pilar', rakpil(1300, MARK - 120, STA[0] + 200, MARK - 120, 6)); text('tomt på "rinner"', STA[0], MARK - 470, 20); },
+  '11': () => { strand({ grp: 1, v: 0.5, spade: true }); vag(1150, 1720, 0.85); HALV(VID); tb(VID, F('fnissig'), P({ ...SKALP })); skalVatten(VID); text('samma två bilder igen, snabbare', VID[0], MARK - 470, 20); },
+  '12': () => { strand({ grp: 1, v: 0.5, spade: true }); NARA(STA); tb(STA, F('ledsen', { titt: [0, 14] }), P({ ...SKALP, oron: [28, 28] })); },
+  '12b': () => { strand({ grp: 1, v: 0.5, spade: true }); NARA(STA); tb(STA, F('nyfiken'), P({})); },
+  '13': () => { strand({ grp: 1, v: 0.5, spade: true }); kamera(1.9, STA[0] + 100, MARK - 170); tb(STA, F('nyfiken', { titt: [14, 10] }), P({ rikt: 0.4 }));
+    krita(...ritaSak('hink', HINKPOS, 0.6, '#c0392b'), 125, 0.25); text('gisspaus 3 s', HINKPOS[0], HINKPOS[1] - 170, 16); },
+  '13b': () => { strand({ grp: 1, v: 0.5, spade: true, hink: HINKPOS }); kamera(1.9, STA[0] + 100, MARK - 170); tb(STA, F('forvanad', { titt: [14, 10] }), P({ rikt: 0.4 })); skimmer(HINKPOS[0], HINKPOS[1] - 80, 0.6, 40); },
+  '13c': () => { strand({ grp: 1, v: 0.5, spade: true, hink: HINKPOS }); kamera(2.3, STA[0] + 90, MARK - 200); tb(STA, F('kawaii', { titt: [14, 8] }), P({ luta: 8, rikt: 0.4 })); },
+  '13d': () => { strand({ grp: 1, v: 0.5, spade: true, hink: HINKPOS }); HALV(STA, 60); tb(STA, F('jatteglad', { titt: [14, -14] }), P({ rikt: 0.3 })); nick(STA); krita(1150, 520, 140, 0.33); lagg('pilar', rakpil(1150, 520, 1300, 400, 5)); },
+  '14': () => { strand({ grp: 1, v: 0.5, spade: true }); HALV(STA, 60); tb(STA, F('glad', { titt: [14, -6] }), P({ rikt: 0.4 })); hinkITass(STA); lagg('pilar', rakpil(STA[0] + 260, MARK - 260, 1500, KANT - 20, 5)); },
+
+  '15a': () => { strand({ grp: 1, v: 0.5, spade: true }); HALV(VID); tb(VID, F('ivrig', { titt: [10, 14] }), P({ ...TRYCK })); hinkITass(VID, 0, true); vag(1250, 1800, 0.95, 'fram'); text('vågen framför hinkens nederkant', VID[0], MARK - 470, 18); },
+  '15b': () => { strand({ grp: 1, v: 0.65, spade: true }); kamera(2.0, (GROP[0] + STA[0]) / 2, MARK - 150); tb(STA, F('glad', { titt: [-14, 14] }), P({ rikt: -0.3, armar: [0, 30] })); haller(STA); stank(GROP[0] + 40, GROP[1] - 10, 1.2); text('plask!', GROP[0], GROP[1] - 130, 22); },
+  '16': () => { strand({ grp: 1, v: 0.7, glim: true, spade: true }); kamera(2.4, GROP[0] + 60, GROP[1] - 120); klippEtikett('klipp → tvättbjörnen jätteglad'); },
+  '17': () => { strand({ grp: 1, v: 0.8, spade: true }); HALV(VID); tb(VID, F('glad', { titt: [10, 14] }), P({ ...TRYCK })); hinkITass(VID, 0, true); vag(1250, 1800, 0.95, 'fram'); text('fyll, klipp, häll i gropen', VID[0], MARK - 470, 20); },
+  '18': () => { strand({ grp: 1, v: 0.85, hink: HINK_BAK }); vag(1250, 1800, 0.9); HALV(VID, -40); tb(VID, F('blinkar'), P({ ...TRYCK })); spadeITass(VID, 30); droppar(...HAND(VID).map((v, i) => v + [30, 110][i]), 3); },
+  '19': () => { strand({ grp: 1, v: 0.85 }); vag(1000, 1700, 0.9); HALV(VID, -100); tb(VID, F('glad', { titt: [10, 14] }), P({})); spadeITass(VID);
+    sak('hink', HINK_BAK[0] - 30, KANT + 40, 120, { rot: -8 }); lagg('pilar', bage(HINK_BAK[0], HINK_BAK[1] - 80, HINK_UTE[0] + 60, HINK_UTE[1] + 60, 30, 5)); text('vågen tar hinken (barnet ser det)', 1150, MARK - 470, 18); },
+  '19b': () => { strand({ grp: 1, v: 0.85 }); HALV(VID, -40); tb(VID, F('nyfiken'), P({})); spadeITass(VID); tittVH(VID); },
+  '20a': () => { strand({ grp: 1, v: 0.85 }); HEL(); tb(VID, F('nyfiken'), P({})); spadeITass(VID); sak('hink', HINK_UTE[0], HINK_UTE[1], HINK_UTE[2], { rot: 6 }); text('Kan du hjälpa tvättbjörnen? (klipp efter 2 s)', 960, 120, 26); },
+  '20b': () => { strand({ grp: 1, v: 0.85 }); kamera(3.0, HINK_UTE[0], HINK_UTE[1] - 40); sak('hink', HINK_UTE[0], HINK_UTE[1], HINK_UTE[2], { rot: 6 }); skimmer(HINK_UTE[0], HINK_UTE[1] - 50, 0.3, 30); text('paus 5 s, skimmer efter 3 s', HINK_UTE[0], HINK_UTE[1] - 140, 10); },
+  '21': () => { strand({ grp: 1, v: 0.85 }); kamera(2.2, HINK_UTE[0] + 180, HINK_UTE[1] + 40); sak('hink', HINK_UTE[0], HINK_UTE[1], HINK_UTE[2], { rot: -4 }); skimmer(HINK_UTE[0], HINK_UTE[1] - 50, 0.9, 40); klippEtikett('klipp → tvättbjörnen: glatt lugnt skutt'); },
+  '22': () => { strand({ grp: 1, v: 0.85 }); vag(1100, 1750, 0.95); HALV(VID, -60); tb(VID, F('glad', { titt: [-10, 14] }), P({})); spadeITass(VID); sak('hink', VID[0] - 170, MARK + 8, 130, { rot: 4 });
+    lagg('pilar', bage(HINK_UTE[0] + 60, KANT, VID[0] - 170, MARK - 90, 40, 5)); },
+  '23': () => { strand({ grp: 1, v: 1, spade: true }); kamera(2.0, (GROP[0] + STA[0]) / 2, MARK - 150); tb(STA, F('glad', { titt: [-14, 14] }), P({ rikt: -0.3, armar: [0, 30] })); haller(STA); stank(GROP[0] + 40, GROP[1] - 10, 1.2); text('vattnet till kanten', GROP[0], GROP[1] - 130, 18); },
+  '24': () => { strand({ grp: 1.15, v: 1, glim: true, slut: true }); stalla('hink', [SPADE_SLUT[0] - 140, MARK + 4, 130]); HEL(); tb(STA, F('stolt'), P({ svans: 20 })); },
+  '24b': () => { strand({ grp: 1.15, v: 1, slut: true }); NARA(STA); tb(STA, F('jatteglad'), P({ svans: 30 })); },
+  '25': () => { strand({ grp: 1.15, v: 1, slut: true }); stalla('hink', [SPADE_SLUT[0] - 140, MARK + 4, 130]); HALV(SJOPOS, 80); tb(SJOPOS, F('fnissig'), P({})); iSjon(SJOPOS); stank(SJOPOS[0] - 60, GROP[1] - 40, 1); stank(SJOPOS[0] + 70, GROP[1] - 40, 1); },
+  '26': () => { strand({ grp: 1.15, v: 1, slut: true }); NARA(SJOPOS); tb(SJOPOS, F('glad'), P({})); iSjon(SJOPOS); nick(SJOPOS); },
+  '26b': () => { strand({ grp: 1.15, v: 1, slut: true }); NARA(SJOPOS); tb(SJOPOS, F('fnissig'), P({ luta: 4 })); iSjon(SJOPOS); },
+  '27': () => { strand({ grp: 1.15, v: 1, slut: true }); stalla('hink', [SPADE_SLUT[0] - 140, MARK + 4, 130]); HALV(SJOPOS, 80); tb(SJOPOS, F('jatteglad'), P({ ...VINKA })); iSjon(SJOPOS); },
+  '28': () => { strand({ grp: 1.15, v: 1, slut: true }); stalla('hink', [SPADE_SLUT[0] - 140, MARK + 4, 130]); HALV(SJOPOS, 80); tb(SJOPOS, F('glad'), P({ armar: [0, 120] })); iSjon(SJOPOS); },
+  '29': () => { strand({ grp: 1.15, v: 1, slut: true }); stalla('hink', [SPADE_SLUT[0] - 140, MARK + 4, 130]); HEL(); tb(SJOPOS, F('glad'), P({})); iSjon(SJOPOS); iris(SJOPOS[0] + 80, MARK - 200, 400); },
+};
+
+window.rad = id => {
+  ['bak', 'golv', 'saker', 'fram', 'pilar', 'ram', 'platta'].forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G); kamera(1);
+  if (id === '00') { papper(); text('Djuren hittar på! (seriens intro, 3,3 s)', 960, 560, 44); return; }
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('tvattbjornen-tilda');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  for (const [n, f] of [['spade', 'spade-rod/cut/spade-rod-kontur.json'], ['hink', 'hink-gul/cut/hink-gul-kontur.json']])
+    KONTUR[n] = await (await fetch(R + f)).json();
+  window.kant?.lagg(G); window.kant?.lagg($('saker'), { andel: 0.01 });
+  await Promise.all([STRAND, KRITA, ...Object.values(SAK).map(s => s[0])]
+    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>

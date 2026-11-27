@@ -65,6 +65,12 @@ const SOL_C = (() => { const c = duk(SOL_I.width, SOL_I.height), x = c.getContex
   return c; })();
 const SOL = tex(trim(SOL_C)), GLASS = tex(trim(GLASS_I)), SOL_URL = SOL_C.toDataURL();
 const KONTUR = Object.fromEntries(await Promise.all(['sol-gul', 'glass-rosa'].map(async s => { const j = await (await fetch(`${RQ}${s}/cut/${s}-kontur.json`)).json(); return [s, [j.d, ...(j.detaljer || [])]]; })));
+// runda 5 (Sanna 27/11 "better sun drawing so it matches movement of kritan"): strålarna ritas som bildens tjocka, rundade strålar
+// (mätta i sol-gul.png: 12 st, r 268–414 från mitten 434/435, ca 80 px breda), ut längs ena sidan, runt toppen och in längs den andra,
+// medurs från toppen, så att kritan går runt solen i en jämn rörelse och teckningen blir bilden
+KONTUR['sol-gul'] = [KONTUR['sol-gul'][0], ...Array.from({ length: 12 }, (_, i) => { const a = i * Math.PI / 6, u = [Math.sin(a), -Math.cos(a)], v = [Math.cos(a), Math.sin(a)];
+  const P = (r, w) => `${(434 + r * u[0] + w * v[0]).toFixed(1)} ${(435 + r * u[1] + w * v[1]).toFixed(1)}`;
+  return `M${P(276, -14)} L${P(310, -26)} L${P(372, -26)} A26 26 0 0 1 ${P(372, 26)} L${P(310, 26)} L${P(276, 14)}`; })];
 // den tomma struten: glassen utan kulan (kulan slutar ca y 200 i bilden)
 const KON_C = duk(GLASS_I.width, GLASS_I.height); { const x = KON_C.getContext('2d'); x.drawImage(GLASS_I, 0, 0); x.clearRect(0, 0, KON_C.width, 196); }
 const KON = tex(trim(KON_C));
@@ -127,8 +133,8 @@ const SKOG = [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0
 // Blommorna bakom busken (Sanna 27/11: "dont hide flowers as much"): högre och bredare än i storyboarden, ungefär halva blomhuvudena syns
 // Runda 3 (Sanna 27/11 "place flowers more clearly"): ännu högre och lite åt sidan, så att blomhuvudena syns tydligt över busken
 const BLOMMOR_BAK = kort(BLOMMOR, 0.52, 1.07, -0.22, { flik: false }); BLOMMOR_BAK.m.scale.x = 0.85; BLOMMOR_BAK.m.visible = !BLOM;
-// enskilda blommor: röd, gul, lila, rosa i en sned rad bakom stranden vid blad 3, så att alla fyra syns, uppe hela tiden, en i taget när färgerna sägs
-const BLOMS_K = BLOM ? [[0, 0.25, 0.64, 0.47], [1, 0.24, 0.9, 0.36], [2, 0.25, 0.8, 0.16], [3, 0.23, 0.94, -0.02]].map(([i, h, x, z]) => kort(BLOMS[i], h, x, z)) : [];
+// enskilda blommor (runda 5, Sanna 27/11 "make flowers smaller": 0,72 av förut): röd, gul, lila, rosa i en sned rad bakom stranden vid blad 3, så att alla fyra syns, uppe hela tiden, en i taget när färgerna sägs
+const BLOMS_K = BLOM ? [[0, 0.18, 0.64, 0.47], [1, 0.17, 0.9, 0.36], [2, 0.18, 0.8, 0.16], [3, 0.165, 0.94, -0.02]].map(([i, h, x, z]) => kort(BLOMS[i], h, x, z)) : [];
 const BUSKAR = [kort(BUSKE, 0.3, -0.12, -0.3), kort(BUSKE, 0.26, 1.02, -0.14)];
 {
   const Wc = 2048, D = 1440, c = duk(Wc, D), x = c.getContext('2d'), form = (p, r) => { x.beginPath(); x.roundRect(p, p, Wc - 2 * p, D - 2 * p, r); };
@@ -141,7 +147,8 @@ platt(DAMM, 1.45, -0.02, 0.06, 0.7);
 const BLADPOS = { 1: [-0.24, 0.08], 2: [0.45, -0.07], 3: BLOM ? [0.68, -0.2] : [0.79, 0.04], bad: [0.1, 0.0] };   // 3 = stranden vid blommorna, bad = mitt i dammen
 platt(BLAD, 0.3, ...BLADPOS[1], undefined, SIDA + 0.003); platt(BLAD, 0.3, ...BLADPOS[2], undefined, SIDA + 0.003);
 const SMATT = [kort(NACKROS, 0.1, 0.12, 0.3, { y: SIDA + 0.004, flik: false }), kort(VASS, 0.46, -0.84, 0.2, { vaj: 0 }), kort(VASS, 0.34, 0.62, -0.25, { vaj: 2 })];
-const HINKEN = kort(HINK, 0.27, 0.36, 0.62), SLOTTET = kort(SAND, 0.24, 0.1, 0.62), BLOMMOR_UPPE = kort(BLOMMOR, 0.26, 0.98, 0.2);
+// hinken och sandslottet i ett sandhörn till vänster (runda 5, Sanna 27/11 "place hink and sandcastle to the left"), bort från blommorna
+const HINKEN = kort(HINK, 0.27, -0.84, 0.64), SLOTTET = kort(SAND, 0.24, -1.06, 0.54), BLOMMOR_UPPE = kort(BLOMMOR, 0.26, 0.98, 0.2);
 const GLASSKORT = kort(GLASS, 0.24, -0.6, 0.48, { y: SIDA + 0.003 }), KONKORT = kort(KON, 0.1, 0, 0, { flik: false });
 const GLASS_R = ruta(GLASS_I), SOL_R = ruta(SOL_I);
 // sandfläcken under sandslottet (runda 4, Sanna 27/11 "sand patch under the sandslott"): en ojämn kritfläck som växer fram med kortet
@@ -242,12 +249,15 @@ komp.addPass(new RenderPass(scen, cam)); komp.addPass(bokeh); komp.addPass(new O
 // Det kort som reser sig först ligger överst i högen; när boken stängs fälls de ner i omvänd ordning (det främsta först),
 // så att inget kort går genom ett annat. Grodan reser sig sist (rad 05) och fälls därför ner först.
 const OPPNA = S('01b'), STANG = S('26');
-const ORDNING = [...BAK, ...SKOG, ...BUSKAR, ...(BLOM ? BLOMS_K : [BLOMMOR_BAK]), ...SMATT, HINKEN].sort((a, b) => a.z - b.z);
+// runda 5 (Sanna 27/11 "flip up all", "flip up frog too"): allt fälls upp när boken öppnas, också sandslottet och grodan
+const ORDNING = [...BAK, ...SKOG, ...BUSKAR, ...(BLOM ? BLOMS_K : [BLOMMOR_BAK]), ...SMATT, HINKEN, SLOTTET].sort((a, b) => a.z - b.z);
 ORDNING.forEach((k, i, a) => { k.upp = OPPNA + 0.6 + i * 0.8 / (a.length - 1); k.hog = 0.004 + 0.001 * (a.length - i); });
-const NER = [SLOTTET, BLOMMOR_UPPE, ...ORDNING].sort((a, b) => b.z - a.z);
+const NER = [BLOMMOR_UPPE, ...ORDNING].sort((a, b) => b.z - a.z);
 NER.forEach((k, i, a) => k.ner = STANG + 0.3 + i * 0.5 / (a.length - 1));   // snabbare (Sanna 27/11 "faster close book")
-const UPP_SLOTT = SVAR('22', 36) - 0.2 - LN(36) + 1.0, UPP_BLOMMOR = S('19') + 0.1;   // sandslottet på ordet "sandslott", blommorna på "Ja, där"
-SLOTTET.upp = UPP_SLOTT; BLOMMOR_UPPE.upp = UPP_BLOMMOR;
+const UPP_SLOTT = SVAR('22', 36) - 0.2 - LN(36) + 1.0, UPP_BLOMMOR = S('19') + 0.1;   // sandslottet studsar på ordet "sandslott", blommorna på "Ja, där"
+BLOMMOR_UPPE.upp = UPP_BLOMMOR;
+// grodans kort reser sig med de andra, i sin plats i ordningen (bladet z 0,08)
+const GROD_UPP = (ORDNING.find(k => k.z > BLADPOS[1][1]) ?? ORDNING.at(-1)).upp;
 const PARM_NER = [STANG + 1.05, STANG + 1.75];
 
 // ---- kritan ritar ----
@@ -284,7 +294,7 @@ function ritaKritan(t) {
 }
 { const a = S('03'), b = S('04'), c = S('08'), d = S('09');
   teckning('sol-gul', SOL_URL, SOL_R, () => SOLEN,
-    { in: [a + 0.1, a + 0.5], rit: [a + 0.6, a + 3.6], vanta: [a + 3.7, a + 4.5], ut: [b + 0.1, b + 0.9] }, [b, b + 0.8], [330, -170]);
+    { in: [a + 0.1, a + 0.5], rit: [a + 0.6, a + 5.0], vanta: [a + 5.1, a + 5.8], ut: [b + 0.1, b + 0.9] }, [b, b + 0.8], [440, -40]);   // lugnare (strålarna är längre streck), väntar längre från strålarna
   teckning('glass-rosa', RQ + 'glass-rosa/cut/glass-rosa.png', GLASS_R, () => GLASSKORT.m,
     { in: [c + 0.1, c + 0.5], rit: [c + 0.6, c + 2.8], vanta: [c + 2.9, c + 3.6], ut: [d, d + 0.8] }, [d, d + 0.5], [300, -230]); }
 const SOL_KLAR = S('04') + 0.8, GLASS_KLAR = S('09') + 0.5, GLASS_UPP = S('09') + 0.75;   // fyllningens slut
@@ -471,7 +481,7 @@ async function bildruta(t) {
   // pärmen och korten
   const oppen = t < STANG ? k01((t - OPPNA) / 0.9) : 1 - mjuk((t - PARM_NER[0]) / (PARM_NER[1] - PARM_NER[0]));
   satt(PARM0 + (PARM1 - PARM0) * oppen);
-  for (const k of [...ORDNING, SLOTTET, BLOMMOR_UPPE]) {
+  for (const k of [...ORDNING, BLOMMOR_UPPE]) {
     let e = k.upp != null ? reser((t - k.upp) / 0.45) : 0;
     if (k.ner != null) e *= 1 - mjuk((t - k.ner) / 0.35);
     vik(k, e); if (k.flik) k.flik.visible = e > 0.6;   // kontaktskuggan bara när kortet står
@@ -479,7 +489,8 @@ async function bildruta(t) {
   }
   { const e = 1 - SLOTTET.m.rotation.x / (Math.PI / 2); SANDFLACK.visible = e > 0.02; SANDFLACK.scale.setScalar(Math.max(0.02, Math.min(1, e))); }
   // hej då (rad 24b, 24c): blommorna och sandslottet studsar lite på sitt "hej då"
-  { const hs = bump(S('24c') + 0.35, S('24c') + 1.0, t, 0.2); SLOTTET.m.scale.setScalar(1 + 0.1 * hs); SLOTTET.m.position.y += 0.015 * hs; }
+  { const hs = Math.max(bump(S('24c') + 0.35, S('24c') + 1.0, t, 0.2), bump(UPP_SLOTT, UPP_SLOTT + 0.65, t, 0.2));   // och på "sandslott" (rad 22)
+    SLOTTET.m.scale.setScalar(1 + 0.1 * hs); SLOTTET.m.position.y += 0.015 * hs; }
   // hej då, solen (rad 24): solen glimtar
   SOLEN.scale.setScalar(1 + 0.08 * bump(S('24') + 1.55, S('24') + 2.4, t, 0.2));
   BLOMMOR_UPPE.m.visible = t >= S('19') && !BLOM; BLOMMOR_UPPE.flik.visible &&= t >= S('19');
@@ -492,10 +503,10 @@ async function bildruta(t) {
   const sk0 = S('18') + 0.3 + LN(40) + 2.0, skim = t < S('19') ? 0.35 * k01((t - sk0) / 0.6) * (0.6 + 0.4 * Math.sin((t - sk0) * 5)) : bump(S('19') - 0.1, S('19') + 1.2, t, 0.3);
   for (const m of [BLOMMOR_BAK.m.material, BLOMMOR_UPPE.m.material]) m.emissive.setScalar(0.22 * skim);
   if (t < S('19b')) for (const k of BLOMS_K) k.m.material.emissive.setScalar(Math.max(k.m.material.emissive.r, 0.02 * skim));   // studsen satte värdet nyss
-  // grodans kort: upp på rad 05 (pop 0,2 s in), ner först när boken stängs
-  vik(GRODKORT, reser((t - S('05') - 0.05) / 0.45) * (1 - mjuk((t - STANG - 0.25) / 0.35)));
-  // solen: syns när fyllningen är klar, vrider sig sakta
-  SOLEN.visible = t >= SOL_KLAR - 0.05; SOLEN.rotation.z = -0.15 * Math.max(0, t - SOL_KLAR);
+  // grodans kort: upp med de andra när boken öppnas, ner först när boken stängs
+  vik(GRODKORT, reser((t - GROD_UPP) / 0.45) * (1 - mjuk((t - STANG - 0.25) / 0.35)));
+  // solen: syns när fyllningen är klar
+  SOLEN.visible = t >= SOL_KLAR - 0.05; SOLEN.rotation.z = 0.035 * Math.sin((t - SOL_KLAR) * 0.7) * k01((t - SOL_KLAR) / 1.5);   // gungar lugnt ±2° (runda 5, Sanna 27/11 "sun face tilt too much": den snurrade förut hela tiden)
   for (const k of MOLNEN) k.m.position.x = k.x + 0.012 * t * (k.i % 2 ? -1 : 1) * (1 + k.i * 0.3);
   // varmare ljus när solen kommer (rad 04) och ännu varmare när den skiner (rad 06)
   const varm = 0.55 * mjuk((t - SOL_KLAR + 0.3) / 1.2) + 0.45 * mjuk((t - S('06') - 0.2) / 1.5);
@@ -560,7 +571,7 @@ const VY = {
   blommor: () => BLOM ? [v3(0.95, 0.46, 1.12), v3(0.62, 0.16, 0.1), 30] : [v3(0.6, 0.4, 1.05), v3(0.82, 0.19, 0.08), 30],
   'bad-nara': g => BAD === 1 ? [g.clone().add(v3(0.03, 0.3, 0.82)), g.clone().add(v3(0, 0.22, 0)), 28] : [g.clone().add(v3(0.05, 0.36, 1.05)), g.clone().add(v3(0, 0.14, 0)), 30],   // i badet: vågorna nederst i bild
   'blommor-nara': () => BLOM ? [v3(0.92, 0.36, 0.95), v3(0.66, 0.15, 0.2), 30] : [v3(0.64, 0.42, 1.0), v3(0.86, 0.24, 0.1), 28],
-  sand: () => [v3(0.3, 0.58, 1.5), v3(0.36, 0.15, 0.3), 32],   // sandslottet till vänster, grodan på stranden till höger
+  sand: () => [v3(-0.42, 0.82, 1.9), v3(-0.38, 0.12, 0.2), 42],   // sandhörnet till vänster, grodan på stranden till höger (runda 5)
   hejda: g => [g.clone().add(v3(-0.1, 0.3, 0.82)), g.clone().add(v3(0.02, 0.2, -0.2)), 32],   // närmare, så att vinkningen syns
 };
 if (STOR < 1) for (const [n, f] of Object.entries(VY)) if (!['bord', 'slut', 'himmel'].includes(n)) VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(1.12)), mal, fov]; };

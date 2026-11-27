@@ -232,3 +232,4 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Stubben | [stubbe.md](stubbe.md) | 059 |
 | Gula solen | [sol-gul.md](sol-gul.md) | 062 |
 | Rosa glassen | [glass-rosa.md](glass-rosa.md) | 062 |
+| Löven (orange, röd, gul, brun) | [lov.md](lov.md) | 063 |

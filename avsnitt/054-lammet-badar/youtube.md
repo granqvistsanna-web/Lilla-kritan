@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 054 Lammet badar
 
-Kanal: **lilla kritan**. Fil: `film/avsnitt-054.mp4` (4:20, slutrenderingen 27 nov, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i båtens röda, "4 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+**Offentlig sedan 2026-11-27:** https://youtu.be/jqqfrSXKnsA. Kanal: **lilla kritan**. Fil: `film/avsnitt-054.mp4` (4:20, slutrenderingen 27 nov, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i båtens röda, "4 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 En bilderbok utan sång, som 020 Grisen badar: Malin berättar och lammet svarar med ljud. Titel och beskrivning kallar det därför aldrig en sång.
 

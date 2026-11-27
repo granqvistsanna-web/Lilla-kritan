@@ -1,6 +1,6 @@
 # YouTube – Avsnitt 052 Zebran klär på sig
 
-Kanal: **lilla kritan**. Fil: `film/avsnitt-052.mp4` (4:05, slutrenderingen 26 nov, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i mössans gula, "4 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
+**Offentlig sedan 2026-11-27:** https://youtu.be/v6Y2bV8Q9Us. Kanal: **lilla kritan**. Fil: `film/avsnitt-052.mp4` (4:05, slutrenderingen 26 nov, `film/satt-ihop.sh`). Miniatyr: `thumbnail/miniatyr-strimma.png` (färgstrimman i mössans gula, "4 min"; utan text `thumbnail/miniatyr-utan-text.png`). Ställ in **Ja, det är gjort för barn**.
 
 En bilderbok utan sång, som 020 Grisen badar: Malin berättar och zebran svarar med ljud. Titel och beskrivning kallar det därför aldrig en sång.
 

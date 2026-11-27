@@ -1,6 +1,6 @@
 # Julkalendern 2026 – YouTube-texter
 
-Kanal: **lilla kritan**. **2026-11-20: alla 12 schemalagda luckor (1, 2, 10, 11, 12, 14, 15, 16, 17, 18, 19, 21) raderades permanent i Studio på Sannas begäran.** Inget är schemalagt nu; luckorna laddas upp på nytt när de är klara. Tidigare plan: 21 luckor (1–19, 21, 24). Lucka 20, 22 och 23 väntar (20 arkiverad och omskriven, 22 och 23 har öppna anteckningar).
+Kanal: **lilla kritan**. **2026-11-20: alla 12 schemalagda luckor (1, 2, 10, 11, 12, 14, 15, 16, 17, 18, 19, 21) raderades permanent i Studio på Sannas begäran.** Inget är schemalagt nu; luckorna laddas upp på nytt när de är klara. **2026-11-27:** den kvarvarande schemalagda Shorts-videon *Lucka 1: Kritan ritar en stjärna ⭐* (4H19UM90HFA, 1 dec) sattes till Privat på Sannas begäran (inte raderad). Utkastet *Lucka 3 ❄️ Hunden och jätteflingan* ligger kvar som utkast. Tidigare plan: 21 luckor (1–19, 21, 24). Lucka 20, 22 och 23 väntar (20 arkiverad och omskriven, 22 och 23 har öppna anteckningar).
 
 Samma för alla:
 

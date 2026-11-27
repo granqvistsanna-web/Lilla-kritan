@@ -1,0 +1,29 @@
+   0.0 s  hej                    kanin-hej-4
+   1.6 s  förtjust               kanin-ny-fortjust-1
+   4.0 s  förtjust               kanin-ny-fortjust-2
+   6.4 s  förtjust               kanin-gullig-2
+   8.3 s  jippi                  kanin-ny-jippi-1
+  10.7 s  jippi                  kanin-ny-jippi-2
+  13.1 s  glatt ja               kanin-ny-ja-1
+  15.5 s  brr                    kanin-ny-brr-1
+  17.9 s  frågande               kanin-ny-fragande-1
+  20.3 s  frågande               kanin-ny-fragande-2
+  22.7 s  frågande               kanin-gullig-7
+  24.5 s  nyfiken                kanin-gullig-5
+  27.0 s  tack                   kanin-tack-1
+  28.6 s  fniss                  kanin-ny-fniss-1
+  31.0 s  fniss                  kanin-ny-fniss-2
+  33.4 s  fniss                  kanin-gullig-3
+  35.2 s  mysig                  kanin-ny-mmm-1
+  37.6 s  hej (till fåglarna)    kanin-ny-hej-2
+  40.0 s  hej då                 kanin-hejda-2
+  41.9 s  hej då                 kanin-hejda-3
+  43.7 s  steg i snö             knarr-sno-1
+  46.6 s  steg i snö             knarr-sno-2
+  49.7 s  rulla                  rull-1
+  52.5 s  snöboll stannar        sno-duns-1
+  53.9 s  snöboll stannar        sno-duns-2
+  55.3 s  fågel                  fagel-pip-1
+  56.4 s  fågel                  fagel-pip-2
+  57.5 s  fågel                  fagel-pip-3
+  58.7 s  matta (10 s)           vinterljud-2

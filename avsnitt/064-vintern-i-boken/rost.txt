@@ -1,0 +1,43 @@
+01-titta-en-bok  [warmly] Titta! En bok.
+02-vinter-i-boken  [happy] Oj, det är vinter i boken.
+03-var-ar-snon  [curious] Det är kallt. Men var är snön?
+04-kritan-ritar  [warmly] Kritan ritar …
+05-vad-blir-det  [curious] Hm … vad blir det nu?
+06-en-snoflinga  [warmly] En snöflinga.
+07-det-snoar  [softly] Titta, det snöar.
+08-vit-och-kall  [warmly] Snön är vit och kall.
+09-hej-kaninen  [happy] Hej, kaninen! Hej, hej!
+10-tycker-om-snon  [curious] Tycker du om snön, kaninen?
+11-leka-i-snon  [happy] Jaså, du vill leka i snön.
+12-snon-knarrar  [softly] Knarr, knarr. Snön knarrar när du går.
+13-landar-pa-oronen  [softly] Snön landar på öronen.
+14-fryser-du  [warmly] Fryser du om öronen?
+15-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+16-kritan-ritar-nagot  [warmly] Titta, kritan ritar något.
+17-ett-pannband-varsagod  [happy] Ett pannband! Varsågod, kaninen.
+18-tack-kritan  [happy] Tack, kritan!
+19-tar-pa-pannbandet  [warmly] Kaninen tar på sig pannbandet.
+20-bara-ett-ora  [playfully] Plopp! … Oj, bara ett öra.
+21-dar-kom-det  [laughs] Plopp! Där kom det.
+22-skont-med-pannbandet  [warmly] Är det skönt med pannbandet?
+23-oronen-varma  [happy sigh] Mmm, nu är öronen varma igen.
+24-gora-snogubbe  [warmly] Ska du göra en snögubbe?
+25-ja-en-stor  [happy] Ja, en stor!
+26-rulla-snoboll  [playfully] Rulla, rulla … snöboll!
+27-stor-mellan-liten  [warmly] En stor, en mellan och en liten.
+28-en-tva-tre  [warmly] En, två, tre snöbollar.
+29-sno-pa-huvudet  [chuckles] Hoppsan! Snö på huvudet.
+30-vem-piper  [curious] Vem är det som piper?
+31-det-ar-faglarna  [happy] Det är fåglarna! De sitter i trädet.
+32-en-rod-fagel  [warmly] En röd fågel.
+33-en-bla-fagel  [warmly] En blå fågel.
+34-och-en-gul  [warmly] Och en gul fågel.
+35-faglarna-sager-hej  [happy] Fåglarna säger hej till dig, kaninen.
+36-vad-ska-det-bli  [curious] Tre snöbollar … vad ska det bli av dem?
+37-ja-en-snogubbe  [happy] Ja, en snögubbe!
+38-roligt-i-snon  [warmly] Var det roligt i snön, kaninen?
+39-hej-da-kaninen  [happy] Hej då, kaninen!
+40-hej-da-snoflingan  [warmly] Hej då, snöflingan!
+41-hej-da-faglarna  [warmly] Hej då, fåglarna!
+42-hej-da-snogubben  [warmly] Hej då, snögubben!
+43-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
