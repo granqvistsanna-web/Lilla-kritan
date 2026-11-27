@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Pandan leker ute scener</title>
+<style>html, body { margin:0; background:#000; } svg { width:100vw; height:auto; display:block; }</style>
+</head>
+<body>
+<!-- 058 Pandan leker ute: kodscenerna för storyboarden. window.rad(id) ritar radens stillbild (id som i rader.mjs). Serveras från
+     repots rot (bygg.mjs). Gjord ur 061:s scen.html: lekplatsen, pandan Pim (v2-rigg, skala 0,5). Uppställningen är storleksbilden
+     C som Sanna godkände 2026-11-27 (provbild/storleksbild.jpg): äppelträdet till vänster, gunganden 470 px, sandlådan till höger. -->
+<svg viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-2000" y="-2000" width="6000" height="5000">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap in="SourceGraphic" scale="2.5"/>
+    </filter>
+    <clipPath id="fyllklipp"><circle id="fyllcirkel" r="0"/></clipPath>
+  </defs>
+  <rect width="1920" height="1080" fill="#FAF8F2"/>
+  <g id="kamera">
+    <g id="platta"></g>
+    <g id="bak" filter="url(#boil)"></g>
+    <g filter="url(#boil)"><g id="saker"></g></g>
+    <g filter="url(#boil)"><g id="figurer"></g></g>
+    <g id="fram" filter="url(#boil)"></g>
+    <g id="forgrund"></g>
+    <g id="pilar"></g>
+  </g>
+  <g id="ram"></g>
+  <g id="gomda" opacity="0"></g>
+</svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const A = '/assets/', LS = A + 'bakgrunder/lekplatsen-saker/';
+const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
+const f1 = v => v.toFixed(1);
+
+// --- Filer -----------------------------------------------------------------------------------------------------------------
+const PLATTA = A + 'bakgrunder/lekplatsen/lekplatsen.png', FORGRUND = A + 'bakgrunder/lekplatsen/lekplatsen-forgrund.png';
+const KRITA = A + 'rekvisita/krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
+// [fil, bildens storlek, alfarutan x0 y0 x1 y1]
+const SAK = {
+  trad:  [LS + 'appeltrad.png', [896, 1200], [56, 95, 840, 1115]],
+  gung:  [LS + 'gunganka.png', [1024, 1024], [145, 76, 919, 970]],
+  sand:  [LS + 'sandlada.png', [1200, 896], [67, 115, 1134, 798]],
+  hink:  [LS + 'hink.png', [1024, 1024], [155, 64, 865, 951]],
+  boll:  [LS + 'boll.png', [1024, 1024], [89, 89, 934, 935]],
+  apple: [A + 'rekvisita/applet-rott/cut/applet-rott-v3-tunn.png', [729, 836], [19, 13, 709, 810]],
+};
+
+// --- Uppställningen (storleksbild C) ---------------------------------------------------------------------------------------
+const DS = 0.5, MARK = 985;
+const TRAD = [330, 935, 640], GUNG = [1180, 950, 470], SANDL = [1650, 940, 250], HINK = [495, 965, 210];
+const BD = 96, BR = BD / 2;
+const IN = [860, MARK], VID_GUNG = [820, MARK], VID_SAND = [1560, MARK], VID_TRAD = [720, MARK];
+const SADEL_Y = GUNG[1] - GUNG[2] * (1 - 0.385);
+const SITT = [GUNG[0] - 104, SADEL_Y + 30];                  // pandans fötter när den sitter bak i sadeln (kroppens underkant på sadeln)
+const B_SADEL = [GUNG[0] - 59, SADEL_Y - BR + 4];
+const B_KRONA = [HINK[0], 560], B_HINK = [HINK[0], 844];      // hinkens främre kant y ca 844: övre halvan av bollen syns
+const B_SAND = [SANDL[0] - 20, 800], B_GUNG = [GUNG[0] + 58, 905], B_TRAD = [398, 892];
+const APPLE_LAND = [600, 975], APPLE_STOPP = [640, 978];
+
+let L, G;
+const iFig = ([x, fot], [px, py], s = DS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
+const HAND = pos => iFig(pos, [845, 668]);
+const VHAND = pos => iFig(pos, [179, 668]);
+
+function kamera(zoom = 1, cx = 960, cy = 540) {
+  const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
+  $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom})`);
+  $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2));
+  const fs = 1 + 0.06 * (zoom - 1);
+  $('forgrund').setAttribute('transform', `translate(${cx} ${cy + 300}) scale(${fs.toFixed(4)}) translate(${-cx} ${-cy - 300})`);
+}
+const HEL = () => kamera(1);
+const HALV = (pos, dx = 0) => kamera(1.6, pos[0] + dx, pos[1] - 210);
+const NARA = (pos, dy = 0) => kamera(2.3, pos[0], pos[1] - 200 + dy);
+const TRADUT = () => kamera(1.35, 560, 640);                  // trädets utsnitt: hela kronan och marken under
+
+// --- Saker ----------------------------------------------------------------------------------------------------------------
+const sak = (namn, x, fot, hojd, { lager = 'saker', rot = 0, o = 1, klipp = '' } = {}) => {
+  const [f, [w, h], [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0);
+  lagg(lager, `<image href="${f}" width="${w}" height="${h}" opacity="${o}" ${klipp} transform="translate(${f1(x)} ${f1(fot)}) rotate(${rot}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`);
+};
+const skugga = (x, fot, rx, lager = 'bak') => lagg(lager, `<ellipse cx="${x}" cy="${fot - 2}" rx="${rx}" ry="${f1(rx * 0.1)}" fill="#000" opacity="0.07"/>`);
+const boll = ([x, y], lager = 'fram', rot = 0) => sak('boll', x, y + BR, BD, { lager, rot });
+const apple = ([x, y], lager = 'fram') => sak('apple', x, y, 58, { lager });
+const stjarna = (x, y, r, o = 1) => `<path transform="translate(${x} ${y}) scale(${r})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
+function skimmer(x, y, k, R = 40) { lagg('fram', [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]].map(([dx, dy, s]) => stjarna(x + dx * R, y + dy * R * 0.87, R * 0.39 * s * k, Math.min(1, 0.4 + k))).join('')); }
+// sanden framför bollen i sandlådan: bara bollens övre tredjedel syns
+const sandFram = ([x, y]) => lagg('saker', `<ellipse cx="${x}" cy="${y + 26}" rx="64" ry="30" fill="#ebe6db"/>${[[-30, 4], [12, -2], [40, 8]].map(([dx, dy]) => `<circle cx="${x + dx}" cy="${y + dy}" r="4" fill="#ddd5c4"/>`).join('')}`);
+
+// --- Rörelsepilar (storyboardens notation, inte i filmen) -----------------------------------------------------------------
+const pil = (d, x, y, v, s = 6) => `<g fill="none" stroke="#c0392b" stroke-width="${s}" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+  <path d="${d}" stroke-dasharray="${3 * s} ${2.4 * s}"/><path d="M${x + 5 * s * Math.cos(v + 2.6)} ${y + 5 * s * Math.sin(v + 2.6)} L${x} ${y} L${x + 5 * s * Math.cos(v - 2.6)} ${y + 5 * s * Math.sin(v - 2.6)}"/></g>`;
+const rakpil = (x0, y0, x1, y1, s = 6) => pil(`M${x0} ${y0} L${x1} ${y1}`, x1, y1, Math.atan2(y1 - y0, x1 - x0), s);
+const bage = (x0, y0, x1, y1, h, s = 6) => pil(`M${x0} ${y0} Q${(x0 + x1) / 2} ${Math.min(y0, y1) - h} ${x1} ${y1}`, x1, y1, Math.atan2(y1 - (Math.min(y0, y1) - h), x1 - (x0 + x1) / 2), s);
+const text = (t, x = 960, y = 80, s = 30) => lagg('pilar', `<text x="${x}" y="${y}" style="font:700 ${s}px system-ui;fill:#c0392b;stroke:#fff;stroke-width:${s / 6};paint-order:stroke;text-anchor:middle">${t}</text>`);
+const tittVH = (pos, y = 400) => lagg('pilar', rakpil(...iFig(pos, [440, y]), ...iFig(pos, [300, y]), 5) + rakpil(...iFig(pos, [585, y]), ...iFig(pos, [725, y]), 5));
+const nick = pos => { const [x, y] = iFig(pos, [800, 380]); lagg('pilar', rakpil(x, y - 30, x, y + 30, 4) + rakpil(x + 18, y + 30, x + 18, y - 30, 4)); };
+const skaka = pos => { const [x, y] = iFig(pos, [512, 150]); lagg('pilar', rakpil(x - 10, y, x - 60, y, 4) + rakpil(x + 10, y, x + 60, y, 4)); };
+const hopp = (pos, s = 5) => { const [x, y] = iFig(pos, [880, 700]); lagg('pilar', rakpil(x, y, x, y - 50, s)); };
+const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', `<image href="${KRITA}" width="755" height="265"
+  transform="translate(${f1(x)} ${f1(y)}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})"/>`);
+const klippEtikett = t => text(t, 960, 1040, 26);
+
+// --- Platsen ---------------------------------------------------------------------------------------------------------------
+// hink: kritan har ritat den; sandlada/gunganden/trad: bollen gömd där
+function lekplats({ hink = false } = {}) {
+  $('platta').innerHTML = `<image href="${PLATTA}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  $('forgrund').innerHTML = `<image href="${FORGRUND}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>`;
+  skugga(TRAD[0], TRAD[1], 130); skugga(GUNG[0], GUNG[1], 140); skugga(SANDL[0], SANDL[1], 190);
+  sak('trad', ...TRAD); sak('sand', ...SANDL); sak('gung', ...GUNG);
+  if (hink) { skugga(HINK[0], HINK[1], 85); sak('hink', ...HINK); }
+}
+const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#F6EFE3"/>
+  <rect x="120" y="70" width="1680" height="940" rx="14" fill="#FDFBF4" stroke="#e8e0cf" stroke-width="6"/>`; };
+
+// --- Kritan ritar en sak (kontur ur *-kontur.json), returnerar spetsen ------------------------------------------------------
+const KONTUR = {};
+function ritaSak(namn, [x, fot, hojd], k, farg) {
+  const [, , [x0, y0, x1, y1]] = SAK[namn], s = hojd / (y1 - y0), t = `translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})`;
+  const drag = KONTUR[namn].drag || [KONTUR[namn].d], n = drag.length, kk = k * n;
+  lagg('pilar', `<g transform="${t}">${drag.map((d, i) => `<path ${i === Math.min(n - 1, Math.floor(kk)) ? 'id="ritkontur"' : ''} d="${d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(5 / s)}" stroke-linecap="round" stroke-dasharray="${i < Math.floor(kk) ? '1 0' : i > kk ? '0 1' : `${kk - i} 1`}"/>`).join('')}</g>`);
+  const p = $('ritkontur'), q = p.getPointAtLength(Math.min(Math.max(kk - Math.min(n - 1, Math.floor(kk)), 0), 0.999) * p.getTotalLength());
+  return [x + (q.x - (x0 + x1) / 2) * s, fot + (q.y - y1) * s];
+}
+function fyllSak(namn, P, fyll, lager = 'saker') {
+  const [f, [w, h], [x0, y0, x1, y1]] = SAK[namn], s = P[2] / (y1 - y0);
+  $('fyllcirkel').setAttribute('cx', (x0 + x1) / 2); $('fyllcirkel').setAttribute('cy', (y0 + y1) / 2); $('fyllcirkel').setAttribute('r', Math.max(w, h) * 0.75 * fyll);
+  lagg(lager, `<image href="${f}" width="${w}" height="${h}" clip-path="url(#fyllklipp)" transform="translate(${P[0]} ${P[1]}) scale(${s.toFixed(4)}) translate(${-(x0 + x1) / 2} ${-y1})"/>`);
+}
+const GPAPP = [960, 940, 760];
+function papperGung(k, fyll) {
+  papper(); kamera(1);
+  if (fyll > 0) fyllSak('gung', GPAPP, fyll);
+  const spets = ritaSak('gung', GPAPP, k, '#c0392b');
+  if (k < 1) krita(...spets, 125, 0.45); else if (fyll < 1) krita(GPAPP[0] + 360, GPAPP[1] - 560, 140, 0.45);
+}
+
+// --- Pandan ----------------------------------------------------------------------------------------------------------------
+const ANS = n => L.blanda('neutral', n, 1);
+const P = o => ({ ...L.POSE0, ...o }), F = (n, o = {}) => ({ ...ANS(n), ...o });
+const VINKA = { armar: [0, 140] };
+const PUFF_V = { luta: -6, sank: 14, armar: [40, 0] };        // rak tass puffar åt vänster (bildens vänster)
+const PUFF_H = { luta: 6, sank: 14, armar: [0, 40] };
+const UPP = { upp: 1, armar: [0, 150] };
+const SITTER = () => L.blandaPose('neutral', 'sitter', 1);
+function pd([x, fot], f, p, { s = DS } = {}) {
+  $('figurer').appendChild(G);
+  G.setAttribute('transform', `translate(${x} ${fot}) scale(${s}) translate(-512 ${-L.FOTTER})`);
+  L.rita(G, f, p);
+}
+const pdSkugga = ([x, fot]) => skugga(x, fot + 2, 95);
+
+// --- Kritirisen ------------------------------------------------------------------------------------------------------------
+function iris(cx, cy, r) {
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.05 * Math.sin(9 * a));
+    return `${f1(cx + rr * Math.cos(a))} ${f1(cy + rr * Math.sin(a))}`; }).join('L') + 'Z';
+  lagg('ram', `<path d="M-50 -50H1970V1130H-50Z ${ring}" fill="#101010" fill-rule="evenodd"/><path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="12" filter="url(#boil)"/>`);
+}
+
+// --- Raderna ---------------------------------------------------------------------------------------------------------------
+const B_FRAM = [IN[0] - 230, MARK - BR];
+const BOLL_RITA = [B_FRAM[0], MARK, BD];
+const HINK_RITA = HINK;
+const sitter = (f, p = {}) => { pd(SITT, f, { ...SITTER(), ...p }); };
+const RAD = {
+  '01a': () => papperGung(0.55, 0),
+  '01b': () => papperGung(1, 0),
+  '01c': () => papperGung(1, 1),
+  '01d': () => { papperGung(1, 1); text('Vilken färg? (paus 3 s) → zoom in', 960, 1000, 26); lagg('pilar', `<rect x="760" y="140" width="420" height="840" fill="none" stroke="#c0392b" stroke-width="6" stroke-dasharray="20 14" opacity=".8"/>`); },
+
+  '1': () => { lekplats(); HEL(); pdSkugga(IN); pd(IN, F('jatteglad'), P(VINKA)); lagg('pilar', rakpil(80, 900, IN[0] - 230, 900, 8)); hopp(IN); },
+  '1b': () => { lekplats(); NARA(IN); pd(IN, F('glad'), P({ oron: [-8, -8] })); },
+  '2': () => { lekplats(); NARA(IN); pd(IN, F('jatteglad'), P({ oron: [-8, -8] })); nick(IN); },
+  '3': () => { lekplats(); NARA(IN); pd(IN, F('ledsen'), P({ oron: [10, 10] })); },
+  '4': () => { lekplats(); HEL(); pdSkugga(IN); pd(IN, F('nyfiken', { titt: [14, 0] }), P({ rikt: 0.3 })); skaka(IN); text('"Vill du gunga?" – skakar på huvudet', IN[0], 520, 24); },
+  '4b': () => { lekplats(); HEL(); pdSkugga(IN); pd(IN, F('ledsen', { titt: [14, 4] }), P({ rikt: 0.4, oron: [14, 14], strack: -0.04 })); skaka(IN); lagg('pilar', rakpil(IN[0] + 250, 700, SANDL[0] - 200, 760, 5)); text('"Vill du leka i sandlådan?" – skakar, sedan närbild: öronen faller', 960, 120, 22); },
+  '4c': () => { lekplats(); NARA(IN); pd(IN, F('ledsen'), P({ oron: [14, 14], strack: -0.04 })); },
+  '5': () => { lekplats(); kamera(1.9, (B_FRAM[0] + IN[0]) / 2, MARK - 170); pd(IN, F('nyfiken', { titt: [-14, 12] }), P({ rikt: -0.3 })); krita(...ritaSak('boll', BOLL_RITA, 0.7, '#c0392b'), 125, 0.25); text('gisspaus 3 s', B_FRAM[0], MARK - 150, 16); },
+  '6': () => { lekplats(); kamera(1.9, (B_FRAM[0] + IN[0]) / 2, MARK - 170); pd(IN, F('kawaii', { titt: [-14, 12] }), P({ rikt: -0.3, oron: [-8, -8] })); boll(B_FRAM); skimmer(B_FRAM[0], B_FRAM[1] - 20, 0.6, 50); krita(B_FRAM[0] + 260, MARK - 380, 140, 0.25); },
+  '6c': () => { lekplats(); HALV(IN, -100); pd(IN, F('jatteglad', { titt: [-14, 8] }), P({ rikt: -0.3 })); boll(B_FRAM); nick(IN); },
+  '6d': () => { lekplats(); kamera(3.0, B_FRAM[0], B_FRAM[1] - 10); boll(B_FRAM); text('Vilken färg? (paus 3 s)', B_FRAM[0], B_FRAM[1] - 80, 12); },
+  '7': () => { lekplats(); HEL(); pdSkugga(IN); pd(IN, F('fnissig', { titt: [-14, 6] }), P(PUFF_V)); boll([B_FRAM[0] - 60, B_FRAM[1]]); lagg('pilar', bage(B_FRAM[0] + 40, B_FRAM[1] - 40, B_FRAM[0] - 60, B_FRAM[1] - 50, 160, 5)); text('tassen puffar, liten båge, två studs', B_FRAM[0], 560, 22); },
+  '8': () => { lekplats(); HALV(IN, -100); pd(IN, F('glad', { titt: [-14, 8] }), P({ rikt: -0.3 })); boll([B_FRAM[0] - 60, B_FRAM[1]]); lagg('pilar', rakpil(B_FRAM[0] - 60, B_FRAM[1] - 70, B_FRAM[0] - 60, B_FRAM[1] - 110, 4)); text('brum – boing – brum – boing (tyst Malin)', IN[0] - 100, 600, 14); },
+  '9': () => { lekplats(); HEL(); pdSkugga(IN); pd(IN, F('forvanad', { titt: [14, -6] }), P({ rikt: 0.4 })); boll(B_SADEL, 'fram', 20); lagg('pilar', bage(IN[0] + 120, MARK - 140, B_SADEL[0] - 10, B_SADEL[1] - 40, 120, 5) + bage(GUNG[0] + 170, 560, GUNG[0] - 170, 560, 30, 4)); text('anden gungar på fjädern, bollen med', GUNG[0], 380, 22); },
+  '9b': () => { lekplats(); NARA(IN); pd(IN, F('jatteglad', { titt: [14, -4] }), P({ rikt: 0.3, oron: [-8, -8] })); nick(IN); },
+  '10': () => { lekplats(); HALV(IN, -100); pd(IN, F('glad'), P({})); boll(B_FRAM); nick(IN); },
+  '11': () => { lekplats(); HEL(); boll(B_SAND, 'saker'); sandFram(B_SAND); pdSkugga(IN); pd(IN, F('glad', { titt: [14, 0] }), P({ rikt: 0.4 })); lagg('pilar', bage(B_FRAM[0] + 300, MARK - 40, B_SAND[0], B_SAND[1] - 60, 60, 5)); text('stannar i sanden på "där"', B_SAND[0] - 80, 640, 22); },
+  '11b': () => { lekplats(); boll(B_SAND, 'saker'); sandFram(B_SAND); pd([1390, MARK], F('fnissig', { titt: [12, 14] }), P({ rikt: 0.3, luta: 4 })); kamera(2.0, 1520, 780); },
+  '12': () => { lekplats(); HEL(); boll(B_GUNG, 'bak'); pdSkugga(VID_SAND); pd(VID_SAND, F('jatteglad', { titt: [-14, 6] }), P({ rikt: -0.4 })); lagg('pilar', rakpil(B_SAND[0] - 120, 900, B_GUNG[0] + 90, 920, 5)); text('en röd bit vid fjädern (bakom anden)', GUNG[0], 380, 22); },
+  '12b': () => { lekplats(); boll(B_GUNG, 'bak'); pd(VID_GUNG, F('jatteglad', { titt: [14, 10] }), P({ rikt: 0.4 })); HALV(VID_GUNG, 160); nick(VID_GUNG); },
+  '13': () => { lekplats(); HALV(VID_GUNG, -60); pd(VID_GUNG, F('forvanad'), P({ oron: [-8, -8] })); lagg('pilar', rakpil(VID_GUNG[0] - 240, MARK - 40, VID_GUNG[0] - 520, MARK - 40, 5)); tittVH(VID_GUNG); },
+  '14': () => { lekplats(); HEL(); boll(B_TRAD, 'bak'); pdSkugga(VID_GUNG); pd(VID_GUNG, F('nyfiken'), P({})); text('Kan du se var bollen är? (paus 5 s)', 960, 120, 30); lagg('pilar', `<circle cx="${B_TRAD[0] + 30}" cy="${B_TRAD[1]}" r="70" fill="none" stroke="#c0392b" stroke-width="5" stroke-dasharray="14 10"/>`); },
+  '14b': () => { lekplats(); boll(B_TRAD, 'bak'); kamera(3.0, B_TRAD[0] + 20, B_TRAD[1] - 40); skimmer(B_TRAD[0] + 40, B_TRAD[1] - 10, 0.3, 30); klippEtikett('skimmer svagt efter 3 s, glider sakta inåt'); },
+  '15': () => { lekplats(); boll(B_TRAD, 'bak'); kamera(3.0, B_TRAD[0] + 20, B_TRAD[1] - 40); skimmer(B_TRAD[0] + 40, B_TRAD[1] - 10, 0.9, 40); klippEtikett('klipp → pandan jätteglad, öronen upp'); },
+  '16': () => { lekplats(); kamera(1.5, 560, 720); const b = [VID_TRAD[0] - 200, MARK - BR]; boll(b); pdSkugga(VID_TRAD); pd(VID_TRAD, F('fnissig', { titt: [-14, 8] }), P({ rikt: -0.3 })); lagg('pilar', rakpil(B_TRAD[0] + 60, MARK - 40, b[0] - 60, MARK - 40, 5)); },
+  '17': () => { lekplats(); HALV(VID_TRAD, -80); boll([VID_TRAD[0] - 200, MARK - BR]); pd(VID_TRAD, F('jatteglad'), P({ oron: [-8, -8] })); hopp(VID_TRAD); },
+  '18': () => { lekplats(); HEL(); pdSkugga(VID_TRAD); pd(VID_TRAD, F('forvanad', { titt: [-10, -14] }), P({ upp: 1, armar: [120, 0] })); lagg('pilar', bage(VID_TRAD[0] - 200, MARK - 100, B_KRONA[0], B_KRONA[1] + 40, 260, 6)); },
+  '19': () => { lekplats(); TRADUT(); boll(B_KRONA); pd(VID_TRAD, F('forvanad', { titt: [-10, -14] }), P({ upp: 1, oron: [-8, -8] })); text('vickar och ligger still', B_KRONA[0] + 40, B_KRONA[1] - 80, 20); },
+  '20': () => { lekplats(); TRADUT(); boll(B_KRONA); pdSkugga(VID_TRAD); pd(VID_TRAD, F('ledsen', { titt: [-10, -14] }), P(UPP)); hopp(VID_TRAD); text('når inte', VID_TRAD[0], 520, 22); },
+  '21': () => { lekplats(); TRADUT(); boll(B_KRONA); apple(APPLE_LAND); pd(VID_TRAD, F('forvanad', { titt: [-14, 6] }), P(PUFF_V)); lagg('pilar', rakpil(380, 620, APPLE_LAND[0] - 10, APPLE_LAND[1] - 70, 5) + bage(160, 420, 500, 420, 20, 4)); text('trädet svajar, ett äpple ramlar', 330, 260, 20); },
+  '21b': () => { lekplats(); TRADUT(); boll(B_KRONA); apple(APPLE_STOPP); pd([VID_TRAD[0] + 60, MARK], F('forvanad', { titt: [-14, 10] }), P({ rikt: -0.3 })); lagg('pilar', rakpil(APPLE_LAND[0] - 60, MARK - 20, APPLE_STOPP[0] - 40, MARK - 20, 4)); },
+  '22': () => { lekplats(); apple(APPLE_STOPP); kamera(3.2, APPLE_STOPP[0], APPLE_STOPP[1] - 40); text('Vilken färg? (paus 3 s)', APPLE_STOPP[0], APPLE_STOPP[1] - 90, 11); },
+  '22b': () => { lekplats(); boll(B_KRONA); kamera(2.6, B_KRONA[0] - 40, B_KRONA[1] + 20); },
+  '23': () => { lekplats(); boll(B_KRONA); apple(APPLE_STOPP); NARA(VID_TRAD); pd(VID_TRAD, F('nyfiken', { titt: [-8, -12] }), P({ upp: 0.6 })); },
+  '24': () => { lekplats(); TRADUT(); boll(B_KRONA); apple(APPLE_STOPP); pd([VID_TRAD[0] + 60, MARK], F('nyfiken', { titt: [-14, 10] }), P({ rikt: -0.3 })); krita(...ritaSak('hink', HINK_RITA, 0.7, '#c0392b'), 125, 0.3); text('rakt under bollen', HINK[0], 640, 18); },
+  '24a': () => { lekplats({ hink: true }); TRADUT(); boll(B_KRONA); apple(APPLE_STOPP); pd([VID_TRAD[0] + 60, MARK], F('kawaii', { titt: [-14, 10] }), P({ rikt: -0.3, oron: [-8, -8] })); skimmer(HINK[0], HINK[1] - 120, 0.6, 50); krita(HINK[0] + 300, 420, 140, 0.3); },
+  '24b': () => { lekplats({ hink: true }); boll(B_KRONA); apple(APPLE_STOPP); HALV([VID_TRAD[0] + 60, MARK], -80); pd([VID_TRAD[0] + 60, MARK], F('glad'), P({})); nick([VID_TRAD[0] + 60, MARK]); },
+  '24c': () => { lekplats({ hink: true }); boll(B_HINK, 'bak'); apple(APPLE_STOPP); TRADUT(); pd([VID_TRAD[0] + 60, MARK], F('jatteglad', { titt: [-14, 6] }), P(PUFF_V)); lagg('pilar', rakpil(B_KRONA[0], B_KRONA[1] + 60, B_HINK[0], B_HINK[1] - 60, 6)); text('rakt ner i hinken', HINK[0], 520, 20); },
+  '25': () => { lekplats({ hink: true }); boll(B_HINK, 'bak'); HALV(VID_TRAD, -40); pd(VID_TRAD, F('mums'), P({ armar: [0, 60] })); apple(HAND(VID_TRAD).map((v, i) => v + [6, 30][i])); },
+  '26': () => { lekplats({ hink: true }); boll(B_HINK, 'bak'); apple([GUNG[0] - 260, MARK - 5]); HEL(); sitter(F('glad')); lagg('pilar', bage(GUNG[0] + 170, 560, GUNG[0] - 170, 560, 30, 5)); text('Gung … gung …', GUNG[0], 330, 26); },
+  '26b': () => { lekplats({ hink: true }); NARA([SITT[0], SITT[1] + 60], -40); sitter(F('fnissig'), { oron: [-8, 8] }); },
+  '27': () => { lekplats({ hink: true }); NARA([SITT[0], SITT[1] + 60], -40); sitter(F('blinkar')); nick(SITT); },
+  '28': () => { lekplats({ hink: true }); boll(B_HINK, 'bak'); apple([GUNG[0] - 260, MARK - 5]); HALV([GUNG[0] - 60, MARK - 100]); sitter(F('jatteglad'), VINKA); },
+  '29': () => { lekplats({ hink: true }); NARA([SITT[0], SITT[1] + 60], -40); sitter(F('glad'), { armar: [0, 110] }); },
+  '30': () => { lekplats({ hink: true }); boll(B_HINK, 'bak'); apple([GUNG[0] - 260, MARK - 5]); HEL(); sitter(F('glad')); iris(SITT[0] + 40, SITT[1] - 200, 330); },
+};
+
+window.rad = id => {
+  ['bak', 'saker', 'fram', 'pilar', 'ram', 'platta', 'forgrund'].forEach(n => $(n).innerHTML = '');
+  $('gomda').appendChild(G); kamera(1);
+  if (id === '00') { papper(); text('Djuren hittar på! (seriens intro, 3,3 s)', 960, 560, 44); return; }
+  RAD[id]();
+  window.kant?.uppdatera();
+};
+window.klar = (async () => {
+  L = await v2rigg('pandan-pim');
+  G = L.figur(512, L.FOTTER, 1, $('gomda'));
+  for (const n of ['gung', 'hink', 'boll']) KONTUR[n] = await (await fetch(LS + { gung: 'gunganka', hink: 'hink', boll: 'boll' }[n] + '-kontur.json')).json();
+  window.kant?.lagg(G);
+  await Promise.all([PLATTA, FORGRUND, KRITA, ...Object.values(SAK).map(s => s[0])]
+    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  window.rad(new URLSearchParams(location.search).get('rad') || '1');
+  return true;
+})();
+</script>
+</body>
+</html>
