@@ -11409,9 +11409,10 @@
   "sec": 87,
   "tags": [],
   "note": "ears look jagged on sad",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808252152,
-  "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)"
+  "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)",
+  "fixedAt": 1795808611916
  },
  "rvami719gvmwzdvqs5": {
   "ep": "061",
@@ -11419,8 +11420,9 @@
   "sec": 81,
   "tags": [],
   "note": "better placement of hands and water",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808277077,
-  "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)"
+  "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)",
+  "fixedAt": 1795808611916
  }
 }
