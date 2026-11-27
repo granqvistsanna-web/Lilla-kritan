@@ -198,6 +198,8 @@ Kaninens familjer finns i `assets/ljud/effekter/` (`kanin-gullig/`, `kanin-ny/`,
 | lättad, mysig suck | `kanin-gullig-4`/`4b` | 16b, 26 |
 | hej då | `kanin-hejda-2`, `-1` (svenskt *"hej då"*) | 30, 31 |
 
+**Alla ljud finns (Sanna 2026-11-27: "använd ljud som redan finns"):** inget hämtas från Openverse och inget görs i ElevenLabs. Kaninens familj täcker alla känslor.
+
 **Saknas i familjen:** ett förvånat *"oj!"*. Rad 16 klarar sig utan: förvåningen är 0,3 s tystnad och ansiktet, och sedan kommer sucken. Inget nytt kaninljud behövs.
 
 | Övriga ljud | Finns | Rader |
@@ -208,10 +210,10 @@ Kaninens familjer finns i `assets/ljud/effekter/` (`kanin-gullig/`, `kanin-ny/`,
 | `ritsch` (lappen rivs av), `porl` (kort och tyst när pottan töms) | ja (042) | 22, 23 |
 | `kran`, `skrubb`, `droppar`, `handduk-gnugg` | ja | 25, 26 |
 | `klistra` (stjärnan trycks fast; lyssna först) | ja | 28b |
-| **`plink`** | **nytt:** en enda liten ljus droppe i en skål, ca 0,4 s. Prova `droppar-1` först, den kan räcka | 16 |
-| **`blad`** | **nytt:** ett tjockt pappblad vänds, ca 0,5 s. Openverse först | 13, 15 |
-| **`spol`** | **nytt:** en mjuk, kort toalettspolning, ca 2,5 s, lågpassad så att den inte skräms. Openverse först | 24 |
-| **`klick`** | kanske nytt: knappen trycks. Prova `lampa-klick` först | 24 |
+| `plink` = **`droppar-1`** (0,3 s, en klar droppe) | ja (Sanna 2026-11-27: befintliga ljud) | 16 |
+| `blad` = **`prassel-tyg-1`**, de första 0,6 s med uttoning 0,2 s (samma ljud som popupbokens pärm) | ja | 13, 15 |
+| `spol` = **`kran-1`**, 2,5 s, lågpass 1200 Hz, intoning 0,2 s och uttoning 1 s, volym 0,5, så att den inte skräms; `porl-1` svagt ovanpå sista sekunden | ja | 24 |
+| `klick` = **`lampa-klick-4`** (0,2 s, litet mjukt klick) | ja | 24 |
 
 ## Saker: finns och nya
 
