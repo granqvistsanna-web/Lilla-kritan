@@ -13,6 +13,7 @@
 # över i dynamiskt läge på korta filmer och ger olika resultat för varje körning. Att köra skriptet igen på en mastrad film
 # ändrar den inte (förstärkningen blir 0).
 set -e
+source ${0:A:h}/plats.sh   # högst två luckbyggen åt gången
 mapp=${1:?"mapp saknas: mastra.sh <mapp> [fil.mp4]"}; mapp=${mapp%/}
 fil=${2:-$mapp/${mapp:t}.mp4}
 [[ -f $fil ]] || { echo "hittar inte $fil" >&2; exit 1; }

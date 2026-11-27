@@ -22,6 +22,7 @@
 # Samma kommando bygger om luckan, t.ex. när filmen bytts eller Malins repliker spelats in.
 set -e
 mapp=${1:?"mapp saknas: hel-video.sh <mapp>"}; mapp=${mapp%/}
+source ${0:A:h}/plats.sh   # högst två luckbyggen åt gången
 cd ${0:A:h}/../../../..   # repots rot
 [[ -f $mapp/index.html ]] || { echo "hittar inte $mapp/index.html" >&2; exit 1; }
 namn=${mapp:t}; ut=$mapp/$namn.mp4; tmp=$mapp/tmp; stills=$mapp/stills; rm -rf $tmp; mkdir -p $tmp $stills

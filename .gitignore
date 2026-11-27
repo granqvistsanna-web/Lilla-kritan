@@ -30,3 +30,6 @@ produktion/ljud-original/*
 
 # QA-kontaktark från verktyg/qa-film.sh
 *-qa.jpg
+
+# Luckbyggenas platser (produktion/youtube/shorts/jul/plats.sh)
+produktion/youtube/shorts/jul/.platser/
