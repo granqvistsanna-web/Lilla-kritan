@@ -27,10 +27,11 @@ done
 # sången börjar 19,2 s in (var 24,5 med det 11,3 s långa introt; introt kortat till 9,0 s och väntan KAP 3 s 2026-11-09).
 # Sanna 2026-11-09 "start music a bit lower and fade in, a bit later": förspelet tonas in från tyst (sångtid 1,5–5,0 s, sången
 # själv börjar 8,0); tagningen klipps inte.
-# skogsljud under ritandet (Sanna 2026-11-09 "forest soundtrack on drawing intro"): från kritsvepet ut ur introt (0:07.6) tills sången har börjat, tonas in och ut
+# skogsljud under ritandet (Sanna 2026-11-09 "forest soundtrack on drawing intro"): från kritsvepet ut ur introt (0:07.6) tills sången har börjat, tonas in och ut.
+# Volym 1,5 (QA J14 27/11: på 0,4 låg ritandet på −35 till −40 dB, nästan tyst; nu ca −26 under Malin och sången på ca −18)
 SKOG=../../assets/ljud/effekter/skogsljud/skogsljud-1.m4a
 ffmpeg -loglevel error -y -i $T/bild.mp4 -i sang.m4a "${in[@]}" -i $SKOG -filter_complex \
-  "${fx}[1:a]afade=t=in:st=0:d=0.6,volume=0.9,adelay=20700|20700[s];[$((n + 2)):a]atrim=0:15,afade=t=in:d=1.2,afade=t=out:st=12.3:d=2.2,volume=0.4,adelay=7600|7600[skog];[s][skog]${fl}amix=inputs=$((2 + n)):normalize=0:duration=longest,apad[a]" \
+  "${fx}[1:a]afade=t=in:st=0:d=0.6,volume=0.9,adelay=20700|20700[s];[$((n + 2)):a]atrim=0:15,afade=t=in:d=1.2,afade=t=out:st=12.3:d=2.2,volume=1.5,adelay=7600|7600[skog];[s][skog]${fl}amix=inputs=$((2 + n)):normalize=0:duration=longest,apad[a]" \
   -map 0:v -map "[a]" -shortest -c:v copy -c:a aac -b:a 192k film/avsnitt-013-grovklipp.mp4
 rm -rf $T
 ffprobe -v error -show_entries format=duration -of csv=p=0 film/avsnitt-013-grovklipp.mp4

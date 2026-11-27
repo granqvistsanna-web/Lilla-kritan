@@ -144,14 +144,16 @@ const SOLO_Z = 1.3, SOLO_CY = 631;                    // solot: kamerazoom 1,3, 
 $('bakom').insertAdjacentHTML('afterend', '<g id="dansare" filter="url(#boil)"></g>');
 const MOTOR = [];
 const laddat = (async () => {
+  // riggarna bygger numera på verktyg/rigg-motor.js: den läggs in i varje figurs egen räckvidd (inte globalt, där den krockar med kanin-motorn)
+  const motor = (await Promise.all(['blinka', 'rigg-motor'].map(async n => (await fetch(ASSETS + '../verktyg/' + n + '.js')).text()))).join('\n');
   const kod = await Promise.all(DJUR.map(async d => { if (!d) return null; const [mapp] = d;
     const bas = ASSETS + 'karaktarer/' + mapp + '/premium/', html = await (await fetch(bas + 'uttryck.html')).text();
-    return html.slice(html.indexOf('const RIGG = {'), html.indexOf('Object.assign(window, {'))
+    return (motor + '\n' + html.slice(html.indexOf('const RIGG = {'), html.indexOf('Object.assign(window, {')))
       .replaceAll('href="cut/', 'href="' + bas + 'cut/').replaceAll("'#figurer > g'", "'#dansare > g'")
       .replaceAll("getElementById('figurer')", "getElementById('dansare')").replaceAll('lock-${', 'dlock-${');
   }));
   kod.forEach((k, i) => { if (!k) return;   // i tur och ordning, så att figurernas id (klipp för ögonlocken) blir 0–3
-    const m = new Function('mjuk', k + '\nreturn { figur, rita, blanda, POSE0, NEUTRAL, FOTTER };')(mjuk);
+    const m = new Function(k + '\nreturn { figur, rita, blanda, POSE0, NEUTRAL, FOTTER };')();
     m.fig = m.figur(0, 0, S); m.fig.setAttribute('opacity', 0); MOTOR[i] = m;
   });
 })();

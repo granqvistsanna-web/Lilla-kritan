@@ -7,6 +7,8 @@ const lerp = (a, b, k) => a + (b - a) * k, kl01 = k => Math.max(0, Math.min(1, k
 const ease = k => { k = kl01(k); return k * k * (3 - 2 * k); };
 const fas = (u, a, b) => ease((u - a) / (b - a));             // 0 före a, 1 efter b, mjukt emellan
 const studs = s => Math.abs(Math.sin(Math.PI * s / BEAT));    // ett skutt per slag
+// På backen: ett kort hopp på slaget och hjulen på kurvan mellan slagen (QA 27/11: med studs var bilen nästan alltid i luften och svävade)
+const skutt = s => studs(s) ** 6;
 const blink = s => Math.floor(s / BEAT) % 2 ? 0.2 : 1;          // blåljusen blinkar, ett slag på, ett av
 let TID = 0, BILD = '', BILD0 = 0;                           // BILD = storyboardbilden just nu (kanin() glider mellan bilderna)                                                  // avsnittstid just nu
 
@@ -55,7 +57,7 @@ const studsApplen = s => { platta(ROSA_ANG); [1700, 1180, 680, 160].forEach((x, 
 // foten (04a) → halvvägs upp (04c) → toppen (04e) → börjar nerför (04g) → nere vid målet (04i).
 const rodbild = (fx0, fx1, kf = backeKant) => (u, s) => { const hurra = studs(s) > 0.6;
   angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), kf, mun: hurra ? 'o' : 'le' });
-  paKant(lerp(fx0, fx1, ease(u)), kf, { k: 0.6, lampa: 1, blaljus: blink(s), upp: 8 * studs(s) });
+  paKant(lerp(fx0, fx1, ease(u)), kf, { k: 0.6, lampa: 1, blaljus: blink(s), upp: 8 * skutt(s) });
   kanin({ iBil: true, uttryck: 'jatteglad', pose: blandaPose('neutral', 'hurra', ease(kl01((studs(s) - 0.2) / 0.6))), rikt: -0.6 }); kamera(1); };
 const pop = k => k <= 0 ? 0 : k >= 1 ? 1 : ease(k) * (1 + 0.3 * Math.sin(Math.PI * k));
 const BALLONG = A + 'rekvisita/ballong-rod/cut/ballong-rod-tunn.png', BLOMMA = A + 'rekvisita/blomma-rod/cut/blomma-rod-tunn.png';   // -tunn: tunnare vit kant
@@ -144,19 +146,19 @@ const ANIM = {
   '04a': rodbild(1600, 1150),   // Sanna 2026-11-09: bilen kör bara en bit upp, tutan (04d) och uppförsbacken (04b) fortsätter därifrån   // QA: bilen i bild från början
   '04b': (u, s) => { const k = 0.7;   // uppför backen bland äppelträden: lugnt först, på "Brum, brum!" (ekot) gasar hon och susar upp
     const p = 0.3 * u + 0.7 * fas(u, 0.45, 0.95), fx = lerp(1150, 450, p), fort = u > 0.5 && u < 0.95;
-    angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s) }); paKant(fx, backeKant, { k, lampa: 1, upp: (fort ? 14 : 6) * studs(s) });
+    angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s) }); paKant(fx, backeKant, { k, lampa: 1, upp: (fort ? 14 : 6) * skutt(s) });
     const g = ease(fas(u, 0.47, 0.55)) * (1 - ease(fas(u, 0.93, 0.99)));   // mjukt in i och ur farten
     kanin({ iBil: true, uttryck: blanda('nyfiken', 'jatteglad', g), pose: blandaPose('neutral', 'hurra', g), rikt: -0.7 }); kamera(1.15, 1920 - (fx + 491 * CS * k), backeKant(fx) - 230); },
   '04c': rodbild(1050, 420),
   '04d': (u, s) => { const fx = 1150, k = 0.7, tut = studs(s) > 0.6;   // tuta vid foten av kullen (tagning 7: tuta före uppför): en tut per "tuta", äpplena i träden säger "o"
-    angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), mun: tut ? 'o' : 'le' }); paKant(fx, backeKant, { k, lampa: 1, upp: 6 * studs(s) });
+    angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), mun: tut ? 'o' : 'le' }); paKant(fx, backeKant, { k, lampa: 1, upp: 6 * skutt(s) });
     kanin({ iBil: true, uttryck: 'fnissig', pose: { armar: [0, 30 + 26 * studs(s)] }, rikt: -0.3 });
     const [ax, ay] = ansiktePaKant(fx, backeKant, k); kamera(lerp(1.35, 1.6, ease(u)), 1920 - ax + 120, ay + 140); },
   '04e': rodbild(420, 300),
   '04f': (u, s) => studsApplen(s),   // "Studsa!": en egen bild med bara äpplen som studsar högt
   '04g': rodbild(1700, 1500, nerKant),
   '04h': (u, s) => { const k = 0.7, fx = lerp(1500, 560, fas(u, 0.05, 0.9) ** 1.6), fort = u > 0.3;   // nerför andra sidan, fortare och fortare: "Wiii!"
-    angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), kf: nerKant, mun: fort ? 'o' : 'le' }); paKant(fx, nerKant, { k, lampa: 1, upp: 4 * studs(s) });
+    angscen({ t: T(s), o: 0, applen: false }); backe({ t: T(s), kf: nerKant, mun: fort ? 'o' : 'le' }); paKant(fx, nerKant, { k, lampa: 1, upp: 4 * skutt(s) });
     kanin({ iBil: true, uttryck: 'jatteglad', pose: blandaPose('neutral', 'hurra', ease(fas(u, 0.25, 0.35))), rikt: -0.5 }); kamera(1.15, 1920 - (fx + 491 * CS * k), nerKant(fx) - 230); },
   '04i': rodbild(560, 380, nerKant),   // stannar innan bilen åker ut till höger   // QA: rakt klipp, SVEP-svepet kommer direkt efter
   // "Vad är rött?" (tagning 7): hon tittar sig omkring, och på svaret dyker saken upp framför bilen (bilden på orden)
