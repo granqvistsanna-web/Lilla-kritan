@@ -88,3 +88,9 @@ Djup QA av kodscenen (`scener/mottagningen/`) efter feedback 1 (commit `22b80386
 - Förhandsvisning (`--snabb`) 4:33, −14,7 LUFS; `qa-film.sh` utan anmärkning utom den kända `krita kod`.
 - **Småsaker**: pratbubblan i 25b/25d lägre (nuddade överkanten), tanden i 31a längre ner (nuddade hyllan), spegeln i 16a längre från håret.
 - Parallellt i en annan session: `HALL()` (armarna håller elefanten), lampan på elefanten i 14, handen tar tandborsten ur fickan i 23d, satt-ihop.sh med intro och prenumerera-kort.
+
+## Slutrendering 2 (2026-11-26 kväll)
+
+- Förhandsvisningen 19:07 godkänd av Sanna. Slutrenderad med `verktyg/render-delat.mjs` (1920×1080, 30 fps, 7890 bildrutor, 4:23) och satt ihop med `film/satt-ihop.sh`: bilderbok-introt först och prenumerera-kortet sist → `film/avsnitt-049.mp4`, 4:33, −14,7 LUFS, topp −1,6 dBFS.
+- `qa-film.sh`: inget fryst eller tyst, boil 1,7 px/s (gräns 4,0), rösterna rena, inget tal tvärt vid klipp (32 klipp). Svart 264,9–266,4 s är kritirisen före prenumerera-kortet, 272,3–273 s kortets slut. `krita kod` flaggar egen krita (regeln gäller från 052).
+- Den förra mastern (25/11, 4:37, utan intro och kort) ligger kvar som `film/avsnitt-049-forra.mp4` tills Sanna säger ok.
