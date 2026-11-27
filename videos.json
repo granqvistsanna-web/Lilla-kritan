@@ -1835,10 +1835,10 @@
   "name": "Pandan leker ute"
  },
  "060": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/060-1127-2013.mp4",
-  "duration": 236.3,
-  "rendered": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
-  "file": "avsnitt/060-kaninen-gar-pa-pottan/scener/badrummet/badrummet.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/060-1127-2046.mp4",
+  "duration": 246.3,
+  "rendered": "2026-11-27 20:46 (slutrendering 1080p med intro och prenumerera-kort)",
+  "file": "avsnitt/060-kaninen-gar-pa-pottan/film/avsnitt-060.mp4",
   "status": "granska",
   "name": "Kaninen går på pottan",
   "approved": 1795805314782
