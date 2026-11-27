@@ -11229,9 +11229,10 @@
   "sec": 4,
   "tags": [],
   "note": "flip up frog too",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794375239,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795796476067
  },
  "nkpche6bf3mwz5lvru": {
   "ep": "062",
