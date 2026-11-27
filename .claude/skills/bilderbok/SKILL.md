@@ -25,7 +25,7 @@ Before the script, check three things (recipe, same section):
 
 1. **Problem:** a small everyday one, the animal doesn't want to.
 2. **Kritan draws a helper thing** inside the scene (contour, short guessing pause, the real picture fills in). *"Varsågod!"*
-3. **Thanks:** *"Ska vi säga tack?"* (2.5 s pause, keep the tack scene quick), *"Tack!"*. Never *"Vad säger man?"* (too sharp, Sanna 2026-11-11)
+3. **Thanks:** Malin says *"Tack, kritan!"* straight away and the animal nods. No question to the child: never *"Vad säger man?"* (too sharp, 2026-11-11) and never *"Ska vi säga tack?"* (Sanna 2026-11-27). Never *"Ni pratar visst med varandra"* either (2026-11-27).
 4. **Play** with the thing, one small surprise.
 5. **Solve it three times** with the same phrase; the last time the animal doesn't know where, and the child helps: *"Kan du hjälpa …? Kan du se var … är?"* (5 s pause, close-up, the spot shimmers after 3 s), *"Ja, där! Ja, på …!"*
 6. **A short play beat, goodbye,** kritiris.
@@ -53,7 +53,7 @@ After gate 3, new lines get new numbers and a short take of their own. Re-record
 - **Never *"Vad kan det vara?"*.** The drawing intro says *"Hm … vad blir det nu?"*.
 - **Short lines,** one thought each. Repetition, *"Oj!"*, small laughs. Less talk is better, and spaced out: 0.7 s extra air on every row with a line (`GLES`).
 - **The picture on the word:** the spot is gone exactly on *"borta!"* (word time in `BORTA`, measured with whisper per take), the bubble pops on *"plopp!"*.
-- **Three questions to the child with a 4–5 s pause,** a *"Varsågod"* and a *"Tack!"*, nothing scary.
+- **Questions to the child with a 4–5 s pause** (guess the drawing, find the lost thing), a *"Varsågod"* and a direct *"Tack, kritan!"*, nothing scary.
 - **Camera: hard cuts between still framings.** The only zoom is from the paper into the first place. Kritsvep only between intro and drawing (and for a change of place, which a bilderbok doesn't have). Ending: kritiris. See "Zoom, klipp eller övergång?" in the recipe.
 - **Calm motion, one thing at a time.** No bouncing, no spinning, no mirroring, no bent arms. The arm is the rig's own straight arm, attached to the body; a waving arm goes behind the body.
 - **Happy faces have open eyes.** Closed-eye joy only where a row asks for it. A sleeping figure lies down.

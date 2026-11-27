@@ -81,10 +81,9 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 | 4 | **N.** Öronen faller, kroppen sjunker lite. Paus 1 s mellan replikerna, pandan tittar på oss | Oj då. Pandan har visst inget att leka med. *(paus 1 s)* Hm … vad ska pandan leka med? | trumpet ljud |
 | 5 | **H** (kritan kommer in), sedan **D** på marken framför pandan: kritan ritar bollens kontur, gisspaus 3 s | Titta! Kritan ritar något på marken. | `krita-ritar` |
 | 6 | **D:** bollen fylls i och guppar en gång. Sedan **N:** kawaii-ögon, öronen reser sig. Kritan flyger ut | En boll! Varsågod, pandan. | `glitter`, förtjust ljud |
-| 6b | **HB.** Pandan tittar på bollen, sedan på oss | Ska vi säga tack? *(paus 2,5 s)* | nyfiket ljud sent i pausen |
-| 6c | **HB.** Pandan nickar direkt | Tack, kritan! | glatt ljud |
+| 6c | **HB.** Pandan tittar på bollen och nickar direkt | Tack, kritan! | glatt ljud |
 | 7 | **D** på tassen som puffar bollen, sedan **H:** bollen far upp i en liten båge, landar och studsar två gånger. **N:** fnissig, öronen vippar | *(när bollen landat)* Oj! Du puffar på bollen med tassen! | `tass`, `boing`, fniss |
-| 8 | **HB.** Utbytet: pandan säger ett ljud, bollen guppar, pandan igen, bollen igen | *(efter utbytet)* Ni pratar visst med varandra. | pandan – `boing` – pandan – `boing` |
+| 8 | **HB.** Utbytet: pandan säger ett ljud, bollen guppar, pandan igen, bollen igen | – *(utbytet är tyst, Sanna 2026-11-27)* | pandan – `boing` – pandan – `boing` |
 | 9 | **H.** Pandan puffar en gång till, bollen gör en båge över kanten och landar i hinken. **N:** förvånad, sedan fnissig | *(när den landat)* Oj! Bollen hoppade ner i hinken! | `tass`, `hink-dunk`, förvånat ljud |
 | 10 | **H.** Bollen ligger framför pandan igen (klipp). **N** i pausen: pandan nickar | Ska bollen rulla nu, pandan? *(paus: pandan svarar)* Ja, bra idé! | pratar (tre ljud) i pausen |
 | 11 | **H.** Bollen rullar åt höger och stannar bakom stöveln på "där". **D** på stöveln: en röd skiva bredvid skaftet. Sedan **H:** pandan går dit | Bollen rullar. Rulla, rulla … där! Bakom stöveln. | `rull`, glatt ljud efter repliken, `smasteg` |
@@ -130,10 +129,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [curious] Hm … vad ska pandan leka med?
 [happy] Titta! Kritan ritar något på marken.
 [happy] En boll! Varsågod, pandan.
-[warmly] Ska vi säga tack?
 [happy] Tack, kritan!
 [surprised] Oj! Du puffar på bollen med tassen!
-[giggles] Ni pratar visst med varandra.
 [laughs] Oj! Bollen hoppade ner i hinken!
 [cheerfully] Ska bollen rulla nu, pandan?
 [happy] Ja, bra idé!
@@ -161,7 +158,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hej då! Vi ses snart! [giggles]
 ```
 
-39 repliker.
+37 repliker (*"Ska vi säga tack?"* och *"Ni pratar visst med varandra"* strukna 2026-11-27).
 
 ## Pandans röst och ljuden
 
@@ -173,7 +170,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 | 2 | förtjust | 2, 6, 12, 15, 22, 25 |
 | 3 | kort fniss | 7, 16, 26, 29 |
 | 4 | mysig suck | 27 |
-| 5 | nyfiken, frågande | 3, 6b, 13 |
+| 5 | nyfiken, frågande | 3, 13 |
 | 6 | trumpen | 4, 20 |
 | 7 | pratar (tre ljud i rad) | 8, 10 |
 | 8 | hej då | 28 |
@@ -189,10 +186,10 @@ Förslag på namn: `panda-gullig` 1–10. Pandaungar piper och gnyr mjukt på ri
 - [x] 1 figur (pandan), 1 plats (lekplatsen), inget platsbyte, inget kritsvep i berättelsen
 - [x] **Inga nya saker och inga nya poser:** allt finns från 021 och riggen
 - [x] Inga djurnamn i det som sägs eller i filnamnen: "pandan", "bollen", "kritan". Röstmappen heter `pandan-leker-ute`
-- [x] Aldrig *"Vad kan det vara?"* (ritintrot: *"Hm … vad blir det nu?"*). Aldrig *"Vad säger man?"* (*"Ska vi säga tack?"*, paus 2,5 s)
+- [x] Aldrig *"Vad kan det vara?"* (ritintrot: *"Hm … vad blir det nu?"*). Ingen tack-fråga: Malin säger direkt *"Tack, kritan!"* (2026-11-27)
 - [x] Varje replik har en v3-tagg, ingen `[excited]` (021 hade sex). Hej då är `[warmly]`
 - [x] Ritintrot ritar en sak ur berättelsen (lekstugan), inte pandan. Pandan kommer in i rad 1
-- [x] Inga uppmaningar till barnet att göra något med kroppen: kittla och hoppa med är borta. *"Hopp!"* i rad 25 beskriver pandans eget skutt. Barnets del: gissa teckningarna, säga tack, **leta efter bollen**
+- [x] Inga uppmaningar till barnet att göra något med kroppen: kittla och hoppa med är borta. *"Hopp!"* i rad 25 beskriver pandans eget skutt. Barnets del: gissa teckningarna, **leta efter bollen**
 - [x] Barnet letar efter en sak som är borta: bollen bakom rutschkanan. Paus 5 s, helbild och sedan närbild, skimmer efter 3 s, *"Ja, där!"*
 - [x] Den gömda bollen syns bara där den ska: vid sidan av lekstugans vägg, aldrig under huset, och inte under kullen
 - [x] Samma fras tre gånger: *"Rulla, rulla … där!"* (rad 11, 12, 16), den tredje med barnets hjälp
@@ -205,7 +202,7 @@ Förslag på namn: `panda-gullig` 1–10. Pandaungar piper och gnyr mjukt på ri
 - [x] Inget läskigt: pandan är lite ledsen i rad 4 och 20, och det löses direkt. Stegen är låg och pandan landar mjukt
 - [x] Inget går genom något: bollen går över hinkens kant, stannar mot väggen, rullar på taket; stegen står mot väggen; pandan klättrar framför stegen
 - [x] Inga snurrar, inga böjda armar, pandan vänds inte och rullar inte
-- [x] Fniss: Malin i rad 8 och 9 (+ giggles sist), pandan i 7, 16, 26, 29. Rad 8 och 9 ligger i följd för Malin, som i 021; säg till om en ska bort
+- [x] Fniss: Malin i rad 9 (+ giggles sist), pandan i 7, 16, 26, 29
 - [x] Ingen ny musik
 - [ ] **Längden:** ca 3:50 plus intro, prenumerera-kort och outro går lite över reglernas 3–4 min. Receptet siktar på 3:45–4:15 sedan 2026-11-11
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt. Reglernas "bjud in barnet att hoppa och vinka med" följs inte, enligt Sannas regel 2026-11-25
@@ -243,5 +240,5 @@ Inga nya saker. I kod: skimret, skuggorna, dammtussarna.
 3. **Slutleken** är att pandan puffar bollen mot lekstugans vägg och får den tillbaka (rad 26). Den ersätter kittlingen och hundens varv med *"Hopp, hopp!"*. Alternativ: pandan lägger sig på mage över bollen och gungar lugnt, eller bollen hamnar i hinken en gång till.
 4. **Tunna kanter på pandan** (`cut-tunn/`): ✅ godkänt 2026-11-26 och gjort 2026-11-27. pandan har status ✅ Referensark klart. Kanten ändras från 10 px till ca 1 % som på de andra figurerna, inget annat. Okej att göra det före bygget?
 5. **Bollen på huvudet** (rad 18) är 021:s sätt att få upp bollen på taket. Pandan har öron på toppen, så bollen studsar mellan dem. Om det ser trångt ut i provbilden puffar pandan upp bollen med tassen i stället.
-6. **"Ni pratar visst med varandra"** (rad 8) är kvar från 021. Den är inte en "tydlig replik" i 25/11-meningen, men den är seriens återkommande skämt. Ta bort raden om du vill ha kortare.
+6. ~~**"Ni pratar visst med varandra"**~~ struken 2026-11-27 (Sanna), liksom *"Ska vi säga tack?"*: Malin säger *"Tack, kritan!"* direkt.
 7. **Stöveln** står som oanvänd i `bakgrunder/lekplatsen.md` sedan Tittut bytte den mot sandlådan, men 021 använder den. Den är kvar här som i 021.

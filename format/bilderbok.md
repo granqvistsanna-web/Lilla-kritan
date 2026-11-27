@@ -49,8 +49,8 @@ Sex steg, alltid i den här ordningen:
 
 1. **Problemet.** Figuren har ett litet vardagsproblem och vill inte (vill inte bada, är smutsig).
 2. **Kritan ritar en hjälpsak** inne i scenen: konturen, en kort gisspaus, sedan fylls den riktiga saken i. Malin: *"Varsågod!"*
-3. **Tack.** Malin frågar barnet *"Ska vi säga tack?"* (paus 2,5 s, Sanna 2026-11-11: "make tack scene a bit faster"), sedan *"Tack!"* och figuren nickar.
-4. **Leken.** Med saken blir det roligt. Figuren och saken "pratar" (nöff – pip – nöff – pip) och något litet överraskande händer (ankan sitter på huvudet).
+3. **Tack.** Malin säger direkt *"Tack, kritan!"* och figuren nickar. Ingen fråga till barnet och ingen paus före (Sanna 2026-11-27: *"just säg tack kritan"*; förut *"Ska vi säga tack?"* med paus 2,5 s).
+4. **Leken.** Med saken blir det roligt. Figuren och saken "pratar" (nöff – pip – nöff – pip) och något litet överraskande händer (ankan sitter på huvudet). Malin kommenterar inte utbytet (*"Ni pratar visst med varandra"* är struket, Sanna 2026-11-27).
 5. **Lösningen med barnets hjälp.** Samma handling tre gånger (*"Skrubba, skrubba … borta!"*). Den sista gången vet figuren inte var, och barnet hjälper till.
 6. **Lek och hej då.** Ett kort lekuppslag efter lösningen, sedan hej då till figuren och saken, och kritirisen.
 
@@ -66,7 +66,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 |---|---|---|---|
 | 1 | Helbild, figuren trippar in och stannar | *Hej, grisen!* | små steg, glatt nöff, öronen vippar |
 | 4 | Närbild, figuren vänder bort trynet, öronen faller | *Oj då. Grisen vill visst inte bada.* | trumpet fnys |
-| 6 | Figuren tittar på saken, öronen reser sig | *Ska vi säga tack?* *(paus 2,5 s)* | nyfiket nöff |
+| 6 | Figuren tittar på saken, öronen reser sig, nickar | *Tack, kritan!* | glatt nöff |
 
 ### Replikerna
 
@@ -75,7 +75,7 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 - **Korta meningar.** En tanke per replik, högst två korta meningar.
 - **Upprepning:** samma fras tre gånger (*"Skrubba, skrubba … borta!"*), samma ord två gånger (*"… visst …"*), samma utbyte fram och tillbaka.
 - **Glädje:** *"Oj!"*, *"Oj, oj, oj!"*, *"Oj då."*, små skratt (*"Ha ha!"*), *"Mmm …"*. Tagning 4 i 020 lade till dem överallt (Sanna: *"a bit of laugh and oj and more happy"*).
-- **Frågor till barnet** med **paus 4–5 s**, och sedan visar bilden svaret. 020 har tre: *"Vad säger man?"* (4 s, från 021 *"Ska vi säga tack?"*), *"Kan du hjälpa grisen? Kan du se var leran är?"* (5 s), *"Kan du blåsa en bubbla?"* (4 s).
+- **Frågor till barnet** med **paus 4–5 s**, och sedan visar bilden svaret. 020 har tre: *"Vad säger man?"* (4 s; tack-frågan är struken helt sedan 2026-11-27, Malin säger *"Tack, kritan!"* direkt), *"Kan du hjälpa grisen? Kan du se var leran är?"* (5 s), *"Kan du blåsa en bubbla?"* (4 s).
 - **Hjälpmönstret** (tagning 3, Sanna 2026-11-10):
   1. *"Oj, lite lera är kvar. Grisen vet inte var."* Figuren tittar åt vänster, sedan åt höger, med ett frågande nöff.
   2. *"Kan du hjälpa grisen? Kan du se var leran är?"* Paus 5 s. Klipp till närbild på fläcken. Efter ca 3 s av pausen börjar den skimra svagt.
@@ -90,7 +90,8 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 - **Inga djurnamn** i det som sägs: *"Hej, grisen!"*, *"Hej då, ankan!"*, aldrig figurens namn. Det gäller filnamnen i röstbanken också.
 - **Aldrig *"Vad kan det vara?"*.** I ritintrot säger Malin *"Hm … vad blir det nu?"*.
 - **Malin efter handlingen** (Sanna 2026-11-11): när en rad beskriver en animerad handling börjar rörelsen först, och repliken startar 0,4–0,8 s in i den eller när den landat. Malin säger aldrig något innan det syns. Frågor och uppmaningar kommer före.
-- **Aldrig *"Vad säger man?"*** (Sanna 2026-11-11: för skarpt). Tack-frågan är *"Ska vi säga tack?"*.
+- **Ingen tack-fråga:** aldrig *"Vad säger man?"* (för skarpt, 2026-11-11) och inte heller *"Ska vi säga tack?"* (2026-11-27). Malin säger direkt *"Tack, kritan!"* (*"Tack för <saken>, kritan!"* andra gången).
+- **Aldrig *"Ni pratar visst med varandra"*** (Sanna 2026-11-27). Utbytet mellan figuren och saken får vara tyst.
 - **Tydligt hej och hej då:** *"Hej, <djuret>! Hej, hej!"* med vinkning i början, *"Hej då, <djuret>!"* och *"Hej då! Vi ses snart!"* i slutet.
 - Inget läskigt: inget vatten i ögonen, ingen gråt, ingen som är elak.
 - Ett *"Varsågod"* och ett *"Tack!"* i varje avsnitt.
@@ -108,12 +109,12 @@ Varje rad i `manus.md` och `rader.mjs` är ett uppslag: **en bild, en rörelse**
 
 | Tagg | Till |
 |---|---|
-| `[warmly]` | *Kritan ritar …*, *Ska vi säga tack?*, *Kan du hjälpa …?* |
+| `[warmly]` | *Kritan ritar …*, *Kan du hjälpa …?* |
 | `[curious]` | *Hm … vad blir det nu?*, *Hm … vad gör vi nu?*, *Kritan ritar mer …* |
 | `[happy]` (aldrig `[excited]`, lät för skarpt 2026-11-22) | svaret (*Oj! En gris!*), *Titta!*, *En båt!*, *Ja, där!* |
 | `[happy]` | hej, tack, hej då, *Skrubba, skrubba … borta!* |
 | `[cheerfully]` | frågorna till figuren: *Nu ska du väl bada?*, *Upp på pallen …* |
-| `[laughs]`, `[chuckles]`, `[giggles]` | *Oj, oj, oj!*, *Oj då.*, *Ha ha!*, *Ni pratar visst …*, efter *plopp!* |
+| `[laughs]`, `[chuckles]`, `[giggles]` | *Oj, oj, oj!*, *Oj då.*, *Ha ha!*, efter *plopp!* |
 | `[surprised]` | *Oj! Nu hoppar grisen i badkaret!* |
 | `[happy sigh]` | *Mmm … ganska skönt.* |
 | `[playfully]` | *Fff … plopp!* |
@@ -516,8 +517,8 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 | **Platser (1)** | <Platsen> (`bakgrunder/<plats>.md`). Inget platsbyte |
 | **Nya saker** | <hjälpsaken som kritan ritar> |
 | **I kod** | <fläckar, skum, droppar …> |
-| **Kärna** | <Djuret> <problem>. Kritan ritar <sak>: "Varsågod!" – "Tack!" Med <saken> blir det roligt, <lösningen> tre gånger, barnet hjälper med den sista. Lek. Hej då! |
-| **Barnet övar på** | <peka på …> · <hitta …> · säga tack |
+| **Kärna** | <Djuret> <problem>. Kritan ritar <sak>: "Varsågod!" – "Tack, kritan!" Med <saken> blir det roligt, <lösningen> tre gånger, barnet hjälper med den sista. Lek. Hej då! |
+| **Barnet övar på** | <peka på …> · <hitta …> |
 
 | # | Bild (en rörelse) | Malin säger | Djuret svarar, ljud |
 |---|---|---|---|
@@ -527,10 +528,9 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 | 3 | Helbild, det vuxna förslaget | Nu ska du väl <göra något>? | trumpet ljud, skakar på huvudet |
 | 4 | Närbild, vänder bort | Oj då. <Djuret> vill visst inte <…>. *(paus 1 s)* Hm … vad gör vi nu? | trumpet ljud |
 | 5 | Kritan ritar hjälpsaken | Titta! Kritan ritar något. *(gisspaus 3 s)* <En …>! Varsågod, <djuret>. | krita-ritar, glitter |
-| 6 | Djuret tittar på saken | Ska vi säga tack? *(paus 2,5 s)* | nyfiket ljud |
-| 7 | Nickar | Tack! | förtjust ljud |
+| 6 | Djuret tittar på saken och nickar | Tack, kritan! | förtjust ljud |
 | 8 | Leken börjar | Oj! Nu <…>! | <…> |
-| 9–12 | Leken, en överraskning | <kort kommentar>. Ni pratar visst med varandra. | ljud – sakens ljud – ljud |
+| 9–12 | Leken, en överraskning | <kort kommentar> (utbytet ljud – sak – ljud är tyst) | ljud – sakens ljud – ljud |
 | 13 | Lösningen börjar | Ska du <…> nu? | förtjust ljud |
 | 14 | Första gången | Först <…>. <Fras, fras> … borta! | effekt, fniss |
 | 15 | Andra gången | Och <…>. <Fras, fras> … borta! | effekt |
@@ -555,10 +555,8 @@ De flesta stegen ovan kan Claude göra från början till slut, utom att välja.
 [curious] Hm … vad gör vi nu?
 [happy] Titta! Kritan ritar något.
 [happy] <En …>! Varsågod, <djuret>.
-[warmly] Ska vi säga tack?
-[happy] Tack!
+[happy] Tack, kritan!
 [surprised] Oj! Nu <…>!
-[giggles] Ni pratar visst med varandra.
 [cheerfully] Ska du <…> nu?
 [happy] Först <…>. <Fras, fras> … borta!
 [happy] Och <…>. <Fras, fras> … borta!
@@ -621,7 +619,7 @@ Fyra avsnitt byggdes, putsades och publicerades samma dag (021 Hunden leker, 022
 - **Djuret har personlighet.** Små glada hopp på de glada ställena (hej, gåvan, när saken hittas, hej då), en tydligt förvånad min när något försvinner (stora ögon, liten rund mun, öronen upp, 0,3 s stillhet), kawaii-ögon med glitter när djuret ser gåvan, glada bågögon vid fniss, och blicken följer det Malin pratar om. Uttrycken läggs i scenen med riggens `ansikte`/`blanda`, den låsta figuren ändras inte.
 - **Djuret leker en stund innan Malin beskriver det** (2–3 s före *"Nu leker hunden"*).
 - **Högst 3–4 fniss per film**, bara där något är roligt, aldrig två rader i följd och aldrig över Malin. Sanna om zebran: *"way too much laughing"*.
-- **Tack-scenen är snabb:** paus 2,5 s efter *"Ska vi säga tack?"*, nicken kommer direkt på *"Tack!"*.
+- **Tack-scenen är snabb:** ingen fråga, Malin säger *"Tack, kritan!"* direkt efter *"Varsågod"* och nicken kommer på *"Tack"* (2026-11-27).
 
 ### Ritintrot och kritans teckningar
 - **Konturen ska gå att gissa innan den fylls i.** Rita artens kännetecken som egna drag: lammets öron åt sidorna och ullkrullar, hundens hängöron, och **alltid armarna** (ett drag per arm). Saker likaså: mössans tofs, kant och ribbor, handdukens ögla och rutor, stegens stolpar och pinnar.
