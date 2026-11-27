@@ -1852,11 +1852,11 @@
   "name": "063 Hösten i boken"
  },
  "064": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/064-1127-2021.mp4",
-  "duration": 200.6,
-  "rendered": "2026-11-27 20:21 (grind 5: storyboard och animatik, 40 bilder, 3:20,6)",
-  "file": "avsnitt/064-vintern-i-boken/storyboard/animatik.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/064-1127-2124.mp4",
+  "duration": 199.6,
+  "rendered": "2026-11-27 21:24 (Grind 6, snabb förhandsvisning (960×540, 15 fps): hela scenen i boken med kaninens rigg, snön i kod, fåglarna, kritans två teckningar. Loggan läggs på i slutbygget.)",
+  "file": "avsnitt/064-vintern-i-boken/scener/boken/boken.mp4",
   "status": "granska",
-  "name": "Vintern i boken – animatik"
+  "name": "064-1127-2124.mp4"
  }
 }
