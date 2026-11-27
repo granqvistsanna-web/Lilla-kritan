@@ -47,7 +47,7 @@ const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const bild = (href, w, h, t, extra = '') => `<image href="${href}" width="${w}" height="${h}" transform="${t}" ${extra}/>`;
 const KARVE = R + 'julkarve/cut/julkarve.png', PASE = R + 'fropase/cut/fropase.png', PASE_TOM = R + 'fropase/cut/fropase-tom.png', LUVA = R + 'tomteluva/cut/tomteluva.png';
 // ?bg=<mapp/fil> byter plattan (för att jämföra bakgrunder); annars snögården
-const PLATTA = A + 'bakgrunder/' + (new URLSearchParams(location.search).get('bg') || 'bjorkdungen/bjorkdungen-platt.jpeg');   // platta björkdungen (Sanna 2026-11-19)
+const PLATTA = A + 'bakgrunder/' + (new URLSearchParams(location.search).get('bg') || 'bjorkdungen/bjorkdungen-platt-holk.jpeg');   // platta björkdungen (Sanna 2026-11-19); -holk: holken hel och 70 px till vänster (QA 27/11, den var kapad i bilden)
 let TOM_FINNS = false;
 
 let L, G; const GS = 0.45;
@@ -111,8 +111,8 @@ const flinga = (x, y, s = 1) => lagg('fram', `<g transform="translate(${x.toFixe
   <path d="M0 -14V14M-14 0H14M-10 -10L10 10M10 -10L-10 10" stroke="#c9d8e6" stroke-width="9"/><path d="M0 -14V14M-14 0H14M-10 -10L10 10M10 -10L-10 10" stroke="#fff" stroke-width="5"/></g>`);
 
 // --- Snögården ----------------------------------------------------------------------------------------------------------------
-// fåglarnas hem: fågelholken vid högerkanten (björkdungen, mätt i 1920 × 1080): hålet (1862, 570), taket överst y 440
-const HOLK = [1862, 570], GRAN = HOLK;
+// fåglarnas hem: fågelholken vid högerkanten (björkdungen, mätt i 1920 × 1080): hålet (1792, 570) i plattan -holk, taket överst y 440
+const HOLK = [1792, 570], GRAN = HOLK;   // QA 27/11: hela holken, 70 px till vänster (bjorkdungen-platt-holk.jpeg)
 const FRON = [[880, 878], [915, 886], [950, 874], [985, 884], [1020, 879], [1055, 888], [1090, 876], [940, 893], [1010, 895], [1070, 896], [900, 894], [1040, 870]];
 // snö: tat 0–1 hur många flingor faller (i hela bilden, i lugn takt)
 const snofall = tat => tat > 0.01 && lagg('fram', Array.from({ length: Math.round(90 * tat) }, (_, i) => {
@@ -185,9 +185,9 @@ const pip = (tl, tider) => ({ oppen: pipT(tl, tider), lyft: 7 * pipT(tl, tider) 
 const VID_FRON = { rod: [930, 888], gul: [1025, 892], bla: [1110, 888] };
 const PA_KARV = { rod: [KARV[0] - 70, KTOPP[1] + 30], gul: [KARV[0] + 5, KTOPP[1] + 12], bla: [KARV[0] + 78, KTOPP[1] + 32] };
 // på holkens snötak (rod, gul) och inne i hålet (bla)
-const I_GRAN = { rod: [1828, 452], gul: [1886, 446], bla: [HOLK[0], HOLK[1] + 30] };
+const I_GRAN = { rod: [1758, 452], gul: [1816, 446], bla: [HOLK[0], HOLK[1] + 30] };
 // en fågel ensam på holkens tak i närbilden HOLKN (rad 4 och 5): på snön strax vänster om nocken
-const HOLK_TAK = [1860, 445];
+const HOLK_TAK = [1790, 445];
 const FRAMFOR = { rod: [1060, 900], gul: [1130, 904], bla: [1195, 898] };
 // hopp: tider i raden (ett hopp tar 0,32 s) med steg i x per hopp → { dx, lyft } att lägga på fågelns plats
 const hopp = (tl, steg) => steg.reduce((o, [a, dx]) => { const w = kl((tl - a) / 0.32); return { dx: o.dx + dx * mjuk(w), lyft: o.lyft + 22 * Math.sin(Math.PI * w) }; }, { dx: 0, lyft: 0 });
@@ -232,7 +232,7 @@ const HEL = () => kamera(1), HALV = () => kamera(1.9, 980, 640),   // HALV 1.6 �
   KARVN_P = () => { const k = del(RR['11c'].s, RR['12'].s + RR['12'].d, TT); kamera(2.3 + 0.25 * k, KARV[0], KTOPP[1] + 120 + 20 * k); },
   HALVH = () => kamera(1.35, 1240, 640),   // större gris men holken kvar i bild när en fågel flyger ut (Sanna 2026-11-20: "bigger pig")
   LUVAN = () => kamera(2.4, GRIS[0] + 20, iFig([512, 330])[1]),   // närbild: ansiktet och luvan med fågeln (J16 2:30)
-  HOLKN = () => kamera(2.6, 1820, 500),   // närbild på fågelholkens tak med fåglarna (Sanna 2026-11-20, J16 0:53)
+  HOLKN = () => kamera(2.6, 1750, 500),   // närbild på fågelholkens tak med fåglarna (Sanna 2026-11-20, J16 0:53)
   FAGLAR_N = () => kamera(2.0, 940, 730), KARVG = () => kamera(1.9, 1120, 650);   // fåglarna vid fröna med hela grisen (QA 25/11: 2,6 kapade grisen halvt vid vänsterkanten), samma bild som rad 6 · nära grisen och kärven (Sanna 2026-11-20)
 
 // --- Ritintrot: kritan ritar den lilla blå fågeln -------------------------------------------------------------------------------
@@ -292,7 +292,7 @@ const S = {
       fagel('gul', ...HOLK_TAK, { ...pip(tl, [lo(0)]), tilt: 14 * titt - 8 * lyft, flax: 0.8 * lyft, lyft: 4 * lyft }); return; }
     FAGLAR_N(); PASEN = { v: 30 }; const j = del(c + 2.1, c + 2.5, tl); gris(F(j > 0.5 ? 'kawaii' : 'glad', { titt: [14, 6] }), { oron: [-10 * j, -10 * j], upp: 0.3 * j });
     fagel('rod', ...VID_FRON.rod, pick(tl, [c + 0.8, c + 2.0, c + 3.2]));
-    flyg('gul', [1700, 520], VID_FRON.gul, c, c + 2.2, tl, { h: 60 }); },
+    flyg('gul', [1630, 520], VID_FRON.gul, c, c + 2.2, tl, { h: 60 }); },
   // pick, pick, pick: fröna försvinner ett och ett, det sista på det sista picket
   // Sanna 2026-11-20: fler pick och fröna försvinner långsammare: de tre första picken tar båda, sedan turas de om; varje pick tar
   // det närmaste fröet, som krymper bort på 0,35 s. Mellan picken hoppar fåglarna lite.
