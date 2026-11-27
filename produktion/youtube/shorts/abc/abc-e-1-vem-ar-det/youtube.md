@@ -1,6 +1,6 @@
 # Kritans ABC E – Vem är det? 🐘
 
-**Inte uppladdad.** Klippt ur `produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4` (Kritans ABC E, *Elefanten vill leka*), film 0:02,3–0:42,9, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-e-1-vem-ar-det.srt` (`../srt.py`). Innehåll: kritan ritar bokstaven, bokstaven hälsar, kritan ritar elefanten, gissningspausen, svaret och "Hej, elefanten!".
+**Offentlig sedan 2026-11-27:** https://youtube.com/shorts/ai5IyOTR-qc. Klippt ur `produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4` (Kritans ABC E, *Elefanten vill leka*), film 0:02,3–0:42,9, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-e-1-vem-ar-det.srt` (`../srt.py`). Innehåll: kritan ritar bokstaven, bokstaven hälsar, kritan ritar elefanten, gissningspausen, svaret och "Hej, elefanten!".
 
 ## Titel
 
@@ -30,4 +30,4 @@ alfabetet, ABC, bokstäver, bokstaven E, alfabetet för barn, kritans abc, lilla
 - Spellistor: **Korta klipp – Lilla Kritan** och **Kritans ABC – lär dig alfabetet**
 - Språk: svenska. Undertexter: ladda upp `abc-e-1-vem-ar-det.srt` (Undertexter → Ladda upp fil → Med tidskoder)
 - Relaterad video: Kritans ABC E (Elefanten vill leka)
-- Synlighet: väntar på Sannas godkännande
+- Synlighet: offentlig (2026-11-27)

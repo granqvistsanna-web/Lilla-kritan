@@ -11,12 +11,11 @@ Alla har ett kort brunt skaft och en mittnerv i sin egen färg, lite mörkare. D
 
 Används i: 063 Hösten i boken. Kritan ritar det orange lövet på den kala eken, och trädet fylls av höstlöv. Det röda, gula och bruna lövet ligger på marken (barnet säger färgerna). Små kopior av alla fyra singlar ner som fallande löv och sitter på rävens huvud.
 
-**Filer (grind 2, väntar på Flow-bilderna):**
+**Filer (grind 2, 2026-11-27):** bilderna är gjorda av Claude i Google Flow (Nano Banana 2.1, 0 krediter), med två tagningar av varje i `assets/rekvisita/lov/original/` (`lov-orange-1/2.jpeg`, `lov-ark-1/2.jpeg`). Tagning 1 är vald i båda: den har mest krita i kanten, och de tre löven på arket har samma enkla form som det orange.
 
-- `assets/rekvisita/lov/original/`: Flow-tagningarna.
-- `assets/rekvisita/lov/cut/lov-orange.png`: urklippt med `verktyg/egen_kant.py`, kanten tunnad till ca 1 % med `verktyg/tunn_kant.py`.
-- `cut/lov-orange-kontur.json`: kritans teckning, gjord med `verktyg/kontur.py --mitt`. `detaljer` blir skaftet, mittnerven och två–fyra sidonerver, mätta ur bilden.
-- `cut/lov-rott.png`, `lov-gult.png` och `lov-brunt.png`: urklippta ur arket med `egen_kant.py ark.png cut --ark lov-rott lov-gult lov-brunt`, med samma kant.
+- `cut/lov-orange.png` (730 × 809) och `cut/lov-rott.png`, `lov-gult.png`, `lov-brunt.png` är urklippta med `verktyg/egen_kant.py` (arket med `--ark lov-rott lov-gult lov-brunt`).
+- Kanten är tunnad till ca 1 % av höjden med `tunn_kant.py`: 8 px på det orange och 5 px på de små. Från början var den 2,8–3,2 %, och de tjocka versionerna ligger kvar i `original/*-tjock-kant.png`.
+- Kritans teckning finns i `cut/lov-orange-kontur.json` (`kontur.py --krymp 6 --mitt`, 192 punkter, mitten (367, 424)). `detaljer` är mittnerven från toppen ner till skaftet och de tre paren sidonerver. Varje par ritas som ett drag som går in till mittnerven och ut igen. Måtten är tagna ur nervernas mörkare krita. Kontrollbilden ligger i `avsnitt/063-hosten-i-boken/grind2/lov-orange-kontur-kontroll.jpg`.
 
 Google Flow (Nano Banana, 0 krediter). Det orange lövet görs först i 1:1. Bild 1 är `assets/rekvisita/sol-gul/cut/sol-gul.png` och bild 2 är `assets/bakgrunder/skogen-gron-saker/svamp.png`, båda som stilreferenser.
 

@@ -1,6 +1,6 @@
 # Kritans ABC B – Vem är det? 🐻
 
-**Inte uppladdad.** Klippt ur `produktion/youtube/alfabet/abc-b-recept-3/abc-b-recept-3.mp4` (Kritans ABC B, *Björnen vill leka*), film 0:02,3–0:43,9, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-b-1-vem-ar-det.srt` (`../srt.py`). Innehåll: kritan ritar bokstaven, bokstaven hälsar, kritan ritar björnen, gissningspausen, svaret och "Hej, björnen!".
+**Offentlig sedan 2026-11-27:** https://youtube.com/shorts/IzjSRB-pGow. Klippt ur `produktion/youtube/alfabet/abc-b-recept-3/abc-b-recept-3.mp4` (Kritans ABC B, *Björnen vill leka*), film 0:02,3–0:43,9, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-b-1-vem-ar-det.srt` (`../srt.py`). Innehåll: kritan ritar bokstaven, bokstaven hälsar, kritan ritar björnen, gissningspausen, svaret och "Hej, björnen!".
 
 ## Titel
 
@@ -30,4 +30,4 @@ alfabetet, ABC, bokstäver, bokstaven B, alfabetet för barn, kritans abc, lilla
 - Spellistor: **Korta klipp – Lilla Kritan** och **Kritans ABC – lär dig alfabetet**
 - Språk: svenska. Undertexter: ladda upp `abc-b-1-vem-ar-det.srt` (Undertexter → Ladda upp fil → Med tidskoder)
 - Relaterad video: Kritans ABC B (Björnen vill leka)
-- Synlighet: väntar på Sannas godkännande
+- Synlighet: offentlig (2026-11-27)

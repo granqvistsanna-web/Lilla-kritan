@@ -1,6 +1,6 @@
 # Kritans ABC D – Vem är det? 🦕
 
-**Inte uppladdad.** Klippt ur `produktion/youtube/alfabet/abc-d-recept-3/abc-d-recept-3.mp4` (Kritans ABC D, *Dinon knackar på dörren*), film 0:02,3–0:43,9, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-d-1-vem-ar-det.srt` (`../srt.py`). Innehåll: kritan ritar bokstaven, bokstaven hälsar, kritan ritar dinon, gissningspausen, svaret och "Hej, dinon!".
+**Offentlig sedan 2026-11-27:** https://youtube.com/shorts/ACJONmLmTNc. Klippt ur `produktion/youtube/alfabet/abc-d-recept-3/abc-d-recept-3.mp4` (Kritans ABC D, *Dinon knackar på dörren*), film 0:02,3–0:43,9, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-d-1-vem-ar-det.srt` (`../srt.py`). Innehåll: kritan ritar bokstaven, bokstaven hälsar, kritan ritar dinon, gissningspausen, svaret och "Hej, dinon!".
 
 ## Titel
 
@@ -30,4 +30,4 @@ alfabetet, ABC, bokstäver, bokstaven D, alfabetet för barn, kritans abc, lilla
 - Spellistor: **Korta klipp – Lilla Kritan** och **Kritans ABC – lär dig alfabetet**
 - Språk: svenska. Undertexter: ladda upp `abc-d-1-vem-ar-det.srt` (Undertexter → Ladda upp fil → Med tidskoder)
 - Relaterad video: Kritans ABC D (Dinon knackar på dörren)
-- Synlighet: väntar på Sannas godkännande
+- Synlighet: offentlig (2026-11-27)

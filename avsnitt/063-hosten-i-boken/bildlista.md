@@ -1,19 +1,21 @@
-# Bildlista – Avsnitt 063 Hösten i boken (grind 2)
+# Bildlista – Avsnitt 063 Hösten i boken (grind 2, klar)
 
 Bara det som är **nytt** eller behöver göras i ordning. Allt annat i uppslaget finns redan (se *Uppslaget – korten* i [`manus.md`](manus.md)). Bilderna görs i Google Flow (Nano Banana, 0 krediter). Figuren är räven (Sanna 2026-11-27), så den hängande änden på halsduken behövs inte (tittut är struket).
 
 | # | Typ | Vad | Ny? | Hamnar i | Klar |
 |---|---|---|---|---|---|
-| 1 | Sak (kritans teckning 1, pärmens siluett) | Det stora orange lövet | **ny** ([`rekvisita/lov.md`](../../rekvisita/lov.md)) | `assets/rekvisita/lov/cut/lov-orange.png` + `lov-orange-kontur.json` | ☐ väntar på Flow-bilden |
-| 2 | Sak | Tre löv på ett ark: rött, gult, brunt (de tre på marken som barnet säger färgen på) | **ny** (samma sak som 1) | `assets/rekvisita/lov/cut/lov-rott.png`, `lov-gult.png`, `lov-brunt.png` | ☐ väntar på Flow-bilden |
-| 3 | Landskapskort | Eken med höstlöv (edit av `ek.png`) | **ny** | `produktion/three-rum/popupbok/bilder/ek-host.png` | ☐ |
-| 4 | Landskapskort | Den kala eken (edit av 3, samma stam och plats) | **ny** | `popupbok/bilder/ek-kal.png` | ☐ |
-| 5 | Landskapskort | Höstkullarna bak och fram (edit av `kulle-bak.png` och `kulle-fram.png`) | **ny** | `popupbok/bilder/kulle-bak-host.png`, `kulle-fram-host.png` | ☐ |
-| 6 | Landskapskort | Gult lövträd (edit av `skogen-saker/trad.png`) | **ny** | `popupbok/bilder/trad-gult.png` | ☐ |
+| 1 | Sak (kritans teckning 1, pärmens siluett) | Det stora orange lövet | **ny** ([`rekvisita/lov.md`](../../rekvisita/lov.md)) | `assets/rekvisita/lov/cut/lov-orange.png` + `lov-orange-kontur.json` (mittnerven och tre par sidonerver), kontroll i [`grind2/lov-orange-kontur-kontroll.jpg`](grind2/lov-orange-kontur-kontroll.jpg) | ☑ 2026-11-27 (Flow tagning 1 av 2) |
+| 2 | Sak | Tre löv på ett ark: rött, gult, brunt (de tre på marken som barnet säger färgen på) | **ny** (samma sak som 1) | `assets/rekvisita/lov/cut/lov-rott.png`, `lov-gult.png`, `lov-brunt.png` | ☑ 2026-11-27 (tagning 1 av 2) |
+| 3 | Landskapskort | Eken med höstlöv (edit av `ek.png`) | **ny** | `produktion/three-rum/popupbok/bilder/ek-host.png` | ☑ 2026-11-27 (tagning 1 av 2) |
+| 4 | Landskapskort | Den kala eken (edit av 3, samma stam och plats) | **ny** | `popupbok/bilder/ek-kal.png` | ☑ 2026-11-27 (tagning 1 av 2, tjocka grenar; 2 har tunna kvistar) |
+| 5 | Landskapskort | Höstkullarna bak och fram (edit av `kulle-bak.png` och `kulle-fram.png`) | **ny** | `popupbok/bilder/kulle-bak-host.png`, `kulle-fram-host.png` | ☑ 2026-11-27 (tagning 1 av 2 var) |
+| 6 | Landskapskort | Gult lövträd (edit av `skogen-saker/trad.png`) | **ny** | `popupbok/bilder/trad-gult.png` | ☑ 2026-11-27 (tagning 2 av 2, rundare krona) |
 | 7 | Sak (kritans teckning 2) | Halsduken: bokversion med kant 1 %, kontur och fem detaljstreck (fyra ränder, randen på den hängande änden). Ingen egen ände, för tittut är struket | finns | `assets/rekvisita/halsduk/cut/halsduk-bok.png`, `halsduk-kontur.json`; kontroll i [`grind2/halsduk-kontur-kontroll.jpg`](grind2/halsduk-kontur-kontroll.jpg) | ☑ 2026-11-27 |
 | 8 | Kanter | Kopior för boken med kanten ca 1 % av höjden: lövhögen 1,6 → 0,9 % (`tunn_kant.py 8`), svampen 0,5 → 1,0 % (nedskalad till 1024 px hög, `tunn_kant.py 10`), ekollonet 2,8 → 0,9 % (`tunn_kant.py 8`). Originalen i `assets/` är orörda (de används i 007, 038, 050, 051 och ABC). Stubben (1,0 %) och ekorren (0,7 %) är redan rätt | finns | `popupbok/bilder/lovhog.png`, `svamp.png`, `ekollon.png` | ☑ 2026-11-27 |
 
-**Kvar i grind 2 när Flow-bilderna finns:** löven klipps med `verktyg/egen_kant.py` och får tunn kant, sedan körs `kontur.py --mitt` på det orange lövet. Detaljstrecken (skaftet, mittnerven och två–fyra sidonerver) mäts ur bilden. Landskapskorten tunnas på samma sätt. [`rekvisita/lov.md`](../../rekvisita/lov.md) och raden i rekvisitans README är gjorda.
+**Grind 2 klar 2026-11-27.** Bilderna är gjorda av Claude i Google Flow (Nano Banana 2.1, 0 krediter). Alla tagningar ligger i `assets/rekvisita/lov/original/` och `popupbok/bilder/original/`, så en annan tagning kan väljas. De är urklippta med `egen_kant.py` och har kant ca 1 % med `tunn_kant.py`. Alla kort sida vid sida finns i [`grind2/landskapskort.jpg`](grind2/landskapskort.jpg).
+
+**Den kala och den höstiga eken passar ihop:** stammen är lika bred (242 px vid foten, mitten x 390–392) i båda, men bilderna är olika höga (829 och 856 px). Ställ dem därför på samma fot (nederkanten), inte samma mitt, så ligger stammarna exakt på varandra när kronan växer fram. I `ek-host.png` var det en vit kil mellan stammen och kronan (Flows fel), och den är ifylld med stammens brun.
 
 **Ljuden (grind 4):** rävens familj `rav-gullig` 1–8 och `rav-fniss` finns redan, så inga krediter behövs.
 

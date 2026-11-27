@@ -4,16 +4,16 @@ Det fasta (boken, skrivbordet, himlen, molnen, kullarna, solen, granarna, kritan
 
 | # | Typ | Vad | Vem | Hamnar i | Klar |
 |---|---|---|---|---|---|
-| 1 | Kritans teckning 1 | **gula tulpanen**, utslagen (också pärmens siluett som knopp, ark C) | grind 2 (rekvisita, 4 tagningar) | `rekvisita/tulpan-gul.md`, `assets/rekvisita/tulpan-gul/` | ☐ |
-| 2 | Kritans teckning 2 | **vattenkannan** | grind 2 (rekvisita, 4 tagningar) | `rekvisita/vattenkanna.md`, `assets/rekvisita/vattenkanna/` | ☐ |
-| 3 | Landskapskort | röda och lila tulpanen, utslagna (ark A, samma ark som 1 och 2) | Sanna i Flow | `produktion/three-rum/popupbok/bilder/` | ☐ |
-| 4 | Landskapskort | röda, gula och lila tulpanen, hängande (ark B, edit av ark A) | Sanna i Flow | `popupbok/bilder/` | ☐ |
-| 5 | Landskapskort | röda, gula och lila tulpanen, slutna knoppar (ark C, edit av ark A) | Sanna i Flow | `popupbok/bilder/` | ☐ |
-| 6 | Landskapskort | fågelboet med tre ägg (ark D) | Sanna i Flow | `popupbok/bilder/` | ☐ |
+| 1 | Kritans teckning 1 | **gula tulpanen**, utslagen (också pärmens siluett som knopp, ark C) | grind 2 (rekvisita, 4 tagningar) | `rekvisita/tulpan-gul.md`, `assets/rekvisita/tulpan-gul/` | ✅ A2/B2/C2/D2 |
+| 2 | Kritans teckning 2 | **vattenkannan** | grind 2 (rekvisita, 4 tagningar) | `rekvisita/vattenkanna.md`, `assets/rekvisita/vattenkanna/` | ✅ A2/B2/C2/D2 |
+| 3 | Landskapskort | röda och lila tulpanen, utslagna (ark A, samma ark som 1 och 2) | Sanna i Flow | `produktion/three-rum/popupbok/bilder/` | ✅ A2/B2/C2/D2 |
+| 4 | Landskapskort | röda, gula och lila tulpanen, hängande (ark B, edit av ark A) | Sanna i Flow | `popupbok/bilder/` | ✅ A2/B2/C2/D2 |
+| 5 | Landskapskort | röda, gula och lila tulpanen, slutna knoppar (ark C, edit av ark A) | Sanna i Flow | `popupbok/bilder/` | ✅ A2/B2/C2/D2 |
+| 6 | Landskapskort | fågelboet med tre ägg (ark D) | Sanna i Flow | `popupbok/bilder/` | ✅ A2/B2/C2/D2 |
 | 7 | Statist | fjärilen: **ritas i kod** (ark D bara som förlaga för form och färg) | kod | `scener/boken/` | ✅ prov |
 | 8 | Statist | nyckelpigan: **ritas i kod** (ark D bara som förlaga) | kod | `scener/boken/` | ✅ prov |
 
-Urklipp med tunn vit kant (ca 1 % av höjden, `verktyg/tunn_kant.py`) och platt fot så att korten kan stå. Varje tulpan i sina tre lägen ska ha samma fotpunkt och samma bredd på stjälken, så att bildbytet inte hoppar.
+Urklipp med tunn vit kant (ca 1 % av höjden, `verktyg/tunn_kant.py 5` för tulpanerna, `4` för kannan och boet) och platt fot så att korten kan stå. De stående tulpanerna och knopparna är 236 px breda med foten mitt i (0,49 av bredden). De hängande är bredare (413–434 px, ca 370 px höga) med foten vid 0,38–0,40 av bredden: placera kortet så att foten hamnar på samma punkt, och sätt höjden till ca 0,86 av den stående. Varje tulpan i sina tre lägen ska ha samma fotpunkt och samma bredd på stjälken, så att bildbytet inte hoppar.
 
 ## Ritas i kod
 

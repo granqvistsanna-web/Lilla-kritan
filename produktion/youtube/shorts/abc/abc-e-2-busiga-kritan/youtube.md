@@ -1,6 +1,6 @@
 # Kritans ABC E – Busiga kritan! 🐱
 
-**Inte uppladdad.** Klippt ur `produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4` (Kritans ABC E, *Elefanten vill leka*), film 0:59,1–1:22,6, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-e-2-busiga-kritan.srt` (`../srt.py`). Innehåll: kritan ritar fel, gissningspausen, "En katt!", Malin skrattar och "Hej då, katten!".
+**Offentlig sedan 2026-11-27:** https://youtube.com/shorts/CuHha01zAcU. Klippt ur `produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4` (Kritans ABC E, *Elefanten vill leka*), film 0:59,1–1:22,6, med `../klipp.sh` (stående 1080×1920 ur scenens kod, ljudet oförändrat ur filmen, 0,3 s toning). Undertexter: `abc-e-2-busiga-kritan.srt` (`../srt.py`). Innehåll: kritan ritar fel, gissningspausen, "En katt!", Malin skrattar och "Hej då, katten!".
 
 ## Titel
 
@@ -30,4 +30,4 @@ alfabetet, ABC, bokstäver, bokstaven E, alfabetet för barn, kritans abc, lilla
 - Spellistor: **Korta klipp – Lilla Kritan** och **Kritans ABC – lär dig alfabetet**
 - Språk: svenska. Undertexter: ladda upp `abc-e-2-busiga-kritan.srt` (Undertexter → Ladda upp fil → Med tidskoder)
 - Relaterad video: Kritans ABC E (Elefanten vill leka)
-- Synlighet: väntar på Sannas godkännande
+- Synlighet: offentlig (2026-11-27)

@@ -233,3 +233,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Gula solen | [sol-gul.md](sol-gul.md) | 062 |
 | Rosa glassen | [glass-rosa.md](glass-rosa.md) | 062 |
 | Löven (orange, röd, gul, brun) | [lov.md](lov.md) | 063 |
+| Gula tulpanen | [tulpan-gul.md](tulpan-gul.md) | 065 |
+| Vattenkannan | [vattenkanna.md](vattenkanna.md) | 065 |
