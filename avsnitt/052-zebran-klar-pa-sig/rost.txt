@@ -25,7 +25,7 @@
 25-ar-du-dar-inne           [playfully] Hallå? Är du där inne?
 26-en-gang-till             [playfully] Kritan ritar en gång till …
 27-lagom-varsagod           [happy] Mössan är lagom! Varsågod, zebran.
-28-saga-tack                [warmly] Ska vi säga tack?
+28-tack-kritan              [happy] Tack, kritan!
 29-tack                     [happy] Tack!
 30-gula-mossan-pa           [happy] Den gula mössan … på huvudet!
 31-tycker-du-om             [happy] Jaså, du tycker om mössan!

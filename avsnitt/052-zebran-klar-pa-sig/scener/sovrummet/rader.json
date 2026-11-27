@@ -367,6 +367,10 @@
      3.54
     ],
     [
+     "gnagg-mjuk/gnagg-mjuk-nyfiken",
+     7.04
+    ],
+    [
      "glitter/glitter-2",
      9.54
     ],
@@ -474,7 +478,7 @@
   },
   {
    "id": "15",
-   "d": 4.14,
+   "d": 2.87,
    "malin": [
     [
      28,
@@ -484,24 +488,18 @@
    "ljud": [
     [
      "gnagg-mjuk/gnagg-mjuk-hej-b",
-     1.54
+     1.47
     ]
    ],
    "bild": "zebran tittar på mössan, öronen reser sig"
   },
   {
    "id": "16",
-   "d": 1.9,
-   "malin": [
-    [
-     29,
-     0.2
-    ]
-   ],
+   "d": 1.6,
    "ljud": [
     [
      "gnagg-mjuk/gnagg-mjuk-fortjust-b",
-     1
+     0.3
     ]
    ],
    "bild": "nickar"
@@ -950,9 +948,9 @@
    "Mössan är lagom! Varsågod, zebran."
   ],
   [
-   "28-saga-tack",
-   1.04,
-   "Ska vi säga tack?"
+   "28-tack-kritan",
+   0.97,
+   "Tack, kritan!"
   ],
   [
    "29-tack",

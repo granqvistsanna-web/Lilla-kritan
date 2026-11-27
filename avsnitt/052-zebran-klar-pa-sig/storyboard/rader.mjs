@@ -24,7 +24,7 @@ const PA = n => PA_MATT[n] ?? +(0.35 + ROST[n - 1][1].split('…')[0].length / 1
 const Z = (k, b = '') => `gnagg-mjuk/gnagg-mjuk-${k}${b ? '-' + b : ''}`;
 const HEJ = 'gnagg-gullig/gnagg-gullig-1c', HEJDA = 'gnagg-gullig/gnagg-gullig-8c', NEJ = 'gnagg-nej/gnagg-nej-3';
 const SVAR = 1.0;   // pausen där zebran svarar innan Malin reagerar
-export const VANTA = 4.0, HJALP = 5.0, TACK = 2.5;   // gisspausen i ritintrot, frågan till barnet, "Ska vi säga tack?"
+export const VANTA = 4.0, HJALP = 5.0, TACK = 1.3;   // gisspausen i ritintrot, frågan till barnet, zebrans svar på "Tack, kritan!" (ingen tack-fråga, Sanna 2026-11-27)
 
 export const RADER = [
   // --- Kritan ritar halsduken på papperet ---
@@ -55,7 +55,7 @@ export const RADER = [
 
   // --- Kritan ritar mössan, för liten, för stor, lagom ---
   { id: '10', d: 0.3 + L(19) + 0.5, malin: [[19, 0.3]], ljud: [['swoosh/swoosh-1', 0.1]], bild: 'halvnära, kritan flyger in' },
-  { id: '11', d: 0.3 + L(20) + 3.0 + 3.0 + L(21) + 0.6, malin: [[20, 0.3], [21, 0.3 + L(20) + 6.0]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(20)], ['glitter/glitter-2', 0.3 + L(20) + 6.0], [Z('fortjust'), 0.5 + L(20) + 6.0 + L(21)]],
+  { id: '11', d: 0.3 + L(20) + 3.0 + 3.0 + L(21) + 0.6, malin: [[20, 0.3], [21, 0.3 + L(20) + 6.0]], ljud: [['krita-ritar/krita-ritar-2', 0.3 + L(20)], [Z('nyfiken'), 0.3 + L(20) + 3.5], ['glitter/glitter-2', 0.3 + L(20) + 6.0], [Z('fortjust'), 0.5 + L(20) + 6.0 + L(21)]],
     bild: 'kritan ritar en mössa i luften, gisspaus, den fylls i pytteliten' },
   { id: '12', d: 1.4 + L(22) + 1.0, malin: [[22, 1.4]], ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['pop/pop-1', 1.3], [Z('fniss'), 1.6 + L(22)]], bild: 'den lilla mössan sitter på örat' },
   // rad 13: långa fnisset (2,8 s) hörs klart före klippet
@@ -66,7 +66,8 @@ export const RADER = [
     ljud: [['swoosh/swoosh-2', 0.2], ['krita-ritar/krita-ritar-4', 0.3 + L(26)], ['glitter/glitter-3', 0.3 + L(26) + 2.9], [Z('fortjust'), 0.5 + L(26) + 3.0 + L(27)]],
     bild: 'den stora glider av, kritan ritar en tredje, lagom, fylls i' },
   { id: '15', d: 0.3 + L(28) + TACK, malin: [[28, 0.3]], ljud: [[Z('hej', 'b'), 0.5 + L(28)]], bild: 'zebran tittar på mössan, öronen reser sig' },
-  { id: '16', d: 0.2 + L(29) + 0.8, malin: [[29, 0.2]], ljud: [[Z('fortjust', 'b'), 0.4 + L(29)]], bild: 'nickar' },
+  // replik 29 ("Tack!") används inte längre: Malin säger direkt "Tack, kritan!" i rad 15 (QA 2026-11-27). Förtjust-ljudet slutar före klippet.
+  { id: '16', d: 1.6, ljud: [[Z('fortjust', 'b'), 0.3]], bild: 'nickar' },
   { id: '17', d: 1.0 + L(30) + SVAR + 0.4 + L(31) + 0.7, malin: [[30, 1.0], [31, 1.0 + L(30) + SVAR + 0.4]], ljud: [['prassel-tyg/prassel-tyg-1', 1.0 + PA(30) - 0.6], ['pop/pop-2', 1.0 + PA(30)], [Z('fniss', 'b'), 1.1 + L(30)]],
     bild: 'mössan glider ner på huvudet, kritan flyger ut' },
 
