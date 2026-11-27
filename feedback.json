@@ -11057,9 +11057,10 @@
   "sec": 116,
   "tags": [],
   "note": "can book be bigger sp i dont see the edges outside book?",
-  "fixed": false,
+  "fixed": true,
   "at": 1795791323385,
-  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)"
+  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)",
+  "fixedAt": 1795794182051
  },
  "r1f0veexe9mwz3swg5": {
   "ep": "062",
