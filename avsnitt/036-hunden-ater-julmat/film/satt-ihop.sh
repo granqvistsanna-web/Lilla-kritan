@@ -11,8 +11,8 @@ langd() { ffprobe -v error -show_entries format=duration -of csv=p=0 "$1"; }
 test -f $I/intro.mp4 && test -f $I/intro-effekter.wav || { echo "bilderboksintrot saknas i $I" >&2; exit 1; }
 T=film/.tmp; mkdir -p $T
 V="-c:v libx264 -pix_fmt yuv420p -r 30 -an"
-ffmpeg -loglevel error -y -i $I/intro.mp4 -vf scale=1920:1080 $V $T/00.mp4
-ffmpeg -loglevel error -y -i scener/koket/koket.mp4 -vf scale=1920:1080 $V $T/01.mp4
+ffmpeg -loglevel error -y -i $I/intro.mp4 -vf scale=1920:1080:out_range=tv $V $T/00.mp4
+ffmpeg -loglevel error -y -i scener/koket/koket.mp4 -vf scale=1920:1080:out_range=tv $V $T/01.mp4
 printf "file '00.mp4'\nfile '01.mp4'\n" > $T/bild.txt
 ffmpeg -loglevel error -y -f concat -safe 0 -i $T/bild.txt -c copy $T/bild.mp4
 IN=$(langd $T/00.mp4); TOT=$(langd $T/bild.mp4)

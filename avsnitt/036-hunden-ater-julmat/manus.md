@@ -29,7 +29,7 @@ Hunden är en stor figur (SKALA 0,5) och står på två ben, så han står **bak
 | Äter | sjunker 40–60 px och lutar sig mot maten, munnen öppnas, en bit klipps bort på *"tugga"*, resten borta på *"mums!"* |
 | Smulor på nosen | 5–7 bruna prickar i kod på nosen efter pepparkakan |
 | Slickar | tungan (rosa, i kod) kommer ut ur munnen och sveper upp över nosen två gånger, prickarna försvinner på andra *"slick"* |
-| Dricker | glaset står på matbordet, lyfter sig upp till munnen (ingen tass), mjölken sjunker, glider ner (som 022) |
+| Dricker | hunden håller glaset själv (Sanna 27/11): högra armen (rak, i en bit) når glaset, tassen ligger på det, armroten glider in över kroppen när glaset lyfts till munnen, mjölken sjunker, ner igen |
 | Mjölkmustasch | en vit båge över munnen i kod när han reser sig |
 | Mätt | blundar nöjt (raden ber om det), öronen hänger mjukt |
 | Vinkar | armen bakom kroppen, snett upp förbi kanten, högst 50 px lyft, 0,6 s upp |
@@ -56,22 +56,22 @@ Kritan ritar hunden: konturen i lugna drag (ca 7 s) med hängöronen och armarna
 | 7 | Hunden nickar direkt | Tack! | `vov-ja` |
 | 8 | Hunden sträcker nosen mot skinkan och nosar, svansen viftar | Sniff, sniff! Mmm, vad gott det luktar! | `nos`, `flamt-valp` |
 | 9 | Kritan ritar en pepparkaka bredvid tallriken | Kritan ritar igen … *(paus 2 s)* En pepparkaka! | krita-ritar, `glitter` |
-| 10 | Kritan ritar ett glas mjölk **på matbordet vid hunden** och flyger ut | Och ett glas mjölk! | krita-ritar, `glitter` |
+| 10 | Kritan ritar ett glas mjölk **på bakbordet, bakom ljusstaken** (bara kanten skymtar mellan ljusen) och flyger ut (Sanna 27/11) | Och ett glas mjölk! | krita-ritar, `glitter` |
 | 11 | Halvbild, hunden ser maten, öronen vippar | Oj, så mycket julmat! | `vov-ja`, `vov-fniss` |
 | 12 | Halvbild, hunden framför maten | Ska du äta nu? | `vov-ja` |
 | 13 | Närbild, hunden böjer sig mot skinkan | Först skinkan. En tugga … mums! | `nom`, `mums` |
 | 14 | Samma med pepparkakan, *krsch* på "tugga" | Och pepparkakan. En tugga … mums! | knaster, `mums` |
 | 15 | Närbild, hunden reser sig med smulor på nosen | Oj! Smulor på nosen! | `vov-fniss` |
 | 16 | Tungan slickar två gånger, smulorna borta på andra | Slick, slick … borta! | slick |
-| 17 | Halvbild, hunden letar först (tittar åt vänster), Malin efter, sedan åt höger. Glaset står kvar på matbordet | Oj, mjölken! Hunden vet inte var. | frågande vov |
-| 18 | Bred bild för frågan, sedan klipp till närbild på glaset. Efter 3 s skimrar glasets kant | Kan du hjälpa hunden? Kan du se var mjölken är? *(paus 5 s)* | tyst |
-| 19 | Närbild kvar, glaset skimrar tydligt; hunden tittar dit och blir jätteglad | Ja, där! | `vov-ja`, `tindra` |
-| 19a | Glaset står på matbordet. Hunden sträcker nosen ivrigt, puttar till glaset, det vickar | Oj! Oj, oj, oj! | `vick`, `glas-klirr` |
+| 17 | Halvbild, hunden letar först (tittar åt vänster), Malin efter, sedan åt höger. Glaset står gömt bakom ljusstaken | Oj, mjölken! Hunden vet inte var. | frågande vov |
+| 18 | Bred bild för frågan, sedan klipp till närbild på ljusstaken. Efter 3 s skimrar glasets kant | Kan du hjälpa hunden? Kan du se var mjölken är? *(paus 5 s)* | tyst |
+| 19 | Kritan drar fram glaset bakom ljusstaken, det skimrar; hunden tittar dit och blir jätteglad | Ja, där! | `vov-ja`, `tindra` |
+| 19a | Kritan bär glaset till matbordet och flyger ut. Hunden sträcker nosen ivrigt, puttar till glaset, det vickar | Oj! Oj, oj, oj! | `vick`, `glas-klirr` |
 | 19b | Närbild: det skvätter, en vit mjölkpöl på duken (kod), glaset står kvar, halvfullt. Öronen faller | Plask! Mjölken skvätte ut. | `plask` (lågt), ledset vov |
 | 19c | Halvbild, hunden tittar ner på pölen, öronen hänger | Det gör ingenting. Det kan hända. | – |
 | 19d | Kritan ritar en handduk bredvid pölen (konturen 3 s, fylls i) | Titta! Kritan ritar en handduk. | krita-ritar, `glitter` |
 | 19e | Handduken glider fram och tillbaka över pölen, pölen borta på *"borta!"*, öronen upp | Torka, torka … borta! | `skrubb`, `tindra`, `vov-ja` |
-| 20 | Glaset lyfter sig upp till munnen, mjölken sjunker | Och nu mjölken. En klunk … mums! | `slurp`, `mums` |
+| 20 | Hunden tar glaset i högra tassen, lyfter det till munnen, mjölken sjunker, ställer ner det | Och nu mjölken. En klunk … mums! | `slurp`, `mums` |
 | 21 | Närbild, hunden reser sig med vit mustasch | Ha ha! En mjölkmustasch! | `vov-fniss` |
 | 22 | Halvbild, hunden blundar nöjt, öronen hänger mjukt | Mmm … mätt i magen. | `mmm`, mysig suck |
 | 23 | Helbild med ljusen, hunden tittar ut mot barnet | Kan du säga god jul till hunden? *(paus 4 s)* | tyst, blinkar, svansen viftar |
