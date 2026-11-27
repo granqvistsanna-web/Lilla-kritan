@@ -11095,5 +11095,45 @@
   "fixed": false,
   "at": 1795791407735,
   "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)"
+ },
+ "81spcph4elmwyqdeox": {
+  "ep": "059",
+  "time": "0:35",
+  "sec": 35,
+  "tags": [],
+  "note": "needs better animation of holding berries, maybe one in one hand and two in one, or closer together both paws in the middle",
+  "fixed": false,
+  "at": 1795768790429,
+  "render": "2026-11-27 09:18 (Förhandsvisning (--snabb) 27/11: tydligare buskteckning, lugnare plockning utan flygande bär, mjuk skugga och pallens framsida framför räven, korgen på stubben, sista busken syns bakom stubben)"
+ },
+ "k8w0mazjremwyqwp4l": {
+  "ep": "059",
+  "time": "2:06",
+  "sec": 126,
+  "tags": [],
+  "note": "shadows look odd fully black",
+  "fixed": false,
+  "at": 1795769690421,
+  "render": "2026-11-27 09:18 (Förhandsvisning (--snabb) 27/11: tydligare buskteckning, lugnare plockning utan flygande bär, mjuk skugga och pallens framsida framför räven, korgen på stubben, sista busken syns bakom stubben)"
+ },
+ "2u9bbkr4shmwyqx850": {
+  "ep": "059",
+  "time": "2:36",
+  "sec": 156,
+  "tags": [],
+  "note": "place on other side of stubbe",
+  "fixed": false,
+  "at": 1795769715060,
+  "render": "2026-11-27 09:18 (Förhandsvisning (--snabb) 27/11: tydligare buskteckning, lugnare plockning utan flygande bär, mjuk skugga och pallens framsida framför räven, korgen på stubben, sista busken syns bakom stubben)"
+ },
+ "4rwlhhpz10mwz4dmyq": {
+  "ep": "059",
+  "time": "0:05",
+  "sec": 5,
+  "tags": [],
+  "note": "improve drawing more like a bush with bluebetties",
+  "fixed": false,
+  "at": 1795792315778,
+  "render": "2026-11-27 16:00 (omuppladdad 27/11 (samma rendering 09:15))"
  }
 }
