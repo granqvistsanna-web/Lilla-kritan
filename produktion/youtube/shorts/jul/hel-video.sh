@@ -22,8 +22,9 @@
 # Samma kommando bygger om luckan, t.ex. när filmen bytts eller Malins repliker spelats in.
 set -e
 mapp=${1:?"mapp saknas: hel-video.sh <mapp>"}; mapp=${mapp%/}
-source ${0:A:h}/plats.sh   # högst två luckbyggen åt gången
-cd ${0:A:h}/../../../..   # repots rot
+jul=${0:A:h}   # skriptets mapp, tas före cd (en relativ $0 pekar fel efteråt)
+source $jul/plats.sh   # högst två luckbyggen åt gången
+cd $jul/../../../..   # repots rot
 [[ -f $mapp/index.html ]] || { echo "hittar inte $mapp/index.html" >&2; exit 1; }
 namn=${mapp:t}; ut=$mapp/$namn.mp4; tmp=$mapp/tmp; stills=$mapp/stills; rm -rf $tmp; mkdir -p $tmp $stills
 film=$(sed -n "s/.*film: *'\([^']*\)'.*/\1/p" $mapp/index.html | head -1)
@@ -109,7 +110,7 @@ ffmpeg -hide_banner -loglevel error -y -i $tmp/oppning.mp4 -i $film -i $tmp/stan
   $(if [[ -n $iris ]]; then echo "[1:a]asplit[fa][fs]; [fa]${borjan}$(ljudlangd $fdur)[a1]; [fs]atrim=start=${iris},asetpts=PTS-STARTPTS,$(ljudlangd $stdur),afade=t=out:st=$(python3 -c "print($stdur - 0.8)"):d=0.8[sv]; [2:a]$(ljudlangd $stdur),${justera}[st]; [st][sv]amix=inputs=2:normalize=0:duration=first[a2];"; else echo "[1:a]${borjan}$(ljudlangd $fdur)${tona}[a1]; [2:a]$(ljudlangd $stdur),${justera}[a2];"; fi)
   [v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[v][a]" -map '[v]' -map '[a]' -r 30 -c:v libx264 -preset medium -crf 16 -pix_fmt yuv420p \
   -colorspace bt470bg -color_range tv -c:a aac -b:a 192k -movflags +faststart $ut
-zsh ${0:A:h}/mastra.sh $mapp > $tmp/mastra.txt   # -16 LUFS och -liten.mp4
+zsh $jul/mastra.sh $mapp > $tmp/mastra.txt   # -16 LUFS och -liten.mp4
 
 # 5. kontroller
 langd=$(ffprobe -v error -show_entries format=duration -of csv=p=0 $ut); vfram=$(sond v:0 nb_frames $ut)
