@@ -225,6 +225,8 @@ function lastKatt(tl) {
   if (s.typ === 'lagg' && tl < s.b) { const top = s.i === 2, sq = del(0.05, 0.45, u) * (1 - del(0.62, 0.95, u)), fr = 1 - del(0.62, 0.95, u);
     const lo = top ? -45 * del(0.05, 0.3, u) * (1 - del(0.35, 0.6, u)) : 0;
     return { x: s.x, f: L.blanda(ner, ANS('jatteglad'), del(0.6, 0.9, u)), p: POS({ fram: [fr, fr], armar: [-105 * fr, -105 * fr], armY: (top ? 25 : 70) * sq + lo, sank: (top ? 8 : 18) * sq, strack: -0.04 * sq }) }; }
+  // pausen (0,2 s) efter sista läggningen: står kvar där paketet lades (J06 27/11: annars hoppade katten 6 bildrutor till LAST.x och tillbaka)
+  if (s.typ === 'lagg') return { x: s.x, f: ANS('jatteglad'), p: POS() };
   // efter det sista paketet: en glad stund (riggens STUNDER.glad), öronen vippar
   const st = STUND('glad', tl - LAST.slut, 2.4);
   return { x: LAST.x, f: ANS('jatteglad'), p: { ...st.p, oron: [oronVipp(tl, LAST.slut + 0.3), -oronVipp(tl, LAST.slut + 0.3)] } };
