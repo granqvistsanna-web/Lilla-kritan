@@ -45,6 +45,7 @@
 <script src="/verktyg/kritan-ritar.js"></script>
 <script src="/verktyg/djup3d.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script src="/avsnitt/043-grisen-matar-faglarna/fagel.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const A = '/assets/', LS = A + 'bakgrunder/lekplatsen-saker/';
@@ -82,15 +83,18 @@ const DETALJ = {
 };
 const DS = 0.5, MARK = 985, SVART = 0.6;
 // trädet 25 % större kring stammens högra kant (x 420), sandlådan 25 % större åt höger (Sanna 27/11: "bigger tree", "bigger sandlåda")
-const TRAD = [307, 935, 800], GUNG = [1180, 950, 470], SANDL = [1664, 940, 312], HINK = [435, 965, 210];
-const BD = 96, BR = BD / 2, BY = MARK - BR;
+// bollen 25 % större och hinken med den, så att bollen ryms i öppningen (Sanna 27/11: "bigger ball")
+const TRAD = [307, 935, 800], GUNG = [1180, 950, 470], SANDL = [1664, 940, 312], HINK = [435, 965, 250];
+const BD = 120, BR = BD / 2, BY = MARK - BR;
 const IN = [860, MARK], VID_GUNG = [820, MARK], SAND_P = [1330, MARK], VID_TRAD = [720, MARK], TRAD_P = [610, 945];
 const GS = GUNG[2] / (970 - 76), PIV = [GUNG[0] + (500 - 532) * GS, GUNG[1] + (930 - 970) * GS];   // gunganden vickar runt fjäderns fot
 const SADEL_Y = GUNG[1] - GUNG[2] * (1 - 0.385);
 const SITT = [GUNG[0] - 104, SADEL_Y + 30];
 const B_SADEL = [GUNG[0] - 59, SADEL_Y - BR + 4];
-const B_FRAM = [630, BY], B_F2 = [570, BY], B_F3 = [1040, BY], B_SAND = [SANDL[0] - 60, SANDL[1] - 0.56 * SANDL[2]], B_GUNG = [GUNG[0] + 58, 905];
-const B_TRAD = [432, 866], B_TRADF = [520, BY], B_KRONA = [HINK[0], 470], B_HINK = [HINK[0], 830];   // i hinken: mitten vid öppningen, övre halvan syns
+const B_FRAM = [630, BY], B_F2 = [570, BY], B_F3 = [1040, BY], B_GUNG = [GUNG[0] + 58, 953 - BR];
+// sandlådans träkant (y 416 i bilden): bollen sjunker ner i sanden bakom kanten, en sandvall ligger framför (Sanna 27/11, 2:09 "polish")
+const SAND_KANT = SANDL[1] - (798 - 416) * SANDL[2] / (798 - 115), B_SAND = [SANDL[0] - 60, SAND_KANT - 0.3 * BR];
+const B_TRAD = [436, 914 - BR], B_TRADF = [520, BY], B_KRONA = [HINK[0], 470], B_HINK = [HINK[0], Math.round(HINK[1] - (951 - 396) * HINK[2] / (951 - 64))];   // i hinken: mitten vid öppningen, övre halvan syns
 const APPLE_FRAN = [570, 640], APPLE_LAND = [560, 978], APPLE_STOPP = [790, 982], APPLE_GUNG = [700, 982], APPLE_H = 58;
 const GPAPP = [960, 940, 760];
 
@@ -118,13 +122,13 @@ const NARA = ([x, y], dy = 0) => [2.3, x, y - 200 + dy];
 const NARA_SITT = [2.3, SITT[0], SITT[1] - 180];
 const TRADUT = [1.35, 560, 640];
 const K_BOLL = [1.9, (B_FRAM[0] + IN[0]) / 2, MARK - 170];
-const K_BD = [3.0, B_FRAM[0], B_FRAM[1] - 10];
+const K_BD = [2.7, B_FRAM[0], B_FRAM[1] - 10];
 const K_SAND = [2.0, SANDL[0] - 130, B_SAND[1] - 20];
 const K_TRAD = [3.0, B_TRAD[0] - 30, B_TRAD[1] - 40];
 const K_TRADH = [1.5, 560, 720];
 const K_APP = [3.2, APPLE_STOPP[0], APPLE_STOPP[1] - 40];
 const K_KRONA = [2.6, B_KRONA[0] + 20, B_KRONA[1] + 20];
-const K_HINK = [2.6, HINK[0] + 40, 830];
+const K_HINK = [2.4, HINK[0] + 40, B_HINK[1]];
 
 // --- Saker --------------------------------------------------------------------------------------------------------------------
 const sakS = (namn, h) => { const [, , [, y0, , y1]] = SAK[namn]; return h / (y1 - y0); };
@@ -150,9 +154,15 @@ function boll({ pos, rot = 0, lager = 'saker', mark = null, sand = false, prick 
   const [fil, [w, h]] = SAK.boll, s = sakS('boll', BD), [cx, , cy] = sakC('boll');
   if (k < 1 || f < 1) return sak('boll', [x, y + BR, BD], { lager, k, f });
   const tr = `${vrid ? `rotate(${f1(vrid[0])} ${f1(vrid[1])} ${f1(vrid[2])}) ` : ''}translate(${f1(x)} ${f1(y)}) rotate(${f1(rot)}) scale(${s.toFixed(4)}) translate(${f1(-cx)} ${f1(-cy)})`;
-  lagg(lager, `<image href="${fil}" width="${w}" height="${h}" transform="${tr}"/>`);
-  if (prick > 0) lagg(lager, [[-22, -18], [14, -26], [26, 6], [-8, 12], [-30, 14]].map(([dx, dy]) => `<circle cx="${f1(x + dx)}" cy="${f1(y + dy)}" r="4.5" fill="#e6dcc6" stroke="#cfc2a6" stroke-width="1.2" opacity="${f1(prick)}"/>`).join(''));
-  if (sand) lagg(lager, `<ellipse cx="${f1(x)}" cy="${f1(y + 26)}" rx="64" ry="30" fill="#ebe6db"/>${[[-30, 4], [12, -2], [40, 8]].map(([dx, dy]) => `<circle cx="${f1(x + dx)}" cy="${f1(y + 26 + dy)}" r="4" fill="#ddd5c4"/>`).join('')}`);
+  const r = BR / 48;   // prickarna och sanden mättes på den gamla bollen (96 px)
+  // i sanden: bollen klipps vid träkanten (nedre delen är nere i sanden bakom kanten), en sandvall i sandens färg ligger över skarven
+  if (sand) lagg(lager, `<clipPath id="isand"><rect x="${f1(x - 2 * BR)}" y="${f1(y - 2 * BR)}" width="${f1(4 * BR)}" height="${f1(SAND_KANT - y + 2 * BR)}"/></clipPath>`);
+  lagg(lager, `<g${sand ? ' clip-path="url(#isand)"' : ''}><image href="${fil}" width="${w}" height="${h}" transform="${tr}"/></g>`);
+  if (prick > 0) lagg(lager, [[-22, -18], [14, -26], [26, 6], [-8, 12], [-30, 14]].map(([dx, dy]) => `<circle cx="${f1(x + dx * r)}" cy="${f1(y + dy * r)}" r="${f1(4.5 * r)}" fill="#e6dcc6" stroke="#cfc2a6" stroke-width="1.2" opacity="${f1(prick)}"/>`).join(''));
+  if (sand) { const k = SAND_KANT + 2, X = d => f1(x + d * BR), Y = d => f1(y + d * BR);
+    const vall = `M${X(-1.9)} ${f1(k)} C${X(-1.4)} ${f1(k - 4)} ${X(-1.25)} ${Y(0.42)} ${X(-0.85)} ${Y(0.38)} C${X(-0.4)} ${Y(0.3)} ${X(0.4)} ${Y(0.3)} ${X(0.85)} ${Y(0.38)} C${X(1.25)} ${Y(0.42)} ${X(1.4)} ${f1(k - 4)} ${X(1.9)} ${f1(k)} Z`;
+    lagg(lager, `<path d="${vall}" fill="#eae8db"/><path d="${vall}" fill="#eae8db" filter="url(#korn)" opacity="0.5"/>`
+      + [[-1.3, 0.05, 3.5], [-0.6, -0.08, 3], [0.15, -0.04, 3.5], [0.7, -0.1, 3], [1.3, 0.06, 3]].map(([dx, dy, rr]) => `<circle cx="${X(dx)}" cy="${f1(k + dy * BR - 8)}" r="${f1(rr * r)}" fill="#d6ccb6"/>`).join('')); }
   return {};
 }
 function apple({ pos, rot = 0, lager = 'saker', mark = null }) {
@@ -160,6 +170,15 @@ function apple({ pos, rot = 0, lager = 'saker', mark = null }) {
   const [fil, [w, h]] = SAK.apple, s = sakS('apple', APPLE_H), [cx, , cy] = sakC('apple');
   lagg(lager, `<image href="${fil}" width="${w}" height="${h}" transform="translate(${f1(pos[0])} ${f1(pos[1] - APPLE_H / 2)}) rotate(${f1(rot)}) scale(${s.toFixed(4)}) translate(${f1(-cx)} ${f1(-cy)})"/>`);
 }
+// en liten röd fågel (rekvisita/smafaglar.md, 043:s fagel.js) flyger in vid stammen, tittar på bollen och piper, flyger iväg när
+// bollen rullar fram (Sanna 27/11, 2:34 "incl a bird in video"). pos = fötterna, vand -1 = tittar åt vänster
+const FH = 62, F_IN = [780, 600], F_LAND = [548, 950], F_STA = [532, 950], F_UT = [1150, 230];
+function fagel({ pos, flax = 0, oppen = 0, vand = -1, luta = 0 }) {
+  const s = FH / 689, [x, y] = pos;
+  if (flax < 0.5) skugga(x, y + 2, 26, 'saker', 0.18 * (1 - 2 * flax));
+  lagg('saker', `<g transform="translate(${f1(x)} ${f1(y)}) rotate(${f1(luta)}) scale(${(vand * s).toFixed(4)} ${s.toFixed(4)}) translate(-400 -689)">${fagelSvg('rod', { t: TT, flax, oppen, blink: (TT % 3.1) < 0.12 ? 1 : 0 })}</g>`);
+}
+const pip = (tl, a) => bump(a, a + 0.22, tl);
 // rörelser för bollen och äpplet
 const rull = (a, b, t0, t1, tl, r = BR) => { const u = utK((tl - t0) / (t1 - t0)), x = lerp(a[0], b[0], u); return { pos: [x, lerp(a[1], b[1], u)], rot: (x - a[0]) / r * 57.3 }; };
 const bageP = (a, b, h, u) => { u = kl(u); return [lerp(a[0], b[0], u), lerp(a[1], b[1], u) - h * Math.sin(Math.PI * u)]; };
@@ -318,15 +337,15 @@ const RS = {
   '11': (tl, d) => { const td = MO('11') + J.DAR['19'], hopp = td - 0.65, K = [1300, BY];
     let b;
     if (tl < hopp) b = { ...rull(B_F3, K, 0.5, hopp, tl), mark: MARK };
-    else if (tl < td) { const u = (tl - hopp) / 0.65; b = { pos: bageP(K, [B_SAND[0], B_SAND[1] - 5], 260, u), rot: (K[0] - B_F3[0]) / BR * 57.3 + 120 * u, mark: lerp(MARK, B_SAND[1] + 10, u) }; }
-    else b = { pos: [B_SAND[0], B_SAND[1] - 5 + 5 * del(td, td + 0.4, tl)], rot: 0, sand: true };
+    else if (tl < td) { const u = (tl - hopp) / 0.65; b = { pos: bageP(K, [B_SAND[0], B_SAND[1] - 0.3 * BR], 260, u), rot: (K[0] - B_F3[0]) / BR * 57.3 + 120 * u, mark: lerp(MARK, B_SAND[1] + 10, u) }; }
+    else b = { pos: [B_SAND[0], B_SAND[1] - 0.3 * BR * (1 - del(td, td + 0.35, tl))], rot: 0, sand: true, prick: del(td, td + 0.3, tl) };
     const g = ga(tl, td + 0.3, td + 2.8, IN, SAND_P, P({ rikt: 0.4 })), sv = 0.8 + ML('11');
     return LK({ pos: g.pos, f: prata(F('glad', { titt: [14, 0] }), tl, sv, sv + 0.7), p: g.p, boll: b, puffar: [[B_SAND[0], B_SAND[1] + 10, (tl - td) / 0.6]] }); },
   // bollen med sand på sig; pandan kikar ner och fnissar
   '11b': (tl, d) => { const sv = 0.6 + ML('11b');
     return LK({ kam: K_SAND, pos: SAND_P, f: prata(F(tl < sv ? 'glad' : 'fnissig', { titt: [12, 14] }), tl, sv, sv + 0.8), p: P({ rikt: 0.3, luta: 4 * del(0.1, 0.6, tl) }), boll: { pos: B_SAND, sand: true, prick: 1 } }); },
   // pandan puffar ut bollen ur sanden, den rullar åt vänster bakom pandan och stannar bakom gunganden på "där"
-  '12': (tl, d) => { const td = MO('12') + J.DAR['20'], k = puffa(tl, 0.0, null, 0.45), K = [1440, 905];
+  '12': (tl, d) => { const td = MO('12') + J.DAR['20'], k = puffa(tl, 0.0, null, 0.45), K = [1440, 953 - BR];
     let b;
     if (tl < 0.15) b = { pos: B_SAND, sand: true, prick: 1 };
     else if (tl < 0.7) { const u = (tl - 0.15) / 0.55; b = { pos: bageP(B_SAND, K, 160, u), rot: -140 * u, prick: 1 - u, mark: lerp(B_SAND[1] + 10, 953, u) }; }
@@ -345,14 +364,20 @@ const RS = {
   '14': (tl, d) => { const klipp = MO('14') + ML('14');
     return LK({ kam: tl < klipp ? NARA(VID_GUNG) : K_HEL, pos: VID_GUNG, f: F('nyfiken'), p: P(), boll: { pos: B_TRAD, lager: 'bak' } }); },
   // detalj stammen: bollen skimrar svagt och glider sakta inåt
-  '14b': (tl, d) => LK({ kam: K_TRAD, pos: VID_GUNG, f: F('nyfiken'), p: P(), boll: { pos: [B_TRAD[0] - 6 * del(0, d, tl), B_TRAD[1]], lager: 'bak' }, skim: [[B_TRAD[0] + 40, B_TRAD[1] - 10, 0.35 * del(0, 0.6, tl), 0.8]] }),
+  // fågeln flyger in i en båge och landar bredvid bollen, skuttar närmare och lutar huvudet mot bollen
+  '14b': (tl, d) => { const u = tl / 0.95, h = tl > 1.25 && tl < 1.5 ? 14 * Math.sin(Math.PI * (tl - 1.25) / 0.25) : 0;
+    const fg = { pos: tl < 0.95 ? qb(F_IN, [640, 760], F_LAND, u) : [lerp(F_LAND[0], F_STA[0], del(1.25, 1.5, tl)), F_LAND[1] - h], flax: 1 - del(0.8, 1.0, tl), oppen: pip(tl, 1.05), luta: 10 * del(1.6, 1.8, tl) };
+    return LK({ kam: K_TRAD, pos: VID_GUNG, f: F('nyfiken'), p: P(), boll: { pos: [B_TRAD[0] - 6 * del(0, d, tl), B_TRAD[1]], lager: 'bak' }, skim: [[B_TRAD[0] + 40, B_TRAD[1] - 10, 0.35 * del(0, 0.6, tl), 0.8]], fagel: fg }); },
   // "Ja, där! Bakom trädet!": skimrar tydligt; klipp: jätteglad, öronen upp
   '15': (tl, d) => { const klipp = MO('15') + ML('15');
-    if (tl < klipp) return LK({ kam: K_TRAD, pos: VID_GUNG, f: F('glad'), p: P(), boll: { pos: [B_TRAD[0] - 6, B_TRAD[1]], lager: 'bak' }, skim: [[B_TRAD[0] + 40, B_TRAD[1] - 10, 0.9, 0.9]] });
-    const up = oronUpp(tl, klipp + 0.1, d, 12); return LK({ kam: NARA(VID_GUNG), pos: VID_GUNG, f: F('jatteglad'), p: P({ oron: [up, up] }), boll: { pos: B_TRAD, lager: 'bak' } }); },
+    const h = (a) => tl > a && tl < a + 0.22 ? 10 * Math.sin(Math.PI * (tl - a) / 0.22) : 0;   // fågeln skuttar på stället och piper med
+    const fg = { pos: [F_STA[0], F_STA[1] - h(0.05) - h(klipp + 0.6)], oppen: pip(tl, 0.1) + pip(tl, klipp + 0.65), luta: 10 * (1 - del(0.5, 0.7, tl)) };   // pip före och efter Malin
+    if (tl < klipp) return LK({ kam: K_TRAD, pos: VID_GUNG, f: F('glad'), p: P(), boll: { pos: [B_TRAD[0] - 6, B_TRAD[1]], lager: 'bak' }, skim: [[B_TRAD[0] + 40, B_TRAD[1] - 10, 0.9, 0.9]], fagel: fg });
+    const up = oronUpp(tl, klipp + 0.1, d, 12); return LK({ kam: NARA(VID_GUNG), pos: VID_GUNG, f: F('jatteglad'), p: P({ oron: [up, up] }), boll: { pos: [B_TRAD[0] - 6, B_TRAD[1]], lager: 'bak' }, fagel: fg }); },
   // bollen rullar fram bakom stammen och stannar framför pandan på "där"
   '16': (tl, d) => { const td = MO('16') + J.DAR['24'], sv = 0.8 + ML('16'), r = rull([B_TRAD[0] - 6, B_TRAD[1]], B_TRADF, 0.6, td, tl);
-    return LK({ kam: K_TRADH, pos: VID_TRAD, f: F(tl < sv ? 'glad' : 'fnissig', { titt: [-14, 8] }), p: P({ rikt: -0.3 }), boll: { ...r, lager: r.pos[0] < 430 ? 'bak' : 'saker', mark: lerp(B_TRAD[1] + BR, MARK, kl((r.pos[0] - B_TRAD[0]) / 120)) } }); },
+    const fu = (tl - 0.45) / 1.3, fg = tl < 0.45 ? { pos: F_STA } : fu < 1 ? { pos: qb(F_STA, [600, 520], F_UT, fu), flax: del(0.45, 0.55, tl), vand: 1 } : null;   // flyger upp och bort när bollen kommer
+    return LK({ kam: K_TRADH, pos: VID_TRAD, f: F(tl < sv ? 'glad' : 'fnissig', { titt: [-14, 8] }), p: P({ rikt: -0.3 }), boll: { ...r, lager: r.pos[0] < 430 ? 'bak' : 'saker', mark: lerp(B_TRAD[1] + BR, MARK, kl((r.pos[0] - B_TRAD[0]) / 120)) }, fagel: fg }); },
   // två små glada skutt med bollen bredvid
   '17': (tl, d) => { const h1 = skutt(VID_TRAD, VID_TRAD, tl, 0.45, 0.3, 30), h2 = skutt(VID_TRAD, VID_TRAD, tl, 0.95, 0.3, 30), h = h1.luft ? h1 : h2;
     return LK({ kam: HALV(VID_TRAD, -80), pos: h.pos, luft: h.luft, f: F('jatteglad', { titt: [-10, 6] }), p: P({ strack: h1.strack + h2.strack, oron: [-8, -8] }), boll: { pos: B_TRADF, mark: MARK } }); },
@@ -462,6 +487,7 @@ function ritaLek(st, t) {
   if (ap?.tass) { const [x, y] = tass('r'); apple({ pos: [x + 10, y + 26], lager: 'saker', rot: -8 }); }
   else if (ap) apple(ap);
   (st.puffar || []).forEach(([x, y, u]) => puff(x, y, u));
+  if (st.fagel) fagel(st.fagel);
   (st.skim || []).forEach(([x, y, k, v]) => skimmer(x, y, k, v));
   // kritirisen runt pandan på gunganden: radien 1400 → 330 på 1,5 s, står 0,4 s, → 0 på 0,6 s; sedan svart
   if (st.iris != null) { const [cx, cy] = [SITT[0] + 30, SITT[1] - 140], tl = st.iris;
@@ -494,6 +520,9 @@ function ljud() {
       ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f) * (v != null ? v / 0.7 : 1) });
   }
   ut.push({ t: RR['9b'].s + RR['9b'].d - 1.0 + 0.55, fil: E + 'boing/boing-2.m4a', vol: 0.6 });   // bollen landar framför pandan
+  // fågeln: piper när den landat, två pip runt "Ja, där!", flaxar iväg
+  const k15 = MO('15') + ML('15');
+  [[RR['14b'].s + 1.05, 1], [RR['15'].s + 0.1, 2], [RR['15'].s + k15 + 0.65, 3], [RR['16'].s + 0.45, 4]].forEach(([t, n]) => ut.push({ t, fil: E + `fagel-pip/fagel-pip-${n}.m4a`, vol: 0.5 }));
   const rit = (T, n) => ut.push({ t: T.rit[0], fil: E + `krita-ritar/krita-ritar-${n}.m4a`, vol: 1.2, langd: T.rit[1] - T.rit[0] + 0.3, loop: true, fade: 0.4 });
   rit(T_RIT, 1); rit(T_B, 2); rit(T_H, 3);
   const s1 = RR['1'].s;
