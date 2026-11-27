@@ -41,7 +41,10 @@ export function kamera(zoom = 1, cx = 960, cy = 540) {
   const tx = kl(960 - cx * zoom, 1920 - 1920 * zoom, 0), ty = kl(540 - cy * zoom, 1080 - 1080 * zoom, 0);
   $('kamera').setAttribute('transform', `translate(${f1(tx)} ${f1(ty)}) scale(${zoom.toFixed(4)})`); ZOOM = zoom;
 }
-export const platta = (fil, extra = '') => { $('platta').innerHTML = `<image href="${fil}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>` + extra; };
+// HIMMEL.farg(t): en färg som multipliceras över vägens vägg (y < 866), så att scenen kan färga himlen (feedback 27/11, 014 0:56)
+export const HIMMEL = { farg: null };
+export const platta = (fil, extra = '') => { $('platta').innerHTML = `<image href="${fil}" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/>` + extra
+  + (fil === VAG && HIMMEL.farg ? `<rect x="-20" y="-20" width="1960" height="886" fill="${HIMMEL.farg(TID)}" style="mix-blend-mode:multiply"/>` : ''); };
 
 // --- Traktorn (assets/rekvisita/traktor-gron-v2, 1024 × 1024, nosen åt höger; Sannas Flow-version med brett lågt säte) --------
 // Lagerordning: bak (sätet, stolparna, avgasröret), leoparden, fram (karet under sätets kant, huven, taket), hjulen.

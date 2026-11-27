@@ -230,3 +230,5 @@ Generera: `python3 verktyg/prompt.py --sak <sak>`. Spara bilden i `assets/rekvis
 | Klossarna (cirkel, fyrkant, trekant) | [klossar.md](klossar.md) | 053 |
 | Blåbärsbusken | [blabarsbuske.md](blabarsbuske.md) | 059 |
 | Stubben | [stubbe.md](stubbe.md) | 059 |
+| Gula solen | [sol-gul.md](sol-gul.md) | 062 |
+| Rosa glassen | [glass-rosa.md](glass-rosa.md) | 062 |

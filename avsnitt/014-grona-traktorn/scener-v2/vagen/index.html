@@ -15,12 +15,19 @@ const { kl, lerp, mjuk, del, bump, f1, lagg } = K;
 window.SCEN = ['03', '09a–g'];
 
 // --- Ordtider (avsnittstid) ------------------------------------------------------------------------------------------------
-const PUTT = [39.6, 40.0, 40.4], KOR = [77.7, 78.4, 79.0], ZIPP = [91.3, 92.0, 92.5], HOPP = [67.7, 68.7, 69.7];
+const PUTT = [39.6, 40.0, 40.4], KOR = [77.7, 78.4, 79.0], ZIPP = [91.3, 92.0, 92.5];
+// feedback 27/11 (1:08 "match hops to song"): "hopp" sjungs på slagen 84–86 (sångtid 59,3 / 60,0 / 60,7, Whisper), inte 58,7 / 59,7 / 60,7 som i rader.txt; avstampet strax före ordet
+const HOPP = [68.25, 68.95, 69.65];
 const R1 = { a: 48.1, gront: [48.1, 49.0, 49.8, 50.2], gbk: 50.6, kor: 51.8, ut: 52.6, artor: [52.6, 54.4, 55.3], ekon: [53.5, 54.4, 55.3],
   tak: 56.3, putt: [59.2, 59.6, 60.0, 60.4], titta: 61.7, slut: 62.5, kawaii: true };
 const R2 = { a: 93.0, gront: [93.0, 93.7, 94.7, 95.7], gbk: 96.4, kor: 97.15,   // QA 26/11: grönt på "kör" (sångtid 1:28,2)
   ut: 97.7, artor: [97.7, 99.7, 100.7], ekon: [98.7, 99.7, 100.7],
   tak: 101.5, putt: [103.6, 104.0, 104.4, 104.8], titta: 105.4, slut: 106.0, kawaii: false };
+
+// --- Himlen (feedback 27/11, 0:56 "more bold bg blue, turning green on chorus"): starkare blå, grön i refrängerna ------------------
+const BLA = [167, 212, 252], GRON = [214, 246, 150];
+K.HIMMEL.farg = t => { const g = Math.max(...[R1, R2].map(R => del(R.a - 0.4, R.a + 0.2, t) * (1 - del(R.slut - 0.5, R.slut + 0.3, t))));
+  return `rgb(${BLA.map((c, i) => Math.round(lerp(c, GRON[i], g))).join(',')})`; };
 
 // --- Farten och vägen: vag(t) = körd sträcka (px), integrerad ur farten, så att inbromsningar och rusningar blir mjuka ----------
 const fart = t => {
@@ -204,16 +211,17 @@ const ANIM = {
   // 03a: närbild, en vinkning (armen bakom kroppen, snett ut), tittar framåt igen och blinkar
   '03a': (u, s) => { kor(); zipp(); const v = bump(0.2, 2.4, s), vink = 15 * Math.sin(2 * Math.PI * (s - 0.2) / 0.7) * v;
     lova(s > 2.6 ? ans('glad', 'blinkar', bump(2.6, 3.2, s)) : 'glad', { armar: [6, 6 + 80 * mjuk(v * 2) + vink], rikt: -0.3 * (1 - v) }); NARA(); },
-  // 03b: helbild, skumpar per "putt", puffar; humlan flyger ett lugnt varv runt Lovas huvud och flyger iväg, Lova följer henne
+  // 03b: helbild, skumpar per "putt", puffar; fjärilen Fia flyger ett lugnt varv runt Lovas huvud och flyger iväg, Lova följer henne.
+  // Feedback 27/11 (0:38 "more smooth animation flying for bumble bee and change to fia"): Fia i stället för humlan, och en enda
+  // mjuk bana: in från höger utanför bild, ett varv runt huvudet (jämn vinkelfart, radien krymper och växer mjukt), ut uppåt höger. Framför Lova går den över bröstet, så att skrattet på "putt" syns.
   '03b': (u, s) => { const t = K.TID; kor(); zipp(); puffar(PUTT);
-    const [hx, hy] = LOVA_HUVUD(), a = 37.6, b = 41.8, w = del(a, b, t);
-    let bx, by, fram = false;
-    if (t < a) { bx = 2100; by = 200; }
-    else if (w < 1) { const v = -Math.PI / 2 + 2.2 * Math.PI * w; bx = hx + 300 * Math.cos(v) + lerp(700, 0, del(a, a + 1, t)); by = hy - 40 + 130 * Math.sin(v) - lerp(160, 0, del(a, a + 1, t)); fram = Math.sin(v) > 0; }
-    else { const k = del(b, b + 0.8, t); bx = hx + 300 * Math.cos(0.2 * Math.PI) - 900 * k; by = hy - 40 - 300 * k; }
-    K.figur('humle', [bx, by + 14 * Math.sin(t * 7)], K.F('humle', 'glad'), K.P('humle'), { s: 0.24, lager: fram ? 'framfor' : 'bakom' });
-    const skratt = PUTT.reduce((m, p) => Math.max(m, bump(p - 0.05, p + 0.35, t)), 0);
-    lova(t > PUTT[0] ? ans('glad', 'skrattar', 1.4 * skratt) : 'glad', { rikt: kl((bx - hx) / 300, -1, 1) * 0.8 * (w > 0 && w < 1 ? 1 : 0.3), upp: kl((hy - by) / 300, -0.3, 0.6) });
+    const [hx, hy] = LOVA_HUVUD(), a = 37.0, b = 42.2, w = kl((t - a) / (b - a));
+    const v = 2 * Math.PI * w, R = 1350 - 1050 * mjuk(w / 0.3) + 1100 * mjuk((w - 0.72) / 0.28);   // ett varv, 0 → 2π: in från höger, framför bröstet, över huvudet under "putt", ut uppåt höger
+    const bx = hx + R * Math.cos(v), by = hy - 60 + Math.min(R, 300) * Math.sin(v) * (0.66 + 0.24 * Math.sin(v)) - 260 * mjuk((w - 0.72) / 0.28) + 10 * Math.sin(2 * Math.PI * 0.9 * t);
+    const fram = Math.sin(v) > 0, flax = Math.sin(2 * Math.PI * 3 * t), vx = -Math.sin(v);   // vx > 0: på väg åt höger (övre halvan)
+    if (t > a - 0.1 && t < b) K.figur('fia', [bx, by], K.F('fia', 'glad'), K.P('fia', { luta: -10 * vx, vingar: [16 + 12 * flax, 16 + 12 * flax] }), { s: 0.26, lager: fram ? 'framfor' : 'bakom' });
+    const skratt = PUTT.reduce((m, p) => Math.max(m, bump(p - 0.05, p + 0.35, t)), 0), folj = bump(a + 0.6, b - 0.2, t);
+    lova(t > PUTT[0] ? ans('glad', 'skrattar', 1.4 * skratt) : 'glad', { rikt: kl((bx - hx) / 300, -1, 1) * 0.8 * folj, upp: kl((hy - by) / 300, -0.3, 0.6) * folj });
     HEL(); },
   // 04: närbild: tittar sig om, ser jackan (tittar ner, litet skutt), pekar på tittaren
   '04': (u, s) => { const t = K.TID; kor(); zipp();
@@ -230,7 +238,7 @@ const ANIM = {
     if (fas < 0) { gy = lerp(1650, 1120, titt); }
     else { const a = HOPP[fas], u2 = kl((t - a) / 0.55), A = B[fas], C = B[fas + 1];
       gx = lerp(A[0], C[0], mjuk(u2)); gy = lerp(A[1], C[1], mjuk(u2)); gs = lerp(A[2], C[2], u2); hojd = 220 * Math.sin(Math.PI * u2); }
-    if (t > 70.0) { gx = varld(B[3][0], 70.0); }
+    if (t > HOPP[2] + 0.55) { gx = varld(B[3][0], 70.0); }
     const iLuft = hojd > 20, gf = iLuft ? K.F('gurra', 'jatteglad') : fas >= 2 ? K.F('gurra', 'fnissig') : K.F('gurra', 'glad');
     const sista = fas >= 2 && t > HOPP[2] + 0.55;
     K.figur('gurra', [gx, gy - hojd], gf, K.P('gurra', iLuft ? { strack: 0.08 } : {}), { s: gs, lager: sista ? 'bakom' : 'framfor' });
@@ -243,7 +251,10 @@ const ANIM = {
     { const u = (t - 70.4) / 1.1;   // QA 26/11: grodan hoppar vidare ut åt höger i två skutt i stället för att försvinna
       if (u < 1) { const h = Math.abs(Math.sin(Math.PI * 2 * u)), gx = varld(1690, 70.0) + 860 * u;
         K.figur('gurra', [gx, 868 - 190 * h], K.F('gurra', 'jatteglad'), K.P('gurra', h > 0.2 ? { strack: 0.08 } : {}), { s: 0.53, lager: 'bakom' }); } }
-    trafikljus(varld(1480, 72.6), 885, 470, 'rod', del(70.6, 71.0, t));   // efter grodan: grodan (fot 868) står bakom lampan (885)
+    // feedback 27/11 (1:09 "smoother transition of the traffic light"): växer mjukt upp ur marken (litet överslag) i stället för att
+    // stå där vid klippet, sedan tänds den röda lampan
+    { const u = kl((t - 70.5) / 0.8), up = mjuk(u) * (1 + 0.08 * Math.sin(Math.PI * u));
+      if (u > 0) trafikljus(varld(1480, 72.6), 885 + 50 * (1 - mjuk(u)), 470 * up, 'rod', del(71.1, 71.5, t)); }   // efter grodan: grodan (fot 868) står bakom lampan (885)
     lova(t < 71.9 ? ans('glad', 'nyfiken', del(70.4, 70.8, t)) : ans('nyfiken', 'forvanad', del(71.9, 72.2, t)), { rikt: 0.6 }); HEL(); },
   // 07b: närbild, tassen upp, sitter stilla och tittar upp mot lampan; blinkar mot tittaren på andra "vänta"
   '07b': () => { const t = K.TID; kor(); zipp();
@@ -287,12 +298,12 @@ const ANIM = {
   '09a–g': () => { K.zipp(1); refrang(R2); },
 };
 
-window.ready = K.starta({ ANIM, figurer: [['lova', 'leoparden-lova', 14], ['humle', 'humlan-humle', 7], ['gurra', 'grodan-gurra', 5]],
+window.ready = K.starta({ ANIM, figurer: [['lova', 'leoparden-lova', 14], ['fia', 'fjarilen-fia', 9], ['gurra', 'grodan-gurra', 5]],
   forladda: ['/assets/rekvisita/trafikljus-v2/cut/trafikljus-v2.png'],
   ljud: () => {
     K.ljud('tuff-tuff', 30.4, { loop: true, langd: 75.4, vol: 0.08, fade: 0.8 });
     PUTT.forEach(a => K.ljud('plupp', a, { vol: 0.15 }));
-    K.ljud('surr', 37.6, { vol: 0.12, langd: 4.6, fade: 0.8 });
+    K.ljud('fladder', 37.9, { vol: 0.12, langd: 3.8, fade: 0.8 });
     K.ljud('glimt', 43.7, { vol: 0.2 });
     for (const R of [R1, R2]) {
       R.gront.forEach(a => K.ljud('pop', a + 0.05, { vol: 0.15 }));

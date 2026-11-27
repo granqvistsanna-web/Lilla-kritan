@@ -466,7 +466,7 @@ S['61'] = tl => { const g = bump(0.5, 1.4, tl);
   return { kam: K_HEL, tub: null, dansare: STILLA, figs: rad3(n => ANS(n, 'glad', { titt: [[8, 0, -8][n] * g, 0] }), n => POS(n, { boj: [2, 0, -2][n] * g })) }; };
 // "Var är tänderna?" (runda 5: närmare): hårt klipp till de tre ansiktena tätt sida vid sida över hela bildens bredd, munnarna stängda,
 // ögonen på tittaren; de lutar huvudet lite
-const TRIO = [625, 960, 1295], K_TRIO = [2.1, 960, MARK + FRAM - SK * 455];   // "Var är tänderna?" närmare (1,95 → 2,1)
+const TRIO = [625, 960, 1295], K_TRIO = [1.55, 960, MARK + FRAM - SK * 470];   // "Var är tänderna?" närmare (1,95 → 2,1); QA 27/11: 1,55, så att katten och pandan syns hela (vid 2,1 var de halva i kanterna)
 S['41'] = tl => ({ kam: K_TRIO, tub: null, figs: [0, 1, 2].map(n => ({ n, x: TRIO[n], fram: true, fot: MARK + FRAM, f: ANS(n, 'glad'), p: POS(n, { boj: [-3, 3, -3][n] * del(0.2 + 0.15 * n, 0.8 + 0.15 * n, tl) }) })) });
 // "Där är de!": tre ansiktsklipp, en i taget ensam i bild
 ['42a', '42b', '42c'].forEach((id, n) => S[id] = () => narbild(n, LER(n), POS(n)));

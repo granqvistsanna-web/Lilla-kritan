@@ -1,0 +1,39 @@
+01-titta-en-bok  [warmly] Titta! En bok.
+02-sommar-i-boken  [happy] Oj! Det är sommar i boken!
+03-var-ar-solen  [curious] Himlen är blå. Men var är solen?
+04-kritan-ritar  [warmly] Kritan ritar …
+05-vad-blir-det  [curious] Vad blir det nu?
+06-oj-en-sol  [happy] Oj! En sol!
+07-hej-grodan  [happy] Hej, grodan! Hej, hej!
+08-hur-ar-det  [warmly] Hur är det, grodan?
+09-tycker-om-sommaren  [happy] Jaså, du tycker om sommaren!
+10-solen-skiner  [warmly] Solen skiner. Det blir varmt!
+11-puh-varm  [chuckles] Puh! Grodan är så varm.
+12-ar-du-varm  [warmly] Är du varm, grodan?
+13-vad-gor-vi-nu  [curious] Hm … vad gör vi nu?
+14-kritan-ritar-nagot  [happy] Titta! Kritan ritar något.
+15-en-glass-varsagod  [happy] En glass! Varsågod, grodan.
+16-tack-kritan  [happy] Tack, kritan!
+17-smakar-mums  [warmly] Grodan smakar på glassen. Mums!
+18-kall-och-god  [curious] Är glassen kall och god?
+19-kall-glass  [happy sigh] Mmm, kall glass när det är varmt!
+20-glass-pa-nasan  [surprised] Oj! Glass på näsan!
+21-hoppsan  [laughs] Ha ha, hoppsan!
+22-glassen-slut  [warmly] Nu är glassen slut. Det är fortfarande varmt.
+23-svalka-dig  [cheerfully] Ska du svalka dig i dammen?
+24-bra-ide  [happy] Ja, bra idé!
+25-hopp-plask  [playfully] Hopp … plask!
+26-vad-skont  [happy sigh] Ah, vad skönt!
+27-sval-och-glad  [happy] Nu är du sval och glad!
+28-vad-mer-finns  [curious] Vad mer finns på sommaren?
+29-blommor  [happy] Blommor!
+30-var-ar-blommorna  [curious] Var är blommorna?
+31-kan-du-hjalpa  [warmly] Kan du hjälpa grodan att hitta blommor?
+32-ja-dar-blommorna  [happy] Ja, där är blommorna!
+33-vad-fina  [happy] Vad fina!
+34-luktar-gott  [happy sigh] Mmm … vad gott de luktar.
+35-och-sand  [happy] Och sand!
+36-sandslott  [happy] Titta, ett sandslott!
+37-fin-sommardag  [warmly] Var det en fin sommardag, grodan?
+38-hej-da-grodan  [happy] Hej då, grodan! Hej då, solen!
+39-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

@@ -582,10 +582,10 @@ const knappGlod = (extra = 0) => { const a = (1 - Math.cos(2 * Math.PI * TT / 1.
     <circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="${f1(40 + 7 * a + 16 * extra)}" fill="url(#kglod)" opacity="${Math.min(1, k).toFixed(3)}"/>`); };
 const knappLjus = k => { if (k > 0) lagg('fram', `<circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="14" fill="#ff5252" opacity="${(0.55 * k).toFixed(2)}"/><circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="28" fill="#ffcdd2" opacity="${(0.35 * k).toFixed(2)}"/>`); };
 // knappen i mellanbild: katten står på sitsen vid stången (KX), armroten ca 110 px från knappen
-// QA 27/11: 1395 → 1340, så att ansiktet stannar ca 20 px från knappen och stången (förut gick nosen in i dem); tassen når ändå.
+// QA 27/11: 1395 → 1315, så att ansiktet stannar fritt från knappen och stången (förut gick nosen in i dem); tassen når ändå.
 // Nallen ligger på sätet framför ryggsäcken (NALLE_KNAPP), annars försvann den ur bild vid klippet till knappen
 const NALLE_KNAPP = [985, SATE.fot - 100, 0.24, -6];
-const KX = 1340, KNAPPB = () => kamera(1.7, 1460, 560);
+const KX = 1315, KNAPPB = () => kamera(1.7, 1460, 560);
 
 // --- Farmors dörr: öppningen x 812–1126, y 202–875, trappstenen y 876–921 ------------------------------------------------------------
 // stjärnor i farmors fönster (Sanna 2026-11-21 "add stars in windows"): en vit pappersstjärna hänger i ett snöre mitt i varje fönster
@@ -598,6 +598,17 @@ const fonsterStjarnor = () => [[383, 250], [1543, 250]].map(([x, y0], i) => { co
     <path transform="translate(${x} ${y + 4}) scale(${r * 0.5})" d="${STJ5}" fill="#ffe7a6" opacity=".8"/></g>`; }).join('');
 const dorr = (oppen = 0) => { $('platta').innerHTML = `<image href="${oppen ? DORR_OPPEN : DORR}" width="1920" height="1080"/>${fonsterStjarnor()}`; };
 const KD = 640, DGOLV = 1000, KRAM = () => kamera(1.3, 820, 600);
+// kramen (QA 27/11): farmors plats, kattens plats och armarnas vinkel; kramArmar() ritar farmors synliga främre armar en gång till
+// ovanpå katten (en kopia av riggens armar, samma transform), så att de ligger runt kattens axlar i stället för bakom kroppen
+const KRAM_F = 930, KRAM_K = 850, KRAM_ARM = 0;
+function kramArmar() {
+  const k = GF.cloneNode(true); k.removeAttribute('id'); k.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
+  const behall = new Set([...k.querySelectorAll('.arm-l, .arm-r')].filter(e => e.getAttribute('opacity') === '1' && /fram/.test(e.getAttribute('href') || e.outerHTML)));
+  if (!behall.size) return;
+  k.querySelectorAll('*').forEach(e => { if (behall.has(e) || [...behall].some(b => e.contains(b) || b.contains(e))) return; if (e.tagName !== 'g') e.remove(); });
+  k.querySelectorAll('g').forEach(e => { if (![...behall].some(b => e.contains(b))) e.remove(); });
+  $('fram').appendChild(k);
+}
 
 // --- Ritintrot: kritan ritar bussen (konturen ur urklippet, fönstren, dörren och hjulen som egna drag) --------------------------------
 const PB = [960, 560, 1.15];
@@ -841,17 +852,19 @@ const S = {
     katt(ANS(tl > 0.7 ? 'jatteglad' : 'nyfiken', { titt: [14, -6] }), ENHAND, { x: KD - 40, fot: DGOLV, lyft: skutt(tl, lo(1) - 0.1, lo(1) + 0.5, 22) }); snofall(); },
   // kramen i halvnära med luft över farmors öron (QA 25/11: 1,5× med mitt 640 kapade öronen och huvudets topp)
   // 44 kramen: rosa hjärtan stiger upp mellan dem (Sanna 2026-11-21 "hearts pink on hug"), ett i taget, svajar och tonar bort
-  '44': tl => { dorr(1); KRAM(); const u = del(0.2, 1.2, tl);
-    farmor(ANS('glad', {}, LF), { luta: -8 * u, armar: [-40 * u, -40 * u], fram: [u, u] }, { x: lerp(970, 920, u) });
-    katt(ANS('glad', { titt: [10, -8] }), { ...ENHAND, luta: 7 * u }, { x: lerp(KD - 40, KD + 90, u), fot: DGOLV }); snofall(0.5);
+  // QA 27/11 "ser inte ut som en kram": katten går in mot farmors mitt, farmor böjer sig fram och lägger båda (riggens främre) armarna runt
+  // kattens axlar, framför kattens kropp (kramArmar), med ett mjukt gung
+  '44': tl => { dorr(1); KRAM(); const u = del(0.2, 1.2, tl), g = 2.5 * Math.sin(2 * Math.PI * tl / 2.4) * del(1.2, 1.8, tl);
+    farmor(ANS('glad', {}, LF), { luta: -6 * u + g, armar: [KRAM_ARM * u, KRAM_ARM * u], fram: [u, u], strack: -0.03 * u }, { x: lerp(970, KRAM_F, u) });
+    katt(ANS('glad', { titt: [10, -8] }), { ...ENHAND, luta: 4 * u + 0.6 * g }, { x: lerp(KD - 40, KRAM_K, u), fot: DGOLV }); kramArmar(); snofall(0.5);
     for (let i = 0; i < 6; i++) { const q = (tl - 1.0 - 0.55 * i) / 2.4; if (q <= 0 || q >= 1) continue;
       const x = (i % 2 ? 1200 : 470) + 40 * Math.sin(i * 2.1) + 18 * Math.sin(TT * 2.2 + i), y = 560 - 230 * q, r = (24 + 7 * slump(i)) * (0.5 + 0.5 * mjuk(q * 4)), o = Math.min(1, q * 6) * (1 - mjuk((q - 0.6) / 0.4));
       lagg('fram', `<g opacity="${o.toFixed(2)}" transform="rotate(${f1(10 * Math.sin(TT * 2 + i))} ${f1(x)} ${f1(y)})"><path d="${hjarta(x, y, r)}" fill="#f58fb3" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
         <ellipse cx="${f1(x - r * 0.45)}" cy="${f1(y - r * 0.55)}" rx="${f1(r * 0.22)}" ry="${f1(r * 0.14)}" fill="#ffd3e2" transform="rotate(-30 ${f1(x - r * 0.45)} ${f1(y - r * 0.55)})"/></g>`); } },
   // 45 glider ur kramen i stället för att hoppa (Sanna 2026-11-21 "abrupt clip"): samma platser och lutning som när 44 slutar, sedan isär och vinkar
   '45': (tl, d) => { dorr(1); KRAM(); const e = mjuk(del(0, 1.0, tl));
-    farmor(ANS('jatteglad', {}, LF), { luta: -8 * (1 - e), armar: [-40 * (1 - e), -40 * (1 - e)], fram: [1 - e, 1 - e] }, { x: lerp(920, 970, e), vinka: VINKA(tl, 0.9, 99) });
-    katt(ANS(e > 0.5 ? 'jatteglad' : 'glad'), { ...ENHAND, luta: 7 * (1 - e) }, { x: lerp(KD + 90, KD, e), fot: DGOLV, vinka: VINKA(tl, 0.6, 99), nalleV: 4 }); snofall(0.5); },
+    farmor(ANS('jatteglad', {}, LF), { luta: -6 * (1 - e), armar: [KRAM_ARM * (1 - e), KRAM_ARM * (1 - e)], fram: [1 - e, 1 - e], strack: -0.03 * (1 - e) }, { x: lerp(KRAM_F, 970, e), vinka: VINKA(tl, 0.9, 99) });
+    katt(ANS(e > 0.5 ? 'jatteglad' : 'glad'), { ...ENHAND, luta: 4 * (1 - e) }, { x: lerp(KRAM_K, KD, e), fot: DGOLV, vinka: VINKA(tl, 0.6, 99), nalleV: 4 }); kramArmar(); snofall(0.5); },
   '46': (tl, d) => { const c = CUR; CUR = RR['45']; TT = RR['45'].s + RR['45'].d - 0.01; S['45'](RR['45'].d - 0.01, RR['45'].d); CUR = c; TT = RR['46'].s + tl;
     kritiris(lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))), [800, 700]); },
 };
@@ -902,7 +915,11 @@ function ljud() {
   ut.push({ t: at('4') + 4.45, fil: E + 'fagel-pip/fagel-pip-1.m4a', vol: 0.3 });   // fågeln på skylten piper lågt när Malin tystnat
   ut.push({ t: FAGEL_IN()[1] + 0.1, fil: E + 'fagel-pip/fagel-pip-1.m4a', vol: 0.3 });   // och när den landat i rad 1
   // kritan låter hela ritningen (Sanna 2026-11-21 "0:06 missing sound for crayon"): krita-ritar-1 är 4 s, en andra tagning tar resten av konturen
-  ut.push({ t: at('01a', 4.8), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 0.75, langd: 2.3, fadeIn: 0.3, fade: 0.5 });
+  ut.push({ t: at('01a', 4.15), fil: E + 'krita-ritar/krita-ritar-2.m4a', vol: 0.75, langd: 3.0, fadeIn: 0.2, fade: 0.5 });
+  // QA 27/11: 4 s tyst medan kritan väntade efter "Hm, vad blir det?" (01b 1,8 s till fyllningen). Kritan krafsar svagt vidare
+  // (lägre än ritningen, under Malin) ända in i fyllningen, så att kritljudet hörs genom hela ritningen
+  ut.push({ t: at('01b', 0.9), fil: E + 'krita-ritar/krita-ritar-3.m4a', vol: 0.32, langd: 3.6, fadeIn: 0.4, fade: 0.4 });
+  ut.push({ t: at('01b', 4.2), fil: E + 'krita-ritar/krita-ritar-4.m4a', vol: 0.32, langd: RR['01b'].d - 4.2 + 0.6, fadeIn: 0.3, fade: 0.5 });
   // vinden (vinterljud) ca 15 dB lägre än förut (två omgångar) (Sanna 2026-11-20: "turn down the wind sound"): svag bakgrund under Malin och bussen
   const ute = at('01c') + RR['01c'].d - 1.0;
   ut.push({ t: 0.2, fil: E + 'vinterljud/vinterljud-1.m4a', vol: 0.06, langd: ute - 0.2 + 0.8, fadeIn: 1.5, fade: 1.2 });       // svagt under ritintrot

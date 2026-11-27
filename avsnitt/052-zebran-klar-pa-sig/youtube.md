@@ -17,7 +17,7 @@ Zebran klär på sig 🦓🧣 | Bilderbok för de minsta – hjälp zebran att h
 ## Beskrivning
 
 ```
-Kritan ritar en röd halsduk, och zebran har vaknat. Titta, det snöar! Zebran vill gå ut och leka i snön, så då ska vi klä på oss. Först strumporna: den blå strumpan på foten … men oj, var är den andra strumpan? Inte under pallen, inte i korgen. Sedan ritar kritan en mössa till zebran: för liten, för stor … och till sist lagom! Tack! Halsduken runt halsen, den gröna jackan och de gula stövlarna. Kan du hjälpa zebran att hitta den blå strumpan?
+Kritan ritar en röd halsduk, och zebran har vaknat. Titta, det snöar! Zebran vill gå ut och leka i snön, så då ska vi klä på oss. Först strumporna: den blå strumpan på foten … men oj, var är den andra strumpan? Inte under pallen, inte i korgen. Sedan ritar kritan en mössa till zebran: för liten, för stor … och till sist lagom! Tack, kritan! Halsduken runt halsen, den gröna jackan och de gula stövlarna. Kan du hjälpa zebran att hitta den blå strumpan?
 
 En bilderbok i vaxkrita för de minsta, ungefär 1–3 år. Berättaren pratar med zebran, och zebran svarar med glada ljud. Leta efter strumpan, säg tack för mössan och räkna upp kläderna tillsammans: strumpor, mössa, halsduk, jacka … och stövlar!
 
@@ -31,11 +31,11 @@ En bilderbok i vaxkrita för de minsta, ungefär 1–3 år. Berättaren pratar m
 1:27 Hjälp zebran att hitta strumpan
 1:49 Vad ska zebran ha på huvudet?
 2:02 En mössa – för liten, för stor!
-2:27 Lagom! Ska vi säga tack?
-2:46 Den röda halsduken
-3:04 Jackan och stövlarna
-3:25 Strumpor, mössa, halsduk, jacka och stövlar!
-3:40 Hej då, zebran!
+2:27 Lagom! Tack, kritan!
+2:45 Den röda halsduken
+3:01 Jackan och stövlarna
+3:27 Strumpor, mössa, halsduk, jacka och stövlar!
+3:41 Hej då, zebran!
 
 Lilla Kritan är tecknade sånger och berättelser i vaxkrita för små barn: en sak i taget och mycket upprepning.
 

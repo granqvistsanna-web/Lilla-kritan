@@ -161,6 +161,7 @@ function julpynt(x, fot, h, o = 1) {
 // Konturerna är kontur.py:s (…-kontur.json, ytterkontur + hålet), detaljerna mätta i bilderna (bildens px): hinkens kantlinje och glans,
 // spadens fog mellan skaft och blad och bladets inre kant, ljusets framkant upptill och veken (lågan i scenens px).
 // Hinken och spaden ritas i följd: kritan glider från hinken till spadens början och svajar där tills den ritar (som J02).
+const KONTUR = {};   // kontur.py:s konturer, laddas i window.ready
 const DETALJ = {
   hink: ['M226 470 Q512 452 798 458', 'M730 532 Q706 625 686 722'],
   spade: ['M474 574 L546 574', 'M300 612 C304 770 420 900 512 955', 'M724 612 C722 770 610 900 512 955'],
@@ -385,8 +386,8 @@ function S(id, tl, d) {
     case '25': {   // hinken lyfts av det översta tornet och vänder tillbaka till kaninen
       const lyft = del(0, 0.5, tl), hem = del(0.5, 1.4, tl), x = lerp(T3[0], HINK[0], hem), fot = T3[1] - 150 * lyft * (1 - hem) - 60 * Math.sin(Math.PI * hem) + (MARK - T3[1]) * hem;
       return { kam: 'hel', hog: 1, n: 3, tv: [0, 0, bump(0.3, 1.8, tl)], hink: [[x, fot, 200], 180 * (1 - hem), 0, lerp(T3[1], MARK, hem)], spade: 'tass', k: { pos: VID, f: FB(glad, F('forvanad', { titt: [14, -6] }), del(0.1, 0.4, tl)), p: P({ rikt: 0.4 }) } }; }
-    case '25b': { const inn = del(0.3, 1.5, tl), ut = del(d - 1.3, d - 0.2, tl), dr = inn * (1 - ut);   // tonar över, står kvar, tonar tillbaka
-      return { kam: 'hel', hog: 1, n: 3, tornO: 1 - dr, drom: dr, spade: 'tass', k: { pos: VID, f: FB(glad, F('kawaii', { titt: [14, -10] }), del(0.1, 0.6, tl)), p: P({ rikt: 0.4, luta: 3 * dr }) } }; }
+    case '25b': { const j = MT() + 1.8, inn = del(j, j + 0.5, tl), ut = del(d - 1.3, d - 0.2, tl), dr = inn * (1 - ut);   // tonar över på "julgran" (QA 27/11), står kvar, tonar tillbaka
+      return { kam: 'hel', hog: 1, n: 3, tornO: 1 - dr, drom: dr, spade: 'tass', k: { pos: VID, f: FB(glad, F('kawaii', { titt: [14, -10] }), del(j - 0.1, j + 0.4, tl)), p: P({ rikt: 0.4, luta: 3 * dr }) } }; }
     // kritan ritar ljuset (RIT[3]) 0,4 s in i rad 26, väntar bredvid lyktan och flyger ut i rad 30; ljuset fylls i rad 28
     case '26': return { kam: 'halv', hog: 1, n: 3, spade: 'tass', k: { pos: VID, f: F('nyfiken', { titt: [14, 6] }), p: P({ rikt: 0.4 }) } };
     case '27': return { kam: 'glipa', hog: 1, n: 3, spade: 'tass', k: { pos: VID, f: F('nyfiken', { titt: [16, 6] }), p: P({ rikt: 0.5 }) } };
@@ -542,12 +543,12 @@ window.ready = (async () => {
   RAD_L = RADER.map(r => { const s = acc; acc += r.d; return { ...r, s }; }); RR = Object.fromEntries(RAD_L.map(r => [r.id, r]));
   DURATION = acc + SVART; window.DURATION = DURATION;
   // kritans ritningar (absoluta tider ur raderna): spaden på papperet, hinken och spaden i snön, ljuset i glipan
-  const rs = id => RR[id].s, lj = (id, f, i = 0) => RR[id].ljud.filter(x => x[0].startsWith(f))[i][1];
+  const rs = id => RR[id].s, ljt = (id, f, i = 0) => RR[id].ljud.filter(x => x[0].startsWith(f))[i][1];
   const lq = LAGA_H / 46, b = MARK - 2 - LJUS_H - 2, x = GLIPA[0];   // lågan ovanför veken (scenens px, som förut)
   RIT = [
     ritning('spade', IP, { t0: 0.6, sek: 6.0, fyll: rs('01c') + RR['01c'].malin[0][1], fd: 0.9, vanta: [SVAJ, [7.0, 7.8]], ut: [rs('01c') + 0.8, rs('01c') + 2.0], gn: [IP[0], IP[1] - 400, 420], bred: KRITAN.BRED }),
     ritning('hink', HINK, { t0: rs('11a') + 0.4, sek: 2.6, fyll: rs('11b'), fd: 0.8, gn: [HINK[0], HINK[1] - 110, 140] }),
-    ritning('spade', SPADE, { t0: rs('11b') + lj('11b', 'krita-ritar'), sek: 1.6, fyll: rs('11b') + lj('11b', 'glitter', 1), fd: 0.8, vanta: [[SPADE[0] - 150, SPADE[1] - 330], [0, 0]], ut: [rs('12') + 0.1, rs('12') + 1.2], gn: [SPADE[0], SPADE[1] - 120, 140] }),
+    ritning('spade', SPADE, { t0: rs('11b') + ljt('11b', 'krita-ritar'), sek: 1.6, fyll: rs('11b') + ljt('11b', 'glitter', 1), fd: 0.8, vanta: [[SPADE[0] - 150, SPADE[1] - 330], [0, 0]], ut: [rs('12') + 0.1, rs('12') + 1.2], gn: [SPADE[0], SPADE[1] - 120, 140] }),
     ritning('ljus', LJUSP, { t0: rs('26') + 0.4, sek: RR['26'].d - 1.0, fyll: rs('28'), fd: 0.7, vanta: [[GLIPA[0] + 90, MARK - 170], [0, 0]], ut: [rs('30') + 0.1, rs('30') + 1.2], gn: [GLIPA[0], MARK - 60, 90],
       extra: [`M${x} ${f1(b)} C${f1(x + 17 * lq)} ${f1(b - 6 * lq)} ${f1(x + 14 * lq)} ${f1(b - 28 * lq)} ${x} ${f1(b - 46 * lq)} C${f1(x - 14 * lq)} ${f1(b - 28 * lq)} ${f1(x - 17 * lq)} ${f1(b - 6 * lq)} ${x} ${f1(b)}`] }),
   ];

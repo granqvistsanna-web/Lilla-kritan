@@ -16,6 +16,8 @@ Känslorna och numren följer `format/bilderbok.md` (`<djur>-gullig-N`: 1 hej, 2
 | räven (055, 056) | `rav-gullig-1`, `-1b` (svenskt "hej!") | `rav-gullig-8`..`8d` (svenskt "hej då!") | `rav-gullig-5`..`5d` | `rav-gullig-3`..`3d`, `rav-fniss-1..4` (långt) | **saknas** | **saknas** | `rav-gullig-2`..`2d` | `rav-gullig-6`..`6d` |
 | musen | `mus-hej` | `mus-hejda` | `mus-nyfiken-3` | `mus-fniss-kort-1`, `mus-fniss` | **saknas** | **saknas** | `mus-fortjust-3` | `mus-trumpen` |
 | grisen | `noff-gullig-1` | `noff-gullig-8` | `noff-gullig-5`, `noff-kolla` | `noff-fniss`, `noff-gullig-3` | `noff-ooo` | `noff-mums` | `noff-aah`, `noff-glad` | `noff-gullig-6` |
+| grodan (062) | `kvak-4` | `mus-hejda-1..4` | `kvak-2`, `kvak-prat-1` | `olle-fniss-4` | `oj-oj-1` | `mus-suck-1` (mysig suck) | `kvak-dubbel-1` | `gran-suck-4` (varm, *phew*, inte ledsen) |
+| grodan, nya ljud (062, ElevenLabs 2026-11-27, ej valda än) | `groda-hej-1..3` (svenskt "Hej!") | `groda-hejda-1..3` (svenskt "Hej då!") | `groda-nyfiken-1..3` ("Kvak?"), `groda-prat-1..3` | `groda-fniss-1..3` | **saknas** | `groda-mysig-suck-1..3` (mysig suck) | `groda-fortjust-1..3` ("Kvak! Kvak!") | `groda-sur-1..3` (mild, inte ledsen) |
 | hunden (valpen) | `vov-hej` | `vov-hejda` | `vov-gullig-5` | `vov-fniss` | **saknas** | **saknas** | `vov-pip`, `flamt-valp`, `vov-ja` | `vov-gullig-6` |
 | ankan | `kvack` | **saknas** | **saknas** | `fniss-anka` | `ooh`, `oj-oj` (från ankpiloten) | `mmm` (från ankpiloten) | `kvack-glad` | `kvack-ledsen` |
 | doktorn (046, 049) | `doktor-hej` | `doktor-hejda` | `doktor-hmm`, `doktor-mhm` | `doktor-fniss` | `doktor-ooo` | – | `doktor-bra` | **saknas** |
