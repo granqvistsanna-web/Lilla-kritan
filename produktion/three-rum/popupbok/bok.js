@@ -19,33 +19,11 @@ R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
 const scen = new THREE.Scene(); scen.background = new THREE.Color('#E9D9C2');
 const cam = new THREE.PerspectiveCamera(30, W / H, 0.05, 40);
 
-// ---- krita på papper (fast frö, samma bild varje rendering) ----
-let fro = 7; const slump = () => (fro = (fro * 9301 + 49297) % 233280) / 233280;
-const duk = (w, h) => Object.assign(document.createElement('canvas'), { width: w, height: h });
-function kritYta(x, w, h, farg, ljus, mork, streck = 1) {
-  x.fillStyle = farg; x.fillRect(0, 0, w, h);
-  x.lineCap = 'round';
-  for (let i = 0; i < 260 * streck * w * h / 1e6; i++) {   // lösa diagonala kritstreck, ljusa och mörka
-    const sx = slump() * w, sy = slump() * h, l = (0.03 + slump() * 0.08) * Math.max(w, h), v = -0.9 + slump() * 0.3;
-    x.strokeStyle = slump() < 0.55 ? ljus : mork; x.globalAlpha = 0.18 + slump() * 0.2; x.lineWidth = 1.5 + slump() * 3;
-    x.beginPath(); x.moveTo(sx, sy); x.lineTo(sx + Math.cos(v) * l, sy + Math.sin(v) * l); x.stroke();
-  }
-  x.globalAlpha = 1;
-  const d = x.getImageData(0, 0, w, h), p = d.data;   // papperskorn
-  for (let i = 0; i < p.length; i += 4) { const n = (slump() - 0.5) * 26; p[i] += n; p[i + 1] += n; p[i + 2] += n; }
-  x.putImageData(d, 0, 0);
-}
-const tex = c => { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t; };
+import { duk, kritYta, tex, trim, skrivbord, skapaBok, SIDA } from './bok-parm.js';
 
 // ---- bilder ----
 // urklippen beskärs till det som syns, så att tom luft under en stam inte får kortet att sväva över marken
-function beskar(t) {
-  const i = t.image, c = duk(i.width, i.height), x = c.getContext('2d'); x.drawImage(i, 0, 0);
-  const a = x.getImageData(0, 0, c.width, c.height).data; let y0 = c.height, y1 = 0, x0 = c.width, x1 = 0;
-  for (let y = 0; y < c.height; y++) for (let u = 0; u < c.width; u++) if (a[(y * c.width + u) * 4 + 3] > 128) { if (y < y0) y0 = y; if (y > y1) y1 = y; if (u < x0) x0 = u; if (u > x1) x1 = u; }
-  const ut = duk(x1 - x0 + 3, y1 - y0 + 3); ut.getContext('2d').drawImage(c, x0 - 1, y0 - 1, ut.width, ut.height, 0, 0, ut.width, ut.height);
-  return tex(ut);
-}
+const beskar = t => tex(trim(t.image));
 const lad = src => new THREE.TextureLoader().loadAsync(src).then(beskar);
 const B = '/assets/bakgrunder/';
 const [GRAN, BUSKE, DAMM, BLAD, NACKROS, VASS, STEN, SVAMP, GRODA, HIMMEL, SOL, KULLE_BAK, KULLE_FRAM, MOLN1, MOLN2, MOLN3, HINK, BLOMMOR, SAND] = await Promise.all([
@@ -70,56 +48,11 @@ function baksida(map) {
 const djup = map => new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, blending: THREE.NoBlending, map, alphaTest: 0.5, side: THREE.DoubleSide });
 const skugga = m => { m.castShadow = m.receiveShadow = true; return m; };
 
-// ---- bordet, kritorna och boken ----
-const SIDA = 0.075;   // sidornas ovansida
-{
-  const c = duk(1024, 1024), x = c.getContext('2d'); kritYta(x, 1024, 1024, '#C8925E', '#DDAE7C', '#A9744A', 0.6);
-  x.globalAlpha = 0.22; x.strokeStyle = '#8E5E38';   // ådring
-  for (let i = 0; i < 26; i++) { const y0 = slump() * 1024; x.lineWidth = 2 + slump() * 4; x.beginPath(); x.moveTo(0, y0);
-    for (let u = 0; u <= 1024; u += 64) x.lineTo(u, y0 + Math.sin(u / 180 + i) * 8); x.stroke(); }
-  const t = tex(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 3);
-  const bord = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), mat(t)); bord.rotation.x = -Math.PI / 2; bord.receiveShadow = true; scen.add(bord);
-}
-for (const [farg, x, z, v] of [['#E2563F', 1.75, 0.55, 0.5], ['#F2C23A', 1.95, 0.75, 0.35], ['#3F8FD2', -1.85, 0.9, -0.25]]) {   // tre kritor på bordet
-  const g = new THREE.Group(), r = 0.032;
-  const kropp = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 0.34, 24), mat(null, { color: farg }));
-  const papper = new THREE.Mesh(new THREE.CylinderGeometry(r + 0.002, r + 0.002, 0.22, 24), mat(null, { color: new THREE.Color(farg).lerp(new THREE.Color('#fff'), 0.45) }));
-  const spets = new THREE.Mesh(new THREE.ConeGeometry(r, 0.06, 24), mat(null, { color: farg })); spets.position.y = 0.2;
-  g.add(kropp, papper, spets); g.children.forEach(skugga);
-  g.rotation.set(0, v, Math.PI / 2); g.position.set(x, r, z); scen.add(g);
-}
-{
-  const parm = new THREE.Mesh(new THREE.BoxGeometry(2.56, 0.03, 1.72), mat(null, { color: '#E9785A' })); parm.position.y = 0.015; skugga(parm); scen.add(parm);
-  const c = duk(512, 512), x = c.getContext('2d'); kritYta(x, 512, 512, '#FBF6EA', '#FFFFFF', '#EFE6D4', 0.3);
-  const kantc = duk(64, 64), kx = kantc.getContext('2d'); kx.fillStyle = '#F7F0E2'; kx.fillRect(0, 0, 64, 64);   // sidkanterna: tunna linjer
-  kx.strokeStyle = '#DCCFB8'; for (let y = 2; y < 64; y += 5) { kx.beginPath(); kx.moveTo(0, y); kx.lineTo(64, y); kx.stroke(); }
-  const ytan = mat(tex(c)), kanten = mat(tex(kantc));
-  for (const s of [-1, 1]) {
-    const blad = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.045, 1.62), [kanten, kanten, ytan, kanten, kanten, kanten]);
-    blad.position.set(s * 0.602, 0.03 + 0.0225, 0); skugga(blad); scen.add(blad);
-  }
-}
-
-// ---- pärmen: gångjärn i bakkanten, slås upp till stående (som referensen 27/11); insidan är himlen med sol och moln ----
-// Utsidan: orange krita och grodans siluett i en ljus ton, ingen text (Sanna 27/11: enkelt omslag).
+// ---- bordet, kritorna och boken (bok-parm.js: samma bok i varje berättelse, egen färg och figur på omslaget) ----
+skrivbord(scen);
 const kl = (a, b, x) => Math.min(b, Math.max(a, x)), mjuk = k => k * k * (3 - 2 * k);
-const PARM_H = 0.12, PARM_Z = -0.86;   // gångjärnets höjd (över korthögen) och bakkanten
-const parmen = new THREE.Group(); parmen.position.set(0, PARM_H, PARM_Z); scen.add(parmen);
-{
-  const c = duk(1536, 1032), x = c.getContext('2d'); kritYta(x, 1536, 1032, '#E9785A', '#F29A7C', '#D2603F', 0.8);
-  // bara grodans siluett mitt på, i en ljus ton (som en tryckt figur på tygpärmen)
-  const g = GRODA.image, h = 560, w = h * g.width / g.height, sil = duk(Math.round(w), h), sx = sil.getContext('2d');
-  sx.drawImage(g, 0, 0, sil.width, h); sx.globalCompositeOperation = 'source-in'; sx.fillStyle = '#FCE6D6'; sx.fillRect(0, 0, sil.width, h);
-  x.globalAlpha = 0.9; x.drawImage(sil, (1536 - sil.width) / 2, (1032 - h) / 2); x.globalAlpha = 1;
-  const ut = mat(tex(c)), inne = mat(tex((() => { const d = duk(512, 512); kritYta(d.getContext('2d'), 512, 512, '#FBF6EA', '#FFFFFF', '#EFE6D4', 0.3); return d; })()));
-  const kant = mat(null, { color: '#E9785A' });
-  const p = skugga(new THREE.Mesh(new THREE.BoxGeometry(2.56, 0.03, 1.72), [kant, kant, ut, inne, kant, kant]));
-  p.position.set(0, 0.015, 1.72 / 2); parmen.add(p);
-  const rygg = skugga(new THREE.Mesh(new THREE.BoxGeometry(2.56, PARM_H + 0.03, 0.03), kant));   // ryggen mellan pärmarna
-  rygg.position.set(0, (PARM_H + 0.03) / 2, PARM_Z - 0.015); scen.add(rygg);
-}
-const PARM0 = 0.5, PARM1 = 1.4, PARM_VINKEL = 0.53 * Math.PI;   // står lite lutad bakåt
-const slaUpp = k => (k = kl(0, 1, k), k < 0.5 ? 4 * k ** 3 : 1 - (-2 * k + 2) ** 3 / 2);
+const PARM0 = 0.5, PARM1 = 1.4;   // pärmen slås upp till stående, lite lutad bakåt
+const { insida, satt } = await skapaBok(scen, { farg: '#E8683A', figur: GRODA.image, doodles: true, oppna: [PARM0, PARM1] });
 
 // ---- uppslaget ----
 // ett stående kort med en liten vikflik vid foten, som i en riktig uppfällbar bok
@@ -144,9 +77,9 @@ kort(bredare(KULLE_FRAM, 6.2), 1.95 / 6.2, 0.05, -0.47);
 // Solen och molnen ligger en bit framför himlen och kastar en liten skugga på den.
 function pa(map, h, x, upp, ut = 0.01, w = h * map.image.width / map.image.height) {
   const m = skugga(new THREE.Mesh(new THREE.PlaneGeometry(w, h), urklipp(map)));
-  m.customDepthMaterial = djup(map); m.rotation.x = Math.PI / 2; m.position.set(x, -ut, upp); parmen.add(m); return m;
+  m.customDepthMaterial = djup(map); m.rotation.x = Math.PI / 2; m.position.set(x, -ut, upp); insida.add(m); return m;
 }
-pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.1 + 1.53 / 2, 0.004, 2.3);
+pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.07 + 1.53 / 2, 0.004, 2.3);   // innanför tygkanten på insidan
 const SOLEN = pa(SOL, 0.34, 0.12, 0.19), SOL_NERE = 0.19, SOL_UPPE = 0.82;   // väntar bakom den mittersta, högsta kullen
 const MOLNEN = [[MOLN1, 0.22, -0.66, 0.9], [MOLN2, 0.16, -0.26, 1.05], [MOLN3, 0.13, 0.62, 1.0]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
 for (const [x, z, h] of [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6]]) kort(GRAN, h, x, z);
@@ -197,7 +130,7 @@ Object.assign(GRODKORT, { start: 2.2, langd: 0.45 });
 const reser = k => { k = kl(0, 1, k); const s = 0.9; return 1 + (s + 1) * (k - 1) ** 3 + s * (k - 1) ** 2; };   // landar med en liten efterstudsning
 const HOPP = [6.4, 10.8], SOL0 = 2.5, SOL1 = 3.6;   // solen glider upp bakom kullarna   // grodan hoppar (litet hopp på bladet)
 function bildruta(t) {
-  parmen.rotation.x = -PARM_VINKEL * slaUpp((t - PARM0) / (PARM1 - PARM0));
+  satt(t);
   for (const k of KORT) {
     const e = reser((t - k.start) / k.langd);
     k.m.rotation.x = Math.PI / 2 * (1 - e);

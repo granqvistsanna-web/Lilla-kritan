@@ -229,3 +229,32 @@ node avsnitt/056-raven-gar-och-lagger-sig/scener/render.mjs produktion/three-rum
 
 ### Husregler som modulen följer
 Line boil (`#djup-boil` på strålen och sakerna) är 2,5 px i bild delat med zoomen, med ny brusbild 6 gånger/s. Strålens vita kant är 3 px + 1 % av höjden i bild (kant.js-regeln); bilder och figurer får sin kant av kant.js som vanligt. Varm ton, vinjett och papperskorn ligger kvar i scenen och i mastringen. Modulen lägger ingen egen helbildstextur. Rörelserna är lugna: inga blixtar, inget fladder, och inget spricker.
+
+## Kritans bok (popupbok/, 2026-11-27)
+En uppfällbar bok på ett skrivbord. Varje berättelse använder samma bok, bara med egen färg och egen figur på omslaget.
+
+- `popupbok/bok-parm.js` är boken: hårda pärmar med rundade hörn och svag fas, en rundad tygrygg i en mörkare ton, en krämvit bladbunt med tunna sidlinjer, ca 3 mm överhäng och en insida i krämpapper med en smal invikt tygkant. Omslaget ("Medaljong", Sannas val 27/11) ritas i kod: tyg med väv och kritkorn, stygn längs tygryggen, en dubbel kritram, en intryckt krämmedaljong med en krans av prickar och figuren i den, och tre doodles (sol, hjärta, stjärna). Ingen text.
+- `popupbok/bok.js` är grodans berättelse (13,5 s): boken öppnas, korten reser sig, grodan hoppar. Himlen, solen och molnen sitter på pärmens insida (`insida`).
+- `popupbok/omslag-prov/` visar tre böcker sida vid sida (grodan orange, kaninen grön, lammet blå, alla v2-figurer), som siluett, som färgbild och med Lilla Kritans krita i stället för djuret. Arket är `omslag-prov/stills/sheet.jpg`.
+
+### Byta omslag per berättelse
+En rad i berättelsens scen:
+```js
+const { parmen, insida, ryggen, satt } = await skapaBok(scen, { farg: '#3F9A40', figur: 'bilder/kanel.png' });
+```
+- `farg`: pärmfärgen (stark, inte pastell). Tygryggens och siluettens mörkare toner räknas ut ur den.
+- `figur`: sökväg till ett urklipp med genomskinlig bakgrund. **Bara art direction v2** (Sanna 27/11): figuren ur `assets/karaktarer/<figur>/premium/`, aldrig v1 (mappen `kaninen-kanel/v2/` är den gamla rosa kaninen, inte art direction v2). En hel v2-figur med ansikte görs av `premium/original/<namn>-platt.png` med alfan ur `premium/cut/<namn>-faceless.png`; så är `popupbok/bilder/kanel.png` och `ludde.png` gjorda (`gurra.png` är också v2-grodan). Siluetten görs ur urklippets alfa, och urklippet ändras inte. `figur: 'kritan'` ger Lilla Kritans krita med slingan.
+- `fargbild: true`: figuren i färg som klistermärke med vit kant i stället för siluett.
+- `doodles: false` och `ram: false` tar bort doodles och kritramen.
+- `oppna: [0.5, 1.4]`: när pärmen slås upp (sekunder). `satt(t)` anropas varje bildruta. Saker på pärmens insida läggs i `insida` (y < 0 är ut från papperet, z uppåt från gångjärnet).
+
+### Köra
+```bash
+node produktion/three-rum/render.mjs produktion/three-rum/popupbok/omslag-prov 0 1 2 3 4 5 6 7 8
+```
+```bash
+node verktyg/render-delat.mjs produktion/three-rum/popupbok --bitar 3 --samtidigt 3
+```
+Efter slutrenderingen normaliseras ljudet med `ffmpeg -i popupbok.mp4 -c:v copy -af loudnorm=I=-18:TP=-1.5 …`. QA 27/11: −18,0 LUFS, topp −1,4 dB, line boil 0,3 px/s, inget svart, fryst eller tyst.
+
+Bra att veta: kritbilderna ritas i processorn (`willReadFrequently` i `duk()`). Chromes GPU-canvas blandade annars ihop `filter: blur` med bilden under och gjorde omslaget blekt. Mellan bladbunten och frampärmen finns en glipa på 4,5 mm, där de nedfällda korten ligger.
