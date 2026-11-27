@@ -14,6 +14,10 @@ const { chromium } = await import(join(homedir(), '.claude/skills/launch-video/s
 const HÄR = new URL('./', import.meta.url).pathname, ROT = new URL('../../../', import.meta.url).pathname;
 const EFF = ROT + 'assets/ljud/effekter/', RÖST = ROT + 'assets/ljud/roster/pandan-leker-ute/';
 let t = 0; for (const r of RADER) { r.t = t; t += r.d; }
+// scenens rader (grind 6): scener/lekplatsen/index.html läser tiderna härifrån
+import { DAR, GUNG } from './rader.mjs';
+await mkdir(HÄR + '../scener/lekplatsen', { recursive: true });
+await writeFile(HÄR + '../scener/lekplatsen/rader.json', JSON.stringify({ RADER: RADER.map(({ id, d, malin, ljud }) => ({ id, d, malin, ljud })), ROST, DAR, GUNG }));
 const LANGD = t, tid = s => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
 
 // --- stillbilderna ---------------------------------------------------------------------------------------------------------

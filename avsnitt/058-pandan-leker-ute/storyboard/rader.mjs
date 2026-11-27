@@ -202,3 +202,7 @@ export const RADER = [
 // 0,15 s extra luft på varje rad med en replik (som 061), inte i ritintrot och inte före klippet i 14.
 export const GLES = 0.15;
 for (const r of RADER) if (r.malin && !['01a', '01b', '14'].includes(r.id)) r.d += GLES;
+
+// ordtider (whisper ord för ord, 2026-11-27): bollen stannar på "där", gunganden vippar på "gung". Mät om om en tagning byts.
+export const DAR = { '19': 2.6, '20': 1.32, '24': 2.64 };
+export const GUNG = { '16b': [0.07, 0.3], '46': [1.72, 2.17] };
