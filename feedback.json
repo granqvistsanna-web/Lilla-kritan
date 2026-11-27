@@ -11092,9 +11092,10 @@
   "sec": 5,
   "tags": [],
   "note": "book cover silette should be sun",
-  "fixed": false,
+  "fixed": true,
   "at": 1795791407735,
-  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)"
+  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)",
+  "fixedAt": 1795794165327
  },
  "81spcph4elmwyqdeox": {
   "ep": "059",
