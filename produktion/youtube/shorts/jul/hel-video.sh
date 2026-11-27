@@ -48,6 +48,11 @@ iris=$(sed -nE "s/.*iris: *([0-9.]+|nej).*/\1/p" $mapp/index.html | head -1)
 [[ -z $iris ]] && python3 -c "import sys; sys.exit(0 if $(ffmpeg -hide_banner -sseof -0.2 -i $film -frames:v 1 -vf signalstats,metadata=print:key=lavfi.signalstats.YAVG -f null - 2>&1 | sed -n 's/.*YAVG=\([0-9.]*\).*/\1/p' | head -1 || echo 99) < 40 else 1)" && echo "OBS: filmen slutar mörkt men ingen kritiris hittades: kolla slutet, eller sätt iris: <tid> i index.html" >&2
 [[ -n $iris ]] && till=$iris
 nb=$(sond v:0 nb_frames $film)
+# bildräknaren n ska följa tiden hela filmen: en film fogad med -c copy av delar i olika färgomfång (molnrenderad scen i tv + intro i pc)
+# börjar om n vid fogen, och då hamnar select=n och trim fel (J06 27/11: 3,3 s fel, irisen gick till svart). Gör om filmen i ett omfång.
+[[ $nb == <-> ]] || nb=$(ffprobe -v error -count_frames -select_streams v:0 -show_entries stream=nb_read_frames -of csv=p=0 $film)   # fogade filmer saknar ibland nb_frames
+nt=$(ffmpeg -hide_banner -i $film -vf "select=eq(n\,$((nb - 1))),showinfo" -frames:v 1 -f null - 2>&1 | sed -n 's/.*pts_time:\([0-9.]*\).*/\1/p' | head -1)
+python3 -c "import sys; sys.exit(0 if '$nt' and abs(float('$nt') - ($nb - 1) / $ffps) < 0.5 else 1)" || { echo "bildräknaren stämmer inte i $film (bild $((nb - 1)) vid ${nt:-?} s): filmen är fogad av delar i olika färgomfång, sätt ihop den igen med samma omfång (out_range=tv)" >&2; exit 1; }
 sist=$(sed -n "s/.*sist: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: bilden bakom stängningen tas vid sist (s) i stället för filmens sista bild
 if [[ -n $till ]]; then   # sista bilden är bild nb-1 av den kapade filmen
   nb=$(python3 -c "print(round($till * $ffps))")
