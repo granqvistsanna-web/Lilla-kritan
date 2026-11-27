@@ -546,7 +546,7 @@ function ritaBad(st, t) {
   kamera(...djup.kamera(st.kam || K_HEL, t, st.id === '1' ? 'still' : undefined));
   if (st.pol) pol(STA[0], st.pol);
   // handduken som kritan ritar (12a–13)
-  if (fran(st.id, '12a') && !fran(st.id, '14')) {
+  if (fran(st.id, '12a') && !fran(st.id, '15')) {   // rad 14 ("Ska vi säga tack?") struken 27/11
     const k = ritfart((t - T_HD.rit[0]) / (T_HD.rit[1] - T_HD.rit[0])), f = st.hdFyll || 0;
     const Rb = ritBana(HD_DRAG, k, { vikt: HD_VIKT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(10 / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (f > 0 && f < 1) lagg('vagg', fyllMask('fyH', HD_MITT[0], HD_MITT[1], 330, f) + `<image href="${HD}" x="${f1(KROK[0] - HD_W / 2)}" y="${KROK[1]}" width="${f1(HD_W)}" height="${HD_H}" clip-path="url(#fyH)"/>`);

@@ -48,9 +48,10 @@ export const RADER = [
   { id: '4', d: 0.5 + L(9) + SVAR + L(10) + 1.2, plats: 'Badet', malin: [[9, 0.5], [10, 0.5 + L(9) + SVAR]], ljud: [[B(4), 0.6 + L(9)]],
     bild: 'Bara huvudet ovanför kanten, skummet runt om. I pausen blundar lammet en stund', ljudtext: 'mysig suck (4) i pausen', ansikte: 'blundar' },
   // omgång 3 (Sanna 26/11 "0:45 a bit too stressed"): ankan glider lugnare, lammet och ankan pratar med luft emellan, Malin väntar in dem
-  { id: '5', d: 2.8 + L(11) + 1.0 + L(12) + SVAR + 0.5 + L(13) + 1.2, plats: 'Badet',
-    malin: [[11, 2.8], [12, 2.8 + L(11) + 1.0], [13, 2.8 + L(11) + 1.0 + L(12) + SVAR + 0.5]],
-    ljud: [[B(7), 0.3], [PIP(1), 1.2], [B(7, 'b'), 2.0], [PIP(2), 3.0 + L(11) + 1.0 + L(12)]],
+  // 27/11: replik 11 ("Lammet och ankan pratar med varandra") struken, utbytet är tyst (bilderbok-regeln)
+  { id: '5', d: 3.4 + L(12) + SVAR + 0.5 + L(13) + 1.2, plats: 'Badet',
+    malin: [[12, 3.4], [13, 3.4 + L(12) + SVAR + 0.5]],
+    ljud: [[B(7), 0.3], [PIP(1), 1.2], [B(7, 'b'), 2.0], [PIP(2), 3.6 + L(12)]],
     bild: 'Ankan glider lugnt fram till lammet. De "pratar" i tur och ordning, med paus emellan. På "Vad säger ankan?" piper ankan och lammet tittar på Malin', ljudtext: 'pratar (7) – pip – pratar (7b) – pip', ansikte: 'glad' },
   { id: '6a', d: 2.2, plats: 'Badet', ljud: [['blubb/blubb-1', 0.3]],
     bild: 'Lammet sjunker rakt ner i skummet. Ankan guppar', ljudtext: '`blubb`', ansikte: '– (under skummet)' },
@@ -92,8 +93,7 @@ export const RADER = [
     bild: 'Kritan ritar en stor handduk på kroken: hängöglan, kanterna, rutorna (ca 3 s). Konturen står kvar, kritan svävar: barnet gissar (2,5 s)', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '13', d: 1.0 + L(23) + 0.9, plats: 'Krokens utsnitt', malin: [[23, 1.0]], ljud: [['glitter/glitter-2', 0.1], [B(2), 1.2 + L(23)]],
     bild: 'Den riktiga handduken fylls i inifrån. Kritan flyger ut uppe till höger', ljudtext: '`glitter`, förtjust (2)', ansikte: 'jätteglad' },
-  { id: '14', d: 0.3 + L(24) + 2.0, plats: 'Halvnära lammet och handduken', malin: [[24, 0.3]], ljud: [[B(5, 'b'), 0.5 + L(24)]],
-    bild: 'Lammet tittar på handduken, öronen reser sig lite. Paus 2 s', ljudtext: 'nyfiken (5b)', ansikte: 'nyfiken' },
+  // 27/11: rad 14 ("Ska vi säga tack?") struken, Malin säger "Tack!" direkt (bilderbok-regeln)
   { id: '15', d: 0.2 + L(25) + 0.9, plats: 'Halvnära', malin: [[25, 0.2]], ljud: [[B(1), 0.4 + L(25)]],
     bild: 'Lammet nickar direkt', ljudtext: 'förtjust (2b)', ansikte: 'jätteglad' },
 
