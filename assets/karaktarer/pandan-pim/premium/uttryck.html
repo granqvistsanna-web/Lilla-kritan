@@ -160,14 +160,14 @@ const BORSTE = '../../../rekvisita/tandborsten/cut/tandborsten.png', BORSTARM = 
 
 function figur(x, y, skala) {                 // en panda med fötterna i (x, y)
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'), id = document.querySelectorAll('#figurer > g').length;
-  const del = (n, fil = n) => `<image class="${n}" href="cut/pim-${fil}.png" width="1024" height="1024"/>`;
+  const del = (n, fil = n) => `<image class="${n}" href="cut-tunn/pim-${fil}.png" width="1024" height="1024"/>`;
   g.setAttribute('transform', `translate(${x} ${y}) scale(${skala}) translate(-512 ${-FOTTER})`);
   // arm-l2/arm-r2: kopior av armarna för riktningsposen (båda armarna ut på samma sida, den ena under den andra).
   g.innerHTML = `<ellipse class="skugga" cx="512" cy="${FOTTER - 18}" rx="300" ry="34" fill="#000" opacity="0.1"/>
     <g class="figuren">${['ear-l', 'ear-r', 'tail', 'leg-l', 'leg-r'].map(n => del(n)).join('')}
     ${del('arm-l2', 'arm-l')}${del('arm-r2', 'arm-r')}${del('arm-l')}${del('arm-r')}
-    <g class="kropp"><image href="cut/pim-body-tom.png" width="1024" height="1024"/>
-    <g><g class="drag"><image href="cut/pim-nos.png" width="1024" height="1024"/>
+    <g class="kropp"><image href="cut-tunn/pim-body-tom.png" width="1024" height="1024"/>
+    <g><g class="drag"><image href="cut-tunn/pim-nos.png" width="1024" height="1024"/>
     ${KINDER.map(([x, y]) => `<ellipse class="kind" cx="${x}" cy="${y}" rx="34" ry="22" fill="${KIND}"/>`).join('')}
     ${OGON.map((_, i) => `<g class="oga">
       <clipPath id="lock-${id}-${i}"><path class="lockklipp" d="M-40 -26 H40 V60 H-40Z"/></clipPath>
@@ -355,11 +355,12 @@ else if ((bara && UTTRYCK[bara]) || (enPose && POSER[enPose])) {
   const SK = 0.5, fig = figur(960, MARK, SK);
   // Sovbilden (Sannas val C, som Zebbes och Ruts): den ritade sovande pandan i en egen grupp i figuren, skalad kring (cx, FOTTER),
   // och tre z i kod. Bilden: original/pim-sover-flow.jpg (Flow, 2026-11-10, ligger på magen med tassarna under hakan), klippt med
+  // cut-tunn/ (2026-11-27, för 058): rigg_tunn.py med varm.py före, originalets färger + ny alfa, vit kant 6,5 px = 1 % av kroppen.
   // sovbild.py-stegen till cut/pim-sover.png och tunn_kant.py 10,5 (krämen värmd före med Zebbes skript/varm.py, annars räknas
   // den som vit). Utan bild (fil: null) ligger riggen kvar och byter i hoppets topp till uttrycket och posen 'sover'.
   // Skala 0,95: den liggande Pims huvud är ritat mindre än det stående ägget, så han får vara lite bredare (817 px) än stående (690)
   // för att se lika stor ut. Kanten 10,5 × 0,95 = 10 px som riggen.
-  const SOV = { fil: 'cut/pim-sover.png', cx: 524, botten: 838, skala: 0.95 };
+  const SOV = { fil: 'cut-tunn/pim-sover.png', cx: 524, botten: 838, skala: 0.95 };
   fig.insertAdjacentHTML('beforeend', `<g class="sovbild" opacity="0">${SOV.fil ? `<image href="${SOV.fil}" width="1024" height="1024" y="${FOTTER - SOV.botten}"/>` : ''}</g>
     <g class="zzz">${[0, 1, 2].map(() => `<path class="z" d="M-22 -22 H22 L-22 22 H22" fill="none" stroke="#7a4a32" stroke-width="9"
       stroke-linecap="round" stroke-linejoin="round" opacity="0"/>`).join('')}</g>`);
