@@ -194,7 +194,7 @@
   "file": "avsnitt/031-borsta-borsta-bondgarden/film/avsnitt-031.mp4",
   "name": "Borsta, borsta (bondgården)",
   "rendered": "2026-11-15 21:30",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/031.mp4"
  },
  "032": {
@@ -232,7 +232,7 @@
   "file": "avsnitt/037-kaninen-stadar/film/avsnitt-037.mp4",
   "name": "Kaninen städar",
   "rendered": "2026-11-15 20:40",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/b0d9544bebe75177e4f482099b72834b.mp4"
  },
  "038": {
@@ -1230,7 +1230,7 @@
   "file": "produktion/youtube/pussel/pussel-vanliga.mp4",
   "name": "Pusslet vanliga (11 pussel)",
   "rendered": "2026-11-18 23:47 (Malin säger ledtråden när biten har landat i brickan (bit 1–4), t.ex. 'En lång svans' när svansen ligger (nu 3:57). Bit 5 som förut i närbild. Inget 'Där!' efter bit 1.)",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/P-vanliga-1118-2343.mp4"
  },
  "T-bjornen": {
@@ -1254,7 +1254,7 @@
   "file": "produktion/youtube/tittut/skogen-gron/kaninen-kanel/kaninen-kanel.mp4",
   "name": "Skogstittut kaninen",
   "rendered": "2026-11-14 07:24",
-  "status": "klar",
+  "status": "live",
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/tittut-kaninen-kanel-v2.mp4"
  },
  "JP-bjornen-fyra-ljus-zoom": {
