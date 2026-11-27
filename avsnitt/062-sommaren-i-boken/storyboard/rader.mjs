@@ -51,6 +51,10 @@ export const ROST = [
   ['41-en-rod-blomma', 1.20, 'En röd blomma!'],
   ['42-en-gul-blomma', 1.19, 'En gul blomma!'],
   ['43-lila-och-rosa', 2.63, 'Och en lila och en rosa!'],
+  // tagning 3 (ElevenLabs v3, Natural, 2026-11-27): hej då till sakerna (Sanna 27/11 "say hejdå to blommor and sandslott and dammen also")
+  ['44-hej-da-blommorna', 1.37, 'Hej då, blommorna!'],
+  ['45-hej-da-sandslottet', 1.71, 'Hej då, sandslottet!'],
+  ['46-hej-da-dammen', 1.30, 'Hej då, dammen!'],
 ];
 export const L = n => ROST[n - 1][1];
 
@@ -81,11 +85,11 @@ export const RADER = [
     bild: 'Grodans kort fälls upp på bladet. Grodan vinkar', ljudtext: 'pop, kvak (hej)', s: { vy: 'halv', groda: 'uppe', vink: true } },
   { id: '05b', d: 0.2 + L(8) + SVAR + L(9) + 0.8, plats: 'Grodans blad, halvbild', malin: [[8, 0.2], [9, 0.2 + L(8) + SVAR]], ljud: [G('groda-fortjust-1', 0.2 + L(8) + 0.2)],
     bild: 'Grodan tittar runt och sedan på oss. Pausen: glatt kvak', ljudtext: 'kvak-dubbel (förtjust)', s: { vink: false } },
-  { id: '06', d: 0.6 + L(10) + 0.8, plats: 'Grodans blad, halvbild', malin: [[10, 0.6]], ljud: [['tindra/tindra-2', 0.2]],
+  { id: '06', d: 2.0, plats: 'Grodans blad, halvbild', ljud: [['tindra/tindra-2', 0.2]],   // utan "Solen skiner. Det blir varmt!" (Sanna 27/11 "vo a bit too repetative")
     bild: 'Grodan tittar upp mot solen, ljuset blir ännu varmare', ljudtext: 'tindra svagt', s: { vy: 'halv-sol' } },
   { id: '07', d: 0.5 + L(11) + 1.4, plats: 'Grodan, närbild', malin: [[11, 0.5]], ljud: [G('groda-mysig-suck-2', 0.5 + L(11) + 0.2)],
     bild: 'Grodan suckar, rosiga kinder, axlarna ner', ljudtext: 'gran-suck (puh)', s: { vy: 'nara' } },
-  { id: '07b', d: 0.2 + L(12) + SVAR + L(13) + 0.8, plats: 'Grodan, närbild', malin: [[12, 0.2], [13, 0.2 + L(12) + SVAR]], ljud: [G('groda-nyfiken-1', 0.2 + L(12) + 0.2)],
+  { id: '07b', d: 0.3 + SVAR + L(13) + 0.8, plats: 'Grodan, närbild', malin: [[13, 0.3 + SVAR]], ljud: [G('groda-nyfiken-1', 0.3)],   // utan "Är du varm, grodan?"
     bild: 'Grodan tittar på oss. Pausen: trött kvak', ljudtext: 'kvak (frågande)', s: {} },
 
   // --- Glassen ---
@@ -103,8 +107,8 @@ export const RADER = [
     bild: 'En rosa droppe faller från kulan och landar på grodans näsa. Grodan tittar i kors upp mot den', ljudtext: 'plupp, oj-oj (förvånad)', s: { droppe: true } },
   { id: '12b', d: 0.5 + L(21) + 1.2, plats: 'Grodan, närbild', malin: [[21, 0.5]], ljud: [['plupp/plupp-2', 0.2], G('groda-fniss-1', 0.5 + L(21) + 0.2)],
     bild: 'Grodan skakar lugnt på huvudet, droppen faller ner i dammen', ljudtext: 'plupp, olle-fniss', s: { droppe: false } },
-  { id: '13', d: 2.6 + L(22) + 0.8, plats: 'Grodans blad, halvbild', malin: [[22, 2.6]], ljud: [['slick/slick-1', 0.45], ['slick/slick-1', 1.15], ['slick/slick-1', 1.85]],
-    bild: 'Grodan slickar upp det sista av glassen (tre slick, kulan är borta), struten är tom, den glider ner på gräset och kortet fälls ner. Grodan tittar ut över dammen', ljudtext: '–', s: { vy: 'halv', glass: 'nej' } },
+  { id: '13', d: 3.7 + L(22) + 0.8, plats: 'Grodans blad, halvbild', malin: [[22, 3.7]], ljud: [['slick/slick-1', 0.45], ['slick/slick-1', 1.15], ['slick/slick-1', 1.85], ['nom/nom-1', 2.5], ['nom/nom-2', 3.1]],   // struten äts upp i två tuggor (Sanna 27/11 "should be eaten up")
+    bild: 'Grodan slickar upp det sista av glassen (tre slick, kulan är borta), sedan äter hon upp struten i två tuggor. Grodan tittar ut över dammen', ljudtext: '–', s: { vy: 'halv', glass: 'nej' } },
 
   // --- Dammen ---
   { id: '14', d: 0.2 + L(23) + SVAR + L(24) + 0.8, plats: 'Dammen, bred', malin: [[23, 0.2], [24, 0.2 + L(23) + SVAR]], ljud: [['vagor/vagor-1', 0], G('groda-fortjust-1', 0.2 + L(23) + 0.2)],
@@ -140,10 +144,17 @@ export const RADER = [
     bild: 'Sandslottets kort fälls upp på "sandslott", hinken bredvid. Grodan klappar glatt', ljudtext: 'pop på "sandslott", klapp, olle-fniss', s: { vy: 'sand', slott: true, luktar: false } },
   { id: '23', d: 0.2 + L(37) + 1.4, plats: 'Grodan, närbild', malin: [[37, 0.2]], ljud: [G('groda-fortjust-2', 0.2 + L(37) + 0.2)],
     bild: 'Grodan tittar på oss. Pausen: glatt kvak, nick', ljudtext: 'kvak-dubbel (förtjust)', s: { vy: 'nara3' } },
-  { id: '24', d: 0.5 + L(38) + 1.4, plats: 'Uppslaget, halvbild', malin: [[38, 0.5]], ljud: [G('groda-hejda-1', 0.5 + L(38) + 0.2)],
-    bild: 'Grodan vinkar (armen bakom kroppen), solen glimtar', ljudtext: 'mus-hejda', s: { vy: 'hejda', vink: true } },
+  { id: '24', d: 0.5 + L(38) + 1.4, plats: 'Uppslaget, halvbild', malin: [[38, 0.5]], ljud: [['glimt/glimt-2', 0.5 + 1.2], G('groda-hejda-1', 0.5 + L(38) + 0.2)],
+    bild: 'Grodan vinkar (armen bakom kroppen). På "Hej då, solen!" glider kameran upp till solen, som glimtar', ljudtext: 'mus-hejda, glimt', s: { vy: 'hejda', vink: true } },
+  // hej då till sakerna (Sanna 27/11): en bild per sak, saken studsar och glimtar på sitt ord
+  { id: '24b', d: 0.3 + L(44) + 0.6, plats: 'Blommorna, halvbild', malin: [[44, 0.3]], ljud: [['glimt/glimt-1', 0.5]],
+    bild: 'Blommorna studsar och glimtar', ljudtext: 'glimt', s: { vy: 'blommor' } },
+  { id: '24c', d: 0.3 + L(45) + 0.6, plats: 'Sanden, halvbild', malin: [[45, 0.3]], ljud: [['glimt/glimt-2', 0.5]],
+    bild: 'Sandslottet studsar och glimtar', ljudtext: 'glimt', s: { vy: 'sand' } },
+  { id: '24d', d: 0.3 + L(46) + 0.6, plats: 'Dammen, bred', malin: [[46, 0.3]], ljud: [['vagor/vagor-1', 0], ['plupp/plupp-2', 0.5]],
+    bild: 'Vattnet ringar sig lugnt runt bladen', ljudtext: 'vågor, plupp', s: { vy: 'damm' } },
   { id: '25', d: 0.3 + L(39) + 1.4, plats: 'Uppslaget, halvbild', malin: [[39, 0.3]], ljud: [G('groda-hejda-2', 0.3 + L(39) + 0.2)],
-    bild: 'Grodan vinkar klart', ljudtext: 'mus-hejda', s: {} },
+    bild: 'Grodan vinkar klart', ljudtext: 'mus-hejda', s: { vy: 'hejda' } },
   { id: '26', d: 2.9, plats: 'Skrivbordet, kameran glider ut en bit', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 1.7]],
     bild: 'Kameran glider ut ur boken. Korten fälls ner, grodan sist, pärmen slås igen', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, groda: 'nere', vink: false } },
 ];

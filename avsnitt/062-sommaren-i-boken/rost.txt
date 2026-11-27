@@ -41,3 +41,6 @@
 41-en-rod-blomma  [happy] En röd blomma!
 42-en-gul-blomma  [happy] En gul blomma!
 43-lila-och-rosa  [warmly] Och en lila och en rosa!
+44-hej-da-blommorna  [warmly] Hej då, blommorna!
+45-hej-da-sandslottet  [warmly] Hej då, sandslottet!
+46-hej-da-dammen  [warmly] Hej då, dammen!
