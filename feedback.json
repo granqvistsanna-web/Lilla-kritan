@@ -11596,9 +11596,10 @@
   "sec": 128,
   "tags": [],
   "note": "place ball higher upp in sand",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812535544,
-  "render": "2026-11-27 21:21 (slutrendering: logo-intro, scenen i 1080p, prenumerera-kortet)"
+  "render": "2026-11-27 21:21 (slutrendering: logo-intro, scenen i 1080p, prenumerera-kortet)",
+  "fixedAt": 1795813306486
  },
  "22c0t776romwzgg6ha": {
   "ep": "058",
@@ -11606,8 +11607,9 @@
   "sec": 245,
   "tags": [],
   "note": "better eatig apple animaton",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812589774,
-  "render": "2026-11-27 21:21 (slutrendering: logo-intro, scenen i 1080p, prenumerera-kortet)"
+  "render": "2026-11-27 21:21 (slutrendering: logo-intro, scenen i 1080p, prenumerera-kortet)",
+  "fixedAt": 1795813306487
  }
 }
