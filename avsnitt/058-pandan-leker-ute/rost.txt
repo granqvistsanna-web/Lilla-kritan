@@ -1,6 +1,6 @@
 01-kritan-ritar  [warmly] Kritan ritar …
 02-vad-blir-det  [curious] Hm … vad blir det nu?
-03-oj-en-lekstuga  [happy] Oj! En lekstuga!
+03-oj-en-gungand  [happy] Oj! En gungand!
 04-hej-pandan  [happy] Hej, pandan! Hej, hej!
 05-vill-du-leka-ute  [cheerfully] Vill du leka ute, pandan?
 06-ja-det-vill-du  [happy] Ja, det vill du!
@@ -10,28 +10,30 @@
 10-en-boll  [happy] En boll! Varsågod, pandan.
 11-tack-kritan  [happy] Tack, kritan!
 12-puffar-pa-bollen  [surprised] Oj! Du puffar på bollen med tassen!
-13-ner-i-hinken  [laughs] Oj! Bollen hoppade ner i hinken!
+13-bollen-gungar  [laughs] Oj! Bollen gungar på gunganden!
 14-ska-bollen-rulla  [cheerfully] Ska bollen rulla nu, pandan?
 15-ja-bra-ide  [happy] Ja, bra idé!
-16-rulla-bakom-stoveln  [happy] Bollen rullar. Rulla, rulla … där! Bakom stöveln.
-17-rulla-bakom-lekstugan  [happy] Rulla, rulla … där! Bakom lekstugan.
+16-i-sandladan  [happy] Bollen rullar. Rulla, rulla … där! I sandlådan.
+17-bakom-gunganden  [happy] Rulla, rulla … där! Bakom gunganden.
 18-bollen-ar-borta  [curious] Oj, nu är bollen borta. Pandan vet inte var.
 19-kan-du-hjalpa  [warmly] Kan du hjälpa pandan? Kan du se var bollen är?
-20-ja-dar-bakom-rutschkanan  [happy] Ja, där! Bakom rutschkanan!
-21-rullar-fram  [happy] Bollen rullar fram. Rulla, rulla … där!
+20-bakom-tradet  [happy] Ja, där! Bakom trädet!
+21-bollen-rullar-fram  [happy] Bollen rullar fram. Rulla, rulla … där!
 22-bollen-ar-tillbaka  [happy] Bollen är tillbaka! Nu är pandan glad.
-23-studsar-pa-huvudet  [playfully] Du studsar bollen på huvudet. Studs, studs!
-24-bollen-pa-taket  [surprised] Oj! Bollen hamnade på taket!
+23-puffade-hogt  [surprised] Oj! Du puffade bollen högt!
+24-fastnade-i-tradet  [surprised] Oj! Bollen fastnade uppe i trädet!
 25-nar-du-bollen  [curious] Når du bollen, pandan?
-26-taket-ar-for-hogt  [gently] Nej, taket är för högt.
-27-kritan-ritar-igen  [happy] Titta! Kritan ritar igen. Vid lekstugan.
-28-en-stege  [happy] En stege! Varsågod, pandan.
-29-tack-for-stegen  [happy] Tack för stegen, kritan!
-30-kliv-kliv-kliv  [playfully] Du klättrar upp på stegen. Kliv … kliv … kliv!
-31-puffar-ner-bollen  [happy] Där är bollen! Du puffar ner den från taket.
-32-ner-fran-stegen  [cheerfully] Och ner från stegen igen. Hopp!
-33-puff-och-tillbaka  [playfully] Du puffar bollen mot väggen. Puff … och tillbaka!
-34-roligt-att-leka-ute  [warmly] Var det roligt att leka ute?
-35-jag-ocksa  [happy] Ja, det tyckte jag också!
-36-hej-da-pandan  [happy] Hej då, pandan! Hej då, bollen!
-37-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
+26-tradet-ar-for-hogt  [gently] Nej, trädet är för högt.
+27-kritan-ritar-igen  [happy] Titta! Kritan ritar igen. Under trädet.
+28-en-hink  [happy] En hink! Varsågod, pandan.
+29-tack-for-hinken  [happy] Tack för hinken, kritan!
+30-puffar-pa-tradet  [playfully] Du puffar på trädet med tassen.
+31-ett-apple  [surprised] Oj! Ett äpple ramlade ner!
+32-rakt-ner-i-hinken  [happy] Och där kommer bollen! Rakt ner i hinken!
+33-ska-du-smaka  [cheerfully] Ska du smaka på äpplet, pandan?
+34-mums-vad-gott  [happy] Mums! Vad gott!
+35-nu-gungar-pandan  [warmly] Nu gungar pandan. Gung … gung …
+36-var-det-roligt  [warmly] Var det roligt att leka ute?
+37-ja-det-tyckte-jag  [happy] Ja, det tyckte jag också!
+38-hej-da-pandan  [happy] Hej då, pandan! Hej då, bollen!
+39-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
