@@ -1575,9 +1575,9 @@
   "youtube": "https://youtu.be/5tLmreNCAJQ"
  },
  "J22": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1127-1415.mp4",
-  "duration": 269.2,
-  "rendered": "2026-11-27 14:16 (--snabb QA 27/11: öronen i bild på pallen, hela huvudet i lådans detalj, klippet efter 'Ja, där!' i pausen, 'Upp!' i närbilden med klippet 0,4 s efter, irisslutet: 3D-dörren stänger över sista scenbilden (inget svart). Kritan går ännu inte via kritan-ritar.js: rättas vid slutrenderingen.)",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1127-1606.mp4",
+  "duration": 269.3,
+  "rendered": "2026-11-27 16:07 (slutrendering 27/11 (molnet, 1080p): QA 27/11-rättningarna, kritan via kritan-ritar.js, irisslutet utan svart)",
   "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen.mp4",
   "status": "granska",
   "name": "Musen pyntar granen"
