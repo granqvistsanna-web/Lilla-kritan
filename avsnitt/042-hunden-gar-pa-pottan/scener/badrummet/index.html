@@ -150,6 +150,8 @@ function sakFyll(namn, pos, fyll, lager = 'saker') {
   lagg(lager, `<g transform="${t}">${fyllMask(id, (x0 + x1) / 2, (y0 + y1) / 2, 0.75 * Math.max(x1 - x0, y1 - y0), fyll)}
     <image href="${SAK[namn][0]}" width="${w}" height="${h}" clip-path="url(#${id})"/></g>`);
 }
+// QA 27/11: kritan ritar med samma mörka kritlinje som i ritintrot (skillen kritan-ritar), inte röd eller grå
+const LINJE = '#3a2c28';
 const ritaSak = (namn, pos, k, farg, o = 1) => { const [t, s] = sakT(namn, pos); return kontur(namn, t, ritfart(k), 5 / s, farg, o); };
 const skugga = (x, fot, rx, lager = 'bak', o = 0.08) => lagg(lager, `<ellipse cx="${f1(x)}" cy="${f1(fot - 2)}" rx="${f1(rx)}" ry="${f1(rx * 0.12)}" fill="#000" opacity="${o}"/>`);
 const BD = 100;   // Sanna 2026-11-22 (J17 0:43): "bigger ball" (78 → 100)
@@ -423,6 +425,10 @@ const DRKV = () => UT('halv', VID_GLAS, 1 / 3), DRK = () => kamera(...DRKV());  
 const pottaKam = () => ut('halv', [POTTA[0], B_GOLV], 1 / 3);   // på pottan: halvnära, pottan med, plats för rullen till höger
 const SITTFOT = () => [B_POTTA[0], B_POTTA[1] + SITTER.sank * DS];   // där den sittande hundens kropp slutar (för närbilden)
 // Sanna 2026-11-22 (J17): "bigger ball, bigger dog" (0:43) och "more reactions and closeup on face overall"
+// kissnödig (rad 13–14): orolig min (nyfiken med ledsna bryn, blicken upp, öronen upp) och trippandet, k = hur mycket
+const ORO = (o = {}) => ({ ...mellan(ANS('nyfiken', { titt: [0, -6] }), ANS('ledsen', { titt: [0, -6], oron: [-14, -14] }), 0.6), ...o });
+const trippa = (tl, k) => { const s = Math.sin(tl * 2 * Math.PI * 2.2), v = Math.sin(tl * 2 * Math.PI * 1.1);
+  return { v: v * k, lyft: 3 * Math.abs(s) * k, p: { ben: [-9 * k, -9 * k], benY: [-14 * Math.max(0, s) * k, -14 * Math.max(0, -s) * k], luta: 3 * v * k, strack: -0.02 * k, oron: [-14 * k, -14 * k] } }; };
 const OJ = (o = {}) => ANS('forvanad', { ogonS: [1.38, 1.34], brynY: [-20, -20], mun: [13, 17, 0, 462], oron: [-16, -16], ...o });   // riktigt förvånad: stora ögon, öronen upp
 const BOLLKAM = () => ut('halv', STA, 1 / 3), ANSKAM = pos => ut('nara', pos);
 
@@ -493,11 +499,12 @@ const S = {
     hund(VID_GLAS, mellan(ANS('nyfiken', { titt: [0, 16 * ner] }), ANS('fnissig', { titt: [0, 10] }), fn), { ...HALL_P(), luta: 3 * ner, bred: 0.012 * fn * Math.abs(Math.sin(tl * 8)) }, { sak: 'glas' }); },
 
   // --- Behöver du kissa? ---
-  '13': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); kameraMix(UT('hel', STA), UT('nara', STA), del(mo(0) + rl(18), mo(0) + rl(18) + 0.8, tl)); const v = Math.sin((tl - 0.2) * 3.4) * del(0.1, 0.5, tl);
-    hund([STA[0] + 6 * v, K_GOLV], ANS('nyfiken', { titt: [0, 4], oron: [-10, -10] }), { luta: 4 * v, ben: [6 * Math.max(0, v), 6 * Math.max(0, -v)] }, { lyft: 5 * Math.abs(v) }); },
-  '14': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); ut('nara', STA); const v = Math.sin((tl + 0.6) * 3.4);
-    const [f, p] = nick(mellan(ANS('nyfiken', { titt: [0, -8], oron: [-10, -10] }), ANS('glad', { titt: [0, -4] }), del(lo(0) - 0.3, lo(0), tl)), { luta: 4 * v }, tl - lo(0) + 0.05, 0.8);
-    hund([STA[0] + 6 * v, K_GOLV], f, p, { lyft: 5 * Math.abs(v) }); },
+  // QA 27/11: kissnödig före "Vad gör du, hunden?" – trippar (fötterna lyfts om vartannat), knäna ihop, oroligt ansikte, öronen upp
+  '13': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); kameraMix(UT('hel', STA), UT('nara', STA), del(mo(0) + rl(18), mo(0) + rl(18) + 0.8, tl));
+    const k = del(0.1, 0.5, tl), tr = trippa(tl, k); hund([STA[0] + 5 * tr.v, K_GOLV], mellan(ANS('nyfiken', { titt: [0, 4] }), ORO(), del(0.1, 0.6, tl)), tr.p, { lyft: tr.lyft }); },
+  '14': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); ut('nara', STA); const ja = del(lo(0) - 0.3, lo(0), tl), tr = trippa(tl + RR['13'].d, 1 - ja);
+    const [f, p] = nick(mellan(ORO({ titt: [0, -8] }), ANS('glad', { titt: [0, -4] }), ja), tr.p, tl - lo(0) + 0.05, 0.8);
+    hund([STA[0] + 5 * tr.v, K_GOLV], f, p, { lyft: tr.lyft }); },
   '15': (tl, d) => { kaktus(); boll(BOLL_PALL); glasG(); const g = gang(tl, 0.5, d + 1.0, STA[0], 1570);   // Sanna 2026-11-21 (J17 1:39): "no overlap ball dog" – svepet tar hunden innan den når bollen
     HEL(kl(g.x, STA[0], 2140)); hund([g.x, K_GOLV], ANS('glad', { titt: [14, 0] }), g.p); SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = BAD_FARG; },
 
@@ -512,9 +519,9 @@ const S = {
     hund([B_STA[0] + 6 * v, B_GOLV], ANS('nyfiken', { titt: [14, 10] }), { rikt: 0.4, luta: 3 * v }, { lyft: 4 * Math.abs(v) });
     const a = lo(0), b = a + 1.8, mal = [POTTA[0] + 150, POTTA[1] - 220, 125];
     if (tl < a) return kritaGlid([2100, 100, 140], mal, del(0, a, tl), 0.33);
-    const sp = ritaSak('potta', POTTA, kl((tl - a) / (b - a)), '#b8322b'); if (tl < b) return krita(sp[0], sp[1], 125, 0.33);
+    const sp = ritaSak('potta', POTTA, kl((tl - a) / (b - a)), LINJE); if (tl < b) return krita(sp[0], sp[1], 125, 0.33);
     kritaGlid([...sp, 125], svajP(POTTA[0] + 170, POTTA[1] - 230, tl), del(b, b + 0.8, tl), 0.33); },
-  '17b': (tl, d) => { badrum(); ut('halv', B_STA, 1 / 3); if (tl < 0.9) ritaSak('potta', POTTA, 1, '#b8322b');
+  '17b': (tl, d) => { badrum(); ut('halv', B_STA, 1 / 3); if (tl < 0.9) ritaSak('potta', POTTA, 1, LINJE);
     gnistorNu(POTTA[0], POTTA[1] - 90, 230, tl - 0.1); kritaGlid(svajP(POTTA[0] + 170, POTTA[1] - 230, tl + 5), [2100, 60, 140], del(0.4, 1.5, tl), 0.33, 0);
     const g = del(0.6, 1.0, tl), v = Math.sin((tl + 2) * 3.4);
     hund([B_STA[0] + 6 * v, B_GOLV], mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [12, 8] }), g), { rikt: 0.4, luta: 3 * v }, { lyft: skutt(tl, 1.0, 1.6, 16) + 4 * Math.abs(v) }); },
@@ -541,9 +548,9 @@ const S = {
   '24a': (tl, d) => { badrum(); pottaKam(); hund(B_POTTA, ANS('nyfiken', { titt: [14, 10] }), { ...SITTER, rikt: 0.4 });
     const a = lo(0), b = a + 1.5, mal = [RULLE_VID[0] + 110, RULLE_VID[1] - 140, 125];
     if (tl < a) return kritaGlid([2100, 100, 140], mal, del(0, a, tl), 0.3);
-    const sp = ritaSak('rulle', RULLE_VID, kl((tl - a) / (b - a)), '#7d8a99'); if (tl < b) return krita(sp[0], sp[1], 125, 0.3);
+    const sp = ritaSak('rulle', RULLE_VID, kl((tl - a) / (b - a)), LINJE); if (tl < b) return krita(sp[0], sp[1], 125, 0.3);
     kritaGlid([...sp, 125], svajP(RULLE_VID[0] + 120, RULLE_VID[1] - 150, tl), del(b, b + 0.8, tl), 0.3); },
-  '24b': (tl, d) => { badrum(); pottaKam(); if (tl < 0.9) ritaSak('rulle', RULLE_VID, 1, '#7d8a99');
+  '24b': (tl, d) => { badrum(); pottaKam(); if (tl < 0.9) ritaSak('rulle', RULLE_VID, 1, LINJE);
     sakFyll('rulle', RULLE_VID, del(0, 0.9, tl)); gnistorNu(RULLE_VID[0], RULLE_VID[1] - 50, 170, tl - 0.1);
     kritaGlid(svajP(RULLE_VID[0] + 120, RULLE_VID[1] - 150, tl + 5), [2100, 60, 140], del(0.4, 1.5, tl), 0.3, 0);
     const g = del(0.6, 1.0, tl); hund(B_POTTA, mellan(ANS('forvanad', { titt: [14, 10] }), ANS('jatteglad', { titt: [14, 8] }), g), { ...SITTER, rikt: 0.4 });
@@ -649,8 +656,8 @@ function ljud() {
   for (const id of ['15', '40']) { const sv = RR[id].s + RR[id].d - SVEP_IN;
     (window.kritsvep?.LJUD || []).forEach((k, i) => ut.push({ t: sv + (k / 0.5) * SVEP_IN, fil: E + `skrrrrt-kort/skrrrrt-kort-${i % 4 + 1}.m4a`, vol: 0.45 })); }
   // julkarolen under varje sammanhängande följd av rader med musik: true. Sanna 2026-11-20: "lower music" (animatiken 0,25 → här 0,15 × 0,4 = 0,06, ca 12 dB under Malin)
-  let m = null; for (const r of RAD_L) { if (!r.musik) { m = null; continue; }
-    if (m && Math.abs(m.t + m.langd - r.s) < 0.01) m.langd += r.d; else ut.push(m = { t: r.s, fil: KAROL, vol: 0.15, langd: r.d, loop: true, fadeIn: 0.6, fade: 1.2 }); }
+  // QA 27/11: karolen ligger nu under HELA filmen (förr bara raderna med musik: true, så kaktusrummets rad 6–15 var helt tyst mellan replikerna)
+  ut.push({ t: 0, fil: KAROL, vol: 0.15, langd: DURATION - SVART, loop: true, fadeIn: 0.6, fade: 1.2 });
   // QA 25/11: badrummet (rad 16–40) hade inget ljud under pauserna (frågorna, kritan ritar) – badrumsljudet lågt under, som 041 (0,45)
   ut.push({ t: at('16'), fil: E + 'badrumsljud/badrumsljud-2.m4a', vol: 0.45, langd: at('41') - at('16'), loop: true, fadeIn: 1.0, fade: 1.2 });
   return ut.filter(c => c.t < DURATION);

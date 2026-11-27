@@ -61,7 +61,8 @@ export const RADER = [
   // --- Kritan ritar en hink och en spade ---
   { id: '11a', d: 0.3 + L(14) + 3.0, plats: 'Halvbild: snön bredvid kaninen', malin: [[14, 0.3]], ljud: [[RITA(2), 0.4]],
     bild: 'Kritan kommer in och ritar hinkens kontur på snön (tre drag). Gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
-  { id: '11b', d: 0.3 + L(15) + G, plats: 'Halvbild', malin: [[15, 0.3]], ljud: [[GLITTER(1), 0.0], [RITA(3), 0.3 + L(15) * 0.35], [GLITTER(3), 0.3 + L(15) * 0.6]],
+  // QA 26/11 (J23, Malin efter handlingen): spaden ritas 0,6–2,2 s och fylls 2,27 s, så att den står klar när Malin säger "spade" (ca 2,4 s in)
+  { id: '11b', d: 0.3 + L(15) + G, plats: 'Halvbild', malin: [[15, 0.3]], ljud: [[GLITTER(1), 0.0], [RITA(3), 0.3 + L(15) * 0.075], [GLITTER(3), 0.3 + L(15) * 0.49]],
     bild: 'Hinken fylls i inifrån. På "Och en spade!" ritar kritan spaden bredvid, den fylls i', ljudtext: '`glitter`, kritan ritar', ansikte: 'glittriga ögon' },
   { id: '12', d: 0.4 + L(16) + G + 0.4, plats: 'Halvbild', malin: [[16, 0.4]], ljud: [[TACK(1), 0.6 + L(16)]],
     bild: 'Kaninen tittar upp mot kritan när den flyger ut', ljudtext: 'kanin tack', ansikte: 'glad' },

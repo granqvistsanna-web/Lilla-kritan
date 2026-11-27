@@ -131,8 +131,8 @@ export const RADER = [
   { id: '22', d: 0.3 + L(29) + 1.4, plats: 'Närbild musen', malin: [[29, 0.3]], ljud: [MUS('förtjust', 0.5 + L(29))], bild: 'Musen med kawaii-ögon', ljudtext: 'förtjust pip', ansikte: 'kawaii' },
   { id: '23', d: 4.8 + L(30) + 1.4, plats: 'Helbild', malin: [[30, 4.8]], ljud: [['tass/tass-1', 1.3, 0.35], ['tass/tass-2', 1.8, 0.35], MUS('pratar', 2.25), ['hopp-mjuk/hopp-mjuk-1', 4.1, 0.3], MUS('trumpen', 5.0 + L(30))],
     bild: 'Stjärnan glider upp i musens hand, musen går till pallen och kliver upp på låga och höga steget (feedback 2026-11-22 3:35), sträcker sig mot toppen och gör ett litet skutt: når ändå inte. Öronen faller', ljudtext: 'trumpet pip', ansikte: 'nyfiken → lite ledsen' },
-  { id: '24', d: 0.3 + L(31) + 3.5, plats: 'Närbild musen', malin: [[31, 0.3]], bild: 'Musen med stjärnan tittar på barnet. Paus 4,4 s med GLES (QA 2026-11-15): barnet säger upp', ljudtext: 'tyst', ansikte: 'hoppfull' },
-  { id: '25', d: L(32) + 2.0 + L(33) + 1.4, plats: 'Helbild', malin: [[32, 0.0], [33, L(32) + 2.0]], ljud: [['swoosh/swoosh-1', 0.3, 0.5], ['tindra/tindra-3', 1.7, 0.9], MUS('förtjust', 1.75)],
+  { id: '24', d: 0.3 + L(31) + 3.5 + L(32) + 0.4, plats: 'Närbild musen', malin: [[31, 0.3], [32, 0.3 + L(31) + 3.5]],   /* QA 2026-11-27: "Upp!" i närbilden, klippet 0,4 s efter */ bild: 'Musen med stjärnan tittar på barnet. Paus 4,4 s med GLES (QA 2026-11-15): barnet säger upp', ljudtext: 'tyst', ansikte: 'hoppfull' },
+  { id: '25', d: L(32) + 2.0 + L(33) + 1.4, plats: 'Helbild', malin: [[33, L(32) + 2.0]], ljud: [['swoosh/swoosh-1', 0.3, 0.5], ['tindra/tindra-3', 1.7, 0.9], MUS('förtjust', 1.75)],
     bild: 'Stjärnan glider i en mjuk båge från handen upp till toppen (1,4 s) och sätter sig; kulorna glimtar', ljudtext: 'swoosh, tindra, förtjust pip', ansikte: 'jätteglad' },
   // Sanna 2026-11-21 kväll (3:26): "och sen släng upp det sista så kommer lamporna"
   { id: '25b', d: 6.4, plats: 'Helbild', ljud: [['swoosh/swoosh-1', 2.3, 0.6], ['glitter/glitter-3', 3.1, 0.8], ['tindra/tindra-3', 3.9, 0.9], MUS('förtjust', 4.5)],

@@ -16,6 +16,8 @@
 #   luckan (Sanna 2026-11-16). Ljudet tonas in under 0,15 s. forst.png blir bilden vid fran.
 #   Valfritt: `till: 136.0` i index.html kapar filmens slut (sekunder) när slutkortet står för länge: filmen tonas ut under sista 0,3 s och
 #   sista bilden blir bilden bakom stängningen. Filen på disk ändras inte. Utan till: spelas hela filmen.
+#   Valfritt: `sist: 174.1` tar bilden bakom stängningen (sist.png) vid den tiden i filmen, när filmen slutar i svart (kritirisen):
+#   annars stängs 3D-luckan över ett svart fönster (QA 26/11, J20). Filmen spelas ändå till slutet (eller till).
 #   6. mastrar luckan till -16 LUFS med mastra.sh (som resten av kalendern), som också gör <namn>-liten.mp4 (1280 px bred). Det gamla läggs i <mapp>/aldre/ för hand.
 # Samma kommando bygger om luckan, t.ex. när filmen bytts eller Malins repliker spelats in.
 set -e
@@ -38,12 +40,14 @@ f0=$(python3 -c "print(round($fran * $ffps))")   # första bildrutan som spelas
 ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$f0)" -frames:v 1 -fps_mode passthrough $mapp/forst.png
 till=$(sed -n "s/.*till: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: kapa filmens slut
 nb=$(sond v:0 nb_frames $film)
+sist=$(sed -n "s/.*sist: *\([0-9.]*\).*/\1/p" $mapp/index.html | head -1)   # valfritt: bilden bakom stängningen tas vid sist (s) i stället för filmens sista bild
 if [[ -n $till ]]; then   # sista bilden är bild nb-1 av den kapade filmen
   nb=$(python3 -c "print(round($till * $ffps))")
   ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$((nb - 1)))" -frames:v 1 -fps_mode passthrough $mapp/sist.png
 else
   ffmpeg -hide_banner -loglevel error -y -sseof -1 -i $film -update 1 $mapp/sist.png   # skriver varje bild, den sista blir kvar
 fi
+[[ -n $sist ]] && ffmpeg -hide_banner -loglevel error -y -i $film -vf "select=eq(n\,$(python3 -c "print(round($sist * $ffps))"))" -frames:v 1 -fps_mode passthrough $mapp/sist.png
 nb=$((nb - f0)); fdur=$(python3 -c "print($nb / $ffps)")   # det som spelas, i hela bildrutor
 
 # 2. tider: sidans längd är OPPEN + 3 + 2,4 s (video.js), och --bara-ljud skriver en wav av exakt den längden

@@ -94,7 +94,9 @@ function kamera([z, cx, cy]) {
 const skarm = ([x, y]) => [KAM[1] + x * KAM[0], KAM[2] + y * KAM[0]];
 const iFig = (x, [px, py], L) => [x + (px - 512) * SK, MARK + (py - L.FOTTER) * SK];
 const kAns = (F, x = HX) => [Z_ANS, x, MARK - SK * (F.L.FOTTER - 470) - 7];
-const kMun = F => [640 / (F.mun.w * SK), ...iFig(HX, [F.mun.cx, F.mun.cy], F.L)];
+// QA 27/11: kaninens arm är lång och brun mot brun päls, så tassen på skaftet hamnade i bildkanten eller utanför och borsten såg ut att sväva.
+// Kaninens munutsnitt är 20 % vidare och flyttat åt vänster, så att hela tassen syns på skaftet (katten och pandan som förut).
+const kMun = F => { const z = 640 / (F.mun.w * SK), [x, y] = iFig(HX, [F.mun.cx, F.mun.cy], F.L); return F === FIG[1] ? [0.8 * z, x - 240 / z, y] : [z, x, y]; };
 
 // --- Badrummet: byggs en gång -----------------------------------------------------------------------------------------------
 function badrum() {
@@ -139,8 +141,9 @@ const bord = (inne, opac = 1) => opac > 0.01 && lagg('bakom', `<g opacity="${opa
   ${[0, 1, 2].filter(i => inne[i]).map(i => borstBild(i, ...KOPP_PLATS(i))).join('')}
   <image href="${MUGG}" x="${f1(KOPP_X - KOPP_W / 2)}" y="${f1(KOPP_B - KOPP_H)}" width="${KOPP_W}" height="${KOPP_H}" preserveAspectRatio="none"/></g>`);
 // flygturen: en mjuk båge med glitter efter borsten; a, b = [x, y, vinkel] (vinkeln tar den kortaste vägen)
-const bage = (a, b, q) => { const e = mjuk(q), dv = ((b[2] - a[2] + 540) % 360) - 180; return [lerp(a[0], b[0], e), lerp(a[1], b[1], e) - 70 * Math.sin(Math.PI * q), a[2] + dv * e]; };
-const glitter = (a, b, q, i) => { let h = ''; for (let k = 1; k <= 7; k++) { const qq = q - k * 0.06; if (qq <= 0) continue; const [x, y] = bage(a, b, qq), g = (1 - k / 8) * Math.min(1, 5 * q, 5 * (1 - q) + 0.4);
+// h = hur högt bågen går (px); QA 27/11: pandans borste går i en svag svacka i stället, annars passerar den snett över ögat
+const bage = (a, b, q, h = 70) => { const e = mjuk(q), dv = ((b[2] - a[2] + 540) % 360) - 180; return [lerp(a[0], b[0], e), lerp(a[1], b[1], e) - h * Math.sin(Math.PI * q), a[2] + dv * e]; };
+const glitter = (a, b, q, i, hb) => { let h = ''; for (let k = 1; k <= 7; k++) { const qq = q - k * 0.06; if (qq <= 0) continue; const [x, y] = bage(a, b, qq, hb), g = (1 - k / 8) * Math.min(1, 5 * q, 5 * (1 - q) + 0.4);
   h += gnistaVit(x + 11 * Math.sin(k * 2.1 + i), y + 11 * Math.cos(k * 1.7 + i), (13 + 7 * (k % 2)) * g); } return h; };
 // var borsten i handen hamnar: mitt och vinkel ur riggens .borste (för flygturen och glittret)
 const handMal = n => { const e = FIG[n].G.querySelector('.borste'), r = e.getBoundingClientRect(), inv = $('kamera').getScreenCTM().inverse(), c = new DOMPoint((r.left + r.right) / 2, (r.top + r.bottom) / 2).matrixTransform(inv), m = inv.multiply(e.getScreenCTM());
@@ -323,7 +326,7 @@ function vers(n, a) {
     if (u < 0) return { kam, figs: [vid(f, POS(n))] };
     // borsten lyfter ur muggen och flyger med glitter till handen (FLYG_UT s), där den i handen tar över; en glittersmäll i handen
     const us = swapU(n), q = (u - (us - FLYG_UT)) / FLYG_UT, qb = (u - us) / 0.4;
-    return { kam, figs: [upp(u)], flyg: q > 0 && q < 1 ? [{ i: n, n, q, a: KOPP_PLATS(n), b: 'hand', fig: upp(us) }] : [], burst: qb > 0 && qb < 1 ? { n, q: qb } : null }; };
+    return { kam, figs: [upp(u)], flyg: q > 0 && q < 1 ? [{ i: n, n, q, a: KOPP_PLATS(n), b: 'hand', fig: upp(us), h: n === 2 ? -40 : 70 }] : [], burst: qb > 0 && qb < 1 ? { n, q: qb } : null }; };
   const borsta = (varv, ...b) => { const [f, p] = L().ROR.borsta(...b); return { kam: null, figs: [vid(varv == null ? f : halv(f, varv), p, { blink: false })] }; };
   // Första varvet: skrubbar (ansiktet), övre raden blir halvvit (munnen tätt), nedre raden blir halvvit (ansiktet)
   S[id(3)] = (tl, d) => ({ ...borsta(0, 'skrubba', tl, d), kam: kAns(FIG[n]) });
@@ -341,7 +344,7 @@ function vers(n, a) {
   S[id('5b')] = (tl, d) => ({ ...borsta(1, 'nere', tl, d - GL), kam: kMun(FIG[n]), utanKran: true, glans: { n, rad: 1, u: (tl - (d - GL)) / GL } });
   // "Rena tänder!": borsten bort, tandleendet; på "Hurra!" glansstjärnan, en skur gnistor och ett mjukt glädjehopp
   S[id(6)] = (tl, d) => { const st = borsta(null, 'klar', tl, d, { glans: GLANS[n], ner: 250 }), h = hoppa(tl, GLANS[n]), fg = st.figs[0];
-    fg.p = { ...fg.p, lyft: h.lyft, strack: (fg.p.strack || 0) + h.strack };
+    fg.p = { ...fg.p, lyft: h.lyft, strack: (fg.p.strack || 0) + h.strack, borstNer: 250 * mjuk(kl(tl / 1.1)) };   // QA 27/11: borsten sjunker lugnt ner i handfatet på 1,1 s (riggens 0,5 s såg ut som att den försvann)
     return { ...st, kam: kAns(FIG[n]), skur: tl - GLANS[n] }; };
   // i närbilderna står tuben inte på handfatet (vid läppens vänstra ände skulle den stå framför borsthanden); klippen är hårda
   for (const k of [1, 2, 3, 4, 5, 'e', '3b', '4b', '5b', 6]) { const s = S[id(k)]; S[id(k)] = (tl, d) => ({ ...s(tl, d), tub: null }); }
@@ -501,7 +504,7 @@ function rita(t) {
   st.figs.forEach(fg => figur(fg, t));
   for (const fl of st.flyg || []) { let b = fl.b;
     if (b === 'hand') { figur(fl.fig, t); b = handMal(fl.n); st.figs.forEach(fg => figur(fg, t)); }   // mäter var borsten i handen hamnar, och ritar om figuren i sin egen pose
-    lagg('fram', glitter(fl.a, b, fl.q, fl.i) + borstBild(fl.i, ...bage(fl.a, b, fl.q))); }
+    lagg('fram', glitter(fl.a, b, fl.q, fl.i, fl.h) + borstBild(fl.i, ...bage(fl.a, b, fl.q, fl.h))); }
   if (st.burst) { const [x, y] = handMal(st.burst.n), g = st.burst.q; lagg('fram', Array.from({ length: 8 }, (_, k) => { const v = k / 8 * 2 * Math.PI + 0.3; return gnistaVit(x + (14 + 70 * g) * Math.cos(v), y + (14 + 70 * g) * Math.sin(v), (10 + 6 * (k % 2)) * Math.sin(Math.PI * g)); }).join('')); }
   if (st.pafat != null) borstePaFat(st.pafat, st.bdy || 0, st.rand ?? 1, st.pafatVilka || st.pafatFran || 0);
   if (st.tubLage) { const g = st.tubLage; tubBild(g.x, g.y, g); } else if (st.tub !== null) tuben(st.tub);

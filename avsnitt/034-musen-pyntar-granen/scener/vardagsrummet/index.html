@@ -332,7 +332,7 @@ function ritaPapper(st, t) {
     const u = mjuk(st.inn / 1.6), w = kritaVanta([start[0] + 140, start[1] + 10], st.inn), sist = mjuk((st.inn - 2.1) / 0.4);
     krita(st.inn < 1.6 ? [lerp(2200, start[0] + 140, u), lerp(-80, start[1] + 10, u)] : [lerp(w[0][0], start[0], sist), lerp(w[0][1], start[1], sist)], lerp(150, 125, u), KS);
   } else if (spets) { krita(spets, KRITAN.VINKEL_RITAR, KS); ritKrita(spets, KRITAN.VINKEL_RITAR, true); }
-  else if (st.vanta >= 0 && rb) kritaTillVanta(rb.slut, vant, st.vanta, KS);
+  else if (st.vanta != null && st.vanta >= 0 && rb) kritaTillVanta(rb.slut, vant, st.vanta, KS);
   else if (kk >= 1 && st.fyll < 1) { const u = del(0, 0.8, st.fyll), [p, v] = kritaVanta(vant, 0); krita([lerp(p[0], 2100, mjuk(u)), lerp(p[1], 60, mjuk(u))], v, KS); }   // flyger ut uppe till höger
   if (st.glitter > 0.01) skimmer(IK.mitt[0], IK.mitt[1] - 20, st.glitter, t, 3.0);
 }
@@ -493,10 +493,11 @@ const S = {
   '17': (tl, d) => { const c = M(22, '17') + LANGD(22) + 0.2;
     return RUM('17', { kam: tl < c ? K.STA : K.FOT, f: ANS('nyfiken', { titt: [lerp(-14, 14, del(1.8, 2.2, tl)), 8] }), p: POS({ oron: [4, -4] }), gomdSkimmer: del(c + 3.0, c + 3.6, tl) * 0.6 }); },
   // den blå rullar fram och hoppar tillbaka upp i lådan (0,9–2,3 s), sedan tar musen den (som de andra, T.a 2,5 s)
-  '18': (tl, d) => { const r = del(0.9, 2.3, tl), arm = 30 * (1 - del(1.8, 2.5, tl));
+  // QA 2026-11-27: klippet till halvbilden i pausen efter "Ja, där!" (1,25 s), inte mitt i ordet; kulan börjar rulla i närbilden
+  '18': (tl, d) => { const r = del(1.1, 2.4, tl), arm = 30 * (1 - del(1.8, 2.5, tl));
     if (tl > 2.5) { const y = pynta(tl, 'bla', { a: 2.5, g: 3.6, u: 99, u2: 99.5, pl: 100 });
       return RUM('18', { kam: K.STA, f: L.blanda(ANS('jatteglad'), y.f, del(2.5, 3.0, tl)), p: y.p, pos: y.pos, kulor: { ...FORE('18'), bla: y.kula } }); }
-    return RUM('18', { kam: tl < 1.0 ? K.FOT : K.STA, f: ANS('jatteglad'), p: POS({ armar: [arm, arm] }), gomdSkimmer: tl < 1.0 ? 1 : 0, kulor: { ...FORE('18'), bla: r < 1 ? { rull: 1 - r } : G0 } }); },
+    return RUM('18', { kam: tl < 1.25 ? K.FOT : K.STA, f: ANS('jatteglad'), p: POS({ armar: [arm, arm] }), gomdSkimmer: tl < 1.25 ? 1 : 0, kulor: { ...FORE('18'), bla: r < 1 ? { rull: 1 - r } : G0 } }); },
   '19': upp('19', 'bla', 24),
   '20': (tl, d) => { const c = M(26, '20') - 0.2;
     return RUM('20', { kam: tl < c ? K.HEL : K.GRAN, f: tl < c ? ANS('jatteglad') : ANS('nyfiken', { titt: [14, -14] }), p: POS({ upp: tl < c ? 0 : 0.6 }), glimt: bump(0.3, 1.3, tl), glimtVar: 'alla' }); },
@@ -514,7 +515,8 @@ const S = {
     return RUM('23', { kam: K.HEL, pos, f: L.blanda(ANS('glad', { titt: [10, lerp(4, -16, arm)] }), ANS('ledsen', { titt: [10, -6] }), led),
       p: POS({ ...L.blandaPose('neutral', 'nar', arm), rikt: ri, armar: [0, 70 * arm], upp: 0.7 * arm - 0.4 * (kl_.landa || 0), luta: kl_.framat || 0, ben: st.ben, benY: st.benY, lyft: st.lyft || 0, oron: [10 * led, 10 * led] }),
       kulor: { ...FORE('23'), stj: g < 1 ? { tillHand: g } : { hand: true } } }); },
-  '24': tl => RUM('24', { kam: [2.0, HOG23()[0], HOG23()[1] - 285], pos: HOG23(), f: ANS('glad', { titt: [0, 0] }), p: POS({ armar: [0, 70] }), kulor: { ...FORE('24'), stj: { hand: true } } }),
+  // QA 2026-11-27: Malins "Upp!" i närbilden (förut precis på klippet), musen sträcker sig på ordet; klippet 0,4 s efter
+  '24': tl => { const u = bump(M(32, '24') - 0.1, M(32, '24') + 0.9, tl); return RUM('24', { kam: [2.0, HOG23()[0], HOG23()[1] - 285], pos: HOG23(), f: ANS('glad', { titt: [0, -4 * u] }), p: POS({ armar: [0, 70 + 22 * u], upp: 0.5 * u }), kulor: { ...FORE('24'), stj: { hand: true } } }); },
   // stjärnan flyger till toppen, sedan kliver musen ner för pallen (2,6 och 3,25 s) till STA2, där rad 25b börjar
   '25': (tl, d) => { const u = del(0.3, 1.7, tl), arm = 1 - del(1.6, 2.2, tl), LAG2 = [PALL_LAG[0] - 10, PALL_LAG[1]], kl_ = klattra(tl, [[2.6, HOG23(), LAG2, 22], [3.25, LAG2, STA2, 24]]);
     return RUM('25', { kam: K.HEL, pos: kl_.pos, f: L.blanda(ANS('forvanad', { titt: [10, -16] }), ANS('jatteglad'), del(1.6, 2.0, tl)),
@@ -543,7 +545,7 @@ const S = {
 };
 K.GOLV2 = [1.3, 900, 700];
 K.PALL = [PROV.pz ?? 1.2, PROV.px ?? 1150, PROV.py ?? 580];   // musen uppe på pallens höga steg, hela musen i bild (QA 2026-11-25)
-K.LADA = [2.3, 1390, 850];   // rad 3: "En låda med julpynt" (2026-11-22)
+K.LADA = [1.75, 1330, 720];   // rad 3: "En låda med julpynt" (2026-11-22); QA 2026-11-27: hela huvudet med (2,3 kapade musen vid nosen)
 K.KULOR = [PROV.kz ?? 3.4, PROV.kx ?? 1405, PROV.ky ?? 860];   // lådan med de tre kulorna fyller bilden   // QA 2026-11-21: hela musen i bild (1,65 skar huvudet)
 // böj ner mot den röda kulan i lådan (b 0–1): lutar åt höger och tittar ner
 const BOJ = b => ({ upp: -1 * b, luta: 7 * b, boj: 9 * b, strack: -0.04 * b, sank: 20 * b, oron: [6 * b, 6 * b] });

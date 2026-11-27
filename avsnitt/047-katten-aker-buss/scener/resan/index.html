@@ -393,7 +393,7 @@ function ritArm(o, hand, nar) {
 // nallen på sitsen till vänster om katten i fönsterbilderna (Sanna 2026-11-20 "teddy in the window shots"): v2-nallen som i helbilderna,
 // lite mindre, sitter still och lutar sig lätt mot katten; alltid på samma ställe (som sätesplatsen), också när katten står
 const NALLE_SATE = [SATE.x - 222, SATE.fot - 112, 0.255, 7];   // ritas efter katten: framför svansen, lutar mot kroppens kant
-function trekvart({ hoj = 0, vrid = 0, luta = 0, sta = 0, lean = 0, x = TV.x, dy = 0, hand = null, nar = 0, ans = {} } = {}) {
+function trekvart({ hoj = 0, vrid = 0, luta = 0, sta = 0, lean = 0, x = TV.x, dy = 0, hand = null, nar = 0, ans = {}, nalleVid = NALLE_SATE } = {}) {
   const [typ, R] = reaktionNu();
   const glad = Math.max(ans.glad || 0, (typ === 'jatteglad' || typ === 'kanin' || typ === 'fniss') ? R : 0), forv = typ === 'forvanad' ? R : 0, nyf = Math.max(ans.nyf || 0, typ === 'nyfiken' ? R : 0);
   const fniss = typ === 'fniss' ? R * Math.sin(TT * 18) : 0;
@@ -411,7 +411,7 @@ function trekvart({ hoj = 0, vrid = 0, luta = 0, sta = 0, lean = 0, x = TV.x, dy
   // korta (12 px upp under kroppen, rötterna dolda), fötterna ca 75 px isär, fötterna med vita tassar vilar på sitsens framkant; stående raka
   const sitt = 1 - st;
   lagg('saker', `${armS}<g transform="${T}">${KAJ34.svg('oss', { ...ansikte, oraF, oraB, svans, ben: true, benY: 12 * sitt, benV: [2 * sitt, -2 * sitt], benX: 30 * sitt })}</g>`);
-  nalle(...NALLE_SATE);
+  nalle(...nalleVid);
   lagg('fram', `<g transform="${T}">${KAJ34.morr('oss')}</g>${tassS}`);
   return o;
 }
@@ -483,7 +483,7 @@ function julgran(U, tindra = 0) {
   lagg('ute', s);
 }
 // kaninen i pulkan på backen (remsans koordinater), liten och långt bort
-const BACKE = [[520, 372], [930, 512]];
+const BACKE = [[650, 416], [930, 512]];   // QA 27/11: startar lägre på samma sluttning (förut 520, 372), så att kaninen inte åker utanför fönstrets överkant
 const kaninU = () => del(at('18', 0.6), at('19') - 0.6, TT);   // 0 uppe på backen, 1 nere
 // ut 0–1: kaninen åker vidare åt höger och sjunker ner bakom snökanten medan den tonar bort (Sanna 2026-11-21 "bunny leave and fade away",
 // "maybe go down behind hill"), i början av rad 20 innan Malin frågar om snögubben
@@ -499,6 +499,7 @@ function kaninPulka(U, u, vinka = 0, ut = 0) {
   GK.setAttribute('transform', `translate(${f1(x + 8 * k)} ${f1(y - 32 * k)}) rotate(${v}) scale(${(0.1 * k).toFixed(4)}) translate(-512 ${-LK.FOTTER})`);
   const a = vinka > 0 ? 40 + vinka * (30 + 18 * Math.sin(TT * 7)) : 0;
   LK.rita(GK, ANS('jatteglad', {}, LK), { ...LK.POSE0, ...LK.POSER.sitter, armar: [0, a] });
+  return [x, y];
 }
 // fågeln 1,6 × större (Sanna 2026-11-20 "bigger bird"): 0,096 på hatten, 0,12 vid skylten
 const FAGEL_S = 0.07;   // mindre igen (Sanna 2026-11-21 "2:33 make bird smaller"): 0,096 → 0,07
@@ -562,6 +563,8 @@ function imma() {
     <g clip-path="url(#glaset)" mask="url(#hm)" opacity="${(0.88 * k).toFixed(3)}">
       <rect x="${FON.x0}" y="${FON.y0}" width="${FON.x1 - FON.x0}" height="${FON.y1 - FON.y0}" fill="#e9f0f4"/>
       <rect x="${FON.x0}" y="${FON.y0}" width="${FON.x1 - FON.x0}" height="${FON.y1 - FON.y0}" filter="url(#immakorn)"/>${dr}</g>`);
+  // QA 27/11: hjärtat syntes knappt (stan genom strecket gav blått/grönt som skiftade). Nu ett rosa kritstreck på glaset i en enda färg
+  if (lin > 0) lagg('bak', `<path d="${hjarta(...HJ)}" pathLength="1" fill="none" stroke="#e8466a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${lin.toFixed(4)} 2" opacity="${Math.min(1, 1.1 * k).toFixed(3)}" clip-path="url(#glaset)"/>`);
 }
 const hjartaPunkt = k => { const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', hjarta(...HJ)); $('gomda').appendChild(p);
   const q = p.getPointAtLength(p.getTotalLength() * kl(k, 0, 0.999)); p.remove(); return [q.x, q.y]; };
@@ -579,7 +582,10 @@ const knappGlod = (extra = 0) => { const a = (1 - Math.cos(2 * Math.PI * TT / 1.
     <circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="${f1(40 + 7 * a + 16 * extra)}" fill="url(#kglod)" opacity="${Math.min(1, k).toFixed(3)}"/>`); };
 const knappLjus = k => { if (k > 0) lagg('fram', `<circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="14" fill="#ff5252" opacity="${(0.55 * k).toFixed(2)}"/><circle cx="${KNAPP[0]}" cy="${KNAPP[1]}" r="28" fill="#ffcdd2" opacity="${(0.35 * k).toFixed(2)}"/>`); };
 // knappen i mellanbild: katten står på sitsen vid stången (KX), armroten ca 110 px från knappen
-const KX = 1395, KNAPPB = () => kamera(1.7, 1460, 560);
+// QA 27/11: 1395 → 1340, så att ansiktet stannar ca 20 px från knappen och stången (förut gick nosen in i dem); tassen når ändå.
+// Nallen ligger på sätet framför ryggsäcken (NALLE_KNAPP), annars försvann den ur bild vid klippet till knappen
+const NALLE_KNAPP = [985, SATE.fot - 100, 0.24, -6];
+const KX = 1340, KNAPPB = () => kamera(1.7, 1460, 560);
 
 // --- Farmors dörr: öppningen x 812–1126, y 202–875, trappstenen y 876–921 ------------------------------------------------------------
 // stjärnor i farmors fönster (Sanna 2026-11-21 "add stars in windows"): en vit pappersstjärna hänger i ett snöre mitt i varje fönster
@@ -682,16 +688,19 @@ const S = {
   '7': tl => { hall(); PASTIG(); const o = del(lo(0) - 0.1, lo(0) + 0.7, tl); buss(BUSS_X0, { oppen: o }); knappSteg(tl - (lo(0) + 0.8), 0, 0.45);
     snofall(0.6); },
   // 8: tittar ner på trappsteget, tar sats, hoppar upp (den fria tassen ut för balansen), landar och blir glad
-  '8': tl => { hall(); PASTIG(); const h = lo(0) - 0.15, inn = del(h + 0.75, h + 1.75, tl), stang = del(h + 1.85, h + 2.55, tl);
+  // QA 27/11: katten stod framför bussen och var plötsligt i dörren, utan synligt kliv. Nu: stannar framför dörren, tar sats, ett tydligt
+  // hopp i en båge (0,7 s, 120 px högt) upp på trappsteget och landar på hopp-mjuk (rader.json 3,15) när Malin säger "hopp!". Dörrkarmen
+  // klipper katten först när fötterna är över trappsteget, så att underkroppen aldrig försvinner bakom golvkanten.
+  '8': tl => { hall(); PASTIG(); const h = 2.45, h1 = 3.15, inn = del(h1 + 0.15, h1 + 1.0, tl), stang = del(h1 + 1.1, h1 + 1.8, tl);
     buss(BUSS_X0, { oppen: 1 - stang });
     if (tl < h) { knappSteg(tl, 0.45, 1.0, h); }
-    else if (inn < 1) { const u = del(h, h + 0.55, tl), landat = del(h + 0.5, h + 0.75, tl);
+    else if (inn < 1) { const u = del(h, h1, tl), b = kl((tl - h) / (h1 - h)), landat = del(h1 - 0.05, h1 + 0.15, tl);
       // inne i bussen går katten bakåt i bussen (åt vänster, bort från föraren och dörren; Sanna 2026-11-20 "1:04 walks the wrong way")
-      const x = lerp(DPOS[0], DSTEG[0], u) - 290 * mjuk(inn), fot = lerp(DPOS[1], DSTEG[1], mjuk(u)) - 14 * inn, s = DS * (1 - 0.06 * inn);
-      if (u > 0.6) DORRKLIPP();
+      const x = lerp(DPOS[0], DSTEG[0], u) - 290 * mjuk(inn), fot = lerp(DPOS[1], DSTEG[1], u) - 14 * inn, s = DS * (1 - 0.06 * inn), lyft = 120 * Math.sin(Math.PI * b);
+      if (fot - lyft < 797 || b >= 1) DORRKLIPP();
       katt(landat > 0.5 ? ANS('jatteglad', { titt: [-10 * inn + 10 * (1 - inn), -4] }) : ANS('glad', { titt: [6, -8] }), { ...ENHAND, rikt: lerp(0.35, -0.45, mjuk(del(0, 0.25, inn))), upp: 0.2 * landat,
-        armar: [-124, 30 * bump(h - 0.1, h + 0.7, tl)], oron: [-6 * landat, -6 * landat] },
-        { x, fot, s, lyft: 46 * Math.sin(Math.PI * u), gang: inn > 0 && inn < 1 ? { vag: 290 * inn, dir: -1 } : null, skugg: u < 0.3 }); }
+        armar: [-124, 30 * bump(h - 0.1, h1 + 0.2, tl)], oron: [-6 * landat, -6 * landat], strack: 0.04 * bump(h, h1, tl) - 0.05 * bump(h1 - 0.05, h1 + 0.3, tl) },
+        { x, fot, s, lyft, gang: inn > 0 && inn < 1 ? { vag: 290 * inn, dir: -1 } : null, skugg: b < 0.3 }); }
     snofall(); },
   // --- I bussen (står still) ---
   // 9: katten blippar själv. Tittar på kortläsaren, lyfter kortet lugnt med den fria tassen, pip + grönt ljus, glad och tassen ner
@@ -731,11 +740,15 @@ const S = {
   // sker utanför bild (Sanna 2026-11-21 "1.33 improve transition of cat pose")
   // Sanna 2026-11-21 "longer scene genom fönster": fönsterbilden står under hela "Vi tittar ut genom fönstret. Snö … och granar …"
   '15': tl => { gungBuss(); inne(); if (tl < 5.2) { kamera(2.4, 1080 - 6 * tl, 300); return; } BILD_A(); bakhuvud(HUVA, { vrid: 0.2 * Math.sin(tl * 0.8) }); },
-  '16': tl => { gungBuss(); inne(); BILD_A(); bakhuvud(HUVA, { vrid: 0.4 }); },
-  '17': tl => { gungBuss(); const U = inne(); BILD_A(); bakhuvud(HUVA, { vrid: 0.3 });
-    const b = mo(0) + L_(20) - 1.2; [[560, 548], [690, 552], [800, 546]].map(p => U.P2(...p)).forEach(([x, y], i) => { const o = bump(b + i * 0.2, b + 1.4 + i * 0.2, tl); if (o > 0) lagg('ute', glans(x, y, 14 * o, o)); }); },
+  '16': tl => { gungBuss(); inne(); if (utsiktNara(tl, 698)) return; BILD_A(); bakhuvud(HUVA, { vrid: 0.4 }); },
+  '17': tl => { gungBuss(); const U = inne();
+    const b = mo(0) + L_(20) - 1.2; [[560, 548], [690, 552], [800, 546]].map(p => U.P2(...p)).forEach(([x, y], i) => { const o = bump(b + i * 0.2, b + 1.4 + i * 0.2, tl); if (o > 0) lagg('ute', glans(x, y, 14 * o, o)); });
+    if (utsiktNara(tl, 688)) return; BILD_A(); bakhuvud(HUVA, { vrid: 0.3 }); },
   // 18: närmare bild på fönstret när katten tittar ut (Sanna 2026-11-20 "2:07"): utsikten och kattens ansikte fyller mer av bilden
-  '18': tl => { gungBuss(); const U = inne(); kamera(1.85, 900, 400); kaninPulka(U, kaninU(), del(CUR.d - 2.0, CUR.d - 1.2, tl)); bakhuvud(HUVA, { hoj: del(mo(0) + 1.4, mo(0) + 1.8, tl), vrid: 0.5 }); },
+  // QA 27/11: på "Det är kaninen!" (2,98 s in i repliken) ett hårt klipp till kaninen i halvnära i fönstret; kameran följer pulkan
+  '18': tl => { gungBuss(); const U = inne(); kamera(1.85, 900, 400); const [kx, ky] = kaninPulka(U, kaninU(), del(CUR.d - 2.0, CUR.d - 1.2, tl));
+    if (tl > mo(0) + 2.85) { kamera(3.4, Math.min(kx + 10, 1300), ky - 45); return; }
+    bakhuvud(HUVA, { hoj: del(mo(0) + 1.4, mo(0) + 1.8, tl), vrid: 0.5 }); },
   // 19: katten vinkar till kaninen (Sanna 2026-11-21) med den korta armen som i rad 22, från "Vinka till kaninen!" till strax före klippet
   '19': (tl, d) => { gungBuss(); const U = inne(); BILD_A(); kaninPulka(U, 1, 1); const m = mo(0), o0 = { lyft: 6, tx: TV.x }, r = trekPunkt('oss', ARM_ROT, o0), w = Math.sin(tl * 7);
     trekvart({ hoj: 1, vrid: 0.5, hand: [r[0] + 70 + 12 * w, r[1] - 95 + 10 * w], nar: mjuk(del(m + 0.4, m + 0.9, tl)) * (1 - mjuk(del(d - 0.9, d - 0.4, tl))), ans: { glad: 1 } }); saeck(); },
@@ -806,11 +819,11 @@ const S = {
   // 37–38 knappen (Sanna 2026-11-20 "4.21 looks odd"): mellanbild där katten själv står på sitsen vid stången, knappen i brösthöjd.
   // Den korta armen (högst 1,15 ×) med riggens tass når knappen: liten lutning in, tassen på knappen, knappen lyser, "Pling", glad.
   '37': tl => { gungBuss(); inne(); KNAPPB(); knappGlod(); saeck(); const st = del(0.2, 0.9, tl), k = del(mo(0) + 0.4, mo(0) + 1.0, tl);
-    trekvart({ sta: st, x: KX, ans: { nyf: 0.6 * k, titt: [10 * k, -10 * k] } }); },
+    trekvart({ sta: st, x: KX, nalleVid: NALLE_KNAPP, ans: { nyf: 0.6 * k, titt: [10 * k, -10 * k] } }); },
   // 38 utan "Kan du också trycka?" (Sanna 2026-11-21): tassen trycker strax efter klippet
   '38': tl => { gungBuss(); inne(); KNAPPB(); saeck(); const p = lo(0), nar = mjuk(del(p - 0.7, p - 0.05, tl)) * (1 - mjuk(del(p + 0.7, p + 1.3, tl)));
     knappGlod(bump(p, p + 0.55, tl)); const glad = del(p + 0.1, p + 0.4, tl);
-    trekvart({ sta: 1, x: KX, lean: 0.5 * nar, hand: [KNAPP[0] - 4, KNAPP[1] + 2], nar, ans: { glad, nyf: 0.6 * (1 - glad), titt: [10 * (1 - glad), -10 * (1 - glad)], mun: 0.3 * glad } });
+    trekvart({ sta: 1, x: KX, nalleVid: NALLE_KNAPP, lean: 0.5 * nar, hand: [KNAPP[0] - 4, KNAPP[1] + 2], nar, ans: { glad, nyf: 0.6 * (1 - glad), titt: [10 * (1 - glad), -10 * (1 - glad)], mun: 0.3 * glad } });
     knappLjus(del(p, p + 0.1, tl) * (1 - 0.6 * del(p + 0.5, p + 0.9, tl))); skimmer(KNAPP[0], KNAPP[1], 0.6 * del(0.1, 0.6, tl) * (1 - del(p - 0.4, p, tl)), 0.3); },
   '39': tl => { gungBuss(); const U = inne(); BILD_A(); imma(); const [x, y] = U.P2(662, 470); bakhuvud(HUVA, { hoj: del(1.4, 1.8, tl) }); fragaSkimmer(x, y, 1.4); },
   '40': tl => { GUNG = 0; inne(); BILD_A(); imma(); bakhuvud(HUVA, { hoj: 1.4, vrid: 0.35 * Math.sin(tl * 5) * bump(0.2, 2.2, tl), luta: 3 * Math.sin(tl * 2) }); },
@@ -843,13 +856,20 @@ const S = {
     kritiris(lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))), [800, 700]); },
 };
 
+// --- Utsikten utan katt (QA 27/11, bilden på orden): katten skymde husen och sjön. Medan Malin säger vad det är: ett hårt klipp till
+// fönstret utan katt (som granarna i rad 15), kameran står still mitt på saken (plattans x P) och saken glider förbi. Ger true när den gäller.
+function utsiktNara(tl, P, z = 2.2, cy = 290) {
+  const m = mo(0), a = m - 0.1, b = m + L_(CUR.malin[0][0]) + 0.5; if (tl < a || tl > b) return false;
+  kamera(z, FON.cx + (P + grupp(CUR.id).ankare - vagX(CUR.s + (a + b) / 2)) * RS, cy); return true;
+}
 // --- Närbilder (Sanna 2026-11-20 "more close crops sometimes"): hårda klipp till en tät bild av samma scen, ingen zoom. Kattens ansikte
 // i reaktionsslaget när den får syn på kaninen, snögubben och granen (tills Malin säger vad det är), och tassen som ritar hjärtat.
 const NARA_RADER = { '19': 0.1, '21': 0.3, '34': 0.1 };   // hur länge närbilden står kvar efter Malins start (21: orden börjar 0,37 s in)
 function narbild(r, tl) {
   if (r.id in NARA_RADER) { const m = r.malin[0][1], r0 = m - REAK_T + 0.05;
     if (tl > r0 + 0.1 && tl < m + NARA_RADER[r.id]) { const [fx, fy] = trekPunkt('oss', [775, 450], { lyft: 6, tx: TV.x }); return [2.3, fx + 30, fy + 10]; } }
-  if (r.id === '30') { const [a, b] = hjRit(); if (tl > a - 0.2 && tl < b + 0.6) return [2.1, HJ[0] - 80, HJ[1] + 60]; }
+  if (r.id === '30') { const [a, b] = hjRit(); if (tl > a - 0.2 && tl < b + 0.5) return [2.1, HJ[0] - 80, HJ[1] + 60];
+    if (tl >= b + 0.5 && tl < r.d - 1.3) return [4.0, HJ[0] + 70, HJ[1] + 5]; }   // QA 27/11: detaljbild på det färdiga hjärtat (ca 25 % av bildhöjden) till "… till farmor och farfar!"
   return null;
 }
 

@@ -1,2 +1,0 @@
-11-roda-sangen.mp4: -16.80 LUFS, topp -2.37 dBTP  ->  -16.08 LUFS, topp -2.89 dBTP
-11-roda-sangen: lucka 14 (vi-ses-i-morgon), 3D-intro 328 rutor + film 4608 + 3D-outro 72 = 5008 rutor, skarvar PSNR 60.394615 / 84.820965

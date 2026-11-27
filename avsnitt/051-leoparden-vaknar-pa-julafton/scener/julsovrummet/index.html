@@ -483,7 +483,8 @@ const HOPP_BAGE = 400;
 const GOM = [1060, MADRASS + 300];   // gömstället bakom sängen (bara öronspetsarna ovanför täcket)
 
 // paketet med lock och rosett (J24-feedback: "paket med lock med rosett som leoparden kan öppna"). lyft 0 på … 1 av och åt sidan
-function paketMedLock([x, fot, h], lyft = 0, lager = 'fram', o = 1) {
+function paketMedLock([x, fot, h], lyft = 0, lager = 'fram', o = 1, vick = 0) {
+  if (vick) { lagg(lager, `<g id="paketvick" transform="rotate(${vick.toFixed(2)} ${f1(x)} ${f1(fot)})"></g>`); lager = 'paketvick'; }   // gungar kring bottenmitten
   sak('paket', x, fot, h, { lager, o });
   const bw = h * 793 / 639, lw = bw * 1.08, lh = lw * 357 / 839, topp = fot - h + lh * 0.55;
   const u = mjuk(lyft), lx = x + 200 * u, ly = topp - 150 * Math.sin(Math.PI * u) + (fot - topp) * u, rot = 18 * u;   // locket lyfts och läggs ner till höger, bort från leoparden
@@ -582,7 +583,9 @@ const RADT = {
     const f = F('fnissig', { titt: [lerp(0, 16, blick), lerp(0, -4, blick)] });
     bjornT(ST(huk * 8), f, nickP(f, P({ rikt: 0.35 * blick, luta: 3 * Math.sin(tl * 4) * del(0.4, 1, tl), strack: -0.04 * huk, bred: 0.03 * huk }), tl - (LT('spinn')[0] ?? 9))); },
   // J24 1:23: skuttet in bakom sängen, "Oj, haha! Leoparden vill leka.", öronspetsarna tittar upp på "Leoparden är borta!"
-  '13': (tl) => { rum({ klocka: true }); sangFram(); const a = 0.1, b = 0.75, u = kl((tl - a) / (b - a)); kamera(1.3, 820, 640 - 130 * 4 * u * (1 - u)); const titt = (MT(1) || b + 1.0) - 0.5;
+  // QA 27/11: kameran glider sakta in mot öronspetsarna över täcket på "Leoparden är borta!", så att gömleken inte står i samma helbild i 12 s
+  '13': (tl) => { rum({ klocka: true }); sangFram(); const a = 0.1, b = 0.75, u = kl((tl - a) / (b - a)), titt = (MT(1) || b + 1.0) - 0.5, z = del(titt - 0.3, titt + 1.8, tl);
+    kamera(lerp(1.3, 1.85, z), lerp(820, GOM[0] - 40, z), lerp(640, 660, z) - 130 * 4 * u * (1 - u));
     const pos = [lerp(STA[0], GOM[0], mjuk(u)), lerp(STA[1], GOM[1], u) - 4 * HOPP_BAGE * u * (1 - u) + 80 * del(b, b + 0.35, tl) - Math.max(del(titt, titt + 0.5, tl) * (125 + 10 * Math.sin(tl * 4)), bump(b + 0.5, titt - 0.2, tl) * (110 + 14 * Math.sin(tl * 7)))];   // 23/11: höjden tar ut sjunket (80) så att öronen faktiskt syns   // öronspetsarna tittar upp och fnissar på "Oj, haha!", sjunker, och tittar upp igen i pausen
     bjornT(pos, F('fnissig'), P({ luta: 3 * Math.sin(tl * 5) * del(1.5, 2, tl) }), { bakom: u > 0.5, klippY: pos[0] > SANG_X0 + 60 ? MADRASS + 30 : null }); },
   '14': (tl, d) => { rum({ klocka: true }); sangFram(); const upp = del(0, 0.35, tl), a = d - 1.0, b = d - 0.35, u = kl((tl - a) / (b - a)); kamera(1.3, 820, 640 - 130 * 4 * u * (1 - u));
@@ -594,7 +597,10 @@ const RADT = {
   '17': (tl) => { rum({ klocka: true, luvaBakom: true }); kamera(3.0, (SOCK1[0] + SOCK2[0]) / 2, SOCK1[1] - 40); lagg('fram', skimra((SOCK1[0] + SOCK2[0]) / 2, SOCK1[1] - 40, 55, tl, del(0.1, 0.5, tl))); },
   // J24 1:50 "a bit slower pace": repliken delad i två, en strumpa per "Dra, dra … på!", den landar på "på!" och leoparden hinner reagera
   '18': (tl, d) => { const p1 = MT(0) + 1.65, p2 = MT(1) + 1.75, a = [MT(0) + 0.4, p1], b = [MT(1) + 0.45, p2], u1 = del(...a, tl), u2 = del(...b, tl);
-    rum({ klocka: true, luvaBakom: true, hangare: ['halsduk', ...(u1 > 0 ? [] : ['strumpa1']), ...(u2 > 0 ? [] : ['strumpa2'])] }); sangFram(); HALV();
+    rum({ klocka: true, luvaBakom: true, hangare: ['halsduk', ...(u1 > 0 ? [] : ['strumpa1']), ...(u2 > 0 ? [] : ['strumpa2'])] }); sangFram();
+    // QA 27/11: detalj på fötterna under "Dra, dra … på!" (som 052), tillbaka till halvbild efter andra strumpan så att glädjen syns
+    const det = del(MT(0) - 0.1, MT(0) + 0.6, tl) * (1 - del(p2 + 0.4, p2 + 1.1, tl));
+    kamera(lerp(1.7, 2.4, det), lerp(STA[0] + 120, STA[0] + 40, det), lerp(STA[1] - 230, STA[1] - 110, det));
     // J24 1:49: den lösa strumpan seglar ner till foten som lyfts, krymper till fotens storlek och lämnar över till strumpan i kod,
     // som glider upp från tån till mudden (0,5 s) medan foten sänks igen
     const land = i => [a, b][i][1];
@@ -618,7 +624,9 @@ const RADT = {
     bjornT(STA, L.blanda(F('nyfiken'), F('forvanad'), del(0.2, 0.6, tl)), P({ armar: [70 * a, 0] }), { strumpor: 2, halsduk: true }); },
   '24': (tl, d) => { rum({ klocka: true, luvaBakom: true, hangare: [] }); sangFram(); HALV(); const v = del(0.3, 0.9, tl) - 2 * del(1.6, 2.4, tl) + del(d - 0.8, d - 0.2, tl);
     bjornT(STA, F('nyfiken', { titt: [-16 * v, 4] }), P({ rikt: -0.4 * v }), { strumpor: 2, halsduk: true }); },
-  '25': (tl, d) => { rum({ klocka: true, luvaBakom: true, hangare: [] }); sangFram(); HEL(); const w = d - 2.2;
+  // QA 27/11: på "Kan du se var luvan är?" glider kameran till sängens fotände och krukan, så att luvan bakom krukan syns under hela pausen
+  '25': (tl, d) => { rum({ klocka: true, luvaBakom: true, hangare: [] }); sangFram(); const w = d - 2.2, k = del(MT() + 1.2, MT() + 2.4, tl);
+    kamera(lerp(1, 1.9, k), lerp(960, 1530, k), lerp(540, 800, k));
     bjornT(STA, F('nyfiken', { titt: [12, 6] }), P({ rikt: 0.4 }), { strumpor: 2, halsduk: true });
     lagg('fram', skimra(KRUKA[0] - 50, KRUKA[1] - KRUKA[2] - 10, 32, tl, 0.6 * del(w, w + 0.6, tl))); },
   '26': (tl) => { rum({ klocka: true, luvaBakom: true, hangare: [] }); kamera(3.0, KRUKA[0] - 20, KRUKA[1] - 160); lagg('fram', skimra(KRUKA[0] - 50, KRUKA[1] - KRUKA[2] - 10, 36, tl, 1)); },
@@ -639,7 +647,7 @@ const RADT = {
     kritaScen(tl + 9, { rit: [0, 1], spets: [0, 0], start: [0, 0], vanta: [PAKET[0] + 200, PAKET[1] - 250], ut: 9.1 });
     lagg('kritan', gnistorS(PAKET[0], PAKET[1] - 70, 120, tl - 0.1, 0.5)); },
   '30': (tl) => { rum({ hangare: [] }); sangFram(); HALV(); const v = del(1.2, 1.8, tl); bjornT(STA, F('nyfiken', { titt: [lerp(12, 0, v), lerp(14, -6, v)] }), P({}), fin);
-    skugga(PAKET[0], PAKET[1], 70, 'saker'); paketMedLock(PAKET); },
+    skugga(PAKET[0], PAKET[1], 70, 'saker'); paketMedLock(PAKET, 0, 'fram', 1, 3.5 * Math.sin(2 * Math.PI * 1.4 * tl) * del(0.2, 0.6, tl)); },   // QA 27/11: paketet gungar lite under "Vem är det till?"
   '31': (tl) => { rum({ hangare: [] }); sangFram(); HALV(); bjornT(STA, F('jatteglad'), P({}), fin); const u = del(0.2, 1.0, tl), p = lerp2([PAKET[0], PAKET[1]], NALLE_START, u);
     skugga(p[0], p[1], 70, 'saker'); paketMedLock([p[0], p[1], PAKET[2]]); },
   // leoparden lyfter locket (armarna fram mot paketet), locket med rosetten åker av åt sidan, elefanten stiger upp
