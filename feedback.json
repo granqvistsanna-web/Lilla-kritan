@@ -10683,8 +10683,9 @@
   "sec": 51,
   "tags": [],
   "note": "oj det är en stor stol. move this after du ska få sitta i den här blabla",
-  "fixed": false,
+  "fixed": true,
   "at": 1795716572632,
-  "render": "2026-11-26 19:07 (feedback 26/11 kväll: kortare ritintro, elefantens öron och snabel, kritan kvar vid tacket, stolen följs, spegeln bredvid munnen, klistermärken på magen, fler rörelser, öppna ögon vid hej då, 4:33)"
+  "render": "2026-11-26 19:07 (feedback 26/11 kväll: kortare ritintro, elefantens öron och snabel, kritan kvar vid tacket, stolen följs, spegeln bredvid munnen, klistermärken på magen, fler rörelser, öppna ögon vid hej då, 4:33)",
+  "fixedAt": 1795760906247
  }
 }
