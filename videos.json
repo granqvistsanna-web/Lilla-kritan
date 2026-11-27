@@ -1496,9 +1496,10 @@
   "duration": 254.0,
   "rendered": "2026-11-26 08:53 (26/11: ingen hund i leken (den felritade är udda), kritan svarar utan ord)",
   "file": "produktion/youtube/alfabet/abc-e-recept-3/abc-e-recept-3.mp4",
-  "status": "klar",
+  "status": "live",
   "name": "Kritans ABC: E (kompisen vill leka)",
-  "approved": 1795763646110
+  "approved": 1795763646110,
+  "youtube": "https://youtu.be/om7-TshsNGE"
  },
  "J19": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J19-1125-1721.mp4",
@@ -1529,36 +1530,40 @@
   "duration": 258.7,
   "rendered": "2026-11-26 08:52 (26/11: ingen hund i leken (den felritade är udda), kritan svarar utan ord)",
   "file": "produktion/youtube/alfabet/abc-b-recept-3/abc-b-recept-3.mp4",
-  "status": "klar",
+  "status": "live",
   "name": "Kritans ABC: B (björnen vill leka)",
-  "approved": 1795763646110
+  "approved": 1795763646110,
+  "youtube": "https://youtu.be/ICHa597AIiE"
  },
  "ABC-a3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-a3-1126-0851.mp4",
   "duration": 259.9,
   "rendered": "2026-11-26 08:52 (26/11: ingen hund i leken (den felritade är udda), kritan svarar utan ord)",
   "file": "produktion/youtube/alfabet/abc-a-recept-3/abc-a-recept-3.mp4",
-  "status": "klar",
+  "status": "live",
   "name": "Kritans ABC: A (apan är hungrig)",
-  "approved": 1795763646110
+  "approved": 1795763646110,
+  "youtube": "https://youtu.be/VrvVvaZdgXY"
  },
  "ABC-d3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-d3-1126-1008.mp4",
   "duration": 257.4,
   "rendered": "2026-11-26 10:09 (26/11: dinon tittar efter grisen och nickar vid 1:25)",
   "file": "produktion/youtube/alfabet/abc-d-recept-3/abc-d-recept-3.mp4",
-  "status": "klar",
+  "status": "live",
   "name": "Kritans ABC: D",
-  "approved": 1795763646110
+  "approved": 1795763646110,
+  "youtube": "https://youtu.be/Y3_8ANXx-SQ"
  },
  "ABC-c3": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-c3-1126-0852.mp4",
   "duration": 257.2,
   "rendered": "2026-11-26 08:52 (26/11: ingen hund i leken (den felritade är udda), kritan svarar utan ord)",
   "file": "produktion/youtube/alfabet/abc-c-recept-3/abc-c-recept-3.mp4",
-  "status": "klar",
+  "status": "live",
   "name": "Kritans ABC: C (citronen vill cykla)",
-  "approved": 1795763646110
+  "approved": 1795763646110,
+  "youtube": "https://youtu.be/Es0RHPjSU6o"
  },
  "049": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/049-1127-0727.mp4",
