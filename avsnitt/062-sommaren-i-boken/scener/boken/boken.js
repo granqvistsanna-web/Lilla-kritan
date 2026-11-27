@@ -148,8 +148,8 @@ const BLADPOS = { 1: [-0.24, 0.08], 2: [0.45, -0.07], 3: BLOM ? [0.68, -0.2] : [
 platt(BLAD, 0.3, ...BLADPOS[1], undefined, SIDA + 0.003); platt(BLAD, 0.3, ...BLADPOS[2], undefined, SIDA + 0.003);
 const SMATT = [kort(NACKROS, 0.1, 0.12, 0.3, { y: SIDA + 0.004, flik: false }), kort(VASS, 0.46, -0.84, 0.2, { vaj: 0 }), kort(VASS, 0.34, 0.62, -0.25, { vaj: 2 })];
 // hinken och sandslottet i ett sandhörn till vänster (runda 5, Sanna 27/11 "place hink and sandcastle to the left"), bort från blommorna
-const HINKEN = kort(HINK, 0.27, -0.84, 0.64), SLOTTET = kort(SAND, 0.24, -1.06, 0.54), BLOMMOR_UPPE = kort(BLOMMOR, 0.26, 0.98, 0.2);
-const GLASSKORT = kort(GLASS, 0.24, -0.6, 0.48, { y: SIDA + 0.003 }), KONKORT = kort(KON, 0.1, 0, 0, { flik: false });
+const HINKEN = kort(HINK, 0.27, -0.7, 0.72), SLOTTET = kort(SAND, 0.24, -0.92, 0.58), BLOMMOR_UPPE = kort(BLOMMOR, 0.26, 0.98, 0.2);
+const GLASSKORT = kort(GLASS, 0.24, -0.5, 0.44, { y: SIDA + 0.003 }), KONKORT = kort(KON, 0.1, 0, 0, { flik: false });
 const GLASS_R = ruta(GLASS_I), SOL_R = ruta(SOL_I);
 // sandfläcken under sandslottet (runda 4, Sanna 27/11 "sand patch under the sandslott"): en ojämn kritfläck som växer fram med kortet
 const SANDFLACK = (() => { const w = 768, h = 320, c = duk(w, h), x = c.getContext('2d'), form = () => { x.beginPath();
@@ -296,7 +296,7 @@ function ritaKritan(t) {
   teckning('sol-gul', SOL_URL, SOL_R, () => SOLEN,
     { in: [a + 0.1, a + 0.5], rit: [a + 0.6, a + 5.0], vanta: [a + 5.1, a + 5.8], ut: [b + 0.1, b + 0.9] }, [b, b + 0.8], [440, -40]);   // lugnare (strålarna är längre streck), väntar längre från strålarna
   teckning('glass-rosa', RQ + 'glass-rosa/cut/glass-rosa.png', GLASS_R, () => GLASSKORT.m,
-    { in: [c + 0.1, c + 0.5], rit: [c + 0.6, c + 2.8], vanta: [c + 2.9, c + 3.6], ut: [d, d + 0.8] }, [d, d + 0.5], [300, -230]); }
+    { in: [c + 0.1, c + 0.5], rit: [c + 0.6, c + 2.8], vanta: [c + 2.9, c + 3.6], ut: [d, d + 0.8] }, [d, d + 0.5], [280, 60]); }   // väntar till höger om glassen, under grodan (glassen flyttad, runda 5)
 const SOL_KLAR = S('04') + 0.8, GLASS_KLAR = S('09') + 0.5, GLASS_UPP = S('09') + 0.75;   // fyllningens slut
 
 // ---- grodans rörelser ----
@@ -571,7 +571,7 @@ const VY = {
   blommor: () => BLOM ? [v3(0.95, 0.46, 1.12), v3(0.62, 0.16, 0.1), 30] : [v3(0.6, 0.4, 1.05), v3(0.82, 0.19, 0.08), 30],
   'bad-nara': g => BAD === 1 ? [g.clone().add(v3(0.03, 0.3, 0.82)), g.clone().add(v3(0, 0.22, 0)), 28] : [g.clone().add(v3(0.05, 0.36, 1.05)), g.clone().add(v3(0, 0.14, 0)), 30],   // i badet: vågorna nederst i bild
   'blommor-nara': () => BLOM ? [v3(0.92, 0.36, 0.95), v3(0.66, 0.15, 0.2), 30] : [v3(0.64, 0.42, 1.0), v3(0.86, 0.24, 0.1), 28],
-  sand: () => [v3(-0.42, 0.82, 1.9), v3(-0.38, 0.12, 0.2), 42],   // sandhörnet till vänster, grodan på stranden till höger (runda 5)
+  sand: () => [v3(-0.36, 0.7, 1.75), v3(-0.32, 0.13, 0.2), 42],   // sandhörnet till vänster, grodan på stranden till höger (runda 5)
   hejda: g => [g.clone().add(v3(-0.1, 0.3, 0.82)), g.clone().add(v3(0.02, 0.2, -0.2)), 32],   // närmare, så att vinkningen syns
 };
 if (STOR < 1) for (const [n, f] of Object.entries(VY)) if (!['bord', 'slut', 'himmel'].includes(n)) VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(1.12)), mal, fov]; };

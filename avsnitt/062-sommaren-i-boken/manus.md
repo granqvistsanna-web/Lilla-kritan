@@ -139,6 +139,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 **Runda 4 (Sanna 2026-11-27):** blommorna gömmer sig inte längre. Malin frågar *"Ser du några blommor?"* och säger färgerna. Replikerna 29–31 (*"Blommor!"*, *"Var är blommorna?"*, *"Kan du hjälpa grodan att hitta blommor?"*) används inte. Tagning 2 (ElevenLabs v3, Natural, `produktion/ljud-original/roster/062/malin-tagning-2a.mp3`, 43 ur 2b där 2a klipptes av i "rosa"): 40 1,36 · 41 1,20 · 42 1,19 · 43 2,63 s. Enskilda blommor ur `rekvisita/blomma-rod`, `blommor-gula`, `blomma-rosa` (lila, rosa) och lövträd (`skogen-saker/trad.png`, `lekplatsen-saker/appeltrad.png`, `rekvisita/ek`) bland granarna.
 
+**Runda 6 (Sanna 2026-11-27, feedback på runda 5):** allt fälls upp när boken öppnas, också grodan och sandslottet (sandslottet studsar och glimtar på *"sandslott"* i stället för att poppa upp, grodan står redan på bladet på *"Hej, grodan!"*). Solens strålar ritas som bildens tjocka, rundade strålar (ut, runt toppen, in, medurs), så att kritans rörelse och teckningen blir bilden, och kritan ritar lugnare (4,4 s). Solen gungar lugnt ±2° i stället för att snurra hela tiden. Blommorna 0,72 av förut. Hinken och sandslottet i ett sandhörn längst fram till vänster, glassen ritas lite närmare dammen.
+
 **Runda 5 (Sanna 2026-11-27, feedback på runda 4):** pärmens siluett är solen, solen är större och har ansikte (ritat i kod), replikerna 10 (*"Solen skiner. Det blir varmt!"*) och 12 (*"Är du varm, grodan?"*) används inte (för mycket "varm"), grodan äter upp hela glassen med struten (två tuggor, ingen tom strut på gräset), lugna vattenringar under bladen (glädjeskutten, badet, hoppet upp), blommorna utspridda, sandfläck under sandslottet, sandslottet till vänster om hinken, kamerorna visar inget utanför boken. Hej då: solen i bild på *"Hej då, solen!"*, sedan tre nya repliker med en bild var. Tagning 3 (ElevenLabs v3, Natural, `produktion/ljud-original/roster/062/malin-tagning-3.mp3`): 44 *"Hej då, blommorna!"* 1,37 · 45 *"Hej då, sandslottet!"* 1,71 · 46 *"Hej då, dammen!"* 1,30 s.
 
 38 rader. Inga tomma medhåll (*"Ja, det är du"*, *"Ja, det tycker jag också"*, Sanna 2026-11-27): Malins reaktion säger något nytt. Ord som mäts per tagning: *"plask"* i 25, 27 och 31 (`PLASK`), *"Mums"* i 17, *"Blommor"* i 33 och *"sandslott"* i 35 (korten fälls upp på orden).
@@ -189,3 +191,54 @@ Fniss på rad 12b och 22 (`olle-fniss-4`).
 5. **Solen ritas på himlen** i stället för att glida upp bakom kullen som i provet. Glidningen kan vara kvar efter fyllningen (solen stiger lite när den är klar) om du gillar den.
 6. **Två näckrosblad** över dammen, lika stora, ett hopp mellan dem (tagning 1 har bara ett plask). Blommorna gömmer sig bakom busken i stället för bladet bakom vassen.
 7. **Seriens nästa uppslag:** höst, vinter och vår med samma bok och grodan, eller en ny figur per årstid? Det avgör om grodans siluett ska vara bokens fasta omslag (sessionen *Kritans bok: återanvändbart omslag* bygger omslaget så att det kan bytas).
+8. **Grodan badar på riktigt (Sanna 27/11 "kan grodan bada?"):** utkast A nedan, väntar på svar. Inget byggt och ingen ny röst.
+9. **Grodan bygger sandslottet (Sanna 27/11 "maybe add scene where frog build sand castle"):** utkast B nedan, väntar på svar. Inget byggt och ingen ny röst.
+
+### Utkast A: grodan badar (ersätter rad 15–16)
+
+På *"plask"* landar grodan i dammen, inte på bladet: hon sjunker ner till bröstet bakom en lugn vattenlinje (koden finns kvar från bad 1, `SJUNK`), vattenringar runt henne. Hon simmar lugnt fram och tillbaka med armarna, plaskar, och hoppar sedan upp på bladet som i dag. Ljud: `plask`, `simma`, `droppar`, `vagor` (finns).
+
+| # | Bild | Malin säger | Grodan |
+|---|---|---|---|
+| 15 | Halvbild: grodan hoppar, landar i vattnet på *"plask"* | Hopp … plask! *(finns, 25)* | `plask` |
+| 15b | Närbild, bara huvudet och armarna över vattnet, hon blundar glatt | Ah, vad skönt! *(finns, 26)* | glatt kvak |
+| 15c | Halvbild, grodan simmar ett varv, vattenringar | Grodan badar! | `simma` |
+| 15d ✱ | Närbild, grodan plaskar med händerna. **Pausen:** fniss-kvak | Är vattnet svalt, grodan? *(paus: fniss-kvak)* Plask, plask, plask! | fniss-kvak, `plask` lågt |
+| 16 | Hon hoppar upp på bladet, droppar glittrar | Nu är du sval och glad! *(finns, 27)* | förtjust kvak |
+
+Nya repliker (ElevenLabs v3, Natural):
+
+```
+[happy] Grodan badar!
+[curious] Är vattnet svalt, grodan?
+[playfully] Plask, plask, plask!
+```
+
+### Utkast B: grodan bygger sandslottet (ersätter rad 22)
+
+Grodan hoppar från blommorna till sandhörnet. Sandhögen och hinken står uppe från början, men slottet är inte byggt. Hon fyller hinken med spaden, vänder den, och ett torn fälls upp som pop-up. En gång till: ett torn till, och sedan reser sig hela slottet. Barnet räknar tornen. Bilderna: tornen behöver delas ur `bilder/sand.png` (eller en ny Flow-bild med ett ensamt torn, som Sanna gör). Ljud: `sand`, `hink-dunk`, `pop`, `klapp` (finns).
+
+| # | Bild | Malin säger | Grodan |
+|---|---|---|---|
+| 22 | Halvbild: grodan hoppar till sandhörnet, tittar på hinken | Och sand! *(finns, 35)* Titta, en hink och en spade. | `hopp-mjuk`, nyfiket kvak |
+| 22b ✱ | Samma, grodan tittar på oss. **Pausen:** glatt kvak, nick | Ska du bygga ett sandslott, grodan? *(paus: glatt kvak)* Ja, vad kul! | förtjust kvak |
+| 22c | Grodan fyller hinken med spaden, två skopor | Grodan fyller hinken med sand. | `sand`, `sand` |
+| 22d | Hon vänder hinken, lyfter: ett torn fälls upp på *"lyft"* | Vänd på hinken … och lyft! | `hink-dunk`, `pop` |
+| 22e | Närbild på tornet, grodan glad | Ett torn! | glatt kvak |
+| 22f | Samma rörelse en gång till, torn två fälls upp | En gång till … och lyft! | `hink-dunk`, `pop` |
+| 22g | Halvbild: hela slottet reser sig, grodan klappar. Tornen glimtar på *"ett, två"* | Ett, två torn! Titta, ett sandslott! *(sista delen finns, 36)* | `pop`, `klapp`, fniss-kvak |
+
+Nya repliker (ElevenLabs v3, Natural):
+
+```
+[curious] Titta, en hink och en spade.
+[curious] Ska du bygga ett sandslott, grodan?
+[happy] Ja, vad kul!
+[warmly] Grodan fyller hinken med sand.
+[playfully] Vänd på hinken … och lyft!
+[happy] Ett torn!
+[playfully] En gång till … och lyft!
+[happy] Ett, två torn!
+```
+
+Båda tillsammans gör filmen ca 35 s längre (2:48 → ca 3:25). Ingen ny musik.
