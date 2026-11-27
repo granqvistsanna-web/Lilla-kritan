@@ -11552,9 +11552,10 @@
   "sec": 110,
   "tags": [],
   "note": "google flow image",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808160810,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812846399
  },
  "4x6rszqfdpmwzdtqar": {
   "ep": "060",
