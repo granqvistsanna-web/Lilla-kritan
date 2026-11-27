@@ -1454,10 +1454,12 @@
   "name": "Röda sången"
  },
  "J08": {
-  "rendered": "2026-11-27 11:32 (irisslutet 27/11: dörren stänger över scenen, inget svart; bygger på fullfilmen 19/11 (utan rättningarna 25/11))",
+  "rendered": "2026-11-27 18:06 (slutrendering 27/11: katten bär påsen och kvistarna, kritan flyger ut i helbilden, klappen som i 053, moroten i bild)",
   "file": "produktion/youtube/shorts/jul/08-katten-snogubbe/08-katten-snogubbe.mp4",
-  "status": "pagar",
-  "name": "Katten gör en snögubbe"
+  "status": "granska",
+  "name": "Katten gör en snögubbe",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J08-1127-1805.mp4",
+  "duration": 273.7
  },
  "J09": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J09-1127-1129.mp4",
