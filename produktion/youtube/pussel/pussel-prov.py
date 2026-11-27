@@ -50,7 +50,7 @@ JUL_OPPNA = ['[excited] Ska vi lägga ett pussel? … Ja!', '[excited] Ett pusse
 REPLIKER.update({f'jul-oppna-{n + 1}': txt for n, txt in enumerate(JUL_OPPNA)})
 OPPNA = {'pussel-jul': [f'jul-oppna-{n + 1}' for n in range(len(JUL_OPPNA))],
          'pussel-lucka-13': ['jul-oppna-1', 'jul-oppna-2', 'jul-oppna-10'],
-         'pussel-lucka-10': ['jul-oppna-1', 'jul-oppna-2', 'jul-oppna-10']}   # lucka 10: samma öppningar som lucka 5   # lucka 5: samma som julfilmen   # film -> öppningsreplik per pussel
+         'pussel-lucka-10': ['jul-oppna-1', 'jul-oppna-4', 'jul-oppna-10']}   # lucka 10: QA 27/11 egen mittreplik, så att den inte låter exakt som lucka 5   # lucka 5: samma som julfilmen   # film -> öppningsreplik per pussel
 OPPNA_LISTA = None                      # sätts i main
 
 # Bitarna: 0 överst till vänster, 1 överst till höger, 2 nederst till vänster, 3 nederst i mitten, 4 nederst till höger.
@@ -89,6 +89,9 @@ TYSTA_BITAR = {'pussel-jul', 'pussel-lucka-13', 'pussel-lucka-10'}            # 
 LIGG_KOMMENTAR = False                  # sätts i main
 LIGG_ALLA = {'pussel-vanliga'}          # Sanna 2026-11-18: bit 1–4 sägs när biten har landat (i stället för i närbild), bit 5 i närbild
 FORSTA_TYST = False                     # sätts i main
+BIT_PA_JA = {'pussel-lucka-13', 'pussel-lucka-10'}         # QA 26/11 (J05): första biten kommer in på "Ja!" i stället för efter repliken (ingen tom bricka)
+JA = {'jul-oppna-1': 1.83, 'jul-oppna-2': 1.22, 'jul-oppna-4': 1.21, 'jul-oppna-10': 1.27}   # s in i röstfilen där "Ja!" börjar (silencedetect −35 dB)
+ANDAS_FILMER = {'pussel-lucka-10'}      # QA 27/11 (J10): hela bilden andas svagt (1,000–1,010 på 4 s), så att den aldrig står helt still i gissningspauserna
 NAMN = ''                               # sätts i main
 
 
@@ -501,7 +504,8 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
 
     t = 0.4
     oppna = OPPNA_LISTA[k] if OPPNA_LISTA else ('ska-vi-lagga' if forsta else tagn.ta('nytt-pussel'))
-    t += sag(oppna, t) + 0.9 * K
+    d0 = sag(oppna, t)
+    t += JA[oppna] if NAMN in BIT_PA_JA and oppna in JA else d0 + 0.9 * K
     plan = []
     for n, (i, rid) in enumerate(p['ordning']):
         sida = -1 if n % 2 == 0 else 1
@@ -624,6 +628,10 @@ def rendera(p, rd, f0, ljud, tagn, forsta, sista):
         if VISA_TEXT:
             for a_, b_, text in rader:
                 if a_ <= tt < b_: textrad(ram, text)
+        if NAMN in ANDAS_FILMER:
+            sa = 1.005 - 0.005 * math.cos(2 * math.pi * (T0 + tt) / 4.0)
+            ram = ram.resize((round(W * sa), round(H * sa)), Image.BICUBIC)
+            ram = ram.crop(((ram.width - W) // 2, (ram.height - H) // 2, (ram.width - W) // 2 + W, (ram.height - H) // 2 + H))
         ram.convert('RGB').save(f'{rd}/{f0 + f:05d}.png')
     return n_rutor
 
