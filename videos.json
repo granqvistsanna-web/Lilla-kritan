@@ -1858,5 +1858,12 @@
   "file": "avsnitt/064-vintern-i-boken/scener/boken/boken.mp4",
   "status": "granska",
   "name": "064-1127-2124.mp4"
+ },
+ "065": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/065-1127-2211.mp4",
+  "duration": 233.9,
+  "rendered": "2026-11-27 22:11 (grind 6, snabb förhandsvisning (960 px, 15 fps), utan logga)",
+  "file": "avsnitt/065-varen-i-boken/scener/boken/boken.mp4",
+  "status": "granska"
  }
 }
