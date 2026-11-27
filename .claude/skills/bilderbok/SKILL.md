@@ -11,7 +11,7 @@ One episode = one animal with a v2 rig, one place, one everyday routine, about 3
 
 ## Kritans bok (the pop-up book)
 
-If the episode is told inside the three.js pop-up book (a theme such as a season, the weather, a colour or animals in a place, like `avsnitt/062-sommaren-i-boken/`), **also read [`format/kritans-bok.md`](../../../format/kritans-bok.md)** and follow it where it differs from this skill: the book is the intro (logo 1 s, then the closed book), the theme gives the problem, kritan first draws the theme's missing main thing (also the cover silhouette), the child names things that stay visible, goodbye to each thing, and the book closes instead of the kritiris. The model is 062; the scene starts from a copy of its `storyboard/` and `scener/`, not 020.
+If the episode is told inside the three.js pop-up book (a theme such as a season, the weather, a colour or animals in a place, like `avsnitt/062-sommaren-i-boken/`), **also read [`format/kritans-bok.md`](../../../format/kritans-bok.md)** and follow it where it differs from this skill: the book is the intro (logo 1 s, then the closed book), the theme gives the problem, kritan first draws the theme's missing main thing (also the cover silhouette), the child names things that stay visible, goodbye to each thing, and the book closes instead of the kritiris. The story model is 062; the scene starts from a copy of 064's or 065's `storyboard/` and `scener/` (the newest code), not 020. Every book script has a *Gissa, lära, lugnt* section, gate 6 starts with one still per row from the real scene before any film is rendered (6a), and previews go through `verktyg/render-delat.mjs --snabb`.
 
 ## The series
 
