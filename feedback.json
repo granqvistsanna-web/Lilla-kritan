@@ -11468,5 +11468,35 @@
   "at": 1795808483598,
   "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))",
   "fixedAt": 1795809074892
+ },
+ "n12qeqx9dtmwzej4d2": {
+  "ep": "058",
+  "time": "2:34",
+  "sec": 154,
+  "tags": [],
+  "note": "incl a bird in video",
+  "fixed": false,
+  "at": 1795809367766,
+  "render": "2026-11-27 20:51 (grind 6 v2: bättre ritning av gunganden, större träd och sandlåda, bollen i hinken)"
+ },
+ "y7pqjvcv63mwzek65p": {
+  "ep": "058",
+  "time": "3:28",
+  "sec": 208,
+  "tags": [],
+  "note": "bigger ball",
+  "fixed": false,
+  "at": 1795809416749,
+  "render": "2026-11-27 20:51 (grind 6 v2: bättre ritning av gunganden, större träd och sandlåda, bollen i hinken)"
+ },
+ "fjwabwbbxamwzekqag": {
+  "ep": "058",
+  "time": "2:09",
+  "sec": 129,
+  "tags": [],
+  "note": "polish",
+  "fixed": false,
+  "at": 1795809442840,
+  "render": "2026-11-27 20:51 (grind 6 v2: bättre ritning av gunganden, större träd och sandlåda, bollen i hinken)"
  }
 }
