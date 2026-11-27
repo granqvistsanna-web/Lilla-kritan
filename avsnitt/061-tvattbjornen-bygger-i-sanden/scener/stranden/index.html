@@ -23,6 +23,13 @@
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="2"/>
       <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.47  0 0 0 0 0.36  1.1 0 0 0 -0.47"/>
     </filter>
+    <!-- vaxkorn för saker ritade i kod (spaden): ljusa fläckar i fyllningen där kritan inte tog -->
+    <filter id="vax" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045 0.03" numOctaves="3" seed="4" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  -2.2 0 0 0 0.95" result="f"/>
+      <feComposite in="f" in2="SourceAlpha" operator="in" result="f2"/>
+      <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="f2"/></feMerge>
+    </filter>
     <filter id="mjukskugga" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
     <radialGradient id="vinjett" cx="50%" cy="50%" r="75%"><stop offset="0.55" stop-color="#3a2410" stop-opacity="0"/><stop offset="1" stop-color="#3a2410" stop-opacity="0.14"/></radialGradient>
     <!-- hinkens framkant (i hinkbildens pixlar): ritas över vattenytan så att vattnet ligger inne i hinken -->
@@ -66,6 +73,19 @@ const STA = [680, MARK];                             // tvättbjörnen vid grope
 const VID = [1120, MARK];                            // tvättbjörnen vid vågen
 const SJO = [GROP[0] + 20, GROP[1] + 6];            // tvättbjörnen står i sjön
 const SPADE_H = 230;
+// röda spaden ritad i kod (Sanna 2026-11-27 "spade with code"), i spadbildens 1024-koordinater så att fot, grepp och kritans kontur stämmer
+const SPADE_FORM = {
+  grepp: '<ellipse cx="512" cy="92" rx="110" ry="42"/>',
+  skaft: '<path d="M486 128 L482 590 L542 590 L538 128 Z"/>',
+  blad: '<path d="M284 580 Q512 566 740 580 L730 800 Q700 905 512 978 Q324 905 294 800 Z"/>' };
+const SPADE_SVG = `<g fill="none" stroke="#fff" stroke-width="72" stroke-linejoin="round">${SPADE_FORM.grepp}</g>
+  <g fill="#fff" stroke="#fff" stroke-width="26" stroke-linejoin="round">${SPADE_FORM.skaft}${SPADE_FORM.blad}</g>
+  <g filter="url(#vax)">
+    <g fill="#f6efbd">${SPADE_FORM.grepp}</g>
+    <g fill="none" stroke="#f1d633" stroke-width="44">${SPADE_FORM.grepp}</g>
+    <g fill="#f1d633" stroke="#d9b91f" stroke-width="8" stroke-linejoin="round">${SPADE_FORM.skaft}</g>
+    <g fill="#e2433a" stroke="#c3322b" stroke-width="10" stroke-linejoin="round">${SPADE_FORM.blad}</g>
+  </g>`;
 const SPADE_STAR = [440, MARK + 6];                  // spaden i sanden bredvid vänstra tassen (rad 1–3)
 const SPADE_NED = [95, MARK + 6];                    // spaden står i sanden till vänster om gropen efter grävandet (rad 5–22)
 const SPADE_SLUT = [1250, MARK + 6];                 // spaden i slutet, bredvid hinken
@@ -132,12 +152,16 @@ function vag(x0, x1, k) {
     <path d="M${sp(b.slice(2, -2))}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(0.9 * Math.min(1, k * 3))}"/>`);
 }
 // vågens framkant (en remsa längs linsens kant) framför fötterna, hinkens botten eller spadens blad
-function vagFram(x0, x1, k, h = 44) {
+function vagFram(x0, x1, k, h = 44, fx = null) {
   if (k <= 0.01) return;
   const b = vagKant(x0, x1, k), o = b.map(([x, y], i) => [x, y - h * Math.sin(Math.PI * i / (b.length - 1)) ** 1.5]);
-  lagg('fram', `<path d="M${sp(b)} L${sp(o.reverse())} Z" fill="#a9d9f4" opacity="${f1(0.88 * Math.min(1, k * 3))}"/>
-    <path d="M${sp(b.slice(2, -2))}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(0.9 * Math.min(1, k * 3))}"/>`);
+  // vågen kommer bakifrån: framför figuren bara nedanför fotlinjen, annars ligger vattnet över benen och magen
+  lagg('fram', `<clipPath id="vagFot"><rect x="-2000" y="${MARK - VAG_FOT}" width="6000" height="2000"/>${fx == null ? '' : `<rect x="-2000" y="-2000" width="${f1(fx - VAG_FIG[0] + 2000)}" height="6000"/><rect x="${f1(fx + VAG_FIG[1])}" y="-2000" width="6000" height="6000"/>`}</clipPath>
+    <g clip-path="url(#vagFot)"><path d="M${sp(b)} L${sp(o.reverse())} Z" fill="#a9d9f4" opacity="${f1(0.88 * Math.min(1, k * 3))}"/>
+    <path d="M${sp(b.slice(2, -2))}" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${f1(0.9 * Math.min(1, k * 3))}"/></g>`);
 }
+const VAG_FOT = 22;   // hur högt över MARK (fotsulorna) vågen får ligga framför figuren: bara över tårna
+const VAG_FIG = [150, 260];   // figurens bredd åt vänster/höger (svansen) från pos: utanför den täcker vågen spadens blad och hinkens botten som förut
 // vågen som rullar upp och drar sig tillbaka: 0 → 1 → 0 mellan a och a + d
 const svall = (tl, a, d) => bump(a, a + d, tl) ** 0.8;
 const droppe = (x, y, s = 1, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(2)})" opacity="${kl(o).toFixed(2)}" d="M0 -12 C5 -4 8 0 8 4 A8 8 0 0 1 -8 4 C-8 0 -5 -4 0 -12Z" fill="${VATTEN_F}" stroke="#fff" stroke-width="2"/>`;
@@ -169,7 +193,7 @@ function spade(pos, { rot = 4, tass = false, lager = 'mitt', h = SPADE_H, k = 1,
   const s = sSpade(h), ank = tass ? SPADE.grepp : SPADE.fot, t = tr(pos, rot, s, ank);
   if (!tass && f > 0.5) skugga(pos[0], pos[1], h * 0.18, lager);
   let html = '', Rb = null;
-  if (f > 0) html += `${f < 1 ? fyllMask('fyS', 512, 520, 640, f) : ''}<image href="${SPADE.bild}" width="${SPADE.w}" height="${SPADE.h}"${f < 1 ? ' clip-path="url(#fyS)"' : ''}/>`;
+  if (f > 0) html += `${f < 1 ? fyllMask('fyS', 512, 520, 640, f) : ''}<g${f < 1 ? ' clip-path="url(#fyS)"' : ''}>${SPADE_SVG}</g>`;
   if (k < 1 || f < 1) { Rb = ritBana([...SK.drag, ...SPADE_DETALJ], ritfart(k), { vila: [0.5], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (k > 0) html += Rb.html; }
   lagg(lager, `<g transform="${t}">${html}</g>`);
@@ -263,7 +287,7 @@ function ritaPapper(st, t) {
   const Rb = ritBana([...SK.drag, ...SPADE_DETALJ], k, { vila: [0.6], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const trp = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS.toFixed(4)})`;
   if (f > 0) { const g = st.gung ?? 0, v = 1.5 * Math.sin(g * 1.7) * del(0.5, 1.2, g);   // spaden gungar lugnt
-    lagg('bak', `<g transform="rotate(${f1(v)} 960 960)"><g transform="${trp}">${f < 1 ? fyllMask('fyP', 512, 520, 640, f) : ''}<image href="${SPADE.bild}" width="${SPADE.w}" height="${SPADE.h}"${f < 1 ? ' clip-path="url(#fyP)"' : ''}/></g></g>`); }
+    lagg('bak', `<g transform="rotate(${f1(v)} 960 960)"><g transform="${trp}">${f < 1 ? fyllMask('fyP', 512, 520, 640, f) : ''}<g${f < 1 ? ' clip-path="url(#fyP)"' : ''}>${SPADE_SVG}</g></g></g>`); }
   if (k > 0 && f < 1) lagg('krita', `<g transform="${trp}">${Rb.html}</g>`);
   kritaRita(kritaFas(t, T_RIT, { start: iPapper(Rb.start), spets: iPapper(Rb.spets), slut: iPapper(Rb.slut), vanta: [960 + 420, 560 - 220], s: KRITAN.SKALA_PAPPER / kryp }));
   if (f > 0) lagg('krita', gnistor(960, 560, 400, t - T_RIT.ut[0]));
@@ -475,7 +499,7 @@ function ritaStrand(st, t) {
   // vatten i tassarna (skålen) och droppar som faller
   if (st.skal > 0.01) { const [x, y] = skalMitt(); lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(y - 10)}" rx="${f1(30 * st.skal)}" ry="${f1(11 * st.skal)}" fill="${VATTEN_F}" stroke="#fff" stroke-width="3"/>`); }
   if (st.droppar) { const [x, y] = skalMitt(); fallande(x, y, st.sjo || st.pos[0] < GROP[0] + 100 ? GROP[1] : MARK + 10, st.tl, ...st.droppar); }
-  (st.vagFram || []).forEach(([a, b, k]) => vagFram(a, b, k));
+  (st.vagFram || []).forEach(([a, b, k]) => vagFram(a, b, k, 44, st.pos?.[0]));
   (st.skim || []).forEach(([x, y, k, v]) => skimmer(x, y, k, v));
   if (st.skimHink) { const p = UTE(st.tl).pos; skimmer(p[0], p[1] - 50, st.skimHink, 0.6); }
   // kritirisen runt tvättbjörnen i sjön: radien 1400 → 330 på 1,5 s, står 0,4 s, → 0 på 0,6 s; sedan svart
@@ -534,7 +558,7 @@ window.ready = (async () => {
   djup.init(document.querySelector('svg'));
   djup.skott(t => { const st = lage(t); return st.plats === 'papper' ? null : typeof st.kam === 'function' ? st.kam() : st.kam || K_HEL; }, DURATION);
   window.kant?.lagg(G);
-  await Promise.all([PLATTA, SPADE.bild, HINK.bild, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await Promise.all([PLATTA, HINK.bild, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();
   rita(Number(new URLSearchParams(location.search).get('t') || 0));
   return true;
