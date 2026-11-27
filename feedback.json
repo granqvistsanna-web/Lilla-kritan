@@ -11284,9 +11284,10 @@
   "sec": 149,
   "tags": [],
   "note": "sun face tilt to much",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794529365,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795796487854
  },
  "o1qtvvgnm9mwz5pkiy": {
   "ep": "062",
