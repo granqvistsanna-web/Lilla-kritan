@@ -10793,9 +10793,10 @@
   "sec": 27,
   "tags": [],
   "note": "move camera up a bit, zoom out a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785261535,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "yvfvt621srmwz06lfd": {
   "ep": "062",
@@ -10803,9 +10804,10 @@
   "sec": 28,
   "tags": [],
   "note": "more smooth camera shots",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785268729,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "s5tebbqqu7mwz06vuz": {
   "ep": "062",
@@ -10813,9 +10815,10 @@
   "sec": 30,
   "tags": [],
   "note": "happy jump",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785282251,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "bwo6u7u452mwz078fh": {
   "ep": "062",
@@ -10823,9 +10826,10 @@
   "sec": 47,
   "tags": [],
   "note": "show signs of heat and frog being warm",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785298541,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "k7q421kmxymwz07kax": {
   "ep": "062",
@@ -10833,9 +10837,10 @@
   "sec": 74,
   "tags": [],
   "note": "show mouth",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785313929,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "f2idhx51damwz07w60": {
   "ep": "062",
@@ -10843,9 +10848,10 @@
   "sec": 81,
   "tags": [],
   "note": "bettwe animation of eating glass",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785329304,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "57fbaxml3emwz08f46": {
   "ep": "062",
@@ -10853,9 +10859,10 @@
   "sec": 104,
   "tags": [],
   "note": "cant frog sink in to the damm?",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785353862,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "6srye4k61pmwz08p6g": {
   "ep": "062",
@@ -10863,9 +10870,10 @@
   "sec": 107,
   "tags": [],
   "note": "the drops make little sense, polish the animation",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785366904,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "q18vtfwq4zmwz0942p": {
   "ep": "062",
@@ -10873,9 +10881,10 @@
   "sec": 122,
   "tags": [],
   "note": "place flowers more clearly and show full scene",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785386209,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "ib64df9nvkmwz09pdl": {
   "ep": "062",
@@ -10883,9 +10892,10 @@
   "sec": 160,
   "tags": [],
   "note": "wave good bye",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785413817,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "qe0vj5p12cmwz09w5n": {
   "ep": "062",
@@ -10893,9 +10903,10 @@
   "sec": 163,
   "tags": [],
   "note": "closer close book",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785422603,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  },
  "25ug2m5p5lmwz0a278": {
   "ep": "062",
@@ -10903,8 +10914,9 @@
   "sec": 163,
   "tags": [],
   "note": "faster close book",
-  "fixed": false,
+  "fixed": true,
   "at": 1795785430436,
-  "render": "r2"
+  "render": "r2",
+  "fixedAt": 1795786821510
  }
 }
