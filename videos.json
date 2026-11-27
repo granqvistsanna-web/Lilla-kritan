@@ -1571,9 +1571,9 @@
   "name": "Kaninen går till tandläkaren"
  },
  "J22": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1125-1721.mp4",
-  "duration": 270.3,
-  "rendered": "2026-11-25 17:22 (3D-intro och 3D-outro, handtaget rättat)",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J22-1127-1415.mp4",
+  "duration": 269.2,
+  "rendered": "2026-11-27 14:16 (--snabb QA 27/11: öronen i bild på pallen, hela huvudet i lådans detalj, klippet efter 'Ja, där!' i pausen, 'Upp!' i närbilden med klippet 0,4 s efter, irisslutet: 3D-dörren stänger över sista scenbilden (inget svart). Kritan går ännu inte via kritan-ritar.js: rättas vid slutrenderingen.)",
   "file": "produktion/youtube/shorts/jul/22-musen-pyntar-granen/22-musen-pyntar-granen.mp4",
   "status": "granska",
   "name": "Musen pyntar granen"
