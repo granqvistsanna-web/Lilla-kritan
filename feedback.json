@@ -11240,9 +11240,10 @@
   "sec": 4,
   "tags": [],
   "note": "flip up all",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794380058,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795796478650
  },
  "91x7l4e1xfmwz5o0ru": {
   "ep": "062",
