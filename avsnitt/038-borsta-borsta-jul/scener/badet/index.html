@@ -481,7 +481,8 @@ S['43'] = (tl, d) => ({ kam: K_HEL, tub: null, dansare: dansare(tl, 'vila'),
 const SLUT = [['stampa', null], ['hoppa', 0], ['vifta', 1], ['hoppa', 2], ['armar', null], ['armar', null]];   // 038: dansslutet är 12,4 s (sex rader)
 const IRIS = 2.9, ANSY = MARK + FRAM - SK * 455;
 S['44'] = (tl, d) => { const sista = tl > d - IRIS - 0.3, st = dansbild(tl, SLUT);
-  return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: tl - (d - IRIS), irisVid: [RAD3[1], ANSY], regn: st.regn || ((sista || radVid(tl, SLUT)[1] === 'armar') && st.figs.length ? [0, 1, 2] : null) }; };
+  return { ...st, disco: { s: tl + T['43'].d, k: 1, slag: tl }, iris: st.figs.length > 1 ? tl - (d - IRIS) : 0, irisVid: [RAD3[1], ANSY], regn: st.regn || ((sista || radVid(tl, SLUT)[1] === 'armar') && st.figs.length ? [0, 1, 2] : null) }; };
+// QA 27/11: irisen väntar tills gruppbilden är i bild (en bildruta av irisens svarta kant syntes i högerkanten av pandans solo)
 S['45'] = () => ({ kam: K_HEL, tub: null, figs: [], svart: true });
 
 // Handens plats i scenen för figuren fg (i = 0 vänster, 1 höger; andel = hur långt ut på armen, 1 = tassens spets), ur riggen:
