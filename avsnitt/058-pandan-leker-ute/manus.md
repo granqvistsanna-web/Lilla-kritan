@@ -1,6 +1,6 @@
 # Avsnitt 058 – Pandan leker ute (plan)
 
-**Status:** ✅ **Grind 1 (manus) godkänd igen 2026-11-27** (Sanna: *"Ja, godkänn"*). ✅ Grind 2 (storleksbild C och äpplet) godkänd 2026-11-27: gunganden visas 470 px hög och pandan sitter bak i sadeln, reserven behövs inte. ✅ Grind 3 (Malins röst) inspelad 2026-11-27, 68 repliker (förlängt med b-rader). Nästa: grind 4, pandans ljudfamilj. Sanna ville att avsnittet skulle skilja sig mer från 021 Hunden leker (*"can we have a bit more diffrent than dog episode?"*) och sa ja till omskrivningen (*"Ja, skriv om"*). Den förra versionen, 021 gjord om med pandan, godkändes 2026-11-26 tillsammans med grind 2, och ligger i [`aldre/manus-021-version-2711.md`](aldre/manus-021-version-2711.md). Pandans tunna kanter (`cut-tunn/`) är gjorda och gäller fortfarande. Nästa steg efter ja: grind 2 kollas igen (inga nya bilder, men äpplet och en storleksbild), sedan grind 3, Malins röst. Ingen röst, inga ljud och ingen scen är byggd. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med pandan, pandan svarar med ljud, öron och ansikte. Sikte: ca 4:10 (50 repliker).
+**Status:** ✅ **Grind 1 (manus) godkänd igen 2026-11-27** (Sanna: *"Ja, godkänn"*). ✅ Grind 2 (storleksbild C och äpplet) godkänd 2026-11-27: gunganden visas 470 px hög och pandan sitter bak i sadeln, reserven behövs inte. ✅ Grind 3 (Malins röst) inspelad 2026-11-27, 68 repliker (förlängt med b-rader). ✅ Grind 4: pandan låter som björnen (`brum-gullig`, Sanna 2026-11-27). Nästa: grind 5, animatiken. Sanna ville att avsnittet skulle skilja sig mer från 021 Hunden leker (*"can we have a bit more diffrent than dog episode?"*) och sa ja till omskrivningen (*"Ja, skriv om"*). Den förra versionen, 021 gjord om med pandan, godkändes 2026-11-26 tillsammans med grind 2, och ligger i [`aldre/manus-021-version-2711.md`](aldre/manus-021-version-2711.md). Pandans tunna kanter (`cut-tunn/`) är gjorda och gäller fortfarande. Nästa steg efter ja: grind 2 kollas igen (inga nya bilder, men äpplet och en storleksbild), sedan grind 3, Malins röst. Ingen röst, inga ljud och ingen scen är byggd. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med pandan, pandan svarar med ljud, öron och ansikte. Sikte: ca 4:10 (50 repliker).
 
 **Förlaga för formen:** [021 Hunden leker](../021-hunden-leker/manus.md) (samma plats, kritan ritar en boll, *"Rulla, rulla … där!"* tre gånger). Men leken, gömställena, problemet och slutet är nya, och lekstugan, stöveln, kullen och stegen är inte med.
 
@@ -205,22 +205,22 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 ## Pandans röst och ljuden
 
-**Pandan har ingen ljudfamilj** i `assets/ljud/effekter/`. Den görs på grind 4 och används sedan i alla pandans avsnitt.
+**Pandan låter som björnen** (Sanna 2026-11-27: *"använd björnen"*, *"samma ljud som björnen"*): familjen `brum-gullig` från 023 i `assets/ljud/effekter/brum-gullig/`, inga nya ljud och inga krediter. Provlyssning i tabellens ordning: [`ljud/provlyssna-pandan-brum.m4a`](ljud/provlyssna-pandan-brum.m4a) (0,6 s mellan).
 
-| Nr | Känsla | Rader |
-|---|---|---|
-| 1 | hej | 1 |
-| 2 | förtjust | 2, 6, 9b, 12, 12b, 15, 24, 24c |
-| 3 | kort fniss | 7, 11b, 16, 26b, 29 |
-| 4 | mysig suck | 27 |
-| 5 | nyfiken, frågande | 4, 13, 23 |
-| 6 | trumpen | 3, 4, 20 |
-| 7 | pratar (tre ljud i rad) | 8, 10 |
-| 8 | hej då | 28 |
-| 9 | glad (extra) | 1b, 6c, 11, 17, 22, 24b, 25, 26 |
-| 10 | förvånad (extra) | 9, 19, 21 |
+| Nr | Känsla | `brum-gullig` | Rader |
+|---|---|---|---|
+| 1 | hej | `1c`, `1d` (svenskt "hej!", inte `1`/`1b` som låter "Hello") | 1 |
+| 2 | förtjust | `2`, `2b` | 2, 6, 9b, 12, 12b, 15, 24, 24c |
+| 3 | kort fniss | `3`, `3b` | 7, 11b, 16, 26b, 29 |
+| 4 | mysig suck | `4`, `4b` | 27 |
+| 5 | nyfiken, frågande | `5`, `5b` | 4, 13, 23 |
+| 6 | trumpen | `6`, `6b` | 3, 4, 20 |
+| 7 | pratar (tre ljud i rad) | `5` + `7b` + `2b` efter varandra | 8, 10 |
+| 8 | hej då | `8`, `8b` | 28 |
+| 9 | glad (extra) | `2`, `1e` | 1b, 6c, 11, 17, 22, 24b, 25, 26 |
+| 10 | förvånad (extra) | `7`, `7b` (ljust "mm-hm?" som stiger) | 9, 19, 21 |
 
-Förslag på namn: `panda-gullig` 1–10. Prompten: *"Tiny cute cartoon baby panda cub, <känslan>, a soft squeaky little hum, sweet, close dry recording, no music, no background"*. Inga ord, och hej och hej då ska inte låta engelska. Fniss ligger aldrig på två rader i följd och aldrig över Malin.
+Variera tagningarna så att samma fil aldrig kommer två gånger i rad. Fniss ligger aldrig på två rader i följd och aldrig över Malin.
 
 **Finns redan** (mät nivån innan de används): `boing` 1–4, `rull-1`, `hink-dunk-1`, `sand` 1–4, `gung-knarr-1`, `apple-studs` 1–3, `mums` 1–8, `prassel-lov`, `vick-1`, `landa-mjuk`, `hopp-mjuk`, `smasteg`, `tass`, `swoosh`, `gasp`, `glimt`, `tindra-3`, `pling`, `glitter`, `krita-ritar`, `skogsljud`, `lekplatsljud`.
 
@@ -259,7 +259,7 @@ Förslag på namn: `panda-gullig` 1–10. Prompten: *"Tiny cute cartoon baby pan
 | **Pandans tunna kanter** | ✅ klart 2026-11-27: `premium/cut-tunn/`, kanten 6,5 px (1 % av kroppen), krämen värmd före med `varm.py`, originalets färger kvar. `uttryck.html` pekar på `cut-tunn/`. Kollat mot mörk bakgrund: `provbild/pim-kant-jamforelse.jpg` | klart |
 | **Storleksbild** | ✅ godkänd 2026-11-27 (Sanna: *"Ja, C"*): [`provbild/storleksbild.jpg`](provbild/storleksbild.jpg). C: anden 470 px hög, pandan (skala 0,5, sittposen) sitter bak i sadeln så att andens huvud syns; B (anden 360 px) täcker anden. Bollen i kronan syns tydligt (96 px mot trädets äpplen ca 58 px). Pandan är stor (SKALA 0,5, kroppen 728 riggpixlar). En stillbild av lekplatsen med gunganden, sandlådan och trädet i 021:s skala, pandan bredvid och i sittposen på gunganden, bollen i kronan och hinken under. Avgör om pandan får sitta på anden (annars reserven: sitter bredvid och puffar) och om bollen i kronan syns | grind 2 |
 | **Äpplet** | ✅ stämmer (storleksbilden, 58 px): `applet-rott-v3-tunn.png` har samma röda, blad och kant som trädets äpplen. `assets/rekvisita/applet-rott/` (v3 utan ansikte, från 013) ska stämma med äpplena i äppelträdet: färg, storlek och kant. Kollas i storleksbilden. Stämmer det inte: ett av trädets egna äpplen klipps ut | grind 2 |
-| **Pandans ljudfamilj** | finns inte. `panda-gullig` 1–10 enligt tabellen ovan (ElevenLabs SFX, kostar krediter: fråga först) | grind 4 |
+| **Pandans ljudfamilj** | ✅ björnens `brum-gullig` (Sanna 2026-11-27), se tabellen ovan | grind 4 |
 | **Konturer** | gungandens kontur till ritintrot och hinkens kontur (nya, ur `gunganka.png` och `hink.png` med `verktyg/kontur.py`). Bollens kontur finns i 021:s scen men ska gå genom `verktyg/kritan-ritar.js` (regeln från 052) | grind 5–6 |
 
 ## Saker: finns och nya
