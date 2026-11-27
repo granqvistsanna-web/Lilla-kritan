@@ -37,3 +37,7 @@
 37-fin-sommardag  [warmly] Var det en fin sommardag, grodan?
 38-hej-da-grodan  [happy] Hej då, grodan! Hej då, solen!
 39-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
+40-ser-du-blommor  [curious] Ser du några blommor?
+41-en-rod-blomma  [happy] En röd blomma!
+42-en-gul-blomma  [happy] En gul blomma!
+43-lila-och-rosa  [warmly] Och en lila och en rosa!

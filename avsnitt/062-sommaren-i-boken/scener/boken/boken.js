@@ -16,6 +16,11 @@ const mjuk = k => (k = k01(k), k * k * (3 - 2 * k));
 const bump = (a, b, t, r = 0.3) => mjuk((t - a) / r) * mjuk((b - t) / r);   // 0 → 1 → 0
 const reser = k => { k = k01(k); const s = 0.9; return 1 + (s + 1) * (k - 1) ** 3 + s * (k - 1) ** 2; };   // fälls upp med en liten efterstudsning
 const v3 = (...a) => new THREE.Vector3(...a);
+// Stillbildsprov runda 4 (Sanna 27/11): ?prov=s mindre saker och bredare bild ("bigger scene and smaller objects"), t lövträd
+// bland granarna, f enskilda blommor som syns hela tiden; ?bad=2|3 andra bad (rad 15–16, "needs lots of polish")
+const Q = new URLSearchParams(location.search), PROV = Q.get('prov') || '', BAD = +(Q.get('bad') || 3);   // bad 3 vald (Sanna 27/11)
+// lövträden och de enskilda blommorna gäller nu (Sanna 27/11 "more individual flower assets", "new trees too"); prov=g visar de gamla
+const STOR = PROV.includes('s') ? 0.72 : 1, TRAD = !PROV.includes('g'), BLOM = !PROV.includes('g');
 
 // ---- raderna ----
 // rader.mjs direkt (läget per rad, st, finns inte i rader.json; rader.json skrivs för qa-verktygen)
@@ -48,6 +53,8 @@ function ruta(i) {
   for (let y = 0; y < c.height; y++) for (let u = 0; u < c.width; u++) if (a[(y * c.width + u) * 4 + 3] > 128) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); x0 = Math.min(x0, u); x1 = Math.max(x1, u); }
   return { ox: x0 - 1, oy: y0 - 1, w: x1 - x0 + 3, h: y1 - y0 + 3, W: i.width, H: i.height };
 }
+const [TRAD1, APPEL, EK, ...BLOMS] = await Promise.all([B + 'skogen-saker/trad.png', B + 'lekplatsen-saker/appeltrad.png', RQ + 'ek/cut/ek.png',
+  ...['blomma-rod/cut/blomma-rod', 'blommor-gula/cut/blomma-gul-2', 'blomma-rosa/cut/blomma-lila', 'blomma-rosa/cut/blomma-rosa'].map(n => RQ + n + '.png'), B + 'vagen-saker/blomma-vit.png'].map(lad));
 const [SOL_I, GLASS_I] = await Promise.all([bild(RQ + 'sol-gul/cut/sol-gul.png'), bild(RQ + 'glass-rosa/cut/glass-rosa.png')]);
 const SOL = tex(trim(SOL_I)), GLASS = tex(trim(GLASS_I));
 const KONTUR = Object.fromEntries(await Promise.all(['sol-gul', 'glass-rosa'].map(async s => { const j = await (await fetch(`${RQ}${s}/cut/${s}-kontur.json`)).json(); return [s, [j.d, ...(j.detaljer || [])]]; })));
@@ -83,6 +90,7 @@ const KSKUGGA = (() => { const c = duk(256, 64), x = c.getContext('2d'), g = x.c
   x.fillStyle = g; x.fillRect(0, 0, 256, 64); return new THREE.MeshBasicMaterial({ map: tex(c), transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 }); })();
 const KORT = [];
 function kort(map, h, x, z, o = {}) {
+  if (o.skala !== false) h *= STOR;
   const w = h * map.image.width / map.image.height, g = new THREE.PlaneGeometry(w, h); g.translate(0, h / 2, 0);
   const m = skugga(new THREE.Mesh(g, urklipp(map))); m.customDepthMaterial = djup(map);
   m.add(new THREE.Mesh(g, baksida(map)));
@@ -96,7 +104,7 @@ const vik = (k, e) => { k.m.rotation.x = Math.PI / 2 * (1 - e); k.m.position.y =
 function platt(map, w, x, z, d = w * map.image.height / map.image.width, y = SIDA + 0.001) {
   const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), urklipp(map)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scen.add(m); return m;
 }
-const BAK = [kort(bredare(KULLE_BAK, 5.2), 2.15 / 5.2, 0, -0.6), kort(bredare(KULLE_FRAM, 6.2), 1.95 / 6.2, 0.05, -0.47)];
+const BAK = [kort(bredare(KULLE_BAK, 5.2), 2.15 / 5.2, 0, -0.6, { skala: false }), kort(bredare(KULLE_FRAM, 6.2), 1.95 / 6.2, 0.05, -0.47, { skala: false })];
 function pa(map, h, x, upp, ut = 0.01, w = h * map.image.width / map.image.height) {
   const m = skugga(new THREE.Mesh(new THREE.PlaneGeometry(w, h), urklipp(map)));
   m.customDepthMaterial = djup(map); m.rotation.x = Math.PI / 2; m.position.set(x, -ut, upp); insida.add(m); return m;
@@ -104,9 +112,12 @@ function pa(map, h, x, upp, ut = 0.01, w = h * map.image.width / map.image.heigh
 pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.07 + 1.53 / 2, 0.004, 2.3);
 const SOLEN = pa(SOL, 0.34, 0.12, 0.82);
 const MOLNEN = [[MOLN1, 0.22, -0.66, 0.9], [MOLN2, 0.16, -0.26, 1.05], [MOLN3, 0.13, 0.62, 1.0]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
-const SKOG = [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6]].map(([x, z, h]) => kort(GRAN, h, x, z));
+const SKOG = [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6]].map(([x, z, h], i) => TRAD && i % 2 ? kort([TRAD1, APPEL, EK][(i - 1) / 2], h * 0.95, x, z) : kort(GRAN, h, x, z));
 // Blommorna bakom busken (Sanna 27/11: "dont hide flowers as much"): högre och bredare än i storyboarden, ungefär halva blomhuvudena syns
-const BLOMMOR_BAK = kort(BLOMMOR, 0.42, 1.03, -0.22, { flik: false }); BLOMMOR_BAK.m.scale.x = 0.8;
+// Runda 3 (Sanna 27/11 "place flowers more clearly"): ännu högre och lite åt sidan, så att blomhuvudena syns tydligt över busken
+const BLOMMOR_BAK = kort(BLOMMOR, 0.52, 1.07, -0.22, { flik: false }); BLOMMOR_BAK.m.scale.x = 0.85; BLOMMOR_BAK.m.visible = !BLOM;
+// enskilda blommor: röd, gul, lila, rosa i en sned rad bakom stranden vid blad 3, så att alla fyra syns, uppe hela tiden, en i taget när färgerna sägs
+const BLOMS_K = BLOM ? [[0, 0.24, 0.8, 0.3], [1, 0.23, 0.86, 0.17], [2, 0.24, 0.91, 0.04], [3, 0.22, 0.95, -0.09]].map(([i, h, x, z]) => kort(BLOMS[i], h, x, z)) : [];
 const BUSKAR = [kort(BUSKE, 0.3, -0.12, -0.3), kort(BUSKE, 0.26, 1.02, -0.14)];
 {
   const Wc = 2048, D = 1440, c = duk(Wc, D), x = c.getContext('2d'), form = (p, r) => { x.beginPath(); x.roundRect(p, p, Wc - 2 * p, D - 2 * p, r); };
@@ -116,7 +127,7 @@ const BUSKAR = [kort(BUSKE, 0.3, -0.12, -0.3), kort(BUSKE, 0.26, 1.02, -0.14)];
   platt(tex(c), 2.26, 0, 0.0, 1.5, SIDA + 0.0004);
 }
 platt(DAMM, 1.45, -0.02, 0.06, 0.7);
-const BLADPOS = { 1: [-0.24, 0.08], 2: [0.45, -0.07], 3: [0.79, 0.04], bad: [0.1, 0.0] };   // 3 = stranden vid blommorna, bad = mitt i dammen
+const BLADPOS = { 1: [-0.24, 0.08], 2: [0.45, -0.07], 3: BLOM ? [0.68, -0.2] : [0.79, 0.04], bad: [0.1, 0.0] };   // 3 = stranden vid blommorna, bad = mitt i dammen
 platt(BLAD, 0.3, ...BLADPOS[1], undefined, SIDA + 0.003); platt(BLAD, 0.3, ...BLADPOS[2], undefined, SIDA + 0.003);
 const SMATT = [kort(NACKROS, 0.1, 0.12, 0.3, { y: SIDA + 0.004, flik: false }), kort(VASS, 0.46, -0.84, 0.2, { vaj: 0 }), kort(VASS, 0.34, 0.62, -0.25, { vaj: 2 })];
 const HINKEN = kort(HINK, 0.27, 0.36, 0.6), SLOTTET = kort(SAND, 0.24, 0.62, 0.62), BLOMMOR_UPPE = kort(BLOMMOR, 0.26, 0.98, 0.2);
@@ -124,17 +135,21 @@ const GLASSKORT = kort(GLASS, 0.24, -0.6, 0.48, { y: SIDA + 0.003 }), KONKORT = 
 const GLASS_R = ruta(GLASS_I), SOL_R = ruta(SOL_I);
 // Grodan badar (Sanna 27/11, "have frog bada in dammen"): ett vågkort i kod fälls upp framför henne på "plask", så att bara
 // överkroppen syns, som i en pop-up-bok. Hon står på sidan bakom vågorna, inget går genom sidan.
-const VAG = (() => { const w = 1024, h = 300, c = duk(w, h), x = c.getContext('2d'), N = 7;
+const VAG = (() => { const w = 1024, h = 300, c = duk(w, h), x = c.getContext('2d'), N = BAD === 2 ? 9 : 7, TOP = BAD === 2 ? 70 : 30;
   const form = () => { x.beginPath(); x.moveTo(14, h - 14); x.lineTo(14, 120);
-    for (let i = 0; i < N; i++) { const a = 14 + i * (w - 28) / N, b = a + (w - 28) / N; x.bezierCurveTo(a + 30, 30, b - 60, 30, b - 10, 120); }
+    for (let i = 0; i < N; i++) { const a = 14 + i * (w - 28) / N, b = a + (w - 28) / N; x.bezierCurveTo(a + 30, TOP, b - 60, TOP, b - 10, 120); }
     x.lineTo(w - 14, h - 14); x.closePath(); };
-  x.strokeStyle = x.fillStyle = '#FFF'; x.lineWidth = 26; x.lineJoin = 'round'; form(); x.fill(); x.stroke();
-  const g = duk(w, h); kritYta(g.getContext('2d'), w, h, '#5FAEDD', '#93D0F2', '#3F8DC4', 0.7);
+  x.strokeStyle = x.fillStyle = '#FFF'; x.lineWidth = BAD === 2 ? 16 : 26; x.lineJoin = 'round'; form(); x.fill(); x.stroke();
+  const g = duk(w, h); kritYta(g.getContext('2d'), w, h, ...(BAD === 2 ? ['#78A8D2', '#9CC4E4', '#5E8FBE'] : ['#5FAEDD', '#93D0F2', '#3F8DC4']), 0.7);
   x.save(); form(); x.clip(); x.drawImage(g, 0, 0);
   x.strokeStyle = 'rgba(255,255,255,0.85)'; x.lineWidth = 10; x.lineCap = 'round';
   for (let i = 0; i < N; i++) { const a = 14 + i * (w - 28) / N; x.beginPath(); x.moveTo(a + 40, 110); x.quadraticCurveTo(a + 70, 70, a + 105, 92); x.stroke(); }
   x.restore(); return tex(c); })();
-const VAGKORT = kort(VAG, 0.17, BLADPOS.bad[0], BLADPOS.bad[1] + 0.07, { flik: false });
+const VAGKORT = kort(VAG, BAD === 2 ? 0.13 : 0.17, BLADPOS.bad[0], BLADPOS.bad[1] + 0.07, { flik: false });
+// bad 3: inget vågkort, grodan landar på ett tredje blad mitt i dammen och vattnet ringar sig runt bladet
+if (BAD === 3) platt(BLAD, 0.3, ...BLADPOS.bad, undefined, SIDA + 0.003);
+const RINGAR = BAD === 3 ? [0, 1, 2].map(() => { const m = new THREE.Mesh(new THREE.RingGeometry(0.9, 1, 64), new THREE.MeshBasicMaterial({ color: '#EAF6FF', transparent: true, depthWrite: false }));
+  m.rotation.x = -Math.PI / 2; m.position.set(BLADPOS.bad[0], SIDA + 0.0035, BLADPOS.bad[1]); m.scale.set(1, 0.55, 1); scen.add(m); return m; }) : [];
 const STANK = new THREE.Group(); for (let i = 0; i < 16; i++) { const d = new THREE.Mesh(new THREE.SphereGeometry(0.011 + 0.006 * (i % 3), 10, 8), mat(null, { color: '#CFEFFF', emissive: '#4b8fb8', emissiveIntensity: 0.3 }));
   d.userData = { a: i / 16 * Math.PI * 2 + 0.3 * Math.sin(i * 7), v: 0.7 + 0.3 * ((i * 5) % 4) / 3 }; STANK.add(d); } scen.add(STANK);
 
@@ -145,7 +160,7 @@ window.HAND = { l: [180, 668], r: [838, 665], kant: 8, mun: [514, 392] };
 const VB = { x: -150, y: -200, w: 1324, h: 1200 }, FOT = 926;
 const L = await v2rigg('grodan-gurra'), G = L.figur(512, FOT, 1, $('figurer'));
 G.querySelector('.skugga')?.setAttribute('display', 'none');
-const SAK = L.sakBild(GLASS_URL, GLASS_I.width, GLASS_I.height, { grepp: [126, 300], fot: [126, 414], skala: 0.5, folj: 0, kant: 4, mat: true, mun: [118, 40], bett: [[172, 40, 50]] });
+const SAK = L.sakBild(GLASS_URL, GLASS_I.width, GLASS_I.height, { grepp: [126, 300], fot: [126, 414], skala: 0.5, folj: 0, kant: 4, mat: true, mun: [118, 40], bett: [[172, 40, 50], [92, 48, 58], [140, 96, 66], [70, 132, 62], [188, 138, 62], [126, 176, 72], [56, 196, 44], [200, 196, 44]] });
 L.sakIn(G, SAK);
 await Promise.all([...$('kort').querySelectorAll('image')].map(async im => { const h = im.getAttribute('href'); if (!h.startsWith('data:')) im.setAttribute('href', await dataUrl(h)); }));
 window.kant.lagg(G); const kantF = $('defs').lastElementChild;
@@ -153,10 +168,11 @@ const BL = skapaBlinka(62);
 // droppar ritade i riggens ruta (de får figurens vita kant): glassdroppen (faller, och på nosen i .drag som följer huvudet) och vattendroppar
 const NOS = [514, 318];
 G.insertAdjacentHTML('beforeend', '<g id="dropparG"></g>');
-(G.querySelector('.drag') || G).insertAdjacentHTML('beforeend', `<circle id="nosDroppe" cx="${NOS[0]}" cy="${NOS[1]}" r="17" fill="#FF6FAE" stroke="#fff" stroke-width="5" display="none"/>`);
+(G.querySelector('.drag') || G).insertAdjacentHTML('beforeend', `<circle id="nosDroppe" cx="${NOS[0]}" cy="${NOS[1]}" r="17" fill="#FF6FAE" stroke="#fff" stroke-width="5" display="none"/><g id="huvudG"></g>`);
+// huvudG följer huvudet (nick, skak): svetten, värmestrecken, tungan och vattendropparna på huvudet
 // grodans höjd (ögonen till fötterna) styr kortets skala: lika hög som gurra.png-kortet i storyboarden (0,36)
 L.rita(G, L.NEUTRAL, L.POSE0);
-const TOPP = 168, ENHET = 0.36 / (FOT - TOPP);   // kroppens överkant (ögonen) i gurra-body.png
+const TOPP = 168, ENHET = 0.36 * (STOR < 1 ? 0.8 : 1) / (FOT - TOPP);   // kroppens överkant (ögonen) i gurra-body.png
 const kortCanvas = duk(VB.w, VB.h), kortCtx = kortCanvas.getContext('2d'), kortTex = tex(kortCanvas);
 const gg = new THREE.PlaneGeometry(VB.w * ENHET, VB.h * ENHET);
 gg.translate((VB.x + VB.w / 2 - 512) * ENHET, (FOT - (VB.y + VB.h / 2)) * ENHET, 0);   // origo i fötterna
@@ -193,13 +209,13 @@ komp.addPass(new RenderPass(scen, cam)); komp.addPass(bokeh); komp.addPass(new O
 // Det kort som reser sig först ligger överst i högen; när boken stängs fälls de ner i omvänd ordning (det främsta först),
 // så att inget kort går genom ett annat. Grodan reser sig sist (rad 05) och fälls därför ner först.
 const OPPNA = S('01b'), STANG = S('26');
-const ORDNING = [...BAK, ...SKOG, ...BUSKAR, BLOMMOR_BAK, ...SMATT, HINKEN].sort((a, b) => a.z - b.z);
+const ORDNING = [...BAK, ...SKOG, ...BUSKAR, ...(BLOM ? BLOMS_K : [BLOMMOR_BAK]), ...SMATT, HINKEN].sort((a, b) => a.z - b.z);
 ORDNING.forEach((k, i, a) => { k.upp = OPPNA + 0.6 + i * 0.8 / (a.length - 1); k.hog = 0.004 + 0.001 * (a.length - i); });
 const NER = [SLOTTET, BLOMMOR_UPPE, ...ORDNING].sort((a, b) => b.z - a.z);
-NER.forEach((k, i, a) => k.ner = STANG + 0.8 + i * 1.0 / (a.length - 1));
+NER.forEach((k, i, a) => k.ner = STANG + 0.3 + i * 0.5 / (a.length - 1));   // snabbare (Sanna 27/11 "faster close book")
 const UPP_SLOTT = SVAR('22', 36) - 0.2 - LN(36) + 1.0, UPP_BLOMMOR = S('19') + 0.1;   // sandslottet på ordet "sandslott", blommorna på "Ja, där"
 SLOTTET.upp = UPP_SLOTT; BLOMMOR_UPPE.upp = UPP_BLOMMOR;
-const PARM_NER = [STANG + 2.15, STANG + 3.05];
+const PARM_NER = [STANG + 1.05, STANG + 1.75];
 
 // ---- kritan ritar ----
 // Konturen (kontur.json, bildens egna px) ritas i #ov, lagd på den riktiga ytan (solen på himlen, glassen på gräset) med en affin
@@ -214,7 +230,7 @@ function affin(mesh, r) {   // bildens px (hela png:n) → skärmen (1920 × 108
 }
 const RIT = [];
 function teckning(namn, href, r, mesh, T, fyll, vanta) { RIT.push({ namn, href, r, mesh, T, fyll, vanta, drag: KONTUR[namn] }); }
-const KS = KRITAN.SKALA_SCEN * 0.7;   // kritan i närbild
+const KS = KRITAN.SKALA_SCEN * 1.25;   // kritan i närbild (större, Sanna 27/11 "bigger crayon")
 function ritaKritan(t) {
   let h = '';
   for (const D of RIT) {
@@ -250,23 +266,67 @@ function grodPos(t) {
   let [x, z] = BLADPOS[1], y = 0;
   for (const H of HOPP) { if (t >= H.t1) [x, z] = H.till; else if (t >= H.t0) { const u = (t - H.t0) / (H.t1 - H.t0), m = mjuk(u);
     x = lerp(H.fran[0], H.till[0], m); z = lerp(H.fran[1], H.till[1], m); y = H.h * Math.sin(Math.PI * u); } }
+  for (const K of SKUTT) { const u = (t - K.t0) / K.d; if (u > 0 && u < 1) y += K.h * Math.sin(Math.PI * u); }
   const bad = k01((t - HOPP[0].t1) / 0.5) * (1 - k01((t - HOPP[1].t0 + 0.4) / 0.3));   // guppar lugnt i vattnet (aldrig under sidan)
   return [x, y + 0.006 * bad * (1 + Math.sin(t * 2.2)), z];
 }
+// glädjehopp på stället (Sanna 27/11 "happy jump"): två små skutt när grodan svarar glatt på "Hur är det, grodan?"
+const SKUTT = [{ t0: SVAR('05b', 8) + 0.05, d: 0.5, h: 0.05 }, { t0: SVAR('05b', 8) + 0.6, d: 0.42, h: 0.032 }];
 const PLASK = HOPP[0].t1, UPPUR = HOPP[1].t1;
-const GLIDA = [S('11') + 0.1, S('11') + 0.9], MUMS = S('11') + 0.6 + 2.1, KON_UT = S('13') + 0.8;   // glassen till handen, tuggan på "Mums", struten släpps
+// grodan sjunker ner i dammen (Sanna 27/11 "cant frog sink in to the damm?"): figuren glider nedåt i sitt kort och det som är
+// under vattenlinjen ritas inte (#vatten), så att bara huvudet syns ovanför vågkortet. Upp igen före hoppet upp på bladet.
+const SJUNK = BAD === 3 ? 0 : BAD === 2 ? 170 : 250, VATTEN = 0.12 * STOR * (BAD === 2 ? 0.8 : 1);   // px i riggen, vattenlinjen i världens höjd över fötterna (vågkortet döljer den)
+const sjunk = t => SJUNK * mjuk((t - PLASK - 0.05) / 0.7) * (1 - mjuk((t - (HOPP[1].t0 - 0.75)) / 0.45));
+const GLIDA = [S('11') + 0.1, S('11') + 0.9], MUMS = S('11') + 0.6 + 2.1, KON_UT = S('13') + 3.3;   // glassen till handen, tuggan på "Mums", struten släpps
 const KLAPP = SVAR('22', 36) - 0.2 + 0.1 - 1.0;   // riggens klapp möts vid 1, 1,5 och 2 s
-function vink(f, p, tl, d) {   // armen bakom kroppen, snett upp och ut förbi kanten (som grodans testfilm, lugnare takt)
+function vink(f, p, tl, d, stor = false) {   // armen bakom kroppen, snett upp och ut förbi kanten (som grodans testfilm, lugnare takt)
   if (tl < 0 || tl > d) return [f, p];
-  const upp = mjuk(Math.min(tl / 0.4, (d - tl) / 0.4)), s = Math.sin(2 * Math.PI * 1.3 * tl);
-  return [f, { ...p, armar: [p.armar[0], p.armar[1] + upp * (55 + 14 * s)], fram: [p.fram?.[0] || 0, 0], luta: (p.luta || 0) - upp * (1.5 + 1.2 * s) }];
+  // hej då (stor): armen högre och tydligare vift, så att vinkningen syns i halvbilden (Sanna 27/11 "wave good bye")
+  const upp = mjuk(Math.min(tl / 0.4, (d - tl) / 0.4)), s = Math.sin(2 * Math.PI * (stor ? 1.5 : 1.3) * tl), [a, b] = stor ? [80, 24] : [55, 14];
+  // hej då med armen på bildens vänstra sida: den andra skyms av blomkortet i hejda-vyn
+  if (stor) return [f, { ...p, armar: [p.armar[0] + upp * (a + b * s), p.armar[1]], fram: [0, p.fram?.[1] || 0], luta: (p.luta || 0) + upp * (1.5 + 1.2 * s) }];
+  return [f, { ...p, armar: [p.armar[0], p.armar[1] + upp * (a + b * s)], fram: [p.fram?.[0] || 0, 0], luta: (p.luta || 0) - upp * (1.5 + 1.2 * s) }];
+}
+const HEJDA = () => [S('24') + 0.3, STANG + 0.25];   // vinkar hela hej då-delen, tills kortet fälls ner
+// grodan är varm (Sanna 27/11 "show signs of heat"): svettdroppar som rinner ner från pannan och värmestreck som stiger över huvudet
+const VARM = () => [S('06') + 0.6 + LN(10), S('08') - 0.2];
+function varmTecken(t) {
+  const [a, b] = VARM(), k = mjuk((t - a) / 0.6) * (1 - mjuk((t - b + 0.5) / 0.5)); if (k <= 0) return '';
+  let h = '';
+  for (const [i, x] of [205, 250, 775, 820].entries()) { const u = ((t - a) * 0.55 + i * 0.27) % 1, y = 400 - 150 * u, op = k * Math.sin(Math.PI * u) * 0.9;
+    const w = 14 * Math.sin(t * 4 + i);
+    h += `<path d="M${x + w} ${y} q 18 -22 0 -44 q -18 -22 0 -44" fill="none" stroke="#F49A4E" stroke-width="10" stroke-linecap="round" opacity="${op.toFixed(2)}"/>`; }
+  for (const [i, [x, y0]] of [[300, 280], [728, 262]].entries()) { const u = ((t - a) * 0.6 + i * 0.5) % 1, y = y0 + 120 * mjuk(u), op = k * Math.min(1, u * 5, (1 - u) * 4);
+    h += `<path d="M${x} ${y - 30} Q${x + 17} ${y} ${x} ${y + 12} Q${x - 17} ${y} ${x} ${y - 30}Z" fill="#9FD8F5" stroke="#fff" stroke-width="5" opacity="${op.toFixed(2)}"/>`; }
+  return h;
+}
+// grodan slickar glassen med tungan (Sanna 27/11 "better animation of eating glass"): tungan sträcks ut till kulan och in igen
+const ATER = () => [S('13') + 0.3, S('13') + 1.0, S('13') + 1.7];   // grodan slickar upp det sista (Sanna 27/11 "frog eating up last of icecream")
+const SLICK = () => [MUMS - 0.3, MUMS + 0.2, S('12') + 0.05, ...ATER()];
+const tunga = t => Math.max(0, ...SLICK().map(a => { const u = (t - a) / 0.45; return u > 0 && u < 1 ? Math.sin(Math.PI * u) : 0; }));
+// vattendropparna efter plasket (rad 15b): stänket faller tillbaka på huvudet, delar sig och rinner ner; rad 16: några pärlor glittrar
+const HUVUDTOPP = [[392, 212], [512, 236], [632, 212], [452, 224]];
+function vattenDroppar(t) {
+  let h = ''; const t0 = S('15b'), dr = (x, y, s, op = 1) => `<path d="M${x} ${y - 24 * s} Q${x + 14 * s} ${y} ${x} ${y + 9 * s} Q${x - 14 * s} ${y} ${x} ${y - 24 * s}Z" fill="#9FD8F5" stroke="#fff" stroke-width="5" opacity="${op.toFixed(2)}"/>`;
+  if (t >= t0 && t < S('16') + 0.6) for (const [i, [x, y]] of HUVUDTOPP.entries()) {
+    const ta = t0 + 0.2 + i * 0.4, u = (t - ta + 0.35) / 0.35;   // faller 0,35 s, landar vid ta
+    if (u > 0 && u < 1) h += dr(x, lerp(-200, y, u * u), 1);
+    const v = (t - ta) / 0.3;   // två små stänk åt sidorna
+    if (v > 0 && v < 1) for (const sd of [-1, 1]) h += `<circle cx="${(x + sd * 50 * v).toFixed(1)}" cy="${(y - 40 * Math.sin(Math.PI * v)).toFixed(1)}" r="${(7 * (1 - v * 0.5)).toFixed(1)}" fill="#BDE7FA" stroke="#fff" stroke-width="3"/>`;
+    const w = (t - ta) / 1.4;   // pärlan rinner ner längs huvudet
+    if (w > 0 && w < 1) h += dr(x + (x - 512) * 0.35 * mjuk(w), y + 170 * mjuk(w), 0.8, Math.min(1, (1 - w) * 4));
+  }
+  if (t >= S('16') && t < S('17')) { const k = mjuk((t - S('16')) / 0.4) * (1 - mjuk((t - S('17') + 0.4) / 0.4));
+    for (const [i, [x, y]] of [[300, 300], [726, 292], [512, 262]].entries()) { const g = 0.5 + 0.5 * Math.sin(t * 5 + i * 2.1);
+      h += `<g opacity="${k.toFixed(2)}">${dr(x, y, 0.75)}<path d="M${x + 14} ${y - 34} l0 ${-14 * g} M${x + 7 - 7 * g} ${y - 41} l${14 * g} 0" stroke="#fff" stroke-width="4" stroke-linecap="round"/></g>`; } }
+  return h;
 }
 const nick = (f, p, tl) => tl >= 0 && tl < 2 ? L.nicka(f, p, tl) : [f, p];
 const blicka = (tl, nycklar) => { let v = nycklar[0][1]; for (let i = 1; i < nycklar.length; i++) v = lerp(v, nycklar[i][1], mjuk((tl - nycklar[i][0]) / 0.5)); return v; };
 let droppar = '';
 const REAKTION = { '05': 'jatteglad', '05b': 'kawaii', '06': 'stolt', '07b': 'tanker', '08': 'nyfiken', '09': 'kawaii', '10': 'blinkar',
   '11': 'mums', '11b': 'fnissig', '12': 'forvanad', '12b': 'skrattar', '13': 'tanker', '14': 'jatteglad', '15': 'skrattar', '15b': 'fnissig',
-  '16': 'stolt', '17': 'nyfiken', '17b': 'tanker', '19': 'jatteglad', '20': 'kawaii', '21': 'blinkar', '22': 'skrattar', '23': 'kawaii' };
+  '16': 'stolt', '17': 'nyfiken', '18': 'nyfiken', '19': 'jatteglad', '19b': 'kawaii', '20': 'kawaii', '21': 'blinkar', '22': 'skrattar', '23': 'kawaii' };
 // smakar: armen med glassen lyfts snett upp mot ansiktet och grodan lutar sig dit (riggens sakMun lade glassen bakom huvudet)
 const smaka = (p, k) => { p.armar = [p.armar[0] + 62 * k, p.armar[1]]; p.luta = (p.luta || 0) + 3 * k; };
 function grodan(t) {
@@ -275,51 +335,55 @@ function grodan(t) {
   [f, p] = L.vila(f, p, t); p = { ...p, armar: p.armar || [0, 0], fram: p.fram || [0, 0] };   // liv när hon står: blicken, tyngden
   const halla = t >= GLIDA[1] && t < KON_UT;
   if (halla) p.hall = [1, 0];
-  if (t >= MUMS + 0.05) p.sakBett = 1;
+  if (t >= MUMS + 0.1) p.sakBett = k01((t - MUMS - 0.1) / 0.3);   // tuggan är borta när tungan har slickat
+  ATER().forEach((a, i) => { if (t >= a + 0.25) p.sakBett = Math.max(p.sakBett || 0, lerp(1 + i * 7 / 3, 1 + (i + 1) * 7 / 3, k01((t - a - 0.25) / 0.3))); });
   switch (id) {
     case '05': [f, p] = vink(f, p, tl - 0.6, r.d - 0.8); break;
     case '05b': { const sv = SVAR('05b', 8) - r.s; f = { ...f, titt: [tl < sv ? 10 * Math.sin(tl * 2.2) : 0, 0] };
       f = L.blanda(f, 'jatteglad', bump(sv, sv + 1.3, tl)); p.rikt = tl < sv ? 0.3 * Math.sin(tl * 2.2) : 0; break; }
     case '06': f = { ...f, titt: [0, -6 * mjuk(tl / 0.5)] }; break;   // tittar upp mot solen (posen 'upp' gav sura bryn)
-    case '07': case '07b': { f = { ...f, kind: 1.25, titt: [0, 3] };   // varm: rosiga kinder och en suck, inget surt eller sömnigt
+    case '07': case '07b': { f = L.blanda({ ...f, kind: 1.25, titt: [0, 3] }, 'ledsen', 0.5); f.kind = 1.3;   // varm och lite besvärad (Sanna 27/11 "look a bit distressed"), rosiga kinder
       const ts = id === '07' ? 0.5 + LN(11) + 0.2 : -9; p.strack = -0.035 * bump(ts, ts + 1.3, tl, 0.4); p.armar = [-6, -6];
-      if (id === '07b') f = { ...f, titt: [0, 0] }; break; }
+      // fläktar sig med handen efter sucken (rad 07) och i början av 07b
+      const fl = id === '07' ? bump(ts + 1.1, r.d + 0.6, tl, 0.35) : bump(-0.6, 1.6, tl, 0.35);
+      p.armar = [p.armar[0], p.armar[1] + fl * (62 + 16 * Math.sin(2 * Math.PI * 2.6 * t))];
+      if (id === '07b') { f = { ...f, titt: [0, 0] }; [f, p] = nick(f, p, tl - (SVAR('07b', 12) - r.s - 0.1)); }   // svarar ja med en nick (Sanna 27/11 "nod head")
+      break; }
     case '08': f = L.blanda(B('nyfiken'), 'glad', 0.3); f.titt = [-10, 5]; p.rikt = -0.35; break;
     case '09': f = L.blanda(B('nyfiken'), 'kawaii', mjuk((tl - 0.5) / 0.4)); f.titt = [-10, 5]; p.rikt = -0.35 * (1 - mjuk((tl - 2) / 0.6)); break;
     case '10': [f, p] = nick(f, p, tl - 0.3); break;
-    case '11': { const munK = mjuk((t - (MUMS - 0.9)) / 0.6) * (1 - mjuk((t - (MUMS + 0.35)) / 0.6));
-      smaka(p, munK); f = L.blanda(f, 'mums', bump(MUMS - 0.1, MUMS + 0.9, t, 0.2)); break; }
-    case '11b': f = { ...B('mums'), tungan: [0, 0, 0], mun: L.param('glad').mun }; break;
+    case '11': { const munK = mjuk((t - (MUMS - 0.9)) / 0.6) * (1 - mjuk((t - (MUMS + 0.75)) / 0.6));
+      smaka(p, munK); f = L.blanda(f, { ...B('nyfiken'), titt: [-12, 4] }, munK * (1 - mjuk((t - MUMS - 0.65) / 0.3)));
+      f = L.blanda(f, 'jatteglad', Math.min(1, 2 * tunga(t)) + bump(MUMS + 0.6, MUMS + 1.6, t, 0.2)); break; }
+    case '11b': f = B('jatteglad'); break;   // munnen syns (Sanna 27/11 "show mouth"; 'mums' hade ingen mun)
     case '12': { // glassen når nosen när grodan slickar (armarna är för korta för att hålla den ovanför nosen), en rosa prick blir kvar
-      smaka(p, bump(0.0, 0.7, tl, 0.3)); nos = tl > 0.35; f = L.blanda(f, { ...B('forvanad'), titt: [0, -12] }, mjuk((tl - 0.35) / 0.25)); break; }
+      smaka(p, bump(-0.3, 0.75, tl, 0.3)); f = L.blanda(f, 'jatteglad', Math.min(1, 2 * tunga(t)));
+      nos = tl > 0.45; f = L.blanda(f, { ...B('forvanad'), titt: [0, -12] }, mjuk((tl - 0.45) / 0.25)); break; }
     case '12b': { [f, p] = L.skakaHuvud(L.blanda(f, 'fnissig', mjuk((tl - 0.9) / 0.3)), p, tl - 0.05, 1.6, 1.5);
       const u = tl / 0.45; if (u < 1) droppar += `<circle cx="${(NOS[0] + 30 * u).toFixed(1)}" cy="${lerp(NOS[1], FOT + 20, u * u).toFixed(1)}" r="17" fill="#FF6FAE" stroke="#fff" stroke-width="5"/>`; break; }
-    case '13': f = { ...f, titt: [9, 5] }; p.rikt = 0.3 * mjuk(tl / 0.6); break;
+    case '13': { const a = ATER(), munK = bump(a[0] - 0.4 - r.s, a[2] + 0.7 - r.s, tl, 0.35);
+      smaka(p, munK); f = L.blanda(L.blanda(f, { ...B('nyfiken'), titt: [-12, 4] }, munK), 'jatteglad', Math.min(1, 2 * tunga(t)));
+      f = L.blanda(f, 'mums', bump(a[2] + 0.6 - r.s, a[2] + 1.6 - r.s, tl, 0.25));
+      const ut = mjuk((tl - 2.6) / 0.6); f = L.blanda(f, { ...f, titt: [9, 5] }, ut); p.rikt = 0.3 * ut; break; }
     case '14': f = { ...f, titt: [7, 8] }; [f, p] = nick(f, p, tl - (SVAR('14', 23) - r.s + 0.3)); break;
     case '15': f = L.blanda(f, 'jatteglad', bump(PLASK - r.s, PLASK - r.s + 1.4, tl)); break;
-    case '15b': f = B('jatteglad');
-      for (let i = 0; i < 6; i++) { const u = ((tl * 0.9 + i * 0.37) % 1.1) / 1.1, x = 300 + ((i * 137) % 430), y = lerp(80, 760, u);
-        if (tl > i * 0.15) droppar += `<path d="M${x} ${y - 22} Q${x + 13} ${y} ${x} ${y + 10} Q${x - 13} ${y} ${x} ${y - 22}Z" fill="#9FD8F5" stroke="#fff" stroke-width="5" opacity="${(1 - u * 0.3).toFixed(2)}"/>`; }
-      break;
-    case '16': f = L.blanda(f, 'kawaii', 0.5);
-      for (const [x, y, i] of [[300, 420, 0], [700, 380, 1], [600, 640, 2]]) { const g = 0.5 + 0.5 * Math.sin(t * 5 + i * 2.1);
-        droppar += `<circle cx="${x}" cy="${y}" r="${(10 + 4 * g).toFixed(1)}" fill="#BDE7FA" stroke="#fff" stroke-width="4"/><circle cx="${x - 3}" cy="${y - 4}" r="${(3 + 3 * g).toFixed(1)}" fill="#fff"/>`; }
-      break;
+    case '15b': f = L.blanda(B('jatteglad'), 'blinkar', 0.3); break;
+    case '16': f = L.blanda(f, 'kawaii', 0.5); break;
     case '17': f = B('nyfiken'); p.rikt = 0.5 * Math.sin(tl * 1.2); f.titt = [10 * Math.sin(tl * 1.2), -2]; break;
-    case '17b': { f = B('nyfiken'); const rk = blicka(tl, [[0, 0], [0.9, -0.6], [1.9, 0.6], [2.9, 0]]); p.rikt = rk; f.titt = [12 * rk, 0]; break; }
     case '18': f = B('nyfiken'); break;
     case '19': f = L.blanda(B('glad'), 'kawaii', 0.8); p.rikt = 0.6 * mjuk((tl - 0.3) / 0.5); f.titt = [10, 0]; break;
+    case '19b': f = L.blanda(B('glad'), 'kawaii', 0.6); p.rikt = 0.6; f.titt = [10, 0]; break;
     case '20': p.rikt = 0.6 * mjuk((tl - 1.0) / 0.5); f.titt = [10, 0]; break;
     case '21': { const ts = 0.5 + LN(34) + 0.2; f = { ...B('glad'), glad: [1, 1], kind: 1.1 }; p.rikt = 0.6; p.luta = -5 * mjuk(tl / 0.8);
       p.strack = -0.025 * bump(ts, ts + 1.2, tl, 0.4); break; }
     case '22': { f = L.blanda(B('glad'), 'jatteglad', mjuk((t - UPP_SLOTT) / 0.4)); p.rikt = -0.4 * mjuk((t - UPP_SLOTT + 0.3) / 0.5);
       if (t > KLAPP && t < KLAPP + 2.8) { const [, p2] = L.ROR.klappa(t - KLAPP); p = { ...p2, rikt: p.rikt * 0.5 }; } break; }
     case '23': [f, p] = nick(f, p, tl - (SVAR('23', 37) - r.s)); break;
-    case '24': [f, p] = vink(f, p, tl - 0.3, r.d + 5); break;
-    case '25': [f, p] = vink(f, p, tl + RR['24'].d - 0.3, RR['24'].d - 0.3 + r.d - 0.3); break;
   }
+  { const [a, b] = HEJDA(); [f, p] = vink(f, p, t - a, b - a, true); }
   // hoppen: hukar före, sträcker sig i luften, landar mjukt
   const sakP = { hall: p.hall, sakBett: p.sakBett };   // blandaPose bygger en ny pose utan saken i handen
+  for (const K of SKUTT) p = L.blandaPose(p, 'huka', 0.6 * bump(K.t0 - 0.2, K.t0 + 0.03, t, 0.12) + 0.4 * bump(K.t0 + K.d - 0.02, K.t0 + K.d + 0.2, t, 0.1));
   for (const H of HOPP) { p = L.blandaPose(p, 'huka', bump(H.t0 - 0.35, H.t0 + 0.05, t, 0.2) + 0.7 * bump(H.t1 - 0.02, H.t1 + 0.35, t, 0.15));
     if (t > H.t0 && t < H.t1) { p.strack = 0.03; p.armar = [p.armar[0] + 20, p.armar[1] + 20]; } }
   if (sakP.hall) p.hall = sakP.hall; if (sakP.sakBett) p.sakBett = sakP.sakBett;
@@ -338,8 +402,22 @@ async function ritaGroda(t) {
   const [f, p] = grodan(t);
   L.rita(G, f, p); L.sakRita(G, p);   // grodans uttryck.html ritar ingen sak själv (inget referensark än)
   $('dropparG').innerHTML = droppar;
+  // sjunka i dammen: figuren nedåt i kortet, vattenlinjen (lätt vågig) klipper det som är under
+  const sj = sjunk(t); $('figurer').setAttribute('transform', `translate(0 ${sj.toFixed(1)})`);
+  if (sj > 0.5) { const yw = FOT - VATTEN / ENHET; let d = `M-400 -400H1600V${yw}`;
+    for (let x = 1600; x > -400; x -= 100) d += `Q${x - 50} ${(yw + 9 * Math.sin(x * 0.03 + t * 2)).toFixed(1)} ${x - 100} ${yw}`;
+    $('vattenKant').setAttribute('d', d + 'Z'); } else $('vattenKant').setAttribute('d', 'M-400 -400H1600V2000H-400Z');
+  // huvudet: värmetecknen, vattendropparna och tungan som slickar glassen (mot kulan, räknat ur det sakRita just ritade)
+  let hu = varmTecken(t) + vattenDroppar(t); const e = tunga(t);
+  const ting = G.querySelector('.sak-plats[display="inline"] .sak-ting');
+  if (e > 0 && ting) { const hg = $('huvudG'), M = DOMMatrix.fromMatrix(hg.getCTM()).inverse().multiply(DOMMatrix.fromMatrix(ting.getCTM()));
+    const T = M.transformPoint(new DOMPoint(150, 95)), [mx, my] = window.HAND.mun, x = lerp(mx, T.x, e), y = lerp(my, T.y, e);
+    const cx = (mx + x) / 2, cy = Math.min(my, y) - 40 * e;
+    hu += `<path d="M${mx} ${my} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}" fill="none" stroke="#E2607F" stroke-width="26" stroke-linecap="round"/>`
+      + `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="17" fill="#F48FA8"/>`; }
+  $('huvudG').innerHTML = hu;
   // struten ur handen (rad 13): riggens sak döljs när 3D-struten tar över
-  const kon = t >= S('13') + 0.3;
+  const kon = t >= ATER()[2] + 0.55;
   G.querySelectorAll('.sak-plats image').forEach(im => { im.setAttribute('href', kon ? KON_URL : GLASS_URL); im.setAttribute('opacity', t < GLIDA[1] || t >= KON_UT ? 0 : 1); });
   // boil 2,5 px i bild och vit kant 3 px i bild, räknat mot 3D-kamerans skala (som lekrummet)
   const mitt = groda.position.clone().add(v3(0, 0.18, 0)), d = mitt.clone().sub(cam.position).dot(cam.getWorldDirection(v3())) || 3;
@@ -360,16 +438,21 @@ async function bildruta(t) {
   satt(PARM0 + (PARM1 - PARM0) * oppen);
   for (const k of [...ORDNING, SLOTTET, BLOMMOR_UPPE]) {
     let e = k.upp != null ? reser((t - k.upp) / 0.45) : 0;
-    if (k.ner != null) e *= 1 - mjuk((t - k.ner) / 0.45);
+    if (k.ner != null) e *= 1 - mjuk((t - k.ner) / 0.35);
     vik(k, e); if (k.flik) k.flik.visible = e > 0.6;   // kontaktskuggan bara när kortet står
     if (k.vaj !== undefined) k.m.rotation.z = 0.025 * Math.sin(t * 1.1 + k.vaj) * k01((t - k.upp - 0.45) / 0.5);
   }
-  BLOMMOR_UPPE.m.visible = t >= S('19'); BLOMMOR_UPPE.flik.visible &&= t >= S('19');
+  BLOMMOR_UPPE.m.visible = t >= S('19') && !BLOM; BLOMMOR_UPPE.flik.visible &&= t >= S('19');
   // blommorna skimrar: svagt 3 s in i letandet (rad 18), tydligt när de hittas
-  const sk0 = SVAR('18', 31) - 0.2 + 3.0, skim = t < S('19') ? 0.35 * k01((t - sk0) / 0.6) * (0.6 + 0.4 * Math.sin((t - sk0) * 5)) : bump(S('19') - 0.1, S('19') + 1.2, t, 0.3);
+  // blommorna studsar på sina färgord (rad 19b: röd, gul, lila, rosa) och alla lite på "Ja, där är blommorna!"
+  { const m = S('19b') + 0.4, a = m + LN(41) + 0.4, b = a + LN(42) + 0.4, ORD = [m + 0.15, a + 0.15, b + 0.55, b + 1.55];
+    BLOMS_K.forEach((k, i) => { const h = Math.max(bump(ORD[i] ?? -9, (ORD[i] ?? -9) + 0.5, t, 0.2), 0.5 * bump(S('19') + 0.2, S('19') + 0.75, t, 0.2));
+      k.m.position.y += 0.025 * h; k.m.scale.setScalar(1 + 0.12 * h); k.m.material.emissive.setScalar(0.015 * h); }); }   // svagt: emissive räknas linjärt och bleker färgen snabbt
+  const sk0 = S('18') + 0.3 + LN(40) + 2.0, skim = t < S('19') ? 0.35 * k01((t - sk0) / 0.6) * (0.6 + 0.4 * Math.sin((t - sk0) * 5)) : bump(S('19') - 0.1, S('19') + 1.2, t, 0.3);
   for (const m of [BLOMMOR_BAK.m.material, BLOMMOR_UPPE.m.material]) m.emissive.setScalar(0.22 * skim);
+  if (t < S('19b')) for (const k of BLOMS_K) k.m.material.emissive.setScalar(Math.max(k.m.material.emissive.r, 0.02 * skim));   // studsen satte värdet nyss
   // grodans kort: upp på rad 05 (pop 0,2 s in), ner först när boken stängs
-  vik(GRODKORT, reser((t - S('05') - 0.05) / 0.45) * (1 - mjuk((t - STANG - 0.3) / 0.45)));
+  vik(GRODKORT, reser((t - S('05') - 0.05) / 0.45) * (1 - mjuk((t - STANG - 0.25) / 0.35)));
   // solen: syns när fyllningen är klar, vrider sig sakta
   SOLEN.visible = t >= SOL_KLAR - 0.05; SOLEN.rotation.z = -0.15 * Math.max(0, t - SOL_KLAR);
   for (const k of MOLNEN) k.m.position.x = k.x + 0.012 * t * (k.i % 2 ? -1 : 1) * (1 + k.i * 0.3);
@@ -381,7 +464,7 @@ async function bildruta(t) {
   G0.m.visible = t >= GLASS_KLAR - 0.05 && t < GLIDA[1]; G0.flik.visible = G0.m.visible && t < GLIDA[0] && t > GLASS_UPP + 0.25;
   G0.m.rotation.x = -Math.PI / 2 * (1 - reser((t - GLASS_UPP) / 0.45)); G0.m.position.set(G0.x, G0.y, G0.z); G0.m.scale.setScalar(1);
   if (t >= GLIDA[0] && t < GLIDA[1]) {
-    const u = mjuk((t - GLIDA[0]) / (GLIDA[1] - GLIDA[0])), mal = fig2varld(window.HAND.l), sk = lerp(1, 0.5 * GLASS_I.height * ENHET / 0.24, u);
+    const u = mjuk((t - GLIDA[0]) / (GLIDA[1] - GLIDA[0])), mal = fig2varld(window.HAND.l), sk = lerp(1, 0.5 * GLASS_I.height * ENHET / G0.h, u);
     mal.y -= (414 - 300) * 0.5 * ENHET;   // greppet i handen, foten under
     G0.m.position.set(lerp(G0.x, mal.x, u), lerp(G0.y, mal.y, u) + 0.12 * Math.sin(Math.PI * u), lerp(G0.z, mal.z, u)); G0.m.scale.setScalar(sk);
   }
@@ -392,7 +475,9 @@ async function bildruta(t) {
     K.m.position.set(lerp(fran.x, mal.x, u), lerp(fran.y, mal.y, u) + 0.05 * Math.sin(Math.PI * u), lerp(fran.z, mal.z, u));
     K.m.rotation.x = Math.PI / 2 * mjuk((t - KON_UT - 0.8) / 0.4); }
   // vågkortet: upp på "plask", ner när grodan hoppat upp på bladet
-  VAGKORT.m.visible = t >= PLASK - 0.05 && t < UPPUR + 0.8; vik(VAGKORT, reser((t - PLASK + 0.05) / 0.45) * (1 - mjuk((t - UPPUR - 0.1) / 0.45)));
+  RINGAR.forEach((m, i) => { const u = ((t - PLASK - i * 0.45) % 1.6 + 1.6) % 1.6 / 1.6, pa = t >= PLASK + i * 0.45 && t < UPPUR; m.visible = pa;
+    m.scale.set(0.17 + 0.2 * u, 0.17 + 0.2 * u, 1); m.material.opacity = 0.75 * (1 - u); });
+  VAGKORT.m.visible = BAD !== 3 && t >= PLASK - 0.05 && t < UPPUR + 0.8; vik(VAGKORT, reser((t - PLASK + 0.05) / 0.45) * (1 - mjuk((t - UPPUR - 0.1) / 0.45)));
   // stänket: droppar i en båge runt grodan på "plask" (och ett litet när hon hoppar upp)
   const st = [[PLASK, 1], [HOPP[1].t0 + 0.05, 0.5]].find(([t0]) => t >= t0 && t < t0 + 1.1);
   STANK.visible = !!st;
@@ -407,8 +492,9 @@ async function bildruta(t) {
   // kritan och skimrets gnistor i #ov
   let ov = ritaKritan(t);
   const gn = (t0, mesh) => { const b = mesh.getWorldPosition(v3()); b.y += 0.36; const [x, y] = skarm(b); return gnistor(x, y, 120, t - t0, 4); };
-  if (t > sk0 && t < S('19')) ov += gn(sk0, BLOMMOR_BAK.m);
-  if (t >= S('19') && t < S('19') + 2.5) ov += gn(S('19'), BLOMMOR_UPPE.m);
+  const blomMitt = BLOM ? BLOMS_K[2].m : BLOMMOR_BAK.m;
+  if (t > sk0 && t < S('19')) ov += gn(sk0, blomMitt);
+  if (t >= S('19') && t < S('19') + 2.5) ov += gn(S('19'), BLOM ? blomMitt : BLOMMOR_UPPE.m);
   $('ov').innerHTML = ov;
   komp.render();
 }
@@ -418,21 +504,27 @@ const VY = {
   bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32],
   bred: () => [v3(0, 0.66, 1.75), v3(0, 0.36, -0.25), 32],
   himmel: () => { scen.updateMatrixWorld(true); const s = SOLEN.getWorldPosition(v3()); return [v3(s.x - 0.05, s.y - 0.12, s.z + 1.25), s, 30]; },
-  halv: g => [g.clone().add(v3(0.06, 0.26, 0.78)), g.clone().add(v3(0, 0.16, 0)), 30],
-  'halv-sol': g => [g.clone().add(v3(0.15, 0.12, 0.72)), g.clone().add(v3(0.06, 0.32, -0.4)), 32],
-  nara: g => [g.clone().add(v3(0.03, 0.3, 0.66)), g.clone().add(v3(0, 0.25, 0)), 28],
+  // runda 3 (Sanna 27/11 "move camera up a bit, zoom out a bit"): halvbilden högre och längre bort; halv, halv-sol och nära har
+  // samma fov, så att kameran kan glida mellan dem utan att bilden hoppar
+  halv: g => [g.clone().add(v3(0.06, 0.34, 0.98)), g.clone().add(v3(0, 0.17, 0)), 30],
+  'halv-sol': g => [g.clone().add(v3(0.15, 0.14, 0.8)), g.clone().add(v3(0.06, 0.32, -0.4)), 30],
+  nara: g => [g.clone().add(v3(0.03, 0.3, 0.61)), g.clone().add(v3(0, 0.25, 0)), 30],
   glass: () => [v3(-0.42, 0.75, 1.15), v3(-0.45, 0.16, 0.24), 30],   // glassteckningen och grodan i samma bild
   damm: () => [v3(0.12, 0.85, 1.55), v3(0.12, 0.06, 0.02), 32],
   hopp: () => [v3(-0.1, 0.72, 1.15), v3(-0.06, 0.12, 0.02), 34],   // högre, så att hinken inte skymmer
   buske: () => [v3(0.55, 0.45, 0.98), v3(0.74, 0.12, -0.08), 32],
   'buske-nara': () => [v3(0.95, 0.3, 0.55), v3(1.02, 0.22, -0.14), 28],
-  blommor: () => [v3(0.6, 0.4, 1.05), v3(0.82, 0.19, 0.08), 30],
-  'bad-nara': g => [g.clone().add(v3(0.03, 0.3, 0.82)), g.clone().add(v3(0, 0.22, 0)), 28],   // i badet: vågorna nederst i bild
-  'blommor-nara': () => [v3(0.64, 0.42, 1.0), v3(0.86, 0.24, 0.1), 28],
+  helhet: () => [v3(0.2, 0.75, 1.95), v3(0.2, 0.2, -0.1), 32],   // barnet letar blommorna: hela uppslaget i bild (Sanna 27/11 "show full scene")
+  slut: () => [v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), 32],   // boken stängs närmare (Sanna 27/11 "closer close book")
+  // blommorna ses snett från höger, så att uppslaget (inte bordet) är bakgrunden
+  blommor: () => BLOM ? [v3(0.86, 0.44, 1.2), v3(0.7, 0.17, -0.04), 30] : [v3(0.6, 0.4, 1.05), v3(0.82, 0.19, 0.08), 30],
+  'bad-nara': g => BAD === 1 ? [g.clone().add(v3(0.03, 0.3, 0.82)), g.clone().add(v3(0, 0.22, 0)), 28] : [g.clone().add(v3(0.05, 0.36, 1.05)), g.clone().add(v3(0, 0.14, 0)), 30],   // i badet: vågorna nederst i bild
+  'blommor-nara': () => BLOM ? [v3(1.08, 0.34, 0.97), v3(0.84, 0.15, 0.1), 28] : [v3(0.64, 0.42, 1.0), v3(0.86, 0.24, 0.1), 28],
   sand: () => [v3(0.45, 0.6, 1.6), v3(0.62, 0.16, 0.3), 32],
-  hejda: g => [g.clone().add(v3(0.22, 0.34, 0.95)), g.clone().add(v3(-0.2, 0.2, -0.3)), 32],
+  hejda: g => [g.clone().add(v3(-0.1, 0.3, 0.82)), g.clone().add(v3(0.02, 0.2, -0.2)), 32],   // närmare, så att vinkningen syns
 };
-const ALIAS = { halv2: 'halv', nara2: 'nara', nara3: 'nara', logga: 'bord' };
+if (STOR < 1) for (const [n, f] of Object.entries(VY)) if (!['bord', 'slut', 'himmel'].includes(n)) VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(1.12)), mal, fov]; };
+const ALIAS = { halv2: 'halv', nara2: 'nara', nara3: 'nara', logga: 'bord', 'buske-nara': 'helhet' };
 const lage = (pos, mal, P) => [Math.atan2(pos.x - P[0], pos.z - P[2]) * 180 / Math.PI, Math.hypot(pos.x - P[0], pos.z - P[2]), pos.y - P[1], mal.x - P[0], mal.y - P[1]];
 const fran3 = (l, P) => { const a = l[0] * Math.PI / 180; return [v3(P[0] + l[1] * Math.sin(a), P[1] + l[2], P[2] + l[1] * Math.cos(a)), v3(P[0] + l[3], P[1] + l[4], P[2])]; };
 const skjut = l => [l[0] + 1.2, l[1] * 0.965, l[2] * 0.985, l[3], l[4]];   // svag push in i varje vy
@@ -445,29 +537,38 @@ function vy(t, namn, g, o = {}) {
   const fran = o.fran || lage(pos, mal, P);
   VYER.push({ t, mot: key, fran, till: o.till || skjut(fran), fov, mal: o.mal || mal, blur: blurFor(namn) });
 }
+// mjuka byten (Sanna 27/11 "more smooth camera shots"): i stället för ett klipp glider kameran från förra vyns läge till nästa vy
+const GLID = { '05': [-1.0, 1.6], '06': [0, 1.0], '07': [0, 1.1] };   // [start rel. radens början, längd]
+function glid(t0, d, namn, g) {
+  const f = VYER.at(-1), [p0, m0] = fran3(f.till ?? f.fran, platser[f.mot]), [pos, mal, fov] = VY[namn](g); pos.y += 0.09;
+  const P = [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
+  VYER.push({ t: t0, mot: key, fran: lage(p0, m0, P), till: lage(pos, mal, P), fov, mal, blur: blurFor(namn), rorelse: 'glid' });
+  vy(t0 + d, namn, g);
+}
 const P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0), bredL = lage(...VY.bred().slice(0, 2), P0);
 let forra = '';
 for (const r of RAD) {
   let namn = r.id === '15' ? 'hopp' : ALIAS[r.st.vy] || r.st.vy; if (namn === 'nara' && r.st.blad === 'bad') namn = 'bad-nara';
   const bp = BLADPOS[r.st.blad], g = v3(bp[0], SIDA, bp[1]), key = namn + r.st.blad;
-  if (r.id === '01a') { vy(r.s, 'bord', g, { P: P0, fran: bordL, till: skjut(bordL), mal: v3(0, 0.25, -0.1) }); forra = 'bord'; continue; }
+  // introt: kameran driver lugnt runt och in mot boken redan medan den är stängd (Sanna 27/11 "slight camera movement, faster intro")
+  if (r.id === '01a') { vy(r.s, 'bord', g, { P: P0, fran: [bordL[0] - 7, bordL[1] * 1.07, bordL[2] * 1.05, bordL[3], bordL[4]], till: bordL, mal: v3(0, 0.25, -0.1) }); forra = 'bord'; continue; }
   if (r.id === '01b') { const t0 = r.s + 0.9;   // en lång lugn glidning in i boken (ca 4 s), sedan står kameran och andas
     VYER.at(-1).till = bordL; vy(t0, 'bred', g, { P: P0, fran: bordL, till: bredL, mal: v3(0, 0.36, -0.25) });
     vy(S('02') + 1.0, 'bred', g, { P: P0, fran: bredL, till: skjut(bredL), mal: v3(0, 0.36, -0.25) }); forra = 'bred1'; continue; }
   if (r.id === '02') continue;
   if (r.id === '26') {   // ut ur boken: från förra vyns slut till bordet, medan korten fälls ner och pärmen slås igen
     const f = VYER.at(-1), [pos, mal] = fran3(f.till, platser[f.mot]);
-    VYER.push({ t: r.s + 0.2, mot: 'pBord', fran: lage(pos, mal, P0), till: bordL, fov: 32, mal: v3(0, 0.25, -0.1), blur: 0.003, rorelse: 'glid' }); platser.pBord = P0; continue; }
+    VYER.push({ t: r.s + 0.1, mot: 'pBord', fran: lage(pos, mal, P0), till: lage(...VY.slut().slice(0, 2), P0), fov: 32, mal: v3(0, 0.2, -0.1), blur: 0.003, rorelse: 'glid' }); platser.pBord = P0; continue; }
   if (key === forra) continue; forra = key;
-  vy(r.s, namn, g);
+  if (GLID[r.id]) glid(r.s + GLID[r.id][0], GLID[r.id][1], namn, g); else vy(r.s, namn, g);
 }
-vy(HOPP[1].t0 - 0.45, 'damm', v3(...BLADPOS.bad));   // klipp till dammen när grodan hoppar upp ur vattnet
+vy(HOPP[1].t0 - 0.05, 'damm', v3(...BLADPOS.bad));   // klipp till dammen när grodan hoppar upp ur vattnet (0,4 s senare än runda 3, så att grodans kvak inte klipps av)
 VYER.sort((a, b) => a.t - b.t);
 const plan = kameraplan({ cam, canvas: $('bild'), platser, vyer: VYER, langd: DURATION });
 
 // ---- ljudet: Malin, grodan och effekterna ur rader.json, kritans ritljud som slinga, skogen lågt under allt ----
 const EF = 'assets/ljud/effekter/';
-const VOL = f => /kvak|suck|fniss|oj-oj|hejda/.test(f) ? 1.4 : /(glitter|tindra|glimt)/.test(f) ? 0.85 : /prassel-tyg/.test(f) ? 0.9 : /(pop|swoosh|hopp-mjuk|landa-mjuk)/.test(f) ? 0.7 : 1.0;
+const VOL = f => /groda-/.test(f) ? 2.8 : /kvak|suck|fniss|oj-oj|hejda/.test(f) ? 1.4 : /(glitter|tindra|glimt)/.test(f) ? 0.85 : /prassel-tyg/.test(f) ? 0.9 : /(pop|swoosh|hopp-mjuk|landa-mjuk)/.test(f) ? 0.7 : 1.0;
 const LJUD = [];
 for (const r of RAD) {
   for (const [n, o] of r.malin || []) LJUD.push({ t: r.s + o, fil: `assets/ljud/roster/sommaren-i-boken/${ROST[n - 1][0]}.m4a`, vol: 2.5 });

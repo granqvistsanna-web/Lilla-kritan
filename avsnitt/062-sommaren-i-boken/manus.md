@@ -72,10 +72,10 @@ Lilla Kritans logotyp 1 s, sedan skrivbordet med den stängda boken. Inget kort 
 | 15 | Halvbild: grodan hoppar till nästa blad, vattnet stänker på *"plask"* | Hopp … plask! | `hopp-mjuk`, `plask`, `droppar` |
 | 15b | Närbild, droppar faller på grodan, hon blundar glatt | Ah, vad skönt! | glatt kvak |
 | 16 ✱ | Närbild, grodan sval och glad, droppar glittrar | Nu är du sval och glad! *(paus: förtjust kvak)* | förtjust kvak |
-| 17 | Halvbild, grodan tittar runt. Bakom busken bredvid dammen sticker blommornas toppar fram, bara lite | Vad mer finns på sommaren? Blommor! | frågande kvak |
-| 17b | Samma, grodan tittar framåt, sedan åt vänster och höger | Var är blommorna? | frågande kvak |
-| 18 | Bred bild över dammen. Efter ca 2 s klipp till närbild på busken: blommornas toppar sticker fram. De skimrar svagt efter 3 s | Kan du hjälpa grodan att hitta blommor? *(paus 5 s)* | tyst, `glimt-2` svagt när skimret börjar |
-| 19 | Topparna skimrar tydligt, och blommornas kort fälls upp framför busken. Klipp till grodan, glad | Ja, där är blommorna! | `glimt`, `pop`, förtjust kvak |
+| 17 | Halvbild, grodan tittar runt. Fyra blommor (röd, gul, lila, rosa) står i en rad vid stranden, synliga från början | Vad mer finns på sommaren? | frågande kvak |
+| 18 | Hela uppslaget. Barnet tittar (3 s), blommorna skimrar svagt efter 2 s | Ser du några blommor? *(paus 3 s)* | tyst, `glimt-2` svagt |
+| 19 | Närbild på blommorna, de studsar lite. Grodan glad | Ja, där är blommorna! | `glimt`, förtjust kvak |
+| 19b | Samma. Varje blomma studsar och glimtar på sitt färgord | En röd blomma! En gul blomma! Och en lila och en rosa! | `glimt` per blomma |
 | 20 | Halvbild: grodan hoppar till stranden bredvid blommorna och tittar på dem | Vad fina! | `hopp-mjuk`, mysigt kvak |
 | 21 | Närbild, grodan lutar sig mot blommorna, blundar och luktar | Mmm … vad gott de luktar. | mysig suck |
 | 22 | Halvbild: sandslottets kort fälls upp på *"sandslott"*, hinken bredvid. Grodan klappar glatt | Och sand! Titta, ett sandslott! | `pop`, `klapp`, fniss-kvak |
@@ -121,10 +121,11 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy sigh] Ah, vad skönt!
 [happy] Nu är du sval och glad!
 [curious] Vad mer finns på sommaren?
-[happy] Blommor!
-[curious] Var är blommorna?
-[warmly] Kan du hjälpa grodan att hitta blommor?
+[curious] Ser du några blommor?
 [happy] Ja, där är blommorna!
+[happy] En röd blomma!
+[happy] En gul blomma!
+[warmly] Och en lila och en rosa!
 [happy] Vad fina!
 [happy sigh] Mmm … vad gott de luktar.
 [happy] Och sand!
@@ -135,6 +136,8 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 ```
 
 **Tagning 1 (Sanna 2026-11-27), längder efter normalisering (blir `ROST` i `rader.mjs`):** 01 1,69 · 02 2,25 · 03 2,79 · 04 1,46 · 05 1,69 · 06 1,49 · 07 1,62 · 08 1,01 · 09 2,01 · 10 2,32 · 11 2,34 · 12 1,21 · 13 1,50 · 14 2,09 · 15 2,23 · 16 1,00 · 17 2,73 · 18 1,53 · 19 2,66 · 20 1,98 · 21 1,44 · 22 2,83 · 23 1,42 · 24 1,31 · 25 1,27 · 26 1,49 · 27 1,59 · 28 1,41 · 29 0,83 · 30 0,83 · 31 1,86 · 32 1,29 · 33 0,93 · 34 2,05 · 35 0,82 · 36 1,70 · 37 1,83 · 38 2,14 · 39 2,51 s
+
+**Runda 4 (Sanna 2026-11-27):** blommorna gömmer sig inte längre. Malin frågar *"Ser du några blommor?"* och säger färgerna. Replikerna 29–31 (*"Blommor!"*, *"Var är blommorna?"*, *"Kan du hjälpa grodan att hitta blommor?"*) används inte. Tagning 2 (ElevenLabs v3, Natural, `produktion/ljud-original/roster/062/malin-tagning-2a.mp3`, 43 ur 2b där 2a klipptes av i "rosa"): 40 1,36 · 41 1,20 · 42 1,19 · 43 2,63 s. Enskilda blommor ur `rekvisita/blomma-rod`, `blommor-gula`, `blomma-rosa` (lila, rosa) och lövträd (`skogen-saker/trad.png`, `lekplatsen-saker/appeltrad.png`, `rekvisita/ek`) bland granarna.
 
 38 rader. Inga tomma medhåll (*"Ja, det är du"*, *"Ja, det tycker jag också"*, Sanna 2026-11-27): Malins reaktion säger något nytt. Ord som mäts per tagning: *"plask"* i 25, 27 och 31 (`PLASK`), *"Mums"* i 17, *"Blommor"* i 33 och *"sandslott"* i 35 (korten fälls upp på orden).
 

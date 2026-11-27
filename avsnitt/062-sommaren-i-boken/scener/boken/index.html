@@ -25,7 +25,9 @@
       <feDisplacementMap id="boilStyrka" in="SourceGraphic" scale="2.5"/>
     </filter>
   </defs>
-  <g filter="url(#boil)"><g id="figurer"></g></g>
+  <!-- vattnet (Sanna 27/11 "cant frog sink in to the damm?"): det som sjunkit under vattenlinjen ritas inte, vågkortet döljer kanten -->
+  <clipPath id="vatten" clipPathUnits="userSpaceOnUse"><path id="vattenKant" d="M-400 -400H1600V2000H-400Z"/></clipPath>
+  <g filter="url(#boil)" clip-path="url(#vatten)"><g id="figurer"></g></g>
 </svg>
 <canvas id="bild"></canvas>
 <div id="vinjett"></div>
