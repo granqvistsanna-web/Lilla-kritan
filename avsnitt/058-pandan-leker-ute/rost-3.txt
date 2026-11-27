@@ -1,0 +1,18 @@
+03b-vilken-farg-gunganden  [curious] Vilken färg har gunganden?
+03c-gul-gungand  [happy] Gul! En gul gungand.
+04b-roligt-att-du-kom-ut  [warmly] Vad roligt att du kom ut, pandan!
+09b-vill-du-gunga  [curious] Vill du gunga på gunganden?
+09c-inte-nu-okej  [gently] Inte nu? Okej.
+09d-vill-du-leka-i-sandladan  [curious] Vill du leka i sandlådan?
+09e-inte-det-heller  [gently] Inte det heller.
+14b-vilken-farg-bollen  [curious] Vilken färg har bollen?
+14c-rod-boll-gula-rander  [happy] Röd! En röd boll med gula ränder.
+16b-gung-gung-bollen  [playfully] Gung, gung, bollen!
+16c-vill-du-ocksa-gunga  [curious] Vill du också gunga, pandan?
+16d-sen-forst-bollen  [warmly] Sen! Först leker vi med bollen.
+19b-full-av-sand  [laughs] Oj, bollen är full av sand!
+20b-ser-du-bollen  [curious] Ser du bollen, pandan? Ja, där är den!
+45b-nu-far-pandan-gunga  [happy] Nu får pandan gunga!
+46b-kul-att-gunga  [curious] Är det kul att gunga, pandan?
+46c-vad-mysigt  [happy] Vad mysigt!
+49b-hej-da-gunganden  [happy] Hej då, gunganden!

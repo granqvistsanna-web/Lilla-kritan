@@ -1,23 +1,37 @@
 01-kritan-ritar  [warmly] Kritan ritar …
 02-vad-blir-det  [curious] Hm … vad blir det nu?
 03-oj-en-gungand  [happy] Oj! En gungand!
+03b-vilken-farg-gunganden  [curious] Vilken färg har gunganden?
+03c-gul-gungand  [happy] Gul! En gul gungand.
 04-hej-pandan  [happy] Hej, pandan! Hej, hej!
+04b-roligt-att-du-kom-ut  [warmly] Vad roligt att du kom ut, pandan!
 05-vill-du-leka-ute  [cheerfully] Vill du leka ute, pandan?
 06-vad-kul-nu-leker-vi  [happy] Ja, vad kul! Nu leker vi!
 07-vad-sager-du  [curious] Vad säger du, pandan?
 08-inget-att-leka-med  [gently] Har du inget att leka med?
 09-massor-av-saker  [curious] Hm … det finns ju massor av saker på lekplatsen.
-10-naha-oj-da  [gently] Men inget som är roligt? Nähä. Oj då.
+09b-vill-du-gunga  [curious] Vill du gunga på gunganden?
+09c-inte-nu-okej  [gently] Inte nu? Okej.
+09d-vill-du-leka-i-sandladan  [curious] Vill du leka i sandlådan?
+09e-inte-det-heller  [gently] Inte det heller.
+10-naha-oj-da  [gently] Nähä. Oj då.
 11-vad-ska-pandan-leka-med  [curious] Hm … vad ska pandan leka med?
 12-kritan-ritar-nagot  [happy] Titta! Kritan ritar något på marken.
 13-en-boll  [happy] En boll! Varsågod, pandan.
 14-tack-kritan  [happy] Tack, kritan!
+14b-vilken-farg-bollen  [curious] Vilken färg har bollen?
+14c-rod-boll-gula-rander  [happy] Röd! En röd boll med gula ränder.
 15-puffar-pa-bollen  [surprised] Oj! Du puffar på bollen med tassen!
 16-bollen-gungar  [laughs] Oj! Bollen gungar på gunganden!
+16b-gung-gung-bollen  [playfully] Gung, gung, bollen!
+16c-vill-du-ocksa-gunga  [curious] Vill du också gunga, pandan?
+16d-sen-forst-bollen  [warmly] Sen! Först leker vi med bollen.
 17-ska-bollen-rulla  [cheerfully] Ska bollen rulla nu, pandan?
 18-ja-bra-ide  [happy] Ja, bra idé!
 19-i-sandladan  [happy] Bollen rullar. Rulla, rulla … där! I sandlådan.
+19b-full-av-sand  [laughs] Oj, bollen är full av sand!
 20-bakom-gunganden  [happy] Rulla, rulla … där! Bakom gunganden.
+20b-ser-du-bollen  [curious] Ser du bollen, pandan? Ja, där är den!
 21-bollen-ar-borta  [curious] Oj, nu är bollen borta. Pandan vet inte var bollen är.
 22-kan-du-hjalpa  [warmly] Kan du hjälpa pandan? Kan du se var bollen är?
 23-bakom-tradet  [happy] Ja, där! Bakom trädet!
@@ -43,8 +57,12 @@
 43-rakt-ner-i-hinken  [happy] Där kommer bollen! Rakt ner i hinken!
 44-ska-du-smaka  [cheerfully] Ska du smaka på äpplet, pandan?
 45-mums-vad-gott  [happy] Mums! Vad gott!
+45b-nu-far-pandan-gunga  [happy] Nu får pandan gunga!
 46-nu-gungar-pandan  [warmly] Nu gungar pandan. Gung … gung …
+46b-kul-att-gunga  [curious] Är det kul att gunga, pandan?
+46c-vad-mysigt  [happy] Vad mysigt!
 47-var-det-roligt  [warmly] Var det roligt att leka ute?
 48-ja-det-tyckte-jag  [happy] Ja, det tyckte jag också!
 49-hej-da-pandan  [happy] Hej då, pandan! Hej då, bollen!
+49b-hej-da-gunganden  [happy] Hej då, gunganden!
 50-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
