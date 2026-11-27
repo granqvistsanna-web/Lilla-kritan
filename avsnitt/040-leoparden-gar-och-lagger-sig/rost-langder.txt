@@ -18,7 +18,7 @@
 18-borstar-tander 1.26
 19-visa-tanderna 1.30
 20-borsta-rent 1.85
-21-borsta-2 0.99
+21-borsta-2 1.13
 22-redan-klar 1.57
 23-lite-till 2.64
 24-sadar-ja 1.85

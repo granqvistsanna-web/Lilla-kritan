@@ -21,7 +21,6 @@
     </filter>
     <filter id="kranKorn" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .5  0 0 0 0 .56  0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/><feMerge><feMergeNode in="SourceGraphic"/><feMergeNode/></feMerge></filter>
     <filter id="fjader" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
-    <clipPath id="tubkropp"><rect width="386" height="594"/></clipPath><clipPath id="tubkork"><rect y="594" width="386" height="147"/></clipPath>
     <!-- J03 "polish the sink tap": svansen (en del av kroppsbilden, x > 790, y > 640 i riggens ruta) klipps bort bakom handfatet, annars trasslar den in sig i kranen -->
     <clipPath id="utanSvans" clipPathUnits="userSpaceOnUse"><path id="utanSvansP" d="M-600 -600H1700V640H790V1700H-600Z"/></clipPath>
     <!-- J03 runda 5: saker som stiger upp bakom handfatets läpp syns bara ovanför den (höjden sätts i badrum()) -->
@@ -31,6 +30,7 @@
     <radialGradient id="nattsken"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".55"/><stop offset=".45" stop-color="#FFD27A" stop-opacity=".18"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient>
     <radialGradient id="rumsken"><stop offset="0" stop-color="#FFD98A" stop-opacity=".55"/><stop offset=".5" stop-color="#FFC27A" stop-opacity=".15"/><stop offset="1" stop-color="#FFC27A" stop-opacity="0"/></radialGradient>
     <radialGradient id="manesken"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".45"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>
+    <radialGradient id="nattgrad" gradientUnits="userSpaceOnUse" cx="1000" cy="720" r="1000"><stop offset="0" stop-color="#B8C6F0"/><stop offset=".55" stop-color="#4062C8"/><stop offset="1" stop-color="#2341B0"/></radialGradient>
     <linearGradient id="kvall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2E5E"/><stop offset="1" stop-color="#40598F"/></linearGradient>
     <mask id="glas" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><image href="/assets/bakgrunder/rosa-sovrummet/fonster-mask.png" width="1920" height="1080" preserveAspectRatio="xMidYMid slice"/></mask>
     <g id="snodefs"></g>
@@ -64,6 +64,7 @@
 </svg>
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
 <script src="/produktion/rum/sno.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/nalle-v2.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
@@ -73,7 +74,6 @@ const A = '/assets/', R = A + 'rekvisita/', NS = 'http://www.w3.org/2000/svg';
 const KL = '/avsnitt/040-leoparden-gar-och-lagger-sig/klader-lager/';
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const bild = (href, w, h, t, extra = '') => `<image href="${href}" width="${w}" height="${h}" transform="${t}" ${extra}/>`;
-const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
 const SKJORTA = { fil: R + 'pyjamasskjorta/cut/pyjamasskjorta.png', w: 876, h: 736 };
 const STJ = { fil: R + 'adventsstjarna/cut/adventsstjarna.png', w: 766, h: 874, mitt: [383, 470] };
 let KONTUR = {};
@@ -82,7 +82,9 @@ let L, G, GS = 0.55;                                 // riggen, leopardens grupp
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
 
 // --- Kameran: zoom 1 = hela plattan; visar aldrig utanför bakgrunden -------------------------------------------------------
+let ZOOM = 1;
 function kamera(zoom = 1, cx = 960, cy = 540) {
+  ZOOM = zoom;
   const tx = Math.max(1920 - 1920 * zoom, Math.min(0, 960 - cx * zoom)), ty = Math.max(1080 - 1080 * zoom, Math.min(0, 540 - cy * zoom));
   $('kamera').setAttribute('transform', `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) scale(${zoom})`);
   $('brus').nextElementSibling.setAttribute('scale', (2.5 / zoom).toFixed(2)); $('brus').setAttribute('seed', 1 + Math.floor(TT * 6) % 50);   // line boil 2,5 px i bild, ny brusbild 6 gånger/s (CLAUDE.md)
@@ -100,37 +102,43 @@ const pilar = () => {};   // rörelsepilarna finns bara i storyboarden
 const nickpil = (x, y, s = 5) => pilar(bagpil(x + 40, y - 30, x + 70, y + 10, x + 40, y + 50, s), bagpil(x + 70, y + 50, x + 100, y + 10, x + 70, y - 30, s));
 const skakpil = (x, y, s = 5) => pilar(pil(`M${x - 80} ${y} Q${x} ${y - 36} ${x + 80} ${y}`, x + 80, y, 0.6, s), pil(`M${x + 80} ${y + 22} Q${x} ${y - 14} ${x - 80} ${y + 22}`, x - 80, y + 22, Math.PI - 0.6, s));
 const text = (x, y, t, s = 34) => lagg('fram', `<text x="${x}" y="${y}" style="font:800 ${s}px Fredoka,system-ui;fill:#7b2cbf">${t}</text>`);
-const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
-function kontur(namn, t, k, bredd, farg = '#9a8a7a') {   // en kontur (json ur verktyg/kontur.py) ritad till andelen k; returnerar kritans spets
-  lagg('pilar', `<g transform="${t}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${bredd}"
-    stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k} 2"/></g>`);
-  const p = $('k-' + namn), q = p.getPointAtLength(p.getTotalLength() * Math.min(0.999, k)), sm = $('kamera').getCTM().inverse().multiply(p.getCTM());
-  const pt = new DOMPoint(q.x, q.y).matrixTransform(sm); return [pt.x, pt.y];
-}
-// adventsstjärnan med mitten i (x, y), skala s: k = konturen (0–1), fyll = ifyllnaden inifrån (0–1), tand = skenet (0–1)
-// J03: snöret ritas av kritan EFTER stjärnans kontur (sn 0–1, nerifrån och upp, i konturens färg) och blir det riktiga snöret när stjärnan fylls:
-// ett tvinnat rött och vitt snöre med en guldnål i valvet och en liten guldögla i stjärnans udd. På natten (NATT > 0) ligger stjärnan och
-// ett större sken ovanför nattens mörker, så att den lyser starkare (J03 "more glow from star").
-function stjarna(x, y, s, { k = 1, fyll = 1, tand = 1, sn = 1, lager = 'saker', snore = y > 200 && y < 500 && x < 800 && s < 0.5 } = {}) {
+// adventsstjärnan med mitten i (x, y), skala s: fyll = ifyllnaden inifrån (0–1, kritan-ritar.js fyllMask), tand = skenet (0–1),
+// rit = kritans linje (ritBana i bildens pixlar) som tonas bort medan stjärnan fylls. Snöret (i fönstret) är det sista kritstrecket
+// och blir det riktiga snöret när stjärnan fylls: ett tvinnat rött och vitt snöre med en guldnål i valvet och en liten guldögla i
+// stjärnans udd. På natten (NATT > 0) ligger stjärnan och ett större sken ovanför nattens mörker, så att den lyser starkare.
+const iFonster = (x, y, s) => y > 200 && y < 500 && x < 800 && s < 0.5;
+function stjarna(x, y, s, { fyll = 1, tand = 1, rit = null, lager = 'saker', snore = iFonster(x, y, s) } = {}) {
   const t = `translate(${x - STJ.mitt[0] * s} ${y - STJ.mitt[1] * s}) scale(${s})`;
   if (NATT > 0 && lager === 'saker') lager = 'natt';
   if (tand > 0) lagg('bak', `<circle cx="${x}" cy="${y}" r="${520 * s * (0.6 + 0.4 * tand)}" fill="url(#sken)" opacity="${tand}"/>`);
   if (tand > 0 && NATT > 0) { const p = 1 + 0.06 * Math.sin(TT * 1.4);
     lagg('natt', `<g style="mix-blend-mode:screen" opacity="${(tand * NATT).toFixed(2)}"><circle cx="${x}" cy="${y}" r="${(1250 * s * p).toFixed(1)}" fill="url(#nattsken)"/>
       <circle cx="${x}" cy="${y}" r="${(560 * s * p).toFixed(1)}" fill="url(#sken)" opacity=".9"/></g>`); }
-  let spets = null;
-  if (snore && (k >= 1 || fyll > 0)) { const y1 = y - (STJ.mitt[1] - 30) * s, y0 = FON.y0 + 6, d = `M${x} ${y1} Q${x + 5} ${(y0 + y1) / 2} ${x} ${y0}`;
-    if (fyll < 1 && sn > 0) lagg('bak', `<path d="${d}" pathLength="1" fill="none" stroke="#9a8a7a" stroke-width="5" stroke-linecap="round" stroke-dasharray="${sn.toFixed(3)} 2" opacity="${(1 - fyll).toFixed(2)}"/>`);
-    if (fyll > 0) lagg('bak', `<g opacity="${fyll.toFixed(2)}"><path d="${d}" fill="none" stroke="#fff" stroke-width="7.5" stroke-linecap="round" opacity=".9"/>
+  if (snore && fyll > 0) { const y1 = y - (STJ.mitt[1] - 30) * s, y0 = FON.y0 + 6, d = `M${x} ${y1} Q${x + 5} ${(y0 + y1) / 2} ${x} ${y0}`;
+    lagg('bak', `<g opacity="${fyll.toFixed(2)}"><path d="${d}" fill="none" stroke="#fff" stroke-width="7.5" stroke-linecap="round" opacity=".9"/>
       <path d="${d}" fill="none" stroke="#c8323a" stroke-width="4" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#fff4e4" stroke-width="4" stroke-dasharray="4 5"/>
       <circle cx="${x}" cy="${y1 + 3}" r="5" fill="none" stroke="#E2B84F" stroke-width="3"/>
-      <circle cx="${x}" cy="${y0}" r="7.5" fill="#E2B84F" stroke="#fff" stroke-width="2.5"/><circle cx="${x - 2.2}" cy="${y0 - 2.2}" r="2.2" fill="#fff8d8"/></g>`);
-    if (fyll === 0 && sn < 1) spets = [x + 4 * Math.sin(Math.PI * sn), lerp(y1, y0, sn)]; }
-  if (fyll > 0) lagg(lager, `<g transform="${t}"><clipPath id="sf${x | 0}"><circle cx="${STJ.mitt[0]}" cy="${STJ.mitt[1]}" r="${560 * fyll}"/></clipPath>
-    <image href="${STJ.fil}" width="${STJ.w}" height="${STJ.h}" clip-path="url(#sf${x | 0})"/></g>`);
-  if (fyll < 1 && k > 0) { const sp = kontur('stjarna', t, k, 10 / s); return k >= 1 && spets ? spets : sp; }
-  return null;
+      <circle cx="${x}" cy="${y0}" r="7.5" fill="#E2B84F" stroke="#fff" stroke-width="2.5"/><circle cx="${x - 2.2}" cy="${y0 - 2.2}" r="2.2" fill="#fff8d8"/></g>`); }
+  if (fyll > 0) lagg(lager, `<g transform="${t}">${fyll < 1 ? fyllMask(`sf${x | 0}`, STJ.mitt[0], STJ.mitt[1], 560, fyll) : ''}
+    <image href="${STJ.fil}" width="${STJ.w}" height="${STJ.h}" ${fyll < 1 ? `clip-path="url(#sf${x | 0})"` : ''}/></g>`);
+  if (rit && fyll < 1) lagg('pilar', `<g transform="${t}" opacity="${linjeOpacitet(fyll).toFixed(3)}">${rit.html}</g>`);
 }
+// Kritan ritar stjärnan (skillen kritan-ritar, verktyg/kritan-ritar.js): konturen i ett drag, en kort vila, sedan fyra detaljstreck,
+// de stora hålen i ringen (uppe, höger, nere, vänster; mätta i bilden), och i fönstret sist snöret uppåt till valvet.
+// T = kritans faser i filmens sekunder, [x, y, s] = stjärnans mitt och skala, bredd = linjens bredd i bild, vanta = väntplatsen.
+const STJ_HAL = [[382, 335], [542, 490], [382, 645], [222, 490]].map(([x, y]) => `M${x} ${y - 18} A18 18 0 1 1 ${x - 0.1} ${y - 18}`);
+function ritStjarna(T, [x, y, s], bredd, { fyll = 0, tand = 0, vanta, ks = kritaSkala(ZOOM), farg = KRITAN.LINJE }) {
+  const snore = iFonster(x, y, s) ? [`M382 30 Q403 ${((30 + (FON.y0 + 6 - y) / s + STJ.mitt[1]) / 2).toFixed(1)} 382 ${((FON.y0 + 6 - y) / s + STJ.mitt[1]).toFixed(1)}`] : [];
+  const k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0]));
+  const R = ritBana([KONTUR.stjarna.d, ...STJ_HAL, ...snore], k, { vila: [0.5],
+    attr: `fill="none" stroke="${farg}" stroke-width="${(bredd / s).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"` });
+  stjarna(x, y, s, { fyll, tand, rit: TT >= T.rit[0] ? R : null });
+  const sc = ([px, py]) => [x + (px - STJ.mitt[0]) * s, y + (py - STJ.mitt[1]) * s];
+  const kr = kritaFas(TT, T, { start: sc(R.start), spets: sc(R.spets), slut: sc(R.slut), vanta, s: ks });
+  if (kr) lagg('pilar', kritaBild(kr.x, kr.y, kr));
+}
+// gnistorna på svaret, i stjärnans storlek (gnistor() är gjord för en sak på ca 0,85 av helbilden)
+const stjGnistor = (x, y, s, t) => lagg('pilar', `<g transform="translate(${x} ${y}) scale(${(s / 0.85).toFixed(3)}) translate(${-x} ${-y})">${gnistor(x, y, 330, t)}</g>`);
 // Papperet fyller hela bilden med kritkorn, ingen pappersskant (Sanna 2026-11-18: "match other videos", som 039:s papper2).
 const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
 
@@ -252,23 +260,20 @@ function badrum({ skjortaPaKrok = true, skjortaVrid = 0, glasPa = true } = {}) {
   $('kar').innerHTML = `<ellipse cx="${HX}" cy="${GOLV_B + 4}" rx="${HANDFAT.W * 0.3}" ry="14" fill="#000" opacity="0.07"/>`
     + `<image href="${HANDFAT.bild}" x="${HX - HANDFAT.W / 2}" y="${RIM - HANDFAT.kantY}" width="${HANDFAT.W}" height="${HANDFAT.H + HANDFAT.kantY}" preserveAspectRatio="xMidYMax meet"/>` + kranSvg();
 }
-const BORSTE = '/avsnitt/040-leoparden-gar-och-lagger-sig/saker/tandborste-jul-utan-kvist.png', GLAS = R + 'mjolkglas/cut/mjolkglas-v2-tomt.png', TUB = R + 'tandkramen/cut/tandkramen.png';
+const BORSTE = '/avsnitt/040-leoparden-gar-och-lagger-sig/saker/tandborste-jul-utan-kvist.png', GLAS = R + 'mjolkglas/cut/mjolkglas-v2-tomt.png';
 const glasSvg = () => `<path d="M64 232 L602 232 L546 852 L118 852Z" fill="#8fd3ef" opacity=".55"/><image href="${GLAS}" width="665" height="901"/>
   <path d="M84 236 Q330 252 584 236" fill="none" stroke="#fff" stroke-width="10" opacity=".8" stroke-linecap="round"/><path d="M110 300 L150 780" stroke="#fff" stroke-width="16" opacity=".45" stroke-linecap="round"/>`;
 const GLAS_P = [HX - 135, RIM - 2, 0.125];               // vattenglaset bredvid muggen på läppen [mitt x, botten, skala]
 const glasS = (x = GLAS_P[0], y = GLAS_P[1], s = GLAS_P[2]) => `<g transform="translate(${x} ${y}) scale(${s}) translate(-332 -895)">${glasSvg()}</g>`;
 const glas = (...a) => lagg('saker', glasS(...a));
-// tandkrämstuben (rekvisita/tandkramen, 386 × 741, står på korken; korken = y 594 och nedåt, som 038): x, y = öppningen, v = lutning, sx = klämd
-const tub = (x, y, { v = 0, sx = 1, s = 0.2, korkPa = false } = {}) => lagg('fram', korkPa
-  ? `<g transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-193 -741)"><image href="${TUB}" width="386" height="741"/></g>`
-  : `<g transform="translate(${x} ${y}) rotate(${v}) scale(${(s * sx).toFixed(4)} ${s}) translate(-193 -638)"><rect x="152" y="586" width="82" height="52" rx="14" fill="#efe6d2" stroke="#fff" stroke-width="6"/><g clip-path="url(#tubkropp)"><image href="${TUB}" width="386" height="741"/></g></g>`);
-const kork = (x, y, v, s = 0.2) => lagg('fram', `<g transform="translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-193 -667)"><g clip-path="url(#tubkork)"><image href="${TUB}" width="386" height="741"/></g></g>`);
 // en punkt på tandkrämsranden (u 0–1 längs den) i kamerans ruta
 function pastaPunkt(u) { const e = [...G.querySelectorAll('.pasta')].find(x => x.closest('.sak-plats')?.getAttribute('display') === 'inline'); if (!e) return null;
   const q = e.getPointAtLength(e.getTotalLength() * kl(u, 0, 0.999)), m = $('kamera').getScreenCTM().inverse().multiply(e.getScreenCTM()), pt = new DOMPoint(q.x, q.y).matrixTransform(m); return [pt.x, pt.y]; }
 const muggS = (x = MUGG[0], y = MUGG[1], s = MUGG[2], v = 0) => bild(R + 'tandborstmuggen/cut/tandborstmuggen.png', 758, 768, `translate(${x} ${y}) rotate(${v}) scale(${s}) translate(-379 -740)`);
 const mugg = (...a) => lagg('saker', muggS(...a));
-const borsteIMugg = () => bild(BORSTE, 877, 238, `translate(${MUGG[0] + 10} ${RIM - 95}) rotate(-80) scale(0.11) translate(-438 -119)`);
+// borsten i bildens egna mått, med tandkrämen (J03 27/11: tandkrämen är redan på borsten när den lyfts ur muggen, ingen tub)
+const borsteSvg = (pa = false) => `<image href="${BORSTE}" width="877" height="238"/>${pa ? PASTA_D.map((c, i) => `<path d="M42 6 q24 -24 48 0 t48 0 t48 0" fill="none" stroke="${c}" stroke-width="${[40, 30, 10][i]}" stroke-linecap="round"/>`).join('') : ''}`;
+const borsteIMugg = (pa = false) => `<g transform="translate(${MUGG[0] + 10} ${RIM - 95}) rotate(-80) scale(0.11) translate(-438 -119)">${borsteSvg(pa)}</g>`;
 // J03 runda 5: en sak stiger lugnt upp bakom handfatets läpp till sin plats (UPP s från scenens början), med en glimt
 const UPP = 0.5;
 const uppur = (svg, tl) => lagg('saker', `<g clip-path="url(#overLapp)"><g transform="translate(0 ${(170 * (1 - mjuk(kl(tl / UPP)))).toFixed(1)})">${svg}</g></g>`);
@@ -280,7 +285,9 @@ const stank = (x, y) => lagg('fram', [[-30, -10], [24, -18], [-6, -30], [38, 4],
 // J03 runda 7 (0:40) "more closeups on faces": ansiktsbild på leoparden när den står på golvet vid pallen (STA)
 const ANS_STA = () => kamera(2.3, STA[0] + 20, GOLV_B - (L.FOTTER - 420) * GS);
 const kamB = (z, y, dx = 0) => kamera(z, BX + dx, VID[1] - (L.FOTTER - y) * GS);
-const HEL_B = () => kamera(1), HALV_B = () => kamB(2.0, 500, 30), ANS_B = () => kamB(2.9, 390), MUN_B = () => kamB(5.6, 505);   // J03: tätare på munnen, som 038
+// J03 27/11 (format/bildutsnitt.md): kroppshöjden (riggens y 183–922) gånger GS 0,55 = 406 px. Halvnära 65 % av H (zoom 1,7) med
+// öronen helt med; närbild 115 % (zoom 3,06), huvudets topp 6 % och ögonen ca 36 % ner. Borstbilderna är samma närbild (hela huvudet med).
+const HEL_B = () => kamera(1), HALV_B = () => kamera(1.7, BX + 30, 318), ANS_B = () => kamB(3.06, 467), MUN_B = ANS_B;
 
 // --- Julsovrummet (produktion/rum/julsovrummet): plattan, kvällshimlen och snön i fönstret, lampan, ljusstaken, sängen, nallen ---
 const SOVR = A + 'bakgrunder/rosa-sovrummet/rosa-sovrummet-v2.jpeg';
@@ -354,9 +361,12 @@ function julrum({ lampa = 1, ljus = [1, 1, 1, 1], rok = [0, 0, 0, 0], boj = [0, 
     h += bild(R + 'adventsljus/cut/adventsljus.png', 1024, 1371, `translate(${x} ${y}) scale(${LJUS_S}) translate(-512 -1173)`);
     const vek = [x, y - (1173 - 221) * LJUS_S];
     if (ljus[i]) { lagg('bak', `<circle cx="${vek[0]}" cy="${vek[1] - 6}" r="24" fill="url(#sken)" opacity=".75"/>`);   // J03: små sken per låga (de stora flöt ihop till en lampa)
-      const fl = 1 + 0.07 * Math.sin(TT * 9.1 + i * 1.7) + 0.04 * Math.sin(TT * 15.3 + i), sw = 2.5 * Math.sin(TT * 5.3 + i * 2.1) + 38 * boj[i];
+      const fl = 1 + 0.07 * Math.sin(TT * 9.1 + i * 1.7) + 0.04 * Math.sin(TT * 15.3 + i), sw = 2.5 * Math.sin(TT * 5.3 + i * 2.1) + 38 * boj[i] + 9 * Math.sin(TT * 41 + i) * boj[i];
       h += bild(R + 'laga/cut/laga.png', 1024, 1024, `translate(${vek[0]} ${vek[1]}) rotate(${sw.toFixed(2)}) scale(${(0.05 / fl).toFixed(4)} ${(0.05 * fl * (1 - 0.35 * boj[i])).toFixed(4)}) translate(-511.5 -901)`); }
-    if (rok[i] > 0.01) { const r = rok[i]; h += [0, 1, 2].map(j => `<circle cx="${vek[0] + 4 * Math.sin(j * 2 + TT * 2)}" cy="${vek[1] - 14 - j * 14 - 30 * (1 - r)}" r="${5 + j * 2 + 4 * (1 - r)}" fill="#e8e6f0" opacity="${((0.8 - j * 0.2) * r).toFixed(2)}"/>`).join(''); }
+    // J03 27/11: en liten rökslinga stiger från veken när lågan slocknat (rok = 0–1 av slingans 1,1 s)
+    if (rok[i] > 0.001 && rok[i] < 1) { const u = rok[i], n = 12, pts = Array.from({ length: n }, (_, j) => { const q = j / (n - 1);
+        return `${(vek[0] + 7 * q * Math.sin(q * 5 + TT * 3 + i)).toFixed(1)} ${(vek[1] - 4 - q * (24 + 60 * u)).toFixed(1)}`; });
+      h += `<path d="M${pts.join(' L')}" fill="none" stroke="#d8d4e0" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity="${(0.75 * (1 - u) * kl(u * 8)).toFixed(2)}"/>`; }
   });
   lagg('saker', bild(R + 'ljusstake/cut/ljusstake.png', 1232, 416, `translate(${STAKE.x} ${STAKE.y}) scale(${STAKE.s}) translate(-616 -413)`) + h);
   if (sang) lagg('kar', bild(R + 'sangen/cut/sangen.png', 1273, 667, `translate(${SANG.x} ${SANG.y}) scale(${SANG.s})`));
@@ -365,18 +375,16 @@ function julrum({ lampa = 1, ljus = [1, 1, 1, 1], rok = [0, 0, 0, 0], boj = [0, 
   if (nalle) { const [x, y, s] = nalle === 'fri' ? nallePos : nalle === 'golv' ? NALLE_GOLV : nalle === 'sov' ? [1180, RIM_S + 22, 0.18] : NALLE_SANG, vrid = nalle === 'fri' ? nallePos[3] : nalle === 'golv' ? 0 : nalle === 'sov' ? -12 : -14;
     lagg('saker', `<g class="nalleG" transform="rotate(${vrid} ${x} ${y}) translate(${x - 424 * s} ${y - 831 * s}) scale(${s})">${nalleSvg(nalleBlund)}</g>`); }
   NATT = natt; $('snoFon').setAttribute('display', 'inline'); SNO.seek(TT);
-  if (natt) lagg('natt', `<rect x="-100" y="-100" width="2120" height="1280" fill="#16205A" opacity="${0.42 * natt}"/>`);
+  // J03 27/11: natten är en mörkare blå kväll (multiply, färgerna behålls) i stället för en grålila hinna, med varmt sken från stjärnan
+  // (stjarna()) och ett svagt varmt efterglöd kring ljusstaken. Blått svagast kring sängen, så att leoparden och täcket behåller sin värme
+  if (natt) lagg('natt', `<rect x="-100" y="-100" width="2120" height="1280" fill="url(#nattgrad)" style="mix-blend-mode:multiply" opacity="${(0.85 * natt).toFixed(3)}"/>
+    <ellipse cx="${STAKE.x}" cy="${STAKE.y - 50}" rx="300" ry="230" fill="url(#rumsken)" style="mix-blend-mode:screen" opacity="${(0.5 * natt).toFixed(3)}"/>`);
 }
 const kamS = (z, y, dx = 0) => kamera(z, LX + dx, VID_S[1] - (922 - y) * SS);
 const ljusVek = i => [STAKE.x + (231 + 257 * i - 616) * STAKE.s, STAKE.y - (416 - 23) * STAKE.s + 6 - (1173 - 221) * LJUS_S];
 const TANDER0 = [0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75];   // J03 "teeth look pink": nästan vita redan före borstningen
 const HEL_S = () => kamera(1), HALV_S = () => kamS(2.0, 470, -40), ANS_S = () => kamS(2.9, 390),
   FON_S = () => kamera(1.3, 830, 470), STAKE_S = () => kamera(3.2, STAKE.x - 40, STAKE.y - 60), STAKE_LOVA = () => kamera(2.0, 1560, 600);
-
-// --- Ritintrot: kritan ritar adventsstjärnan på papperet ----------------------------------------------------------------------
-function papperStjarna(k, fyll, tand = 0) { papper(); kamera(1);
-  const sp = stjarna(960, 520, 0.85, { k, fyll, tand });
-  if (k < 1 && sp) krita(...sp, 125, 0.42); else if (fyll < 1) krita(1400, 300, 140, 0.42); }
 
 
 const B = (f, p, o = {}) => lova(VID, f, P(p), { bakom: true, ...o });
@@ -431,14 +439,24 @@ const zzz = (x, y, tl) => lagg('fram', [0, 1, 2].map(i => { const u = ((tl * 0.4
 // skjortan som flyger fritt (tittut): ankaret = urklippets överkant mitt (438, 0) i bild, skala k
 const skjortaFri = (x, y, k, v = 0) => lagg('figurer', bild(SKJORTA.fil, SKJORTA.w, SKJORTA.h, `translate(${x} ${y}) rotate(${v}) scale(${k}) translate(-438 0)`));
 
+const INTRO = () => { const a = RR['01a'].s, b = RR['01b'].s, c = RR['01c'].s; return { in: [a, a + 0.4], rit: [a + 0.6, a + 4.8], vanta: [b + 0.2, b + 1.0], ut: [c + 0.3, c + 1.1] }; };
+const FON_LINJE = '#f6ecd8';   // i fönstret ritar kritan med ljus linje: den mörka kritlinjen syns inte mot natthimlen
+const FONSTJ = () => { const a = RR['33a'].s, c = RR['34'].s; return { in: [a + 0.2, a + 0.6], rit: [a + 0.8, a + 4.9], vanta: [a + 5.1, a + 5.9], ut: [c + 0.1, c + 0.9] }; };
+// sovbilden (Flow, 1157 × 649) i sängens mått, andas; o = ögonen (sovOgon), gasp = gäspningen (0–1)
+const SOVNATT = { nalle: false, sang: false, kudde: false, lampa: 0, ljus: [0, 0, 0, 0], natt: 1 };
+function sovbild(o, gasp = 0) { const sb = SANG.s * 1273 / 1157, by = SANG.y + 667 * SANG.s, an = (1 - Math.cos(2 * Math.PI * TT / 4)) / 2;
+  lagg('saker', `<g transform="translate(${SANG.x} ${by}) scale(${sb} ${sb * (1 + 0.006 * an + 0.012 * gasp)}) translate(0 -649)">${bild(A + 'karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-sangen-jul.png', 1157, 649, '')}${gaspMun(gasp)}${sovOgon(o)}</g>`); }
+// gäspningen på sovbilden: bildens leende (under nosen, ansiktet lutar −37°) täcks med nosens kräm, en mörk oval mun med tunga öppnas
+const gaspMun = g => g < 0.03 ? '' : `<g transform="rotate(-37 358 262)"><ellipse cx="358" cy="263" rx="23" ry="12" fill="#f3e3c9" filter="url(#fjader)" opacity="${kl(g * 4).toFixed(2)}"/>
+  <ellipse cx="358" cy="${(258 + 6 * g).toFixed(1)}" rx="${(5 + 5 * g).toFixed(1)}" ry="${(3 + 11 * g).toFixed(1)}" fill="#5a2a24"/><ellipse cx="358" cy="${(260 + 11 * g).toFixed(1)}" rx="${(4 * g).toFixed(1)}" ry="${(3.5 * g).toFixed(1)}" fill="#e98a8f"/></g>`;
 const S = {
   // --- Ritintrot: kritan ritar adventsstjärnan, väntar, stjärnan fylls och tänds, zoom in ---
-  '01a': tl => { const k = kl((tl - 0.3) / 6.2); papper(); kamera(1); const sp = stjarna(960, 520, 0.85, { k, fyll: 0, tand: 0 });
-    if (sp) krita(sp[0], sp[1], 125, 0.42 * (0.7 + 0.3 * del(0, 0.4, tl))); },
-  '01b': tl => { papper(); kamera(1); stjarna(960, 520, 0.85, { k: 1, fyll: 0, tand: 0 }); krita(1400 + 14 * Math.sin(tl * 1.6), 300 + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3), 0.42); },
-  '01c': (tl, d) => { papper(); const z = del(d - 0.8, d, tl); kamera(lerp(1, 2.6, z * z), 960, 520);
-    stjarna(960, 520, 0.85, { k: 1, fyll: del(0, 0.9, tl), tand: del(0.4, 1.4, tl) }); krita(lerp(1400, 2000, del(0.6, 1.6, tl)), lerp(300, 100, del(0.6, 1.6, tl)), 140, 0.42);
-    if (tl > 1.0) skimmer(960, 520, 0.6 + 0.3 * Math.sin(tl * 3), 2.4);
+  // kritans faser (kritan-ritar.js): in 0,4 s, konturen ca 2,8 s + detaljerna, frågan direkt när teckningen är klar, 4,5 s gisspaus
+  '01a': () => { papper(); kamera(1); ritStjarna(INTRO(), [960, 520, 0.85], KRITAN.BRED, { vanta: [1430, 300], ks: KRITAN.SKALA_PAPPER }); },
+  '01b': (tl, d) => { papper(); kamera(1 + 0.12 * del(1.0, d, tl), 960, 520); ritStjarna(INTRO(), [960, 520, 0.85], KRITAN.BRED, { vanta: [1430, 300], ks: KRITAN.SKALA_PAPPER }); },
+  '01c': (tl, d) => { papper(); const z = del(d - 0.8, d, tl); kamera(lerp(1.12, 2.6, z * z), 960, 520);
+    ritStjarna(INTRO(), [960, 520, 0.85], KRITAN.BRED, { fyll: del(0, 0.7, tl), tand: del(0.4, 1.4, tl), vanta: [1430, 300], ks: KRITAN.SKALA_PAPPER });
+    stjGnistor(960, 520, 0.85, tl - 0.1);
     SVEP = 0.5 * del(d - SVEP_IN, d, tl); SVEP_F = BAD_FARG; },   // J03 runda 5 "improve transition from drawing to leo": kritsvep till badrummet
 
   // --- Badrummet ---
@@ -516,26 +534,17 @@ const S = {
     [[400, 640], [560, 700], [690, 620]].forEach(([x, y], i) => { const g = bump(lo(i) - 0.05, lo(i) + 0.9, tl); if (g > 0.02) skimmer(...iFig(VID, [x, y]), 0.5 * g, 0.5); }); },
   '12': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); const ut = del(mo(0) + 0.1, mo(0) + 0.6, tl);
     const [f, p] = nick(F('glad', { titt: [0, 10 * (1 - ut)] }), P({ upp: -0.4 * (1 - ut) }), tl - (lo(0) - 0.35), 1.4); B(f, p); },   // svarar: nickar med fnisset
-  // borsten lyfter ur muggen på handfatet och flyger med glitter in i tassen (som 038)
-  // J03: tandkräm på borsten (som 038): närbild på borsthuvudet, tuben flyger in, korken hoppar av (plopp), tuben lutar sig och
-  // klämmer ut en rand längs borsten, lyfter och flyger bort; en glimt på tandkrämen; sedan ler leoparden mot borsten
-  '13': (tl, d) => { badrum({ skjortaPaKrok: false }); SAK = 'borste'; const u = del(lo(0) - 0.75, lo(0), tl), T0 = mo(0) + LN(18) + 0.3, KO = lo(1), K1 = lo(2), K2 = K1 + 1.4, UT = K2 + 0.15, SLUT = UT + 1.2;
+  // borsten lyfter ur muggen på handfatet och flyger med glitter in i tassen (som 038). J03 27/11 "fix all": tandkrämen är redan
+  // på borsten (ingen tub som flyger själv över ansiktet, ingen lös kork); i närbilden tittar leoparden på den, en glimt, och den blir glad
+  '13': (tl, d) => { badrum({ skjortaPaKrok: false }); SAK = 'borste'; pasta(1); const u = del(lo(0) - 0.75, lo(0), tl), T0 = mo(0) + LN(18) + 0.3, GL = lo(1), GLAD = GL + 0.6;
     if (tl < T0) { kamera(2.2, BX - 60, RIM - 110); B(F('glad', { titt: [lerp(-14, 6, u), lerp(2, 10, u)] }), BP(0));
-      if (u <= 0) { const h = sakSkarm(); if (h) h[2].setAttribute('display', 'none'); uppur(muggS() + borsteIMugg(), tl); }   // runda 5: muggen stiger upp
-      else { mugg(); flyg('borste', u, [MUGG[0] + 10, RIM - 95], (x, y, u) => lagg('saker', bild(BORSTE, 877, 238, `translate(${x} ${y}) rotate(${lerp(-80, -15, u)}) scale(${lerp(0.11, 0.17, u)}) translate(-438 -119)`))); }
+      if (u <= 0) { const h = sakSkarm(); if (h) h[2].setAttribute('display', 'none'); uppur(muggS() + borsteIMugg(true), tl); }   // runda 5: muggen stiger upp
+      else { mugg(); flyg('borste', u, [MUGG[0] + 10, RIM - 95], (x, y, u) => lagg('saker', `<g transform="translate(${x} ${y}) rotate(${lerp(-80, -15, u)}) scale(${lerp(0.11, 0.17, u)}) translate(-438 -119)">${borsteSvg(true)}</g>`)); }
       const sk = bump(0, UPP + 0.3, tl); if (sk > 0.02) skimmer(MUGG[0], RIM - 60, 0.35 * sk, 0.4);
       const g = bump(lo(0) - 0.05, lo(0) + 0.8, tl), h = sakSkarm(); if (g > 0.02 && h) skimmer(h[0], h[1], 0.4 * g, 0.4); return; }
-    mugg(); if (tl >= SLUT) { ANS_B(); const ner = 1 - del(SLUT + 0.6, SLUT + 1.1, tl); B(blandO(F('glad', { titt: [-6, 12] }), F('jatteglad', { titt: [-6 * ner, 12 * ner] }), del(SLUT, SLUT + 0.4, tl)), skutt(BP(0), tl, SLUT + 0.2, 10, 0.4)); pasta(1); return; }
-    const tw = del(T0, T0 + 0.4, tl); B(F('glad', { titt: [lerp(6, -6, tw), lerp(10, 12, tw)] }), BP(0)); const k = del(K1, K2, tl); pasta(k);
-    const c = pastaPunkt(0.5); if (!c) return; kamera(4.6, c[0] + 4, c[1] - 10);
-    const S0 = 0.11, nu = pastaPunkt(k) || c, mal = [nu[0] + 2, nu[1] - 4];
-    if (tl < KO) { const f = del(T0, T0 + 0.7, tl), x = lerp(c[0] + 90, mal[0], mjuk(f)), y = lerp(c[1] - 70, mal[1] - 8, f) - 26 * Math.sin(Math.PI * f);
-      tub(x, y, { korkPa: true, s: S0, v: 10 * (1 - f) }); if (f < 1) skimmer(x, y - 20, 0.25 * Math.sin(Math.PI * f), 0.2); return; }
-    const pf = kl((tl - KO) / 0.55), kx = mal[0] - 26 * pf, ky = mal[1] + 6 - 22 * Math.sin(Math.PI * Math.min(1, pf * 1.3)) + 60 * pf * pf;   // korken hoppar av och faller ut ur bild
-    if (pf < 1) kork(kx, ky, -140 * pf, S0);
-    const lut = del(KO + 0.1, K1, tl) * (1 - del(K2, UT, tl)), lyft = del(K2, SLUT, tl);
-    tub(mal[0] + 140 * lyft * lyft, mal[1] - 14 * del(KO, KO + 0.15, tl) * (1 - lut) - 120 * lyft * lyft, { s: S0, v: -24 * lut + 20 * lyft, sx: 1 - 0.14 * bump(K1, K2, tl) });
-    const gl = bump(lo(3) - 0.05, lo(3) + 0.9, tl); if (gl > 0.02) skimmer(c[0], c[1] - 6, 0.35 * gl, 0.25); },
+    mugg(); ANS_B(); const ner = del(T0, T0 + 0.5, tl) * (1 - del(GLAD + 0.6, GLAD + 1.1, tl));
+    B(blandO(F('glad', { titt: [-6 * ner, 12 * ner] }), F('jatteglad', { titt: [-6 * ner, 12 * ner] }), del(GLAD, GLAD + 0.4, tl)), skutt(BP(0), tl, GLAD + 0.2, 10, 0.4));
+    const gl = bump(GL - 0.05, GL + 0.9, tl), c = pastaPunkt(0.5); if (gl > 0.02 && c) skimmer(c[0], c[1] - 6, 0.35 * gl, 0.25); },
   // "Kan du visa tänderna?": leoparden nickar och gapar stort med de matta tänderna
   '14': tl => { badrum({ skjortaPaKrok: false }); ANS_B(); SAK = 'borste'; const o = mo(0) + LN(19) + 0.3, k = del(o, o + 0.25, tl);
     const [f, p] = nick(F('glad'), P(BP(0)), tl - (o - 0.95), 0.8); B(blandO(f, GAP({ tander: TANDER0 }), k), { ...p, strack: 0.03 * bump(o, o + 0.4, tl) }); pasta(1); },
@@ -591,7 +600,8 @@ const S = {
     else { const u = tl - klipp, bl = (u % 3.2) > 1.6 && (u % 3.2) < 1.75 ? 1 : 0;   // nallen gungar lite och blinkar (QA: bilden får aldrig stå helt still)
       julrum({ nalle: 'fri', nallePos: [NALLE_GOLV[0], NALLE_GOLV[1], NALLE_GOLV[2], 2 * Math.sin(u * 1.7)], nalleBlund: bl }); kamera(2.6, NALLE_GOLV[0], NALLE_GOLV[1] - 70); GS = SS; lova([500, GOLV_S], F('glad'), P({ rikt: 1 }), { s: SS }); }
     SVEP = tl < SVEP_UT ? 0.5 + 0.3 * del(0, SVEP_UT, tl) : 0; },
-  '26': tl => { julrum({ snoTat: del(0.3, 1.2, tl) }); FON_S(); const u = del(0.1, 0.6, tl);
+  '26': tl => { julrum({ snoTat: del(0.3, 1.2, tl) }); kamera(1.51, 640, 583);   // J03 27/11: halvnära (kroppen 60 %, fötterna 95 % ner), fönstret bredvid
+    const u = del(0.1, 0.6, tl);
     GS = SS; lova([500, GOLV_S], F('nyfiken', { titt: [-14 * u, -10 * u] }), P(skutt({ rikt: -0.6 * u, upp: 0.5 * u }, tl, lo(0), 12)), { s: SS }); },   // J03 26/11: på golvet, där den står i 25 och 27 (stod bakom sängen)
   '27': tl => { const a = lo(0) - 0.45, b = lo(0) + 0.05, n0 = lo(2) - 0.25, nu = del(n0, n0 + 0.5, tl);
     const np = [lerp(NALLE_GOLV[0], NALLE_SANG[0], nu), lerp(NALLE_GOLV[1], NALLE_SANG[1], nu) - 200 * Math.sin(Math.PI * nu), lerp(NALLE_GOLV[2], NALLE_SANG[2], nu), lerp(0, -14, nu)];
@@ -617,65 +627,52 @@ const S = {
   '30': tl => { julrum({ nalle: 'sang' }); HALV_S(); const [f, p] = skaka(F('ledsen', { le: -0.4, titt: [14 * del(1.8, 2.2, tl), -4] }), P({ rikt: 0.5 * del(1.8, 2.3, tl) }), tl - 0.15); S_(f, p); },
   '31': () => { julrum({ nalle: 'sang' }); kamera(3.6, STAKE.x - 40, STAKE.y - 50); },
   '32': tl => { julrum({ nalle: 'sang' }); ANS_S(); const u = del(0.2, 1.0, tl); S_(F('ledsen', { le: -0.3 * u, titt: [-4 * u, 10 * u], oron: [16 * u, 16 * u] }), { upp: -0.5 * u }); },
-  '33a': tl => { julrum({ nalle: 'sang' }); FON_S(); const a = lo(0), k = kl((tl - a) / 2.3), sn = kl((tl - a - 2.35) / 0.6), u = del(0.1, 0.6, tl);
+  // kritan ritar stjärnan i fönstret (kritan-ritar.js): konturen, hålen och sist snöret upp till valvet; väntar ovanför stjärnan
+  '33a': tl => { julrum({ nalle: 'sang' }); FON_S(); const u = del(0.1, 0.6, tl);
     S_(F('nyfiken', { titt: [-14 * u, -10 * u] }), { rikt: -0.6 * u, upp: 0.5 * u });
-    const sp = stjarna(...STJ_FON, { k: Math.max(0.001, k), fyll: 0, tand: 0, sn: k >= 1 ? sn : 0 }); const inn = del(a - 0.8, a, tl);
-    const vil = del(a + 2.95, a + 3.6, tl), V = [STJ_FON[0] + 150, STJ_FON[1] - 110], S0 = [STJ_FON[0], FON.y0 + 6];   // QA: kritan glider till 33b:s viloläge
-    if (sn >= 1) krita(lerp(S0[0], V[0], vil), lerp(S0[1], V[1], vil), lerp(125, 140, vil), 0.33);
-    else if (sp) krita(lerp(sp[0] + 500, sp[0], inn), lerp(sp[1] - 300, sp[1], inn), 125, 0.33); },
+    ritStjarna(FONSTJ(), STJ_FON, 7, { farg: FON_LINJE, vanta: [STJ_FON[0] + 150, STJ_FON[1] - 110] }); },
   '33b': tl => { julrum({ nalle: 'sang' }); FON_S(); S_(F('nyfiken', { titt: [-14, -10] }), { rikt: -0.6, upp: 0.5, luta: 1.5 * Math.sin(tl * 1.3) });
-    stjarna(...STJ_FON, { k: 1, fyll: 0, tand: 0 }); krita(STJ_FON[0] + 150 + 12 * Math.sin(tl * 1.6), STJ_FON[1] - 110 + 9 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3), 0.33); },
-  '34': tl => { julrum({ nalle: 'sang' }); kamera(2.6, STJ_FON[0], STJ_FON[1] + 30); stjarna(...STJ_FON, { k: 1, fyll: del(0, 0.9, tl), tand: del(0.5, 1.5, tl) });
-    skimmer(STJ_FON[0], STJ_FON[1], (0.5 + 0.3 * Math.sin(tl * 3)) * del(0.4, 1.0, tl), 1.6); krita(lerp(STJ_FON[0] + 150, STJ_FON[0] + 700, del(0, 0.9, tl)), lerp(STJ_FON[1] - 110, STJ_FON[1] - 500, del(0, 0.9, tl)), 140, 0.33); },
+    ritStjarna(FONSTJ(), STJ_FON, 7, { farg: FON_LINJE, vanta: [STJ_FON[0] + 150, STJ_FON[1] - 110] }); },
+  '34': tl => { julrum({ nalle: 'sang' }); kamera(2.6, STJ_FON[0], STJ_FON[1] + 30);
+    ritStjarna(FONSTJ(), STJ_FON, 7, { farg: FON_LINJE, fyll: del(0, 0.7, tl), tand: del(0.5, 1.5, tl), vanta: [STJ_FON[0] + 150, STJ_FON[1] - 110] });
+    stjGnistor(STJ_FON[0], STJ_FON[1], STJ_FON[2], tl - 0.1); },
   '35': tl => { julrum({ nalle: 'sang' }); FON_S(); stjarna(...STJ_FON, { tand: 1 });
     S_(F('kawaii', { titt: [-14, -10] }), skutt({ rikt: -0.6, upp: 0.5, oron: [-10 * del(0, 0.3, tl), -10 * del(0, 0.3, tl)] }, tl, lo(0), 26)); },
   '36': tl => { julrum({ nalle: 'sang' }); HALV_S(); stjarna(...STJ_FON, { tand: 1 }); const [f, p] = nick(F('glad', { titt: [-14, -8] }), P({ rikt: -0.5 }), tl - (lo(0) - 0.2)); S_(f, p); },
   // blåser ut ljusen: lågorna slocknar en i taget på puffarna, en liten rökpuff stiger från varje veke
-  // blåser ut ljusen: lutar sig mot ljusstaken, andas in (kinderna fylls), puffar: tre små luftstreck far till lågan, lågan böjer sig bort och slocknar, rök
-  '37': tl => { const P4 = [0, 1, 2, 3], ut = P4.map(i => tl >= lo(i)), rok = P4.map(i => bump(lo(i), lo(i) + 1.2, tl)), boj = P4.map(i => ut[i] ? 0 : del(lo(i) - 0.22, lo(i), tl));
+  // blåser ut ljusen: lutar sig mot ljusstaken, andas in (kinderna fylls), puffar: lågan fladdrar, böjer sig bort och slocknar, en liten rökslinga (J03 27/11: inga blåsstreck)
+  '37': tl => { const P4 = [0, 1, 2, 3], ut = P4.map(i => tl >= lo(i)), rok = P4.map(i => kl((tl - lo(i)) / 1.1)), boj = P4.map(i => ut[i] ? 0 : del(lo(i) - 0.22, lo(i), tl));
     julrum({ nalle: 'sang', ljus: ut.map(u => u ? 0 : 1), rok, boj }); STAKE_LOVA(); stjarna(...STJ_FON, { tand: 1 });
     const u = del(0.2, 0.7, tl), fore = del(lo(0) - 0.9, lo(0) - 0.45, tl);
     const inn = P4.reduce((s, i) => s + bump(lo(i) - 0.42, lo(i) - 0.1, tl), 0), puff = P4.reduce((s, i) => s + bump(lo(i) - 0.15, lo(i) + 0.15, tl), 0);
     S_(F('neutral', { mun: [lerp(9, 6, puff), lerp(8, 12, kl(puff + fore)), 0, 466], kind: 0.75 + 0.5 * kl(inn + puff), titt: [14 * u, 6 * u], streck: 1 - fore }),
       { rikt: 0.8 * u, luta: 3 * fore + 2 * puff, boj: 6 * fore + 3 * puff, strack: 0.03 * inn - 0.025 * puff, bred: 0.02 * puff });
-    P4.forEach(i => { const a = del(lo(i) - 0.3, lo(i), tl), o = bump(lo(i) - 0.32, lo(i) + 0.05, tl); if (o < 0.02) return;
-      const m = huvudS(90, 470), v = ljusVek(i), x = lerp(m[0] + 30, v[0] - 22, a), y = lerp(m[1], v[1] - 8, a);
-      lagg('fram', [-18, 0, 18].map(dy => `<path d="M${(x - 50).toFixed(1)} ${(y + dy).toFixed(1)} q25 -10 50 0" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity="${(0.85 * o).toFixed(2)}"/>`).join('')); }); },
+  },
   '38': tl => { const natt = del(0.3, 1.5, tl);   // J03: ingen lampa, rummet mörknar mjukt när ljusen är släckta
     julrum({ nalle: 'sang', ljus: [0, 0, 0, 0], nalleBlund: tl >= mo(0) + 0.75, natt: 0.7 * natt }); HALV_S(); stjarna(...STJ_FON, { tand: 1 });
     S_(F('somnig'), { luta: 1.5 * Math.sin(tl * 1.2) }); },
   '39': tl => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: lerp(0.7, 1, del(0, 0.6, tl)) }); kamera(1.3, 900, 520);
     stjarna(...STJ_FON, { tand: 0.85 + 0.15 * Math.sin(tl * 2.2) }); const g = bump(lo(0), lo(0) + 1.6, tl); if (g > 0.02) skimmer(STJ_FON[0], STJ_FON[1], 0.5 * g, 1.2);
     S_(F('somnig'), {}); },
-  '40': tl => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); ANS_S(); const g = bump(0.1, 1.4, tl);
-    S_({ ...F('somnig'), mun: [lerp(10, 22, g), lerp(8, 30, g), 0, 470] }, { strack: 0.04 * g }); },
-  '41': (tl, d) => { julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); HALV_S(); stjarna(...STJ_FON, { tand: 1 });
-    const vk = del(0.2, 0.8, tl) * (1 - del(d - 1.0, d - 0.3, tl)); S_(F('somnig'), vink({}, vk, tl * 0.7, VINK_BAS, 10, 7)); },   // J03 runda 7: armen snett upp bakom kroppen
-  // somnar (J03 "longer scene, eyes open, slowly closing"): ett litet hopp ner i sängen, sedan ligger den med öppna ögon och tittar på
-  // stjärnan, blinkar sakta två gånger, ögonlocken blir tyngre och tyngre, ögonen sluts, zzz. Sovbilden (Flow) har slutna ögon:
-  // de öppna ögonen ritas ovanpå i bildens egen ruta (sovOgon) och försvinner när de sluts.
-  // J03 "better transition" (3:40): i stället för ett klipp från närbilden till sovbilden backar kameran mjukt ut medan leoparden hoppar
-  // upp mot kudden, och bilden sjunker mjukt ner i nattblått (som när man somnar) och stiger upp igen i sovbilden i samma utsnitt.
-  // Bytet sker i det mörkaste (byt); en övertoning gav två sängar och en genomskinlig leopard.
-  '42': (tl, d) => { const H = lo(0), byt = H + 0.3, a = H - 0.3, b = H + 0.4, dip = tl < byt ? del(H - 0.1, byt, tl) : 1 - del(byt, byt + 0.45, tl);
+  // J03 27/11 "sova liggande": leoparden lägger sig direkt efter "Så trött": kameran backar mjukt ut medan den hoppar upp mot kudden,
+  // bilden sjunker ner i nattblått (som när man somnar) och stiger upp igen i sovbilden. Bytet sker i det mörkaste (byt); en övertoning
+  // gav två sängar och en genomskinlig leopard. Gäspningen och "God natt" kommer liggande (rad 41), sedan sluts ögonen (rad 42).
+  '40': (tl, d) => { const H = lo(0), byt = H + 0.3, a = H - 0.3, b = H + 0.4, dip = tl < byt ? del(H - 0.1, byt, tl) : 1 - del(byt, byt + 0.45, tl);
     if (dip > 0) lagg('ram', `<rect x="-50" y="-50" width="2020" height="1180" fill="#0f1640" opacity="${(0.92 * dip).toFixed(3)}"/>`);
-    const sb = SANG.s * 1273 / 1157, by = SANG.y + 667 * SANG.s;
-    const sovbild = (op, oga) => { const an = (1 - Math.cos(2 * Math.PI * (tl - byt) / 4)) / 2;
-      lagg('saker', `<g opacity="${op.toFixed(3)}" transform="translate(${SANG.x} ${by}) scale(${sb} ${sb * (1 + 0.006 * an)}) translate(0 -649)">${bild(A + 'karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-sangen-jul.png', 1157, 649, '')}${sovOgon(oga, tl)}</g>`); };
-    if (tl < byt) { const k = mjuk(kl((tl - 0.15) / (byt - 0.15))), z = lerp(2.0, 1.15, k), Y = VID_S[1] - (922 - 470) * SS;
-      julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); kamera(z, lerp(LX - 40, 900, k), lerp(Y, 590, k)); stjarna(...STJ_FON, { tand: 1 });
-      // hoppet: från platsen bakom sängen i en båge mot kudden (huvudet där sovbildens huvud ligger), lutar sig åt vänster på väg ner
-      const u = kl((tl - a) / (b - a)), huk = bump(a - 0.3, a, tl), mal = [925, VID_S[1] + 90];
-      const pos = [lerp(VID_S[0], mal[0], mjuk(u)), lerp(VID_S[1], mal[1], u) - 4 * 150 * u * (1 - u)];
-      GS = SS; lova(pos, F('somnig'), P({ strack: -0.05 * huk + 0.04 * Math.sin(Math.PI * u), bred: 0.05 * huk, luta: -14 * mjuk(u) }), { bakom: true, s: SS });
-      return; }
-    julrum({ nalle: false, sang: false, kudde: false, lampa: 0, ljus: [0, 0, 0, 0], natt: 1 }); kamera(1.15 + 0.12 * del(byt, mo(0), tl), 900, 590); stjarna(...STJ_FON, { tand: 1 });
-    // ögonen: 1 öppna … 0 slutna (bildens egna streck). Två långsamma blinkningar, sedan tyngre lock, sist sluts de helt
-    const og = Math.min(1 - 0.92 * bump(byt + 1.4, byt + 2.3, tl), 1 - 0.45 * del(byt + 2.6, byt + 3.6, tl)) - 0.5 * bump(byt + 3.9, byt + 4.9, tl) * 0.9
-      - 0.55 * del(byt + 5.0, byt + 6.4, tl);
-    sovbild(1, og);
-    // J03 "bigger z z z, a bit more high up"
-    if (tl > lo(2) - 0.2) zzz(990, 560, tl - lo(2)); },
+    if (tl >= byt) { julrum(SOVNATT); kamera(1.15, 900, 590); stjarna(...STJ_FON, { tand: 1 }); sovbild(0); return; }
+    julrum({ nalle: 'sang', lampa: 0, ljus: [0, 0, 0, 0], nalleBlund: 1, natt: 1 }); stjarna(...STJ_FON, { tand: 1 });
+    const k = mjuk(kl((tl - (a - 0.6)) / (byt - (a - 0.6)))), Y = VID_S[1] - (922 - 390) * SS; kamera(lerp(2.9, 1.15, k), lerp(LX, 900, k), lerp(Y, 590, k));
+    // hoppet: från platsen bakom sängen i en båge mot kudden (huvudet där sovbildens huvud ligger), lutar sig åt vänster på väg ner
+    const u = kl((tl - a) / (b - a)), huk = bump(a - 0.3, a, tl), mal = [925, VID_S[1] + 90];
+    const pos = [lerp(VID_S[0], mal[0], mjuk(u)), lerp(VID_S[1], mal[1], u) - 4 * 150 * u * (1 - u)];
+    GS = SS; lova(pos, F('somnig'), P({ strack: -0.05 * huk + 0.04 * Math.sin(Math.PI * u), bred: 0.05 * huk, luta: -14 * mjuk(u) + 1.5 * Math.sin(tl * 1.2) * (1 - u) }), { bakom: true, s: SS }); },
+  // liggande: gäspar med slutna ögon (gaspning-1), kameran glider närmare ansiktet, ögonen öppnas och tittar på stjärnan under "God natt"
+  '41': tl => { julrum(SOVNATT); const k = del(0, 1.0, tl); kamera(lerp(1.15, 1.8, k), lerp(900, 930, k), lerp(590, 680, k)); stjarna(...STJ_FON, { tand: 1 });
+    sovbild(del(lo(0) + 2.2, lo(0) + 2.8, tl), bump(lo(0) + 0.1, lo(0) + 2.2, tl)); },
+  // ögonen: två långsamma blinkningar, tyngre lock, sist sluts de helt; kameran backar ut till sovbilden, zzz och "Hej då!"
+  '42': tl => { julrum(SOVNATT); const k = del(5.0, 6.6, tl); kamera(lerp(1.8, 1.15, k), lerp(930, 900, k), lerp(680, 590, k)); stjarna(...STJ_FON, { tand: 1 });
+    sovbild(Math.min(1 - 0.92 * bump(0.8, 1.7, tl), 1 - 0.45 * del(2.0, 3.0, tl)) - 0.45 * bump(3.3, 4.3, tl) - 0.55 * del(4.4, 5.6, tl));
+    if (tl > lo(1) - 0.2) zzz(990, 560, tl - lo(1)); },
   '43': (tl, d) => { const c = CUR; CUR = RR['42']; S['42'](tl + RR['42'].d, RR['42'].d); CUR = c; kritiris(lerp(1500, 0, mjuk(kl(tl / (d - 0.3)))), [905, 625]); },
 };
 
@@ -732,7 +729,7 @@ window.ready = (async () => {
   SNO = snoFonster(FON, 6); $('snodefs').outerHTML = SNO.defs; $('snoFon').innerHTML = SNO.svg;
   window.kant?.lagg(G); ['sakerbak', 'saker', 'kar'].forEach(n => window.kant?.lagg($(n)));
   try { KONTUR.stjarna = await (await fetch(R + 'adventsstjarna/cut/adventsstjarna-kontur.json')).json(); } catch {}
-  const bilder = [BAD, SOVR, HANDFAT.bild, SKJORTA.fil, STJ.fil, KRITA, R + 'handduk-jul/cut/handduk-jul-krok.png', R + 'tavlan-tomte/cut/tavlan-tomte.png', R + 'tandborstmuggen/cut/tandborstmuggen.png', R + 'tandborste-jul/cut/tandborste-jul.png', R + 'sangen/cut/sangen.png', R + 'pall/cut/pall.png',
+  const bilder = [BAD, SOVR, HANDFAT.bild, SKJORTA.fil, STJ.fil, KRITAN.BILD, R + 'handduk-jul/cut/handduk-jul-krok.png', R + 'tavlan-tomte/cut/tavlan-tomte.png', R + 'tandborstmuggen/cut/tandborstmuggen.png', R + 'tandborste-jul/cut/tandborste-jul.png', R + 'sangen/cut/sangen.png', R + 'pall/cut/pall.png',
     R + 'nalle/cut/nalle-v2-ljus-tunn.png', R + 'tomteluva/cut/tomteluva.png', R + 'ljusstake/cut/ljusstake.png', R + 'adventsljus/cut/adventsljus.png', R + 'laga/cut/laga.png',
     A + 'karaktarer/leoparden-lova/premium/cut-tunn/lova-sover-sangen-jul.png'];
   await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
