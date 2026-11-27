@@ -36,7 +36,7 @@ Alla figurer följer stilguiden: mjuka runda former framifrån, prickögon i vit
 | Räven Rut | [raven-rut.md](raven-rut.md) (v2-rigg i `assets/karaktarer/raven-rut/premium/`) |
 | Grisen Greta | [grisen-greta.md](grisen-greta.md) (v2-rigg i `assets/karaktarer/grisen-greta/premium/`) |
 | Pandan Pim | [pandan-pim.md](pandan-pim.md) (v2-rigg i `assets/karaktarer/pandan-pim/premium/`) |
-| Tvättbjörnen Tilda | [tvattbjornen-tilda.md](tvattbjornen-tilda.md) (v2 påbörjad, konsten i Google Flow) |
+| Tvättbjörnen Tilda | [tvattbjornen-tilda.md](tvattbjornen-tilda.md) (v2-rigg i `assets/karaktarer/tvattbjornen-tilda/premium/`, väntar på Sannas godkännande) |
 | Blå dinon | [dinon-bla.md](dinon-bla.md) (v2-rigg i `assets/karaktarer/dinon-bla/premium/`; inget eget namn, heter "blå dinon") |
 | Röda dinon | [dinon-rod.md](dinon-rod.md) (v2-rigg i `assets/karaktarer/dinon-rod/premium/`; inget eget namn, heter "röda dinon") |
 

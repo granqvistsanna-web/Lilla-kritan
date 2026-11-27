@@ -1,0 +1,55 @@
+{
+  "storlek": 1024,
+  "kropp": "cut/tilda-body.png",
+  "delar": {
+    "arm-l": {
+      "fil": "cut/tilda-arm-l.png",
+      "vridpunkt": [
+        241,
+        575
+      ]
+    },
+    "ear-l": {
+      "fil": "cut/tilda-ear-l.png",
+      "vridpunkt": [
+        350,
+        255
+      ]
+    },
+    "leg-l": {
+      "fil": "cut/tilda-leg-l.png",
+      "vridpunkt": [
+        433,
+        838
+      ]
+    },
+    "ear-r": {
+      "fil": "cut/tilda-ear-r.png",
+      "vridpunkt": [
+        662,
+        252
+      ]
+    },
+    "arm-r": {
+      "fil": "cut/tilda-arm-r.png",
+      "vridpunkt": [
+        775,
+        575
+      ]
+    },
+    "tail": {
+      "fil": "cut/tilda-tail.png",
+      "vridpunkt": [
+        718,
+        740
+      ]
+    },
+    "leg-r": {
+      "fil": "cut/tilda-leg-r.png",
+      "vridpunkt": [
+        604,
+        836
+      ]
+    }
+  }
+}
