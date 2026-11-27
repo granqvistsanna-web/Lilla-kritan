@@ -1712,8 +1712,16 @@
   "name": "Stillbildsprov runda 4",
   "stills": [
    {
-    "label": "Bad 1 / 2 / 3 (rader)",
+    "label": "Skala: nu vänster, ny höger",
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1127-1456-1.jpg"
+   },
+   {
+    "label": "Ny: lövträd och blommor",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1127-1456-2.jpg"
+   },
+   {
+    "label": "Bad 1, 2, 3 (rader)",
+    "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1127-1456-3.jpg"
    }
   ]
  }
