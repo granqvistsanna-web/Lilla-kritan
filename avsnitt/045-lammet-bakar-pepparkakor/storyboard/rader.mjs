@@ -30,7 +30,7 @@ export const RADER = [
   { id: '00', d: 1.0, plats: 'Logotypen', bild: 'Lilla Kritans logotyp i 1 s, sedan papperet', ljudtext: '–', ansikte: '–' },
 
   // --- Kritan ritar (papperet): pepparkaksstjärnan, idén ---
-  { id: '01a', d: 10.5, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [[RITA(1), 0.3]],
+  { id: '01a', d: 6.4, plats: 'Papperet, helbild', malin: [[1, 0.6]], ljud: [[RITA(1), 0.5]],   // QA 27/11: kritan-ritar.js, konturen ca 2,8 s (förut 10,5 s)
     bild: 'Kritan ritar pepparkaksgubben detaljerat (Sanna 2026-11-19 kväll): konturen i ett lugnt drag, glasyrprickarna runt kanten, tre knappar, ögonen och leendet', ljudtext: 'kritan ritar', ansikte: '–' },
   { id: '01b', d: L(2) + 4.0, plats: 'Papperet, helbild', malin: [[2, 0.0]],
     bild: 'Konturen klar, kritan väntar bredvid och svajar: barnet gissar', ljudtext: 'tyst', ansikte: '–' },
@@ -105,7 +105,7 @@ export const RADER = [
     bild: 'Lammet tittar ner på bordet', ljudtext: '–', ansikte: 'nyfiken' },
 
   // --- Kritan ritar ringklockan ---
-  { id: '21a', d: 0.3 + L(27) + 3.0, plats: 'Julköket, helbild', malin: [[27, 0.3]], ljud: [[RITA(2), 0.4]],
+  { id: '21a', d: 0.3 + L(27) + 4.2, plats: 'Julköket, helbild', malin: [[27, 0.3]], ljud: [[RITA(2), 0.5]],   // QA 27/11: kontur + urtavla + visare
     bild: 'Kritan flyger in och ritar ringklockans kontur på bordet, rakt framför grytlapparna. Gisspaus 3 s', ljudtext: 'kritan ritar', ansikte: 'nyfiken' },
   { id: '21b', d: 0.8 + L(28) + G, plats: 'Halvbild', malin: [[28, 0.8]], ljud: [[GLITTER, 0.1]],
     bild: 'Ringklockan fylls i inifrån. Bara en rutig grön kant syns vid klockans sida (grytlapparna bakom)', ljudtext: '`glitter`', ansikte: 'glittriga ögon' },

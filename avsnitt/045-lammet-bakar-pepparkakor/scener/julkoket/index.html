@@ -52,6 +52,8 @@
 </svg>
 <script src="/verktyg/blinka.js"></script>
 <script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="/verktyg/utsnitt.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
 <script>
 const $ = id => document.getElementById(id);
@@ -59,7 +61,6 @@ const A = '/assets/', R = A + 'rekvisita/';
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const f1 = x => (+x).toFixed(1);
 const bild = (href, w, h, t, extra = '') => `<image href="${href}" width="${w}" height="${h}" transform="${t}" ${extra}/>`;
-const KRITA = R + 'krita-rod/cut/krita-rod.png', KRITA_SPETS = [742, 132];
 const PLATTA = '/avsnitt/045-lammet-bakar-pepparkakor/storyboard/julkoket-teal.jpg';
 const BORD = { fil: R + 'bordet/cut/bordet.png', w: 998, h: 562, topp: 21, s: 0.82 };
 const STJF = R + 'pepparkaksformar/cut/stjarnform.png', HJF = R + 'pepparkaksformar/cut/hjartform.png';
@@ -93,17 +94,8 @@ const kameraMix = (A, B, k) => kamera(lerp(A[0], B[0], k), lerp(A[1], B[1], k), 
 const glans = (x, y, r, o = 1) => `<path transform="translate(${f1(x)} ${f1(y)}) scale(${f1(r)})" opacity="${o}" d="M0 -1 L.2 -.2 L1 0 L.2 .2 L0 1 L-.2 .2 L-1 0 L-.2 -.2Z" fill="#fff6c8" stroke="#e6b422" stroke-width=".06"/>`;
 const skimmer = (x, y, k = 1, vidd = 1, lager = 'fram') => { if (k < 0.02) return; lagg(lager, [[-1, -0.7, 1], [1.1, -0.4, 0.8], [0.2, 1.1, 0.7], [-1.2, 0.8, 0.6]]
   .map(([dx, dy, s], i) => glans(x + dx * 40 * vidd, y + dy * 34 * vidd, 16 * s * k * vidd * (0.85 + 0.15 * Math.sin(TT * 5 + i * 2)), Math.min(1, 0.4 + k))).join('')); };
-const krita = (x, y, v = 125, s = 0.33) => lagg('pilar', bild(KRITA, 755, 265, `translate(${f1(x)} ${f1(y)}) rotate(${f1(v)}) scale(${s}) translate(${-KRITA_SPETS[0]} ${-KRITA_SPETS[1]})`));
-const svajP = (x, y, tl) => [x + 14 * Math.sin(tl * 1.6), y + 10 * Math.sin(tl * 2.3), 140 + 4 * Math.sin(tl * 1.3)];
-const kritaGlid = (A, B, k, s, bage = 40) => { const m = mjuk(k), h = Math.min(1, Math.hypot(B[0] - A[0], B[1] - A[1]) / 300) * bage * Math.sin(Math.PI * m);
-  krita(lerp(A[0], B[0], m), lerp(A[1], B[1], m) - h, lerp(A[2] ?? 125, B[2] ?? 125, m), s); };
-const ritfart = k => (k = kl(k), 0.6 * k + 0.4 * mjuk(k));
-function kontur(namn, t, k, bredd, farg = '#3a2c28') {
-  lagg('pilar', `<g transform="${t}"><path id="k-${namn}" d="${KONTUR[namn].d}" pathLength="1" fill="none" stroke="${farg}" stroke-width="${f1(bredd)}"
-    stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="${k.toFixed(4)} 2"/></g>`);
-  const p = $('k-' + namn), q = p.getPointAtLength(p.getTotalLength() * Math.min(0.999, k)), sm = $('kamera').getCTM().inverse().multiply(p.getCTM());
-  const pt = new DOMPoint(q.x, q.y).matrixTransform(sm); return [pt.x, pt.y];
-}
+// kritan ritar med verktyg/kritan-ritar.js (QA 26–27/11: förut egna krita/kritaGlid/svajP/kontur här)
+const ring = (x, y, r) => `M${x - r} ${y} a${r} ${r} 0 1 0 ${2 * r} 0 a${r} ${r} 0 1 0 ${-2 * r} 0`;
 const papper = () => { $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`; };
 function kritiris(r, [cx, cy]) {
   if (r >= 1500) return;
@@ -273,7 +265,7 @@ function klockaNu() {
   const ln = (v, l, b) => { const a = (v - 90) * Math.PI / 180; return `<line x1="${NAV[0]}" y1="${NAV[1]}" x2="${f1(NAV[0] + l * Math.cos(a))}" y2="${f1(NAV[1] + l * Math.sin(a))}" stroke="#3a2a20" stroke-width="${b}" stroke-linecap="round"/>`; };
   const streck = ring > 0.05 ? [[-1, 110], [1, 610]].map(([s, bx]) => `<path d="M${bx + s * 40} 60 l${s * 70} -50 M${bx + s * 60} 130 l${s * 90} -10" stroke="#fff6c8" stroke-width="18" stroke-linecap="round" opacity="${ring.toFixed(2)}"/>`).join('') : '';
   // Sanna 20/11 runda 2 (3:23): klockan står på bordet framför lammet och ritas över tassarna, vantarna och plåten
-  lagg('klockan', `<g transform="${t}"><clipPath id="kf"><circle cx="362" cy="440" r="${f1(560 * fyll)}"/></clipPath><g clip-path="url(#kf)">
+  lagg('klockan', `<g transform="${t}">${fyllMask('kf', 362, 440, 560, fyll)}<g clip-path="url(#kf)">
     <image href="${KLOCKA}" width="710" height="835"/>${ln(v1, 140, 26)}${ln(v2, 200, 18)}<circle cx="${NAV[0]}" cy="${NAV[1]}" r="20" fill="#3a2a20"/></g>${streck}</g>`);
 }
 
@@ -376,10 +368,13 @@ const BAR_DY = 34, BAR_DY29 = 62;   // plåtens underkant under tassarnas mitt (
 // plåten i tassarna: ritas efter lammet, tassarna överst (kopior av armarna), grytvantarna överst i rad 29
 function barPlat(x, y) { platNu(x, y); armOverst(-1, [-400, -400, 2400, 1600]); armOverst(1, [-400, -400, 2400, 1600]); vantarPa(); }
 const huvud = (dx = 0, y = 250) => [LX + dx * DS, LFOT + (y - 927) * DS];
-const HEL = () => kamera(1), HALV = () => kamera(1.9, 958, 480), FORMN = () => kamera(2.6, 760, TY - 85), PLN = () => kamera(2.6, PLAT_X, TY - 85),
-  KLN = () => kamera(2.4, KL_X - 110, MAT_Y - 150), NARL = () => kamera(2.4, 930, 440);
+// QA 26–27/11 (närbilderna kapade toppen av huvudet, ögonen 10–15 % ner): närbilderna räknas med verktyg/utsnitt.js ('nara', huvudet
+// 6 % från överkanten). Lammet: fötterna på y 870 (LFOT), huvudets topp på y 240 i helbild, kroppshöjd 630.
+const LAMM_FIG = { golv: 870, kropp: 630 }, NARA = x => kamera(...utsnitt('nara', { ...LAMM_FIG, x }, 0.5));
+const HEL = () => kamera(1), HALV = () => kamera(1.9, 958, 480), FORMN = () => NARA(760), PLN = () => NARA(PLAT_X),
+  KLN = () => NARA(KL_X - 110), NARL = () => NARA(930);
 // QA 25/11 (3:26, plåtbilden kapade huvudet vid ögonen): plåtbilden i rad 30 och 32 lite vidare och högre, så att ögonen och pannan syns
-const PLN2 = () => kamera(2.3, PLAT_X, 515);
+const PLN2 = () => NARA(PLAT_X);
 
 // --- Ritintrot: kritan ritar pepparkaksgubben, detaljerad (Sanna 2026-11-19 kväll): konturen, glasyrprickarna runt kanten,
 // tre knappar och ett glasyransikte. Ansiktet finns inte i bilden, så det läggs på den ifyllda bilden i kod (teckningen som bilden).
@@ -387,40 +382,40 @@ const GB = R + 'pepparkaksgubbe/cut/pepparkaksgubbe.png', gT = `translate(960 56
 const pS = (x, y) => [960 + (x - 512) * 0.82, 560 + (y - 512) * 0.82];
 const KNAPPAR = [[512, 488, 19], [512, 568, 19], [512, 650, 21]], OGON = [[468, 240], [556, 240]], LE = 'M470 292 Q512 322 554 292';
 const ansikte = (farg, b) => `${OGON.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="${farg}"/>`).join('')}<path d="${LE}" fill="none" stroke="${farg}" stroke-width="${b}" stroke-linecap="round"/>`;
-let PRICKAR = [], SISTA = [1100, 330];
-// glasyrprickarna: punkter längs konturen, krympt 11 % mot mitten (där bildens prickar ligger)
-function gorPrickar() { const e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', KONTUR.gubbe.d); $('gomda').appendChild(e);
-  const n = 64, l = e.getTotalLength(); PRICKAR = Array.from({ length: n }, (_, i) => { const q = e.getPointAtLength(l * i / n); return [512 + 0.89 * (q.x - 512), 515 + 0.89 * (q.y - 515)]; }); e.remove(); }
-function papperGubbe(k, fyll) {
-  papper(); let sp = null;
-  if (fyll > 0) lagg('saker', `<g transform="${gT}"><clipPath id="pg"><circle cx="512" cy="512" r="${f1(560 * fyll)}"/></clipPath><g clip-path="url(#pg)">
-    <image href="${GB}" width="1024" height="1024"/>${ansikte('#fbf4e6', 10)}</g></g>`);
-  if (fyll >= 1) return null;
-  const n0 = $('pilar').children.length;   // QA 20/11: teckningen tonas ut medan bilden fylls i (förut försvann den på en bildruta)
-  const k1 = kl(k / 0.58), k2 = kl((k - 0.6) / 0.22), k3 = kl((k - 0.84) / 0.07), k4 = kl((k - 0.92) / 0.08), M = '#3a2c28', B = '#8a6a58';
-  if (k1 > 0) { const q = kontur('gubbe', gT, ritfart(k1), 12 / 0.82, M); if (k1 < 1) sp = q; }
-  let h = '';
-  if (k2 > 0) { const n = Math.max(1, Math.ceil(PRICKAR.length * k2)); h += PRICKAR.slice(0, n).map(([x, y]) => `<circle cx="${f1(x)}" cy="${f1(y)}" r="9" fill="${B}"/>`).join(''); if (k2 < 1) sp = pS(...PRICKAR[n - 1]); }
-  if (k3 > 0) { const n = Math.ceil(3 * k3); h += KNAPPAR.slice(0, n).map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${M}" stroke-width="10"/>`).join(''); if (k3 < 1) sp = pS(KNAPPAR[n - 1][0], KNAPPAR[n - 1][1]); }
-  if (k4 > 0) { const ogon = k4 > 0.3 ? 2 : k4 > 0.1 ? 1 : 0, le = kl((k4 - 0.4) / 0.6);
-    h += OGON.slice(0, ogon).map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${f1(13 * mjuk((k4 - [0.1, 0.3][i]) / 0.12))}" fill="${M}"/>`).join('');   // QA: ögonen växer fram
-    if (le > 0) h += `<path d="${LE}" pathLength="1" fill="none" stroke="${M}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${le.toFixed(3)} 2"/>`;
-    if (k4 < 1) sp = le > 0 ? pS(lerp(470, 554, le), 292 + 22 * Math.sin(Math.PI * le)) : pS(...OGON[Math.max(0, ogon - 1)]); }
-  if (h) lagg('pilar', `<g transform="${gT}">${h}</g>`);
-  if (fyll > 0) [...$('pilar').children].slice(n0).forEach(e => e.setAttribute('opacity', (1 - del(0.45, 0.95, fyll)).toFixed(3)));
-  if (sp) SISTA = sp; else if (k > 0 && k < 1) sp = SISTA;
-  return sp;
+// QA 26–27/11: kritan går genom verktyg/kritan-ritar.js (skillen kritan-ritar): konturen i ett drag (ca 2,8 s), sedan sex detaljstreck
+// (ögonen, leendet, knapparna) i samma ritBana, kritan glider till väntplatsen, bilden fylls inifrån på svaret och kritan flyger ut.
+// Glasyrprickarna ritas inte längre (mönster, inte detaljer). Ögonen och leendet finns inte i bilden och läggs på fyllningen i kod.
+const GUBBE_DRAG = () => [KONTUR.gubbe.d, ...OGON.map(([x, y]) => ring(x, y, 7)), LE, ...KNAPPAR.map(([x, y, r]) => ring(x, y, r))];
+const RIT1 = () => { const a = at('01a'), c = at('01c'); return { in: [a, a + 0.4], rit: [a + 0.5, a + 5.3], vanta: [a + 5.4, a + 6.2], ut: [c + 0.2, c + 1.0] }; };
+const linje = (bredd, o) => `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(bredd)}" stroke-linecap="round" stroke-linejoin="round" opacity="${o.toFixed(3)}"`;
+function papperGubbe(fyll) {
+  papper(); const T = RIT1(), k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0]));
+  const R = ritBana(GUBBE_DRAG(), k, { vila: [0.6], attr: linje(KRITAN.BRED / 0.82, linjeOpacitet(fyll)) });
+  if (fyll > 0) lagg('saker', `<g transform="${gT}">${fyllMask('pg', 512, 512, 560, fyll)}<g clip-path="url(#pg)"><image href="${GB}" width="1024" height="1024"/>${ansikte('#fbf4e6', 10)}</g></g>`);
+  if (fyll < 1 && k > 0) lagg('pilar', `<g transform="${gT}">${R.html}</g>`);
+  const kr = kritaFas(TT, T, { start: pS(...R.start), spets: pS(...R.spets), slut: pS(...R.slut), vanta: [1430, 300] });
+  if (kr) lagg('pilar', kritaBild(kr.x, kr.y, kr));
+}
+// ringklockan (rad 21a–21b): konturen, urtavlan och de två visarna, samma förlopp i köket (kritans skala efter kamerans zoom)
+const pK = (x, y) => [KL_X + (x - 355) * KS, MAT_Y + 4 + (y - 833) * KS];
+const visare = (v, l) => { const a = (v - 90) * Math.PI / 180; return `M${NAV[0]} ${NAV[1]} L${f1(NAV[0] + l * Math.cos(a))} ${f1(NAV[1] + l * Math.sin(a))}`; };
+const KLOCKA_DRAG = () => [KONTUR.klocka.d, ring(352, 453, 226), visare(-60, 140), visare(0, 200)];
+const RIT2 = () => { const a = at('21a'), b = at('21b'); return { in: [a, a + 0.4], rit: [a + 0.5, a + 4.3], vanta: [a + 4.4, a + 5.2], ut: [b + 0.2, b + 1.0] }; };
+function ritKlocka(zoom) {
+  const T = RIT2(), k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0])), fyll = del(at('21b'), at('21b', 0.9), TT);
+  const R = ritBana(KLOCKA_DRAG(), k, { vila: [0.5], attr: linje(KRITAN.BRED / KS, linjeOpacitet(fyll)) });
+  if (fyll < 1 && k > 0) lagg('pilar', `<g transform="translate(${KL_X} ${MAT_Y + 4}) scale(${KS}) translate(-355 -833)">${R.html}</g>`);
+  const kr = kritaFas(TT, T, { start: pK(...R.start), spets: pK(...R.spets), slut: pK(...R.slut), vanta: [KL_X + 170, MAT_Y - 230], s: kritaSkala(zoom) });
+  if (kr) lagg('pilar', kritaBild(kr.x, kr.y, kr));
 }
 
 // --- Raderna --------------------------------------------------------------------------------------------------------------------
 const S = {
-  '01a': (tl, d) => { kamera(1); const k = kl((tl - 0.3) / (d - 0.6)), sp = papperGubbe(k, 0);
-    if (sp) krita(sp[0], sp[1], 125, 0.42 * (0.7 + 0.3 * del(0, 0.4, tl))); },
-  '01b': tl => { kamera(1); papperGubbe(1, 0); kritaGlid([...pS(554, 292), 125], svajP(1420, 300, tl), del(0, 1.1, tl), 0.42, 60); },
+  '01a': () => { kamera(1); papperGubbe(0); },
+  '01b': () => { kamera(1); papperGubbe(0); },
   '01c': (tl, d) => { const z0 = mo(0) + rl(3) + 0.2, klipp = z0 + 1.0;
     if (tl < klipp) { const z = mjuk((tl - z0) / (klipp - z0)); kamera(lerp(1, 2.6, z), 960, lerp(560, 480, z));
-      papperGubbe(1, del(0, 0.9, tl)); kritaGlid(svajP(1420, 300, RR['01b'].d + tl), [2100, 60, 140], del(0.2, 1.4, tl), 0.42, 0);
-      skimmer(960, 560, 0.7 * bump(0.3, 2.0, tl), 2.4); vit(del(klipp - 0.45, klipp, tl)); return; }
+      papperGubbe(del(0, 0.9, tl)); lagg('pilar', gnistor(960, 560, 330, tl)); vit(del(klipp - 0.45, klipp, tl)); return; }
     kok(); HEL(); vit(1 - del(klipp, klipp + 0.6, tl)); },
 
   // --- Julköket: lammet kommer, vad ska du göra? ---
@@ -436,14 +431,14 @@ const S = {
   // --- Har du allt? (3c–3g): tassen klappar på degen och plåten, formarna glimtar ---
   '3c': tl => { kok(); HALV(); const ner = del(0.1, 0.6, tl) * (1 - del(lo(0) + 0.6, lo(0) + 1.1, tl));
     lamm(ANS('nyfiken', { titt: [0, 16 * ner] }), { luta: 3 * ner }); },
-  '3d': (tl, d) => { DEG_TRYCK = 0.6 * bump(0.3, 0.75, tl); kok(); kamera(1.9, DEG_X + 40, TY - 150);
+  '3d': (tl, d) => { DEG_TRYCK = 0.6 * bump(0.3, 0.75, tl); kok(); kamera(1.9, DEG_X + 40, 481);
     const f = del(0.05, 0.3, tl) * (1 - del(d - 0.9, d - 0.3, tl)), k = bump(0.3, 0.75, tl);
     lamm(mellan(ANS('nyfiken', { titt: [-8, 16] }), ANS('jatteglad', { titt: [-6, 14] }), del(lo(0) + rl(49) - 0.2, lo(0) + rl(49) + 0.2, tl)),
       { luta: 4 * f, fram: [f, 0], hand: HEL_ARM, klapp: 78, armar: [-124 * f, 0], armY: (28 - 40 + 46 * k) * f });
     degArm(f); skimmer(DEG_X, TY - 40, 0.8 * bump(0.6, 2.2, tl), 1); },
   '3e': tl => { kok(); FORMN(); lamm(ANS('glad', { titt: [-12, 16] })); const s1 = lo(0) + rl(50) * 0.45, s2 = lo(0) + rl(50) * 0.85;
     lagg('fram', glans(FORM_X[0] + 38, TY - 88, 16 * bump(s1 - 0.1, s1 + 0.6, tl), 1) + glans(FORM_X[1] + 36, TY - 84, 16 * bump(s2 - 0.1, s2 + 0.6, tl), 1)); },
-  '3f': (tl, d) => { kok(); kamera(1.9, PLAT_X - 40, TY - 150);
+  '3f': (tl, d) => { kok(); kamera(1.9, PLAT_X - 40, 481);
     const f = del(0.05, 0.3, tl) * (1 - del(d - 0.9, d - 0.3, tl)), k = bump(0.3, 0.75, tl);
     lamm(mellan(ANS('nyfiken', { titt: [8, 16] }), ANS('jatteglad', { titt: [6, 14] }), del(lo(0) + rl(51) - 0.2, lo(0) + rl(51) + 0.2, tl)),
       { luta: -4 * f, fram: [0, f], hand: HEL_ARM, klapp: 78, armar: [0, -124 * f], armY: (28 - 40 + 46 * k) * f });
@@ -506,15 +501,8 @@ const S = {
 
   // --- Kritan ritar ringklockan (framför grytlapparna) ---
   '21a': (tl, d) => { kok(); kamera(1.25, 1050, 520); const u = del(0.3, 1.4, tl);
-    lamm(ANS('nyfiken', { titt: [16 * u, 8 * u] }), { rikt: 0.3 * u, oron: [10 - 14 * u, 10 - 14 * u] });
-    const t = `translate(${KL_X} ${MAT_Y + 4}) scale(${KS}) translate(-355 -833)`, a = lo(0), b = d - 2.6, k = kl((tl - a) / (b - a));
-    if (tl < a) { kritaGlid([2100, 100, 140], [KL_X - 40, MAT_Y - 170, 125], del(0, a, tl), 0.33); return; }
-    const sp = kontur('klocka', t, ritfart(k), 9 / KS); if (k < 1) krita(sp[0], sp[1], 125, 0.33);
-    else kritaGlid([...sp, 125], svajP(KL_X + 170, MAT_Y - 230, tl), del(b, b + 0.8, tl), 0.33); },
-  '21b': tl => { kok(); HALV(); const t = `translate(${KL_X} ${MAT_Y + 4}) scale(${KS}) translate(-355 -833)`;
-    if (tl < 0.9) kontur('klocka', t, 1, 9 / KS);
-    kritaGlid(svajP(KL_X + 170, MAT_Y - 230, tl + 5), [2100, 60, 140], del(mo(0) + 0.6, mo(0) + 1.8, tl), 0.33, 0);
-    skimmer(KL_X, MAT_Y - 90, 0.8 * bump(0.1, 2.2, tl), 1.2, 'pilar');
+    lamm(ANS('nyfiken', { titt: [16 * u, 8 * u] }), { rikt: 0.3 * u, oron: [10 - 14 * u, 10 - 14 * u] }); ritKlocka(1.25); },
+  '21b': tl => { kok(); HALV(); ritKlocka(1.9); lagg('pilar', gnistor(KL_X, MAT_Y - 90, 120, tl));
     const g = del(0.6, 1.0, tl); lamm(mellan(ANS('forvanad', { titt: [16, 6] }), ANS('kawaii', { titt: [16, 6] }), g), { upp: 0.5 * g, rikt: 0.3 }, { lyft: skutt(tl, 1.0, 1.6, 16) }); },
   '22': tl => { kok(); HALV(); lamm(ANS('kawaii', { titt: [lerp(16, 0, del(mo(0), mo(0) + 0.5, tl)), 4] }), { oron: [-10, -10] }); },
   '23': tl => { kok(); HALV(); const [f, p] = nick(ANS('jatteglad'), {}, tl - 0.05, 0.9); lamm(f, p); },
@@ -595,7 +583,7 @@ function ljud() {
   for (const r of RAD_L) {
     for (const [n, o, ss, l] of r.malin || []) ut.push({ t: r.s + o, fil: `assets/ljud/roster/lammet-bakar-pepparkakor/${ROSTER[n - 1][0]}.m4a`, vol: 1.0,
       ...(ss ? { ss } : {}), ...(l ? { langd: l, fade: 0.08 } : {}) });   // [n, tid, ss, längd]: en del av repliken (rad 16 och 29)
-    for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f), ...(/^krita-ritar/.test(f) ? { loop: true, langd: f.endsWith('-1') ? 9.7 : RR['21a'].d - 3.0, fade: 0.4 } : {}) });
+    for (const [f, o] of r.ljud || []) if (f) ut.push({ t: r.s + o, fil: E + f + '.m4a', vol: VOL(f), ...(/^krita-ritar/.test(f) ? { loop: true, langd: f.endsWith('-1') ? 5.0 : 4.0, fade: 0.4 } : {}) });
   }
   // julmusiken (befintlig bädd, ingen ny musik) under hela filmen, från ritintrot (Sanna 2026-11-19: "add xmas soundtrack")
   // Sanna 20/11 (0:42, "xmas music like jingle bells instrumental"): karolen från 039/042 (Up on the Housetop, instrumental, slinga) i stället för
@@ -634,9 +622,9 @@ window.ready = (async () => {
   G = L.figur(512, L.FOTTER, 1, $('gomda'));
   BLINKA = skapaBlinka(45);
   window.kant?.lagg(G); ['vagg', 'sakerbak', 'saker', 'fram', 'klockan'].forEach(n => window.kant?.lagg($(n)));
-  KONTUR.gubbe = await (await fetch(R + 'pepparkaksgubbe/cut/pepparkaksgubbe-kontur.json')).json(); gorPrickar();
+  KONTUR.gubbe = await (await fetch(R + 'pepparkaksgubbe/cut/pepparkaksgubbe-kontur.json')).json();
   KONTUR.klocka = await (await fetch(R + 'ringklocka/cut/ringklocka-kontur.json')).json();
-  const bilder = [PLATTA, KRITA, GB, BORD.fil, STJF, HJF, PLAT, KLOCKA, GLV, GLH, STJ, HJ];
+  const bilder = [PLATTA, KRITAN.BILD, GB, BORD.fil, STJF, HJF, PLAT, KLOCKA, GLV, GLH, STJ, HJ];
   await Promise.all(bilder.map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   // röstfiler som inte finns än (replik 10 väntar på tagning 2) hoppas över, annars stannar renderingen
   const lj = ljud(), finns = await Promise.all(lj.map(c => fetch('/' + c.fil, { method: 'HEAD' }).then(r => r.ok, () => false)));
