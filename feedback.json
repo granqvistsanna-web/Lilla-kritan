@@ -11034,9 +11034,10 @@
   "sec": 41,
   "tags": [],
   "note": "vo a bit too repetative here",
-  "fixed": false,
+  "fixed": true,
   "at": 1795791255685,
-  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)"
+  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)",
+  "fixedAt": 1795794172813
  },
  "wshmqmw2l9mwz3rml4": {
   "ep": "062",
