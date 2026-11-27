@@ -7,8 +7,11 @@ set -e
 cd "$(dirname "$0")/.."
 SCENER=(kritan-ritar vagen bondgarden discot slutet)
 T=film/.tmp-v2; rm -rf $T; mkdir -p $T
-{ echo "file '../../intro/v2/intro.mp4'"; for s in "${SCENER[@]}"; do echo "file '../../scener-v2/$s/$s.mp4'"; done; echo "file '../../../../produktion/youtube/prenumerera/prenumerera.mp4'"; } > $T/lista.txt   # sist prenumerera-kortet, som 054
-ffmpeg -loglevel error -y -f concat -safe 0 -i $T/lista.txt -an -vf "scale=1920:1080,fps=30" -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p $T/bild.mp4
+# introt och prenumerera-kortet (pc-omfång) görs om till tv-omfång som de molnrenderade scenerna, annars blir scenerna bleka i fogen (27/11, J13)
+ffmpeg -loglevel error -y -i intro/v2/intro.mp4 -an -vf "scale=out_range=tv,format=yuv420p" -color_range tv -c:v libx264 -preset veryfast -crf 14 $T/intro.mp4
+ffmpeg -loglevel error -y -i ../../produktion/youtube/prenumerera/prenumerera.mp4 -an -vf "scale=out_range=tv,format=yuv420p" -color_range tv -c:v libx264 -preset veryfast -crf 14 $T/prenumerera.mp4
+{ echo "file 'intro.mp4'"; for s in "${SCENER[@]}"; do echo "file '../../scener-v2/$s/$s.mp4'"; done; echo "file 'prenumerera.mp4'"; } > $T/lista.txt   # sist prenumerera-kortet, som 054
+ffmpeg -loglevel error -y -f concat -safe 0 -i $T/lista.txt -an -vf "scale=1920:1080,fps=30" -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -color_range tv $T/bild.mp4
 # effekterna: varje scens wav där scenen börjar (summan av längderna före)
 in=(-i intro/v2/jingel-kort.m4a -i intro/v2/intro-effekter.wav); fx="[2:a]atrim=0:7.3,afade=t=out:st=6.95:d=0.35[e1];"; fl="[e1][3:a]"; n=2
 start=$(ffprobe -v error -show_entries format=duration -of csv=p=0 intro/v2/intro.mp4); sd=$(python3 -c "print(round($start*1000))")
