@@ -758,9 +758,9 @@
   "name": "Jul (parkerad): Björnen pepparkaka"
  },
  "J04": {
-  "duration": 176.3,
+  "duration": 185.7,
   "file": "produktion/youtube/shorts/jul/05-grisen-pulka/05-grisen-pulka.mp4",
-  "rendered": "2026-11-25 17:29 (3D-intro och 3D-outro, handtaget rättat)",
+  "rendered": "2026-11-27 08:21 (QA 26/11 fixad: björnen bär säcken till nosen, björnen bakom pulkan när den knuffar, drivan ur snön, större kullåk, tydligare fast-läge)",
   "status": "granska",
   "stills": [
    {
@@ -788,7 +788,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/9fab59d51b9ddc56010dcaabfe8b06a8.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J04-1125-1729.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J04-1127-0820.mp4",
   "videoId": "088d118be17591e25241f4de714abb2b",
   "name": "Grisen åker pulka"
  },
