@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Kritans bok – prov</title>
+<!-- Prov 2026-11-27: en uppfällbar bok på ett skrivbord, ett uppslag med en utescen i lager (dammen och skogen ur befintliga urklipp)
+     och grodan som ett platt kort. Tre stillbilder (t = 0, 1, 2): helbild, inne i boken, närbild. -->
+<style>
+  html, body { margin: 0; background: #111; overflow: hidden; }
+  canvas#bild { display: block; width: 100vw; height: 100vh; }
+  #vinjett { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(60, 35, 20, 0.12) 100%); }
+</style>
+<script type="importmap">{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+</head>
+<body>
+<canvas id="bild"></canvas>
+<div id="vinjett"></div>
+<script type="module" src="bok.js"></script>
+</body>
+</html>
