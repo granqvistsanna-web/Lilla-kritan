@@ -310,7 +310,7 @@ function grodPos(t) {
   for (const H of HOPP) { if (t >= H.t1) [x, z] = H.till; else if (t >= H.t0) { const u = (t - H.t0) / (H.t1 - H.t0), m = mjuk(u);
     x = lerp(H.fran[0], H.till[0], m); z = lerp(H.fran[1], H.till[1], m); y = H.h * Math.sin(Math.PI * u); } }
   for (const K of SKUTT) { const u = (t - K.t0) / K.d; if (u > 0 && u < 1) y += K.h * Math.sin(Math.PI * u); }
-  const bad = k01((t - HOPP[0].t1) / 0.5) * (1 - k01((t - HOPP[1].t0 + 0.4) / 0.3));   // guppar lugnt i vattnet (aldrig under sidan)
+  const bad = BAD === 4 ? 0 : k01((t - HOPP[0].t1) / 0.5) * (1 - k01((t - HOPP[1].t0 + 0.4) / 0.3));   // bad 4 guppar i kortet (sjunk) i stället   // guppar lugnt i vattnet (aldrig under sidan)
   return [x, y + 0.006 * bad * (1 + Math.sin(t * 2.2)), z];
 }
 // glädjehopp på stället (Sanna 27/11 "happy jump"): två små skutt när grodan svarar glatt på "Hur är det, grodan?"
@@ -318,8 +318,10 @@ const SKUTT = [{ t0: SVAR('05b', 8) + 0.05, d: 0.5, h: 0.05 }, { t0: SVAR('05b',
 const PLASK = HOPP[0].t1, UPPUR = HOPP[1].t1;
 // grodan sjunker ner i dammen (Sanna 27/11 "cant frog sink in to the damm?"): figuren glider nedåt i sitt kort och det som är
 // under vattenlinjen ritas inte (#vatten), så att bara huvudet syns ovanför vågkortet. Upp igen före hoppet upp på bladet.
-const SJUNK = BAD === 3 ? 0 : BAD === 2 ? 170 : 250, VATTEN = 0.12 * STOR * (BAD === 2 ? 0.8 : 1);   // px i riggen, vattenlinjen i världens höjd över fötterna (vågkortet döljer den)
-const sjunk = t => SJUNK * mjuk((t - PLASK - 0.05) / 0.7) * (1 - mjuk((t - (HOPP[1].t0 - 0.75)) / 0.45));
+// bad 4 (Sanna 27/11 "make bad 4"): inget vågkort, grodan sjunker till axlarna mitt i dammen; vattenlinjen ligger i kortets fot,
+// så att det som syns slutar där kortet möter dammen, och en vattenkant (#vattenYta) i dammens färg täcker snittet
+const SJUNK = BAD === 4 ? 300 : BAD === 3 ? 0 : BAD === 2 ? 170 : 250, VATTEN = BAD === 4 ? 0.004 : 0.12 * STOR * (BAD === 2 ? 0.8 : 1);   // px i riggen, vattenlinjen i världens höjd över fötterna (vågkortet döljer den)
+const sjunk = t => (SJUNK + (BAD === 4 ? 10 * Math.sin(t * 2.2) : 0)) * mjuk((t - PLASK - 0.05) / 0.7) * (1 - (BAD === 4 ? mjuk((t - HOPP[1].t0 + 0.2) / 0.4) : mjuk((t - (HOPP[1].t0 - 0.75)) / 0.45)));   // bad 4: upp ur vattnet i själva hoppet, aldrig stående på vattnet
 const GLIDA = [S('11') + 0.1, S('11') + 0.9], MUMS = S('11') + 0.6 + 2.1, KON_UT = S('13') + 3.5;   // KON_UT: allt är uppätet, handen tom   // glassen till handen, tuggan på "Mums", struten släpps
 const KLAPP = SVAR('22', 36) - 0.2 + 0.1 - 1.0;   // riggens klapp möts vid 1, 1,5 och 2 s
 function vink(f, p, tl, d, stor = false) {   // armen bakom kroppen, snett upp och ut förbi kanten (som grodans testfilm, lugnare takt)
@@ -452,7 +454,13 @@ async function ritaGroda(t) {
   const sj = sjunk(t); $('figurer').setAttribute('transform', `translate(0 ${sj.toFixed(1)})`);
   if (sj > 0.5) { const yw = FOT - VATTEN / ENHET; let d = `M-400 -400H1600V${yw}`;
     for (let x = 1600; x > -400; x -= 100) d += `Q${x - 50} ${(yw + 9 * Math.sin(x * 0.03 + t * 2)).toFixed(1)} ${x - 100} ${yw}`;
-    $('vattenKant').setAttribute('d', d + 'Z'); } else $('vattenKant').setAttribute('d', 'M-400 -400H1600V2000H-400Z');
+    $('vattenKant').setAttribute('d', d + 'Z');
+    // bad 4: vattenkanten framför kroppen, lite bredare än grodan, med vita vågstreck (som dammens kritvatten)
+    if (BAD === 4) { const k = mjuk((sj - 40) / 120), x0 = 512 - 330, x1 = 512 + 330, n = 6, w = (x1 - x0) / n; let v = `M${x0} ${yw + 40}L${x0} ${yw}`, h = '';
+      for (let i = 0; i < n; i++) { const a = x0 + i * w, dy = 3 * Math.sin(t * 2 + i); v += `Q${a + w / 2} ${(yw - 22 + dy).toFixed(1)} ${a + w} ${yw}`;
+        h += `<path d="M${a + w * 0.25} ${yw - 4}Q${a + w / 2} ${(yw - 18 + dy).toFixed(1)} ${a + w * 0.75} ${yw - 4}" fill="none" stroke="#fff" stroke-opacity="0.85" stroke-width="7" stroke-linecap="round"/>`; }
+      $('vattenYta').innerHTML = `<path d="${v}L${x1} ${yw + 40}Z" fill="#7FB2CF" stroke="#fff" stroke-width="8" stroke-linejoin="round"/>` + h; $('vattenYta').setAttribute('opacity', k.toFixed(2)); }
+  } else { $('vattenKant').setAttribute('d', 'M-400 -400H1600V2000H-400Z'); $('vattenYta').innerHTML = ''; }
   // huvudet: värmetecknen, vattendropparna och tungan som slickar glassen (mot kulan, räknat ur det sakRita just ritade)
   let hu = varmTecken(t) + vattenDroppar(t); const e = tunga(t);
   const ting = G.querySelector('.sak-plats[display="inline"] .sak-ting');
@@ -528,7 +536,7 @@ async function bildruta(t) {
     K.m.rotation.x = Math.PI / 2 * mjuk((t - KON_UT - 0.8) / 0.4); }
   // vågkortet: upp på "plask", ner när grodan hoppat upp på bladet
   ringar(t);
-  VAGKORT.m.visible = BAD !== 3 && t >= PLASK - 0.05 && t < UPPUR + 0.8; vik(VAGKORT, reser((t - PLASK + 0.05) / 0.45) * (1 - mjuk((t - UPPUR - 0.1) / 0.45)));
+  VAGKORT.m.visible = BAD <= 2 && t >= PLASK - 0.05 && t < UPPUR + 0.8; vik(VAGKORT, reser((t - PLASK + 0.05) / 0.45) * (1 - mjuk((t - UPPUR - 0.1) / 0.45)));
   // stänket: droppar i en båge runt grodan på "plask" (och ett litet när hon hoppar upp)
   const st = [[PLASK, 1], [HOPP[1].t0 + 0.05, 0.5]].find(([t0]) => t >= t0 && t < t0 + 1.1);
   STANK.visible = !!st;
