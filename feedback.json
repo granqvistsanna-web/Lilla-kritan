@@ -11002,9 +11002,10 @@
   "sec": 87,
   "tags": [],
   "note": "icecream jumps out hand but should be eaten up",
-  "fixed": false,
+  "fixed": true,
   "at": 1795791204256,
-  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)"
+  "render": "2026-11-27 15:47 (Runda 4: snabbare intro med kamerarörelse, större krita, besvärad min och nick, grodan slickar upp glassen, bad 3 (eget blad, vattenringar), blommorna synliga och färgerna sägs, lövträd)",
+  "fixedAt": 1795794175655
  },
  "f2xp8iytnemwz3qanv": {
   "ep": "062",
