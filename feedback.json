@@ -11321,9 +11321,10 @@
   "sec": 39,
   "tags": [],
   "note": "berries roll away no visable",
-  "fixed": false,
+  "fixed": true,
   "at": 1795805423461,
-  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)"
+  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)",
+  "fixedAt": 1795807176674
  },
  "5js1kma0uumwzc6u1h": {
   "ep": "059",
@@ -11331,9 +11332,10 @@
   "sec": 95,
   "tags": [],
   "note": "pick all berroes",
-  "fixed": false,
+  "fixed": true,
   "at": 1795805435285,
-  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)"
+  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)",
+  "fixedAt": 1795807176674
  },
  "cf2uh2kponmwzc72il": {
   "ep": "059",
@@ -11341,9 +11343,10 @@
   "sec": 131,
   "tags": [],
   "note": "pick all berries",
-  "fixed": false,
+  "fixed": true,
   "at": 1795805446269,
-  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)"
+  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)",
+  "fixedAt": 1795807176674
  },
  "fxogeyy2h2mwzc7fuk": {
   "ep": "059",
@@ -11351,9 +11354,10 @@
   "sec": 174,
   "tags": [],
   "note": "blur blue more",
-  "fixed": false,
+  "fixed": true,
   "at": 1795805463548,
-  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)"
+  "render": "2026-11-27 17:25 (Slutrenderad i molnet 27/11 (1920×1080, 30 fps): buskteckningen, bären mitt på magen, mjuk skugga, sista busken på stubbens andra sida)",
+  "fixedAt": 1795807176675
  },
  "bib0kbqg46mwzbrajs": {
   "ep": "061",
