@@ -1,1 +1,0 @@
-18-rosa-sangen.mp4: -13.73 LUFS, topp -0.44 dBTP  ->  -16.05 LUFS, topp -2.64 dBTP
