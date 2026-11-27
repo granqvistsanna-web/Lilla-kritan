@@ -11156,9 +11156,10 @@
   "sec": 152,
   "tags": [],
   "note": "full nalle under bed not just head",
-  "fixed": false,
+  "fixed": true,
   "at": 1795716863931,
-  "render": "2026-11-26 18:12 (Feedback 26/11 fixad: nallens teckning med alla delar, nallen kikar under sängen)"
+  "render": "2026-11-26 18:12 (Feedback 26/11 fixad: nallens teckning med alla delar, nallen kikar under sängen)",
+  "fixedAt": 1795796923736
  },
  "dxbg1zw9p5mwyoc8ct": {
   "ep": "020",
