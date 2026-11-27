@@ -1,6 +1,6 @@
 # Avsnitt 063 – Hösten i boken (plan)
 
-**Status:** ✅ grind 1 (manus) godkänd av Sanna 2026-11-27 (*"Ja, grind 1 godkänd för 063 med dina förslag i Öppet"*). Samma dag ändrade Sanna figuren från igelkotten till **räven**. Hon skrev också om replikerna: tittut stryks, *"Hopp!"* utan *"prassel"*, *"Löv på huvudet!"*, ekorren kommer fram vid ekollonen och svampen är giftig. Replikblocket nedan är hennes text, putsad. Sanna bad sedan om mer att gissa, lite pedagogik och ett lugnt tempo, så det är också inarbetat (se *Gissa, lära, lugnt*). Grind 2 (rekvisita) pågår, se [`bildlista.md`](bildlista.md). Andra avsnittet i **Kritans bok** (receptet `format/kritans-bok.md`, temabladets rad **Höst**, förlagan `avsnitt/062-sommaren-i-boken/`). Ingen sång. Malin pratar med räven, och räven svarar med sina ljud, ögon, öron, svans och små hopp.
+**Status:** ✅ grind 1 (manus) godkänd av Sanna 2026-11-27 (*"Ja, grind 1 godkänd för 063 med dina förslag i Öppet"*). Samma dag ändrade Sanna figuren från igelkotten till **räven**. Hon skrev också om replikerna: tittut stryks, *"Hopp!"* utan *"prassel"*, *"Löv på huvudet!"*, ekorren kommer fram vid ekollonen och svampen är giftig. Replikblocket nedan är hennes text, putsad. Sanna bad sedan om mer att gissa, lite pedagogik och ett lugnt tempo, så det är också inarbetat (se *Gissa, lära, lugnt*). Grind 2 (rekvisita) klar, se [`bildlista.md`](bildlista.md). ✅ **Grind 3 (rösten) godkänd av Sanna 2026-11-27** (*"Yes, approved"*) med tagning 1 och omtagningen av 07, 08, 11, 28 och 30. Replikerna ligger i `assets/ljud/roster/hosten-i-boken/` (49 filer). Grind 5 (storyboarden) gjord 2026-11-27 i [`storyboard/`](storyboard/storyboard.md): 43 stillbilder i three.js-boken, kontaktark och animatik (3:48). ✅ **Grind 5 godkänd av Sanna 2026-11-27** (*"Approved"*), med längden 3:48 som den är. Nästa: grind 6, scenen i `scener/boken/`. Andra avsnittet i **Kritans bok** (receptet `format/kritans-bok.md`, temabladets rad **Höst**, förlagan `avsnitt/062-sommaren-i-boken/`). Ingen sång. Malin pratar med räven, och räven svarar med sina ljud, ögon, öron, svans och små hopp.
 
 | | |
 |---|---|
@@ -208,7 +208,7 @@ Ord som mäts i tagningen: *"löv"* i 07 (kronan fylls), *"ner"* i 09 (lövet n�
 
 ## Tagning 1 (grind 3, 2026-11-27)
 
-Sannas tagning i ElevenLabs (v3, s50, 153 s) ligger i `ljud/malin-tagning-1.mp3`. Den är delad med `verktyg/dela-tagning.py` i 49 filer i `ljud/tagning-1/` (de flyttas till `assets/ljud/roster/hosten-i-boken/` när tagningen är godkänd). Gränsen mellan 28 och 29 hamnade fel och är klippt om för hand (28 slutade med *"Ser du några löv på"*). QA:s koll av röstfilerna hittar inga filer som börjar eller slutar mitt i ett ord.
+Sannas tagning i ElevenLabs (v3, s50, 153 s) ligger i `ljud/malin-tagning-1.mp3`. Den är delad med `verktyg/dela-tagning.py` i 49 filer i `ljud/tagning-1/` (flyttade till `assets/ljud/roster/hosten-i-boken/` 2026-11-27, när tagningen godkändes). Gränsen mellan 28 och 29 hamnade fel och är klippt om för hand (28 slutade med *"Ser du några löv på"*). QA:s koll av röstfilerna hittar inga filer som börjar eller slutar mitt i ett ord.
 
 **Bra:** 01–06, 09, 10, 12–27, 29, 31–49. Whisper hör *"Äckorren"*, *"krytan rytar"*, *"e-kolonen"* och *"ekollen"*, men det är vanligt svenskt uttal och whisper som stavar fel. *"Ha ha"* i 27 finns med. **Rad 38 har ett tillägg:** *"Titta, där är den ju! Hej, ekorren! Hej, hej!"* (5,8 s). Det passar bra när ekorren kommer fram, så det får vara kvar. Bilden räknar med den längre repliken.
 
@@ -228,6 +228,8 @@ Gör gärna 3–4 tagningar av blocket och välj den där ö:et låter tydligast
 [warmly] Ett rött löv.
 ```
 
+**Tagning 2 (2026-11-27):** Sannas omtagning av de fem raderna (`ljud/malin-tagning-2.mp3`, 10,4 s) är delad i `ljud/tagning-2/`. Whisper hör alla fem rätt (*"hösten"*, *"höst"*, *"rött"*), och inga filer börjar eller slutar mitt i ett ord. De har ersatt 07, 08, 11, 28 och 30 i `ljud/tagning-1/`, och de gamla ligger i `ljud/tagning-1/aldre/` tills tagningen är godkänd. Nu är alla 49 rader bra.
+
 ## Rävens röst och ljuden (grind 4)
 
 | Ljud | Finns? | Rader |
@@ -236,7 +238,7 @@ Gör gärna 3–4 tagningar av blocket och välj den där ö:et låter tydligast
 | Ekorren | ett litet skutt (`hopp-mjuk`) räcker, statisten säger inget | 21c, 21d, 24b |
 | `pop`, `prassel-tyg`, `glimt`, `glitter`, `tindra`, `krita-ritar`, `landa-mjuk`, `swoosh`, `hopp-mjuk`, `nos` | ja | öppningen, teckningarna, korten, hoppen |
 | `hostlov` (`lovhog.mp3`, `lovbuske.mp3`), `prassel-lov` | ja | lövhögen, löven som faller |
-| Mattan: skog med lite vind (`skogsljud` 0,3 och en mild vind under rad 08–13b) | `skogsljud` ja, vind bara `vind-hatt`. Openverse först för en mild höstvind | hela scenen |
+| Mattan: skog med lite vind (`skogsljud` 0,3 och en mild vind under rad 08–13b) | `skogsljud` ja, **`vind-host`** ja (Openverse, CC0, 2026-11-27, ännu ej lyssnad) | hela scenen |
 
 ## Regelkoll
 
@@ -268,6 +270,13 @@ Gör gärna 3–4 tagningar av blocket och välj den där ö:et låter tydligast
 - [ ] Avsteg som receptet redan har: ingen sång, inget *"Djuren hittar på!"*, boken i stället för ritintro och kritiris, fler än 6 utsnitt
 - [ ] **Nytt för Kritans bok:** en statist i uppslaget (receptet har den bara för djurtemat)
 - [ ] `harriets-favoriter.md`: inte ändrad, eftersom den här sessionen bara rör avsnittsmappen och grind 2:s filer. Läggs till när Sanna säger till
+
+## Beslut 2026-11-27 (Sanna, efter grind 3)
+
+- **Grind 2 godkänd** (*"Approved"*): bilderna i `bildlista.md` gäller som de är.
+- **Halsduken ritas i kod** (*"code scarf"*): samma form som 038:s `halsduk-bok.png`, så `halsduk-kontur.json` och detaljstrecken gäller, men ränderna fylls med `kritYta` i höstfärger. Sanna valde **färg B, mossgrön och ljust senapsgul** (*"B, green-yellow"*), så att den syns mot den orange räven. Koden är `prov/halsduk/halsduk.js` (`await halsduk()` ger en canvas i samma ruta som `halsduk-bok.png`), med skuggningen utjämnad och mjuka randkanter. Prov i `prov/halsduk/stills/0.jpg`. Ingen ny sak i Flow. **Halsduken på räven** ritas också i kod (Sanna 2026-11-27 *"consider code halsduk to make it fit better"*): `halsdukPa(bild, { yc, tjock, dip, ande })` i samma fil ritar den efter rävens egen kontur, ett band under kindbandet som slutar vid kroppens kant och svänger ner lite i mitten, ränder tvärs över och en hängande ände med tofsar över magen. Storyboarden använder `{ yc: 430, tjock: 72, dip: 30, ande: -0.36 }` på `rut.png`. I scenen (grind 6) blir det ett lager i riggen som följer kroppen.
+- **Ekorren är det platta kortet** `ekorre-orange` med två små skutt.
+- **Lövhögen delas i kod** i en bakre och en främre halva, så att räven sjunker ner i den på *"Hopp!"*.
 
 ## Öppet (Sanna bestämmer)
 

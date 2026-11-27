@@ -207,6 +207,7 @@ ElevenLabs SFX 2026-11-10 (v3, prompt influence 30 %), fyra tagningar var, origi
 | `helikopter-stannar` | 4 | 5 s | rotorn varvar ner och stannar med ett litet klick (08a, Lage stänger av motorn) |
 | `moln-puff` | 4 | 1,2–1,8 s | ett mjukt "pfoomf" genom ett moln med lite glitter (02d) |
 | `vind-hatt` | 3 | 1,9–5 s | en lekfull vindpust lyfter hatten (08a). Tagning 2 är nästan tyst (−38 dB), använd inte |
+| `vind-host` | 1 | 68 s | mild höstvind i träd, ett mjukt brus med två lugna pustar (vid ca 25 s och 43 s). Under vinden i 063 Hösten i boken (rad 12–13, svagt i 21), ca 0,3 under Malin. Ur [Autumn wind trees slow slighly abstract 07](https://freesound.org/people/TRP/sounds/573676), TRP, CC0, mullret under 80 Hz bort, −25 LUFS som `skogsljud` (Openverse 2026-11-27). Ännu ej lyssnad |
 | `ryt-gasp` | 4 | 3–3,3 s | en liten lejonunge försöker ryta, "rrrawr", som blir en mysig gäspning (Lage, 02b och 05c) |
 
 ## Saknas

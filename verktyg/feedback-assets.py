@@ -9,7 +9,8 @@ OUT = ROOT / "feedback" / "assets"
 IMG = {".png", ".jpg", ".jpeg", ".webp"}
 # platser Sanna rensat bort från fliken (2026-11-20); filerna ligger kvar
 DOLD = {"vinterkullen-natt-v3", "vinterkullen-v2", "vinterkullen-v3", "julskogen-v2", "dammen", "busshallplatsen",
-        "bondgarden-natt", "badplatsen", "bjornen-bulle"}
+        "bondgarden-natt", "badplatsen", "bjornen-bulle",
+        "julskogen", "julskogen-v3", "julsovrummet", "julrummet", "vinterkullen-natt", "vinterkullen-natt-v2", "vardagsrummet", "granrummet", "granrummet-tom", "glasskiosken"}  # 2026-11-27
 HUVUD = {  # v2-bilden (godkänd konst i karaktarer/<namn>.md); mappens egen huvudbild är v1
     "ankan-agda": "premium/original/agda-platt.png", "dinon-disa": "premium/original/disa-djup.jpg",
     "fjarilen-fia": "premium/original/fia-platt.png", "grodan-gurra": "premium/original/gurra-platt.png",

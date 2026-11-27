@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>065 Våren i boken – scenen</title>
+<!-- Grind 6 (2026-11-27): hela avsnittet i Kritans bok (three.js, produktion/three-rum/popupbok/bok-parm.js), förlaga 062:s scen.
+     Raderna och tiderna ur storyboard/rader.mjs. Musen är sin v2-rigg (assets/karaktarer/musen-mille/premium/uttryck.html via
+     v2-rigg.js), ritad i den dolda SVG:n #kort varje bildruta och lagd som textur på sitt kort. Kritan går genom
+     verktyg/kritan-ritar.js (#ov). -->
+<style>
+  html, body { margin: 0; background: #111; overflow: hidden; }
+  canvas#bild { display: block; width: 100vw; height: 100vh; }
+  #kort { position: absolute; left: -99999px; top: 0; visibility: hidden; }
+  #ov { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; }
+  #vinjett { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(60, 35, 20, 0.12) 100%); }
+</style>
+<script type="importmap">{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+</head>
+<body>
+<svg id="kort" xmlns="http://www.w3.org/2000/svg" viewBox="-150 -200 1324 1200" width="1324" height="1200">
+  <defs id="defs">
+    <filter id="boil" filterUnits="userSpaceOnUse" x="-400" y="-400" width="2000" height="1800">
+      <feTurbulence id="brus" type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="1"/>
+      <feDisplacementMap id="boilStyrka" in="SourceGraphic" scale="2.5"/>
+    </filter>
+  </defs>
+  <g filter="url(#boil)"><g id="figurer"></g></g>
+</svg>
+<canvas id="bild"></canvas>
+<div id="vinjett"></div>
+<svg id="ov" viewBox="0 0 1920 1080" preserveAspectRatio="none"></svg>
+<script src="/verktyg/blinka.js"></script>
+<script src="/verktyg/kant.js"></script>
+<script src="/verktyg/kritan-ritar.js"></script>
+<script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
+<script type="module" src="boken.js"></script>
+</body>
+</html>
