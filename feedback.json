@@ -11200,9 +11200,10 @@
   "sec": 75,
   "tags": [],
   "note": "change bg to bold one, from other jultittut",
-  "fixed": false,
+  "fixed": true,
   "at": 1795769747746,
-  "render": "2026-11-27 09:43 (slutrendering 27/11)"
+  "render": "2026-11-27 09:43 (slutrendering 27/11)",
+  "fixedAt": 1795799463706
  },
  "if7fxkhgwimwyxftzi": {
   "ep": "J13",
