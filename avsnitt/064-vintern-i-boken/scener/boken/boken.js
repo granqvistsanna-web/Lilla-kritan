@@ -4,59 +4,29 @@
 // uppifrån (marken nerifrån) i rad 05b. Fåglarna är 043:s fagel.js. Scenens t = 0 är rad 01a (loggan, rad 00, läggs på i sammansättningen).
 //   node avsnitt/062-sommaren-i-boken/scener/render.mjs avsnitt/064-vintern-i-boken/scener/boken --snabb
 import * as THREE from 'three';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
-import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { kameraplan } from '/verktyg/kamera3d.mjs';
-import { duk, kritYta, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
+import { duk, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
+import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, dataUrl, kontur, bredareC, mat, mark, vik, stall, kortmotor,
+  PARM, fallning, figurKort, vink, gaRikt, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
 import { kaltTrad, sittplats, W as TW, H as TH } from '/avsnitt/064-vintern-i-boken/prov/trad/trad.js';
 import { granSno, kulleSno, frost } from '/avsnitt/064-vintern-i-boken/kod/vinter.js';
 
-const $ = id => document.getElementById(id);
-const kl = (a, b, x) => Math.min(b, Math.max(a, x)), k01 = x => kl(0, 1, x), lerp = (a, b, k) => a + (b - a) * k;
-const mjuk = k => (k = k01(k), k * k * (3 - 2 * k));
-const bump = (a, b, t, r = 0.3) => mjuk((t - a) / r) * mjuk((b - t) / r);   // 0 → 1 → 0
-const reser = k => { k = k01(k); const s = 0.9; return 1 + (s + 1) * (k - 1) ** 3 + s * (k - 1) ** 2; };   // fälls upp med en liten efterstudsning
-const v3 = (...a) => new THREE.Vector3(...a);
-
 // ---- raderna ----
-const { RADER, ROST, GLES, MATTA } = await import('/avsnitt/064-vintern-i-boken/storyboard/rader.mjs'); let acc = 0;
-const RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, st: r.s, s }; });
-const RR = Object.fromEntries(RAD.map(r => [r.id, r])), S = id => RR[id].s, LN = n => ROST[n - 1][1];
-const DURATION = acc, rad = t => RAD[Math.max(0, RAD.findLastIndex(r => r.s <= t))];
-const MAL = (id, n) => S(id) + RR[id].malin.find(m => m[0] === n)[1];   // när Malins replik n börjar
-const SVAR = (id, n) => MAL(id, n) + LN(n) + 0.2;                        // kaninens svar: 0,2 s efter repliken
+const RD = rader(await import('/avsnitt/064-vintern-i-boken/storyboard/rader.mjs')), { RAD, S, LN, MAL, SVAR, DURATION, rad, GLES, MATTA } = RD;
 const ORD = { snoflinga: 0.37, knarr1: 0.06, knarr2: 0.73, plopp1: 0.05, plopp2: 0.15, snoboll: 1.2, stor: 0.22, mellan: 1.11, liten: 2.4,
   en: 0.06, tva: 0.72, tre: 1.15, rod: 0.26, bla: 0.27, gul: 0.49, snogubbe: 0.75 };   // samma som rader.mjs (whisper)
 
 // ---- renderaren ----
-const SNABB = location.search.includes('snabb'), W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, PR = SNABB ? 1 : 1.5;
-const R = new THREE.WebGLRenderer({ canvas: $('bild'), antialias: true, preserveDrawingBuffer: true });
-R.setPixelRatio(PR); R.setSize(W, H, false);
-R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
-const scen = new THREE.Scene(); scen.background = new THREE.Color('#E9D9C2');
-const cam = new THREE.PerspectiveCamera(30, W / H, 0.05, 40);
+const SC = scenen(), { scen, cam } = SC;
 
 // ---- bilderna ----
 const P = '/produktion/three-rum/popupbok/bilder/', B = '/assets/bakgrunder/', RQ = '/assets/rekvisita/';
-const bild = src => new THREE.ImageLoader().loadAsync(src);
-const lad = src => bild(src).then(i => tex(trim(i)));
 const [HIMMEL, MOLN1, MOLN2, MOLN3, SNOBOLL, GUBBE, TUSS] = await Promise.all([
   ...['himmel', 'moln-stor', 'moln-mellan', 'moln-liten'].map(n => P + n + '.png'),
   RQ + 'snoboll/cut/snoboll.png', RQ + 'snogubbe/cut/snogubbe.png', RQ + 'snotuss/cut/snotuss.png'].map(lad));
 const [GRAN_I, KBAK_I, KFRAM_I, FLINGA_I, PB_I] = await Promise.all([B + 'skogen-gron-saker/gran.png', P + 'kulle-bak.png', P + 'kulle-fram.png',
   RQ + 'snoflinga/cut/snoflinga.png', RQ + 'pannband/cut/pannband.png'].map(bild));
 const FLINGA = tex(trim(FLINGA_I)), PANNBAND = tex(trim(PB_I));
-function ruta(i) {   // bildens synliga ruta (som trim): konturen (bildens egna px) läggs på den beskurna bilden
-  const c = duk(i.width, i.height), x = c.getContext('2d'); x.drawImage(i, 0, 0);
-  const a = x.getImageData(0, 0, c.width, c.height).data; let y0 = c.height, y1 = 0, x0 = c.width, x1 = 0;
-  for (let y = 0; y < c.height; y++) for (let u = 0; u < c.width; u++) if (a[(y * c.width + u) * 4 + 3] > 128) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); x0 = Math.min(x0, u); x1 = Math.max(x1, u); }
-  return { ox: x0 - 1, oy: y0 - 1, w: x1 - x0 + 3, h: y1 - y0 + 3, W: i.width, H: i.height };
-}
-const KONTUR = Object.fromEntries(await Promise.all([['flinga', 'snoflinga/cut/snoflinga-kontur-skarp.json'], ['pannband', 'pannband/cut/pannband-kontur.json']].map(async ([n, f]) => {
-  const j = await (await fetch(RQ + f)).json(); return [n, [j.d, ...(j.detaljer || [])]]; })));
-const dataUrl = async src => { const b = await (await fetch(src)).blob(); return new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(b); }); };
+const KONTUR = Object.fromEntries(await Promise.all([['flinga', 'snoflinga/cut/snoflinga-kontur-skarp.json'], ['pannband', 'pannband/cut/pannband-kontur.json']].map(async ([n, f]) => [n, await kontur(RQ + f)])));
 const FLINGA_URL = await dataUrl(RQ + 'snoflinga/cut/snoflinga.png'), PB_URL = await dataUrl(RQ + 'pannband/cut/pannband.png');
 
 // ---- snön på korten: en snöfri bild (A) och en snöig (B) i samma ruta; snön växer in uppifrån (marken: nerifrån) ----
@@ -65,11 +35,6 @@ function union(A, Bc) {   // beskär båda till det som syns i någon av dem
   for (const c of [A, Bc]) { const a = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
     for (let y = 0; y < c.height; y++) for (let u = 0; u < c.width; u++) if (a[(y * c.width + u) * 4 + 3] > 128) { if (y < y0) y0 = y; if (y > y1) y1 = y; if (u < x0) x0 = u; if (u > x1) x1 = u; } }
   return [A, Bc].map(c => { const ut = duk(x1 - x0 + 3, y1 - y0 + 3); ut.getContext('2d').drawImage(c, x0 - 1, y0 - 1, ut.width, ut.height, 0, 0, ut.width, ut.height); return ut; });
-}
-function bredareC(i, bredd) {
-  const h = i.height, w = Math.round(h * bredd), s = Math.round(i.width * 0.3), c = duk(w, h), x = c.getContext('2d');
-  x.drawImage(i, 0, 0, s, h, 0, 0, s, h); x.drawImage(i, i.width - s, 0, s, h, w - s, 0, s, h);
-  x.drawImage(i, s, 0, i.width - 2 * s, h, s, 0, w - 2 * s, h); return c;
 }
 function snoBild(A, Bc, nerifran = false) {
   const c = duk(A.width, A.height), x = c.getContext('2d'), tmp = duk(A.width, A.height), y = tmp.getContext('2d'), T = tex(c); let kk = -1;
@@ -88,48 +53,13 @@ const GRAN_S = snoBild(...union(granSno(GRAN_I, 0), granSno(GRAN_I, 1)));
 const KBAK_S = snoBild(bredareC(kulleSno(KBAK_I, 0), 5.2), bredareC(kulleSno(KBAK_I, 1), 5.2));
 const KFRAM_S = snoBild(bredareC(kulleSno(KFRAM_I, 0), 6.2), bredareC(kulleSno(KFRAM_I, 1), 6.2));
 const TRAD_S = snoBild(kaltTrad({ sno: 0 }), kaltTrad({ sno: 1 }));   // otrimmat, så att sittplats() stämmer
-const mark = (f, l, m) => { const Wc = 2048, D = 1440, c = duk(Wc, D), x = c.getContext('2d'), form = (p, r) => { x.beginPath(); x.roundRect(p, p, Wc - 2 * p, D - 2 * p, r); };
-  x.fillStyle = '#FFF'; form(8, 90); x.fill();
-  const g = duk(Wc, D); kritYta(g.getContext('2d'), Wc, D, f, l, m, 0.7);
-  x.save(); form(30, 70); x.clip(); x.drawImage(g, 0, 0); x.restore(); return c; };
 const MARK_S = snoBild(mark('#9DB39A', '#B2C4AE', '#879E86'), mark('#F7F9FC', '#FFFFFF', '#DCE6F2'), true);
 
-const mat = (map, o = {}) => new THREE.MeshLambertMaterial({ map, ...o });
-const urklipp = map => mat(map, { alphaTest: 0.5, alphaToCoverage: true, shadowSide: THREE.DoubleSide });
-function baksida(map) {
-  const i = map.image, c = duk(i.width, i.height), x = c.getContext('2d'); x.drawImage(i, 0, 0);
-  x.globalCompositeOperation = 'source-in'; x.fillStyle = '#F4ECDD'; x.fillRect(0, 0, c.width, c.height);
-  return mat(tex(c), { alphaTest: 0.5, alphaToCoverage: true, side: THREE.BackSide });
-}
-const djup = map => new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, blending: THREE.NoBlending, map, alphaTest: 0.5, side: THREE.DoubleSide });
-const skugga = m => { m.castShadow = m.receiveShadow = true; return m; };
-
 skrivbord(scen);
-const PARM0 = 0.5, PARM1 = 1.4;
-const { insida, satt } = await skapaBok(scen, { farg: '#3F7FC4', figur: FLINGA.image, doodles: true, oppna: [PARM0, PARM1] });
+const { insida, satt } = await skapaBok(scen, { farg: '#3F7FC4', figur: FLINGA.image, doodles: true, oppna: PARM });
 
 // ---- uppslaget (som storyboarden) ----
-const KSKUGGA = (() => { const c = duk(256, 64), x = c.getContext('2d'), g = x.createRadialGradient(128, 32, 0, 128, 32, 128);
-  g.addColorStop(0, 'rgba(40,50,70,0.36)'); g.addColorStop(0.55, 'rgba(40,50,70,0.14)'); g.addColorStop(1, 'rgba(40,50,70,0)');
-  x.fillStyle = g; x.fillRect(0, 0, 256, 64); return new THREE.MeshBasicMaterial({ map: tex(c), transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 }); })();
-function kort(map, h, x, z, o = {}) {
-  const w = h * map.image.width / map.image.height, g = new THREE.PlaneGeometry(w, h); g.translate(0, h / 2, 0);
-  const m = skugga(new THREE.Mesh(g, urklipp(map))); m.customDepthMaterial = djup(map);
-  m.add(new THREE.Mesh(g, baksida(map)));
-  m.position.set(x, o.y ?? SIDA, z); scen.add(m);
-  const k = { m, x, y: m.position.y, z, h, w, hog: 0.002, vaj: o.vaj };
-  if (o.flik !== false) { const f = new THREE.Mesh(new THREE.PlaneGeometry(w * 0.9, 0.07), KSKUGGA); f.rotation.x = -Math.PI / 2;
-    f.position.set(x, SIDA + 0.0009, z + 0.012); f.renderOrder = 1; scen.add(f); k.flik = f; }
-  return k;
-}
-const vik = (k, e) => { k.m.rotation.x = Math.PI / 2 * (1 - e); k.m.position.y = k.y + k.hog * (1 - k01(e * 4)); };   // e 0 = nedfälld framåt, 1 = står
-function platt(map, w, x, z, d = w * map.image.height / map.image.width, y = SIDA + 0.001) {
-  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), urklipp(map)); m.rotation.x = -Math.PI / 2; m.position.set(x, y, z); m.receiveShadow = true; scen.add(m); return m;
-}
-function pa(map, h, x, upp, ut = 0.01, w = h * map.image.width / map.image.height, farg) {
-  const m = skugga(new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat(map, { alphaTest: 0.5, alphaToCoverage: true, ...(farg && { color: farg }) })));
-  m.customDepthMaterial = djup(map); m.rotation.x = Math.PI / 2; m.position.set(x, -ut, upp); insida.add(m); return m;
-}
+const { kort, platt, pa } = kortmotor(scen, insida, { kskugga: ['40,50,70', 0.36, 0.14] });
 // kortet byter inte bild när snön växer: snoBild ritar om samma canvas (texturen), djupmaterialet följer med
 const BAK = [kort(KBAK_S.T, 2.15 / 5.2, 0, -0.6), kort(KFRAM_S.T, 1.95 / 6.2, 0.05, -0.47)];
 const VHIMMEL = (() => { const c = frost(HIMMEL.image), x = c.getContext('2d'); x.globalCompositeOperation = 'source-atop'; x.globalAlpha = 0.35; x.fillStyle = '#F2F6FA'; x.fillRect(0, 0, c.width, c.height); return tex(bredareC(c, 1.5)); })();
@@ -161,9 +91,8 @@ async function ritaFagel(F, o) {   // ritar om bara när läget ändras
 const tradLokal = p => v3((p.x - TW / 2) * TS, (TH - p.y) * TS, 0.004);   // trädets px → trädkortets egna koordinater
 
 // ---- kaninen: v2-riggen på ett kort ----
-const VB = { x: -150, y: -200, w: 1324, h: 1200 }, NS = 'http://www.w3.org/2000/svg';
+const NS = 'http://www.w3.org/2000/svg';
 const L = await v2rigg('kaninen-kanel'), FOT = L.FOTTER || 947, TOPP = 31, G = L.figur(512, FOT, 1, $('figurer'));
-G.querySelector('.skugga')?.setAttribute('display', 'none');
 // öronen i egna grupper (som 039), så att frosten och snöflingorna på spetsarna följer örat
 const SPETS = { l: [316, 36], r: [706, 36] };
 G.querySelectorAll('image.ear-l, image.ear-r').forEach(img => {
@@ -178,22 +107,9 @@ G.querySelectorAll('image.ear-l, image.ear-r').forEach(img => {
 });
 // pannbandet på huvudet (039:s kodband, klader-lager/pannband.png: bandet x 304–714, y 209–324), i kroppen efter magen så att det följer huvudet
 G.querySelector('.mage').insertAdjacentHTML('afterend', `<g id="band" display="none"><image href="/avsnitt/039-kaninen-aker-pulka/klader-lager/pannband.png" width="1024" height="1024"/></g>`);
-await Promise.all([...$('kort').querySelectorAll('image')].map(async im => { const h = im.getAttribute('href'); if (!h.startsWith('data:')) im.setAttribute('href', await dataUrl(h)); }));
-window.kant.lagg(G); const kantF = $('defs').lastElementChild;
-const BL = skapaBlinka(62);
+// lika hög som kanel.png-kortet i storyboarden (0,34)
+const KANKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: 0.34 }), { m: kanin, fig2varld, BL, nick } = KANKORT;
 L.rita(G, L.NEUTRAL, L.POSE0);
-const ENHET = 0.34 / (FOT - TOPP);   // lika hög som kanel.png-kortet i storyboarden (0,34)
-const kortCanvas = duk(VB.w, VB.h), kortCtx = kortCanvas.getContext('2d'), kortTex = tex(kortCanvas);
-const gg = new THREE.PlaneGeometry(VB.w * ENHET, VB.h * ENHET);
-gg.translate((VB.x + VB.w / 2 - 512) * ENHET, (FOT - (VB.y + VB.h / 2)) * ENHET, 0);   // origo i fötterna
-const kanin = new THREE.Mesh(gg, new THREE.MeshLambertMaterial({ map: kortTex, emissiveMap: kortTex, emissive: new THREE.Color(0.3, 0.3, 0.3), alphaTest: 0.5, side: THREE.FrontSide }));
-kanin.add(new THREE.Mesh(gg, new THREE.MeshLambertMaterial({ map: kortTex, color: 0x000000, emissive: '#F4ECDD', alphaTest: 0.5, side: THREE.BackSide })));
-kanin.castShadow = kanin.receiveShadow = true;
-kanin.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: kortTex, alphaTest: 0.5 });
-scen.add(kanin);
-const KANKORT = { m: kanin, y: SIDA + 0.004, hog: 0.001, z: 0 };
-const fig2varld = ([x, y], pos = kanin.position) => v3(pos.x + (x - 512) * ENHET, pos.y + (FOT - y) * ENHET, pos.z + 0.01);
-const stillBild = new Image();
 
 // ---- pannbandets kort, snöbollarna, snögubben, snötussen ----
 const PBPOS = [-0.18, 0.36], PBW = 0.16;
@@ -222,24 +138,9 @@ const SNOFALL = Array.from({ length: 150 }, () => { const m = new THREE.Sprite(n
 const puff = () => { const m = new THREE.Mesh(new THREE.SphereGeometry(0.014, 16, 12), new THREE.MeshBasicMaterial({ color: '#FFFFFF', transparent: true, opacity: 0, depthWrite: false })); m.visible = false; scen.add(m); return m; };
 const ANDE = puff(), FOTPUFF = Array.from({ length: 6 }, puff);
 
-// ---- ljuset: blekt vinterljus ----
-scen.add(new THREE.HemisphereLight('#F4F8FF', '#C8D2DC', 2.3));
-const ljus = new THREE.DirectionalLight('#FFF6EA', 2.0); ljus.position.set(-2.2, 4.4, 3); ljus.castShadow = true;
-Object.assign(ljus.shadow.camera, { left: -2.6, right: 2.6, top: 2.6, bottom: -2.6, near: 0.5, far: 12 });
-ljus.shadow.mapSize.set(4096, 4096); ljus.shadow.bias = -0.0004; ljus.shadow.normalBias = 0.01; ljus.shadow.radius = 4; scen.add(ljus);
-
-// ---- skärpedjup (som 062) ----
-const rt = new THREE.WebGLRenderTarget(W * PR, H * PR, { samples: 4, type: THREE.HalfFloatType });
-const komp = new EffectComposer(R, rt); komp.setPixelRatio(PR); komp.setSize(W, H);
-const bokeh = new BokehPass(scen, cam, { focus: 2, aperture: 0.002, maxblur: 0.006 });
-bokeh.materialDepth = null;
-const DJUP0 = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, blending: THREE.NoBlending }), bokehRender = bokeh.render.bind(bokeh);
-bokeh.render = (...a) => {
-  const byt = []; scen.traverse(o => { if (o.isMesh) { byt.push([o, o.material]); o.material = o.customDepthMaterial ?? DJUP0; } });
-  const bg = scen.background; scen.background = null; bokehRender(...a); scen.background = bg;
-  for (const [o, m] of byt) o.material = m;
-};
-komp.addPass(new RenderPass(scen, cam)); komp.addPass(bokeh); komp.addPass(new OutputPass());
+// ---- ljuset (blekt vinterljus) och skärpedjupet ----
+ljuset(scen, { himmel: ['#F4F8FF', '#C8D2DC', 2.3], sol: ['#FFF6EA', 2.0], hojd: 4.4 });
+const DOF = djupskarpa(SC);
 
 // ---- tiderna ----
 const OPPNA = S('01b'), STANG = S('26');
@@ -275,13 +176,6 @@ function kaninPos(t) {
   for (const s of SKUTT) if (t > s && t < s + 0.4) y = 0.035 * Math.sin(Math.PI * (t - s) / 0.4);
   return [x, y, z];
 }
-const gaRikt = t => { for (const [a, b, f, g] of GA) if (Math.abs(g[0] - f[0]) > 0.1 && t > a - 0.3 && t < b + 0.3) return Math.sign(g[0] - f[0]) * 0.8 * bump(a - 0.3, b + 0.3, t, 0.3); return 0; };
-function vink(f, p, tl, d, stor = false) {   // armen bakom kroppen, snett upp och ut förbi kanten (som 062, 063)
-  if (tl < 0 || tl > d) return [f, p];
-  const upp = mjuk(Math.min(tl / 0.4, (d - tl) / 0.4)), s = Math.sin(2 * Math.PI * (stor ? 1.5 : 1.3) * tl), [a, b] = stor ? [80, 24] : [55, 14];
-  return [f, { ...p, armar: [p.armar[0] + upp * (a + b * s), p.armar[1]], fram: [0, p.fram?.[1] || 0], luta: (p.luta || 0) + upp * (1.5 + 1.2 * s) }];
-}
-const nick = (f, p, tl) => tl >= 0 && tl < 2 ? L.nicka(f, p, tl) : [f, p];
 // öronen ploppar ut ur bandet (039): ihoptryckta −14 → ut med en liten efterstudsning
 const plopp = (t, a) => t < a ? -14 : t < a + 0.25 ? lerp(-14, 5, mjuk((t - a) / 0.25)) : 5 * Math.exp(-(t - a - 0.25) * 7) * Math.cos((t - a - 0.25) * 14);
 const REAKTION = { '06': 'jatteglad', '06b': 'kawaii', '06c': 'glad', '07b': 'nyfiken', '09': 'kawaii', '10': 'jatteglad', '11': 'forvanad',
@@ -331,7 +225,7 @@ function kaninen(t) {
   if (t >= PB_PA - 0.35 && t < S('13')) { const k = mjuk((t - PB_PA + 0.35) / 0.35); p.oron = [lerp(p.oron[0], plopp(t, PLOPP[0]), k), lerp(p.oron[1], plopp(t, PLOPP[1]), k)]; }
   // fryser: darrar lätt
   const darr = bump(DARR[0], DARR[1], t, 0.3); if (darr > 0) { p.luta = (p.luta || 0) + darr * 1.2 * Math.sin(2 * Math.PI * 7 * t); p.strack = (p.strack || 0) - 0.02 * darr; }
-  const gr = gaRikt(t); if (gr) { p.rikt = gr; f = { ...f, titt: [12 * Math.sign(gr), 2] }; }   // går i riktningsposen, speglas aldrig
+  const gr = gaRikt(GA, t, 0.8); if (gr) { p.rikt = gr; f = { ...f, titt: [12 * Math.sign(gr), 2] }; }   // går i riktningsposen, speglas aldrig
   for (const s of SKUTT) { p = L.blandaPose(p, 'huka', bump(s - 0.25, s + 0.02, t, 0.12) + 0.6 * bump(s + 0.38, s + 0.6, t, 0.1)); }
   const RE = REAKTION[id];
   if (RE) { const k = bump(r.d - GLES - 0.15, r.d + 0.1, tl, 0.3); f = L.blanda(f, RE, 0.9 * k); p.luta = (p.luta || 0) + (RAD.indexOf(r) % 2 ? 2.5 : -2.5) * k; }
@@ -351,79 +245,35 @@ async function ritaKanin(t) {
     const vis = t > a && av < 1; e.setAttribute('display', vis ? 'inline' : 'none'); if (!vis) return;
     e.setAttribute('transform', `translate(${(x0 + 30 * Math.sin(u * 5 + i) * (1 - u) + 40 * av).toFixed(1)} ${(y0 - 160 * (1 - mjuk(u)) + 220 * av * av).toFixed(1)}) scale(${(0.6 + 0.4 * mjuk(u)).toFixed(2)})`);
     e.setAttribute('opacity', (1 - av).toFixed(2)); });
-  // boil 2,5 px i bild och vit kant 3 px i bild, räknat mot kamerans skala
-  const mitt = kanin.position.clone().add(v3(0, 0.17, 0)), d = mitt.clone().sub(cam.position).dot(cam.getWorldDirection(v3())) || 3;
-  const s = 540 / (d * Math.tan(cam.fov * Math.PI / 360)) * ENHET;
-  $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1); $('boilStyrka').setAttribute('scale', (2.5 / s).toFixed(2));
-  const ru = 3 / s;
-  kantF.querySelector('feMorphology[result="d"]')?.setAttribute('radius', ru.toFixed(3));
-  kantF.querySelector('feDisplacementMap')?.setAttribute('scale', (0.35 * ru).toFixed(3));
-  const tu = kantF.querySelectorAll('feTurbulence'); tu[0]?.setAttribute('baseFrequency', (0.05 * s).toFixed(5)); tu[1]?.setAttribute('baseFrequency', (0.35 * s).toFixed(5));
-  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString($('kort'))], { type: 'image/svg+xml' }));
-  stillBild.src = url; await stillBild.decode(); URL.revokeObjectURL(url);
-  kortCtx.clearRect(0, 0, VB.w, VB.h); kortCtx.drawImage(stillBild, 0, 0, VB.w, VB.h); kortTex.needsUpdate = true;
+  await KANKORT.textur(t);
 }
 
 // ---- korten: upp när boken öppnas, ner när den stängs (det främsta först, så att inget går genom något) ----
-const ORDNING = [...BAK, ...GRANAR, TRADET].sort((a, b) => a.z - b.z);
-ORDNING.forEach((k, i, a) => { k.upp = OPPNA + 0.6 + i * 0.8 / (a.length - 1); k.hog = 0.004 + 0.001 * (a.length - i); });
+const FALL = fallning(satt, OPPNA, STANG);
+const ORDNING = FALL.upp([...BAK, ...GRANAR, TRADET]);
 KANKORT.upp = KANIN_UPP; SNOGUBBEN.upp = GUBBE_UPP;
 KANKORT.z = PLATS['vid-bollar'][1];   // där kaninen står när boken stängs
-const NER = [...ORDNING, KANKORT, SNOGUBBEN].sort((a, b) => b.z - a.z);
-NER.forEach((k, i, a) => k.ner = STANG + 0.3 + i * 0.5 / (a.length - 1));
-const PARM_NER = [STANG + 1.05, STANG + 1.75];
+FALL.ner([...ORDNING, KANKORT, SNOGUBBEN]);
 
-// ---- kritan ritar (som 062, 063) ----
-const skarm = p => { const q = p.clone().project(cam); return [(q.x + 1) * 960, (1 - q.y) * 540]; };
-function affin(mesh, r) {   // bildens px (hela png:n) → skärmen (1920 × 1080)
-  mesh.updateMatrixWorld(true); const g = mesh.geometry; g.computeBoundingBox(); const b = g.boundingBox;
-  const varld = (ix, iy) => mesh.localToWorld(v3(lerp(b.min.x, b.max.x, (ix - r.ox) / r.w), lerp(b.max.y, b.min.y, (iy - r.oy) / r.h), 0));
-  const cx = r.W / 2, cy = r.H / 2, d = r.W / 4, [x0, y0] = skarm(varld(cx, cy)), [x1, y1] = skarm(varld(cx + d, cy)), [x2, y2] = skarm(varld(cx, cy + d));
-  const a = (x1 - x0) / d, b2 = (y1 - y0) / d, c = (x2 - x0) / d, e = (y2 - y0) / d;
-  return { m: [a, b2, c, e, x0 - a * cx - c * cy, y0 - b2 * cx - e * cy], p: ([x, y]) => [a * x + c * y + x0 - a * cx - c * cy, b2 * x + e * y + y0 - b2 * cx - e * cy] };
-}
-const RIT = [];
-function teckning(namn, href, r, mesh, T, fyll, vanta) { RIT.push({ namn, href, r, mesh, T, fyll, vanta, drag: KONTUR[namn] }); }
-const KS = KRITAN.SKALA_SCEN * 1.25;
-function ritaKritan(t) {
-  let h = '';
-  for (const D of RIT) {
-    const { T, fyll: [f0, f1], r } = D;
-    if (t < T.in[0] || t > Math.max(T.ut[1], f1 + 0.5)) continue;
-    const A = affin(D.mesh(t), r), f = k01((t - f0) / (f1 - f0)), k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
-    const Rb = ritBana(D.drag, k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
-    const cx = r.W / 2, cy = r.H / 2, op = 1 - k01((t - f1) / 0.2);
-    h += `<g transform="matrix(${A.m.map(x => x.toFixed(4)).join(' ')})">`;
-    if (f > 0 && op > 0) h += fyllMask('fy' + D.namn, cx, cy, Math.hypot(r.W, r.H) / 2, f) + `<image href="${D.href}" width="${r.W}" height="${r.H}" opacity="${op.toFixed(3)}" ${f < 1 ? `clip-path="url(#fy${D.namn})"` : ''}/>`;
-    if (k > 0 && f < 1) h += Rb.html;
-    h += '</g>';
-    const [sx, sy] = A.p([cx, cy]), kr = kritaFas(t, T, { start: A.p(Rb.start), spets: A.p(Rb.spets), slut: A.p(Rb.slut), vanta: [sx + D.vanta[0], sy + D.vanta[1]], s: KS });
-    if (kr) h += kritaBild(kr.x, kr.y, kr);
-    if (f > 0) h += gnistor(sx, sy, Math.hypot(...A.p([r.W, cy]).map((v, i) => v - [sx, sy][i])) * 1.1, t - f0);
-  }
-  return h;
-}
+// ---- kritan ritar ----
+const KR = kritan(cam), { glimt } = KR;
 { const a = S('03'), b = S('04'), c = S('08'), d = S('09'), va = MAL('03', 5) + 0.3, vc = MAL('08', 16) + LN(16) - 0.2;
-  teckning('flinga', FLINGA_URL, ruta(FLINGA_I), () => FLINGAN,
+  KR.teckning('flinga', FLINGA_URL, KONTUR.flinga, ruta(FLINGA_I), () => FLINGAN,
     { in: [a + 0.1, a + 0.5], rit: [a + 0.6, va - 0.2], vanta: [va, b - 0.1], ut: [b + 0.1, b + 0.9] }, [b + 0.05, FL_KLAR], [240, 40]);
-  teckning('pannband', PB_URL, ruta(PB_I), () => PBKORT.m,
+  KR.teckning('pannband', PB_URL, KONTUR.pannband, ruta(PB_I), () => PBKORT.m,
     { in: [c + 0.1, c + 0.5], rit: [c + 0.6, vc - 0.2], vanta: [vc, d - 0.1], ut: [d + 0.1, d + 0.9] }, [d + 0.05, PB_KLAR], [260, -60]); }
 
 // ---- en bildruta ----
-const glimt = (t, t0, p, r = 90, n = 4) => { if (t < t0 || t > t0 + 1.2) return ''; const [x, y] = skarm(p); return gnistor(x, y, r, t - t0, n); };
 const nivaSnofall = t => { const r = rad(t), n = [0, 60, 150][r.st.snofall], f = RAD[RAD.indexOf(r) - 1], n0 = f ? [0, 60, 150][f.st.snofall] : 0; return lerp(n0, n, mjuk((t - r.s) / 1.5)); };
 const FAGEL_ORD = [MAL('19b', 32) + ORD.rod, MAL('19b', 33) + ORD.bla, MAL('19b', 34) + ORD.gul];
 const FAGEL_PIP = [[S('18') + 0.1, 1], [S('18') + 0.7, 2], [S('18') + 1.4 + LN(30) + 1.8, 0], ...FAGEL_ORD.map((t, i) => [t - 0.05, i]),
   ...[0.7, 1.0, 1.3].map((o, i) => [MAL('20', 35) + LN(35) + o, i]), [MAL('24c', 41) + 0.3, 0], [MAL('24c', 41) + 0.45, 1], [MAL('24c', 41) + 0.6, 2]];
 const FAGEL_LYFT = [[S('19') + 0.5, 0], [S('19') + 0.65, 1], [S('19') + 0.8, 2], ...FAGEL_ORD.map((t, i) => [t, i]), [MAL('24c', 41) + 0.25, 0], [MAL('24c', 41) + 0.4, 1], [MAL('24c', 41) + 0.55, 2]];
 async function bildruta(t) {
-  const oppen = t < STANG ? k01((t - OPPNA) / 0.9) : 1 - mjuk((t - PARM_NER[0]) / (PARM_NER[1] - PARM_NER[0]));
-  satt(PARM0 + (PARM1 - PARM0) * oppen);
+  FALL.parm(t);
   { const [x, y, z] = kaninPos(t); kanin.position.set(x, KANKORT.y + y, z); }   // först: tussen och pannbandet räknar mot kaninen
   for (const k of [...ORDNING, SNOGUBBEN]) {
-    let e = k.upp != null ? reser((t - k.upp) / 0.45) : 0;
-    if (k.ner != null) e *= 1 - mjuk((t - k.ner) / 0.35);
-    vik(k, e); if (k.flik) k.flik.visible = e > 0.6;
+    stall(k, FALL.e(k, t));
     if (k.vaj !== undefined) k.m.rotation.z = 0.015 * Math.sin(t * 1.1 + k.vaj) * k01((t - k.upp - 0.45) / 0.5);
   }
   SNOGUBBEN.m.visible = t >= GUBBE_UPP;
@@ -481,13 +331,12 @@ async function bildruta(t) {
     const p = i < 2 ? v3(kanin.position.x + (i ? 0.05 : -0.05), SIDA + 0.012, kanin.position.z + 0.02) : v3(BOLLPOS[i - 2][0] + 0.06, SIDA + 0.012, BOLLPOS[i - 2][1] + 0.02);
     m.position.copy(p).add(v3(0, 0.02 * u, 0)); m.scale.setScalar(0.6 + 1.6 * u); m.material.opacity = 0.8 * (1 - u); });
   TRADET.m.updateMatrixWorld(true);
-  vik(KANKORT, reser((t - KANIN_UPP) / 0.45) * (1 - mjuk((t - KANKORT.ner) / 0.35))); kanin.visible = t >= KANIN_UPP;
+  vik(KANKORT, FALL.e(KANKORT, t)); kanin.visible = t >= KANIN_UPP;
   await ritaKanin(t);
-  const v = VYER[Math.max(0, VYER.findLastIndex(w => w.t <= t))];
-  bokeh.uniforms.focus.value = cam.position.distanceTo(v.mal); bokeh.uniforms.maxblur.value = v.blur; bokeh.uniforms.aperture.value = v.blur > 0.003 ? 0.012 : 0.002;
+  DOF.fokus(KAM.aktiv(t));
   scen.updateMatrixWorld(true);
   // kritan och glimtarna i #ov
-  let ov = ritaKritan(t);
+  let ov = KR.rita(t);
   const flp = FLINGAN.getWorldPosition(v3());
   ov += glimt(t, MAL('04', 6) + ORD.snoflinga, flp, 160, 5) + glimt(t, MAL('24b', 40) + 0.3, flp, 160, 5) + glimt(t, S('01a') + 0.2, v3(0, SIDA + 0.1, 0.2), 120, 4);
   const bollTopp = i => BOLLAR[i].m.position.clone().add(v3(0.02, BOLLPOS[i][2] * 0.85, 0.02));
@@ -497,14 +346,13 @@ async function bildruta(t) {
   FAGLAR.forEach(F => { const w = F.m.getWorldPosition(v3()).add(v3(0, 0.06, 0.01)); ov += glimt(t, FAGEL_ORD[F.i] + 0.1, w, 60, 4) + glimt(t, S('19') + 0.5 + 0.15 * F.i, w, 50, 3); });
   ov += glimt(t, MAL('24d', 42) + 0.3, SNOGUBBEN.m.position.clone().add(v3(0.04, 0.36, 0.02)), 110, 5) + glimt(t, GUBBE_UPP, SNOGUBBEN.m.position.clone().add(v3(0, 0.2, 0.02)), 160, 5);
   $('ov').innerHTML = ov;
-  komp.render();
+  DOF.komp.render();
 }
 
 // ---- kameran: vyerna ur storyboarden, en svag glidning i varje ----
-satt(PARM1); scen.updateMatrixWorld(true);
+satt(PARM[1]); scen.updateMatrixWorld(true);
 const FLW = FLINGAN.getWorldPosition(v3());
 const VY = {
-  bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32],
   in: () => [v3(-0.1, 1.25, 2.4), v3(0, 0.32, -0.2), 32],
   himmel: () => [v3(0, 0.62, 1.75), v3(0, 0.62, -0.6), 34],
   flinga: () => [FLW.clone().add(v3(0.04, -0.12, 0.95)), FLW.clone(), 28],
@@ -520,51 +368,20 @@ const VY = {
   gubbe: () => [v3(-0.28, 0.36, 0.95), v3(-0.32, 0.18, 0.17), 30],
   hejda: g => [g.clone().add(v3(0.18, 0.34, 0.95)), g.clone().add(v3(-0.18, 0.2, -0.3)), 32],
 };
-const lage = (pos, mal, P) => [Math.atan2(pos.x - P[0], pos.z - P[2]) * 180 / Math.PI, Math.hypot(pos.x - P[0], pos.z - P[2]), pos.y - P[1], mal.x - P[0], mal.y - P[1]];
-const fran3 = (l, P) => { const a = l[0] * Math.PI / 180; return [v3(P[0] + l[1] * Math.sin(a), P[1] + l[2], P[2] + l[1] * Math.cos(a)), v3(P[0] + l[3], P[1] + l[4], P[2])]; };
-const skjut = l => [l[0] + 1.2, l[1] * 0.965, l[2] * 0.985, l[3], l[4]];
-const platser = {}, VYER = [];
-const blurFor = n => /nara|flinga$/.test(n) ? 0.008 : /halv|pannband|bollar|gubbe|tradnara/.test(n) ? 0.006 : 0.003;
-function vy(t, namn, g, o = {}) {
-  const [pos, mal, fov] = VY[namn](g), P = o.P || [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
-  const fran = o.fran || lage(pos, mal, P);
-  VYER.push({ t, mot: key, fran, till: o.till || skjut(fran), fov, mal: o.mal || mal, blur: blurFor(namn) });
-}
-function glid(t0, d, namn, g) {   // kameran glider från förra vyns läge till nästa vy
-  const f = VYER.at(-1), [p0, m0] = fran3(f.till ?? f.fran, platser[f.mot]), [pos, mal, fov] = VY[namn](g);
-  const P = [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
-  VYER.push({ t: t0, mot: key, fran: lage(p0, m0, P), till: lage(pos, mal, P), fov, mal, blur: blurFor(namn), rorelse: 'glid' });
-  vy(t0 + d, namn, g);
-}
+const KAM = kamera(cam, VY, { blur: n => /nara|flinga$/.test(n) ? 0.008 : /halv|pannband|bollar|gubbe|tradnara/.test(n) ? 0.006 : 0.003 }), { vy, glid } = KAM;
 const GLID = { '02': [0, 1.6], '19': [0, 1.3] };   // in mot himlen; från kaninen vid granen till trädet
-const P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0), inL = lage(...VY.in().slice(0, 2), P0);
 let forra = '';
 for (const r of RAD) {
-  const namn = r.st.vy === 'logga' ? 'bord' : r.st.vy, pl = PLATS[r.st.plats] || PLATS.mitt, g = v3(pl[0], SIDA, pl[1]), key = namn + (VY[namn].length ? r.st.plats : '');
-  if (r.id === '01a') { vy(r.s, 'bord', g, { P: P0, fran: [bordL[0] - 7, bordL[1] * 1.07, bordL[2] * 1.05, bordL[3], bordL[4]], till: bordL, mal: v3(0, 0.25, -0.1) }); forra = 'bord'; continue; }
-  if (r.id === '01b') { VYER.at(-1).till = bordL; vy(r.s + 0.9, 'in', g, { P: P0, fran: bordL, till: inL, mal: v3(0, 0.32, -0.2) }); forra = 'in'; continue; }
-  if (r.id === '26') { const f = VYER.at(-1), [pos, mal] = fran3(f.till, platser[f.mot]);
-    VYER.push({ t: r.s + 0.1, mot: 'pBord', fran: lage(pos, mal, P0), till: lage(v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), P0), fov: 32, mal: v3(0, 0.2, -0.1), blur: 0.003, rorelse: 'glid' }); platser.pBord = P0; continue; }
+  const namn = r.st.vy === 'logga' ? 'bord' : r.st.vy, pl = PLATS[r.st.plats] || PLATS.mitt, g = v3(pl[0], SIDA, pl[1]), key = namn + (KAM.VY[namn].length ? r.st.plats : '');
+  if (r.id === '01a') { KAM.oppning(r.s, S('01b') + 0.9, 'in'); forra = 'in'; continue; }
+  if (r.id === '01b') continue;
+  if (r.id === '26') { KAM.stangning(r.s + 0.1); continue; }
   if (r.id === '24c') { vy(r.s, 'tradhej', g); forra = 'tradhej'; continue; }   // närbild: kaninen vid bollarna kommer inte med i bild
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s + GLID[r.id][0], GLID[r.id][1], namn, g); else vy(r.s, namn, g);
 }
-VYER.sort((a, b) => a.t - b.t);
-const plan = kameraplan({ cam, canvas: $('bild'), platser, vyer: VYER, langd: DURATION });
+const plan = KAM.plan(DURATION);
 
 // ---- ljudet: Malin, kaninen och effekterna ur raderna, kritans ritljud som slinga, vinterljudet lågt under allt ----
-const EF = 'assets/ljud/effekter/';
 const VOL = f => /kanin-/.test(f) ? 2.0 : /(glitter|tindra|glimt)/.test(f) ? 0.85 : /prassel/.test(f) ? 0.9 : /(pop|swoosh|landa-mjuk)/.test(f) ? 0.7 : 1.0;
-const LJUD = [];
-for (const r of RAD) {
-  for (const [n, o] of r.malin || []) LJUD.push({ t: r.s + o, fil: `assets/ljud/roster/vintern-i-boken/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
-  for (const [f, o, v] of r.ljud || []) if (!/^(krita-ritar|vinterljud)\//.test(f)) LJUD.push({ t: r.s + o, fil: EF + f + (/\.\w+$/.test(f) ? '' : '.m4a'), vol: VOL(f) * (v != null ? v / 0.7 : 1) });
-}
-for (const [i, D] of RIT.entries()) LJUD.push({ t: D.T.rit[0], fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: D.T.rit[1] - D.T.rit[0] + 0.3, loop: true, fade: 0.4 });
-LJUD.push({ t: 0, fil: EF + MATTA[0] + '.m4a', vol: MATTA[1], langd: DURATION, loop: true, fadeIn: 1.0, fade: 2.0 });
-LJUD.push(...plan.ljud);
-window.LJUD = LJUD.filter(c => c.t < DURATION).sort((a, b) => a.t - b.t);
-window.DURATION = DURATION;
-window.TIDER = Object.fromEntries(RAD.map(r => [r.id, +r.s.toFixed(2)]));
-window.seek = t => plan.rita(t, () => bildruta(t));
-window.ready = window.seek(+(new URLSearchParams(location.search).get('t') || 0)).then(() => true);
+starta(RD, plan, bildruta, { rost: 'vintern-i-boken', vol: VOL, matta: MATTA, RIT: KR.RIT });
