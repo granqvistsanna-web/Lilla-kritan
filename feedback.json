@@ -11563,9 +11563,10 @@
   "sec": 159,
   "tags": [],
   "note": "better tap for sink",
-  "fixed": false,
+  "fixed": true,
   "at": 1795808183139,
-  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)"
+  "render": "2026-11-27 20:13 (grind 6: snabb förhandsvisning (--snabb), scentid, utan logga)",
+  "fixedAt": 1795812848634
  },
  "ounj49a76nmwzdufh8": {
   "ep": "060",
