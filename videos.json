@@ -1751,5 +1751,13 @@
   "file": "produktion/youtube/shorts/abc/abc-a-2-busiga-kritan/abc-a-2-busiga-kritan.mp4",
   "status": "granska",
   "name": "Kritans ABC A, Short 2: Busiga kritan! (prov)"
+ },
+ "061": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/061-1127-1600.mp4",
+  "duration": 46.8,
+  "rendered": "2026-11-27 16:00 (riggens testfilm (riggen godkänd 27/11), inget avsnitt byggt än)",
+  "file": "assets/karaktarer/tvattbjornen-tilda/premium/tilda-testfilm.mp4",
+  "status": "granska",
+  "name": "Tvättbjörnen bygger i sanden"
  }
 }
