@@ -1,0 +1,11 @@
+47-grodan-badar  [happy] Grodan badar!
+48-ar-vattnet-svalt  [curious] Är vattnet svalt, grodan?
+49-plask-plask  [playfully] Plask, plask, plask!
+50-hink-och-spade  [curious] Titta! En hink och en spade!
+51-bygga-sandslott  [curious] Ska du bygga ett sandslott, grodan?
+52-ja-vad-kul  [happy] Ja, vad kul!
+53-fyller-hinken  [warmly] Grodan fyller hinken med sand.
+54-vand-pa-hinken  [playfully] Vänd på hinken … och lyft!
+55-ett-torn  [happy] Ett torn!
+56-en-gang-till  [playfully] En gång till … och lyft!
+57-ett-tva-torn  [happy] Ett, två torn!

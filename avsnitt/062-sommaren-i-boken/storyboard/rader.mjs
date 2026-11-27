@@ -55,6 +55,18 @@ export const ROST = [
   ['44-hej-da-blommorna', 1.37, 'Hej då, blommorna!'],
   ['45-hej-da-sandslottet', 1.71, 'Hej då, sandslottet!'],
   ['46-hej-da-dammen', 1.30, 'Hej då, dammen!'],
+  // tagning 4 (ElevenLabs v3, Natural, 2026-11-27, malin-tagning-4.mp3): utkast A "kan grodan bada?" och B "frog build sand castle" (Sanna 27/11 "Både A och B")
+  ['47-grodan-badar', 1.55, 'Grodan badar!'],
+  ['48-ar-vattnet-svalt', 1.66, 'Är vattnet svalt, grodan?'],
+  ['49-plask-plask', 1.55, 'Plask, plask, plask!'],
+  ['50-hink-och-spade', 2.20, 'Titta! En hink och en spade!'],
+  ['51-bygga-sandslott', 1.86, 'Ska du bygga ett sandslott, grodan?'],
+  ['52-ja-vad-kul', 1.45, 'Ja, vad kul!'],
+  ['53-fyller-hinken', 2.02, 'Grodan fyller hinken med sand.'],
+  ['54-vand-pa-hinken', 2.25, 'Vänd på hinken … och lyft!'],
+  ['55-ett-torn', 1.02, 'Ett torn!'],
+  ['56-en-gang-till', 1.91, 'En gång till … och lyft!'],
+  ['57-ett-tva-torn', 1.52, 'Ett, två torn!'],
 ];
 export const L = n => ROST[n - 1][1];
 
@@ -116,7 +128,13 @@ export const RADER = [
   { id: '15', d: 0.5 + L(25) + 0.9, plats: 'Dammen, halvbild', malin: [[25, 0.5]], ljud: [['hopp-mjuk/hopp-mjuk-2', 0.4], ['plask/plask-1', 1.4], ['droppar/droppar-1', 1.5]],
     bild: 'Grodan hoppar ut i dammen och badar: vågkortet fälls upp framför henne på "plask", vattnet stänker', ljudtext: 'hopp-mjuk, plask, droppar', s: { vy: 'halv2', blad: 'bad', stank: true } },
   { id: '15b', d: 0.4 + L(26) + 1.1, plats: 'Grodan, närbild', malin: [[26, 0.4]], ljud: [G('groda-prat-2', 0.4 + L(26) + 0.2)],
-    bild: 'Droppar faller på grodan, hon blundar glatt', ljudtext: 'kvak (glad)', s: { vy: 'nara2', stank: false } },
+    bild: 'Droppar faller på grodan, hon blundar glatt. Hon har sjunkit ner till bröstet i vattnet', ljudtext: 'kvak (glad)', s: { vy: 'nara2', stank: false } },
+  // grodan badar på riktigt (utkast A, Sanna 27/11 "kan grodan bada?"): hon simmar ett varv och plaskar med händerna
+  { id: '15c', d: 0.4 + L(47) + 2.2, plats: 'Dammen, halvbild', malin: [[47, 0.4]], ljud: [['simma/simma-1', 0.2], ['vagor/vagor-2', 0.3], ['simma/simma-2', 1.6]],
+    bild: 'Grodan simmar lugnt ett varv i dammen med armarna, vattenringar följer henne', ljudtext: 'simma, vågor', s: { vy: 'halv2' } },
+  { id: '15d', d: 0.2 + L(48) + SVAR + L(49) + 0.8, plats: 'Grodan i vattnet, närbild', malin: [[48, 0.2], [49, 0.2 + L(48) + SVAR]],
+    ljud: [G('groda-fniss-3', 0.2 + L(48) + 0.2), ...[0, 1, 2].map(i => ['plask/plask-' + (2 + i), 0.2 + L(48) + SVAR + 0.1 + i * L(49) / 3])],
+    bild: 'Grodan plaskar med händerna, tre plask på "Plask, plask, plask!". Pausen: fniss-kvak', ljudtext: 'fniss-kvak, plask ×3 lågt', s: { vy: 'nara2' } },
   { id: '16', d: 0.3 + L(27) + 1.1, plats: 'Grodan, närbild', malin: [[27, 0.3]], ljud: [G('groda-prat-1', 0.3 + L(27) + 0.2)],
     bild: 'Grodan sval och glad, dropparna glittrar', ljudtext: 'kvak (glad)', s: {} },
 
@@ -139,9 +157,25 @@ export const RADER = [
     bild: 'Grodan lutar sig mot blommorna, blundar och luktar', ljudtext: 'mus-suck (mysig)', s: { vy: 'blommor-nara', luktar: true } },
 
   // --- Sanden och hej då ---
-  { id: '22', d: 0.3 + L(35) + 0.4 + L(36) + 1.4, plats: 'Sanden, halvbild', malin: [[35, 0.3], [36, 0.3 + L(35) + 0.4]],
-    ljud: [['glimt/glimt-1', 0.3 + L(35) + 0.4 + 1.0], ['klapp/klapp-1', 0.3 + L(35) + 0.4 + L(36) + 0.1], G('groda-fniss-2', 0.3 + L(35) + 0.4 + L(36) + 0.5)],
-    bild: 'Sandslottet (uppe sedan boken öppnades) studsar och glimtar på "sandslott", hinken bredvid. Grodan klappar glatt', ljudtext: 'glimt på "sandslott", klapp, olle-fniss', s: { vy: 'sand', slott: true, luktar: false } },
+  // grodan bygger sandslottet (utkast B, Sanna 27/11 "maybe add scene where frog build sand castle"): sandhögen och hinken står uppe
+  // från början, slottet är inte byggt. Två torn med hinken, sedan reser sig hela slottet på "sandslott".
+  { id: '22', d: 2.5 + L(35) + 0.4 + L(50) + 0.8, plats: 'Sandhörnet, bred', malin: [[35, 2.5], [50, 2.5 + L(35) + 0.4]],
+    ljud: [['hopp-mjuk/hopp-mjuk-1', 0.1], ['hopp-mjuk/hopp-mjuk-2', 0.75], ['hopp-mjuk/hopp-mjuk-1', 1.6], ['landa-mjuk/landa-mjuk-2', 2.3], G('groda-nyfiken-3', 2.5 + L(35) + 0.4 + L(50) + 0.2)],
+    bild: 'Grodan hoppar över bladen till sandhörnet och landar bredvid hinken. Sandhögen utan slott, hinken med spaden', ljudtext: 'hopp ×3, landa-mjuk, nyfiket kvak', s: { vy: 'bygge', blad: 'sand', luktar: false } },
+  { id: '22b', d: 0.2 + L(51) + SVAR + L(52) + 0.8, plats: 'Sandhörnet, halvbild', malin: [[51, 0.2], [52, 0.2 + L(51) + SVAR]], ljud: [G('groda-fortjust-3', 0.2 + L(51) + 0.2)],
+    bild: 'Grodan tittar på oss. Pausen: glatt kvak, nick', ljudtext: 'kvak-dubbel (förtjust)', s: {} },
+  { id: '22c', d: 0.9 + L(53) + 1.3, plats: 'Sandhörnet, halvbild', malin: [[53, 0.9]], ljud: [['swoosh/swoosh-1', 0.1], ['grav/grav-1', 1.25], ['sand/sand-1', 1.55], ['grav/grav-1', 2.35], ['sand/sand-2', 2.65]],
+    bild: 'Grodan tar spaden ur hinken och fyller hinken med sand, två skopor. Sanden syns i hinken', ljudtext: 'swoosh, gräv + sand ×2', s: {} },
+  { id: '22d', d: 0.4 + L(54) + 1.0, plats: 'Sandhörnet, halvbild', malin: [[54, 0.4]], ljud: [['swoosh/swoosh-1', 0.15], ['hink-dunk/hink-dunk-1', 1.15], ['pop/pop-1', 0.4 + L(54) - 0.2]],
+    bild: 'Hinken lyfts upp och vänds över sandhögen (dunk). På "lyft!" lyfts den, och ett torn står kvar', ljudtext: 'swoosh, hink-dunk, pop på "lyft"', s: {} },
+  { id: '22e', d: 0.5 + L(55) + 1.2, plats: 'Tornet, närbild', malin: [[55, 0.5]], ljud: [['glimt/glimt-1', 0.5], G('groda-fortjust-1', 0.5 + L(55) + 0.2)],
+    bild: 'Närbild på tornet, som glimtar. Hinken flyger tillbaka bakom bilden', ljudtext: 'glimt, kvak-dubbel (förtjust)', s: { vy: 'torn' } },
+  { id: '22f', d: 0.4 + L(56) + 1.0, plats: 'Sandhörnet, halvbild', malin: [[56, 0.4]], ljud: [['grav/grav-1', 0.25], ['sand/sand-3', 0.5], ['swoosh/swoosh-1', 0.8], ['hink-dunk/hink-dunk-1', 1.7], ['pop/pop-2', 0.4 + L(56) - 0.2]],
+    bild: 'En skopa till, hinken vänds på andra sidan om mitten, och på "lyft!" står torn två kvar', ljudtext: 'gräv, sand, swoosh, hink-dunk, pop', s: { vy: 'bygge' } },
+  { id: '22g', d: 0.4 + L(57) + 0.4 + L(36) + 1.6, plats: 'Sandhörnet, halvbild', malin: [[57, 0.4], [36, 0.4 + L(57) + 0.4]],
+    ljud: [['glimt/glimt-1', 0.45], ['glimt/glimt-2', 0.4 + L(57) * 0.5], ['pop/pop-3', 0.4 + L(57) + 0.4 + 1.0], ['tindra/tindra-2', 0.4 + L(57) + 0.4 + 1.2],
+      ['klapp/klapp-1', 0.4 + L(57) + 0.4 + L(36) + 0.1], G('groda-fniss-2', 0.4 + L(57) + 0.4 + L(36) + 0.5)],
+    bild: 'Tornen glimtar på "ett" och "två". Hela slottet reser sig på "sandslott", grodan lägger spaden i hinken och klappar', ljudtext: 'glimt ×2, pop och tindra på "sandslott", klapp, olle-fniss', s: { slott: true } },
   { id: '23', d: 0.2 + L(37) + 1.4, plats: 'Grodan, närbild', malin: [[37, 0.2]], ljud: [G('groda-fortjust-2', 0.2 + L(37) + 0.2)],
     bild: 'Grodan tittar på oss. Pausen: glatt kvak, nick', ljudtext: 'kvak-dubbel (förtjust)', s: { vy: 'nara3' } },
   { id: '24', d: 0.5 + L(38) + 1.4, plats: 'Uppslaget, halvbild', malin: [[38, 0.5]], ljud: [['glimt/glimt-2', 0.5 + 1.2], G('groda-hejda-1', 0.5 + L(38) + 0.2)],

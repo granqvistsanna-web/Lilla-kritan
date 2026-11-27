@@ -141,6 +141,24 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 
 **Runda 6 (Sanna 2026-11-27, feedback på runda 5):** allt fälls upp när boken öppnas, också grodan och sandslottet (sandslottet studsar och glimtar på *"sandslott"* i stället för att poppa upp, grodan står redan på bladet på *"Hej, grodan!"*). Solens strålar ritas som bildens tjocka, rundade strålar (ut, runt toppen, in, medurs), så att kritans rörelse och teckningen blir bilden, och kritan ritar lugnare (4,4 s). Solen gungar lugnt ±2° i stället för att snurra hela tiden. Blommorna 0,72 av förut. Hinken och sandslottet i ett sandhörn längst fram till vänster, glassen ritas lite närmare dammen.
 
+**Runda 7 (Sanna 2026-11-27, *"Både A och B"*):** utkast A och B under Öppet är byggda. **A:** på bad 4 simmar grodan ett varv i dammen (rad 15c, *"Grodan badar!"*) och plaskar med händerna (rad 15d, *"Är vattnet svalt, grodan?"* – fniss-kvak – *"Plask, plask, plask!"*). **B:** sandhögen och hinken står uppe från början, slottet är inte byggt. Grodan hoppar över bladen till sandhörnet (rad 22, *"Och sand! Titta, en hink och en spade."*), svarar ja (22b), tar spaden ur hinken och fyller den (22c), hinken vänds över sandhögen och lyfts på *"lyft!"* (22d), torn 1 i närbild (22e), en gång till (22f), och på *"sandslott"* reser sig mitten och hela slottet står (22g); grodan klappar med spaden i handen. Bilderna är Sannas hink.png och sand.png delade i `produktion/three-rum/popupbok/bilder/delat/` (hinken utan spade, spaden, sandhögen, två torn och mitten), inga nya bilder. Sandhögen är 1,5 gånger större (0,36) och hinken lite mindre (0,22), så att hinken kan forma tornen. **Rösten:** tagning 4 (ElevenLabs v3, Natural, `produktion/ljud-original/roster/062/malin-tagning-4.mp3`) delad i repliker 47–57 (`rost-4.txt`), −3 dBFS: 47 1,55 · 48 1,66 · 49 1,55 · 50 2,20 · 51 1,86 · 52 1,45 · 53 2,02 · 54 2,25 · 55 1,02 · 56 1,91 · 57 1,52 s.
+
+```
+[happy] Grodan badar!
+[curious] Är vattnet svalt, grodan?
+[playfully] Plask, plask, plask!
+[curious] Titta, en hink och en spade.
+[curious] Ska du bygga ett sandslott, grodan?
+[happy] Ja, vad kul!
+[warmly] Grodan fyller hinken med sand.
+[playfully] Vänd på hinken … och lyft!
+[happy] Ett torn!
+[playfully] En gång till … och lyft!
+[happy] Ett, två torn!
+```
+
+**Bad 4 (Sanna 2026-11-27, *"is there any way to get frog to bada in dammen?"*, *"Yes, use bad 4"*):** grodan hoppar mitt ut i dammen på *"plask"* och sjunker till bröstet, utan blad under och utan vågkort. Figuren glider ner i sitt kort, det under vattenlinjen ritas inte och en vågig vattenkant i dammens färg täcker snittet. Hon guppar lugnt, ringarna sprider sig, och hon kommer upp ur vattnet i själva hoppet upp på bladet (står aldrig på vattnet). Stillbilder i `scener/boken/stills-prov/bad4-*.jpg`, bad 1–3 kvar med `?bad=`.
+
 **Runda 5 (Sanna 2026-11-27, feedback på runda 4):** pärmens siluett är solen, solen är större och har ansikte (ritat i kod), replikerna 10 (*"Solen skiner. Det blir varmt!"*) och 12 (*"Är du varm, grodan?"*) används inte (för mycket "varm"), grodan äter upp hela glassen med struten (två tuggor, ingen tom strut på gräset), lugna vattenringar under bladen (glädjeskutten, badet, hoppet upp), blommorna utspridda, sandfläck under sandslottet, sandslottet till vänster om hinken, kamerorna visar inget utanför boken. Hej då: solen i bild på *"Hej då, solen!"*, sedan tre nya repliker med en bild var. Tagning 3 (ElevenLabs v3, Natural, `produktion/ljud-original/roster/062/malin-tagning-3.mp3`): 44 *"Hej då, blommorna!"* 1,37 · 45 *"Hej då, sandslottet!"* 1,71 · 46 *"Hej då, dammen!"* 1,30 s.
 
 38 rader. Inga tomma medhåll (*"Ja, det är du"*, *"Ja, det tycker jag också"*, Sanna 2026-11-27): Malins reaktion säger något nytt. Ord som mäts per tagning: *"plask"* i 25, 27 och 31 (`PLASK`), *"Mums"* i 17, *"Blommor"* i 33 och *"sandslott"* i 35 (korten fälls upp på orden).
@@ -191,8 +209,8 @@ Fniss på rad 12b och 22 (`olle-fniss-4`).
 5. **Solen ritas på himlen** i stället för att glida upp bakom kullen som i provet. Glidningen kan vara kvar efter fyllningen (solen stiger lite när den är klar) om du gillar den.
 6. **Två näckrosblad** över dammen, lika stora, ett hopp mellan dem (tagning 1 har bara ett plask). Blommorna gömmer sig bakom busken i stället för bladet bakom vassen.
 7. **Seriens nästa uppslag:** höst, vinter och vår med samma bok och grodan, eller en ny figur per årstid? Det avgör om grodans siluett ska vara bokens fasta omslag (sessionen *Kritans bok: återanvändbart omslag* bygger omslaget så att det kan bytas).
-8. **Grodan badar på riktigt (Sanna 27/11 "kan grodan bada?"):** utkast A nedan, väntar på svar. Inget byggt och ingen ny röst.
-9. **Grodan bygger sandslottet (Sanna 27/11 "maybe add scene where frog build sand castle"):** utkast B nedan, väntar på svar. Inget byggt och ingen ny röst.
+8. **Grodan badar på riktigt (Sanna 27/11 "kan grodan bada?"):** utkast A nedan, ✅ godkänt och byggt i runda 7 (tagning 4 gjord).
+9. **Grodan bygger sandslottet (Sanna 27/11 "maybe add scene where frog build sand castle"):** utkast B nedan, ✅ godkänt och byggt i runda 7 (tagning 4 gjord).
 
 ### Utkast A: grodan badar (ersätter rad 15–16)
 
