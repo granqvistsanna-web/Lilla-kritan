@@ -10749,9 +10749,10 @@
   "sec": 56,
   "tags": [],
   "note": "more bold bg blue, turning green on chorus",
-  "fixed": false,
+  "fixed": true,
   "at": 1795761560152,
-  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)"
+  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)",
+  "fixedAt": 1795784936136
  },
  "d93hb06t0amwym32k7": {
   "ep": "014",
@@ -10759,9 +10760,10 @@
   "sec": 38,
   "tags": [],
   "note": "more smooth animation flying for bumble bee and change to fia",
-  "fixed": false,
+  "fixed": true,
   "at": 1795761589687,
-  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)"
+  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)",
+  "fixedAt": 1795784936136
  },
  "0a44moykirmwyypv6p": {
   "ep": "014",
@@ -10769,9 +10771,10 @@
   "sec": 68,
   "tags": [],
   "note": "match hops to song",
-  "fixed": false,
+  "fixed": true,
   "at": 1795782808609,
-  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)"
+  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)",
+  "fixedAt": 1795784936136
  },
  "3xw5fkcr2kmwyyq392": {
   "ep": "014",
@@ -10779,8 +10782,9 @@
   "sec": 69,
   "tags": [],
   "note": "smoother transition of thw traffic light",
-  "fixed": false,
+  "fixed": true,
   "at": 1795782819062,
-  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)"
+  "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)",
+  "fixedAt": 1795784936136
  }
 }
