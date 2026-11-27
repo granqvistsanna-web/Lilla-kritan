@@ -10786,5 +10786,125 @@
   "at": 1795782819062,
   "render": "2026-11-27 07:34 (QA 27/11: inga halvslutna ögon (kör-kör-kör, refrängerna, discot), glad blick på 'Kan du se?', discot putsat efter förstoringen (noter i hörnen, dansmärket uppe till vänster, fjärilen över huvudena, mindre klistermärke), picket utan att kycklingen täcker leoparden, vagnen helt i bild i slutet, ljudtoppen −1,8 dBFS. --snabb.)",
   "fixedAt": 1795784936136
+ },
+ "vk8wtlmbz9mwz06fvj": {
+  "ep": "062",
+  "time": "0:27",
+  "sec": 27,
+  "tags": [],
+  "note": "move camera up a bit, zoom out a bit",
+  "fixed": false,
+  "at": 1795785261535,
+  "render": "r2"
+ },
+ "yvfvt621srmwz06lfd": {
+  "ep": "062",
+  "time": "0:28",
+  "sec": 28,
+  "tags": [],
+  "note": "more smooth camera shots",
+  "fixed": false,
+  "at": 1795785268729,
+  "render": "r2"
+ },
+ "s5tebbqqu7mwz06vuz": {
+  "ep": "062",
+  "time": "0:30",
+  "sec": 30,
+  "tags": [],
+  "note": "happy jump",
+  "fixed": false,
+  "at": 1795785282251,
+  "render": "r2"
+ },
+ "bwo6u7u452mwz078fh": {
+  "ep": "062",
+  "time": "0:47",
+  "sec": 47,
+  "tags": [],
+  "note": "show signs of heat and frog being warm",
+  "fixed": false,
+  "at": 1795785298541,
+  "render": "r2"
+ },
+ "k7q421kmxymwz07kax": {
+  "ep": "062",
+  "time": "1:14",
+  "sec": 74,
+  "tags": [],
+  "note": "show mouth",
+  "fixed": false,
+  "at": 1795785313929,
+  "render": "r2"
+ },
+ "f2idhx51damwz07w60": {
+  "ep": "062",
+  "time": "1:21",
+  "sec": 81,
+  "tags": [],
+  "note": "bettwe animation of eating glass",
+  "fixed": false,
+  "at": 1795785329304,
+  "render": "r2"
+ },
+ "57fbaxml3emwz08f46": {
+  "ep": "062",
+  "time": "1:44",
+  "sec": 104,
+  "tags": [],
+  "note": "cant frog sink in to the damm?",
+  "fixed": false,
+  "at": 1795785353862,
+  "render": "r2"
+ },
+ "6srye4k61pmwz08p6g": {
+  "ep": "062",
+  "time": "1:47",
+  "sec": 107,
+  "tags": [],
+  "note": "the drops make little sense, polish the animation",
+  "fixed": false,
+  "at": 1795785366904,
+  "render": "r2"
+ },
+ "q18vtfwq4zmwz0942p": {
+  "ep": "062",
+  "time": "2:02",
+  "sec": 122,
+  "tags": [],
+  "note": "place flowers more clearly and show full scene",
+  "fixed": false,
+  "at": 1795785386209,
+  "render": "r2"
+ },
+ "ib64df9nvkmwz09pdl": {
+  "ep": "062",
+  "time": "2:40",
+  "sec": 160,
+  "tags": [],
+  "note": "wave good bye",
+  "fixed": false,
+  "at": 1795785413817,
+  "render": "r2"
+ },
+ "qe0vj5p12cmwz09w5n": {
+  "ep": "062",
+  "time": "2:43",
+  "sec": 163,
+  "tags": [],
+  "note": "closer close book",
+  "fixed": false,
+  "at": 1795785422603,
+  "render": "r2"
+ },
+ "25ug2m5p5lmwz0a278": {
+  "ep": "062",
+  "time": "2:43",
+  "sec": 163,
+  "tags": [],
+  "note": "faster close book",
+  "fixed": false,
+  "at": 1795785430436,
+  "render": "r2"
  }
 }
