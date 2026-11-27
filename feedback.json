@@ -11618,9 +11618,10 @@
   "sec": 25,
   "tags": [],
   "note": "polish leaf on tree animatoon",
-  "fixed": false,
+  "fixed": true,
   "at": 1795807940974,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "a8jdoehjgamwzdprbo": {
   "ep": "063",
@@ -11628,9 +11629,10 @@
   "sec": 207,
   "tags": [],
   "note": "smaller sparkles",
-  "fixed": false,
+  "fixed": true,
   "at": 1795807997844,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "nslgqnc6fxmwzgkn75": {
   "ep": "063",
@@ -11638,9 +11640,10 @@
   "sec": 57,
   "tags": [],
   "note": "less shaking",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812798065,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "epf2qcdwyomwzgm115": {
   "ep": "063",
@@ -11648,9 +11651,10 @@
   "sec": 145,
   "tags": [],
   "note": "a bit faster pace",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812862649,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "e5rc240onnmwzgm7ra": {
   "ep": "063",
@@ -11658,9 +11662,10 @@
   "sec": 143,
   "tags": [],
   "note": "show numbers too",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812871366,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "gveqad0fvkmwzgmjpm": {
   "ep": "063",
@@ -11668,9 +11673,10 @@
   "sec": 158,
   "tags": [],
   "note": "have leaves falloff head",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812886858,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "8qoom6vpbjmwzgn954": {
   "ep": "063",
@@ -11678,9 +11684,10 @@
   "sec": 183,
   "tags": [],
   "note": "fold up faster on titta vid stubbe",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812919816,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  },
  "vfkn4swpu5mwzgo3qh": {
   "ep": "063",
@@ -11688,8 +11695,9 @@
   "sec": 13,
   "tags": [],
   "note": "it would make more sense if a green tree changed t autumm colors",
-  "fixed": false,
+  "fixed": true,
   "at": 1795812959465,
-  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))"
+  "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
+  "fixedAt": 1795814281357
  }
 }
