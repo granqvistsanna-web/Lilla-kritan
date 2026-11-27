@@ -11166,9 +11166,10 @@
   "sec": -1,
   "tags": [],
   "note": "redan uppe på yt",
-  "fixed": false,
+  "fixed": true,
   "at": 1795765376332,
-  "render": "2026-11-14 07:28"
+  "render": "2026-11-14 07:28",
+  "fixedAt": 1795794725993
  },
  "7qy5e59hfqmwyoce52": {
   "ep": "026",
@@ -11176,9 +11177,10 @@
   "sec": -1,
   "tags": [],
   "note": "redan uppe på yt",
-  "fixed": false,
+  "fixed": true,
   "at": 1795765383830,
-  "render": "2026-11-14 07:28"
+  "render": "2026-11-14 07:28",
+  "fixedAt": 1795794725993
  },
  "zv7460w64qmwyocn6v": {
   "ep": "027",
@@ -11186,9 +11188,10 @@
   "sec": -1,
   "tags": [],
   "note": "redan på yt",
-  "fixed": false,
+  "fixed": true,
   "at": 1795765395559,
-  "render": "2026-11-15 17:04"
+  "render": "2026-11-15 17:04",
+  "fixedAt": 1795794725993
  },
  "cz84kzcd9lmwyqxxcy": {
   "ep": "J12",
