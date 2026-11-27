@@ -10925,9 +10925,10 @@
   "sec": 0,
   "tags": [],
   "note": "maybe slight camera movement for some visual intrest, we need a faster intro",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787133816,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  },
  "uhj35jwxddmwz1b9vm": {
   "ep": "062",
@@ -10935,9 +10936,10 @@
   "sec": 14,
   "tags": [],
   "note": "match kritan animation with drawing, bigger crayon",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787166658,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  },
  "xzywow8zv9mwz1bkft": {
   "ep": "062",
@@ -10945,9 +10947,10 @@
   "sec": 14,
   "tags": [],
   "note": "overall i want a bigger scene and smaller objects",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787180345,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  },
  "srte88kcb6mwz1c9sw": {
   "ep": "062",
@@ -10955,9 +10958,10 @@
   "sec": 45,
   "tags": [],
   "note": "nod head",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787213216,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  },
  "p5qaso7kuxmwz1cezt": {
   "ep": "062",
@@ -10965,9 +10969,10 @@
   "sec": 45,
   "tags": [],
   "note": "look a bit distressed",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787219945,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  },
  "jaeucevgd9mwz1dl6o": {
   "ep": "062",
@@ -10975,9 +10980,10 @@
   "sec": 90,
   "tags": [],
   "note": "animation of frog eatig up last of icecream",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787274624,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  },
  "5oztljekh9mwz1eds4": {
   "ep": "062",
@@ -10985,8 +10991,9 @@
   "sec": 107,
   "tags": [],
   "note": "this scene needs lots of polish to work. lets do some stills test.",
-  "fixed": false,
+  "fixed": true,
   "at": 1795787311684,
-  "render": "2026-11-27 14:40 (Runda 3)"
+  "render": "2026-11-27 14:40 (Runda 3)",
+  "fixedAt": 1795790821527
  }
 }
