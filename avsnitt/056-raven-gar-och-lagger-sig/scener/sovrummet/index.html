@@ -305,7 +305,7 @@ function lagen(t) {
   if (t >= s19 + 1.0 && t < s23) { const upp = del(s19 + 1.0, s19 + 1.5, t), fall = del(s19 + 1.5, s19 + 1.9, t);
     np = [lerp(NALLE_BREDVID[0], BULA[0], upp), t < s19 + 1.5 ? lerp(NALLE_BREDVID[1], KANT, upp) - 14 * bump(s19 + 1.0, s19 + 1.5, t) : KANT + 190 * fall * fall];
     if (t >= s19 + 1.5) nklipp = KANT; nalleSyns = t < s19 + 1.95;
-    if (t >= s21) under = { x: UNDER[0], y: UNDER[1], luta: -12 * (1 - del(s21 + 2.2, s21 + 3.0, t)) }; }   // lutar sig fram under kanten, rätar upp sig
+    if (t >= s21 + 1.6) under = { x: UNDER[0], y: UNDER[1], luta: -12 * (1 - del(s21 + 2.2, s21 + 3.0, t)) }; }   // lutar sig fram under kanten, rätar upp sig
   if (t >= s23) { const h = del(s23, s23 + 0.7, t);
     np = [lerp(UNDER[0], NALLE_BREDVID[0], h), lerp(UNDER[1], NALLE_BREDVID[1], h) - 110 * bump(s23, s23 + 0.7, t)]; }
   // täcket: platt på sängen → upp över magen (rad 5) → till hakan (rad 27, i det mörkaste)
