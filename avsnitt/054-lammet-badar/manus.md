@@ -1,6 +1,6 @@
 # Avsnitt 054 – Lammet badar (plan)
 
-**Status:** grind 1 (manus) **godkänd av Sanna 2026-11-25**. Öppet 1–3 obesvarat, så tills vidare gäller: den rutiga handduken från 023 i större skala, rad 26 kvar, titeln *Lammet badar*. `rost.txt` skriven. **Samtalsrepliker tillagda 2026-11-25 (11 nya, 3 ändrade), godkända av Sanna samma dag.** **Grind 2 (handduken och kroken) godkänd av Sanna 2026-11-25** (se Rekvisita). **Grind 3 (rösten) godkänd av Sanna 2026-11-25:** två tagningar (1a, 1b) i ElevenLabs, båda delade i 42 repliker. 1b ligger normaliserad i `assets/ljud/roster/lammet-badar/` (längderna i `rost-langder.txt`). Provlyssning rad för rad, först A sedan B: `ljud/provlyssna-rost-a-b.m4a`. **Grind 4 (ljuden) klar och grind 5 (animatiken, `storyboard/animatik.mp4`) byggd 2026-11-25, väntar på Sanna.**
+**Status:** grind 1 (manus) **godkänd av Sanna 2026-11-25**. Öppet 1–3 obesvarat, så tills vidare gäller: den rutiga handduken från 023 i större skala, rad 26 kvar, titeln *Lammet badar*. `rost.txt` skriven. **Samtalsrepliker tillagda 2026-11-25 (11 nya, 3 ändrade), godkända av Sanna samma dag.** **Grind 2 (handduken och kroken) godkänd av Sanna 2026-11-25** (se Rekvisita). **Grind 3 (rösten) godkänd av Sanna 2026-11-25:** två tagningar (1a, 1b) i ElevenLabs, båda delade i 42 repliker. 1b ligger normaliserad i `assets/ljud/roster/lammet-badar/` (längderna i `rost-langder.txt`). Provlyssning rad för rad, först A sedan B: `ljud/provlyssna-rost-a-b.m4a`. Grind 4 (ljuden) klar 2026-11-25. **Filmen godkänd av Sanna 2026-11-26. Sista QA 2026-11-27:** *"Ska vi säga tack?"* (rad 14) och *"Lammet och ankan pratar med varandra"* (replik 11) strukna enligt bilderbok-regeln 27/11 (Malin säger *"Tack!"* direkt, pratet är tyst). Slutrenderad i full kvalitet (molnet), `film/avsnitt-054.mp4`. **Klar för uppladdning.**
 
 Bilderbok i serien *Djuren hittar på!* ([`format/bilderbok.md`](../../format/bilderbok.md), skillen `bilderbok`). Förlagor: 020 Grisen badar och 041 Kaninen badar varmt. Malin pratar med lammet, och lammet svarar bara med ljud, öron och ansikte. Samma badrum och badkar som 020 och 041.
 
@@ -14,7 +14,7 @@ Bilderbok i serien *Djuren hittar på!* ([`format/bilderbok.md`](../../format/bi
 | **Kritan ritar (2)** | **badankan** i ritintrot (`rekvisita/badanka.md`, finns, konturen från 020) · **den stora handduken** på kroken i scenen (se Rekvisita nedan) |
 | **Saker som finns** | badkaret, pallen, badankan, handduken (rutig rosa, `handduk-rutig`) |
 | **I kod, inga nya bilder** | skummet längs kanten och skumtussen där ankan gömmer sig · skumhatten · den blöta ullen (mörkare, slätare, droppar, en liten pöl) · ulltussarna som växer ut (öronen, magen, hela lammet) · skimret · droppar på ankan |
-| **Kärna** | Lammet badar med badankan. Badet är skönt, men när lammet kliver upp är ullen platt och blöt, och lammet fryser. Kritan ritar en stor handduk: *"Varsågod!"* – *"Ska vi säga tack?"* – *"Tack!"* Handduken torkar öronen, magen och till sist hela lammet: *"Blött … blött … torrt!"* Under handduken har lammet blivit ett fluffigt ullmoln. Men var är ankan? Barnet hittar näbben i skummet. Ankan är blöt, och lammet är torrt. Hej då! |
+| **Kärna** | Lammet badar med badankan. Badet är skönt, men när lammet kliver upp är ullen platt och blöt, och lammet fryser. Kritan ritar en stor handduk: *"Varsågod!"* – *"Tack!"* Handduken torkar öronen, magen och till sist hela lammet: *"Blött … blött … torrt!"* Under handduken har lammet blivit ett fluffigt ullmoln. Men var är ankan? Barnet hittar näbben i skummet. Ankan är blöt, och lammet är torrt. Hej då! |
 | **Barnet gör** | gissar vad kritan ritar (två gånger) · säger tack · letar efter ankan i skummet |
 | **Tema, subtilt** | **blött och torrt.** Bara i upprepningen *"Blött … blött … torrt!"* (tre gånger) och i en sista jämförelse (*"Ankan är blöt … och lammet är torrt!"*). Ingen förklaring, ingen lektion |
 | **Favoriter** | 🐑 lamm · 🦆 badanka · ☁️ ullmoln |
@@ -57,7 +57,7 @@ Lilla Kritan-logotypen, 1 s. Ingen jingel, inget titelkort.
 | 11 | Lammet tittar åt vänster mot väggen. Klipp till kroken: den är tom. Tillbaka till lammet | Hm … vad gör vi nu? | frågande `ba-gullig-7` |
 | 12 | Utsnittet kring kroken. Kritan kommer in uppe till höger och ritar en stor handduk på kroken: hängöglan, kanterna, rutorna (ca 3 s). Väntar och svävar | Titta! Kritan ritar något. *(gisspaus 3 s)* | `krita-ritar` |
 | 13 | Den riktiga handduken fylls i inifrån. Kritan flyger ut | En handduk! En stor handduk! Varsågod, lammet. | `glitter`, förtjust `ba-gullig-2` |
-| 14 | Lammet tittar på handduken, öronen reser sig lite | Ska vi säga tack? *(paus 2,5 s)* | nyfiket `ba-gullig-5b` |
+| ~~14~~ | *Struken 27/11 (bilderbok-regeln: ingen tack-fråga)* | | |
 | 15 | Lammet nickar direkt | Tack! | förtjust `ba-gullig-2b` |
 | 16 | Helbild. Handduken glider lugnt ner från kroken och lägger sig över lammets huvud och öron. Den gnuggar i små cirklar. På *"torrt!"* lyfts den, och öronen är fluffiga: små runda ulltussar växer ut, öronen vippar | *(när handduken ligger på, lammet blundar nöjt en kort stund)* 🆕 Åh, vad mjuk! Först öronen. Blött … blött … torrt! | `prassel-tyg` medan den gnuggar, `puff` + `tindra-3` på *"torrt!"* |
 | 17 | Närbild på de fluffiga öronen. Lammet tittar upp på dem, blinkar, ler (reaktionsslag, ingen replik, ca 2,5 s) | – | förtjust `ba-gullig-2` |
@@ -75,7 +75,7 @@ Lilla Kritan-logotypen, 1 s. Ingen jingel, inget titelkort.
 | 28 | Lammet vinkar lugnt vidare | Hej då! Vi ses snart! | `ba-gullig-8b` |
 | 29 | Kritirisen runt lammet och ankan, 0,6 s svart | – | – |
 
-**Frågor till barnet (paus):** gissa ritintrot (ca 4 s), gissa handduken (3 s), *"Ska vi säga tack?"* (2,5 s), *"Ser du ankan?"* (5 s). Inga uppmaningar att göra något med kroppen.
+**Frågor till barnet (paus):** gissa ritintrot (ca 4 s), gissa handduken (3 s), *"Ser du ankan?"* (5 s). Inga uppmaningar att göra något med kroppen.
 
 **Fniss:** tre (6, 20, 26), aldrig två rader i följd, aldrig över Malin.
 
