@@ -11361,9 +11361,10 @@
   "sec": 51,
   "tags": [],
   "note": "more clear that water comes from ocean wave",
-  "fixed": false,
+  "fixed": true,
   "at": 1795804710184,
-  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))"
+  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))",
+  "fixedAt": 1795805958756
  },
  "clzoykp87hmwzbtykz": {
   "ep": "061",
@@ -11371,9 +11372,10 @@
   "sec": 122,
   "tags": [],
   "note": "wave still goes over racoon, need to be behind",
-  "fixed": false,
+  "fixed": true,
   "at": 1795804834643,
-  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))"
+  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))",
+  "fixedAt": 1795805958756
  },
  "v2a4l8s9r5mwzbudnc": {
   "ep": "061",
@@ -11381,9 +11383,10 @@
   "sec": 128,
   "tags": [],
   "note": "polish pouting animation,",
-  "fixed": false,
+  "fixed": true,
   "at": 1795804854168,
-  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))"
+  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))",
+  "fixedAt": 1795805958756
  },
  "8wgqy80kuemwzbvfq6": {
   "ep": "061",
@@ -11391,8 +11394,9 @@
   "sec": 197,
   "tags": [],
   "note": "more playful splashes with feet",
-  "fixed": false,
+  "fixed": true,
   "at": 1795804903518,
-  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))"
+  "render": "2026-11-27 19:07 (snabb förhandsvisning (grind 6))",
+  "fixedAt": 1795805958756
  }
 }
