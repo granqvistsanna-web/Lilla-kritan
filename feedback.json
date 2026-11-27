@@ -11424,5 +11424,45 @@
   "at": 1795808277077,
   "render": "2026-11-27 20:21 (slutrendering (molnet): vågen fyller gropen, vågen bakom, hälla putsat, stampa i sjön)",
   "fixedAt": 1795808611916
+ },
+ "rsg7a3jw61mwzdxqd8": {
+  "ep": "058",
+  "time": "0:09",
+  "sec": 9,
+  "tags": [],
+  "note": "better drawing",
+  "fixed": false,
+  "at": 1795808369852,
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+ },
+ "ofzv7283zfmwzdyk6d": {
+  "ep": "058",
+  "time": "1:43",
+  "sec": 103,
+  "tags": [],
+  "note": "bigger tree",
+  "fixed": false,
+  "at": 1795808408485,
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+ },
+ "g5rkstgygfmwzdzws8": {
+  "ep": "058",
+  "time": "3:58",
+  "sec": 238,
+  "tags": [],
+  "note": "better ball in bucket, not behind bottom",
+  "fixed": false,
+  "at": 1795808471480,
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
+ },
+ "8mpbnr6s3gmwze064v": {
+  "ep": "058",
+  "time": "4:12",
+  "sec": 252,
+  "tags": [],
+  "note": "bigger sandlåda",
+  "fixed": false,
+  "at": 1795808483598,
+  "render": "2026-11-27 19:56 (grind 6: snabb förhandsvisning (utan logo-intro och outro))"
  }
 }
