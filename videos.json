@@ -1599,9 +1599,9 @@
   "name": "Mix: Djuren hittar på! (vardagsberättelser)"
  },
  "J23": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-1127-1405.mp4",
-  "duration": 191.3,
-  "rendered": "2026-11-27 14:06 (--snabb QA 27/11: kritan ritar hinken, spaden och ljuset med den gemensamma kritkoden; spaden står klar när Malin säger 'spade'; julgransbubblan tänds på 'julgran' och raden är 0,7 s kortare; 3D-dörren stänger över scenen (irisslutet), inget svart)",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/J23-1127-1723.mp4",
+  "duration": 191.9,
+  "rendered": "2026-11-27 17:24 (Slutrendering 27/11 (scenen i molnet, luckan lokalt): närbilder på tittut (öronen syns) och tornet högst upp, sedan kaninens reaktion; julgransbubblan på 'julgran'; kritan via kritan-ritar.js; irisslutet. 191,9 s, −16,1 LUFS)",
   "file": "produktion/youtube/shorts/jul/23-kaninen-bygger-torn/23-kaninen-bygger-torn.mp4",
   "status": "granska",
   "name": "Kaninen bygger torn i snön"
