@@ -1,14 +1,14 @@
 #!/bin/bash
 # Renderar en kodscen i molnet (GitHub Actions, .github/workflows/render.yml) och lägger in filmen som render-delat.mjs gör.
-#   bash verktyg/molnrender.sh <scenmapp> [--bitar 8] [--ut fil.mp4] [flaggor till render.mjs: --en …]
+#   bash verktyg/molnrender.sh <scenmapp> [--bitar 16] [--ut fil.mp4] [flaggor till render.mjs: --en …]
 # Molnet ser bara det som är pushat: skriptet stoppar om scenens avsnitt, verktyg/ eller assets/ skiljer sig från origin.
 # Efteråt: stoppar om en fil som saknades i molnet finns lokalt (inte pushad), flyttar den gamla filmen till aldre/,
 # lägger in den nya och skriver effekt-wav:en lokalt och lägger den på som filmens ljud (AAC 192k, som render-delat.mjs;
 # molnets film är bara bild). Med --ut blir det bara bilden. Se produktion/molnrendering-plan.md.
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
-SCEN=${1:?användning: bash verktyg/molnrender.sh <scenmapp> [--bitar 8] [--ut fil.mp4] [--en …]}; shift
-SCEN=${SCEN%/}; BITAR=8; UT=; FLAGGOR=()
+SCEN=${1:?användning: bash verktyg/molnrender.sh <scenmapp> [--bitar 16] [--ut fil.mp4] [--en …]}; shift
+SCEN=${SCEN%/}; BITAR=16; UT=; FLAGGOR=()
 while [ $# -gt 0 ]; do case $1 in --bitar) BITAR=$2; shift 2;; --ut) UT=$(cd "$(dirname "$2")" && pwd)/$(basename "$2"); shift 2;; *) FLAGGOR+=("$1"); shift;; esac; done
 R=$(dirname "$SCEN")/render.mjs; AVSNITT=$(dirname "$(dirname "$SCEN")")
 [ -f "$SCEN/index.html" ] && [ -f "$R" ] || { echo "ingen kodscen: $SCEN"; exit 1; }

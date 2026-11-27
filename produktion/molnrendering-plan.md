@@ -129,3 +129,11 @@ Själva renderingen kostar inga tokens, men sättet sessionerna väntar på, lä
 | Ett publikt repo visar opublicerat material | Beslut: publikt (Sanna, 2026-11-12) |
 | Checkout av 3,1 GB per jobb är långsam | Mäts i piloten. Bitarna checkar ut samtidigt, så det blir en fast väntan, inte en per bit. Optimering i fas 1 vid behov |
 | Parallella sessioner committar varandras filer | Gäller redan idag. Committa scenen i egen commit med `git commit -- <sökvägar>` före molnrender |
+
+## Snabbare molnrendering (2026-11-27)
+
+Mätt på körning 45979442239 (8 bitar): checkout 150–234 s per maskin (repot har vuxit till 5,9 GB), Chromium 37–68 s, rendering 10–17 min per bit, totalt 22 min.
+
+- **16 bitar som standard** (förut 8) i `render.yml` och `molnrender.sh`. Gratis, eftersom repot är publikt. Högst 20 maskiner kör samtidigt, så två scener samtidigt köar delvis.
+- **Glesare checkout:** `produktion/youtube/mix/mix-1/kritsvep/bilder-opak/` (800 MB bildrutor, bara mixarnas skalskript läser dem) hämtas inte. Behöver en scen något som saknas stoppar `molnrender.sh` på saknas-kontrollen.
+- **Chromium cachas** (`~/.cache/ms-playwright`, nyckel per Playwright-version). Systempaketen installeras fortfarande varje gång.

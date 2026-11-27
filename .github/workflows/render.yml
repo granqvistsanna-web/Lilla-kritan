@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       scen: { description: 'Scenmapp, t.ex. avsnitt/004-bussen-badar/scener/korscen-1', required: true }
-      bitar: { description: 'Antal bitar (en maskin var, högst 20 samtidigt)', default: '8' }
+      bitar: { description: 'Antal bitar (en maskin var, högst 20 samtidigt)', default: '16' }
       flaggor: { description: 'Flaggor till render.mjs, t.ex. --en eller --snabb', default: '' }
 permissions: { contents: read }
 run-name: Rendera ${{ inputs.scen }} ${{ inputs.flaggor }} (${{ inputs.bitar }} bitar)
@@ -30,14 +30,23 @@ jobs:
       I: ${{ matrix.i }}
       PLAYWRIGHT_MJS: /tmp/pw/node_modules/playwright/index.mjs
     steps:
+      # Utan mix-1:s kritsvepsbilder (800 MB, bara mixarnas skript läser dem). Behöver en scen något som saknas
+      # här stoppar molnrender.sh på saknas-kontrollen.
       - uses: actions/checkout@v4
-        with: { fetch-depth: 1 }
+        with:
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/produktion/youtube/mix/mix-1/kritsvep/bilder-opak/
+      - uses: actions/cache@v4
+        with: { path: ~/.cache/ms-playwright, key: chromium-pw-1.49.1 }
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: Chromium och ffmpeg
         run: |
           npm i -s --prefix /tmp/pw playwright@1.49.1
-          npx --prefix /tmp/pw playwright install --with-deps chromium
+          npx --prefix /tmp/pw playwright install --with-deps chromium   # hoppar över nedladdningen när cachen finns
           command -v ffmpeg || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }
       - name: Rendera bit ${{ matrix.i }}
         run: |
