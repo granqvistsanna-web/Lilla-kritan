@@ -1738,5 +1738,13 @@
   "file": "produktion/youtube/shorts/abc/abc-a-1-vem-ar-det/abc-a-1-vem-ar-det.mp4",
   "status": "granska",
   "name": "Kritans ABC A, Short 1: Vem är det? (prov)"
+ },
+ "ABC-SH-a2": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-SH-a2-1127-1518.mp4",
+  "duration": 25.6,
+  "rendered": "2026-11-27 15:18 (stående prov, kritan ritar en bil)",
+  "file": "produktion/youtube/shorts/abc/abc-a-2-busiga-kritan/abc-a-2-busiga-kritan.mp4",
+  "status": "granska",
+  "name": "Kritans ABC A, Short 2: Busiga kritan! (prov)"
  }
 }
