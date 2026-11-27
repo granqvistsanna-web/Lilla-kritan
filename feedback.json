@@ -11273,9 +11273,10 @@
   "sec": 116,
   "tags": [],
   "note": "place hink and sancastel to the left",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794512598,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795796485726
  },
  "4yoq3nvs2omwz5p2z9": {
   "ep": "062",
