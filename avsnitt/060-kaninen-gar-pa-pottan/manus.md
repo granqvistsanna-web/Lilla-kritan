@@ -2,7 +2,7 @@
 
 **Status:** ✅ grind 1 (manus) godkänd 2026-11-26 (Sanna: *"Ja, med toaletten"*): manuset som det står, med toaletten (Öppet 1, alternativ A), övriga Öppet-punkter som manuset står (också *"Du kissade i pottan!"* och *"Hej då, kisset!"*). **✅ Grind 2 (saker) godkänd 2026-11-27 (Sanna: *"Bok 4, toalett 2"*):** [bilderboken](../../rekvisita/bilderbok.md) nr 4 och [toaletten](../../rekvisita/toalett.md) nr 2, utklippta med 1 % kant (`cut/bilderbok.png` 7 px, `cut/toalett.png` 8 px), bokens kritkontur `cut/bilderbok-kontur.json`. Stjärnan och toarullen finns redan och används som de är. README-raderna i `rekvisita/README.md` läggs till av huvudsessionen. **Nästa: grind 3 (Malins röst), inte påbörjad** (ElevenLabs kostar krediter, fråga först).  Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med kaninen, kaninen svarar med ljud, öron och ansikte. Förlagor för formen: 057 Katten tvättar händerna och 054 Lammet badar (samma badrum). `harriets-favoriter.md` och README-filerna uppdateras av huvudsessionen.
 
-**Skillnaden mot 042 Hunden går på pottan:** 042 är julversionen (två platser, tre glas vatten, bråttom, kritan ritar pottan och toarullen, *"Gnugga, gnugga … ren!"*). 060 är tidlös och handlar om **att vänta**: kaninen vill inte sluta leka, och när den väl sitter kommer det inget. Pottan och toarullen står i badrummet från början. Kritan ritar i stället en **bilderbok** att titta i medan man väntar, och till sist ett **stjärnklistermärke**. Det som görs tre gånger är väntan: *"Vänta, vänta … inget än."* – *"Vänta, vänta … inget än."* – *"Vänta, vänta … plink!"* Ingen brådska, inget vatten att dricka, ingen jul.
+**Skillnaden mot 042 Hunden går på pottan:** 042 är julversionen (två platser, tre glas vatten, bråttom, kritan ritar pottan och toarullen, *"Gnugga, gnugga … ren!"*). 060 är tidlös och handlar om **att vänta**: kaninen vill inte sluta leka, och när den väl sitter kommer det inget. Pottan och toarullen står i badrummet från början. Kritan ritar i stället en **bilderbok** att titta i medan man väntar, och till sist ett **stjärnklistermärke**. Det som görs tre gånger är väntan: *"Vänta, vänta … inget än."* – *"Vänta, vänta … inget än."* – *"Vänta, vänta …"* och så hörs ett litet *plink* Ingen brådska, inget vatten att dricka, ingen jul.
 
 | | |
 |---|---|
@@ -17,12 +17,12 @@
 | **Kärna** | Kritan ritar en potta. Kaninen leker med bollen och vickar på sig, men vill inte sluta leka. Bollen får vänta bredvid pottan, och kaninen sätter sig. *"Vänta, vänta … inget än."* Det är svårt att sitta still. Kritan ritar en bilderbok: *"Varsågod!"* – *"Ska vi säga tack?"* – *"Tack!"* En morot i boken. *"Vänta, vänta … inget än."* Nästa blad: en liten kanin på en potta, precis som du! *"Vänta, vänta … plink!"* Papper behövs, men toarullen är borta: barnet hittar den bakom badkaret. Torka, tömma pottan, spola, tvätta tassarna. Kritan ritar en stjärna som klistras på pottan. Bollen har väntat. Hej då! |
 | **Tema (subtilt)** | **att vänta.** Bara i upprepningen och i bollen som väntar. Ingen förklaring, ingen lektion, inget beröm som press: Malin säger vad som händer (*"Du kissade i pottan!"*) och vad hon ser (*"Oj, vad stolt du är!"*) |
 | **Samtal** | Malin frågar kaninen, kaninen svarar med sitt ljud i pausen (ca 1 s), Malin reagerar kort som om hon förstått (mönstret från 052–057) |
-| **Barnet gör** | gissar vad kritan ritar (tre gånger) · säger tack · **letar efter toarullen** bakom badkaret. Den rullar dit i rad 3 utan att Malin säger något, så ett barn som tittar noga har redan sett den |
+| **Barnet gör** | gissar vad kritan ritar (tre gånger) · **letar efter toarullen** bakom badkaret. Den rullar dit i rad 3 utan att Malin säger något, så ett barn som tittar noga har redan sett den |
 | **Favoriter** | 🐰 kanin · ⚽ boll · ⭐ stjärna |
 
 **Kärnans ordning:** lek (bollen) → problemet 1 (vill inte sluta leka) → bollen väntar, kaninen sätter sig → problemet 2 (inget kommer, svårt att sitta still) → kritan ritar boken → tack → leken med boken (moroten, kaninen på pottan) med väntan tre gånger → plink → toarullen är borta → barnet hittar den → torka, tömma, spola, tvätta → stjärnan → bollen igen → hej då.
 
-**Längd:** ca 4:05–4:15 (47 repliker; 057 har 45 och är 3:57 efter tempoändringen). Längden kommer ur reaktionsslag och närbilder, inte segare rörelser. Blir den för lång: stryk replik 21–22 (morötterna) och 36 (*"Hej då, kisset!"*), ca 10 s.
+**Längd:** ca 4:00–4:10 (46 repliker; 057 har 45 och är 3:57 efter tempoändringen). Längden kommer ur reaktionsslag och närbilder, inte segare rörelser. Blir den för lång: stryk replik 20–21 (morötterna) och 35 (*"Hej då, kisset!"*), ca 10 s.
 
 **Short:** uppslag 13–17 (boken, väntan två gånger, plink, stolt), ca 50 s.
 
@@ -85,14 +85,13 @@ Uppställning (förslag, bestäms i animatiken): från vänster handfatet med pa
 | 9 | Halvnära. Kaninen tittar mot bollen, lyfter sig lite från pottan och sätter sig igen, öronen på sned | Hm. Det är svårt att sitta still och vänta. | `kanin-ny-trumpen` (kort, en annan tagning) |
 | 10 | Utsnittet vid pottan. Kritan kommer in uppe till höger och ritar en bok bredvid kaninen: pärmen, ryggen, en liten bild på framsidan. Väntar och svävar | Titta! Kritan ritar något vid pottan. *(gisspaus 3 s)* | `krita-ritar`, nyfiket `kanin-ny-sniff` |
 | 11 | Boken fylls i inifrån, glimt. Kritan flyger ut. Närbild: kaninens ögon glittrar, öronen rakt upp | En bok! En bilderbok! Varsågod, kaninen. | `glitter`, `kanin-ny-fortjust` |
-| 12 | Kaninen tittar på boken | Ska vi säga tack? *(paus 2,5 s)* | nyfiket `kanin-gullig-5b` |
-| 12b | Kaninen nickar direkt, på ordet | Tack! | `kanin-tack` |
+| 12 | Kaninen tittar på boken, sedan upp dit kritan flög ut. Nickar, öronen vippar | Tack kritan *(Sanna 2026-11-27, i stället för "Ska vi säga tack?" + "Tack!")* | nyfiket `kanin-gullig-5b`, `kanin-tack` efter repliken |
 | 13 | Halvnära. Kaninen tar boken och öppnar den. Klipp till närbild på uppslaget: en stor morot | *(när boken är öppen)* Du tittar i boken. Oj! En morot! | `blad`, `kanin-ny-mmm` |
-| 13b | Närbild på kaninen bakom boken. **Pausen:** nickar två gånger, nosen puffar | Tycker du om morötter? *(paus: ja-ljud)* Mm, det tror jag! | `kanin-ny-ja` (annan tagning) |
+| 13b | Närbild på kaninen bakom boken. **Pausen:** nickar två gånger, nosen puffar | Tycker du om morötter? *(paus: ja-ljud)* Mm, det är gott | `kanin-ny-ja` (annan tagning) |
 | 14 | Halvnära. Kaninen sänker boken lite, sitter stilla, öronen lyssnar. Tyst. På *"inget än"* sjunker öronen, kaninen rycker på axlarna och tittar i boken igen | Vänta, vänta … inget än. | – (tyst, bara `badrumsljud`) |
 | 15 | Närbild på boken: sidan vänds. Nytt uppslag: en liten kanin som sitter på en röd potta | *(när bladet är vänt)* Du vänder blad. Titta! En liten kanin på en potta. | `blad`, förtjust `kanin-gullig-2` |
 | 15b | Närbild. Kaninen tittar på bilden, sedan ner på sin egen potta, sedan på oss. Fnissar | Precis som du! | `kanin-ny-fniss` (fniss) |
-| 16 | Halvnära. Kaninen sitter stilla med boken, öronen lyssnar. **På ordet *"plink"*:** ljudet, 0,3 s helt stilla, förvånat ansikte, öronen rakt upp | Vänta, vänta … plink! | `plink` på ordet |
+| 16 | Halvnära. Kaninen sitter stilla med boken, öronen lyssnar. Efter repliken ca 0,8 s tyst, sedan **ljudet `plink`**: 0,3 s helt stilla, förvånat ansikte, öronen rakt upp. Malin säger inte *plink* | Vänta, vänta … | `plink` efter pausen |
 | 16b | Närbild (reaktionsslag, ingen replik, ca 2 s): ögonen halvslutna, öronen sjunker, mysig suck. Sedan öppna jätteglada ögon | – | mysig suck `kanin-gullig-4` |
 | 17 | Halvnära. Kaninen ler stort, öronen vippar | Ja! Du kissade i pottan! | `kanin-ny-jippi`, `tindra-3` |
 | 17b | Närbild. Kaninen sträcker på sig, stolt, ett litet lugnt skutt på pottan | Oj, vad stolt du är! | `kanin-ny-ja` |
@@ -115,11 +114,11 @@ Uppställning (förslag, bestäms i animatiken): från vänster handfatet med pa
 | 31 | Samma, kaninen vinkar klart | Hej då! Vi ses snart! | `kanin-hejda` (annan tagning) |
 | 32 | Kritirisen runt kaninen, pottan med stjärnan och bollen. 0,6 s svart | – | – |
 
-**Frågor till barnet (paus):** gissa ritintrot (3 s), gissa boken (3 s), *"Ska vi säga tack?"* (2,5 s), *"Kan du se toarullen?"* (5 s), gissa stjärnan (3 s). Inga uppmaningar att göra något med kroppen.
+**Frågor till barnet (paus):** gissa ritintrot (3 s), gissa boken (3 s), *"Kan du se toarullen?"* (5 s), gissa stjärnan (3 s). Inga uppmaningar att göra något med kroppen.
 
 **Fniss:** fyra (3, 15b, 24, 29), aldrig två rader i följd, aldrig över Malin.
 
-**Bilden på orden:** bollen ligger still intill pottan före *"vänta på dig"*, öronen sjunker på *"inget än"*, moroten syns före *"En morot!"*, ljudet och det förvånade ansiktet kommer på *"plink"*, fliken skimrar på *"Ja, där!"*, nicken på *"klart"*, stjärnan sitter fast efter *"På pottan!"*. Ordets tid inne i replik 26 (*"plink"*) och 33 (*"klart"*) mäts med whisper per tagning.
+**Bilden på orden:** bollen ligger still intill pottan före *"vänta på dig"*, öronen sjunker på *"inget än"*, moroten syns före *"En morot!"*, det förvånade ansiktet kommer på ljudet *plink* (efter *"Vänta, vänta …"*), fliken skimrar på *"Ja, där!"*, nicken på *"klart"*, stjärnan sitter fast efter *"På pottan!"*. Ordets tid inne i replik 32 (*"klart"*) mäts med whisper per tagning. *Plink* är ett ljud som läggs efter replik 25, inte ett ord.
 
 **Malin efter handlingen:** rad 3, 5, 7, 13, 15, 21, 23, 24, 25, 26 beskriver en rörelse och börjar 0,4–0,8 s in i den eller när den landat. Frågorna (2, 6, 13b, 28b, 29) kommer före kaninens svar.
 
@@ -145,15 +144,14 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hm. Det är svårt att sitta still och vänta.
 [happy] Titta! Kritan ritar något vid pottan.
 [happy] En bok! En bilderbok! Varsågod, kaninen.
-[warmly] Ska vi säga tack?
-[happy] Tack!
+[happy] Tack kritan
 [happy] Du tittar i boken. Oj! En morot!
 [curious] Tycker du om morötter?
-[chuckles] Mm, det tror jag!
+[chuckles] Mm, det är gott
 [playfully] Vänta, vänta … inget än.
 [happy] Du vänder blad. Titta! En liten kanin på en potta.
 [laughs] Precis som du!
-[playfully] Vänta, vänta … plink!
+[playfully] Vänta, vänta …
 [happy] Ja! Du kissade i pottan!
 [warmly] Oj, vad stolt du är!
 [curious] Nu behöver du papper. Men … var är toarullen?
@@ -177,7 +175,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hej då! Vi ses snart! [giggles]
 ```
 
-47 repliker. Replik 14 och 23 är samma ord i två tagningar (först undrande, sedan lekfullt), så att upprepningen inte låter kopierad.
+46 repliker (Sannas ändringar 2026-11-27: tacket är *"Tack kritan"* direkt i stället för *"Ska vi säga tack?"* + *"Tack!"*, *"Mm, det är gott"* i stället för *"Mm, det tror jag!"*, och *plink* sägs inte utan hörs bara som ljud efter *"Vänta, vänta …"*). Replik 14, 22 och 25 börjar med samma ord i tre tagningar (undrande, lekfullt, lekfullt och öppet), så att upprepningen inte låter kopierad. Replik 18 och 42 är båda *"Tack kritan"*, i två egna tagningar.
 
 ## Kaninens röst och ljuden
 
@@ -255,29 +253,30 @@ I kod utan egen rekvisitafil: pappersfliken bakom badkaret, papperslappen, boken
 
 - [x] 1 figur, 1 plats (badrummet), inget platsbyte
 - [x] Inga djurnamn: "kaninen", "pottan", "bollen", "kritan". Röstfilernas namn likaså
-- [x] Aldrig *"Vad kan det vara?"* eller *"Vad säger man?"*. Ritintrot: *"Hm … vad blir det nu?"*, tacket: *"Ska vi säga tack?"*
+- [x] Aldrig *"Vad kan det vara?"* eller *"Vad säger man?"*. Ritintrot: *"Hm … vad blir det nu?"*, tacket: *"Tack kritan"* (Sanna 2026-11-27)
 - [x] Ritintrot ritar en sak ur berättelsen (pottan), inte kaninen
 - [x] Inga uppmaningar att göra något med kroppen. Barnets del: gissa teckningarna, säga tack, **leta efter toarullen**
 - [x] Varje replik har en v3-tagg, ingen `[excited]`. Hej då varmt
 - [x] Malin frågar, kaninen svarar, Malin reagerar: rad 1b, 2–3, 6, 13b, 28b, 29
 - [x] Tydliga repliker: handlingen och saken sägs (*"Nu torkar du dig med papperet"*, *"Nu tömmer du pottan i toaletten"*, *"Och torkar tassarna på handduken"*)
 - [x] Kritans problem av ny sort: **att vänta** (inget kommer, svårt att sitta still). Hjälpsaken löser väntan, inte själva pottan
-- [x] *"Varsågod"* och *"Tack!"*, och *"Tack, kritan!"* efter stjärnan
-- [x] Samma fras tre gånger: *"Vänta, vänta … inget än."* ×2, *"Vänta, vänta … plink!"*
+- [x] *"Varsågod"* och *"Tack kritan"* efter boken, *"Tack, kritan!"* efter stjärnan
+- [ ] **Avsteg mot receptet (Sanna 2026-11-27):** ingen *"Ska vi säga tack?"* med paus: Malin tackar själv, så barnets tack-paus utgår
+- [x] Samma fras tre gånger: *"Vänta, vänta … inget än."* ×2, *"Vänta, vänta …"* + ljudet *plink*
 - [x] Bilden på orden (se listan under tabellen)
 - [x] Malin efter handlingen på rader som beskriver en rörelse
 - [x] Kritan ritar två gånger i scenen: boken (hjälpsaken) och stjärnan (belöningen)
 - [x] Reaktionsslag och närbilder: 1b, 4, 8, 11, 15b, 16b, 17b, 20, 24, 26, 28
 - [x] Fniss högst 3–4: rad 3, 15b, 24, 29 (+ giggles i sista repliken)
 - [x] Tydligt hej och hej då, med vinkning
-- [x] Inget läskigt, inget pinsamt, ingen press: ingen olycka, ingen brådska, ingen som tjatar. Pottan visas bara framifrån, inget visas utöver ett litet ljud på *"plink"*, torkningen sker utanför bild
+- [x] Inget läskigt, inget pinsamt, ingen press: ingen olycka, ingen brådska, ingen som tjatar. Pottan visas bara framifrån, inget visas utöver ett litet ljud (*plink*), torkningen sker utanför bild
 - [x] Inget går genom något: rullen rullar in bakom badkaret (inte genom), pottan lyfts över toalettens kant, kaninen skuttar upp över pottans kant, handduken går framför tassarna. Täta bilder (6 per sekund) runt rad 3, 7, 21, 23 och 26 i QA
 - [x] Figuren snurrar inte, speglas inte, inga böjda armar. Kaninen sover inte
 - [x] Ingen ny musik
 - [x] 2 nya saker (bilderboken, toaletten): inom `format/regler.md`
 - [x] Inga julsaker, avsnittet är tidlöst
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 kamerautsnitt (stilla utsnitt med klipp)
-- [ ] Avsteg mot receptets "tre frågor till barnet med 4–5 s paus": här en (toarullen 5 s) plus tack 2,5 s och tre gisspauser på 3 s, enligt 25/11-regeln att barnet letar i stället för att göra (samma som 057)
+- [ ] Avsteg mot receptets "tre frågor till barnet med 4–5 s paus": här en (toarullen 5 s) och tre gisspauser på 3 s (tack-pausen utgår, Sanna 2026-11-27), enligt 25/11-regeln att barnet letar i stället för att göra (samma som 057)
 - [ ] **Avsteg mot `format/regler.md`:** längden blir ca 4:05–4:15 mot regelns 3–4 min (serien siktar på 3:45–4:15 sedan 2026-11-11). Se Öppet 7
 
 ## Öppet (Sanna bestämmer)
@@ -288,7 +287,7 @@ I kod utan egen rekvisitafil: pappersfliken bakom badkaret, papperslappen, boken
 4. **Ritintrot ritar pottan,** som 042:s omgjorda intro. Alternativ om du vill ha något annat än 042: toarullen (kontur finns) eller bollen.
 5. **Leksaken: blå bollen** (finns, syns mot den röda pottan). Alternativ: klossarna (`rekvisita/klossar.md`), men då behövs ett annat sätt för toarullen att rulla iväg.
 6. **Stjärnan sätts på pottan.** Alternativ: på kaninens mage eller på ett litet papper på väggen. På pottan syns den i slutbilden och i miniatyren.
-7. **Längden,** ca 4:05–4:15 med 47 repliker. Kortare: stryk morotssamtalet (replik 21–22) och *"Hej då, kisset!"* (36), ca 10 s, eller välj alternativ B i punkt 1.
+7. **Längden,** ca 4:00–4:10 med 46 repliker. Kortare: stryk morotssamtalet (replik 20–21) och *"Hej då, kisset!"* (35), ca 10 s, eller välj alternativ B i punkt 1.
 8. **Bokens bilder:** moroten och *"en liten kanin på en potta"* (kaninens egen riggbild, liten). Bokens pärmfärg och bild väljs på grind 2.
 9. **Nära 042** (pottan, toarullen som försvinner). Lägg inte 042 och 060 efter varandra i en mix.
 10. **Uppställningen** (vad som står var) är ett förslag och visas i animatiken på grind 5.
