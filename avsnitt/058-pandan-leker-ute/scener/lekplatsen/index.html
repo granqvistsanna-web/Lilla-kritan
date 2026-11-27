@@ -70,9 +70,10 @@ const SAK = {   // [fil, bildens storlek, alfarutan x0 y0 x1 y1]
 const DETALJ = {
   gung: ['M760 225 C820 212 890 228 905 255 C895 285 840 300 765 290',                 // näbben
     'M690 207 C690 190 714 190 714 207 C714 224 690 224 690 207',                          // ögat
-    'M285 410 L545 410',                                                                   // handtaget
-    'M315 490 C360 580 520 620 645 565',                                                   // vingen
-    'M420 720 C560 730 560 760 420 770 C560 780 560 810 420 820 C560 830 560 860 420 870 C560 880 560 900 500 915'],   // fjädern
+    'M296 394 L534 394 C546 394 548 400 548 415 C548 430 546 436 534 436 L296 436 C284 436 282 430 282 415 C282 400 284 394 296 394',   // handtaget
+    'M510 457 C430 460 350 470 322 488 C330 540 360 600 470 612 C560 620 640 580 640 500',   // vingen
+    'M600 712 L597 720 L587 727 L571 734 L550 739 L526 744 L500 747 L474 749 L450 749 L429 749 L413 747 L403 745 L400 742 L403 739 L413 737 L429 735 L450 735 L474 735 L500 737 L526 740 L550 745 L571 750 L587 757 L597 764 L600 772 L597 780 L587 787 L571 794 L550 799 L526 804 L500 807 L474 809 L450 809 L429 809 L413 807 L403 805 L400 802 L403 799 L413 797 L429 795 L450 795 L474 795 L500 797 L526 800 L550 805 L571 810 L587 817 L597 824 L600 832 L596 852 L580 880 L548 903 L515 914',   // fjädern, en spiral som i bilden
+    'M352 918 C352 880 648 880 648 918 C648 956 352 956 352 918'],                         // foten
   boll: ['M106 400 C350 425 680 425 920 400', 'M106 565 C350 640 680 640 920 565',      // randen
     'M261 281 C261 236 329 236 329 281 C329 326 261 326 261 281', 'M479 326 C479 281 547 281 547 326 C547 371 479 371 479 326',
     'M699 292 C699 247 767 247 767 292 C767 337 699 337 699 292'],                         // prickarna
@@ -80,16 +81,17 @@ const DETALJ = {
     'M266 396 C266 350 742 350 742 396 C742 440 266 440 266 396', 'M225 470 C400 495 620 495 790 470'],   // öppningen, kanten
 };
 const DS = 0.5, MARK = 985, SVART = 0.6;
-const TRAD = [330, 935, 640], GUNG = [1180, 950, 470], SANDL = [1650, 940, 250], HINK = [435, 965, 210];
+// trädet 25 % större kring stammens högra kant (x 420), sandlådan 25 % större åt höger (Sanna 27/11: "bigger tree", "bigger sandlåda")
+const TRAD = [307, 935, 800], GUNG = [1180, 950, 470], SANDL = [1664, 940, 312], HINK = [435, 965, 210];
 const BD = 96, BR = BD / 2, BY = MARK - BR;
-const IN = [860, MARK], VID_GUNG = [820, MARK], SAND_P = [1390, MARK], VID_TRAD = [720, MARK], TRAD_P = [610, 945];
+const IN = [860, MARK], VID_GUNG = [820, MARK], SAND_P = [1330, MARK], VID_TRAD = [720, MARK], TRAD_P = [610, 945];
 const GS = GUNG[2] / (970 - 76), PIV = [GUNG[0] + (500 - 532) * GS, GUNG[1] + (930 - 970) * GS];   // gunganden vickar runt fjäderns fot
 const SADEL_Y = GUNG[1] - GUNG[2] * (1 - 0.385);
 const SITT = [GUNG[0] - 104, SADEL_Y + 30];
 const B_SADEL = [GUNG[0] - 59, SADEL_Y - BR + 4];
-const B_FRAM = [630, BY], B_F2 = [570, BY], B_F3 = [1040, BY], B_SAND = [SANDL[0] - 20, 800], B_GUNG = [GUNG[0] + 58, 905];
-const B_TRAD = [432, 866], B_TRADF = [520, BY], B_KRONA = [HINK[0], 560], B_HINK = [HINK[0], 844];
-const APPLE_FRAN = [540, 700], APPLE_LAND = [560, 978], APPLE_STOPP = [790, 982], APPLE_GUNG = [700, 982], APPLE_H = 58;
+const B_FRAM = [630, BY], B_F2 = [570, BY], B_F3 = [1040, BY], B_SAND = [SANDL[0] - 60, SANDL[1] - 0.56 * SANDL[2]], B_GUNG = [GUNG[0] + 58, 905];
+const B_TRAD = [432, 866], B_TRADF = [520, BY], B_KRONA = [HINK[0], 470], B_HINK = [HINK[0], 830];   // i hinken: mitten vid öppningen, övre halvan syns
+const APPLE_FRAN = [570, 640], APPLE_LAND = [560, 978], APPLE_STOPP = [790, 982], APPLE_GUNG = [700, 982], APPLE_H = 58;
 const GPAPP = [960, 940, 760];
 
 let L, G, BLINKA, KONT = {}, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, J = {};
@@ -117,7 +119,7 @@ const NARA_SITT = [2.3, SITT[0], SITT[1] - 180];
 const TRADUT = [1.35, 560, 640];
 const K_BOLL = [1.9, (B_FRAM[0] + IN[0]) / 2, MARK - 170];
 const K_BD = [3.0, B_FRAM[0], B_FRAM[1] - 10];
-const K_SAND = [2.0, 1520, 780];
+const K_SAND = [2.0, SANDL[0] - 130, B_SAND[1] - 20];
 const K_TRAD = [3.0, B_TRAD[0] - 30, B_TRAD[1] - 40];
 const K_TRADH = [1.5, 560, 720];
 const K_APP = [3.2, APPLE_STOPP[0], APPLE_STOPP[1] - 40];
@@ -128,9 +130,10 @@ const K_HINK = [2.6, HINK[0] + 40, 830];
 const sakS = (namn, h) => { const [, , [, y0, , y1]] = SAK[namn]; return h / (y1 - y0); };
 const sakC = namn => { const [, , [x0, y0, x1, y1]] = SAK[namn]; return [(x0 + x1) / 2, y1, (y0 + y1) / 2]; };
 // en sak med foten i (x, fot), höjd h; vrid = [grader, px, py]; k = kritans linje (0–1), f = fyllningen (0–1)
-function sak(namn, [x, fot, h], { lager = 'saker', vrid = null, k = 1, f = 1, o = 1 } = {}) {
+function sak(namn, [x, fot, h], { lager = 'saker', vrid = null, k = 1, f = 1, o = 1, klipp = null } = {}) {
   const [fil, [w, hh]] = SAK[namn], s = sakS(namn, h), [cx, y1, cy] = sakC(namn);
   const tr = `${vrid ? `rotate(${f1(vrid[0])} ${f1(vrid[1])} ${f1(vrid[2])}) ` : ''}translate(${f1(x)} ${f1(fot)}) scale(${s.toFixed(4)}) translate(${f1(-cx)} ${-y1})`;
+  if (klipp) { lagg(lager, `<g transform="${tr}"><clipPath id="kl${namn}"><path d="${klipp}"/></clipPath><image href="${fil}" width="${w}" height="${hh}" clip-path="url(#kl${namn})"/></g>`); return {}; }
   let html = '', Rb = null;
   if (f > 0) html += `${f < 1 ? fyllMask('fy' + namn, cx, cy, Math.max(w, hh) * 0.75, f) : ''}<image href="${fil}" width="${w}" height="${hh}" opacity="${o}"${f < 1 ? ` clip-path="url(#fy${namn})"` : ''}/>`;
   if (k < 1 || f < 1) { Rb = ritBana([KONT[namn].d, ...DETALJ[namn]], ritfart(k), { vila: [0.5], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
@@ -312,10 +315,10 @@ const RS = {
   '10': (tl, d) => { const sv = 0.5 + ML('10'), [f, p] = nick(prata(F('glad', { titt: [14, 10] }), tl, sv, sv + 1.6), P({ rikt: 0.3 }), tl - sv - 0.9);
     return LK({ kam: HALV(IN, 60), f, p, boll: { pos: B_F3, mark: MARK } }); },
   // bollen rullar åt höger, studsar över sandlådans kant och stannar i sanden på "där"; pandan går efter
-  '11': (tl, d) => { const td = MO('11') + J.DAR['19'], hopp = td - 0.65, K = [1420, BY];
+  '11': (tl, d) => { const td = MO('11') + J.DAR['19'], hopp = td - 0.65, K = [1300, BY];
     let b;
     if (tl < hopp) b = { ...rull(B_F3, K, 0.5, hopp, tl), mark: MARK };
-    else if (tl < td) { const u = (tl - hopp) / 0.65; b = { pos: bageP(K, [B_SAND[0], B_SAND[1] - 5], 150, u), rot: (K[0] - B_F3[0]) / BR * 57.3 + 120 * u, mark: lerp(MARK, 810, u) }; }
+    else if (tl < td) { const u = (tl - hopp) / 0.65; b = { pos: bageP(K, [B_SAND[0], B_SAND[1] - 5], 260, u), rot: (K[0] - B_F3[0]) / BR * 57.3 + 120 * u, mark: lerp(MARK, B_SAND[1] + 10, u) }; }
     else b = { pos: [B_SAND[0], B_SAND[1] - 5 + 5 * del(td, td + 0.4, tl)], rot: 0, sand: true };
     const g = ga(tl, td + 0.3, td + 2.8, IN, SAND_P, P({ rikt: 0.4 })), sv = 0.8 + ML('11');
     return LK({ pos: g.pos, f: prata(F('glad', { titt: [14, 0] }), tl, sv, sv + 0.7), p: g.p, boll: b, puffar: [[B_SAND[0], B_SAND[1] + 10, (tl - td) / 0.6]] }); },
@@ -326,7 +329,7 @@ const RS = {
   '12': (tl, d) => { const td = MO('12') + J.DAR['20'], k = puffa(tl, 0.0, null, 0.45), K = [1440, 905];
     let b;
     if (tl < 0.15) b = { pos: B_SAND, sand: true, prick: 1 };
-    else if (tl < 0.7) { const u = (tl - 0.15) / 0.55; b = { pos: bageP(B_SAND, K, 160, u), rot: -140 * u, prick: 1 - u, mark: lerp(810, 953, u) }; }
+    else if (tl < 0.7) { const u = (tl - 0.15) / 0.55; b = { pos: bageP(B_SAND, K, 160, u), rot: -140 * u, prick: 1 - u, mark: lerp(B_SAND[1] + 10, 953, u) }; }
     else { const r = rull(K, B_GUNG, 0.7, td, tl); b = { ...r, rot: r.rot - 140, mark: 953, lager: r.pos[0] < 1385 ? 'bak' : 'saker' }; }
     const g = ga(tl, td + 0.5, d - 0.05, SAND_P, VID_GUNG, P({ rikt: -0.4 })), sv = 0.9 + ML('12');
     return LK({ pos: g.pos, f: prata(F(tl < sv ? 'glad' : 'jatteglad', { titt: [-14, 6] }), tl, sv, sv + 0.8), p: L.blandaPose(g.p, P(PUFF_H), k), boll: b, puffar: [[B_SAND[0], B_SAND[1] + 10, (tl - 0.1) / 0.6]] }); },
@@ -419,6 +422,9 @@ function lage(t) {
 }
 
 // --- Bildrutan -----------------------------------------------------------------------------------------------------------------
+// hinkens framsida i bildens koordinater: allt under öppningens främre båge (öppningen är ellipsen 266–742, mitt 396, framkant 440)
+const HINK_FRAM = 'M100 396 L266 396 C266 446 742 446 742 396 L920 396 L920 1000 L100 1000 Z';
+const iHinken = st => st.hink === true && st.boll && st.boll.lager === 'fram' && Math.abs(st.boll.pos[0] - HINK[0]) < 40;
 const LAGER = ['platta', 'bak', 'saker', 'fram', 'forgrund', 'glans', 'krita', 'ram'];
 function ritaLek(st, t) {
   const kam = djup.kamera(st.kam || K_HEL, t);
@@ -435,7 +441,7 @@ function ritaLek(st, t) {
     if (t >= T_B.in[0]) { const r = boll({ pos: [B_FRAM[0], B_FRAM[1] - (b.gupp || 0)], lager: 'saker', k: t < T_B.rit[0] ? 0 : k, f, mark: f > 0.5 ? MARK : null });
       if (r.spets) kritaRita(kritaFas(t, T_B, { ...r, vanta: [B_FRAM[0] - 170, MARK - 260], s: kritaS() }));
       if (f > 0) lagg('krita', gnistor(B_FRAM[0], B_FRAM[1], 110, t - s6)); }
-  } else if (b) boll({ ...b, lager: b.lager || (b.krona ? 'saker' : 'saker'), vrid: b.sadel ? [gv, ...PIV] : b.krona && tv ? TV : null, pos: b.pos });
+  } else if (b && !iHinken(st)) boll({ ...b,lager: b.lager || (b.krona ? 'saker' : 'saker'), vrid: b.sadel ? [gv, ...PIV] : b.krona && tv ? TV : null, pos: b.pos });
   // hinken (framför pandans fötter: pandan står längre bak vid trädet)
   if (st.hink === 'rit') {
     const s24a = RR['24a'].s, f = del(s24a, s24a + 0.7, t), k = ritfart((t - T_H.rit[0]) / (T_H.rit[1] - T_H.rit[0]));
@@ -444,6 +450,8 @@ function ritaLek(st, t) {
       if (r.spets) kritaRita(kritaFas(t, T_H, { ...r, vanta: [230, 760], s: kritaS() }));
       if (f > 0) lagg('krita', gnistor(HINK[0], HINK[1] - 100, 150, t - s24a)); }
   } else if (st.hink) { skugga(HINK[0], HINK[1], 85, 'fram'); sak('hink', HINK, { lager: 'fram' }); }
+  // bollen i hinken: framför hinkens insida och bakkant, bakom framkanten och sidan (Sanna 27/11: "better ball in bucket")
+  if (iHinken(st)) { boll({ ...b, lager: 'fram' }); sak('hink', HINK, { lager: 'fram', klipp: HINK_FRAM }); }
   // kritan flyger ut efter att bollen och hinken fyllts i (finns kvar i bild till T.ut)
   if (!b?.rit && t >= T_B.in[0] && t < T_B.ut[1]) kritaRita(kritaFas(t, T_B, { start: [0, 0], spets: [0, 0], slut: [0, 0], vanta: [B_FRAM[0] - 170, MARK - 260], s: kritaS() }));
   if (st.hink !== 'rit' && t >= T_H.in[0] && t < T_H.ut[1]) kritaRita(kritaFas(t, T_H, { start: [0, 0], spets: [0, 0], slut: [0, 0], vanta: [230, 760], s: kritaS() }));
@@ -503,7 +511,7 @@ window.ready = (async () => {
   DURATION = acc + SVART; window.DURATION = DURATION;
   L = await v2rigg('pandan-pim');
   G = L.figur(512, L.FOTTER, 1, $('gomda'));
-  for (const [n, fil] of [['gung', 'gunganka'], ['hink', 'hink'], ['boll', 'boll']]) KONT[n] = await (await fetch(LS + fil + '-kontur.json')).json();
+  for (const [n, fil] of [['gung', 'gunganka-kropp'],['hink', 'hink'], ['boll', 'boll']]) KONT[n] = await (await fetch(LS + fil + '-kontur.json')).json();
   BLINKA = skapaBlinka(58);
   const a = RR['01a'].s, c = RR['01c'].s;
   T_RIT = { in: [a + 0.1, a + 0.5], rit: [a + 0.5, a + 5.6], vanta: [a + 5.7, c], ut: [c, c + 0.8] };
