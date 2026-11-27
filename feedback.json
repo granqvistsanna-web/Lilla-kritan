@@ -11149,5 +11149,155 @@
   "at": 1795792315778,
   "render": "2026-11-27 16:00 (omuppladdad 27/11 (samma rendering 09:15))",
   "fixedAt": 1795793695265
+ },
+ "2n5lcdyit8mwxvgfy3": {
+  "ep": "056",
+  "time": "2:32",
+  "sec": 152,
+  "tags": [],
+  "note": "full nalle under bed not just head",
+  "fixed": false,
+  "at": 1795716863931,
+  "render": "2026-11-26 18:12 (Feedback 26/11 fixad: nallens teckning med alla delar, nallen kikar under sängen)"
+ },
+ "dxbg1zw9p5mwyoc8ct": {
+  "ep": "020",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "redan uppe på yt",
+  "fixed": false,
+  "at": 1795765376332,
+  "render": "2026-11-14 07:28"
+ },
+ "7qy5e59hfqmwyoce52": {
+  "ep": "026",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "redan uppe på yt",
+  "fixed": false,
+  "at": 1795765383830,
+  "render": "2026-11-14 07:28"
+ },
+ "zv7460w64qmwyocn6v": {
+  "ep": "027",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "redan på yt",
+  "fixed": false,
+  "at": 1795765395559,
+  "render": "2026-11-15 17:04"
+ },
+ "cz84kzcd9lmwyqxxcy": {
+  "ep": "J12",
+  "time": "1:15",
+  "sec": 75,
+  "tags": [],
+  "note": "change bg to bold one, from other jultittut",
+  "fixed": false,
+  "at": 1795769747746,
+  "render": "2026-11-27 09:43 (slutrendering 27/11)"
+ },
+ "if7fxkhgwimwyxftzi": {
+  "ep": "J13",
+  "time": "0:17",
+  "sec": 17,
+  "tags": [],
+  "note": "change to new version of gröna sången",
+  "fixed": false,
+  "at": 1795780660878,
+  "render": "2026-11-27 11:31 (irisslutet 27/11: dörren stänger över scenen, inget svart)"
+ },
+ "jlr0tb1f5mmwz5lm1m": {
+  "ep": "062",
+  "time": "0:10",
+  "sec": 10,
+  "tags": [],
+  "note": "better sun drawing so it matches movement of kritan",
+  "fixed": false,
+  "at": 1795794367450,
+  "render": "runda 5"
+ },
+ "6ufj2k454amwz5ls1z": {
+  "ep": "062",
+  "time": "0:04",
+  "sec": 4,
+  "tags": [],
+  "note": "flip up frog too",
+  "fixed": false,
+  "at": 1795794375239,
+  "render": "runda 5"
+ },
+ "nkpche6bf3mwz5lvru": {
+  "ep": "062",
+  "time": "0:04",
+  "sec": 4,
+  "tags": [],
+  "note": "flip up all",
+  "fixed": false,
+  "at": 1795794380058,
+  "render": "runda 5"
+ },
+ "91x7l4e1xfmwz5o0ru": {
+  "ep": "062",
+  "time": "0:38",
+  "sec": 38,
+  "tags": [],
+  "note": "kan grodan bada?",
+  "fixed": false,
+  "at": 1795794479850,
+  "render": "runda 5"
+ },
+ "20r9ndc1cqmwz5ohgi": {
+  "ep": "062",
+  "time": "1:55",
+  "sec": 115,
+  "tags": [],
+  "note": "make flowers smaller",
+  "fixed": false,
+  "at": 1795794501474,
+  "render": "runda 5"
+ },
+ "oasxvsl3ibmwz5oq1i": {
+  "ep": "062",
+  "time": "1:56",
+  "sec": 116,
+  "tags": [],
+  "note": "place hink and sancastel to the left",
+  "fixed": false,
+  "at": 1795794512598,
+  "render": "runda 5"
+ },
+ "4yoq3nvs2omwz5p2z9": {
+  "ep": "062",
+  "time": "2:29",
+  "sec": 149,
+  "tags": [],
+  "note": "sun face tilt to much",
+  "fixed": false,
+  "at": 1795794529365,
+  "render": "runda 5"
+ },
+ "o1qtvvgnm9mwz5pkiy": {
+  "ep": "062",
+  "time": "2:44",
+  "sec": 164,
+  "tags": [],
+  "note": "maybe add scene where frog build sand castle",
+  "fixed": false,
+  "at": 1795794552106,
+  "render": "runda 5"
+ },
+ "2ch90i6m4gmwz5roi6": {
+  "ep": "059",
+  "time": "2:25",
+  "sec": 145,
+  "tags": [],
+  "note": "make sure all blueberries are plockade extept the on eby stubbe and the one on ground rolled off earlier",
+  "fixed": false,
+  "at": 1795794650574,
+  "render": "2026-11-27 16:34 (--snabb 27/11)"
  }
 }
