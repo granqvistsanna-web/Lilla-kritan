@@ -150,7 +150,8 @@ let tavla, DORR = {}, ramM, ramG, ramIM, ramI, inneM, inneMesh, sistM, pappM, gl
 async function byggTavla() {
   const [tim, lim, iim, sim] = await Promise.all([bild(TAVLA), bild(LUCKA), bild(INNE), bild(SIST)]);
   // bakom de tidigare luckorna: dagens sak (ikoner/NN.png) som vit siluett på kvällsfärg, se inreBild
-  const dagar = await Promise.all([...Array(N - 1).keys()].map(i => bild(`ikoner/${String(i + 1).padStart(2, '0')}.png`).catch(() => null)));
+  // alla-luckor (lucka 24, Sanna 27/11): också dagens ikon (ikoner/24.png, ett paket), som står bakom luckan när den öppnas igen och tänds sist
+  const dagar = await Promise.all([...Array(ALLA ? N : N - 1).keys()].map(i => bild(`ikoner/${String(i + 1).padStart(2, '0')}.png`).catch(() => null)));
   // framsidan: tavlans bild, lite eget ljus så att färgerna blir som i plattan
   // girlangen får en mjuk skugga på pepparkakan (Sanna 25/11: mer premium), så att den ser ut att ligga ovanpå i stället för målad
   const tc = canvas(tim.width, tim.height), tx = tc.getContext('2d'); tx.drawImage(tim, 0, 0);
@@ -201,14 +202,16 @@ async function byggTavla() {
       : (() => { const t = tex(inreBild(512, 288, dagar[n - 1], n)); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
           return new THREE.MeshLambertMaterial({ map: t, emissiveMap: t, emissive: new THREE.Color(0.32, 0.32, 0.32) }); })());
     inne.position.set(r.cx, r.cy, 0.003); inne.receiveShadow = !idag; scen.add(inne);
-    if (!idag && dagar[n - 1]) { const [gc, sc] = ikonGuld(512, 288, dagar[n - 1]), t1 = tex(gc), t2 = tex(sc);
+    if ((!idag || ALLA) && dagar[n - 1]) { const [gc, sc] = ikonGuld(512, 288, dagar[n - 1]), t1 = tex(gc), t2 = tex(sc);
       for (const t of [t1, t2]) t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
       const fm = new THREE.MeshBasicMaterial({ map: t1, transparent: true, opacity: 0, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -1 });
       const hm = new THREE.MeshBasicMaterial({ map: t2, transparent: true, opacity: 0, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending, polygonOffset: true, polygonOffsetFactor: -2 });
       const pg = new THREE.PlaneGeometry(r.w, r.h), f = new THREE.Mesh(pg, fm), h = new THREE.Mesh(pg, hm);
       f.position.set(r.cx, r.cy, 0.0034); h.position.set(r.cx, r.cy, 0.0038); scen.add(f, h); ikonLjus.push({ n, r, fm, hm }); }
     if (idag) { inneMesh = inne; const st = Object.assign(new THREE.Texture(sim), { colorSpace: THREE.SRGBColorSpace, needsUpdate: true, anisotropy: 8 });
-      sistM = new THREE.MeshBasicMaterial({ map: st, toneMapped: false }); pappM = new THREE.MeshLambertMaterial({ map: tex(inreBild(512, 288)), emissive: new THREE.Color(0.12, 0.12, 0.12) }); }
+      sistM = new THREE.MeshBasicMaterial({ map: st, toneMapped: false }); pappM = ALLA   // alla-luckor (Sanna 27/11): kvällsfärg och paketet som grannarna; obelyst, eftersom det varma ljuset vid dagens lucka annars bleker den
+        ? new THREE.MeshBasicMaterial({ map: tex(inreBild(512, 288, dagar[n - 1], n)), color: new THREE.Color(0.8, 0.8, 0.8) })
+        : new THREE.MeshLambertMaterial({ map: tex(inreBild(512, 288)), emissive: new THREE.Color(0.12, 0.12, 0.12) }); }
     for (const [bx, by, px, py] of [[r.w + 2 * E, E, r.cx, r.y1 + E / 2], [r.w + 2 * E, E, r.cx, r.y0 - E / 2], [E, r.h, r.x0 - E / 2, r.cy], [E, r.h, r.x1 + E / 2, r.cy]]) {
       const m = new THREE.Mesh(new THREE.BoxGeometry(bx, by, ZF), karmM); m.position.set(px, py, ZF / 2); m.castShadow = m.receiveShadow = true; scen.add(m); }
     // dörren: gångjärnet i vänstra bakre kanten, öppnas mot kameran åt vänster
@@ -568,7 +571,7 @@ function ikonGlod(t) {
   const soker = mjuk((t - FRAGA - 0.3) / 0.4) * (1 - mjuk((t - PEK + 0.2) / 0.3)), u = mjuk((t - FRAGA - dD) / 1.5);
   const gx = lerp(ruta(1).cx, ruta(N).cx, u), sv = soker * mjuk(u / 0.06) * (1 - mjuk((u - 0.9) / 0.1));
   for (const { n, r, fm, hm } of ikonLjus) {
-    const b = sv * Math.exp(-(((gx - r.cx) / 0.1) ** 2));
+    const b = n === N ? 0 : sv * Math.exp(-(((gx - r.cx) / 0.1) ** 2));   // dagens ikon (bara alla-luckor) blänker inte över filmen i introt
     const tn = RA[0] + 0.2 + 1.6 * (n - 1) / Math.max(1, N - 2), k = mjuk((t - tn) / 0.25), tin = 0.85 + 0.15 * Math.sin(t * 2.3 + n * 1.7);
     const tand = t > T0 ? k : 0, pop = tand * (1 + 0.6 * Math.exp(-Math.max(0, t - tn) * 3.5));
     fm.opacity = Math.max(0.5 * b, 0.9 * tand); hm.opacity = Math.max(0.45 * b, 0.5 * pop * tin);

@@ -101,7 +101,7 @@ Kritan ritar björnen som sover (konturen av `bulle-sover`: den runda kroppen, d
 | 34 | Ljusslingan i fönstret tänds, en lampa i taget | God jul! | `tindra`, `brum-gullig-2` |
 | 35 | Musiken kommer upp. Björnen vickar vid fönstret med nallen, snön faller | *(efter några takter)* Vad mysigt på julafton! | `jul-julafton` upp, `bjallror` |
 | 36 | Halvbild, björnen vinkar (armen bakom kroppen, nallen i den andra) | Hej då, björnen! God jul! | `brum-gullig-8` (hej då) |
-| 37 | Samma, björnen vinkar klart | Hej då! Vi ses snart! | `brum-gullig-8b` |
+| ~~37~~ | ~~Samma, björnen vinkar klart~~ | ~~Hej då! Vi ses snart!~~ (bort 2026-11-27: kalenderns sista avsked ska vara kort, Sanna; rad 36 slutar efter *"Hej då, leoparden!"*) | |
 
 ### KALENDERNS AVSKED (~15 s, efter berättelsen, före kalenderramens outro)
 
