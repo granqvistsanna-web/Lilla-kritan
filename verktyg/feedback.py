@@ -11,6 +11,7 @@ media: releasen `forhandsvisningar`. Kräver gh (inloggad) och ffmpeg.
   python3 verktyg/feedback.py bilder EP FIL [FIL ...] [--etikett "0:29" ...] [--namn N] [--rader]
                                                      stillbilder i stället för film (bakgrunder, luckor)
 """
+import time
 import argparse, base64, datetime, json, os, re, subprocess, sys, tempfile
 
 REPO = "granqvistsanna-web/Lilla-kritan"
@@ -111,6 +112,8 @@ def cmd_status(a):
             if e not in d:
                 raise SystemExit(f"finns inte: {e}")
             d[e]["status"] = a.status
+            if a.status == "klar":
+                d[e].setdefault("approved", int(time.time() * 1000))  # Att publicera sorterar på godkänt-tiden
     mutate("videos", fn, f"videos status {a.status}: {', '.join(a.ep)}")
     print(a.status + ":", *a.ep)
 

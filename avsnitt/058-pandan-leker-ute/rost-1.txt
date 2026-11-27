@@ -1,0 +1,16 @@
+30-puffar-pa-tradet  [playfully] Du puffar på trädet med tassen.
+31-ett-apple  [surprised] Oj! Ett äpple ramlade ner!
+32-applet-rullade-ivag  [gently] Oj då. Äpplet rullade iväg.
+33-vilken-farg  [curious] Vilken färg har äpplet?
+34-ar-det-gront  [playfully] Är det grönt? Nej.
+35-ar-det-gult  [playfully] Är det gult? Nej.
+36-det-ar-rott  [happy] Det är rött! Precis som bollen.
+37-rott-apple-rod-boll  [warmly] Ett rött äpple och en röd boll.
+38-rullar-ocksa-ivag  [curious] Hm … om bollen ramlar ner, då rullar den också iväg.
+39-kritan-ritar-under-tradet  [happy] Titta! Kritan ritar något under trädet.
+40-en-hink  [happy] En hink! Då landar bollen i hinken.
+41-tack-for-hinken  [happy] Tack för hinken, kritan!
+42-puffa-en-gang-till  [playfully] Puffa en gång till!
+43-rakt-ner-i-hinken  [happy] Där kommer bollen! Rakt ner i hinken!
+44-ska-du-smaka  [cheerfully] Ska du smaka på äpplet, pandan?
+45-mums-vad-gott  [happy] Mums! Vad gott!

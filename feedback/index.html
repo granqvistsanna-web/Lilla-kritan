@@ -37,8 +37,9 @@ button { font: inherit; color: inherit; }
 .updated { font-size: 12px; color: var(--ink-4); font-variant-numeric: tabular-nums; white-space: nowrap; }
 @media (max-width: 760px) {
   .top .inner { grid-template-columns: 1fr auto; padding-block: var(--s-4); row-gap: var(--s-4); }
-  .tabs { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; display: flex; }
-  .tab { flex: 1; justify-content: center; padding: 0 var(--s-4); }
+  .tabs { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: 1 0 auto; justify-content: center; padding: 0 var(--s-5); }
   .updated { display: none; }
 }
 @media (max-width: 380px) { .tab { font-size: 13px; } }
@@ -151,7 +152,7 @@ h2.sec:first-of-type { margin-top: 0; }
 .back:hover { color: var(--ink); }
 .meta { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-7); align-items: center; color: var(--ink-4); font-size: 13px; font-variant-numeric: tabular-nums; }
 .meta b { color: var(--ink-2); font-weight: 500; }
-.acts { display: flex; gap: var(--s-4); align-items: center; }
+.acts { display: flex; flex-wrap: wrap; gap: var(--s-4); align-items: center; }
 .more { position: relative; }
 .more summary { list-style: none; }
 .more summary::-webkit-details-marker { display: none; }
@@ -221,6 +222,7 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
     <nav class="tabs" aria-label="Vyer">
       <button class="tab" type="button" data-tab="granska">Att granska <span class="cnt" id="nGranska"></span></button>
       <button class="tab" type="button" data-tab="todo">Att göra <span class="cnt" id="nTodo"></span></button>
+      <button class="tab" type="button" data-tab="publicera">Publicera <span class="cnt" id="nPub"></span></button>
       <button class="tab" type="button" data-tab="jul">Jul <span class="cnt" id="nJul"></span></button>
       <button class="tab" type="button" data-tab="alla">Alla videor</button>
       <button class="tab" type="button" data-tab="assets">Assets</button>
@@ -241,6 +243,11 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
     <div class="vhead"><div><h1>Att göra</h1><p class="lead" id="todoLead"></p></div>
       <button class="btn ghost" id="copyAllBtn" type="button">Kopiera all feedback</button></div>
     <div class="panel" id="todoBody"></div>
+  </section>
+
+  <section class="view" id="v-publicera" hidden>
+    <div class="vhead"><div><h1>Att publicera</h1><p class="lead" id="pubLead"></p></div></div>
+    <div id="pubBody"></div>
   </section>
 
   <section class="view" id="v-jul" hidden>
@@ -273,6 +280,7 @@ kbd { font: 500 10px/16px var(--font-code); color: var(--ink-4); border-radius: 
             <div class="file" id="file"></div>
           </div>
         </details>
+        <button class="btn ghost" type="button" id="approveBtn">Godkänn</button>
         <button class="btn ghost" type="button" id="copyBtn">Kopiera feedback</button>
         <button class="btn" type="button" id="nextBtn">Klar, nästa →</button>
       </div>
@@ -331,7 +339,7 @@ const TYPES = [["alla","Alla"],["avsnitt","Avsnitt"],["jul","Julkalender"],["bg"
 const typeOf = id => /^\d{3}/.test(id) ? "avsnitt" : /^J\d\d/.test(id) ? "jul" : id.startsWith("B-") ? "bg" : "ovrigt";
 const ORDER = ["avsnitt", "jul", "ovrigt", "bg"];
 
-const LISTS = ["granska", "todo", "jul", "alla", "assets"];
+const LISTS = ["granska", "todo", "publicera", "jul", "alla", "assets"];
 let ALL = GROUPS.flatMap(g => g.eps.map(e => ({ id: e[0], name: e[1], group: g.name })));
 let items = [], videos = {}, db = null, loaded = false;
 let view = "granska", from = "granska", filter = "alla";
@@ -401,12 +409,14 @@ function render() {
   const nf = fresh().length, nw = waiting().length, nt = openItems().length;
   $("#nGranska").textContent = nf || nw || ""; $("#nGranska").className = "cnt" + (nf ? " hot" : "");
   $("#nTodo").textContent = nt || "";
+  $("#nPub").textContent = ready().length || "";
   $("#nJul").textContent = julDone() + "/24";
   document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-current", String(b.dataset.tab === (isList ? view : from))));
   for (const v of [...LISTS, "video"]) $("#v-" + v).hidden = v !== (isList ? view : "video");
   updated();
   if (view === "granska") renderGranska();
   else if (view === "todo") renderTodo();
+  else if (view === "publicera") renderPub();
   else if (view === "jul") renderJul();
   else if (view === "alla") renderAlla();
   else if (view === "assets") renderAssets();
@@ -426,7 +436,7 @@ function card(e) {
     <div class="tl">${nu ? `<span class="pill ink">Ny</span>` : ""}${tag ? `<span class="pill">${esc(tag)}</span>` : ""}</div>
     ${n ? `<div class="tr"><span class="pill ink">${n} öppna</span></div>` : ""}</div>
     <div class="cmeta"><span class="num">${/^B-|-bg$/.test(e.id) ? "" : esc(e.id)}</span><span class="name">${esc(shortName(e.id))}</span>
-    <span class="when${nu ? " new" : ""}">${d ? "renderad " + esc(when(d)) : ""}</span></div></button>`;
+    <span class="when${nu ? " new" : ""}">${statusOf(e.id) === "klar" && v.approved ? "godkänd " + esc(when(new Date(v.approved))) : d ? "renderad " + esc(when(d)) : ""}</span></div></button>`;
 }
 function renderGranska() {
   const f = fresh(), w = waiting();
@@ -452,6 +462,16 @@ function renderTodo() {
   put($("#todoBody"), eps.length ? eps.map(e => `<div class="todo-ep"><h3><button type="button" data-go="${esc(e.id)}">${esc(titleOf(e.id))}</button><span class="dot ${statusOf(e.id)}"></span><span class="cnt">${open.filter(i => i.ep === e.id).length}</span></h3>
     ${open.filter(i => i.ep === e.id).sort(bySec).map(i => itemRow(i, false)).join("")}</div>`).join("")
     : `<div class="empty">${loaded ? "Ingen öppen feedback. Allt är fixat." : "Laddar…"}</div>`);
+}
+// Att publicera: approved videos (status klar), oldest approval first = the publishing queue
+const approvedAt = id => V(id).approved || +(rDate(V(id).rendered) || 0);
+const ready = () => ALL.filter(e => !isBg(e.id) && statusOf(e.id) === "klar").sort((a, b) => approvedAt(a.id) - approvedAt(b.id));
+function renderPub() {
+  const r = ready();
+  $("#pubLead").textContent = !loaded ? "Laddar…" : r.length ? `${r.length} godkända, i den ordning de godkändes. Sätt status Live när de är uppe.` : "";
+  const groups = ORDER.map(t => [t, r.filter(e => typeOf(e.id) === t)]).filter(g => g[1].length);
+  put($("#pubBody"), groups.length ? groups.map(([t, eps]) => `<h2 class="sec">${TYPES.find(x => x[0] === t)[1]} <span class="cnt">${eps.length}</span></h2><div class="cards">${eps.map(card).join("")}</div>`).join("")
+    : `<div class="empty">${loaded ? "Inget godkänt än. Tryck Godkänn på en video när den är klar." : "Laddar…"}</div>`);
 }
 // Julkalendern: lucka 1–24 as a checklist. Done = Klar att publicera or Live.
 const JUL = Array.from({ length: 24 }, (_, i) => "J" + String(i + 1).padStart(2, "0"));
@@ -504,7 +524,7 @@ function renderVideo() {
   const id = view, v = V(id);
   if (!ALL.find(e => e.id === id)) { $("#epTitle").textContent = loaded ? "Hittar inte " + id : "Laddar…";
     for (const s of ["#epMeta", "#player", "#marks", "#pics", "#comments"]) put($(s), ""); shownVideo = null; return; }
-  $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", jul: "Julkalendern", alla: "Alla videor", assets: "Assets" }[from];
+  $("#backBtn").textContent = "← " + { granska: "Att granska", todo: "Att göra", publicera: "Att publicera", jul: "Julkalendern", alla: "Alla videor", assets: "Assets" }[from];
   $("#epTitle").textContent = titleOf(id);
   const st = statusOf(id), d = rDate(v.rendered);
   $("#epMeta").innerHTML = `<span><span class="dot ${st}"></span> ${esc(statusName(st))}</span>` + (d ? `<span>Renderad <b>${esc(when(d))}</b>${rNote(v.rendered) ? " · " + esc(rNote(v.rendered)) : ""}</span>` : "")
@@ -512,6 +532,10 @@ function renderVideo() {
     + (V(id + "-bg").stills ? `<a class="chip" href="#${esc(id)}-bg">${picked(id + "-bg") ? "Bakgrund: " + esc(picked(id + "-bg").pick) : "Välj bakgrund"} →</a>` : "");
   $("#statusPick").innerHTML = STATUSES.map(([k, l]) => `<option value="${k}"${k === st ? " selected" : ""}>${l}</option>`).join("");
   $("#statusPick").disabled = !db;
+  $("#approveBtn").textContent = st === "klar" ? "✓ Godkänd" : st === "live" ? "Live" : "Godkänn";
+  $("#approveBtn").className = st === "klar" ? "btn" : "btn ghost";
+  $("#approveBtn").disabled = st === "live" || isPick(id) || !db;
+  $("#approveBtn").title = st === "klar" ? "Klicka för att ångra" : "Klar att publicera, flyttas till Att publicera";
   $("#file").textContent = v.file ? "Fil: " + v.file : "";
   $("#ytLink").hidden = !v.youtube; if (v.youtube) $("#ytLink").href = v.youtube;
   const nx = nextOf(id); $("#nextBtn").textContent = nx ? "Klar, nästa →" : "Klar ✓";
@@ -617,9 +641,17 @@ document.addEventListener("click", async e => {
 });
 $("#nextBtn").addEventListener("click", () => { markSeen(view); const n = nextOf(view); go(n || "granska"); });
 $("#backBtn").addEventListener("click", () => go(from));
+$("#approveBtn").addEventListener("click", async () => {
+  if (!db) return;
+  const undo = statusOf(view) === "klar", b = $("#approveBtn"); b.disabled = true;
+  try { await db.doc("videos/" + view).set({ ...V(view), status: undo ? "granska" : "klar", approved: undo ? null : Date.now() });
+    markSeen(view); toast(undo ? "Tillbaka i Att granska" : "Godkänd, ligger nu i Att publicera"); }
+  catch (err) { toast("Kunde inte godkänna: " + (err.message || err)); }
+  renderVideo();
+});
 $("#statusPick").addEventListener("change", async e => {
   if (!db) return;
-  try { await db.doc("videos/" + view).set({ ...V(view), status: e.target.value }); toast("Status ändrad"); } catch (err) { toast("Kunde inte ändra status"); e.target.value = statusOf(view); }
+  try { await db.doc("videos/" + view).set({ ...V(view), status: e.target.value, approved: e.target.value === "klar" ? V(view).approved || Date.now() : V(view).approved }); toast("Status ändrad"); } catch (err) { toast("Kunde inte ändra status"); e.target.value = statusOf(view); }
 });
 const claudeText = id => { const open = items.filter(i => i.ep === id && !i.fixed).sort(bySec), v = V(id);
   return `Feedback ${id} ${nameOf(id)}${v.rendered ? " (renderad " + v.rendered + ")" : ""}\n` + (open.length ? open.map(i => `- ${i.time || "hela"}${(i.tags || []).length ? " [" + i.tags.map(tagName).join(", ") + "]" : ""}${i.note ? " " + i.note : ""}`).join("\n") : "- (ingen öppen feedback)"); };

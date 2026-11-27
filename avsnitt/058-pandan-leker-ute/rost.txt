@@ -3,37 +3,48 @@
 03-oj-en-gungand  [happy] Oj! En gungand!
 04-hej-pandan  [happy] Hej, pandan! Hej, hej!
 05-vill-du-leka-ute  [cheerfully] Vill du leka ute, pandan?
-06-ja-det-vill-du  [happy] Ja, det vill du!
-07-inget-att-leka-med  [gently] Oj då. Pandan har visst inget att leka med.
-08-vad-ska-pandan-leka-med  [curious] Hm … vad ska pandan leka med?
-09-kritan-ritar-nagot  [happy] Titta! Kritan ritar något på marken.
-10-en-boll  [happy] En boll! Varsågod, pandan.
-11-tack-kritan  [happy] Tack, kritan!
-12-puffar-pa-bollen  [surprised] Oj! Du puffar på bollen med tassen!
-13-bollen-gungar  [laughs] Oj! Bollen gungar på gunganden!
-14-ska-bollen-rulla  [cheerfully] Ska bollen rulla nu, pandan?
-15-ja-bra-ide  [happy] Ja, bra idé!
-16-i-sandladan  [happy] Bollen rullar. Rulla, rulla … där! I sandlådan.
-17-bakom-gunganden  [happy] Rulla, rulla … där! Bakom gunganden.
-18-bollen-ar-borta  [curious] Oj, nu är bollen borta. Pandan vet inte var.
-19-kan-du-hjalpa  [warmly] Kan du hjälpa pandan? Kan du se var bollen är?
-20-bakom-tradet  [happy] Ja, där! Bakom trädet!
-21-bollen-rullar-fram  [happy] Bollen rullar fram. Rulla, rulla … där!
-22-bollen-ar-tillbaka  [happy] Bollen är tillbaka! Nu är pandan glad.
-23-puffade-hogt  [surprised] Oj! Du puffade bollen högt!
-24-fastnade-i-tradet  [surprised] Oj! Bollen fastnade uppe i trädet!
-25-nar-du-bollen  [curious] Når du bollen, pandan?
-26-tradet-ar-for-hogt  [gently] Nej, trädet är för högt.
-27-kritan-ritar-igen  [happy] Titta! Kritan ritar igen. Under trädet.
-28-en-hink  [happy] En hink! Varsågod, pandan.
-29-tack-for-hinken  [happy] Tack för hinken, kritan!
+06-vad-kul-nu-leker-vi  [happy] Ja, vad kul! Nu leker vi!
+07-vad-sager-du  [curious] Vad säger du, pandan?
+08-inget-att-leka-med  [gently] Har du inget att leka med?
+09-massor-av-saker  [curious] Hm … det finns ju massor av saker på lekplatsen.
+10-naha-oj-da  [gently] Men inget som är roligt? Nähä. Oj då.
+11-vad-ska-pandan-leka-med  [curious] Hm … vad ska pandan leka med?
+12-kritan-ritar-nagot  [happy] Titta! Kritan ritar något på marken.
+13-en-boll  [happy] En boll! Varsågod, pandan.
+14-tack-kritan  [happy] Tack, kritan!
+15-puffar-pa-bollen  [surprised] Oj! Du puffar på bollen med tassen!
+16-bollen-gungar  [laughs] Oj! Bollen gungar på gunganden!
+17-ska-bollen-rulla  [cheerfully] Ska bollen rulla nu, pandan?
+18-ja-bra-ide  [happy] Ja, bra idé!
+19-i-sandladan  [happy] Bollen rullar. Rulla, rulla … där! I sandlådan.
+20-bakom-gunganden  [happy] Rulla, rulla … där! Bakom gunganden.
+21-bollen-ar-borta  [curious] Oj, nu är bollen borta. Pandan vet inte var bollen är.
+22-kan-du-hjalpa  [warmly] Kan du hjälpa pandan? Kan du se var bollen är?
+23-bakom-tradet  [happy] Ja, där! Bakom trädet!
+24-bollen-rullar-fram  [happy] Bollen rullar fram. Rulla, rulla … där!
+25-bollen-ar-tillbaka  [happy] Bollen är tillbaka! Nu är pandan glad.
+26-puffade-hogt  [surprised] Oj! Du puffade bollen högt!
+27-fastnade-i-tradet  [surprised] Oj! Bollen fastnade uppe i trädet!
+28-kan-du-na-bollen  [curious] Kan du nå bollen, pandan?
+29-tradet-ar-for-hogt  [gently] Nej, trädet är för högt.
 30-puffar-pa-tradet  [playfully] Du puffar på trädet med tassen.
 31-ett-apple  [surprised] Oj! Ett äpple ramlade ner!
-32-rakt-ner-i-hinken  [happy] Och där kommer bollen! Rakt ner i hinken!
-33-ska-du-smaka  [cheerfully] Ska du smaka på äpplet, pandan?
-34-mums-vad-gott  [happy] Mums! Vad gott!
-35-nu-gungar-pandan  [warmly] Nu gungar pandan. Gung … gung …
-36-var-det-roligt  [warmly] Var det roligt att leka ute?
-37-ja-det-tyckte-jag  [happy] Ja, det tyckte jag också!
-38-hej-da-pandan  [happy] Hej då, pandan! Hej då, bollen!
-39-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]
+32-applet-rullade-ivag  [gently] Oj då. Äpplet rullade iväg.
+33-vilken-farg  [curious] Vilken färg har äpplet?
+34-ar-det-gront  [playfully] Är det grönt? Nej.
+35-ar-det-gult  [playfully] Är det gult? Nej.
+36-det-ar-rott  [happy] Det är rött! Precis som bollen.
+37-rott-apple-rod-boll  [warmly] Ett rött äpple och en röd boll.
+38-rullar-ocksa-ivag  [curious] Hm … om bollen ramlar ner, då rullar den också iväg.
+39-kritan-ritar-under-tradet  [happy] Titta! Kritan ritar något under trädet.
+40-en-hink  [happy] En hink! Då landar bollen i hinken.
+41-tack-for-hinken  [happy] Tack för hinken, kritan!
+42-puffa-en-gang-till  [playfully] Puffa en gång till!
+43-rakt-ner-i-hinken  [happy] Där kommer bollen! Rakt ner i hinken!
+44-ska-du-smaka  [cheerfully] Ska du smaka på äpplet, pandan?
+45-mums-vad-gott  [happy] Mums! Vad gott!
+46-nu-gungar-pandan  [warmly] Nu gungar pandan. Gung … gung …
+47-var-det-roligt  [warmly] Var det roligt att leka ute?
+48-ja-det-tyckte-jag  [happy] Ja, det tyckte jag också!
+49-hej-da-pandan  [happy] Hej då, pandan! Hej då, bollen!
+50-vi-ses-snart  [warmly] Hej då! Vi ses snart! [giggles]

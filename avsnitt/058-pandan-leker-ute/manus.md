@@ -1,6 +1,6 @@
 # Avsnitt 058 – Pandan leker ute (plan)
 
-**Status:** ⏳ **Grind 1 (manus) öppnad igen 2026-11-27, väntar på Sanna.** Sanna ville att avsnittet skulle skilja sig mer från 021 Hunden leker (*"can we have a bit more diffrent than dog episode?"*) och sa ja till omskrivningen (*"Ja, skriv om"*). Den förra versionen, 021 gjord om med pandan, godkändes 2026-11-26 tillsammans med grind 2, och ligger i [`aldre/manus-021-version-2711.md`](aldre/manus-021-version-2711.md). Pandans tunna kanter (`cut-tunn/`) är gjorda och gäller fortfarande. Nästa steg efter ja: grind 2 kollas igen (inga nya bilder, men äpplet och en storleksbild), sedan grind 3, Malins röst. Ingen röst, inga ljud och ingen scen är byggd. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med pandan, pandan svarar med ljud, öron och ansikte. Sikte: ca 3:50 (39 repliker).
+**Status:** ✅ **Grind 1 (manus) godkänd igen 2026-11-27** (Sanna: *"Ja, godkänn"*). ⏳ Grind 2 (storleksbild och äpplet) pågår. Sanna ville att avsnittet skulle skilja sig mer från 021 Hunden leker (*"can we have a bit more diffrent than dog episode?"*) och sa ja till omskrivningen (*"Ja, skriv om"*). Den förra versionen, 021 gjord om med pandan, godkändes 2026-11-26 tillsammans med grind 2, och ligger i [`aldre/manus-021-version-2711.md`](aldre/manus-021-version-2711.md). Pandans tunna kanter (`cut-tunn/`) är gjorda och gäller fortfarande. Nästa steg efter ja: grind 2 kollas igen (inga nya bilder, men äpplet och en storleksbild), sedan grind 3, Malins röst. Ingen röst, inga ljud och ingen scen är byggd. Bilderbok i serien *Djuren hittar på!* enligt [`format/bilderbok.md`](../../format/bilderbok.md) och skillen `bilderbok`: ingen sång, Malin pratar med pandan, pandan svarar med ljud, öron och ansikte. Sikte: ca 4:10 (50 repliker).
 
 **Förlaga för formen:** [021 Hunden leker](../021-hunden-leker/manus.md) (samma plats, kritan ritar en boll, *"Rulla, rulla … där!"* tre gånger). Men leken, gömställena, problemet och slutet är nya, och lekstugan, stöveln, kullen och stegen är inte med.
 
@@ -14,7 +14,7 @@
 | **Gömställe 2** | bakom lekstugan | **bakom gunganden** |
 | **Barnet hittar** | bakom rutschkanan | **bakom äppelträdet** |
 | **Problemet** | bollen på lekstugans tak | bollen **fastnar uppe i äppelträdet** |
-| **Kritan ritar igen** | en stege | **en hink** under trädet. Pandan puffar på stammen tre gånger: ingenting, ett äpple, sedan bollen rakt ner i hinken |
+| **Kritan ritar igen** | en stege | **en hink** under bollen. Först puffar pandan på stammen och ett äpple ramlar ner och rullar iväg, så barnet ser varför hinken behövs. En puff till: bollen rakt ner i hinken |
 | **Pandans egen grej** | – | pandan **smakar på äpplet**: *"Mums! Vad gott!"* |
 | **Slutet** | ett varv och *"Hopp, hopp!"* | pandan **sitter på gunganden** och gungar lugnt |
 | **Malin** | kommenterar, `[excited]`, *"Ska vi säga tack?"*, *"Ni pratar visst med varandra"* | frågar pandan och reagerar, `[happy]`, säger direkt *"Tack, kritan!"* (2026-11-27), utbytet är tyst |
@@ -30,10 +30,10 @@
 | **Nya saker** | **inga** |
 | **I kod** | skimret runt bollen, skuggorna, sandtussar när bollen landar i sandlådan, äppelträdets svaj |
 | **Musik** | ingen ny musik. `lekplatsljud` lågt under |
-| **Kärna** | Kritan ritar en gungand. Pandan kommer ut och vill leka men har inget att leka med. Kritan ritar en boll: *"Varsågod!"* – *"Tack, kritan!"* Pandan puffar på bollen, och den hoppar upp på gunganden och gungar med. Sedan rullar bollen och gömmer sig tre gånger: i sandlådan, bakom gunganden, och den tredje gången vet pandan inte var. Barnet hittar den bakom äppelträdet. Pandan puffar bollen för högt, och den fastnar i trädet. Kritan ritar en hink. Pandan puffar på stammen: först ingenting, sedan ramlar ett äpple ner, sedan bollen, rakt i hinken. Pandan smakar på äpplet och gungar till sist på gunganden. Hej då! |
-| **Samtal** | fem gånger: vill du leka ute, ska bollen rulla, når du bollen, ska du smaka, var det roligt |
-| **Barnet letar** | **bollen bakom äppelträdet** (rad 14). En röd kant sticker fram vid stammens sida |
-| **Leken** | bollen gungar på gunganden (rad 9), tre puffar på trädet (rad 23–24), pandan gungar (rad 26) |
+| **Kärna** | Kritan ritar en gungand. Pandan kommer ut och vill leka men har inget att leka med. Kritan ritar en boll: *"Varsågod!"* – *"Tack, kritan!"* Pandan puffar på bollen, och den hoppar upp på gunganden och gungar med. Sedan rullar bollen och gömmer sig tre gånger: i sandlådan, bakom gunganden, och den tredje gången vet pandan inte var. Barnet hittar den bakom äppelträdet. Pandan puffar bollen för högt, och den fastnar i trädet. Pandan puffar på stammen och ett äpple ramlar ner och rullar iväg (vilken färg? röd, som bollen). Bollen skulle också rulla iväg, så kritan ritar en hink under den. En puff till, och bollen ramlar rakt i hinken. Pandan smakar på äpplet och gungar till sist på gunganden. Hej då! |
+| **Samtal** | sex gånger: vill du leka ute, vad säger du, ska bollen rulla, kan du nå bollen, ska du smaka, var det roligt |
+| **Barnet letar** | **bollen bakom äppelträdet** (rad 14). En röd kant sticker fram vid stammens sida. Barnet svarar också på **vilken färg äpplet har** (rad 22, paus 3 s) |
+| **Leken** | bollen gungar på gunganden (rad 9), äpplet och färgerna (rad 21–22), pandan gungar (rad 26) |
 | **Favoriter** | 🐼 panda · ⚽ boll · 🦆 gungand · 🍎 äpple · 🪣 hink |
 
 ## Så rör det sig
@@ -56,9 +56,9 @@
 | Skimret | svagt efter 3 s av frågans paus, tydligt på *"Ja, där!"* |
 | För högt | pandan puffar med tassen uppåt, bollen far i en hög båge upp i trädkronan och fastnar i en klyka bland äpplena: studsar lite, vickar och ligger still. Bollen ligger framför lövverket, inte inne i stammen |
 | Når inte | pandan går till trädet, tittar upp, sträcker den raka armen uppåt och gör ett skutt. Det räcker inte. Öronen sjunker |
-| Kritan ritar hinken | på marken under kronan, vid stammens sida: hinkens kontur, sedan handtaget och kanten som detaljstreck. Konturen står kvar 0,8–1 s, sedan fylls hinken i med gnistor |
-| Puffar på stammen | pandan ställer sig vid stammen och puffar på den med den raka tassen. Trädet svajar lugnt från roten (±2°, dör ut). **Puff 1:** ingenting. **Puff 2:** ett äpple lossnar och ramlar ner, studsar en gång (`apple-studs`) och lägger sig bredvid pandan. **Puff 3:** bollen lossnar och ramlar rakt ner i hinken: övre halvan syns ovanför kanten (`HINK_KANT`), aldrig genom hinkens sida |
-| Smakar | pandan står vid äpplet, den raka armen håller äpplet vid handens spets (som tvålen i 020), huvudet lutar sig fram, uttrycket `mums` med små tuggor (`mums`). Inget böjt |
+| Kritan ritar hinken | på marken rakt under bollen i kronan: hinkens kontur, sedan handtaget och kanten som detaljstreck. Konturen står kvar 0,8–1 s, sedan fylls hinken i med gnistor |
+| Puffar på stammen | pandan ställer sig vid stammen och puffar på den med den raka tassen. Trädet svajar lugnt från roten (±2°, dör ut). **Första puffen:** ett äpple lossnar, ramlar ner, studsar en gång (`apple-studs`) och rullar en bit bort, som barnet ser: det som ramlar rullar iväg. **Andra puffen (efter hinken):** bollen lossnar och ramlar rakt ner i hinken: övre halvan syns ovanför kanten (`HINK_KANT`), aldrig genom hinkens sida |
+| Smakar | pandan går till äpplet där det stannade, den raka armen håller äpplet vid handens spets (som tvålen i 020), huvudet lutar sig fram, uttrycket `mums` med små tuggor (`mums`). Inget böjt |
 | Sitter på gunganden | pandan står vid gunganden, gör ett lugnt skutt upp och landar i sittposen (`sitter`) i sadeln. Gunganden vippar lugnt fram och tillbaka (`gung-knarr` lågt). Bollen ligger på marken bredvid. **Reserv** om storleksbilden visar att pandan täcker hela anden: pandan sitter på marken bredvid och puffar anden med tassen så att den gungar |
 | Vinkar | från gunganden: armen bakom kroppen, snett ut förbi kanten, 3–4 lugna vink |
 
@@ -80,9 +80,9 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 |---|---|---|---|
 | 01 | Papperet: kritan ritar gungandens kontur, väntar, gunganden fylls i | Kritan ritar … *(paus)* Hm … vad blir det nu? *(gisspaus 3 s)* Oj! En gungand! | `krita-ritar`, `skogsljud`, `glitter` |
 | 1 | **H.** Lekplatsen: äppelträdet, gunganden och sandlådan. Pandan går in från vänster, stannar, gör ett glatt skutt och vinkar | Hej, pandan! Hej, hej! | `smasteg`, `hopp-mjuk`, pandans hej |
-| 2 | **N.** Pandan tittar på oss. **Pausen:** förtjust ljud, öronen upp, en nick | Vill du leka ute, pandan? *(paus: pandan svarar)* Ja, det vill du! | förtjust ljud i pausen |
-| 3 | **HB.** Pandan tittar åt vänster, sedan åt höger. Inget att leka med. Tyst 2,5 s | – | frågande ljud |
-| 4 | **N.** Öronen faller, kroppen sjunker lite. Paus 1 s mellan replikerna, pandan tittar på oss | Oj då. Pandan har visst inget att leka med. *(paus 1 s)* Hm … vad ska pandan leka med? | trumpet ljud |
+| 2 | **N.** Pandan tittar på oss. **Pausen:** förtjust ljud, öronen upp, en nick | Vill du leka ute, pandan? *(paus: pandan svarar)* Ja, vad kul! Nu leker vi! | förtjust ljud i pausen |
+| 3 | **N.** Pandan tittar på oss och säger något trumpet. Malin tolkar | Vad säger du, pandan? *(paus: pandan svarar)* Har du inget att leka med? | trumpet ljud i pausen |
+| 4 | **H.** Pandan tittar på gunganden, sandlådan och trädet, skakar lite på huvudet vid varje. **N:** öronen faller, kroppen sjunker lite. Paus 1 s före sista repliken | Hm … det finns ju massor av saker på lekplatsen. Men inget som är roligt? Nähä. Oj då. *(paus 1 s)* Hm … vad ska pandan leka med? | frågande ljud, trumpet ljud |
 | 5 | **H** (kritan kommer in), sedan **D** på marken framför pandan: kritan ritar bollens kontur, gisspaus 3 s | Titta! Kritan ritar något på marken. | `krita-ritar` |
 | 6 | **D:** bollen fylls i och guppar en gång. Sedan **N:** kawaii-ögon, öronen reser sig. Kritan flyger ut | En boll! Varsågod, pandan. | `glitter`, förtjust ljud |
 | 6c | **HB.** Pandan tittar på bollen och nickar direkt | Tack, kritan! | glatt ljud |
@@ -99,24 +99,25 @@ Utsnitt: **H** helbild, **HB** halvbild, **N** närbild på ansiktet, **D** deta
 | 17 | **HB.** Pandan gör två små glada skutt med bollen bredvid, öronen upp | *(efter skutten)* Bollen är tillbaka! Nu är pandan glad. | `hopp-mjuk` ×2, glatt ljud |
 | 18 | **H.** Pandan puffar bollen uppåt med tassen, bollen far i en hög båge mot trädkronan. **N:** ögonen följer den upp | *(när bollen är i luften)* Oj! Du puffade bollen högt! | `tass`, `swoosh` |
 | 19 | **H.** Bollen landar i en klyka bland äpplena, vickar och ligger still. **N:** förvånad, öronen upp | *(när den ligger still)* Oj! Bollen fastnade uppe i trädet! | `prassel-lov`, `vick`, `gasp` |
-| 20 | **Trädets utsnitt** (hela kronan syns). Pandan går dit, tittar upp, sträcker armen och skuttar. Når inte. **N:** öronen sjunker | *(efter skuttet)* Når du bollen, pandan? *(paus: pandan svarar)* Nej, trädet är för högt. | `smasteg`, `hopp-mjuk`, trumpet ljud i pausen |
-| 21 | **Trädets utsnitt.** Kritan flyger in och ritar hinken på marken under kronan: konturen, handtaget, kanten. Konturen står 1 s | Titta! Kritan ritar igen. Under trädet. | `swoosh`, `krita-ritar` |
-| 22 | Hinken fylls i med gnistor. **N:** kawaii-ögon. Kritan flyger ut | En hink! Varsågod, pandan. | `pling`, `glitter`, förtjust ljud |
-| 22b | **HB.** Pandan nickar | Tack för hinken, kritan! | glatt ljud |
-| 23 | **Trädets utsnitt.** Pandan puffar på stammen: trädet svajar, ingenting. Puff 2: ett äpple ramlar ner, studsar och lägger sig bredvid pandan. **N:** förvånad, sedan fnissig | *(efter första puffen)* Du puffar på trädet med tassen. *(efter äpplet)* Oj! Ett äpple ramlade ner! | `tass`, `prassel-lov`, `apple-studs`, fniss |
-| 24 | **Trädets utsnitt.** Puff 3: bollen lossnar och ramlar rakt ner i hinken. **D** på hinken: bollen guppar i öppningen. **N:** jätteglad | *(när den landat)* Och där kommer bollen! Rakt ner i hinken! | `tass`, `prassel-lov`, `hink-dunk`, förtjust ljud |
-| 25 | **HB.** Pandan tittar på äpplet. **Pausen:** pandan nickar och håller upp äpplet vid tassen, tar en tugga | Ska du smaka på äpplet, pandan? *(paus: pandan svarar och smakar)* Mums! Vad gott! | glatt ljud, `mums` i pausen |
+| 20 | **Trädets utsnitt** (hela kronan syns). Pandan går dit, tittar upp, sträcker armen och skuttar. Når inte. **N:** öronen sjunker | *(efter skuttet)* Kan du nå bollen, pandan? *(paus: pandan svarar)* Nej, trädet är för högt. | `smasteg`, `hopp-mjuk`, trumpet ljud i pausen |
+| 21 | **Trädets utsnitt.** Pandan puffar på stammen, trädet svajar. Ett äpple lossnar, ramlar ner, studsar en gång och **rullar iväg** en bit på marken. Bollen sitter kvar. **N:** förvånad | *(efter puffen)* Du puffar på trädet med tassen. *(när äpplet landat)* Oj! Ett äpple ramlade ner! *(när det stannat)* Oj då. Äpplet rullade iväg. | `tass`, `prassel-lov`, `apple-studs`, `rull`, förvånat ljud |
+| 22 | **D** på äpplet. Paus 3 s efter frågan. Pandan skakar på huvudet på varje "Nej". På "Precis som bollen" klipp till **D** på bollen uppe i kronan | Vilken färg har äpplet? *(paus 3 s)* Är det grönt? Nej. Är det gult? Nej. Det är rött! Precis som bollen. Ett rött äpple och en röd boll. | skakar på huvudet, glatt ljud |
+| 23 | **N.** Pandan tittar upp mot bollen, sedan på oss, oroligt | Hm … om bollen ramlar ner, då rullar den också iväg. | frågande ljud |
+| 24 | **Trädets utsnitt.** Kritan flyger in och ritar hinken på marken rakt under bollen: konturen, handtaget, kanten. Konturen står 1 s, sedan fylls hinken i med gnistor. **N:** kawaii-ögon. Kritan flyger ut | Titta! Kritan ritar något under trädet. *(när hinken är klar)* En hink! Då landar bollen i hinken. | `swoosh`, `krita-ritar`, `pling`, `glitter`, förtjust ljud |
+| 24b | **HB.** Pandan nickar | Tack för hinken, kritan! | glatt ljud |
+| 24c | **Trädets utsnitt.** Pandan puffar på stammen igen. Bollen lossnar och ramlar rakt ner i hinken: övre halvan syns ovanför kanten. **D** på hinken: bollen guppar. **N:** jätteglad | Puffa en gång till! *(när bollen landat)* Där kommer bollen! Rakt ner i hinken! | `tass`, `prassel-lov`, `hink-dunk`, förtjust ljud |
+| 25 | **HB.** Pandan går och hämtar äpplet och tittar på det. **Pausen:** pandan nickar och håller upp äpplet vid tassen, tar en tugga | Ska du smaka på äpplet, pandan? *(paus: pandan svarar och smakar)* Mums! Vad gott! | glatt ljud, `mums` i pausen |
 | 26 | *(gungandet börjar 2–3 s före repliken)* **H.** Bollen ligger bredvid gunganden. Pandan skuttar upp i sadeln och gungar lugnt fram och tillbaka. **N:** mysig | *(efter första gunget)* Nu gungar pandan. Gung … gung … | `hopp-mjuk`, `gung-knarr` lågt, glatt ljud |
 | 27 | **N.** Pandan tittar på oss. **Pausen:** mysig suck, nickar | Var det roligt att leka ute? *(paus: pandan svarar)* Ja, det tyckte jag också! | mysig suck i pausen |
 | 28 | **HB.** Pandan vinkar från gunganden, bollen bredvid | Hej då, pandan! Hej då, bollen! | pandans hej då |
 | 29 | **N.** Pandan vinkar klart | Hej då! Vi ses snart! | fniss |
 | 30 | Kritirisen runt pandan på gunganden, sedan prenumerera-kortet (`produktion/youtube/prenumerera/`) och outrot | – | – |
 
-**Malin efter handlingen:** raderna 7, 9, 13, 17, 18, 19, 20, 23, 24 och 26 beskriver en rörelse. Där börjar rörelsen först, och repliken kommer 0,4–0,8 s in eller när det landat. Frågorna kommer före.
+**Malin efter handlingen:** raderna 7, 9, 13, 17, 18, 19, 20, 21, 24c och 26 beskriver en rörelse. Där börjar rörelsen först, och repliken kommer 0,4–0,8 s in eller när det landat. Frågorna kommer före.
 
-**Bilden på orden:** bollen stannar på *"där"* (tiden mäts i varje tagning, `DAR`), äpplet landar före *"Oj! Ett äpple"*, bollen ligger i hinken på *"hinken"*, gunganden vippar på varje *"gung"* (`GUNG`).
+**Bilden på orden:** bollen stannar på *"där"* (tiden mäts i varje tagning, `DAR`), äpplet landar före *"Oj! Ett äpple"* och har stannat på *"rullade iväg"*, pandan skakar på huvudet på varje *"Nej"*, bollen ligger i hinken på *"hinken"*, gunganden vippar på varje *"gung"* (`GUNG`).
 
-**Short:** uppslag 13–17 (bollen är borta, barnet hittar den), ca 40 s. Eller 18–25 (trädet, hinken och äpplet), ca 55 s.
+**Short:** uppslag 13–17 (bollen är borta, barnet hittar den), ca 40 s. Eller 18–25 (trädet, äpplet, färgerna och hinken), ca 65 s.
 
 ## Malins repliker att klistra in (ElevenLabs)
 
@@ -128,8 +129,11 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Oj! En gungand!
 [happy] Hej, pandan! Hej, hej!
 [cheerfully] Vill du leka ute, pandan?
-[happy] Ja, det vill du!
-[gently] Oj då. Pandan har visst inget att leka med.
+[happy] Ja, vad kul! Nu leker vi!
+[curious] Vad säger du, pandan?
+[gently] Har du inget att leka med?
+[curious] Hm … det finns ju massor av saker på lekplatsen.
+[gently] Men inget som är roligt? Nähä. Oj då.
 [curious] Hm … vad ska pandan leka med?
 [happy] Titta! Kritan ritar något på marken.
 [happy] En boll! Varsågod, pandan.
@@ -140,21 +144,29 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Ja, bra idé!
 [happy] Bollen rullar. Rulla, rulla … där! I sandlådan.
 [happy] Rulla, rulla … där! Bakom gunganden.
-[curious] Oj, nu är bollen borta. Pandan vet inte var.
+[curious] Oj, nu är bollen borta. Pandan vet inte var bollen är.
 [warmly] Kan du hjälpa pandan? Kan du se var bollen är?
 [happy] Ja, där! Bakom trädet!
 [happy] Bollen rullar fram. Rulla, rulla … där!
 [happy] Bollen är tillbaka! Nu är pandan glad.
 [surprised] Oj! Du puffade bollen högt!
 [surprised] Oj! Bollen fastnade uppe i trädet!
-[curious] Når du bollen, pandan?
+[curious] Kan du nå bollen, pandan?
 [gently] Nej, trädet är för högt.
-[happy] Titta! Kritan ritar igen. Under trädet.
-[happy] En hink! Varsågod, pandan.
-[happy] Tack för hinken, kritan!
 [playfully] Du puffar på trädet med tassen.
 [surprised] Oj! Ett äpple ramlade ner!
-[happy] Och där kommer bollen! Rakt ner i hinken!
+[gently] Oj då. Äpplet rullade iväg.
+[curious] Vilken färg har äpplet?
+[playfully] Är det grönt? Nej.
+[playfully] Är det gult? Nej.
+[happy] Det är rött! Precis som bollen.
+[warmly] Ett rött äpple och en röd boll.
+[curious] Hm … om bollen ramlar ner, då rullar den också iväg.
+[happy] Titta! Kritan ritar något under trädet.
+[happy] En hink! Då landar bollen i hinken.
+[happy] Tack för hinken, kritan!
+[playfully] Puffa en gång till!
+[happy] Där kommer bollen! Rakt ner i hinken!
 [cheerfully] Ska du smaka på äpplet, pandan?
 [happy] Mums! Vad gott!
 [warmly] Nu gungar pandan. Gung … gung …
@@ -164,7 +176,7 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [warmly] Hej då! Vi ses snart! [giggles]
 ```
 
-39 repliker.
+50 repliker. Inspelat 2026-11-27: 28–45 (tagning 1, `malin-tagning-1.mp3`; 28–29 från tagning 2, *"Kan du nå bollen"* i stället för *"Når du"*). **Kvar att spela in: 01–27 och 46–50** (blocket i `rost-2.txt`).
 
 ## Pandans röst och ljuden
 
@@ -173,15 +185,15 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 | Nr | Känsla | Rader |
 |---|---|---|
 | 1 | hej | 1 |
-| 2 | förtjust | 2, 6, 12, 15, 22, 24 |
-| 3 | kort fniss | 7, 16, 23, 29 |
+| 2 | förtjust | 2, 6, 12, 15, 24, 24c |
+| 3 | kort fniss | 7, 16, 29 |
 | 4 | mysig suck | 27 |
-| 5 | nyfiken, frågande | 3, 13 |
-| 6 | trumpen | 4, 20 |
+| 5 | nyfiken, frågande | 4, 13, 23 |
+| 6 | trumpen | 3, 4, 20 |
 | 7 | pratar (tre ljud i rad) | 8, 10 |
 | 8 | hej då | 28 |
-| 9 | glad (extra) | 6c, 11, 17, 22b, 25, 26 |
-| 10 | förvånad (extra) | 9, 19 |
+| 9 | glad (extra) | 6c, 11, 17, 22, 24b, 25, 26 |
+| 10 | förvånad (extra) | 9, 19, 21 |
 
 Förslag på namn: `panda-gullig` 1–10. Prompten: *"Tiny cute cartoon baby panda cub, <känslan>, a soft squeaky little hum, sweet, close dry recording, no music, no background"*. Inga ord, och hej och hej då ska inte låta engelska. Fniss ligger aldrig på två rader i följd och aldrig över Malin.
 
@@ -202,18 +214,18 @@ Förslag på namn: `panda-gullig` 1–10. Prompten: *"Tiny cute cartoon baby pan
 - [x] Samma fras tre gånger: *"Rulla, rulla … där!"* (rad 11, 12, 16), den tredje med barnets hjälp
 - [x] Kritan ritar två gånger i berättelsen: bollen (löser problemet) och hinken (löser nästa)
 - [x] *"Varsågod"* och tack, båda gångerna
-- [x] Samtal: Malin frågar pandan fem gånger, pandan svarar i pausen, Malin reagerar
+- [x] Samtal: Malin frågar pandan sex gånger, pandan svarar i pausen, Malin reagerar
 - [x] Tydliga repliker: handlingen och saken sägs
-- [x] Malin efter handlingen (rad 7, 9, 13, 17, 18, 19, 20, 23, 24, 26)
+- [x] Malin efter handlingen (rad 7, 9, 13, 17, 18, 19, 20, 21, 24c, 26)
 - [x] Tydligt hej och hej då med vinkning, *"Hej då! Vi ses snart!"*
 - [x] Inget läskigt: pandan är lite ledsen i rad 4 och 20, och det löses direkt. Äpplet och bollen ramlar mjukt, inget träffar pandan
 - [x] Inget går genom något: bollen går över sandlådans kant och hinkens kant, ligger vid sidan av anden och stammen, ligger framför lövverket; pandan sitter i sadeln
 - [x] Inga snurrar, inga böjda armar, pandan vänds inte och rullar inte. Gunganden och trädet vippar lugnt, de snurrar inte
-- [x] Fniss: Malin i rad 9 (+ giggles sist), pandan i 7, 16, 23, 29
+- [x] Fniss: Malin i rad 9 (+ giggles sist), pandan i 7, 16, 29
 - [x] Ingen ny musik
 - [ ] **Längden:** ca 3:50 plus intro, prenumerera-kort och outro går lite över reglernas 3–4 min. Receptet siktar på 3:45–4:15
 - [ ] Avsteg som receptet redan har: ingen sång, fler än 6 utsnitt. Reglernas "bjud in barnet att hoppa och vinka med" följs inte, enligt Sannas regel 2026-11-25
-- [ ] Barnet får en fråga med lång paus (bollen, 5 s) plus tre gisspauser (gunganden, bollen, hinken). Tack-frågan är borta enligt regeln 2026-11-27
+- [x] Barnet får två frågor med paus (bollen 5 s, äpplets färg 3 s) plus tre gisspauser (gunganden, bollen, hinken). Tack-frågan är borta enligt regeln 2026-11-27
 
 ## Saknas innan bygget
 
