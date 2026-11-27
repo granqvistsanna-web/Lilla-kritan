@@ -11299,9 +11299,10 @@
   "sec": 164,
   "tags": [],
   "note": "maybe add scene where frog build sand castle",
-  "fixed": false,
+  "fixed": true,
   "at": 1795794552106,
-  "render": "runda 5"
+  "render": "runda 5",
+  "fixedAt": 1795803153203
  },
  "2ch90i6m4gmwz5roi6": {
   "ep": "059",
