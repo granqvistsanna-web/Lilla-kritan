@@ -28,15 +28,15 @@ En bilderbok i vaxkrita för de minsta, ungefär 1–3 år. Berättaren pratar m
 0:39 Ska vi städa undan klossarna?
 0:50 Oj då, korgen är full
 1:09 Kritan ritar något till klossarna
-1:23 En låda med tre hål – tack!
-1:43 Trekanten blev en hatt
-2:01 Nu städar vi – först cirkeln
-2:20 Nu tar du fyrkanten – plopp!
-2:32 Var är trekanten?
-2:44 Hjälp leoparden att hitta trekanten
-2:59 Trekanten ner i hålet – plopp!
-3:11 Alla i lådan – det skramlar!
-3:24 Hej då, leoparden!
+1:22 En låda med tre hål – tack!
+1:38 Trekanten blev en hatt
+1:56 Nu städar vi – först cirkeln
+2:15 Nu tar du fyrkanten – plopp!
+2:27 Var är trekanten?
+2:39 Hjälp leoparden att hitta trekanten
+2:54 Trekanten ner i hålet – plopp!
+3:06 Alla i lådan – det skramlar!
+3:19 Hej då, leoparden!
 
 Lilla Kritan är tecknade sånger och berättelser i vaxkrita för små barn: en sak i taget och mycket upprepning.
 
