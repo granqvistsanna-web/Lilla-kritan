@@ -1,27 +1,34 @@
 // 065 Våren i boken: uppslaget, byggt en gång. Storyboarden (scen.js) och scenen (../scener/boken/boken.js) läser samma kort,
 // koordinater och vyer här, så att de inte glider isär. Det som bara finns i den ena (musens rigg, insekterna i kod, kritan och
 // rörelserna i scenen; det platta muskortet och lägena per rad i storyboarden) ligger kvar där.
-import { tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
+import { duk, kritYta, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
 import { v3, bild, lad, ruta, bredare, mark, kortmotor, PARM } from '/produktion/three-rum/popupbok/uppslag.js';
 
 export const P = '/produktion/three-rum/popupbok/bilder/', B = '/assets/bakgrunder/', RQ = '/assets/rekvisita/';
 // boken lika stor som 062 runda 5 (1,3), grön pärm med den gula tulpanen i knopp
 export const BOK = 1.3;
+// ?prov=l luftigare uppslag (Sanna 28/11, som 062: "remove all pine trees, remove bush, make flowers smaller, all content a bit smaller"):
+// inga granar och ingen buske, tre lövträd utspridda (plus trädet med boet), tulpanerna 0,30 i stället för 0,38, musen och småblommorna × 0,9
+export const LUFT = (new URLSearchParams(location.search).get('prov') || '').includes('l');
 // rabatten: tre tulpaner i tre lägen på samma fot. Den hängande bilden är bredare med foten vid 0,39–0,40 av bredden (bildlista.md):
 // dx flyttar den så att foten hamnar på samma punkt, höjden i samma px-skala som den stående.
-export const TH = 0.38, TPOS = { rod: [-0.42, 0.0], gul: [0.0, -0.02], lila: [0.42, 0.06] }, FOTFR = { rod: 0.396, gul: 0.388, lila: 0.404 };
+export const TH = LUFT ? 0.3 : 0.38, TPOS = { rod: [-0.42, 0.0], gul: [0.0, -0.02], lila: [0.42, 0.06] }, FOTFR = { rod: 0.396, gul: 0.388, lila: 0.404 };
 // de små blommorna med djuren, utspridda framför till höger (inte framför musen)
 export const ROSA = [0.9, 0.18], GULA = [0.8, 0.5];
 // kannan: kritans teckning i gräset till höger om musen, sedan i handen, sedan tillbaka i gräset (rad 20)
 export const KANNAPOS = [0.42, 0.42], KH = 0.097;
 // lövträdet med fågelboet i grenklykan (BO_OFF: boets plats på trädkortet)
-export const TRADET = [-0.68, -0.24], BO_OFF = v3(0.05, 0.4, 0.03), BOPOS = [TRADET[0] + BO_OFF.x, SIDA + BO_OFF.y, TRADET[1] + BO_OFF.z];
+// ?gren=kod|flow (Sanna 28/11 "need new tree for bird nest … maybe a branch"): trädet med boet får en gren åt höger under kronan, och boet
+// sitter i grenens klyka. kod = grenen ritad på trad.png i kritYta med vit kant; flow = popupbok/bilder/trad-gren.png (Flow-edit av trad.png).
+// Klykan ligger vid px (745, 648) i trad.png (896 × 1200, synligt 92–804 × 60–1142): x (745 − 448) / 1082 × 0,78, y (1142 − 648) / 1082 × 0,78.
+export const GREN = new URLSearchParams(location.search).get('gren') || '';
+export const TRADET = [-0.68, -0.24], BO_OFF = GREN === 'kod' ? v3(0.214, 0.356, 0.03) : v3(0.05, 0.4, 0.03), BOPOS = [TRADET[0] + BO_OFF.x, SIDA + BO_OFF.y, TRADET[1] + BO_OFF.z];
 // musen: höjden (öronen till fötterna) och platserna, till vänster om blomman den vattnar, kannan i höger hand
-export const MH = 0.26, MUSPOS = { start: [0.27, 0.27], rod: [-0.66, 0.22], gul: [-0.22, 0.2], lila: [0.2, 0.26], blommor: [0.56, 0.28] };
+export const MH = LUFT ? 0.235 : 0.26, MUSPOS = { start: [0.27, 0.27], rod: [-0.66, 0.22], gul: [-0.22, 0.2], lila: [0.2, 0.26], blommor: [0.56, 0.28] };
 
 export async function byggUppslaget(scen) {
-  const [GRAN, BUSKE, TRAD1, APPEL, EK, HIMMEL, KULLE_BAK, KULLE_FRAM, MOLN1, MOLN2, MOLN3, SOL, BO, ROSA_B, GULA_B] = await Promise.all([
-    B + 'skogen-gron-saker/gran.png', B + 'skogen-saker/buske.png', B + 'skogen-saker/trad.png', B + 'lekplatsen-saker/appeltrad.png', RQ + 'ek/cut/ek.png',
+  const [STEN, GRAN, BUSKE, TRAD1, APPEL, EK, HIMMEL, KULLE_BAK, KULLE_FRAM, MOLN1, MOLN2, MOLN3, SOL, BO, ROSA_B, GULA_B] = await Promise.all([
+    B + 'skogen-saker/sten.png', B + 'skogen-gron-saker/gran.png', B + 'skogen-saker/buske.png', B + 'skogen-saker/trad.png', B + 'lekplatsen-saker/appeltrad.png', RQ + 'ek/cut/ek.png',
     ...['himmel', 'kulle-bak', 'kulle-fram', 'moln-stor', 'moln-mellan', 'moln-liten', 'sol', 'fagelbo'].map(n => P + n + '.png'),
     RQ + 'blomma-rosa/cut/blomma-rosa.png', RQ + 'blommor-gula/cut/blomma-gul-1.png'].map(lad));
   const TB = {};   // tulpanerna: knopp, uppe, hanger per färg (den gula utslagna är kritans teckning ur rekvisita)
@@ -39,10 +46,12 @@ export async function byggUppslaget(scen) {
   const SOLEN = pa(SOL, 0.24, 0.18, 1.15);
   const MOLNEN = [[MOLN1, 0.22, -0.7, 1.0], [MOLN2, 0.16, -0.2, 1.22], [MOLN3, 0.13, 0.3, 1.08]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
   // granarna och två lövträd ut mot kanterna; lövträdet med boet står till vänster (storyboarden)
-  const SKOG = [[-1.0, -0.4, 0.5, GRAN], [-1.24, -0.42, 0.56, GRAN], [-1.42, -0.16, 0.44, GRAN], [-0.36, -0.42, 0.44, EK], [0.28, -0.42, 0.5, GRAN],
+  // runda 2 (som 062 runda 2–5, Sanna 28/11): större träd ut mot sidorna (inget träd bakom tulpanerna), en sten vid två trädfötter
+  const SKOG = LUFT ? [[-1.3, -0.42, 0.6, TRAD1], [0.98, -0.42, 0.58, TRAD1], [1.42, -0.34, 0.5, TRAD1],   // mellanstora: vårens kamera är låg, större träd blev stammar utan krona; framför den främre kullen (z −0,47)
+    [-0.98, -0.2, 0.1, STEN], [0.8, -0.32, 0.07, STEN]].map(([x, z, h, m]) => kort(m, h, x, z)) : [[-1.0, -0.4, 0.5, GRAN], [-1.24, -0.42, 0.56, GRAN], [-1.42, -0.16, 0.44, GRAN], [-0.36, -0.42, 0.44, EK], [0.28, -0.42, 0.5, GRAN],
     [0.56, -0.36, 0.48, APPEL], [0.82, -0.38, 0.56, GRAN], [1.06, -0.42, 0.46, EK], [1.24, -0.36, 0.52, GRAN], [1.42, -0.2, 0.46, GRAN]].map(([x, z, h, m]) => kort(m, h, x, z));
-  const LOVTRAD = kort(TRAD1, 0.78, ...TRADET);
-  const BUSKE_K = kort(BUSKE, 0.26, 1.06, -0.12);
+  const LOVTRAD = kort(GREN === 'kod' ? await grenKod() : GREN === 'flow' ? await lad(P + 'trad-gren.png') : TRAD1, 0.78, ...TRADET);
+  const BUSKE_K = kort(BUSKE, 0.26, 1.06, -0.12, LUFT ? { flik: false } : {}); if (LUFT) BUSKE_K.m.visible = false;
   // marken: vårgrönt kritark med små vita prickblommor
   platt(tex(mark('#7CCB4E', '#A2DE72', '#5DB040', (x, Wc, D) => {
     x.fillStyle = '#FFFDF4'; for (let i = 0; i < 200; i++) { const px = 60 + ((i * 733) % (Wc - 120)), py = 60 + ((i * 397) % (D - 120)); x.beginPath(); x.arc(px, py, 4 + (i % 3) * 2, 0, 7); x.fill();
@@ -55,7 +64,7 @@ export async function byggUppslaget(scen) {
   }
   // den gula ritas av kritan: kortet ligger platt bakåt från foten (bildsidan upp) tills det fälls upp (som 062:s glass)
   const GUL_R = ruta(TB.gul.uppe.i);
-  const ROSA_K = kort(ROSA_B, 0.18, ...ROSA), GULA_K = kort(GULA_B, 0.14, ...GULA);
+  const ROSA_K = kort(ROSA_B, LUFT ? 0.16 : 0.18, ...ROSA), GULA_K = kort(GULA_B, LUFT ? 0.125 : 0.14, ...GULA);
   const KANNA_K = kort(KANNA, KH, ...KANNAPOS);
   const KANNA_R = ruta(KANNA_I);
   // fågelboet: följer lövträdet (scenen och storyboarden lägger det på LOVTRAD.m.localToWorld(BO_OFF))
@@ -85,4 +94,21 @@ export async function byggUppslaget(scen) {
     slut: () => [v3(0, 2.55, 4.05), v3(0, 0.12, -0.12), 32],   // hela den stängda boken, centrerad (bordets höjd)
   };
   return { insida, satt, kort, platt, pa, TB, KANNA_I, KANNA, BAK, SOLEN, MOLNEN, SKOG, LOVTRAD, BUSKE_K, TULPAN, GUL_R, ROSA_K, GULA_K, KANNA_K, KANNA_R, BOET, VY };
+}
+
+// grenen i kod: en avsmalnande gren ut från stammens högra sida under kronan, med en liten klyka i änden, i samma bruna krita som stammen
+// och med vit klistermärkeskant. Trädet ritas ovanpå, så att stammen täcker grenens rot.
+async function grenKod() {
+  const tr = await bild(B + 'skogen-saker/trad.png'), W = tr.width, H = tr.height, c = duk(W, H), x = c.getContext('2d');
+  const gren = () => { x.beginPath(); x.moveTo(555, 698); x.quadraticCurveTo(650, 668, 748, 640); x.lineTo(758, 664); x.quadraticCurveTo(660, 712, 555, 772); x.closePath(); };
+  const kvistar = [[[728, 648], [714, 604]], [[754, 646], [790, 606]]];
+  const kv = w => { x.lineCap = 'round'; x.lineWidth = w; for (const [[a, b], [d, e]] of kvistar) { x.beginPath(); x.moveTo(a, b); x.lineTo(d, e); x.stroke(); } };
+  x.fillStyle = x.strokeStyle = '#FFFDF6'; gren(); x.lineWidth = 26; x.lineJoin = 'round'; x.stroke(); x.fill(); kv(18 + 26);
+  const k = duk(W, H); kritYta(k.getContext('2d'), W, H, '#A06A3E', '#B98252', '#7E5230');
+  const m = duk(W, H), mx = m.getContext('2d'); mx.fillStyle = mx.strokeStyle = '#000';
+  mx.beginPath(); mx.moveTo(555, 698); mx.quadraticCurveTo(650, 668, 748, 640); mx.lineTo(758, 664); mx.quadraticCurveTo(660, 712, 555, 772); mx.closePath(); mx.fill();
+  mx.lineCap = 'round'; mx.lineWidth = 18; for (const [[a, b], [d, e]] of kvistar) { mx.beginPath(); mx.moveTo(a, b); mx.lineTo(d, e); mx.stroke(); }
+  mx.globalCompositeOperation = 'source-in'; mx.drawImage(k, 0, 0);
+  x.drawImage(m, 0, 0); x.drawImage(tr, 0, 0);
+  return tex(trim(c));
 }

@@ -12,7 +12,11 @@ import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, da
 // bland granarna, f enskilda blommor som syns hela tiden; ?bad=2|3 andra bad (rad 15–16, "needs lots of polish")
 const Q = new URLSearchParams(location.search), PROV = Q.get('prov') || '', BAD = +(Q.get('bad') || 4);   // bad 4 vald (Sanna 27/11 "Yes, use bad 4"), förut bad 3
 // lövträden och de enskilda blommorna gäller nu (Sanna 27/11 "more individual flower assets", "new trees too"); prov=g visar de gamla
-const STOR = PROV.includes('s') ? 0.72 : 1, TRAD = !PROV.includes('g'), BLOM = !PROV.includes('g');
+// ?prov=l luftigare uppslag (Sanna 28/11 "remove all pine trees, remove bush, make flowers smaller, all content a bit smaller"):
+// inga granar och buskar, fyra lövträd utspridda, blommorna × 0,75, sakerna × 0,85 och kameran lite längre bort
+const LUFT = PROV.includes('l');
+const STOR = PROV.includes('s') ? 0.72 : LUFT ? 0.85 : 1, TRAD = !PROV.includes('g'), BLOM = !PROV.includes('g');
+const FIGS = 1 - (1 - STOR) * 0.714, KDRAG = 1 + (1 - STOR) * 0.43;   // grodan och spaden (0,72 → 0,8), kamerans avstånd (0,72 → 1,12)
 
 // ---- raderna ----
 // rader.mjs direkt (läget per rad, st, finns inte i rader.json; rader.json skrivs för qa-verktygen)
@@ -28,7 +32,7 @@ const [GRAN, BUSKE, DAMM, BLAD, NACKROS, VASS, GRODA, HIMMEL, KULLE_BAK, KULLE_F
   B + 'dammen-saker/nackros.png', B + 'dammen-saker/vass.png', P + 'gurra.png',
   ...['himmel', 'kulle-bak', 'kulle-fram', 'moln-stor', 'moln-mellan', 'moln-liten', 'hink', 'blommor', 'sand'].map(n => P + n + '.png')].map(lad));
 // solen och glassen: kritan ritar dem (konturen i bildens egna px läggs på den beskurna bilden, ruta = beskärningen)
-const [TRAD1, APPEL, EK, ...BLOMS] = await Promise.all([B + 'skogen-saker/trad.png', B + 'lekplatsen-saker/appeltrad.png', RQ + 'ek/cut/ek.png',
+const [STEN, TRAD1, APPEL, EK, ...BLOMS] = await Promise.all([B + 'skogen-saker/sten.png', B + 'skogen-saker/trad.png', B + 'lekplatsen-saker/appeltrad.png', RQ + 'ek/cut/ek.png',
   ...['blomma-rod/cut/blomma-rod', 'blommor-gula/cut/blomma-gul-2', 'blomma-rosa/cut/blomma-lila', 'blomma-rosa/cut/blomma-rosa'].map(n => RQ + n + '.png'), B + 'vagen-saker/blomma-vit.png'].map(lad));
 const [SOL_I, GLASS_I] = await Promise.all([bild(RQ + 'sol-gul/cut/sol-gul.png'), bild(RQ + 'glass-rosa/cut/glass-rosa.png')]);
 // solen med ansikte (Sanna 27/11 runda 4 "bigger sun with face"): ögon med glans, rosiga kinder och ett leende på skivan (r ca 260 px)
@@ -73,24 +77,46 @@ const { insida, satt } = await skapaBok(scen, { farg: '#E8683A', figur: SOL_I, d
 // Molnen och solen kastar skugga på himlen (paSkuggsida).
 const UPPSLAG = kortmotor(scen, insida, { kskugga: ['28,52,18', 0.42, 0.16], paSkuggsida: true }), { platt, pa } = UPPSLAG;
 const kort = (map, h, x, z, o = {}) => UPPSLAG.kort(map, o.skala !== false ? h * STOR : h, x, z, o);   // ?prov=s: sakerna × 0,72
+// ?prov=l runda 6: den bakre kullen i dis (dess kritkant smälter mot himlen), och ingen av dem tar emot trädens skuggor.
+// (Prövat och tillbaka: kullarna längre bak visade bordet bakom boken och flyttade knappt horisonten; jämnt utdragna kullar tog inte bort
+// de lodräta skarvarna, som går genom gräset också och alltså kommer ur renderingen, inte kullbilden.)
 const BAK = [kort(bredare(KULLE_BAK, 5.2 * BOK), 2.15 / 5.2, 0, -0.6, { skala: false }), kort(bredare(KULLE_FRAM, 6.2 * BOK), 1.95 / 6.2, 0.05, -0.47, { skala: false })];
+if (LUFT) { BAK[0].m.material.color.set('#D8E6D2'); for (const k of BAK) k.m.receiveShadow = false; }
 pa(bredare(HIMMEL, 1.5), 2.03, 0, 0.07 + 2.03 / 2, 0.004, 2.3 * BOK);   // himlen upp till pärmens kant (större bok)
 const SOLEN = pa(SOL, 0.5, 0.12, 0.9);   // större (runda 4)
 const MOLNEN = [[MOLN1, 0.22, -0.66, 0.9], [MOLN2, 0.16, -0.26, 1.05], [MOLN3, 0.13, 0.62, 1.0]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
 // runda 5: fler träd ut mot de större sidornas kanter
-const SKOG = [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6],
+// runda 2 (Sanna 28/11 "trees can be bigger, vass smaller, a stone in front of a tree"): större träd ut mot sidorna, eken till höger om blad 2
+// (grodan stod grönt på grönt framför den), vassen vid dammens kant (vänster och bakre), en sten vid foten av äppelträdet och en liten vid trädet längst till höger
+// runda 6: träd 4 in från sidans kant (bordet syntes bredvid det; träd 1 in till −1,18 visade i stället bordet i glassens vy); träd 4 fram till z −0,3 prövades och blev för stort i blommornas vy
+const SKOG = LUFT ? [[TRAD1, -1.3, -0.44, 0.84], [APPEL, -0.66, -0.46, 0.7], [EK, 1.04, -0.46, 0.8], [TRAD1, 1.3, -0.38, 0.7]].map(([b, x, z, h]) => kort(b, h, x, z)) : [[-0.98, -0.36, 0.5], [-0.72, -0.4, 0.62], [-0.46, -0.34, 0.44], [0.38, -0.38, 0.56], [0.66, -0.33, 0.46], [0.94, -0.4, 0.6],
   [-1.24, -0.42, 0.56], [1.22, -0.36, 0.52], [-1.42, -0.16, 0.44], [1.42, -0.2, 0.46]].map(([x, z, h], i) => TRAD && i % 2 ? kort([TRAD1, APPEL, EK][((i - 1) / 2) % 3], h * 0.95, x, z) : kort(GRAN, h, x, z));
 // Blommorna bakom busken (Sanna 27/11: "dont hide flowers as much"): högre och bredare än i storyboarden, ungefär halva blomhuvudena syns
 // Runda 3 (Sanna 27/11 "place flowers more clearly"): ännu högre och lite åt sidan, så att blomhuvudena syns tydligt över busken
 const BLOMMOR_BAK = kort(BLOMMOR, 0.52, 1.07, -0.22, { flik: false }); BLOMMOR_BAK.m.scale.x = 0.85; BLOMMOR_BAK.m.visible = !BLOM;
 // enskilda blommor (runda 5, Sanna 27/11 "make flowers smaller": 0,72 av förut): röd, gul, lila, rosa i en sned rad bakom stranden vid blad 3, så att alla fyra syns, uppe hela tiden, en i taget när färgerna sägs
-const BLOMS_K = BLOM ? [[0, 0.18, 0.64, 0.47], [1, 0.17, 0.9, 0.36], [2, 0.18, 0.8, 0.16], [3, 0.165, 0.94, -0.02]].map(([i, h, x, z]) => kort(BLOMS[i], h, x, z)) : [];
-const BUSKAR = [kort(BUSKE, 0.3, -0.12, -0.3), kort(BUSKE, 0.26, 1.02, -0.14)];
+// ?prov=l (Sanna 28/11 "space flowers better"): två förskjutna rader med jämna mellanrum (ca 0,24), samma mitt vid stranden
+const BLOMS_K = BLOM ? (LUFT ? [[0, 0.18, 0.6, 0.4], [1, 0.17, 0.84, 0.44], [2, 0.18, 0.72, 0.2], [3, 0.165, 0.97, 0.24]] : [[0, 0.18, 0.64, 0.47], [1, 0.17, 0.9, 0.36], [2, 0.18, 0.8, 0.16], [3, 0.165, 0.94, -0.02]]).map(([i, h, x, z]) => kort(BLOMS[i], LUFT ? h * 0.75 : h, x, z)) : [];
+const BUSKAR = LUFT ? [] : [kort(BUSKE, 0.3, -0.12, -0.3), kort(BUSKE, 0.26, 1.02, -0.14)];
 platt(tex(mark('#6CC04A', '#8ED46A', '#56A83A')), 2.26 * BOK, 0, 0.0, 1.5 * BOK, SIDA + 0.0004);
-platt(DAMM, 1.45, -0.02, 0.06, 0.7);
-const BLADPOS = { 1: [-0.24, 0.08], 2: [0.45, -0.07], 3: BLOM ? [0.68, -0.2] : [0.79, 0.04], bad: [0.1, 0.0], sand: [-0.36, 0.62] };   // sand: bredvid hinken (utkast B)   // 3 = stranden vid blommorna, bad = mitt i dammen
+const DAMMEN = platt(DAMM, LUFT ? 1.28 : 1.45, -0.02, 0.06, LUFT ? 0.62 : 0.7);
+// ?prov=l: dammens kant upphöjd (Sanna 28/11 "raise edge for pond a bit"): en oval ring ovanpå bildens vita kant, 0,012 hög. Ovansidan är
+// bildens egen vita kritkant (bilden lagd i ringens plan), sidan lite mörkare krämvit, så att vattnet ligger nedsänkt.
+if (LUFT) {
+  const rx = 1.28 / 2, rz = 0.62 / 2, kx = rx - 1.28 * 42 / 977, kz = rz - 0.62 * 42 / 423, H = 0.008;   // runda 6: lägre och mörkare sida (såg ut som ett fat)
+  const yta = new THREE.Shape(); yta.absellipse(0, 0, rx, rz, 0, Math.PI * 2);
+  const hal = new THREE.Path(); hal.absellipse(0, 0, kx, kz, 0, Math.PI * 2, true); yta.holes.push(hal);
+  const geo = new THREE.ExtrudeGeometry(yta, { depth: H, curveSegments: 96, bevelEnabled: true, bevelThickness: 0.003, bevelSize: 0.003, bevelSegments: 2 });
+  const map = DAMM.clone(); map.repeat.set(1 / (2 * rx), 1 / (2 * rz)); map.offset.set(0.5, 0.5); map.needsUpdate = true;
+  const kant = new THREE.Mesh(geo, [mat(map), mat(null, { color: '#CFC4AA' })]);
+  kant.rotation.x = -Math.PI / 2; kant.position.set(-0.02, SIDA + 0.0005, 0.06); kant.castShadow = kant.receiveShadow = true; scen.add(kant);
+}   // ?prov=l: dammen lite mindre (Sanna 28/11), bladen ryms fortfarande
+const BLADPOS = { 1: [-0.24, 0.08], 2: LUFT ? [0.38, -0.02] : [0.45, -0.07],   // ?prov=l: blad 2 lite inåt, inte under den upphöjda kanten
+  3: BLOM ? [0.68, -0.2] : [0.79, 0.04], bad: [0.1, 0.0], sand: [-0.36, 0.62] };   // sand: bredvid hinken (utkast B)   // 3 = stranden vid blommorna, bad = mitt i dammen
 platt(BLAD, 0.3, ...BLADPOS[1], undefined, SIDA + 0.003); platt(BLAD, 0.3, ...BLADPOS[2], undefined, SIDA + 0.003);
-const SMATT = [kort(NACKROS, 0.1, 0.12, 0.3, { y: SIDA + 0.004, flik: false }), kort(VASS, 0.46, -0.84, 0.2, { vaj: 0 }), kort(VASS, 0.34, 0.62, -0.25, { vaj: 2 })];
+// runda 6: näckrosen in från bildens underkant, vass 1 ut ur dammens kant (stod i den); stenen vid (−0,52, −0,45) hamnade bakom vass 2, så den står kvar
+const SMATT = [kort(NACKROS, 0.1, ...(LUFT ? [0.2, 0.22] : [0.12, 0.3]), { y: SIDA + 0.004, flik: false }), kort(VASS, LUFT ? 0.28 : 0.46, ...(LUFT ? [-0.72, 0.2] : [-0.84, 0.2]), { vaj: 0 }), kort(VASS, LUFT ? 0.2 : 0.34, ...(LUFT ? [-0.5, -0.14] : [0.62, -0.25]), { vaj: 2 }),
+  ...(LUFT ? [kort(STEN, 0.11, -0.4, -0.38), kort(STEN, 0.07, 1.3, -0.26)] : [])];
 // hinken och sandslottet i ett sandhörn till vänster (runda 5, Sanna 27/11 "place hink and sandcastle to the left"), bort från blommorna
 // utkast B: hinken lite mindre och sandhögen större, så att hinken kan forma tornen (tornet ur bilden är litet)
 const HINKEN = kort(helTex(HINK_TOM_I), 0.22, -0.58, 0.76), SLOTTET = kort(helTex(SLOTT_I[0]), 0.36, -0.92, 0.58), BLOMMOR_UPPE = kort(BLOMMOR, 0.26, 0.98, 0.2);
@@ -171,9 +197,9 @@ const SAK = L.sakBild(GLASS_URL, GLASS_I.width, GLASS_I.height, { grepp: [126, 3
   [126, 236, 70], [70, 262, 50], [182, 262, 50], [126, 300, 64], [90, 340, 52], [162, 340, 52], [126, 372, 60], [126, 320, 175]] });   // sista tuggan tar resten
 L.sakIn(G, SAK);
 // spaden (utkast B): greppet i handtagets ögla, bladet nedåt; skalan så att den är lika stor som spaden i hinken
-const SPADE_SAK = L.sakBild(SPADE_URL, 146, 155, { grepp: [100, 22], fot: [15, 150], skala: HINKEN.h / 404 / (0.36 * (STOR < 1 ? 0.8 : 1) / (FOT - 168)), folj: 1, kant: 0 });
+const SPADE_SAK = L.sakBild(SPADE_URL, 146, 155, { grepp: [100, 22], fot: [15, 150], skala: HINKEN.h / 404 / (0.36 * FIGS / (FOT - 168)), folj: 1, kant: 0 });
 // grodans höjd (ögonen till fötterna) styr kortets skala: lika hög som gurra.png-kortet i storyboarden (0,36)
-const GRODKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: 0.36 * (STOR < 1 ? 0.8 : 1), mitt: 0.18 }), { m: groda, ENHET, fig2varld, BL, nick } = GRODKORT;
+const GRODKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: 0.36 * FIGS, mitt: 0.18 }), { m: groda, ENHET, fig2varld, BL, nick } = GRODKORT;
 // droppar ritade i riggens ruta (de får figurens vita kant): glassdroppen (faller, och på nosen i .drag som följer huvudet) och vattendroppar
 const NOS = [514, 318];
 G.insertAdjacentHTML('beforeend', '<g id="dropparG"></g>');
@@ -548,13 +574,13 @@ const VY = {
   nara: g => [g.clone().add(v3(0.03, 0.3, 0.61)), g.clone().add(v3(0, 0.25, 0)), 30],
   'nara-glass': g => [g.clone().add(v3(-0.04, 0.27, 0.68)), g.clone().add(v3(-0.06, 0.2, 0)), 30],   // närbilden med glassen i handen: lite åt vänster och ner, så att glassen ryms (QA 28/11 F6)
   glass: () => [v3(-0.4, 0.82, 1.42), v3(-0.42, 0.22, 0.22), 30],   // längre bort: grodans huvud i bild (QA 28/11)   // glassteckningen och grodan i samma bild
-  damm: () => [v3(0.12, 0.85, 1.55), v3(0.12, 0.06, 0.02), 32],
+  damm: () => LUFT ? [v3(0.06, 0.8, 1.55), v3(0.06, 0.06, -0.04), 32] : [v3(0.12, 0.85, 1.55), v3(0.12, 0.06, 0.02), 32],   // ?prov=l runda 6: mindre tom mark fram, blommorna ute ur bild
   'damm-hopp': () => [v3(0.12, 0.9, 1.7), v3(0.15, 0.22, -0.02), 32],   // hoppet upp ur badet hela vägen i bild (QA 28/11 R4)
   'damm-hejda': () => [v3(0.38, 0.85, 1.5), v3(0.38, 0.06, 0.0), 32],   // hej då, dammen: grodan (vid sandhörnet) helt utanför bild (QA 28/11 F7)
   hopp: () => [v3(-0.08, 0.78, 1.35), v3(-0.04, 0.2, 0.02), 34],   // längre bort och högre mål: hoppet stannar i bild (QA 28/11 R5)   // högre, så att hinken inte skymmer
   buske: () => [v3(0.98, 0.5, 1.04), v3(0.6, 0.17, -0.04), 32],   // snett från höger, så att uppslaget är bakgrunden (runda 5)
   'buske-nara': () => [v3(0.95, 0.3, 0.55), v3(1.02, 0.22, -0.14), 28],
-  bygge: () => [v3(-0.6, 0.62, 1.9), v3(-0.66, 0.2, 0.62), 30],   // utkast B: grodan, hinken och sandhögen i samma bild
+  bygge: () => LUFT ? [v3(-0.98, 0.5, 1.42), v3(-0.56, 0.18, 0.46), 28] /* runda 6: snävare (bordet syntes uppe till höger, sidans kant nere till höger) */ : [v3(-0.6, 0.62, 1.9), v3(-0.66, 0.2, 0.62), 30],   // ?prov=l: närmare och snett från vänster in mot boken, bordet och sidans framkant utanför bild   // utkast B: grodan, hinken och sandhögen i samma bild
   torn: () => { const m = v3(TORN_X[0], KULLE_Y + 0.045, SLOTTET.z); return [m.clone().add(v3(0, 0.11, 0.21)), m, 28]; },   // detaljbild på torn 1: tornet ca halva bildhöjden (QA 28/11)
   helhet: () => [v3(0.12, 0.78, 1.62), v3(0.12, 0.18, -0.02), 32],   // närmare (runda 4, Sanna 27/11 "dont see the edges outside book")   // barnet letar blommorna: hela uppslaget i bild (Sanna 27/11 "show full scene")
   slut: () => [v3(-0.14, 2.45, 3.95), v3(0, -0.12, -0.2), 32],   // hela den stängda boken i bild, mitt i bilden (QA 28/11 F2; förut 1,45/2,45 efter Sanna 27/11 "closer close book", då syns bara pärmen)
@@ -562,11 +588,12 @@ const VY = {
   blommor: () => BLOM ? [v3(0.97, 0.54, 1.32), v3(0.62, 0.25, 0.1), 30] : [v3(0.6, 0.4, 1.05), v3(0.82, 0.19, 0.08), 30],
   'bad-nara': g => BAD === 1 ? [g.clone().add(v3(0.03, 0.3, 0.82)), g.clone().add(v3(0, 0.22, 0)), 28] : [g.clone().add(v3(0.05, 0.42, 1.15)), g.clone().add(v3(0, 0.22, 0)), 30],   // i badet: ansiktet och händerna i bild (QA 28/11 R1; förut mål 0,14, ansiktet i underkant)
   // grodans ansikte och blommorna i samma bild, var hon än står (blad 2 på rad 19–19b, stranden på rad 21; QA 28/11 F1)
-  'blommor-nara': g => BLOM ? (m => [m.clone().add(v3(0.32, 0.32, 1.32)), m, 30])(v3((g.x + 0.8) / 2, 0.22, (g.z + 0.22) / 2)) : [v3(0.64, 0.42, 1.0), v3(0.86, 0.24, 0.1), 28],
-  sand: () => [v3(-0.36, 0.7, 1.75), v3(-0.32, 0.13, 0.2), 42],   // sandhörnet till vänster, grodan på stranden till höger (runda 5)
-  hejda: g => [g.clone().add(v3(-0.1, 0.3, 0.82)), g.clone().add(v3(0.02, 0.2, -0.2)), 32],   // närmare, så att vinkningen syns
+  // ?prov=l runda 6: blommor-nara snävare (fov 26), bordet syntes till höger om träd 4
+  'blommor-nara': g => BLOM ? (m => [m.clone().add(v3(0.32, 0.32, 1.32)), m, LUFT ? 26 : 30])(v3((g.x + 0.8) / 2, 0.22, (g.z + 0.22) / 2)) : [v3(0.64, 0.42, 1.0), v3(0.86, 0.24, 0.1), 28],
+  sand: () => LUFT ? [v3(-0.24, 0.66, 1.62), v3(-0.3, 0.13, 0.22), 36] : [v3(-0.36, 0.7, 1.75), v3(-0.32, 0.13, 0.2), 42],   // ?prov=l: snävare och lite åt höger, bordet utanför bild   // sandhörnet till vänster, grodan på stranden till höger (runda 5)
+  hejda: g => [g.clone().add(v3(-0.1, 0.3, 0.82)), g.clone().add(v3(0.02, 0.2, -0.2)), LUFT ? 28 : 32],   // ?prov=l runda 6: snävare (sidans och kullkortens ändar syntes i kanterna)   // närmare, så att vinkningen syns
 };
-if (STOR < 1) for (const [n, f] of Object.entries(VY)) if (!['bord', 'slut', 'himmel'].includes(n)) VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(1.12)), mal, fov]; };
+if (STOR < 1) for (const [n, f] of Object.entries(VY)) if (!['bord', 'slut', 'himmel', ...(LUFT ? ['sand', 'bygge'] : [])].includes(n)) VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(KDRAG)), mal, fov]; };
 const ALIAS = { halv2: 'halv', nara2: 'nara', nara3: 'nara', logga: 'bord', 'buske-nara': 'helhet' };
 satt(PARM[1]); scen.updateMatrixWorld(true);   // himlens vy mäts med pärmen uppe
 // kameran 0,09 högre än vyns plats (Sanna 27/11), utom i klippet till himlen
