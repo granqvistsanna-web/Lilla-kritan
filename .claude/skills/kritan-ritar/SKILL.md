@@ -30,7 +30,9 @@ Tre saker gör att teckningarna hänger ihop mellan avsnitten (Sanna 2026-11-26:
 
 ## Linjen och konturen
 
-- **Färg:** mörk kritlinje `#3a2c28`, eller i färgsångerna en mörk ton av avsnittets färg. Runda ändar och hörn.
+- **Färg:** en mörk ton av sakens egen färg, `linjeFarg(bild)` (ljushet 30 %, gult blir mörk orangebrun), så att teckningen är lättare att gissa: rosa glass får en vinröd linje, blå kanna en mörkblå. `#3a2c28` bara när saken saknar bild. I färgsångerna en mörk ton av avsnittets färg. Runda ändar och hörn.
+- **Vaxkrita, aldrig en slät linje** (Sanna 2026-11-28: *"no crayon texture"*): linjen ritas genom `kritKorn(id, t)`, ojämn kant och korn med ljusa luckor, nytt korn 6 gånger/s som boilen. Filtret läggs på en `<g>` **utan** transform runt linjen, så att kornet räknas i skärmens px och blir lika stort i närbild och helbild.
+- **Aldrig `vector-effect="non-scaling-stroke"` på linjen.** Då räknas `pathLength`/strecket i skärmens px men kritans spets i bildens px, och linjen springer före kritan (1/skalan gånger fortare; Kritans bok före 2026-11-28). Ge i stället bredden i linjens egna enheter: bredden i bild delad med skalan.
 - **Bredd:** 12 px i helbild (ungefär 3 % av sakens höjd). Ritas linjen i bildens egna pixlar, dela bredden med sakens skala.
 - **Konturen ur en urklippt bild:**
 
@@ -99,6 +101,11 @@ Rendera stillbilder och lägg dem på ett kontaktark med minst en bild ur varje 
 5. Linjen är borta när bilden är fylld.
 6. Kritan är aldrig över ett ansikte.
 7. Kritan har samma storlek i bild som i de andra scenerna.
+8. Linjen är vaxkrita (korn, ojämn kant) i sakens mörka ton, inte en slät mörk linje.
+9. Teckningen står upprätt mot kameran, aldrig liggande eller snedvriden av en yta.
+10. Den färdiga teckningen (bild 6 på arket) går att gissa utan fyllningen: ytterform + detaljer som syns i den storlek den ritas.
+
+**Kritans bok och 3D-scener:** `node avsnitt/NNN/scener/render.mjs avsnitt/NNN/scener/boken --krita` ger ett ark per teckning i `stills/krita/<teckning>.jpg` (9 bilder: kritan kommer, 20/40/60/80/100 % ritat, gisspausen, fyllningen, klart) på någon minut. Visa arken och en kort `--snabb --fran --till`-film av varje teckning för Sanna och få ett ja **innan** avsnittet renderas om (en omrendering av ett bokavsnitt tar ungefär en timme). Ändras den delade koden (`kritan-ritar.js`, `uppslag.js`): ark före och efter för alla avsnitt som använder den, som i `produktion/three-rum/popupbok/krita-prov/`.
 
 Titta också på täta bildrutor (6 per sekund) runt varje fasbyte och varje glidning mellan streck, för ryck och flimmer syns inte i enstaka bilder.
 
@@ -107,6 +114,7 @@ Titta också på täta bildrutor (6 per sekund) runt varje fasbyte och varje gli
 - Rita inte hela bilden med många kritor och färger (007), och inga skuggor, mönster eller fyllning med linjen. Detaljer betyder några tydliga linjer, inte en färdig målning.
 - Ingen teckning med bara ytterformen när saken har delar som gör den lätt att gissa.
 - Ingen egen glid-, fart- eller vinkelkod för kritan i avsnittet.
+- Rita inte på en liggande eller lutande yta (marken, en sida i boken). Kritan ritar alltid på ett stående plan mot kameran, på sakens fotpunkt; i Kritans bok gör `uppslag.js` det själv (`staende()`).
 - Ingen platt färgad bild i en djup zoom, och inget kritsvep ut ur ritscenen.
 - Fäst inte kritan vid en punkt som räknas om från ett annat streck än det som ritas just nu. Använd `ritBana`, så följer spetsen linjen.
 - Skriv inte nya egna `krita()`-funktioner med andra vinklar eller skalor. Äldre avsnitt (011, 045, 046) har egna kopior. De får ligga kvar, men nya scener använder den delade filen.

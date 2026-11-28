@@ -131,7 +131,7 @@ Börja från en kopia av **065:s eller 064:s** `scener/` och `storyboard/` (de n
 | Figuren: v2-riggen ritad i `#kort` varje bildruta och lagd som textur på ett kort (som Kanel i lekrummet), boil 2,5 px och vit kant 3 px i bild räknat mot kamerans avstånd, `fig2varld` för saker i handen | ja | riggens mapp, `HAND` om figuren saknar referensark, kortets höjd |
 | Figurens platser och hopp (`BLADPOS`, `HOPP`, `SKUTT`, `grodPos`) | hoppmotorn | platserna |
 | Figurens rörelser per rad (`switch (id)` i `grodan(t)`), `REAKTION` (reaktionsslaget i radens slut) | mönstret, `vink()`, `nick`, `blicka` | varje rad |
-| Kritan ritar på en 3D-yta: `affin()`, `teckning()`, `ritaKritan()` via `verktyg/kritan-ritar.js`, kritan ×1,25 i närbild | ja | vilka två saker och var |
+| Kritan ritar stående mot kameran på sakens fotpunkt: `teckning()` i `uppslag.js` via `verktyg/kritan-ritar.js` (vaxkorn, linjen i sakens mörka ton), kritan ×1,25 i närbild, reglerna under *Kritan ritar i boken* | ja | vilka två saker och var |
 | Kameran: vyer (`VY`), `vy()`, `glid()`, `lage`, `fran3`, `skjut`, `kameraplan` ur `verktyg/kamera3d.mjs`, öppningens och stängningens glidning | ja | vyernas koordinater |
 | Skärpedjupet (`BokehPass` med kortens egna djupmaterial), oskärpa per vy | ja | – |
 | Ljuset och värmegraderingen | ljuset | om temat ändrar ljuset (varmare, kallare, grått) |
@@ -199,7 +199,18 @@ Gå igenom stillbilderna i grind 6a och förhandsvisningen med den här listan, 
 
 ### Kritan ritar i boken
 
-Allt via `verktyg/kritan-ritar.js` (skillen `kritan-ritar`). Konturen (bildens egna px ur `kontur.json`) läggs på 3D-ytan med en affin avbildning ur kamerans projektion varje bildruta, fylls i inifrån och tonas över till 3D-urklippet. Kritan är × 1,25 i närbild (runda 4: *"bigger crayon"*) och följer linjen den ritar. Den första teckningen ritas på pärmens insida (himlen), den andra på sidan, där kortet sedan fälls upp med ett `pop`.
+Allt via `verktyg/kritan-ritar.js` (skillen `kritan-ritar`) och `kritan()` i `uppslag.js`, så att kritan ritar likadant i varje bokavsnitt. Avsnittet ger bara `KR.teckning(namn, bild, kontur, ruta, yta, tider, fyllning, väntplats)` och skriver ingen egen krit-kod.
+
+**Reglerna (Sanna 2026-11-28, *"the line dont follow crayon animation … no crayon texture … the angle is weird"*):**
+
+1. **Linjen följer spetsen.** Linjen och spetsen räknas i samma enheter (ingen `non-scaling-stroke`), så att det som är ritat slutar exakt under kritans spets i varje bildruta.
+2. **Vaxkrita.** Linjen går genom `kritKorn` (korn, ojämn kant, nytt korn 6 gånger/s) i en mörk ton av sakens egen färg (`linjeFarg`), 14 px bred i bild.
+3. **Stående mot kameran.** Teckningen står upprätt på sakens fotpunkt (botten mitt i bildens synliga ruta), i den storlek saken får på ytan, utan lutning och perspektiv, och tonas över till 3D-urklippet. Den ritas aldrig liggande på en sida eller på marken. Hjälpsaken står uppe (eller poppar upp) när fyllningen är klar, så att bilden och kortet möts. En sak som ska ligga ner efteråt (064:s pannband på snön) ritas ändå stående och fälls ner efter fyllningen.
+4. **Gissbar.** Ytterform + 2–6 detaljstreck som syns i den storlek teckningen ritas (inte små hål eller prickar). Teckningen är minst ca 15 % av bildens höjd medan den ritas: välj en närbild för ritandet om saken är liten i helbild.
+5. **Samma tider.** Kritan kommer på 0,4 s, ritar 2–4,5 s, glider till väntplatsen på 0,7 s, svajar under gisspausen (3 s), fyllningen tar 0,5–0,8 s. Kritan × 1,25 i närbild (runda 4: *"bigger crayon"*).
+6. **Godkänn på stillbilder före omrendering.** `render.mjs <scen> --krita` ger ett ark per teckning (`stills/krita/`) på någon minut, och `--snabb --fran --till` en kort film av bara ritandet. Sanna säger ja till arken innan avsnittet renderas om (ca en timme). Proven för 062–065 ligger i `produktion/three-rum/popupbok/krita-prov/` (`fore/` och `efter/`).
+
+Den första teckningen ritas på pärmens insida (himlen), den andra i uppslaget, där kortet sedan fälls upp med ett `pop`.
 
 ### Puts att pröva (genomgången 2026-11-27, inte beslutat av Sanna)
 

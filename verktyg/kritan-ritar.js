@@ -14,12 +14,17 @@
 //   fyllMask(id, cx, cy, R, f)    cirkeln som fyller den riktiga bilden inifrån (f 0–1)
 //   linjeOpacitet(f)              linjen tonas bort medan bilden fylls
 //   gnistor(cx, cy, R, t, n)      krit-gnistorna på svaret
+//   kritKorn(id, t)               filtret som gör linjen till vaxkrita (ojämn kant, korn och luckor), nytt korn 6 gånger/s som boilen.
+//                                 Lägg <defs>${kritKorn('kk', t)}</defs> i SVG:n och linjen i <g filter="url(#kk)"> UTAN transform på just den g:n
+//                                 (filtret räknas i skärmens px, så kornet blir lika stort hur nära kameran än är)
+//   linjeFarg(bild)               linjens färg: en mörk ton av sakens egen färg (bild = img/canvas med saken), så att teckningen är lättare att gissa
 //
 // Siffrorna nedan är godkända av Sanna. Ändra dem här, inte i avsnitten.
 
 const KRITAN = {
   BILD: '/assets/rekvisita/krita-rod/cut/krita-rod-tunn.png', WH: [755, 265], SPETS: [742, 132], BAK: [16, 132],   // tunn kant: följer vita-kanter-regeln (Sanna 2026-11-25)
-  LINJE: '#3a2c28',          // mörk kritlinje (i färgsångerna: en mörk ton av avsnittets färg)
+  LINJE: '#3a2c28',          // mörk kritlinje när saken saknar bild (annars linjeFarg: en mörk ton av sakens färg, Kritans bok 2026-11-28)
+  BRED_BOK: 14,              // Kritans bok: linjens bredd i bild (skärmens px), kornet äter lite av den
   BRED: 12,                  // linjens bredd i helbild (ca 3 % av sakens höjd); dela med sakens skala om linjen ritas i bildens pixlar
   VINKEL_RITAR: 125, VINKEL_VANTAR: 140,
   SKALA_PAPPER: 0.42,        // på ritpapperet (ritintrot)
@@ -123,4 +128,32 @@ function gnistor(cx, cy, R, t, n = 5) {
     return r > 0.5 ? `<path d="${_gnistaD(x, y, r)}" fill="#ffd23f" stroke="#fff" stroke-width="6" stroke-linejoin="round" paint-order="stroke" transform="rotate(${_f1(20 * u)} ${_f1(x)} ${_f1(y)})"/>` : ''; }).join('');
 }
 
-if (typeof window !== 'undefined') Object.assign(window, { KRITAN, kritaBild, kritaSkala, ritfart, ritBana, kritaFas, fyllMask, linjeOpacitet, gnistor });
+// Vaxkritans linje (Sanna 2026-11-28: "no crayon texture"): kanten knaggas lite (displacement 2,5 px, samma som line boil) och kornet ger
+// luckor på längden, som när kritan drar över papper. Kornet byts 6 gånger/s (som #boil), annars glider linjen under ett fast korn när kameran rör sig.
+function kritKorn(id, t = 0) {
+  const s = 1 + (Math.floor(t * 6) % 97);
+  return `<filter id="${id}" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">`
+    + `<feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="${s}" result="b"/>`
+    + `<feDisplacementMap in="SourceGraphic" in2="b" scale="2.5" xChannelSelector="R" yChannelSelector="G" result="d"/>`
+    + `<feTurbulence type="fractalNoise" baseFrequency="0.22 0.5" numOctaves="3" seed="${s + 50}" result="k"/>`
+    + `<feColorMatrix in="k" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.6 0 0 0 2.15" result="m"/>`
+    + `<feComposite in="d" in2="m" operator="in"/></filter>`;
+}
+
+// En mörk ton av sakens färg: medelfärgen av de mättade, synliga pixlarna, mörkad till ljushet 0,30 (färgsångernas linje, för alla saker).
+function linjeFarg(bild) {
+  try {
+    const c = document.createElement('canvas'), w = c.width = 64, h = c.height = Math.max(1, Math.round(64 * (bild.height / bild.width))), x = c.getContext('2d');
+    x.drawImage(bild, 0, 0, w, h); const a = x.getImageData(0, 0, w, h).data; let r = 0, g = 0, b = 0, n = 0;
+    for (let i = 0; i < a.length; i += 4) { if (a[i + 3] < 200) continue; const mx = Math.max(a[i], a[i + 1], a[i + 2]), mn = Math.min(a[i], a[i + 1], a[i + 2]);
+      const v = (mx - mn) / 255; if (mx > 245 && v < 0.1) continue; r += a[i] * v; g += a[i + 1] * v; b += a[i + 2] * v; n += v; }   // vit kant och vitt papper räknas inte
+    if (n < 1) return KRITAN.LINJE;
+    [r, g, b] = [r / n / 255, g / n / 255, b / n / 255];
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn; let hu = 0, sa = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
+    if (d) hu = mx === r ? ((g - b) / d + 6) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    hu *= 60; if (hu > 38 && hu < 75) hu = 30;   // gult mörkat blir olivgrönt: gula saker får en mörk orangebrun linje
+    return `hsl(${Math.round(hu)} ${Math.round(Math.min(0.7, sa) * 100)}% 30%)`;
+  } catch { return KRITAN.LINJE; }
+}
+
+if (typeof window !== 'undefined') Object.assign(window, { KRITAN, kritaBild, kritaSkala, ritfart, ritBana, kritaFas, fyllMask, linjeOpacitet, gnistor, kritKorn, linjeFarg });

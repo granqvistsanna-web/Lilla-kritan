@@ -1,6 +1,7 @@
 // Renderar en three.js-scen i produktion/three-rum/ till 1920×1080, 30 fps (samma upplägg som avsnittens render.mjs, utan sång; ljudet ur window.LJUD).
 //   node render.mjs <scenmapp>                         -> <scenmapp>/<scen>.mp4
 //   node render.mjs <scenmapp> 0 5 9.5                  -> <scenmapp>/stills/<t>.jpg + stills/sheet.jpg
+//   node render.mjs <scenmapp> --krita                  -> <scenmapp>/stills/krita/<teckning>.jpg: 9 bilder per teckning kritan ritar (in, 20–100 %, gisspausen, fyllningen)
 //   node render.mjs <scenmapp> --snabb                  -> förhandsvisning 960×540, 15 fps
 //   node render.mjs <scenmapp> --fran 2 --till 4 [--ut fil.mp4] [--langd] [--bara-ljud] [--tider] [--fraga 'lucka=5&del=slut']   (för verktyg/render-delat.mjs)
 // Sidan sätter window.ready (promise), window.seek(t) (promise, ritar bildrutan för tiden t) och window.DURATION.
@@ -16,7 +17,7 @@ const HAR = dirname(fileURLToPath(import.meta.url)), ROT = resolve(HAR, '../..')
 const args = process.argv.slice(2), dir = resolve(args.shift());
 const flagga = n => { const i = args.indexOf(n); return i < 0 ? undefined : +args.splice(i, 2)[1]; };
 const ta = n => args.includes(n) && !!args.splice(args.indexOf(n), 1);
-const baraLjud = ta('--bara-ljud'), snabb = ta('--snabb'), LANGD = ta('--langd'), TIDER = ta('--tider');   // --tider: sidans window.TIDER som json
+const KRITA = ta('--krita'), baraLjud = ta('--bara-ljud'), snabb = ta('--snabb'), LANGD = ta('--langd'), TIDER = ta('--tider');   // --tider: sidans window.TIDER som json
 const UT = args.includes('--ut') ? resolve(args.splice(args.indexOf('--ut'), 2)[1]) : undefined;
 const FRAGA = args.includes('--fraga') ? args.splice(args.indexOf('--fraga'), 2)[1] : '';   // extra sidfråga, t.ex. armar=b
 const fran = flagga('--fran') ?? 0, tillArg = flagga('--till'), ts = args;
@@ -58,6 +59,17 @@ async function effektWav() {
 if (TIDER) { console.log(JSON.stringify(await p.evaluate(() => ({ ...window.TIDER, LJUD_NYA: window.LJUD_NYA || [], LJUD_SLUT: window.LJUD_SLUT || [] })))); }
 else if (LANGD) { console.log(JSON.stringify({ langd: till - fran, fps: FPS, ut })); }
 else if (baraLjud) { console.log(await effektWav());
+} else if (KRITA) {   // kritans teckningar (window.KRITA_RIT ur uppslag.js kritan()): ett ark per teckning, att godkänna innan scenen renderas om
+  const UTK = join(dir, 'stills', 'krita'); await mkdir(UTK, { recursive: true });
+  for (const { namn, T, fyll: [f0, f1] } of await p.evaluate(() => (window.KRITA_RIT || []).map(({ namn, T, fyll }) => ({ namn, T, fyll })))) {
+    const rit = k => T.rit[0] + k * (T.rit[1] - T.rit[0]), tider = [T.in[1], rit(0.2), rit(0.4), rit(0.6), rit(0.8), rit(1), (T.vanta[1] + T.ut[0]) / 2, (f0 + f1) / 2, f1 + 0.3];
+    const files = [];
+    for (const [i, t] of tider.entries()) { await seek(t); files.push(join(UTK, `${namn}-${i + 1}.jpg`)); await p.screenshot({ path: files.at(-1), type: 'jpeg', quality: 90 }); }
+    execFileSync('ffmpeg', ['-loglevel', 'error', '-y', ...files.flatMap(f => ['-i', f]), '-filter_complex',
+      files.map((_, i) => `[${i}:v]scale=640:360[v${i}];`).join('') + files.map((_, i) => `[v${i}]`).join('') + 'xstack=inputs=9:grid=3x3',
+      '-frames:v', '1', join(UTK, `${namn}.jpg`)]);
+    console.log(join(UTK, `${namn}.jpg`), JSON.stringify({ rit: T.rit, fyll: [f0, f1] }));
+  }
 } else if (ts.length) {
   const STILLS = join(dir, 'stills'); await mkdir(STILLS, { recursive: true });
   const files = [];

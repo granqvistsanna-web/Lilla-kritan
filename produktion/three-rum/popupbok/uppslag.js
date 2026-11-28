@@ -176,21 +176,30 @@ export function kritan(cam) {
   const RIT = [], KS = KRITAN.SKALA_SCEN * 1.25;   // kritan i närbild
   // drag: konturen ur kontur(); r: ruta(bilden); mesh: ytan (eller t => ytan); T: { in, rit, vanta, ut }; fyll: [start, slut]; vanta: [dx, dy] i bild
   const teckning = (namn, href, drag, r, mesh, T, fyll, vanta) => RIT.push({ namn, href, drag, r, mesh, T, fyll, vanta });
+  if (typeof window !== 'undefined') window.KRITA_RIT = RIT;   // render.mjs --krita läser tiderna (stillbilder av kritan före en omrendering)
+  // Kritan ritar alltid på ett stående plan mot kameran (Sanna 2026-11-28: saker som ritades liggande i boken fick en konstig vinkel):
+  // teckningen står på sakens fotpunkt i sakens storlek (bildens bredd på ytan), utan lutning, och ingen tagning ritar på en liggande yta.
+  function staende(mesh, r) {
+    const A = affin(mesh, r), [a, b] = A.m, s = Math.hypot(a, b), fx = r.ox + r.w / 2, fy = r.oy + r.h, [Fx, Fy] = A.p([fx, fy]);
+    const m = [s, 0, 0, s, Fx - s * fx, Fy - s * fy];
+    return { m, s, p: ([x, y]) => [s * x + m[4], s * y + m[5]] };
+  }
   function rita(t) {
-    let h = '';
+    let h = `<defs>${kritKorn('kritkorn', t)}</defs>`;
     for (const D of RIT) {
       const { T, fyll: [f0, f1], r } = D;
       if (t < T.in[0] || t > Math.max(T.ut[1], f1 + 0.5)) continue;
-      const A = affin(typeof D.mesh === 'function' ? D.mesh(t) : D.mesh, r), f = k01((t - f0) / (f1 - f0)), k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
-      const Rb = ritBana(D.drag, k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
-      const cx = r.W / 2, cy = r.H / 2, op = 1 - k01((t - f1) / 0.2);
-      h += `<g transform="matrix(${A.m.map(x => x.toFixed(4)).join(' ')})">`;
-      if (f > 0 && op > 0) h += fyllMask('fy' + D.namn, cx, cy, Math.hypot(r.W, r.H) / 2, f) + `<image href="${D.href}" width="${r.W}" height="${r.H}" opacity="${op.toFixed(3)}" ${f < 1 ? `clip-path="url(#fy${D.namn})"` : ''}/>`;
-      if (k > 0 && f < 1) h += Rb.html;
-      h += '</g>';
+      const mesh = typeof D.mesh === 'function' ? D.mesh(t) : D.mesh;
+      D.farg ??= linjeFarg(mesh.material?.map?.image ?? mesh.children?.find(c => c.material?.map)?.material.map.image);
+      const A = staende(mesh, r), f = k01((t - f0) / (f1 - f0)), k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
+      // linjens bredd i bildens px (inte non-scaling-stroke: då räknas strecket i skärmens px och linjen springer före kritan)
+      const Rb = ritBana(D.drag, k, { attr: `fill="none" stroke="${D.farg}" stroke-width="${(KRITAN.BRED_BOK / A.s).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"` });
+      const cx = r.W / 2, cy = r.H / 2, op = 1 - k01((t - f1) / 0.2), M = `matrix(${A.m.map(x => x.toFixed(4)).join(' ')})`;
+      if (f > 0 && op > 0) h += `<g transform="${M}">` + fyllMask('fy' + D.namn, cx, cy, Math.hypot(r.W, r.H) / 2, f) + `<image href="${D.href}" width="${r.W}" height="${r.H}" opacity="${op.toFixed(3)}" ${f < 1 ? `clip-path="url(#fy${D.namn})"` : ''}/></g>`;
+      if (k > 0 && f < 1) h += `<g filter="url(#kritkorn)" opacity="${linjeOpacitet(f).toFixed(2)}"><g transform="${M}">${Rb.html}</g></g>`;   // kornet i skärmens px
       const [sx, sy] = A.p([cx, cy]), kr = kritaFas(t, T, { start: A.p(Rb.start), spets: A.p(Rb.spets), slut: A.p(Rb.slut), vanta: [sx + D.vanta[0], sy + D.vanta[1]], s: KS });
       if (kr) h += kritaBild(kr.x, kr.y, kr);
-      if (f > 0) h += gnistor(sx, sy, Math.hypot(...A.p([r.W, cy]).map((v, i) => v - [sx, sy][i])) * 1.1, t - f0);
+      if (f > 0) h += gnistor(sx, sy, A.s * (r.w + r.h) / 4 * 1.1, t - f0);
     }
     return h;
   }
