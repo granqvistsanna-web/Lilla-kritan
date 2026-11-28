@@ -39,6 +39,8 @@ body without arms and legs, left arm, right arm, left leg, right leg, left ear, 
 
 > **Öronen utan hack (2026-11-25, 056, Sannas ja):** öronen hade ett trappsteg på utsidan (den gamla äggkanten) som syntes i närbild. `premium/skript/rut_oron.py` fyller öronens kritfyllning ut till sitt konvexa hölje (nya pixlar får närmaste kritfärg) och lägger samma vita kant runt: `cut-tunn/` 6,5 px, `cut/` 10 px. Samma konst, spets och vridpunkter. De gamla ligger i `premium/aldre/`. Jämförelse: `avsnitt/056-raven-gar-och-lagger-sig/provbild/rav-oron-forslag.jpg`.
 
+> **Öronen putsade (2026-11-28, Sannas "polish räven ears", godkänt "better yes"):** `rut_oron.py`-öronen hade kantiga hörn, en vit glansrand på utsidan, en trubbig spets och inre örat avklippt mot den gamla äggkanten. `premium/skript/rut_oron_putsa.py` gör om dem direkt ur `original/rut-faceless.jpg` (samma pixlar som riggen): det synliga örat ovanför huvudet rakt ur konsten, roten bakom kroppen (70 px längre ner) i ren orange krita ur huvudets mitt, formen rundad, sedan den vita kanten (`cut-tunn/` 6,5 px, `cut/` 10 px). Samma vridpunkter. De förra ligger i `premium/aldre/`. Jämförelse: `premium/rut-oron-fore-efter.jpg`.
+
 > **Tunna kanter (2026-11-25, inför 055):** `premium/cut-tunn/` ur `verktyg/rigg_tunn.py` (kanten 1 % av kroppens höjd: 10 px → 6,5 px), och `uttryck.html` pekar dit. Bilderna i `cut/` är orörda. `rut-kropp-mask.png` och sovbilden används fortfarande ur `cut/`, eftersom sovbilden redan har sin kant från tunn_kant.py.
 
 ## Prompt
