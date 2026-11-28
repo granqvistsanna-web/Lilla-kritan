@@ -1866,5 +1866,13 @@
   "file": "avsnitt/065-varen-i-boken/film/avsnitt-065.mp4",
   "status": "granska",
   "name": "065 Våren i boken"
+ },
+ "JP-tittut-bjornen": {
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/JP-tittut-bjornen-1128-1206.mp4",
+  "duration": 106.0,
+  "rendered": "2026-11-28 12:06 (Tittut v3 i luckan (parkerad, lucka 6 i ramen), utan tittut-slutkortet som J12, 1:46, -16,0 LUFS)",
+  "file": "produktion/youtube/shorts/jul/06-tittut-bjornen/06-tittut-bjornen.mp4",
+  "status": "granska",
+  "name": "Jul (parkerad): Tittut björnen"
  }
 }
