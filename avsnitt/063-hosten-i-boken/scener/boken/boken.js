@@ -86,8 +86,9 @@ function krona(k) {   // 0 = grön, 1 = hela kronan höstfärgad (med kritans l�
   EKHOST_T.needsUpdate = true;
 }
 platt(tex(mark('#B99A45', '#CDB264', '#8F8A3A')), 2.26, 0, 0.0, 1.5, SIDA + 0.0004);   // marken: höstgräs, ockrabrunt med gröna fläckar
-const STUBBEN = kort(STUBBE, 0.17 * L85, LUFT ? 0.9 : 0.78, -0.08);   // Sanna 28/11 "move stubbe more to the right"
-const SVAMPEN = kort(SVAMP, LUFT ? 0.11 : 0.17, LUFT ? 0.84 : 0.74, 0.14, { flik: false });   // Sanna 28/11 "make svamp smaller"   // 0,13 skymdes av svansen (QA förbättring 5); en bit åt höger så att den står bredvid räven, inte framför benen
+const STUBBEN = kort(STUBBE, 0.17 * L85, LUFT ? 0.97 : 0.78, -0.08);   // Sanna 28/11 "move stubbe more to the right"
+// svampen en bit till vänster om stubben med luft emellan (Sanna 28/11 "move mushroom more to the left", "create some air between them")
+const SVAMPEN = kort(SVAMP, LUFT ? 0.11 : 0.17, LUFT ? 0.76 : 0.74, 0.16, { flik: false });   // Sanna 28/11 "make svamp smaller"   // 0,13 skymdes av svansen (QA förbättring 5); en bit åt höger så att den står bredvid räven, inte framför benen
 const HOG = { x: 0.37, z: 0.34 }, HOGH = LUFT ? 0.256 : 0.32;   // "en stor lövhög": nästan lika hög som räven (0,26 var mindre än räven), fri från svampen och räven på mitten
 const HOGBAK = kort(LOVHOG, HOGH, HOG.x, HOG.z), HOGFRAM = kort(nedre(LOVHOG, 0.5), HOGH * (0.5 + NEDRE_KANT), HOG.x, HOG.z + 0.06, { flik: false });
 const EKOLLON_POS = LUFT ? [[-0.53, 0.03], [-0.38, 0.13], [-0.23, 0.04]] : [[-0.5, 0.06], [-0.38, 0.1], [-0.26, 0.05]];   // ?prov=l: förskjutna, inte på en rad
@@ -143,7 +144,7 @@ ljuset(scen, { himmel: ['#FFF8EC', '#D8B892', 2.2], sol: ['#FFE8CC', 2.2] });
 const DOF = djupskarpa(SC);
 
 // ---- rävens platser och rörelser ----
-const PLATS = { mitt: [0.08, 0.2], 'fore-hog': [0.06, 0.48], hog: [HOG.x, HOG.z + 0.02], 'framfor-hog': [0.14, 0.42], ekollon: [-0.11, 0.15], svamp: LUFT ? [0.58, 0.06] : [0.5, 0.06] };   // ekollon: så att det tredje ekollonet syns bredvid räven
+const PLATS = { mitt: [0.08, 0.2], 'fore-hog': [0.06, 0.48], hog: [HOG.x, HOG.z + 0.02], 'framfor-hog': [0.14, 0.42], ekollon: [-0.11, 0.15], svamp: LUFT ? [0.57, 0.04] : [0.5, 0.06] };   // ekollon: så att det tredje ekollonet syns bredvid räven
 // hopp: xz flyttas inom [xz0, xz1] av hoppet (in i högen: först fram, sedan rakt ner; ut ur högen: först upp, sedan fram)
 const HOPP = [
   { t0: S('16') + 0.1, t1: S('16') + 0.55 + 0.25, fran: PLATS['fore-hog'], till: PLATS.hog, h: 0.22, xz: [0.15, 0.75] },   // in i högen över främre halvan, landar på "Hopp!"
@@ -432,8 +433,8 @@ const VY = {
   ekmark: () => [v3(-0.3, 0.42, 0.95), v3(-0.33, 0.13, 0.02), 30],
   ekollon: () => [v3(-0.38, 0.22, 0.42), v3(-0.38, 0.1, 0.06), 28],
   stam: () => [v3(-0.3, 0.42, 0.95), v3(-0.3, 0.2, -0.04), 30],   // ekorren vid stammen och hela räven vid ekollonen
-  stubbe: () => LUFT ? [v3(0.74, 0.4, 1.1), v3(0.54, 0.2, 0.0), 27] : [v3(0.72, 0.4, 1.1), v3(0.48, 0.2, 0.0), 28],   // tittar lite åt vänster (sidans högra kant syns inte); räven ryms vid svampen (22b, 24e)
-  'rav-svamp': () => LUFT ? [v3(0.72, 0.42, 1.0), v3(0.57, 0.2, 0.08), 29] : [v3(0.68, 0.42, 1.0), v3(0.5, 0.2, 0.08), 30],
+  stubbe: () => LUFT ? [v3(0.76, 0.4, 1.1), v3(0.58, 0.2, 0.0), 27] : [v3(0.72, 0.4, 1.1), v3(0.48, 0.2, 0.0), 28],   // tittar lite åt vänster (sidans högra kant syns inte); räven ryms vid svampen (22b, 24e)
+  'rav-svamp': () => LUFT ? [v3(0.74, 0.42, 1.0), v3(0.6, 0.2, 0.08), 29] : [v3(0.68, 0.42, 1.0), v3(0.5, 0.2, 0.08), 30],
   hejda: g => [g.clone().add(v3(0.18, 0.34, 0.95)), g.clone().add(v3(-0.18, 0.2, -0.3)), 32],
   slut: () => [v3(-0.1, 2.3, 2.9), v3(0, 0.1, 0.05), 32],   // den stängda boken hel och i mitten, också efter pushen (062:s läge skar pärmens främre hörn)
 };
