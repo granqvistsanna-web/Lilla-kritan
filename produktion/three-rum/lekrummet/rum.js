@@ -24,12 +24,18 @@ const DOLLY = new URLSearchParams(location.search).has('dolly');
 // ?ricks: huvudet vänder sig dit hon tittar (riggens rikt: ansiktet, magen och öronen glider, kroppen vänds aldrig) och en
 // reaktionsnärbild medan hon håller bollen och tittar glatt på den (3,4–4,8 s), två klipp som i referensen.
 const RICKS = new URLSearchParams(location.search).has('ricks');
+<<<<<<< HEAD
 // ?prov (Sanna 2026-11-24: "more walking and stuff, jumping sitting full test rig"): riggprov i rummet i stället för bollscenen,
 // Kanel går, hoppar, sätter sig, dansar, klappar och vinkar med riggens egna rörelser (se kanelProv).
 const PROV = new URLSearchParams(location.search).has('prov'), UTANROT = RICKS || PROV;
 // prov runda 2 (bara prov, Sanna har inte sett dem): ?djup = mer djup inom v2 (mjuk skugga av silhuetten på golvet, överlappsskuggor
 // under nosen och de främre armarna, varm/kall ton från rummet, förgrund som blir suddig), ?puff = kudd-volym (bryter mot v2, test). Sanna 24/11: djup före puff, ?prov har djup alltid
 const DJUP = new URLSearchParams(location.search).has('djup') || PROV, PUFF = new URLSearchParams(location.search).has('puff');
+=======
+// rum2 (2026-11-24, Sanna godkände): rikare material och ljusdetaljer i rummet, se rum2-blocken nedan. Standard, också i ?ricks.
+// ?rum1 ger det gamla rummet från runda 7 (för jämförelse).
+const RUM2 = !new URLSearchParams(location.search).has('rum1');
+>>>>>>> claude/recursing-morse-34b480
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = PROV ? 42 : 18;
@@ -44,7 +50,7 @@ R.setPixelRatio(1); R.setSize(W, H, false);
 R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.NoToneMapping;   // ingen tonkurva: kritfärgerna ska bli som i plattan
 R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFShadowMap;
 const scen = new THREE.Scene();
-scen.background = new THREE.Color('#05a167');
+scen.background = new THREE.Color(RUM2 ? '#0fa08d' : '#05a167');
 const cam = new THREE.PerspectiveCamera(24, W / H, 0.1, 40);   // runda 7: längre objektiv (24° i stället för 30°), plattare perspektiv
 const LINS = Math.tan(15 * Math.PI / 180) / Math.tan(12 * Math.PI / 180);   // kameran längre bort så att utsnittet blir detsamma
 
@@ -87,17 +93,27 @@ const skakig = ([ax, ay], [bx, by], d = 2, n = 12) => Array.from({ length: n + 1
 // tät kort kritskraffering åt ett håll med mycket låg täckning (läses som vaxkrita, inte som streck) och kritkorn i två skalor.
 function vaggBit(w, h) {
   const c = canvas(w, h), x = c.getContext('2d');
-  x.fillStyle = '#05a167'; x.fillRect(0, 0, w, h);
-  for (let n = 0; n < w * h / 9000; n++) {   // fläckar
+  x.fillStyle = RUM2 ? '#0fa08d' : '#05a167'; x.fillRect(0, 0, w, h);   // rum2 (Sanna 24/11): mer turkos
+  for (let n = 0; n < (RUM2 ? 0 : w * h / 9000); n++) {   // fläckar (rum2: inga, Sanna 24/11: väggen såg fläckig ut)
     const px = slump() * w, py = slump() * h, r = 60 + slump() * 160, g = x.createRadialGradient(px, py, 0, px, py, r), ljus = slump() < 0.5;
-    g.addColorStop(0, ljus ? 'rgba(60,190,120,0.12)' : 'rgba(0,110,70,0.12)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); }
+    g.addColorStop(0, RUM2 ? (ljus ? 'rgba(70,195,175,0.12)' : 'rgba(0,100,90,0.12)') : ljus ? 'rgba(60,190,120,0.12)' : 'rgba(0,110,70,0.12)'); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(px - r, py - r, 2 * r, 2 * r); }
   x.lineCap = 'round';
   for (let n = 0; n < w * h / 180; n++) {   // skraffering: korta snea drag, nästan osynliga ett och ett
     const px = slump() * w, py = slump() * h, l = 8 + slump() * 12, ljus = slump() < 0.55, a = -1.1 + (slump() - 0.5) * 1.2;
-    x.strokeStyle = ljus ? 'rgba(120,215,150,0.04)' : 'rgba(0,90,55,0.04)'; x.lineWidth = 2.5 + slump() * 3;
+    x.strokeStyle = RUM2 ? (ljus ? 'rgba(125,215,195,0.04)' : 'rgba(0,80,72,0.04)') : ljus ? 'rgba(120,215,150,0.04)' : 'rgba(0,90,55,0.04)'; x.lineWidth = 2.5 + slump() * 3;
     x.beginPath(); x.moveTo(px, py); x.lineTo(px + l * Math.cos(a), py + l * Math.sin(a)); x.stroke(); }
-  kornPa(x, w, h, 512); kornPa(x, w, h, 160); kornPa(x, w, h, 72);
+  if (RUM2) tapet(x, w, h);
+  if (!RUM2) kornPa(x, w, h, 512); kornPa(x, w, h, 160); kornPa(x, w, h, 72);   // rum2: utan det grova kornet (1,5 m stora moln)
   return c;
+}
+// Tapet (rum2): svaga, handritade ränder (en ljusare krita var 30:e cm) och små femprickiga blommor mellan ränderna,
+// i ljus turkos med låg täckning, så att väggen fortfarande är ett starkt färgfält.
+function tapet(x, w, h) {
+  const P = 99;   // 0,3 m vid 330 px/m
+  for (let i = P / 2; i < w; i += P) krita(x, skakig([i, -10], [i + 3, h + 10], 3, 30), 'rgb(150,235,215)', 22, 0.045, 3);
+  for (let i = 0, k = 0; i < w; i += P, k++) for (let j = (k % 2) * P / 2 + P / 4; j < h; j += P) {
+    for (let b = 0; b < 5; b++) { const a = b / 5 * 2 * Math.PI + k; x.fillStyle = 'rgba(225,255,240,0.13)'; x.beginPath(); x.arc(i + 6 * Math.cos(a), j + 6 * Math.sin(a), 3.6, 0, 7); x.fill(); }
+    x.fillStyle = 'rgba(255,225,140,0.16)'; x.beginPath(); x.arc(i, j, 2.6, 0, 7); x.fill(); }
 }
 // Golvet: varmt ljust golv, kritkorn och plankstreck som vickar lite.
 function golvBit() {
@@ -164,14 +180,85 @@ function teckning(typ) {
   return c;
 }
 
+// ---------- ?rum2: material ----------
+// Trä: långa, lite vågiga ådror med låg täckning längs bitens långa håll (golvet, hyllan, dörren, lådan). Vågorna går jämnt upp
+// i bildens längd, så att en upprepad textur inte får skarvar.
+function adror(x, w, h, farg, styrka = 1, langsY = w < h) {
+  const L = langsY ? h : w, B = langsY ? w : h, n = Math.max(4, Math.round(B / 7));
+  x.lineCap = 'round';
+  for (let i = 0; i < n; i++) { const o = (i + slump()) / n * B, amp = 1 + slump() * 3, per = 1 + Math.floor(slump() * 3), fas = slump() * 6.3;
+    x.strokeStyle = farg; x.globalAlpha = (0.05 + 0.08 * slump()) * styrka; x.lineWidth = 0.8 + slump() * 2.2; x.beginPath();
+    for (let u = 0; u <= L; u += 6) { const v = o + amp * Math.sin(u / L * 2 * Math.PI * per + fas); langsY ? x.lineTo(v, u) : x.lineTo(u, v); }
+    x.stroke(); }
+  x.globalAlpha = 1;
+}
+// Golvet i rum2: ljusare, varmare trägolv. Fyra plankor per bild (0,5 m), egen ton per planka, ådror, förskjutna ändskarvar
+// och mjuka kritskarvar mellan plankorna.
+function golvBit2() {
+  const c = canvas(1024, 1024), x = c.getContext('2d');
+  x.fillStyle = '#f6e4c8'; x.fillRect(0, 0, 1024, 1024);
+  for (let k = 0; k < 4; k++) { const y = k * 256; x.fillStyle = slump() < 0.5 ? 'rgba(255,248,232,0.35)' : 'rgba(214,160,104,0.12)'; x.fillRect(0, y, 1024, 256);
+    x.save(); x.beginPath(); x.rect(0, y, 1024, 256); x.clip(); x.translate(0, y); adror(x, 1024, 256, '#b47a44', 1.1, false); x.restore(); }
+  flackar(x, 1024, 1024, 0.06); kornPa(x, 1024, 1024); kornPa(x, 1024, 1024, 128);
+  for (let k = 0; k < 4; k++) { const y = k * 256;
+    krita(x, skakig([-10, y + 1], [1034, y + 4], 3, 30), 'rgb(176,124,80)', 5, 0.2, 3);
+    const e = (k * 389 + 170) % 1024; krita(x, skakig([e, y + 4], [e + 2, y + 252], 2, 6), 'rgb(176,124,80)', 4, 0.16, 3); }
+  return c;
+}
+// Tyg (mattan, kudden): fin väv (täta korsade trådar med mycket låg täckning) och små luddiga fibrer åt alla håll.
+function vav(x, w, h, tat = 5) {
+  x.lineWidth = 1.2;
+  for (let i = 0; i < w; i += tat) { x.strokeStyle = i / tat % 2 ? 'rgba(255,255,255,0.06)' : 'rgba(40,20,10,0.06)'; x.beginPath(); x.moveTo(i, 0); x.lineTo(i, h); x.stroke(); }
+  for (let j = 0; j < h; j += tat) { x.strokeStyle = j / tat % 2 ? 'rgba(255,255,255,0.05)' : 'rgba(40,20,10,0.05)'; x.beginPath(); x.moveTo(0, j); x.lineTo(w, j); x.stroke(); }
+  x.lineCap = 'round';
+  for (let n = 0; n < w * h / 260; n++) { const px = slump() * w, py = slump() * h, a = slump() * 6.3, l = 2 + slump() * 4;
+    x.strokeStyle = slump() < 0.5 ? 'rgba(255,250,240,0.1)' : 'rgba(40,20,10,0.08)'; x.lineWidth = 1;
+    x.beginPath(); x.moveTo(px, py); x.lineTo(px + l * Math.cos(a), py + l * Math.sin(a)); x.stroke(); }
+}
+// Mattan i rum2: samma ringar, men vävd och med luddiga kanter mellan ringarna (fibrer som går över gränsen).
+function mattBit2() {
+  const c = canvas(1024, 1024), x = c.getContext('2d'), r = [370, 308, 246, 180], f = ['#3d7bd9', '#f2b33d', '#3d7bd9', '#f2b33d'];
+  x.fillStyle = '#ffffff'; x.beginPath(); x.arc(512, 512, 506, 0, 2 * Math.PI); x.fill();
+  r.forEach((q, i) => { x.fillStyle = f[i]; x.beginPath(); for (let a = 0; a <= 2 * Math.PI + 0.01; a += 0.02) { const rr = q / 370 * 492 + Math.sin(a * 7 + i) * 2.5 + Math.sin(a * 23) * 1.2;
+    x.lineTo(512 + rr * Math.cos(a), 512 + rr * Math.sin(a)); } x.fill();
+    x.strokeStyle = f[i]; x.lineWidth = 2; x.lineCap = 'round'; const R0 = q / 370 * 492;   // ludd över kanten
+    for (let n = 0; n < 900; n++) { const a = slump() * 2 * Math.PI, d = (slump() - 0.5) * 9, l = 3 + slump() * 5, v = a + (slump() - 0.5) * 2;
+      x.globalAlpha = 0.5; x.beginPath(); x.moveTo(512 + (R0 + d) * Math.cos(a), 512 + (R0 + d) * Math.sin(a)); x.lineTo(512 + (R0 + d) * Math.cos(a) + l * Math.cos(v), 512 + (R0 + d) * Math.sin(a) + l * Math.sin(v)); x.stroke(); }
+    x.globalAlpha = 1; });
+  vav(x, 1024, 1024, 4); kornPa(x, 1024, 1024);
+  x.globalCompositeOperation = 'destination-in'; x.beginPath(); x.arc(512, 512, 506, 0, 2 * Math.PI); x.fill(); return c;
+}
+// Solfläck (rum2): ett fönster med fyra rutor, fyllt med ljusa, snea kritdrag (som de ljusa dragen i plattan), mjuka kanter.
+// Läggs additivt på väggen och golvet, i solens riktning.
+function solBit() {
+  const c = canvas(512, 512), x = c.getContext('2d');
+  const rutor = q => { for (const [a, b] of [[70, 70], [262, 70], [70, 262], [262, 262]]) q.rect(a, b, 180, 180); };
+  x.filter = 'blur(26px)'; x.fillStyle = 'rgba(255,236,150,0.8)'; x.beginPath(); rutor(x); x.fill();   // mjuk fläck, rutorna anas bara
+  const d = canvas(512, 512), y = d.getContext('2d'); klotter(y, rutor, '#f4ffb0', 0.3, 16, -0.9);   // ljusa kritdrag, lite suddiga
+  x.filter = 'blur(3px)'; x.drawImage(d, 0, 0); x.filter = 'none';
+  return c;
+}
+// Kontakt- och hörnskugga (rum2): mjuk gradient från mörkt till vitt (multiply). En kort ton åt grönt där golvet möter
+// den gröna väggen: väggen kastar lite grönt ljus på golvet.
+function aoBit(rund, farg = [150, 125, 108], toning = false) {
+  const c = canvas(256, 256), x = c.getContext('2d'), [r, g, b] = farg;
+  const gr = rund ? x.createRadialGradient(128, 128, 0, 128, 128, 128) : x.createLinearGradient(0, 0, 0, 256);
+  gr.addColorStop(0, `rgb(${r},${g},${b})`); gr.addColorStop(rund ? 0.4 : 0.25, `rgb(${(r + 255 * 1.4) / 2.4 | 0},${(g + 255 * 1.4) / 2.4 | 0},${(b + 255 * 1.4) / 2.4 | 0})`); gr.addColorStop(1, '#fff');
+  x.fillStyle = gr; x.fillRect(0, 0, 256, 256);
+  if (toning) for (const s of [0, 1]) { const t = x.createLinearGradient(s ? 256 : 0, 0, s ? 196 : 60, 0); t.addColorStop(0, '#fff'); t.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = t; x.fillRect(0, 0, 256, 256); }   // mjuka ändar
+  return c;
+}
+const multiply = map => new THREE.MeshBasicMaterial({ map, depthWrite: false, transparent: true,
+  blending: THREE.CustomBlending, blendEquation: THREE.AddEquation, blendSrc: THREE.ZeroFactor, blendDst: THREE.SrcColorFactor });
+
 // ---------- material och former ----------
 const mat = (farg, o = {}) => new THREE.MeshLambertMaterial({ color: farg, ...o });
 // Varje sida av en låda får en egen bild i rätt proportion: färgen, kritkornet och skakiga mörkare kritstreck längs kanterna
 // (som klossarna i plattan). Lådorna har rundade hörn och vickar lite (ojamn), så att de ser ritade ut och inte maskingjorda.
 const PXM = 420;
-function sidBild(b, h, farg, linje) {
+function sidBild(b, h, farg, linje, tra = 0) {
   const w = Math.max(24, Math.round(b * PXM)), hh = Math.max(24, Math.round(h * PXM)), c = canvas(w, hh), x = c.getContext('2d');
-  x.fillStyle = farg; x.fillRect(0, 0, w, hh); flackar(x, w, hh); kornPa(x, w, hh); kornPa(x, w, hh, 96);
+  x.fillStyle = farg; x.fillRect(0, 0, w, hh); if (tra) adror(x, w, hh, '#6b3a10', tra); flackar(x, w, hh); kornPa(x, w, hh); kornPa(x, w, hh, 96);
   if (linje) { const k = 0.022 * PXM, o = k * 0.75, P = [[o, o], [w - o, o], [w - o, hh - o], [o, hh - o]];
     for (let i = 0; i < 4; i++) krita(x, skakig(P[i], P[(i + 1) % 4], k * 0.25, 10), linje, k, 0.5, 4); }
   const t = tex(c); t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; return t;
@@ -185,11 +272,13 @@ function ojamn(g, amp, f = 0) {   // mjuk, lågfrekvent vickning av hörnen (sam
 const lada = (b, h, d, farg, linje, pos, o = {}) => {
   const r = Math.min(o.r ?? 0.025, b / 2.2, h / 2.2, d / 2.2);
   const g = ojamn(new RoundedBoxGeometry(b, h, d, 3, r), o.vick ?? 0.004, pos[0] * 3 + pos[2]);
-  const sidor = [[d, h], [d, h], [b, d], [b, d], [b, h], [b, h]].map(([u, v]) => new THREE.MeshLambertMaterial({ map: sidBild(u, v, farg, linje) }));
+  const sidor = [[d, h], [d, h], [b, d], [b, d], [b, h], [b, h]].map(([u, v]) => new THREE.MeshLambertMaterial({ map: sidBild(u, v, farg, linje, RUM2 ? o.tra ?? 0 : 0) }));
   const m = new THREE.Mesh(g, sidor); m.position.set(...pos); if (o.rot) m.rotation.set(...o.rot);
   m.castShadow = m.receiveShadow = true; scen.add(m); return m; };
-const klot = (r, farg, pos, sk = [1, 1, 1], vick = 0.02) => {
-  const c = canvas(512, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 512, 256); flackar(x, 512, 256); kornPa(x, 512, 256); kornPa(x, 512, 256, 96);
+const klot = (r, farg, pos, sk = [1, 1, 1], vick = 0.02, tyg = false) => {
+  const c = canvas(512, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 512, 256); flackar(x, 512, 256);
+  if (tyg) { vav(x, 512, 256, 3); x.setLineDash([7, 6]); krita(x, skakig([0, 128], [512, 128], 1, 20), 'rgba(120,30,70,0.9)', 2.5, 0.5, 2); x.setLineDash([]); }   // rum2: tyg med en söm runt
+  kornPa(x, 512, 256); kornPa(x, 512, 256, 96);
   const m = new THREE.Mesh(ojamn(new THREE.SphereGeometry(r, 40, 28), r * vick, pos[0]), new THREE.MeshLambertMaterial({ map: tex(c) }));
   m.position.set(...pos); m.scale.set(...sk); m.castShadow = m.receiveShadow = true; scen.add(m); return m; };
 
@@ -208,16 +297,16 @@ async function byggRum() {
   for (const s of [-1, 1]) { const v = new THREE.Mesh(new THREE.PlaneGeometry(6, TAK), vm(6)); v.rotation.y = -s * Math.PI / 2;
     v.position.set(s * SIDA, TAK / 2, BAK + 3); v.receiveShadow = true; scen.add(v); }
   const tak = new THREE.Mesh(new THREE.PlaneGeometry(2 * SIDA, 6), mat('#f6efe3')); tak.rotation.x = Math.PI / 2; tak.position.set(0, TAK, BAK + 3); scen.add(tak);
-  const golv = new THREE.Mesh(new THREE.PlaneGeometry(2 * SIDA, 6), new THREE.MeshLambertMaterial({ map: tex(golvBit(), [3, 3]) }));
+  const golv = new THREE.Mesh(new THREE.PlaneGeometry(2 * SIDA, 6), new THREE.MeshLambertMaterial({ map: tex(RUM2 ? golvBit2() : golvBit(), [3, 3]) }));
   golv.rotation.x = -Math.PI / 2; golv.position.set(0, 0, BAK + 3); golv.receiveShadow = true; scen.add(golv);
   // golvlist: plattans mörkgröna kritkant där väggen möter golvet
-  lada(2 * SIDA, 0.05, 0.03, '#1f7a52', null, [0, 0.025, BAK + 0.015], { r: 0.01, vick: 0.003 });
-  for (const s of [-1, 1]) lada(0.03, 0.05, 6, '#1f7a52', null, [s * (SIDA - 0.015), 0.025, BAK + 3], { r: 0.01, vick: 0.003 });
+  lada(2 * SIDA, 0.05, 0.03, RUM2 ? '#136a5e' : '#1f7a52', null, [0, 0.025, BAK + 0.015], { r: 0.01, vick: 0.003 });
+  for (const s of [-1, 1]) lada(0.03, 0.05, 6, RUM2 ? '#136a5e' : '#1f7a52', null, [s * (SIDA - 0.015), 0.025, BAK + 3], { r: 0.01, vick: 0.003 });
 
   // dörren: gräddvit med rosa kritram och gul knopp (plattan: #fae7c4, #e757b2)
   const DX = -1.85, DB = 0.8, DH = 1.55;
   const dorrForm = (b, h) => { const s = new THREE.Shape(); s.moveTo(-b / 2, 0); s.lineTo(-b / 2, h - b / 2); s.absarc(0, h - b / 2, b / 2, Math.PI, 0, true); s.lineTo(b / 2, 0); s.lineTo(-b / 2, 0); return s; };
-  const dorr = (b, h, d, farg) => { const c = canvas(256, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 256, 256); kornPa(x, 256, 256); kornPa(x, 256, 256, 96);   // dörren: bara korn (fläckar upprepas i mönster)
+  const dorr = (b, h, d, farg) => { const c = canvas(256, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 256, 256); if (RUM2) adror(x, 256, 256, '#7a4a20', farg === '#fae7c4' ? 0.5 : 0.3, true); kornPa(x, 256, 256); kornPa(x, 256, 256, 96);   // dörren: bara korn (fläckar upprepas i mönster)
     const t = tex(c, [3, 3]); const m = new THREE.Mesh(new THREE.ExtrudeGeometry(dorrForm(b, h), { depth: d, bevelEnabled: true, bevelSize: 0.008, bevelThickness: 0.008, bevelSegments: 2, curveSegments: 24 }),
       new THREE.MeshLambertMaterial({ map: t })); m.position.set(DX, 0, BAK); m.castShadow = m.receiveShadow = true; scen.add(m); return m; };
   dorr(DB + 0.08, DH + 0.04, 0.035, '#e757b2'); dorr(DB - 0.03, DH - 0.02, 0.05, '#fae7c4');
@@ -225,7 +314,7 @@ async function byggRum() {
 
   // hyllan med klossarna (plattan: #f2a929, blå #376fce, röd #f73f46), plus en liten gul kloss
   const HX = 1.65, HY = 1.22;
-  lada(1.05, 0.09, 0.2, '#f2a929', '#b8740f', [HX, HY, BAK + 0.1], { r: 0.02 });
+  lada(1.05, 0.09, 0.2, '#f2a929', '#b8740f', [HX, HY, BAK + 0.1], { r: 0.02, tra: 1.4 });
   lada(0.24, 0.24, 0.2, '#376fce', '#1f4a95', [HX - 0.24, HY + 0.165, BAK + 0.11], { rot: [0, 0.06, 0] });
   lada(0.24, 0.24, 0.2, '#f73f46', '#b52230', [HX + 0.06, HY + 0.165, BAK + 0.11], { rot: [0, -0.05, 0] });
   lada(0.14, 0.14, 0.14, '#f2b33d', '#b98216', [HX + 0.33, HY + 0.115, BAK + 0.11], { rot: [0, 0.25, 0] });
@@ -236,14 +325,14 @@ async function byggRum() {
     m.position.set(x, y, BAK + 0.006); m.rotation.z = v; m.receiveShadow = true; scen.add(m); }
 
   // mattan (platt på golvet)
-  const matta = new THREE.Mesh(new THREE.CircleGeometry(1, 96), new THREE.MeshLambertMaterial({ map: tex(mattBit()), transparent: true }));
+  const matta = new THREE.Mesh(new THREE.CircleGeometry(1, 96), new THREE.MeshLambertMaterial({ map: tex(RUM2 ? mattBit2() : mattBit()), transparent: true }));
   matta.rotation.x = -Math.PI / 2; matta.scale.set(0.95, 0.62, 1); matta.position.set(-0.05, 0.004, 0.25); matta.receiveShadow = true; scen.add(matta);
 
   // leksakslådan (ljusblå) med en kloss som sticker upp; bollen läggs i den
   const { x: lx, z: lz, b: lb, d: ld, h: lh } = LADA, t = 0.03, KF = '#6fb7e8', KL = '#2f6fa8';
   lada(lb, 0.03, ld, KF, KL, [lx, 0.015, lz], { r: 0.01 });
-  lada(lb, lh, t, KF, KL, [lx, lh / 2, lz + ld / 2 - t / 2], { r: 0.012 }); lada(lb, lh, t, KF, KL, [lx, lh / 2, lz - ld / 2 + t / 2], { r: 0.012 });
-  lada(t, lh, ld - 2 * t, KF, KL, [lx - lb / 2 + t / 2, lh / 2, lz], { r: 0.012 }); lada(t, lh, ld - 2 * t, KF, KL, [lx + lb / 2 - t / 2, lh / 2, lz], { r: 0.012 });
+  lada(lb, lh, t, KF, KL, [lx, lh / 2, lz + ld / 2 - t / 2], { r: 0.012, tra: 0.6 }); lada(lb, lh, t, KF, KL, [lx, lh / 2, lz - ld / 2 + t / 2], { r: 0.012, tra: 0.6 });
+  lada(t, lh, ld - 2 * t, KF, KL, [lx - lb / 2 + t / 2, lh / 2, lz], { r: 0.012, tra: 0.6 }); lada(t, lh, ld - 2 * t, KF, KL, [lx + lb / 2 - t / 2, lh / 2, lz], { r: 0.012, tra: 0.6 });
   // ?ricks (runda 7): bollen landar i lådan, så klossen ger plats. Förut stack den 13 cm stora, snedställda klossens övre hörn ut
   // över platsen där bollen landar (bollen gick genom det), ett hörn gick ut genom bakväggen och den svävade 2 cm över botten.
   // Nu 12 cm, lutad framåt, i högra bakre hörnet, vilar på botten; bollen (20 cm, 23 i squashen) får plats till vänster med 1 cm kvar.
@@ -257,11 +346,13 @@ async function byggRum() {
   // ?ricks: förgrund nära kameran (två klossar nere till höger), så att åkningen får parallax
   if (RICKS || DJUP) { lada(0.22, 0.22, 0.22, '#d9443a', '#a12a24', [0.5, 0.11, 1.6], { rot: [0, 0.4, 0] }); lada(0.18, 0.18, 0.18, '#f2b33d', '#b98216', [0.74, 0.09, 1.42], { rot: [0, -0.3, 0] }); }
   // en rund rosa golvkudde längst fram till vänster (förgrund, blir mjukt suddig)
-  klot(0.24, '#e86fa8', [-1.3, 0.1, 1.0], [1, 0.42, 0.9], 0.03);
+  klot(0.24, '#e86fa8', [-1.3, 0.1, 1.0], [1, 0.42, 0.9], 0.03, RUM2);
+  if (RUM2) bil(BIL.x, BIL.z, BIL.v);   // rum2 (Sanna 24/11): en leksaksbil på golvet framme till vänster
   // en liten krukväxt i hörnet till höger
+  if (RUM2) vaxt(2.45, -1.25); else {
   const kruka = new THREE.Mesh(ojamn(new THREE.CylinderGeometry(0.13, 0.1, 0.24, 28), 0.004), new THREE.MeshLambertMaterial({ map: sidBild(0.8, 0.24, '#d8784a', '#9b4a26') }));
   kruka.position.set(2.45, 0.12, -1.25); kruka.castShadow = kruka.receiveShadow = true; scen.add(kruka);
-  klot(0.2, '#3da35a', [2.45, 0.42, -1.25], [1, 0.9, 1], 0.08); klot(0.14, '#4cb866', [2.36, 0.6, -1.2], [1, 1, 1], 0.08); klot(0.12, '#2e8b57', [2.58, 0.55, -1.3], [1, 1, 1], 0.08);
+  klot(0.2, '#3da35a', [2.45, 0.42, -1.25], [1, 0.9, 1], 0.08); klot(0.14, '#4cb866', [2.36, 0.6, -1.2], [1, 1, 1], 0.08); klot(0.12, '#2e8b57', [2.58, 0.55, -1.3], [1, 1, 1], 0.08); }
 
   // papperskedjan högt upp på bakväggen (kodscenens färger), två slingor; varannan länk vriden
   const FARGER = ['#D9443A', '#F2B33D', '#FFF6E8', '#E86FA8', '#3D7BD9'], ring = new THREE.TorusGeometry(0.05, 0.013, 8, 24);
@@ -270,6 +361,67 @@ async function byggRum() {
       const m = new THREE.Mesh(ring, mat(FARGER[i % 5])); m.scale.set(1, 0.62, 1); m.position.set(x, y, BAK + 0.08);
       m.rotation.set(i % 2 ? Math.PI / 2 : 0, 0, Math.atan(dy)); m.castShadow = true; scen.add(m); } };
   kedja(-SIDA + 0.1, 0, 2.2, 0.28); kedja(0, SIDA - 0.1, 2.2, 0.28);
+  if (RUM2) rum2Ljus();
+}
+// ?rum2: leksaksbilen. Gul kaross och blå hytt i samma kritklossar som resten (lada), ljusa fönster på hyttens sidor och
+// framruta, fyra mörka hjul med ljusa navkapslar och gula strålkastare. 30 cm lång, står på hjulen (inget går genom golvet).
+const BIL = { x: -0.8, z: 0.95, v: 0.5 };
+function bil(px, pz, v) {
+  const g = new THREE.Group(), ta = m => { scen.remove(m); g.add(m); return m; }, R0 = 0.045;
+  ta(lada(0.3, 0.09, 0.16, '#f2b33d', '#b98216', [0, R0 + 0.035, 0], { r: 0.025 }));
+  ta(lada(0.15, 0.085, 0.13, '#3d7bd9', '#1f4a95', [-0.025, R0 + 0.12, 0], { r: 0.025 }));
+  for (const s of [-1, 1]) ta(lada(0.1, 0.045, 0.006, '#e8f6fb', null, [-0.025, R0 + 0.125, s * 0.066], { r: 0.012 }));   // sidofönster
+  ta(lada(0.006, 0.045, 0.095, '#e8f6fb', null, [0.051, R0 + 0.125, 0], { r: 0.012 }));   // framruta
+  const hjulM = new THREE.MeshLambertMaterial({ map: sidBild(0.3, 0.05, '#3b3540', null) }), navM = mat('#f6ead0');
+  for (const x of [-0.09, 0.09]) for (const z of [-1, 1]) {
+    const h = new THREE.Mesh(new THREE.CylinderGeometry(R0, R0, 0.035, 24), hjulM); h.rotation.x = Math.PI / 2; h.position.set(x, R0, z * 0.08);
+    const n = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.006, 16), navM); n.rotation.x = Math.PI / 2; n.position.set(x, R0, z * 0.0995);
+    for (const m of [h, n]) { m.castShadow = m.receiveShadow = true; g.add(m); } }
+  for (const z of [-0.045, 0.045]) { const l = new THREE.Mesh(new THREE.SphereGeometry(0.014, 16, 12), mat('#ffe27a')); l.scale.set(0.5, 1, 1); l.position.set(0.15, R0 + 0.045, z); g.add(l); }
+  g.position.set(px, 0.004, pz); g.rotation.y = v; scen.add(g);   // 4 mm upp: framhjulen står på mattans kant, inte i den
+}
+// ?rum2: krukväxten. Terrakottakruka med kant och mörk jord, nio blad som bladen på en liten gummiväxt: platta ovaler i två
+// gröna, med kritad mittnerv och korn, som står ut i en solfjäder från jorden (de yttre lutar mer och är lite mindre).
+function vaxt(px, pz) {
+  const kruka = new THREE.Mesh(ojamn(new THREE.CylinderGeometry(0.11, 0.085, 0.2, 28), 0.003), new THREE.MeshLambertMaterial({ map: sidBild(0.7, 0.2, '#d8784a', null, 0) }));
+  kruka.position.set(px, 0.1, pz); scen.add(kruka);
+  const kant = new THREE.Mesh(ojamn(new THREE.CylinderGeometry(0.125, 0.12, 0.05, 28), 0.002), new THREE.MeshLambertMaterial({ map: sidBild(0.8, 0.05, '#e08a5a', '#9b4a26') }));
+  kant.position.set(px, 0.215, pz); scen.add(kant);
+  const jord = new THREE.Mesh(new THREE.CylinderGeometry(0.108, 0.108, 0.01, 28), mat('#5a3a26')); jord.position.set(px, 0.232, pz); scen.add(jord);
+  for (const m of [kruka, kant, jord]) m.castShadow = m.receiveShadow = true;
+  const bladTex = farg => { const c = canvas(256, 256), x = c.getContext('2d'); x.fillStyle = farg; x.fillRect(0, 0, 256, 256); flackar(x, 256, 256, 0.12);
+    for (const u of [64, 192]) krita(x, skakig([u, 14], [u, 242], 2, 10), 'rgba(20,70,35,1)', 4, 0.35, 3);   // mittnerv fram och bak
+    kornPa(x, 256, 256, 128); return tex(c); };
+  const T = [bladTex('#3da35a'), bladTex('#58bd6a')], upp = new THREE.Vector3(0, 1, 0), bas = new THREE.Vector3(px, 0.23, pz);
+  for (let i = 0; i < 9; i++) {
+    const yttre = i > 2, a = i * 2.4 + 0.3, lut = yttre ? 0.75 + 0.15 * (i % 2) : 0.2 + 0.12 * i, L = yttre ? 0.15 : 0.19;
+    const dir = new THREE.Vector3(Math.sin(lut) * Math.cos(a), Math.cos(lut), Math.sin(lut) * Math.sin(a));
+    const b = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), new THREE.MeshLambertMaterial({ map: T[i % 2] }));
+    b.scale.set(L * 0.38, L, L * 0.09); b.quaternion.setFromUnitVectors(upp, dir); b.position.copy(bas).addScaledVector(dir, L * 0.95);
+    b.castShadow = b.receiveShadow = true; scen.add(b); }
+}
+// ?rum2: ljusdetaljer som målade lager (inga nya ljuskällor med skugga): en solfläck på golvet från ett fönster till vänster utanför bild,
+// mjuk skugga där golvet möter väggarna (med en aning grönt ur väggen), kontaktskuggor under sakerna på golvet och under hyllan.
+function rum2Ljus() {
+  const sol = tex(solBit()); sol.wrapS = sol.wrapT = THREE.ClampToEdgeWrapping;
+  const solM = o => new THREE.MeshBasicMaterial({ map: sol, transparent: true, opacity: o, depthWrite: false, blending: THREE.AdditiveBlending });
+  const skev = (g, k) => g.applyMatrix4(new THREE.Matrix4().makeShear(0, 0, k, 0, 0, 0));   // x += k·y: fönstret snett, som ljus från sidan
+  // ingen solfläck på väggen (Sanna 2026-11-24), bara på golvet
+  const gs = new THREE.Mesh(skev(new THREE.PlaneGeometry(1.1, 1.0), 0.5), solM(0.16)); gs.rotation.x = -Math.PI / 2; gs.position.set(-0.75, 0.007, 0.7); scen.add(gs);
+  // hörnskugga golv/vägg: ett band på golvet och ett på väggen (gradienten mörkast i hörnet)
+  const hornG = multiply(tex(aoBit(false, [178, 176, 150]))), hornV = multiply(tex(aoBit(false, [150, 150, 140])));
+  for (const [b, pos, ry] of [[2 * SIDA, [0, 0, BAK], 0], [6, [-SIDA, 0, BAK + 3], Math.PI / 2], [6, [SIDA, 0, BAK + 3], -Math.PI / 2]]) {
+    const g = new THREE.Mesh(new THREE.PlaneGeometry(b, 0.4), hornG); g.geometry.rotateX(-Math.PI / 2); g.geometry.translate(0, 0.0055, 0.2);
+    g.geometry.rotateY(ry); g.position.set(...pos); scen.add(g);
+    const v = new THREE.Mesh(new THREE.PlaneGeometry(b, 0.35), hornV); v.geometry.rotateZ(Math.PI); v.geometry.translate(0, 0.175, 0.004);
+    v.geometry.rotateY(ry); v.position.set(...pos); scen.add(v); }
+  // kontaktskuggor: [x, z, bredd, djup, vridning]
+  const klick = multiply(tex(aoBit(true)));
+  const under = [[LADA.x, LADA.z, LADA.b * 1.5, LADA.d * 1.6, 0], [1.05, 0.55, 0.36, 0.36, 0.35], [1.36, 0.78, 0.3, 0.3, 0.6],
+    [-1.3, 1.0, 0.62, 0.5, 0], [2.45, -1.25, 0.36, 0.36, 0], [BIL.x, BIL.z, 0.42, 0.3, BIL.v], ...(RICKS ? [[0.5, 1.6, 0.4, 0.4, 0.4], [0.74, 1.42, 0.33, 0.33, -0.3]] : [])];
+  for (const [x, z, b, d, v] of under) { const m = new THREE.Mesh(new THREE.PlaneGeometry(b, d), klick); m.rotation.set(-Math.PI / 2, 0, v); m.position.set(x, 0.0058, z); scen.add(m); }
+  // under hyllan på väggen
+  const hy = new THREE.Mesh(new THREE.PlaneGeometry(1.45, 0.3), multiply(tex(aoBit(false, [170, 170, 160], true)))); hy.position.set(1.65, 1.22 - 0.045 - 0.15 + 0.01, BAK + 0.003); scen.add(hy);
 }
 
 // ---------- ljus: varmt och mjukt, ljusare än det mörka referensljuset ----------
@@ -279,6 +431,8 @@ sol.position.set(-3.5, 4.2, 2.6); sol.target.position.set(0, 0, -0.3);
 sol.castShadow = true; sol.shadow.mapSize.set(2048, 2048); sol.shadow.radius = 7; sol.shadow.bias = -0.0006; sol.shadow.normalBias = 0.01;
 Object.assign(sol.shadow.camera, { left: -3.5, right: 3.5, top: 3.5, bottom: -3.5, near: 0.5, far: 14 });
 scen.add(sol, sol.target);
+// ?rum2: ett svagt varmt motljus från höger (studs från rummet, utan skugga), så att sakernas skuggsidor inte blir grumliga
+if (RUM2) { const fyll = new THREE.DirectionalLight('#ffe6cc', 0.35); fyll.position.set(3.2, 2.2, 2.5); scen.add(fyll); }
 const SOLRIKT = new THREE.Vector3().subVectors(sol.position, sol.target.position).normalize();   // mot solen
 // ?djup: silhuettens skugga faller mer åt sidan än solens (som faller rakt bakåt, gömd bakom henne): åt höger och lite bakåt
 const SKUGGRIKT = new THREE.Vector3(-0.62, 0.75, 0.22).normalize();
@@ -698,12 +852,18 @@ class Linsoskarpa extends Pass {
 }
 // Gradering: en varm ton, lite lyft i skuggorna och en svag vinjett (högst 0,12, regeln säger 0,14), i linjärt ljus före sRGB.
 class Gradering extends Pass {
-  constructor() { super(); this.u = { tBild: { value: null } };
+  constructor() { super(); this.u = { tBild: { value: null }, tPapper: { value: null }, skala: { value: new THREE.Vector2(W / 900, H / 900) } };
     this.q = new FullScreenQuad(new THREE.ShaderMaterial({ uniforms: this.u, vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }',
-      fragmentShader: `uniform sampler2D tBild; varying vec2 vUv;
+      fragmentShader: `uniform sampler2D tBild, tPapper; uniform vec2 skala; varying vec2 vUv;
         void main() { vec3 c = texture2D(tBild, vUv).rgb;
+          ${RUM2 ? `// rum2: hela bilden på papper. Papperskornet (samma som i rummets kritkorn) ligger still i bilden, i två skalor,
+          // ±8 % ljushet, så att allt, också Kanel, ser ritat på samma ark ut
+          float p = texture2D(tPapper, vUv * skala).r * 0.6 + texture2D(tPapper, vUv * skala * 2.37 + 0.31).r * 0.4;
+          c *= 1.0 + (p - 0.94) * 1.7;` : ''}
           c *= vec3(1.015, 1.0, 0.975);
           c = c + 0.012 * (1.0 - c);
+          ${RUM2 ? `float l = dot(c, vec3(0.2126, 0.7152, 0.0722)); c = mix(vec3(l), c, 1.06);   // rum2: lite mer mättnad
+          c *= mix(vec3(0.99, 1.0, 1.015), vec3(1.02, 1.0, 0.97), smoothstep(0.05, 0.6, l));      // svala skuggor, varmt ljus` : ''}
           vec2 q = vUv - 0.5; q.x *= 1.25; float v = smoothstep(0.42, 0.85, length(q)); c *= 1.0 - 0.12 * v;
           gl_FragColor = vec4(c, 1.0); }` })); }
   render(r, skriv, las) { this.u.tBild.value = las.texture; r.setRenderTarget(this.renderToScreen ? null : skriv); this.q.render(r); }
@@ -715,7 +875,8 @@ const lins = new Linsoskarpa();
 komp.addPass(new RenderPass(scen, cam));
 komp.addPass(lins);
 komp.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.16, 0.55, 0.93));
-komp.addPass(new Gradering());
+const gradering = new Gradering();
+komp.addPass(gradering);
 komp.addPass(new OutputPass());
 
 // ---------- en bildruta ----------
@@ -782,6 +943,7 @@ window.LJUD = PROV ? PROV_LJUD() : [
 window.DURATION = DURATION;
 window.ready = (async () => {
   await byggRum();
+  if (RUM2) { const t = new THREE.CanvasTexture(KORNC); t.wrapS = t.wrapT = THREE.RepeatWrapping; gradering.u.tPapper.value = t; }
   // runda 7 (Sanna: plattare rum): rummets ytor lyser till 40 % av sig själva (golv och matta 20 %, så att Kanels skugga syns kvar),
   // så att ljus och skugga skiljer mindre mellan sidorna och ytorna läses som platta målade färgfält, som i 2D-plattan
   scen.traverse(o => { if (!o.isMesh) return; for (const m of [].concat(o.material)) { if (!m.isMeshLambertMaterial) continue;
