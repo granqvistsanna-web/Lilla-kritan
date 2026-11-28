@@ -2,8 +2,8 @@
 # den gamla svansen hade ett hack och en liten spets i överkanten mot kroppen och en utsmetad, randig rot.
 # Svansen görs om direkt ur original/rut-faceless.jpg (samma pixlar som riggen): det synliga ovanför/utanför kroppen rakt ur
 # konsten (med den vita spetsen), roten bakom kroppen (in till vridpunkten) i ren orange krita, formen rundad, vit kant runt.
-#   python3 skript/rut_svans_putsa.py [kant px: 6.5 för cut-tunn, 10 för cut] <utmapp>
-import sys, numpy as np
+#   python3 skript/rut_svans_putsa.py [kant px: 6.5 för cut-tunn, 10 för cut] <utmapp> [vridpunkt x y, annars rut-rigg.json]
+import sys, json, numpy as np
 from PIL import Image, ImageDraw
 from scipy import ndimage as nd
 from scipy.spatial import ConvexHull
@@ -19,13 +19,14 @@ V = nd.binary_opening(krita & ~huvud & box, iterations=2)
 lab, n = nd.label(V); V = nd.binary_fill_holes(lab == (np.argmax(nd.sum(V, lab, range(1, n + 1))) + 1))
 # roten: höljet av svansen och en rund klump kring vridpunkten (bakom kroppen), rundat
 ys, xs = np.nonzero(V); v = np.linspace(0, 2 * np.pi, 48)
-p = np.r_[np.c_[xs, ys], np.c_[761 + 45 * np.cos(v), 717 + 45 * np.sin(v)]]   # rot in till vridpunkten (761, 717), syns aldrig när svansen lyfts 40°
+PX, PY = map(float, sys.argv[3:5]) if len(sys.argv) > 4 else json.load(open('rut-rigg.json'))['delar']['tail']['vridpunkt']
+p = np.r_[np.c_[xs, ys], np.c_[PX + 45 * np.cos(v), PY + 45 * np.sin(v)]]   # roten in till vridpunkten (rut-rigg.json)
 h = ConvexHull(p); m = Image.new('L', (1024, 1024), 0)
 ImageDraw.Draw(m).polygon([tuple(map(int, p[v])) for v in h.vertices], fill=255)
 G = (np.asarray(m) > 0) & (V | huvud)                                # utanför kroppen följer formen konsten exakt
 G = nd.gaussian_filter(G.astype(float), 3) > 0.5                     # mjuka hörn
 vit = (rgb.min(2) > 200) & ~kram
-S = V & ~vit & ~nd.binary_dilation(huvud, iterations=8)
+S = V & ~vit & ~nd.binary_dilation(huvud, iterations=16)   # 16: konstens kroppskontur vid fästet följer inte med när svansen viftar
 _, (iy, ix) = nd.distance_transform_edt(~S, return_indices=True)
 out = np.zeros((1024, 1024, 4))
 out[..., :3] = rgb[iy, ix]                                           # närmast kroppskanten: närmaste kritfärg

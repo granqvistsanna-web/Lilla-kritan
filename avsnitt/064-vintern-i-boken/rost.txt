@@ -35,6 +35,12 @@
 35-faglarna-sager-hej  [happy] Fåglarna säger hej till dig, kaninen.
 36-vad-ska-det-bli  [curious] Tre snöbollar … vad ska det bli av dem?
 37-ja-en-snogubbe  [happy] Ja, en snögubbe!
+37b-inget-ansikte  [curious] Men snögubben har inget ansikte.
+37c-tva-ogon  [warmly] Två ögon …
+37d-en-morot  [playfully] … och en morot till näsa!
+37e-tva-armar  [warmly] Två armar av pinnar.
+37f-rod-halsduk  [warmly] Och en röd halsduk, så att snögubben inte fryser.
+37g-vad-fin  [happy] Vad fin snögubben blev!
 38-roligt-i-snon  [warmly] Var det roligt i snön, kaninen?
 39-hej-da-kaninen  [happy] Hej då, kaninen!
 40-hej-da-snoflingan  [warmly] Hej då, snöflingan!

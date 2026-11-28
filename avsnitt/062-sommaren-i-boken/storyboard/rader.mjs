@@ -67,6 +67,14 @@ export const ROST = [
   ['55-ett-torn', 1.02, 'Ett torn!'],
   ['56-en-gang-till', 1.91, 'En gång till … och lyft!'],
   ['57-ett-tva-torn', 1.52, 'Ett, två torn!'],
+  // tagning 5 (ElevenLabs v3, Natural, 2026-11-28, malin-tagning-5.mp3): värmen i tre steg (Sanna 28/11 "make the summer heat impact feel bigger … skönt i solen,
+  // oj nu blev det lite varmt, grodan svettas, oj då, det vore skönt med något svalkande").
+  ['58-skont-i-solen', 1.94, 'Är det skönt i solen, grodan?'],
+  ['59-solen-varmer', 2.85, 'Mmm, solen värmer så gott.'],
+  ['60-lite-varmt', 2.27, 'Oj! Nu blev det lite varmt.'],
+  ['61-grodan-svettas', 2.48, 'Grodan svettas. Oj då!'],
+  ['62-for-varmt', 1.20, 'Är det för varmt nu?'],
+  ['63-nagot-svalkande', 2.03, 'Det vore skönt med något svalkande!'],
 ];
 export const L = n => ROST[n - 1][1];
 
@@ -97,12 +105,15 @@ export const RADER = [
     bild: 'Grodan står på bladet (kortet fälldes upp med boken). Grodan vinkar', ljudtext: 'pop, kvak (hej)', s: { vy: 'halv', groda: 'uppe', vink: true } },
   { id: '05b', d: 0.2 + L(8) + SVAR + L(9) + 0.8, plats: 'Grodans blad, halvbild', malin: [[8, 0.2], [9, 0.2 + L(8) + SVAR]], ljud: [G('groda-fortjust-1', 0.2 + L(8) + 0.2)],
     bild: 'Grodan tittar runt och sedan på oss. Pausen: glatt kvak', ljudtext: 'kvak-dubbel (förtjust)', s: { vink: false } },
-  { id: '06', d: 2.0, plats: 'Grodans blad, halvbild', ljud: [['tindra/tindra-2', 0.2]],   // utan "Solen skiner. Det blir varmt!" (Sanna 27/11 "vo a bit too repetative")
-    bild: 'Grodan tittar upp mot solen, ljuset blir ännu varmare', ljudtext: 'tindra svagt', s: { vy: 'halv-sol' } },
-  { id: '07', d: 0.5 + L(11) + 1.4, plats: 'Grodan, närbild', malin: [[11, 0.5]], ljud: [G('groda-mysig-suck-2', 0.5 + L(11) + 0.2)],
-    bild: 'Grodan suckar, rosiga kinder, axlarna ner', ljudtext: 'gran-suck (puh)', s: { vy: 'nara' } },
-  { id: '07b', d: 0.3 + SVAR + L(13) + 0.8, plats: 'Grodan, närbild', malin: [[13, 0.3 + SVAR]], ljud: [G('groda-nyfiken-1', 0.3)],   // utan "Är du varm, grodan?"
-    bild: 'Grodan tittar på oss. Pausen: trött kvak', ljudtext: 'kvak (frågande)', s: {} },
+  // värmen i tre steg (Sanna 28/11): skönt i solen → lite varmt (värmestreck) → grodan svettas (svettdroppar, fläktar sig) → något svalkande
+  { id: '06', d: 0.6 + L(58) + SVAR + L(59) + 0.8, plats: 'Grodans blad, halvbild', malin: [[58, 0.6], [59, 0.6 + L(58) + SVAR]], ljud: [['tindra/tindra-2', 0.2], G('groda-mysig-suck-3', 0.6 + L(58) + 0.2)],
+    bild: 'Grodan tittar upp mot solen, ljuset blir varmare. Pausen: grodan blundar och suckar mysigt, solen värmer gott', ljudtext: 'tindra svagt, mus-suck (mysig)', s: { vy: 'halv-sol' } },
+  { id: '06b', d: 0.6 + L(60) + 1.4, plats: 'Grodan, närbild', malin: [[60, 0.6]], ljud: [G('oj-oj-1', 0.6 + L(60) + 0.2)],
+    bild: 'Ljuset blir hett och orange. Grodan slår upp ögonen, förvånad; värmestreck börjar stiga över huvudet, kinderna blir röda', ljudtext: 'oj-oj (förvånad)', s: { vy: 'nara' } },
+  { id: '07', d: 0.6 + L(61) + 1.6, plats: 'Grodan, närbild', malin: [[61, 0.6]], ljud: [G('groda-mysig-suck-2', 0.6 + L(61) + 0.2)],
+    bild: 'Svettdroppar rinner från pannan, fler värmestreck. Grodan torkar pannan och fläktar sig med handen, suckar', ljudtext: 'gran-suck (puh)', s: {} },
+  { id: '07b', d: 0.2 + L(62) + SVAR + L(63) + 0.8, plats: 'Grodan, närbild', malin: [[62, 0.2], [63, 0.2 + L(62) + SVAR]], ljud: [G('groda-nyfiken-1', 0.2 + L(62) + 0.2)],
+    bild: 'Grodan tittar på oss. Pausen: trött kvak och en nick. Sedan tittar hon runt efter något svalt', ljudtext: 'kvak (trött)', s: {} },
 
   // --- Glassen ---
   { id: '08', d: 0.4 + L(14) + 3.0, plats: 'Gräset vid dammen, nära', malin: [[14, 0.4]], ljud: [['krita-ritar/krita-ritar-1', 0.2]],

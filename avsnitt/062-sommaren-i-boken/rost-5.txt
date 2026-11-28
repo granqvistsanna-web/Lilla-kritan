@@ -1,0 +1,6 @@
+58-skont-i-solen  [warmly] Är det skönt i solen, grodan?
+59-solen-varmer  [happy sigh] Mmm, solen värmer så gott.
+60-lite-varmt  [surprised] Oj! Nu blev det lite varmt.
+61-grodan-svettas  [gently] Grodan svettas. Oj då!
+62-for-varmt  [curious] Är det för varmt nu?
+63-nagot-svalkande  [warmly] Det vore skönt med något svalkande!

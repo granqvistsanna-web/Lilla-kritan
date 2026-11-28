@@ -57,9 +57,10 @@ Lilla Kritans logotyp 1 s, sedan skrivbordet med den stängda boken. Inget kort 
 | 04 | Solen fylls i och glimtar, ljuset blir varmare | Oj! En sol! | `glitter`, `tindra` |
 | 05 | Halvbild, grodans kort fälls upp på sitt blad. Grodan vinkar | Hej, grodan! Hej, hej! | `pop`, kvak hej |
 | 05b ✱ | Samma, grodan tittar runt och sedan på oss. **Pausen:** glatt kvak | Hur är det, grodan? *(paus: glatt kvak)* Jaså, du tycker om sommaren! | förtjust kvak |
-| 06 | Halvbild, grodan tittar upp mot solen, ljuset blir ännu varmare | Solen skiner. Det blir varmt! | `tindra` svagt |
-| 07 | Närbild, grodan suckar, rosiga kinder, axlarna ner | Puh! Grodan är så varm. | trött kvak |
-| 07b ✱ | Samma, grodan tittar på oss. **Pausen:** trött kvak | Är du varm, grodan? *(paus: trött kvak)* Hm … vad gör vi nu? | frågande kvak |
+| 06 ✱ | Halvbild, grodan tittar upp mot solen, ljuset blir varmare. **Pausen:** grodan blundar och suckar mysigt | Är det skönt i solen, grodan? *(paus: mysig suck)* Mmm, solen värmer så gott. | `tindra` svagt, mysig suck |
+| 06b | Närbild, ljuset blir hett och orange. Grodan slår upp ögonen, två värmestreck stiger, kinderna blir röda | Oj! Nu blev det lite varmt. | oj-oj (förvånad) |
+| 07 | Närbild, svettdroppar rinner från pannan, fyra värmestreck. Grodan torkar pannan och fläktar sig | Grodan svettas. Oj då! | suck (puh) |
+| 07b ✱ | Samma, grodan tittar på oss. **Pausen:** trött kvak och en nick, sedan tittar hon bort mot gräset | Är det för varmt nu? *(paus: trött kvak)* Det vore skönt med något svalkande! | trött kvak |
 | 08 | Kritan kommer in och ritar en glass på gräset bredvid grodan (nära bild), svajar | Titta! Kritan ritar något. *(gisspaus 3 s)* | `krita-ritar` |
 | 09 | Glassen fylls i, kortet fälls upp. Grodan ser den, stora glada ögon (kawaii) | En glass! Varsågod, grodan. | `glitter`, `pop`, förtjust kvak |
 | 10 | Närbild, grodan nickar | Tack, kritan! | glatt kvak |
@@ -102,10 +103,12 @@ Malin – Professional Swedish Narration, Eleven v3, stability 0,5, similarity 0
 [happy] Hej, grodan! Hej, hej!
 [warmly] Hur är det, grodan?
 [happy] Jaså, du tycker om sommaren!
-[warmly] Solen skiner. Det blir varmt!
-[chuckles] Puh! Grodan är så varm.
-[warmly] Är du varm, grodan?
-[curious] Hm … vad gör vi nu?
+[warmly] Är det skönt i solen, grodan?
+[happy sigh] Mmm, solen värmer så gott.
+[surprised] Oj! Nu blev det lite varmt.
+[gently] Grodan svettas. Oj då!
+[curious] Är det för varmt nu?
+[warmly] Det vore skönt med något svalkande!
 [happy] Titta! Kritan ritar något.
 [happy] En glass! Varsågod, grodan.
 [happy] Tack, kritan!
@@ -260,3 +263,5 @@ Nya repliker (ElevenLabs v3, Natural):
 ```
 
 Båda tillsammans gör filmen ca 35 s längre (2:48 → ca 3:25). Ingen ny musik.
+
+**Värmen i tre steg (Sanna 2026-11-28):** *"make the summer heat impact feel bigger … skönt i solen, oj nu blev det lite varmt, grodan svettas, oj då, det vore skönt med något svalkande"*. Raderna 06–07b är omskrivna: skönt (bara varmt ljus, grodan blundar), lite varmt (ljuset blir hett och orange, två värmestreck), svettas (fyra streck, svett, fläktar sig), något svalkande (grodan tittar bort mot gräset, sedan ritar kritan glassen). Det heta ljuset svalnar när grodan plaskar i dammen. Replikerna 10, 11, 12 och 13 används inte längre. Nya repliker 58–63 i `rost-5.txt` (tagning 5, inspelad 2026-11-28, `produktion/ljud-original/roster/062/malin-tagning-5.mp3`).

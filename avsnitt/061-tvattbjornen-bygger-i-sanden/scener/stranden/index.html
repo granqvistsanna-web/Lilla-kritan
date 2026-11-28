@@ -122,6 +122,8 @@ const K_SPADE = [1.9, SPADE_STAR[0] + 60, MARK - 170];
 const K_GRAV = [1.6, (GROP[0] + STA[0]) / 2 + 40, MARK - 170];
 const K_GROP = [2.4, GROP[0] + 60, GROP[1] - 120];
 const K_POL = [1.9, (GROP[0] + STA[0]) / 2, MARK - 160];
+const K_TVATT = [2.1, GROP[0] + 10, MARK - 175];   // tvättbjörnen vid pölen, tassarna och pölen tydliga (Sanna 28/11 'better animation of washing paws')
+const K_TASSAR = [3.0, GROP[0] + 10, MARK - 105];  // detalj: tassarna som gnids och pölen under (som 057:s K_NARA_TASS)
 const K_HALL = [2.0, (GROP[0] + STA[0]) / 2, MARK - 150];
 const K_HINKEN = [1.9, (STA[0] + HINKPOS[0]) / 2 + 40, MARK - 170];
 const K_HINKEN_NARA = [2.0, (STA[0] + HINKPOS[0]) / 2 + 30, MARK - 175];
@@ -253,8 +255,8 @@ function tb([x, fot], f, p, { luft = false, utanSkugga = false } = {}) {
   if (sk) { sk.setAttribute('fill', '#3a2a1a'); sk.setAttribute('filter', 'url(#mjukskugga)'); sk.setAttribute('opacity', luft || utanSkugga ? 0 : (2.2 * +sk.getAttribute('opacity')).toFixed(3)); }
 }
 // tassens spets (sida 'l' = bildens vänster) i scenens koordinater, ur armens synliga del
-function tass(sida = 'l', saknas = [960, 700]) {
-  const spets = sida === 'l' ? [162, 672] : [862, 672];
+function tass(sida = 'l', saknas = [960, 700], mitt = false) {   // mitt: den svarta tassens mitt i stället för spetsen
+  const spets = mitt ? (sida === 'l' ? [183, 643] : [832, 643]) : sida === 'l' ? [162, 672] : [862, 672];
   for (const e of [`arm-${sida}-klapp`, `arm-${sida}-fram`, `arm-${sida}2`, `arm-${sida}`].flatMap(c => [...G.querySelectorAll('.' + c)])) {
     let syns = true; for (let n = e; n && n !== G; n = n.parentNode) if (n.getAttribute('display') === 'none' || n.style?.display === 'none' || n.getAttribute('opacity') === '0') syns = false;
     if (!syns) continue;
@@ -286,6 +288,11 @@ const stampStank = (tl, ts) => ts.map(([a, i]) => [SJO[0] + (i ? 40 : -55), GROP
 const GANG = (tl, a, b, d) => lerp(a, b, 1 - (1 - kl(tl / d)) ** 1.6);
 const SKAL = (o = {}) => POSE('magen', { klapp: 60, ...o });                       // tassarna framför magen som en skål
 const GNUGG = (tl, ts, o = {}) => SKAL({ klapp: 60 - 26 * ts.reduce((s, a) => s + bump(a - 0.05, a + 0.4, tl), 0), luta: 2 * ts.reduce((s, a) => s + Math.sin(2 * Math.PI * (tl - a) / 0.45) * bump(a - 0.05, a + 0.4, tl), 0), ...o });
+// tvättar tassarna som 057: tassarna gnids mot varandra i en lugn liten cirkel (0,9 s) hela repliken, den ena upp när den andra går ner,
+// kroppen gungar lite med; k 0–1 tonar in och ut (Sanna 28/11 'better animation of washing paws')
+const klappT = (T, o = {}) => ({ ...L.ROR.klappa(T)[1], gnista: 0, ...o });
+const TVATTA = (tl, k = 1, o = {}) => { const a = 2 * Math.PI * tl / 0.9, p = klappT(1.05 + 0.035 * k * Math.cos(a)), d = 14 * k * Math.sin(a);
+  return { ...p, armar: [p.armar[0] + d, p.armar[1] - d], armY: (p.armY || 0) + 10 - 4 * k * Math.sin(2 * a), luta: 1.5 * k * Math.sin(a), ...o }; };
 const SKOPA = (o = {}) => P({ fram: [1, 1], hand: 1, armar: [-138, -138], klapp: 136, armY: 10, ...o });         // tassarna ihop framför magen som en skål med vatten (Sanna 27/11 'better placement of hands and water')
 const skalMitt = () => { const [lx, ly] = tass('l'), [rx, ry] = tass('r'); return [(lx + rx) / 2, (ly + ry) / 2]; };
 
@@ -374,8 +381,13 @@ const RS = {
     return ST({ kam: tl < klipp ? K_GROP : NARA(STA), f: F('jatteglad', { titt: [-14, 12] }), p: P({ rikt: -0.3, oron: [up, up], svans: vipp(tl, klipp + 0.2, 1.2) }),
       skim: [[GROP[0] - 20, GROP[1] - 4, 0.6 * bump(0, klipp + 0.4, tl), 0.8]] }); },
   // står bakom pölen och tvättar tassarna: gnids mot varandra på "gnugg, gnugg", droppar faller ner i pölen
-  '7': (tl, d) => { const g = J.GNUGG[13].map(w => M('7', 13) + w);
-    return ST({ kam: K_POL, pos: [GROP[0] + 10, MARK - 14], f: F(tl < g[0] ? 'glad' : 'fnissig', { titt: [0, 14] }), p: GNUGG(tl, g, { svans: vipp(tl, g[1] + 0.3, 1.2) }), droppar: [0.3, d - 0.4] }); },
+  // (Sanna 28/11 'better animation of washing paws'): tassarna kommer fram vid pölen, klipp till tassarna i detalj på "gnugg, gnugg",
+  // tassarna gnids lugnt runt mot varandra hela repliken (som 057), lite mer på "gnugg, gnugg"; droppar faller och ringar i pölen
+  '7': (tl, d) => { const g = J.GNUGG[13].map(w => M('7', 13) + w), klipp = g[0] - 0.3, in_ = mjuk(del(0.15, 0.75, tl));
+    const k = del(0.5, 1.0, tl) * (1 - del(d - 0.45, d - 0.05, tl)) * (1 + 0.35 * g.reduce((s, a) => s + bump(a - 0.1, a + 0.45, tl), 0));
+    const up = -8 * g.reduce((s, a) => s + bump(a - 0.05, a + 0.5, tl), 0);
+    return ST({ kam: tl < klipp ? K_TVATT : K_TASSAR, pos: [GROP[0] + 10, MARK - 14], f: F(tl < g[0] ? 'glad' : 'fnissig', { titt: [0, 14] }),
+      p: L.blandaPose(SKAL(), TVATTA(tl, k, { oron: [up, up], svans: vipp(tl, g[1] + 0.3, 1.2) }), in_), droppar: [0.9, d - 0.4], ringar: true, blank: k > 0 ? Math.min(1, k) : 0 }); },
   '7b': (tl, d) => ST({ kam: NARA([GROP[0] + 10, MARK - 14]), pos: [GROP[0] + 10, MARK - 14], f: F('stolt'), p: { ...POSE('stolt'), svans: vipp(tl, 0.2, 2.0) } }),
   // tittar ner i pölen; nick i pausen; tittar sedan mot havet
   '8': (tl, d) => { const sv = M('8', 15) + LN(15), hav = M('8', 16);
@@ -532,7 +544,13 @@ function ritaStrand(st, t) {
       lagg('fram', [0, 0.3].map(w0 => { const w = kl((u - w0) / 0.7); return w <= 0 || w >= 1 ? '' : `<ellipse cx="${f1(x)}" cy="${f1(y + 22)}" rx="${f1(30 + 80 * w)}" ry="${f1(8 + 16 * w)}" fill="none" stroke="#fff" stroke-width="4" opacity="${f1(0.85 * (1 - w))}"/>`; }).join('')); }); }
   // vatten i tassarna (skålen) och droppar som faller
   if (st.skal > 0.01) { const [x, y] = skalMitt(); lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(y - 10)}" rx="${f1(30 * st.skal)}" ry="${f1(11 * st.skal)}" fill="${VATTEN_F}" stroke="#fff" stroke-width="3"/>`); }
-  if (st.droppar) { const [x, y] = skalMitt(); fallande(x, y, st.sjo || st.pos[0] < GROP[0] + 100 ? GROP[1] : MARK + 10, st.tl, ...st.droppar); }
+  // våta tassar (Sanna 28/11): en tunn vit våt glansbåge längs varje svart tass ovansida medan tassarna gnids, de skimrar lugnt i takt med gnuggandet
+  if (st.blank > 0.01) lagg('glans', ['l', 'r'].map((sd, i) => { const [x, y] = tass(sd, undefined, true), o = st.blank * (0.65 + 0.35 * Math.sin(TT * 7 + i * 2.1));   // ljuset från vänster ovanifrån
+    return `<path d="M${f1(x - 13)} ${f1(y - 2)} Q${f1(x - 9)} ${f1(y - 13)} ${f1(x + 3)} ${f1(y - 14)}" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="${f1(0.8 * o)}"/>
+      <path d="M${f1(x + 8)} ${f1(y - 12)} l3 2" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity="${f1(0.6 * o)}"/>`; }).join(''));
+  if (st.droppar) { const [x, y] = skalMitt(); fallande(x, y, st.sjo || st.pos[0] < GROP[0] + 100 ? GROP[1] : MARK + 10, st.tl, ...st.droppar);
+    if (st.ringar) for (let t0 = st.droppar[0] + 0.45; t0 < st.droppar[1] + 0.45; t0 += 0.25) { const w = (st.tl - t0) / 0.6;   // där droppen landar i pölen: en ring växer ut
+      if (w > 0 && w < 1) lagg('glans', `<ellipse cx="${f1(x)}" cy="${f1(GROP[1] - 2)}" rx="${f1(8 + 34 * w)}" ry="${f1(3 + 9 * w)}" fill="none" stroke="#fff" stroke-width="3" opacity="${f1(0.8 * (1 - w))}"/>`); } }
   (st.vagFram || []).forEach(([a, b, k]) => vagFram(a, b, k, 44, st.pos?.[0]));
   (st.skim || []).forEach(([x, y, k, v]) => skimmer(x, y, k, v));
   if (st.skimHink) { const p = UTE(st.tl).pos; skimmer(p[0], p[1] - 50, st.skimHink, 0.6); }
