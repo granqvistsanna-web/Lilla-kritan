@@ -82,8 +82,11 @@ function refrang(E, nr) {
     R(2.3, `${nr}b`, REF, tl => [tl < 1.0 ? BF('glad', 'forvanad', del(0.15, 0.45, tl)) : BF('forvanad', 'jatteglad', del(1.0, 1.4, tl)),
       { ...BP('neutral', 'magen'), luta: 4 * Math.sin(Math.PI * tl / (2 * SLAG)), upp: 0.6 * del(0.1, 0.5, tl) * (1 - del(1.8, 2.3, tl)) }]),
     R(4.6, `${nr}c`, REF, tl => [G('jatteglad'), BP('neutral', 'hurra', upp(tl))]),
-    // pekar på bubblan och tittar upp på den (förut tittade hon ner: upp −0,6)
-    R(6.9, `${nr}d`, REFIN, tl => titta([BF('glad', 'kawaii', del(0, 0.4, tl)), { ...BP('neutral', 'pekar'), upp: 0.3 }], BUB, del(0.1, 0.5, tl))),   // kawaii (1 och 2 av 3)
+    // pekar på bubblan och tittar upp på den (förut tittade hon ner: upp −0,6). QA 2026-11-28: kawaii-ögonen är helsvarta med
+    // glitter, så en liten blick (titt 16/13) läste som att hon tittade in i kameran; nu vänds huvudet tydligt upp mot bubblan
+    // (rikt 0,7, upp 0,75) och ögonen går hela vägen upp åt höger.
+    R(6.9, `${nr}d`, REFIN, tl => { const k = del(0.1, 0.5, tl), [f, p] = titta([BF('glad', 'kawaii', del(0, 0.4, tl)), { ...BP('neutral', 'pekar'), upp: 0.3 }], BUB, k);
+      return [{ ...f, titt: [lerp(f.titt[0], 22, k), lerp(f.titt[1], -20, k)] }, { ...p, rikt: lerp(p.rikt, 0.7, k), upp: lerp(p.upp, 0.75, k), luta: 3 * k }]; }),   // kawaii (1 och 2 av 3)
     R(9.2, `${nr}e`, REF, tl => [G('jatteglad'), { ...NEU(), armar: Array(2).fill(30 * pulsar(tl, [2 * SLAG, 3 * SLAG], 0.4)) }]),
     // "Titta ut!": pekar åt höger, dit fågeln flyger in, och följer den med blicken tills den flyger ut
     R(11.5, `${nr}f`, TITTA_K, tl => titta([G('nyfiken'), pekH(del(0, 0.4, tl))], fagelXY(E + 11.5 + tl), del(0, 0.3, tl))),
@@ -105,8 +108,13 @@ const S = [
   [47.6, '042', HEL, 1, () => [G('jatteglad'), NEU()]],                  // båten hoppar på varje tut
   // "Dinon letar orange nu": tittar först efter Fia som flyger ut uppe till vänster, sedan sveper huvudet vänster–höger på slagen
   [51.2, '04a', HEL, 1, tl => { const E = 51.2 + tl;
-    if (E < 54.0) return titta([BF('jatteglad', 'nyfiken', del(0, 0.4, tl)), NEU()], fiaXY(E), del(0.2, 0.6, tl));
-    const sv = Math.sin(Math.PI * (E - 54.0) / (2 * SLAG)) * del(54.0, 54.5, E), ef = titta([G('nyfiken'), NEU()], fiaXY(53.99));
+    // QA 2026-11-28 (stod nästan still 52,5–54): när Fia är borta lutar hon huvudet, tittar upp åt sidan och funderar ("hm"),
+    // och ljusnar till nyfiken lagom till svepet
+    const fore = E => { const [f, p] = titta([BF('jatteglad', 'nyfiken', del(51.2, 51.6, E)), NEU()], fiaXY(Math.min(E, 52.5)), del(51.4, 51.8, E)), k = del(52.5, 52.95, E);
+      return [{ ...BF('nyfiken', 'tanker', k * (1 - del(53.55, 53.9, E))), titt: [lerp(f.titt[0], -9, k), lerp(f.titt[1], -11, k)] },
+        { ...p, luta: -6 * k + 2 * k * Math.sin(2 * Math.PI * (E - 52.5) / 1.2), rikt: lerp(p.rikt || 0, -0.3, k), upp: lerp(p.upp || 0, 0.4, k) }]; };
+    if (E < 54.0) return fore(E);
+    const sv = Math.sin(Math.PI * (E - 54.0) / (2 * SLAG)) * del(54.0, 54.5, E), ef = fore(53.99);
     const [f, p] = [{ ...G('nyfiken'), titt: [11 * sv, -2] }, { ...NEU(), rikt: 0.6 * sv }], k = del(54.0, 54.4, E);
     return [B.L.blanda(ef[0], f, k), { ...p, ...B.L.blandaPose(ef[1], p, k) }]; }],
   // "leta med – jag och du!": närbild, hon tittar på tittaren och blir glad, händerna på västen på "jag", pekar på "du" och nickar
@@ -120,15 +128,18 @@ const S = [
   [74.9, '06', FISK_K, 1, tl => titta([tl < 1.6 ? BF('glad', 'forvanad', del(0.3, 0.6, tl)) : BF('forvanad', 'jatteglad', del(1.6, 1.95, tl)),
     { ...NEU(), armar: Array(2).fill(34 * pulsar(tl, [1.75], 0.7)) }], fiskXY(74.9 + tl) || [1560, 860], del(0.2, 0.5, tl))],
   // fisken guppar och tittar upp på henne; hon pekar och tittar på fisken, på tittaren (nickar), och på fisken igen
-  [77.5, '06a', FISK_N, 0, tl => { const E = 77.5 + tl, mot = 1 - del(78.6, 78.9, E) + del(79.5, 79.8, E), f0 = G('glad'), p0 = BP('neutral', 'pekar');
+  // QA 2026-11-28 (båda stod still): fisken gör ett litet glatt skutt på stället (78,0) och hon blir förvånad och fnissar till
+  [77.5, '06a', FISK_N, 0, tl => { const E = 77.5 + tl, mot = 1 - del(78.6, 78.9, E) + del(79.5, 79.8, E), sk = pulsar(E, [78.0], 0.7);
+    const f0 = B.L.blanda(BF('glad', 'forvanad', pulsar(E, [77.95], 0.35)), G('fnissig'), del(78.25, 78.4, E) * (1 - del(78.6, 78.8, E))), p0 = { ...BP('neutral', 'pekar'), luta: 3 * sk };
     const [f, p] = titta([f0, p0], fiskXY(E) || [1560, 830], mot);
     return E > 78.8 && E < 80.4 ? B.L.nicka(f, p, E - 78.8) : [f, p]; }],
   [80.9, '06b', FISK_K, 0, tl => titta([G('jatteglad'), klapp(0.5 + tl)], fiskXY(80.9 + tl), 0.7)],   // klapp 81.4, 81.9, 82.4 = fiskens plask
   // fågeln flyger in (82.9–85.4): nyfiken, följer den med blicken, förvånad när den stannar framför fören
   [82.7, '07', HEL, 1, tl => titta([BF('nyfiken', 'forvanad', del(2.5, 2.9, tl)), NEU()], fagelXY(82.7 + tl), del(0.3, 0.8, tl))],
   // pekar på fågeln, tittar på tittaren (nickar) och tillbaka
-  [86.8, '07a', HEL, 0, tl => { const E = 86.8 + tl, mot = 1 - del(87.9, 88.2, E) + del(88.9, 89.2, E);
-    const [f, p] = titta([G('glad'), BP('neutral', 'pekar')], fagelXY(E), mot);
+  // QA 2026-11-28 (stod nästan still): fågeln fladdrar upp en bit och ner igen (87,2) och hon blir jätteglad och gungar till
+  [86.8, '07a', HEL, 0, tl => { const E = 86.8 + tl, mot = 1 - del(87.9, 88.2, E) + del(88.9, 89.2, E), fl = pulsar(E, [FLADDER], 0.75);
+    const [f, p] = titta([BF('glad', 'jatteglad', fl), { ...BP('neutral', 'pekar'), luta: 3 * Math.sin(2 * Math.PI * kl((E - FLADDER) / 0.75)) }], fagelXY(E), mot);
     return E > 88.1 && E < 89.7 ? B.L.nicka(f, p, E - 88.1) : [f, p]; }],
   [90.0, '07b', HALV, 0, tl => [G('fnissig'), { ...NEU(), armar: Array(2).fill(10 + 34 * pulsar(tl, [0, 0.6, 1.2], 0.5)) }]],   // flaxar på pip, pip, pip
   // "Vad mer är orange?" (Sanna 2026-11-26 "more expressions from the dino" vid 1:37): vinkar hej då till fågeln, tänker
@@ -216,13 +227,13 @@ const FISK = '/assets/rekvisita/fisk-orange-v2/cut/fisk-orange-v2.png', FS = 0.4
 const EKO = REF0.map(r => [0.576, 1.73, 4.6 + 0.576, 4.6 + 1.73].map(d => r + d - 0.1));
 const FISKREF = EKO[0].map((t, i) => [t, 0.6, i % 2 ? 1372 : 1340, i % 2 ? 1340 : 1372, 110]);   // bara refräng 1; i refräng 2 hoppar fågeln
 const FISKHOPP = [[75.3, 1.4, 1400, 1560, 300], [81.15, 0.5, 1560, 1650, 130], [81.65, 0.5, 1650, 1570, 130], [82.15, 0.5, 1570, 1670, 130]];
-const BOB = [1560, 76.7, 81.15];   // 06a: fisken guppar där den landade
+const BOB = [1560, 76.7, 81.15], BOB_SKUTT = 78.0;   // 06a: fisken guppar där den landade, och skuttar till på stället (QA 2026-11-28)
 function hoppXY(E, [t0, D, x0, x1, H], vy) { const u = (E - t0) / D; if (u < 0 || u > 1) return null;
   return [lerp(x0, x1, u), vy + 40 * (vy === VY ? 1 : 0.6) - (H + 40) * 4 * u * (1 - u), Math.atan2((H + 40) * 4 * (1 - 2 * u), (x1 - x0)) * -180 / Math.PI * 0.7]; }
 const bobK = E => del(76.9, 77.4, E) * (1 - del(80.9, 81.15, E));
 function fiskXY(E) {   // fiskens mitt i scenen (för Disas blick)
   for (const h of FISKHOPP) { const q = hoppXY(E, h, VY); if (q) return q; }
-  if (E >= BOB[1] && E < BOB[2]) return [BOB[0], VY + 70 - 95 * bobK(E)];
+  if (E >= BOB[1] && E < BOB[2]) return [BOB[0], VY + 70 - 95 * bobK(E) - 55 * pulsar(E, [BOB_SKUTT], 0.5)];
   return null;
 }
 function fisk(E) {
@@ -240,7 +251,9 @@ function fisk(E) {
   // 06a: fisken guppar i vattenytan, vickar på stjärten och tittar upp på Disa (nosen upp mot båten), en ring runt den
   if (E >= BOB[1] && E < BOB[2]) { const k = bobK(E), rr = 70 + 60 * k + 6 * Math.sin(E * 2.4), [bx, by] = fiskXY(E);
     plask += `<path d="M${(bx - rr).toFixed(1)} ${VY + 6} A${rr.toFixed(1)} 13 0 0 0 ${(bx + rr).toFixed(1)} ${VY + 6}" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="40 14" opacity="${(0.75 * k).toFixed(2)}"/>`;
-    h = rita(bx, by + 6 * Math.sin(E * 3), 16 + 5 * Math.sin(E * 2.2), -1, FS, 1 + 0.07 * Math.sin(E * 11)); }
+    const su = kl((E - BOB_SKUTT) / 0.5), sv = E >= BOB_SKUTT && E < BOB_SKUTT + 0.5 ? 18 * Math.sin(2 * Math.PI * su) : 0;   // nosen upp, sedan ner
+    [BOB_SKUTT - 0.03, BOB_SKUTT + 0.45].forEach(tp => { const w = (E - tp) / 0.6; if (w > 0 && w < 1) plask += plaskRita(bx, VY, w, 0.5); });
+    h = rita(bx, by + 6 * Math.sin(E * 3), 16 + 5 * Math.sin(E * 2.2) + sv, -1, FS, 1 + 0.07 * Math.sin(E * 11)); }
   $('fisk').innerHTML = h; $('fiskbak').innerHTML = hb; $('plask').innerHTML = plask;
 }
 
@@ -249,6 +262,7 @@ function fisk(E) {
 // dit Disa pekar, flaxar där en stund och flyger ut till höger (förut bakom hennes huvud, av överkanten).
 // Refräng 2 (QA 2026-11-27, en liten variation): fågeln flyger in på första raden och sitter på fören, hoppar och flaxar på ekona,
 // och lyfter på "Titta ut!".
+const FLADDER = 87.2;   // 07a: fågeln fladdrar upp och ner igen (QA 2026-11-28)
 const FAGEL = '/assets/rekvisita/fagel-orange-v2/delar/', FG = 0.26, FAGEL_IN = [82.9, 85.4], FAGEL_UT = [92.6, 95.0], SVAV = [1300, 455];
 const FAGEL_F = REF0.map(r => [r + 11.6, r + 13.8]), TITTA_P = [1350, 470];
 const R2_IN = [105.0, 106.3], FOR_P = [FOREN[0] + 6, FOREN[1] - 36], FGP = 0.2;   // fören i båtens koordinater
@@ -269,7 +283,7 @@ function fagelXY(E) {   // fågelns mitt i scenen, eller null
   if (E < FAGEL_IN[0] || E > FAGEL_UT[1]) return null;
   if (E < FAGEL_IN[1]) { const u = mjuk((E - FAGEL_IN[0]) / (FAGEL_IN[1] - FAGEL_IN[0])); return [lerp(2150, SVAV[0], u), lerp(300, SVAV[1], u) - 60 * Math.sin(Math.PI * u)]; }
   if (E > FAGEL_UT[0]) { const u = mjuk((E - FAGEL_UT[0]) / (FAGEL_UT[1] - FAGEL_UT[0])); return [lerp(SVAV[0], 2200, u), lerp(SVAV[1], 80, u)]; }
-  return [SVAV[0], SVAV[1] + 14 * Math.sin(E * 4.2)];
+  return [SVAV[0], SVAV[1] + 14 * Math.sin(E * 4.2) - 55 * pulsar(E, [FLADDER], 0.75)];
 }
 function fagel(E) {
   $('fagelbak').innerHTML = ''; FAGELP.innerHTML = '';
@@ -279,21 +293,21 @@ function fagel(E) {
   const q = fagelXY(E); if (!q) { $('fagel').innerHTML = ''; return; }
   const ff = FAGEL_F.find(([a, b]) => E >= a && E <= b), inR2 = E >= R2_IN[0] && E < R2_IN[1];
   const ut = (ff && E > ff[0] + 0.65 * (ff[1] - ff[0])) || E > FAGEL_UT[0];   // vänd åt höger när den flyger ut
-  const fr = E >= 90 && E < 92.3 ? 3 : 2;   // flaxar 2 gånger/s, 3 på pip
+  const fr = (E >= 90 && E < 92.3) || (E >= FLADDER && E < FLADDER + 0.75) ? 3 : 2;   // flaxar 2 gånger/s, 3 på pip
   $('fagel').innerHTML = fagelSvg(q[0], q[1], ff ? 0.24 : inR2 ? lerp(FG, FGP, mjuk((E - R2_IN[0]) / 1.3)) : FG, flax(E, ff ? 2.5 : fr), ut ? 1 : -1);
 }
 
 // --- Apelsinbubblan (05d/09d): poppar upp till höger med glitter, står kvar raden ut och nästa, poppar bort ---------------------
-const APELSIN = '/assets/rekvisita/apelsin-v2/cut/apelsin-v2.png', BUB = [1245, 375];   // QA 2026-11-27: lite till vänster, fri från solen
+const APELSIN = '/assets/rekvisita/apelsin-v2/cut/apelsin-v2.png', BUB = [1272, 450], BUB_S = 0.55;   // QA 2026-11-28: lägre och mindre, mellan hennes taggar och solen (förut [1245, 375] i skala 0,7: skymde solens strålar)
 function bubbla(E) {
   let h = '';
   for (const t0 of [61.3 + 6.9, 105 + 6.9]) {
     const u = E - t0 - 0.2, ut = E - (t0 + 4.4); if (u < 0 || ut > 0.35) continue;
     const s = (ut > 0 ? 1 - mjuk(ut / 0.35) : pop(u * 0.9)) * (1 + 0.02 * Math.sin(E * 6));
-    h += `<g transform="translate(${BUB[0]} ${BUB[1]}) scale(${Math.max(0, 0.7 * s).toFixed(3)})">
+    h += `<g transform="translate(${BUB[0]} ${BUB[1]}) scale(${Math.max(0, BUB_S * s).toFixed(3)})">
       <path d="M-60 100 L-150 190 L-10 118Z" fill="#fff"/><circle r="150" fill="#fff"/><circle r="138" fill="#FFF3E2"/>
       <image href="${APELSIN}" x="-117" y="-107" width="234" height="214"/></g>`;
-    h += gnistor(BUB[0], BUB[1], 118, u);
+    h += gnistor(BUB[0], BUB[1], 170 * BUB_S, u);
   }
   $('bubbla').innerHTML = h;
 }
@@ -370,8 +384,7 @@ window.ready = (async () => {
   FIA.fig = LF.figur(0, 0, FIA_SK, FIA.g);
   FIA.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none');
   FAGELP = document.createElementNS(NS, 'g'); B.mast.appendChild(FAGELP);
-  await Promise.all(['/assets/bakgrunder/sjon-v2/sjon-v2.png', FISK, APELSIN, FAGEL + 'fagel-vinge.png', FAGEL + 'fagel-kropp.png', KORN]
-    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await bilderKlara(['/assets/bakgrunder/sjon-v2/sjon-v2.png', FISK, APELSIN, FAGEL + 'fagel-vinge.png', FAGEL + 'fagel-kropp.png', KORN]);   // kastar om en bild inte laddas (QA 2026-11-28)
   window.LJUD = ljud();
   const q = new URLSearchParams(location.search).get('t');
   rita(q ? +q - E0 : 0);

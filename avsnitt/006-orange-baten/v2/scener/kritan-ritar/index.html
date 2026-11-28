@@ -97,7 +97,7 @@ window.seek = t => { window.stilla = true; rita(t); };
 window.render = window.seek;
 window.ready = (async () => {
   KONTUR = await (await fetch('/assets/rekvisita/orange-baten-v2/cut/orange-baten-v2-kontur.json')).json();
-  await Promise.all([BATEN, KRITAN.BILD].map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await bilderKlara([BATEN, KRITAN.BILD]);   // kastar om en bild inte laddas (QA 2026-11-28)
   window.LJUD = ljud();
   const q = new URLSearchParams(location.search).get('t');
   rita(q ? +q - E0 : 0);

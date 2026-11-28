@@ -78,9 +78,11 @@ function ekoKam(E) {
 }
 // Hej då (punkt 22): Disa kör in i båten från vänster, bakom Gurra (längre bort på golvet), och stannar i mitten och vinkar.
 // De andra vinkar en i taget. Kameran står still (en inzoomning skar Gurra och Agda vid kanterna).
-const BAT_S = 1.15, BAT_Y = 965, BAT_IN = [HEJ, 214.6], VINK0 = { disa: 213.9, gurra: 214.7, agda: 215.3, fia: 215.9 };
-const HEJ_DX = { gurra: -120, agda: 120 };   // Gurra och Agda flyttar ut lite för båten (klippet döljs av kritsvepet)
-const batX = E => lerp(-420, 960, 1 - (1 - kl((E - BAT_IN[0]) / (BAT_IN[1] - BAT_IN[0]))) ** 3) + 18 * kl(E - BAT_IN[1]) / 7;
+// QA 2026-11-28: alla djur lika stora (format/bildutsnitt.md): Disa i båten SK 0,5 × 1,6 = 0,8 som när hon står (förut 1,15: hälften så
+// stor som Gurra och Agda); Gurra och Agda flyttar ut mer, båtens ändar går in bakom dem (vattenlinjen 1020, så att hennes huvud går fritt under discokulan).
+const BAT_S = 1.6, BAT_Y = 1020, BAT_IN = [HEJ, 214.6], VINK0 = { disa: 213.9, gurra: 214.7, agda: 215.3, fia: 215.9 };
+const HEJ_DX = { gurra: -150, agda: 150 };   // Gurra och Agda flyttar ut lite för båten (klippet döljs av kritsvepet)
+const batX = E => lerp(-700, 960, 1 - (1 - kl((E - BAT_IN[0]) / (BAT_IN[1] - BAT_IN[0]))) ** 3) + 18 * kl(E - BAT_IN[1]) / 7;
 const BATFACE = () => [batX(E_nu) - 8, 600], BAT = {};
 let E_nu = 0;
 const kamAt = E => E < 179.9 ? kamMix(HEL, ALLA, (E - 173.8) / 6)
@@ -237,10 +239,18 @@ function symbolMotiv(typ, E) {
         <circle cx="-16" cy="-47" r="5" fill="#2b2b2b"/><circle cx="16" cy="-47" r="5" fill="#2b2b2b"/>
         <path d="M-12 -16 Q0 -8 12 -16" fill="none" stroke="#2b2b2b" stroke-width="3.5" stroke-linecap="round"/></g>`;
   }
-  if (typ === 'snurra') {   // en prickad ring, bollen går runt ett varv på fyra slag (som Fias ögla)
-    const a = 2 * Math.PI * ((x / 4) % 1) - Math.PI / 2;
-    const prickar = Array.from({ length: 12 }, (_, i) => { const b = i / 12 * 2 * Math.PI; return `<circle cx="${(44 * Math.cos(b)).toFixed(1)}" cy="${(44 * Math.sin(b)).toFixed(1)}" r="4.5" fill="#C98A5E"/>`; }).join('');
-    return `${prickar}<circle cx="${(44 * Math.cos(a)).toFixed(1)}" cy="${(44 * Math.sin(a)).toFixed(1)}" r="14" fill="${ORANGE}" stroke="#fff" stroke-width="4"/>`;
+  if (typ === 'snurra') {   // QA 2026-11-28 (en prickad ring läste inte): en ögla ritas som en kritlinje, med en liten fjäril (som Fia) i linjens
+    // ände. Linjen är en kurva med en ögla (x = 16t − 36 sin t, y = −36 cos t, t −π…π), ritad på 1,9 s; svagt spår före. Fjärilen vänds aldrig.
+    const P = t => [0.86 * (16 * t - 36 * Math.sin(t)), 0.86 * -36 * Math.cos(t) + 2], u = mjuk(kl((E - 182.65) / 1.9)), N = 48;
+    const pts = n => Array.from({ length: n + 1 }, (_, i) => P(-Math.PI + 2 * Math.PI * u * i / n).map(v => v.toFixed(1)).join(' ')).join(' L');
+    const spar = Array.from({ length: N + 1 }, (_, i) => P(-Math.PI + 2 * Math.PI * i / N).map(v => v.toFixed(1)).join(' ')).join(' L');
+    const [bx, by] = P(-Math.PI + 2 * Math.PI * u), fl = 0.55 + 0.45 * Math.abs(Math.cos(E * 14));
+    const vinge = (sx) => `<g transform="scale(${(sx * fl).toFixed(3)} 1)"><ellipse cx="11" cy="-7" rx="12" ry="10" fill="#A98BD8" stroke="#fff" stroke-width="3"/>
+      <ellipse cx="9" cy="8" rx="8" ry="7" fill="#A98BD8" stroke="#fff" stroke-width="3"/><circle cx="12" cy="-8" r="3" fill="#F6D04D"/></g>`;
+    return `<path d="M${spar}" fill="none" stroke="${BRUN}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.18"/>
+      ${u > 0 ? `<path d="M${pts(Math.max(2, Math.round(N * u)))}" fill="none" stroke="${BRUN}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+      <g transform="translate(${bx.toFixed(1)} ${by.toFixed(1)})">${vinge(-1)}${vinge(1)}
+        <ellipse rx="5" ry="13" fill="#4A3348"/><path d="M-2 -12 Q-6 -20 -9 -22 M2 -12 Q6 -20 9 -22" stroke="#4A3348" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;
   }
   if (typ === 'klappa') {   // två tassar som slår ihop på slaget
     const isar = q < 0.12 ? 0 : qn > -0.18 ? -qn / 0.18 : 1, gap = 8 + 30 * mjuk(isar);
@@ -306,8 +316,7 @@ window.ready = (async () => {
     if (n === 'fia') F.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none');
     if (n === 'disa') { BAT.yttre = document.createElementNS(NS, 'g'); BAT.yttre.setAttribute('transform', `scale(${BAT_S})`);
       $('figurer').prepend(BAT.yttre); Object.assign(BAT, await batBygg(BAT.yttre)); } }   // längst bak: båten kör bakom Gurra
-  await Promise.all([LAGER + 'disco-orange.png', LAGER + 'discokula-orange.png', R + 'fisk-orange-v2/cut/fisk-orange-v2.png', R + 'fagel-orange-v2/delar/fagel-hel.png']
-    .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
+  await bilderKlara([LAGER + 'disco-orange.png', LAGER + 'discokula-orange.png', R + 'fisk-orange-v2/cut/fisk-orange-v2.png', R + 'fagel-orange-v2/delar/fagel-hel.png']);   // kastar om en bild inte laddas (QA 2026-11-28)
   window.LJUD = ljud();
   const q = new URLSearchParams(location.search).get('t');
   rita(q ? +q - E0 : 0);

@@ -16,6 +16,28 @@ function kamera(cx, cy, z, t) {
   $('flytt').setAttribute('scale', (2.5 / z).toFixed(3)); $('brus').setAttribute('seed', Math.floor(t * 6) % 50 + 1);
 }
 const kamMix = (a, b, k) => a.map((v, i) => lerp(v, b[i], mjuk(k)));
+// Bilderna (QA 2026-11-28): bananen i korgen blev en trasig bild i en av bryggans fyra bitar, för att förladdningen löste sig
+// även på onerror. Nu laddas varje url och varje <image> i scenen med upp till tre omförsök, och ready kastar ett fel om en bild
+// ändå inte går att ladda, så att renderingen stannar i stället för att leverera en trasig bild.
+async function bilderKlara(urls = []) {
+  const vanta = ms => new Promise(r => setTimeout(r, ms)), igen = (u, n) => n && !u.startsWith('data:') ? `${u}${u.includes('?') ? '&' : '?'}igen=${n}` : u;
+  const ladda = async u => {
+    for (let n = 0; n < 4; n++) {
+      if (await new Promise(r => { const i = new Image(); i.onload = () => r(true); i.onerror = () => r(false); i.src = igen(u, n); })) return;
+      await vanta(300);
+    }
+    throw new Error('bilden gick inte att ladda: ' + u);
+  };
+  await Promise.all(urls.map(ladda));
+  await Promise.all([...document.querySelectorAll('image')].map(async im => {
+    const u = im.getAttribute('href'); if (!u) return;
+    for (let n = 0; n < 4; n++) {
+      if (n) { await vanta(300); im.setAttribute('href', igen(u, n)); }
+      if (await im.decode().then(() => true, () => false)) return;
+    }
+    throw new Error('bilden i scenen gick inte att ladda: ' + u);
+  }));
+}
 
 // Vinkningen (2026-11-26, Sanna: "improve dino rigs and waving", "motion on waved"). Dinoriggarna gömmer armen bakom kroppen
 // mellan 26° och 80° (GOM), så 033:s 55° ± 12° syntes knappt. Nu sätts riggens vink: 1 (armen göms inte, glider 24 px ut längs

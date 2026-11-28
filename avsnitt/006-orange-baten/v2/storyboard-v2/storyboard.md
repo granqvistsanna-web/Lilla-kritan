@@ -39,18 +39,18 @@ Samma berättelse och samma bilder som v1 ([`../../storyboard.md`](../../storybo
 | 04 | 0:39.3≈ | Sjön · körscen, kameran glider in | ♪ Dinon kör sin orange båt, | Sjön glider, båten gungar, skum vid skrovet. Fia fladdrar in från höger och landar på flaggstången | Disa: **glad** |
 | 041 | 0:43.2 | Närbild Disa | (raden fortsätter) | Disa klappar på relingen på slagen, tittar bakåt mot Fia på flaggan | Disa: **fnissig** |
 | 042 | 0:47.6 | Sjön · körscen | ♪ tut, tut, tut – på vågorna! | Båten hoppar till på varje tut (mistluren), Fia skuttar på stången | Disa: **jatteglad** |
-| 04a | 0:51.2 | Sjön · körscen | ♪ Dinon letar orange nu, leta med – jag och du! | Disa pekar åt vänster, sedan åt höger, så att barnet kan peka med. Fia lyfter och flyger ut | Disa: **nyfiken** + **pekar** |
+| 04a | 0:51.2 | Sjön · körscen | ♪ Dinon letar orange nu, leta med – jag och du! | Disa pekar åt vänster, sedan åt höger, så att barnet kan peka med. Fia lyfter och flyger ut; när Fia är borta lutar Disa huvudet och funderar ("hm") innan hon letar | Disa: **nyfiken** + **pekar** |
 | 05a | 1:01.3 | Refräng · dansbild på sjön | ♪ Orange! (Orange!) Orange! (Orange!) | Vattnet står still, båten mitt i bild, armarna upp på rösten, ner på ekot. Himlen glöder mjukt persikoorange | Disa: **jatteglad** + **hurra** |
 | 05b | 1:03.6 | Samma bild | ♪ Orange är bästa färgen! | Händerna på västen, gungar åt sidorna | Disa: **glad** + **magen** |
 | 05c | 1:05.9 | Samma bild | ♪ Orange! (Orange!) Orange! (Orange!) | Som 05a | Disa: **jatteglad** + **hurra** |
-| 05d | 1:08.2 | Samma bild, kameran glider in | ♪ Som en fin apelsin! | En bubbla med v2-apelsinen poppar upp till höger med glitter, Disa pekar och tittar upp | Disa: **kawaii** (1 av 3) + **pekar** |
+| 05d | 1:08.2 | Samma bild, kameran glider in | ♪ Som en fin apelsin! | En bubbla med v2-apelsinen poppar upp till höger med glitter (mellan hennes taggar och solen, skymmer inte solen), Disa pekar och vänder huvudet och blicken tydligt upp mot den | Disa: **kawaii** (1 av 3) + **pekar** |
 | 05e | 1:10.5 | Samma bild | ♪ Tut, tut, tut, tut – | Båten gungar på de första två, två små knytnävspumpar på de sista | Disa: **jatteglad** |
 | 05f | 1:12.8 | Närbild Disa | ♪ vad är orange? Titta ut! | Pekar ut åt höger och tittar dit, sedan åt vänster | Disa: **nyfiken** + **pekar** |
 | 06 | 1:14.9 | Sjön · körscen | ♪ Vad är orange? (Vad är orange?) | v2-fisken hoppar upp framför fören i en hög båge, plask med droppar. Disa tittar dit | Disa: **forvanad** |
-| 06a | 1:17.5 | Sjön, stannar | ♪ Titta där! (Titta där!) Fisken är orange – | Sjön stannar, Disa pekar på fisken | Disa: **glad** + **pekar** |
+| 06a | 1:17.5 | Sjön, stannar | ♪ Titta där! (Titta där!) Fisken är orange – | Sjön stannar, Disa pekar på fisken. Fisken gör ett litet glatt skutt på stället (plask) och Disa blir förvånad och fnissar till | Disa: **glad** + **pekar** |
 | 06b | 1:20.9 | Närbild Disa | ♪ plask, plask, plask! | Fisken hoppar tre gånger i en båge bredvid båten, Disa klappar en gång per plask | Disa: **jatteglad** · fisken: glad |
 | 07 | 1:22.7 | Sjön · körscen | ♪ Vad är orange? (Vad är orange?) | Sjön glider igen, v2-fågeln flyger in från höger, vingen flaxar | Disa: **nyfiken** |
-| 07a | 1:26.8 | Sjön, stannar | ♪ Titta där! (Titta där!) Fågeln är orange – | Fågeln flaxar på stället framför fören, Disa pekar | Disa: **glad** + **pekar** |
+| 07a | 1:26.8 | Sjön, stannar | ♪ Titta där! (Titta där!) Fågeln är orange – | Fågeln flaxar på stället framför fören och fladdrar upp en bit och ner igen, Disa pekar och blir jätteglad | Disa: **glad** + **pekar** |
 | 07b | 1:30.0 | Närbild Disa | ♪ pip, pip, pip! | Disa flaxar med armarna, en gång per pip (lugnt, armarna bakom kroppen ut förbi kanten), fågeln bredvid | Disa: **fnissig** |
 | 08 | 1:32.3 | Närbild Disa | ♪ Vad mer är orange? Kan du se? | Disa tittar på tittaren med huvudet på sned, frågande | Disa: **nyfiken** |
 | 08a | 1:37.2 | Närbild Disa, inåkning | (Kan du se? / ledtråden) | Disa tittar ner på sin väst, kameran glider in mot västen | Disa: **tanker** |
@@ -61,7 +61,7 @@ Samma berättelse och samma bilder som v1 ([`../../storyboard.md`](../../storybo
 | 11 | 1:59.1 | Bryggan · helbild | ♪ Vad är orange? (Vad är orange?) | Agda sitter på v2-bryggans kant med korgen (apelsin, grönt äpple, gul banan). Båten puttrar in från vänster | Agda: **glad** · Disa: **glad** |
 | 11a | 2:01.0 | Bryggan · helbild | ♪ Titta där! (Titta där!) Apelsinen är orange – | Båten lägger till. Disa: förvånad → glad, tittar på korgen, sedan på Agda och nickar (2:03.9). Agda sträcker vingen mot korgen | Agda: **glad** · Disa: **forvanad → glad** |
 | 11b | 2:05.5 | Närbild Disa | ♪ rund, rund, rund! | Disa ritar tre cirklar i luften med tassen, en per "rund", och en orange kritring växer efter tassen. Öppna ögon från första bilden efter klippet | Disa: **glad** |
-| 11d–11d5 | 2:08.0 | Närbild Agda ↔ närbild Disa | (lucka i sången ca 9,5 s, grooven fortsätter) | Pantomim, klipp mellan de två: Agda lyfter äpplet (Disa skakar på huvudet), bananen (skakar), apelsinen (stor glad nick). Ett pop när varje frukt lyfts | Agda: **glad** · Disa: **glad** |
+| 11d–11d5 | 2:08.0 | Närbild Agda ↔ närbild Disa | (lucka i sången ca 9,5 s, grooven fortsätter) | Pantomim, klipp mellan de två: Agda lyfter äpplet (Disa tänker, munnen ler inte, och skakar lugnt på huvudet), bananen (samma), apelsinen (stor glad nick). Ett pop när varje frukt lyfts | Agda: **glad** · Disa: **glad** |
 | 11e | 2:13.5 | Tvåbild | (luckan, inga repliker: Sanna 2026-11-26) | Agda räcker fram vingen, Disas tass möter den (2:14.35–2:15.0), Disa håller upp apelsinen mot himlen och tittar på den, sedan på Agda och nickar | båda: **jatteglad → glad** |
 | 13a | 2:18.0 | Tvåbild | ♪ Oj, oj, plask! (Plask!) | Apelsinen glider ur Disas tassar, plask | Disa: **forvanad** |
 | 13b | 2:20.3 | Närbild Agda | ♪ Där flöt den bort! | Agda förvånad, sedan orolig | Agda: **forvanad → ledsen** |
@@ -72,13 +72,13 @@ Samma berättelse och samma bilder som v1 ([`../../storyboard.md`](../../storybo
 | 14a | 2:36.6 | Tvåbild | ♪ Ankan! (Ankan!) | Agda ställer sig upp, redo att hoppa | Agda: **stolt** · Disa: **glad** |
 | 14b | 2:38.0 | Bryggan, vänster | ♪ Ankan hoppar i – plask! | Agda hoppar rakt fram från bryggans framkant (aldrig genom plankorna), stort plask, blir lite större ju närmare hon kommer | Agda: **jatteglad** |
 | 14c | 2:40.0 | Tvåbild | ♪ Ankan simmar, kvack, kvack, kvack! | Agda simmar ut, bara huvudet över vattnet, ringar efter | Agda: **glad** |
-| 14d | 2:42.1 | Bryggan, vänster | ♪ Hit med apelsinen – hit, hit, hit! | Agda knuffar apelsinen tillbaka, ett kliv per "hit", Disa sträcker fram tassen och tittar på apelsinen | Disa: **jatteglad** |
+| 14d | 2:42.1 | Bryggan, vänster | ♪ Hit med apelsinen – hit, hit, hit! | Agda knuffar apelsinen tillbaka i vattnet framför näbben, ett kliv per "hit", och simmar under båten (skymmer inte skrovet), Disa sträcker fram tassen och tittar på apelsinen | Disa: **jatteglad** |
 | 14e | 2:44.5 | Tvåbild | ♪ En halva var – till dig och mig! | Hela apelsinen vid Disas tass delar sig i två halvor precis på "halva" (pop, glitter), en halva var | båda: **glad** |
 | 14f | 2:46.8 | Samma bild | ♪ Mums, mums, mums – | En tugga per mums | båda: **fnissig** |
 | 14g | 2:48.2≈ | Samma bild | ♪ – hurra, hurra! | Båda armarna upp | båda: **kawaii** (3 av 3) + **hurra** |
 | 15a | 2:50.6 | Rakt klipp → discot | ♪ Danspaus! (Danspaus!) Danspaus! (Danspaus!) | Discot omfärgat till ljusorange, orange discokula. Disa i mitten, Agda hoppar in bredvid | båda: **jatteglad** |
 | 15c | 3:00.2 | Discot, solo | ♪ Hoppa, hoppa! (Hoppa, hoppa!) | Grodan hoppar (lugnt). Kameran glider in lite mot den, alla hela i bild. Märket: en liten grön groda som hoppar | Gurra: **glad** |
-| 15d | 3:02.6 | Discot, solo | ♪ Snurra runt! (Snurra runt!) | Fjärilen flyger en ögla (ingen snurr på figuren), ovanför Agda, hela i bild | Fia: **glad** |
+| 15d | 3:02.6 | Discot, solo | ♪ Snurra runt! (Snurra runt!) | Fjärilen flyger en ögla (ingen snurr på figuren), ovanför Agda, hela i bild. Märket: en ögla som ritas som en kritlinje med en liten fjäril i linjens ände | Fia: **glad** |
 | 15e | 3:04.8 | Discot, solo | ♪ Klappa, klappa! (Klappa, klappa!) | Ankan klappar, händerna möts framför bröstet | Agda: **glad** |
 | 15f | 3:07.3 | Discot, alla fyra | ♪ Alla dansar – orange dans! (Orange dans!) … | Alla dansar. På varje eko (3:09.2, 3:11.5, 3:13.8, 3:16.1) gör en sitt drag: grodan hoppar, fjärilen flyger en ögla, ankan klappar, Disa hurra. De andra gungar och tittar på den som dansar, kameran glider sakta in mot den och ut igen | den som dansar: **glad**, de andra: **glad** |
 | 16a | 3:19.0 | Discot | ♪ Fisken – orange! (Orange!) | Fisken poppar upp i bågen under kulan, alla tittar upp | alla: **forvanad → glad** |
@@ -86,7 +86,7 @@ Samma berättelse och samma bilder som v1 ([`../../storyboard.md`](../../storybo
 | 16c | 3:22.7 | Discot | ♪ Väst och apelsin och båt – orange! (Orange!) | Västen, apelsinen och båten poppar upp, en per ord | alla: **jatteglad** |
 | 16d | 3:27.8 | Discot | ♪ Orange är bästa färgen, | Alla med händerna på magen | alla: **glad** + **magen** |
 | 16e | 3:29.9 | Discot | ♪ som en fin apelsin! | Apelsinen i bågen gungar extra | alla: **glad** |
-| 16f | 3:32.4 | Orange kritsvep → discot | ♪ Hej då, hej då – tut, tut! Hej då! Hej då! | Disa kör in i båten från vänster, bakom grodan, stannar i mitten och vinkar (riggens vink). De andra tittar på båten och vinkar sedan en i taget: grodan, ankan, fjärilen (två små lyft). Öppna ögon | alla: **glad** |
+| 16f | 3:32.4 | Orange kritsvep → discot | ♪ Hej då, hej då – tut, tut! Hej då! Hej då! | Disa kör in i båten från vänster, bakom grodan, stannar i mitten och vinkar (riggens vink). Båten är så stor att Disa är lika stor som de andra; grodan och ankan står längre ut och båtens ändar går in bakom dem. De andra tittar på båten och vinkar sedan en i taget: grodan, ankan, fjärilen (två små lyft). Öppna ögon | alla: **glad** |
 | 16g | 3:41.9 | Rakt klipp → prenumerera-kortet | (instrumentalt) | `produktion/youtube/prenumerera/` utan sina första 0,75 s (irisen som öppnar ur svart), så att kortets iris på slutet är den enda | – |
 
 **Längd:** ca 3:47,9 (discot slutar 3:41.9, sedan kortet 5,95 s).
