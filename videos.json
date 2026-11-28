@@ -1844,10 +1844,10 @@
   "approved": 1795805314782
  },
  "063": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/063-1128-0807.mp4",
-  "duration": 225.2,
-  "rendered": "2026-11-28 08:07 (djup-QA 27–28/11 rättad och flyttad till uppslag.js: ljudmattan loopar, mjuk glidstart, stängningen, bildutsnitten (--snabb))",
-  "file": "avsnitt/063-hosten-i-boken/scener/boken/boken.mp4",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/063-1128-0809.mp4",
+  "duration": 232.9,
+  "rendered": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)",
+  "file": "avsnitt/063-hosten-i-boken/film/avsnitt-063.mp4",
   "status": "granska",
   "name": "063 Hösten i boken"
  },
