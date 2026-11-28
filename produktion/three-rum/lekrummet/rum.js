@@ -24,18 +24,16 @@ const DOLLY = new URLSearchParams(location.search).has('dolly');
 // ?ricks: huvudet vänder sig dit hon tittar (riggens rikt: ansiktet, magen och öronen glider, kroppen vänds aldrig) och en
 // reaktionsnärbild medan hon håller bollen och tittar glatt på den (3,4–4,8 s), två klipp som i referensen.
 const RICKS = new URLSearchParams(location.search).has('ricks');
-<<<<<<< HEAD
 // ?prov (Sanna 2026-11-24: "more walking and stuff, jumping sitting full test rig"): riggprov i rummet i stället för bollscenen,
 // Kanel går, hoppar, sätter sig, dansar, klappar och vinkar med riggens egna rörelser (se kanelProv).
 const PROV = new URLSearchParams(location.search).has('prov'), UTANROT = RICKS || PROV;
 // prov runda 2 (bara prov, Sanna har inte sett dem): ?djup = mer djup inom v2 (mjuk skugga av silhuetten på golvet, överlappsskuggor
 // under nosen och de främre armarna, varm/kall ton från rummet, förgrund som blir suddig), ?puff = kudd-volym (bryter mot v2, test). Sanna 24/11: djup före puff, ?prov har djup alltid
 const DJUP = new URLSearchParams(location.search).has('djup') || PROV, PUFF = new URLSearchParams(location.search).has('puff');
-=======
+
 // rum2 (2026-11-24, Sanna godkände): rikare material och ljusdetaljer i rummet, se rum2-blocken nedan. Standard, också i ?ricks.
 // ?rum1 ger det gamla rummet från runda 7 (för jämförelse).
 const RUM2 = !new URLSearchParams(location.search).has('rum1');
->>>>>>> claude/recursing-morse-34b480
 
 const SNABB = location.search.includes('snabb');
 const W = SNABB ? 960 : 1920, H = SNABB ? 540 : 1080, DURATION = PROV ? 42 : 18;
