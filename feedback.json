@@ -11699,5 +11699,265 @@
   "at": 1795812959465,
   "render": "2026-11-27 20:17 (grind 6, --snabb-förhandsvisning (960×540, 15 fps))",
   "fixedAt": 1795814281357
+ },
+ "wwq53741ghmwzbffft": {
+  "ep": "062",
+  "time": "2:16",
+  "sec": 136,
+  "tags": [],
+  "note": "more zoom out",
+  "fixed": false,
+  "at": 1795804156649,
+  "render": "2026-11-27 19:12 (Runda 7: grodan badar och simmar ett varv, plaskar; grodan bygger sandslottet (spaden, hinken vänds, två torn, hela slottet). Tagning 4 inne. --snabb)"
+ },
+ "klfjzh6pqsmwzbforu": {
+  "ep": "062",
+  "time": "2:33",
+  "sec": 153,
+  "tags": [],
+  "note": "better rig and walking for frog",
+  "fixed": false,
+  "at": 1795804168746,
+  "render": "2026-11-27 19:12 (Runda 7: grodan badar och simmar ett varv, plaskar; grodan bygger sandslottet (spaden, hinken vänds, två torn, hela slottet). Tagning 4 inne. --snabb)"
+ },
+ "hlgmym80w9mwzbgice": {
+  "ep": "062",
+  "time": "3:05",
+  "sec": 185,
+  "tags": [],
+  "note": "build spade in code",
+  "fixed": false,
+  "at": 1795804207070,
+  "render": "2026-11-27 19:12 (Runda 7: grodan badar och simmar ett varv, plaskar; grodan bygger sandslottet (spaden, hinken vänds, två torn, hela slottet). Tagning 4 inne. --snabb)"
+ },
+ "53hhgnmw3mmwzg0bge": {
+  "ep": "062",
+  "time": "1:34",
+  "sec": 94,
+  "tags": [],
+  "note": "bg is a bit cluttered rmove bush and apple tree",
+  "fixed": false,
+  "at": 1795811849726,
+  "render": "2026-11-27 19:12 (Runda 7: grodan badar och simmar ett varv, plaskar; grodan bygger sandslottet (spaden, hinken vänds, två torn, hela slottet). Tagning 4 inne. --snabb)"
+ },
+ "hwquakelq9mwzghlmj": {
+  "ep": "061",
+  "time": "1:00",
+  "sec": 60,
+  "tags": [],
+  "note": "better animation of washing paws",
+  "fixed": false,
+  "at": 1795812656059,
+  "render": "2026-11-27 21:04 (slutrendering (molnet): tassarna ihop med vattnet (1:21), släta ledsna öron (1:27))"
+ },
+ "fxya8q1xi1mx04xsxs": {
+  "ep": "064",
+  "time": "2:28",
+  "sec": 148,
+  "tags": [],
+  "note": "smaller sparkles overall",
+  "fixed": false,
+  "at": 1795853722816,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "cbyix7d5nhmx04zr64": {
+  "ep": "064",
+  "time": "0:10",
+  "sec": 10,
+  "tags": [],
+  "note": "polish drawing of snowflake. how can it be better. more synced lines with crayon motion, no need for inner drawing, just outline is fine.",
+  "fixed": false,
+  "at": 1795853813836,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "b1ob2zozrrmx04zzba": {
+  "ep": "064",
+  "time": "0:26",
+  "sec": 26,
+  "tags": [],
+  "note": "zoom out a bit",
+  "fixed": false,
+  "at": 1795853824390,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "38ylmwsu7gmx050lz5": {
+  "ep": "064",
+  "time": "0:31",
+  "sec": 31,
+  "tags": [],
+  "note": "have bunny walk in view, better walking rig",
+  "fixed": false,
+  "at": 1795853853761,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "qbifbzmb9omx050u7c": {
+  "ep": "064",
+  "time": "1:03",
+  "sec": 63,
+  "tags": [],
+  "note": "polish drawing",
+  "fixed": false,
+  "at": 1795853864424,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "vdwoqgkt8mmx0514xd": {
+  "ep": "064",
+  "time": "1:17",
+  "sec": 77,
+  "tags": [],
+  "note": "polish fotsteg i snön",
+  "fixed": false,
+  "at": 1795853878321,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "s452pf7emmmx051t20": {
+  "ep": "064",
+  "time": "2:10",
+  "sec": 130,
+  "tags": [],
+  "note": "better assemble animation of the 3 snöbollar and consider longer video with adding nose eyes arms and so on",
+  "fixed": false,
+  "at": 1795853909592,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "9i1ep1a9l6mx052c66": {
+  "ep": "064",
+  "time": "3:21",
+  "sec": 201,
+  "tags": [],
+  "note": "faster outro",
+  "fixed": false,
+  "at": 1795853934366,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "tv3gvtgt9nmx052v0e": {
+  "ep": "064",
+  "time": "",
+  "sec": -1,
+  "tags": [],
+  "note": "remove lilla kritan intro and start with book",
+  "fixed": false,
+  "at": 1795853958782,
+  "render": "2026-11-28 09:06 (ny slutrendering 28/11 (uppslag.js, boken.js))"
+ },
+ "fc21wm4japmx0577z5": {
+  "ep": "063",
+  "time": "0:21",
+  "sec": 21,
+  "tags": [],
+  "note": "have leaf falling down",
+  "fixed": false,
+  "at": 1795854162209,
+  "render": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)"
+ },
+ "jynz7oaokamx059fnm": {
+  "ep": "063",
+  "time": "2:47",
+  "sec": 167,
+  "tags": [],
+  "note": "try to avoid thing going through things such as ekorre and tree, and lövhög , try to go around",
+  "fixed": false,
+  "at": 1795854265474,
+  "render": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)"
+ },
+ "dd5zwadvbzmx05fcxa": {
+  "ep": "065",
+  "time": "0:14",
+  "sec": 14,
+  "tags": [],
+  "note": "polish drawing, the lines looks odd",
+  "fixed": false,
+  "at": 1795854541870,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "gsha8lzwojmx05fomn": {
+  "ep": "065",
+  "time": "0:07",
+  "sec": 7,
+  "tags": [],
+  "note": "move camera up a bit, remove apple tree",
+  "fixed": false,
+  "at": 1795854557039,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "aax16pnstnmx05gkk0": {
+  "ep": "065",
+  "time": "0:39",
+  "sec": 39,
+  "tags": [],
+  "note": "make flowers a bit smaller",
+  "fixed": false,
+  "at": 1795854598416,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "1z0m08lccgmx06174q": {
+  "ep": "065",
+  "time": "1:21",
+  "sec": 81,
+  "tags": [],
+  "note": "place in the left hand so it makes better sense pouring water on feet",
+  "fixed": false,
+  "at": 1795855560794,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "schq1jeskomx0622vs": {
+  "ep": "065",
+  "time": "1:46",
+  "sec": 106,
+  "tags": [],
+  "note": "thicker number with white circle number",
+  "fixed": false,
+  "at": 1795855601944,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "p08v9eiw54mx062g8b": {
+  "ep": "065",
+  "time": "1:51",
+  "sec": 111,
+  "tags": [],
+  "note": "zoom out a bit, raise camera a bit",
+  "fixed": false,
+  "at": 1795855619243,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "qbwxdmjcvwmx0637rr": {
+  "ep": "065",
+  "time": "2:32",
+  "sec": 152,
+  "tags": [],
+  "note": "slight zoom effect camera, happy face on sun, bigger sun, lower sun a bit",
+  "fixed": false,
+  "at": 1795855654935,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "ue1b8mw4fpmx063liw": {
+  "ep": "065",
+  "time": "2:42",
+  "sec": 162,
+  "tags": [],
+  "note": "butterfly looks clipped.",
+  "fixed": false,
+  "at": 1795855672760,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "01yzdmf0r6mx06og94": {
+  "ep": "065",
+  "time": "3:16",
+  "sec": 196,
+  "tags": [],
+  "note": "Incl bird in scene too.",
+  "fixed": false,
+  "at": 1795856645704,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+ },
+ "vl5fbmp342mx06oxg4": {
+  "ep": "065",
+  "time": "3:16",
+  "sec": 196,
+  "tags": [],
+  "note": "new tree in googleflow, with a branch where the fågelbo can sit more naturally",
+  "fixed": false,
+  "at": 1795856667988,
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
  }
 }
