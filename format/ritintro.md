@@ -81,3 +81,5 @@ Hela scenen är ungefär 7–8 s (var 14–15 s före 2026-11-23). Provet är `v
 | Extra | | | kritskugga, smulor | |
 
 Det som står i fetstil är standarden. Kritskuggan och smulorna från 019 läggs till.
+
+**Linjen (Sanna 2026-11-28):** som överallt där kritan ritar: vaxkrita (inbyggt i `ritBana`) i en mörk ton av sakens egen färg (`farg: await linjeFargAv(…)`), se skillen `kritan-ritar`. Provet `verktyg/prov/ritintro-kort/` visar hur.

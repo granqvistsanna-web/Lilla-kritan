@@ -4,7 +4,10 @@
 //
 //   kritaBild(x, y, {s, v, bak})   kritan med spetsen i (x, y), vriden v grader, skala s; bak: vänd, baksidan i (x, y) (kritan suddar)
 //   kritaSkala(zoom)              kritans skala i en scen med kamerazoom (lika stor i bild hur nära kameran än går)
-//   ritBana(drag, k, {vikt, vila, attr}) linjen ritas streck för streck fram till k (0–1); kritan glider mellan strecken i en liten båge.
+//   ritBana(drag, k, {vikt, vila, attr, farg, t}) linjen ritas streck för streck fram till k (0–1); kritan glider mellan strecken i en liten båge.
+//                                 Linjen är alltid vaxkrita (kritKorn inbyggt, kornet räknat mot linjens egen bredd, så det ser likadant ut
+//                                 i alla skalor och zoomar). farg: linjens färg (linjeFarg/linjeFargAv, ersätter stroke i attr). t: sekunder,
+//                                 kornet byts 6 gånger/s som boilen (utan t står kornet still på teckningen).
 //                                 Varje streck börjar och slutar mjukt (ingen tvärstopp före glidningen). vila[i]: kritan står still
 //                                 i strecket i:s slut (vikt som i vikt), t.ex. mellan konturen och detaljerna.
 //                                 Ger { html, spets, start, slut }. Ett drag (en kontur) = ett streck. Lägg kontur + detaljer i SAMMA anrop.
@@ -14,10 +17,9 @@
 //   fyllMask(id, cx, cy, R, f)    cirkeln som fyller den riktiga bilden inifrån (f 0–1)
 //   linjeOpacitet(f)              linjen tonas bort medan bilden fylls
 //   gnistor(cx, cy, R, t, n)      krit-gnistorna på svaret
-//   kritKorn(id, t)               filtret som gör linjen till vaxkrita (ojämn kant, korn och luckor), nytt korn 6 gånger/s som boilen.
-//                                 Lägg <defs>${kritKorn('kk', t)}</defs> i SVG:n och linjen i <g filter="url(#kk)"> UTAN transform på just den g:n
-//                                 (filtret räknas i skärmens px, så kornet blir lika stort hur nära kameran än är)
+//   kritKorn(id, t, w, ruta)      vaxfiltret som ritBana lägger på själv (ojämn kant, korn och luckor); w = linjens bredd i samma enheter som ruta
 //   linjeFarg(bild)               linjens färg: en mörk ton av sakens egen färg (bild = img/canvas med saken), så att teckningen är lättare att gissa
+//   linjeFargAv(url)              samma ur en bildfil (async, anropa före window.ready): const FARG = await linjeFargAv('/assets/…/cut/sak.png')
 //
 // Siffrorna nedan är godkända av Sanna. Ändra dem här, inte i avsnitten.
 
@@ -79,12 +81,15 @@ function _mat(drag) {
   const m = drag.map(d0 => { const e = document.createElementNS('http://www.w3.org/2000/svg', 'path'); e.setAttribute('d', d0); svg.appendChild(e);
     const d = _mjukD(e, e.getTotalLength()); e.setAttribute('d', d);
     const L = e.getTotalLength(), a = e.getPointAtLength(0), b = e.getPointAtLength(L); return { e, d, L, a: [a.x, a.y], b: [b.x, b.y] }; });
+  const bb = m.map(x => x.e.getBBox()); m.ruta = [Math.min(...bb.map(b => b.x)), Math.min(...bb.map(b => b.y)), Math.max(...bb.map(b => b.x + b.width)), Math.max(...bb.map(b => b.y + b.height))];
+  m.id = 'kk' + (_matt.size + 1);
   _matt.set(key, m); return m;
 }
 
-function ritBana(drag, k, { vikt = null, vila = null, attr = '' } = {}) {
+function ritBana(drag, k, { vikt = null, vila = null, attr = '', farg = null, t = 0 } = {}) {
   const M = _mat(drag), steg = [], R = KRITAN.RESA;
-  const st = attr || `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" stroke-linecap="round" stroke-linejoin="round"`;
+  let st = attr || `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" stroke-linecap="round" stroke-linejoin="round"`;
+  if (farg) st = st.replace(/stroke="[^"]*"/, `stroke="${farg}"`);
   drag.forEach((d, i) => {
     if (i) { const [x0, y0] = M[i - 1].b, [x1, y1] = M[i].a, dist = Math.hypot(x1 - x0, y1 - y0); if (dist > 4) steg.push({ resa: i, w: R.bas + dist * R.perPx }); }
     steg.push({ rita: i, w: vikt ? vikt[i] : M[i].L / 300 });
@@ -99,6 +104,10 @@ function ritBana(drag, k, { vikt = null, vila = null, attr = '' } = {}) {
       else if (s.vila != null) spets = M[s.vila].b;
       else { const P0 = M[s.resa - 1].b, P1 = M[s.resa].a, m = _mjuk(u); spets = [_lerp(P0[0], P1[0], m), _lerp(P0[1], P1[1], m) - R.bage * Math.sin(Math.PI * m)]; }
     }
+  }
+  if (html) {   // vaxkritan: filtret i linjens egna enheter, ytan runt hela teckningen (Sanna 2026-11-28: samma krita överallt)
+    const w = +(st.match(/stroke-width="([\d.]+)"/)?.[1] || KRITAN.BRED), p = 2 * w, [x0, y0, x1, y1] = M.ruta, id = `${M.id}-${Math.floor(t * 6) % 97}`;
+    html = `<defs>${kritKorn(id, t, w, [x0 - p, y0 - p, x1 - x0 + 2 * p, y1 - y0 + 2 * p])}</defs><g filter="url(#${id})">${html}</g>`;
   }
   return { html, spets, start: M[0].a, slut: M.at(-1).b };
 }
@@ -130,12 +139,15 @@ function gnistor(cx, cy, R, t, n = 5) {
 
 // Vaxkritans linje (Sanna 2026-11-28: "no crayon texture"): kanten knaggas lite (displacement 2,5 px, samma som line boil) och kornet ger
 // luckor på längden, som när kritan drar över papper. Kornet byts 6 gånger/s (som #boil), annars glider linjen under ett fast korn när kameran rör sig.
-function kritKorn(id, t = 0) {
-  const s = 1 + (Math.floor(t * 6) % 97);
-  return `<filter id="${id}" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">`
-    + `<feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="${s}" result="b"/>`
-    + `<feDisplacementMap in="SourceGraphic" in2="b" scale="2.5" xChannelSelector="R" yChannelSelector="G" result="d"/>`
-    + `<feTurbulence type="fractalNoise" baseFrequency="0.22 0.5" numOctaves="3" seed="${s + 50}" result="k"/>`
+// Värdena är mätta på 14 px bred linje (Kritans bok, godkänt 2026-11-28) och skalas med linjens bredd w, så kornet är lika stort i förhållande
+// till linjen var den än ritas. ruta [x, y, b, h]: filtrets yta i samma enheter (annars försvinner ett rakt streck: dess ruta har höjden 0).
+function kritKorn(id, t = 0, w = 14, ruta = null) {
+  const s = 1 + (Math.floor(t * 6) % 97), q = 14 / w, f = v => +(v * q).toPrecision(4);
+  const yta = ruta ? `filterUnits="userSpaceOnUse" x="${_f1(ruta[0])}" y="${_f1(ruta[1])}" width="${_f1(ruta[2])}" height="${_f1(ruta[3])}"` : 'x="-10%" y="-10%" width="120%" height="120%"';
+  return `<filter id="${id}" ${yta} color-interpolation-filters="sRGB">`
+    + `<feTurbulence type="fractalNoise" baseFrequency="${f(0.08)}" numOctaves="2" seed="${s}" result="b"/>`
+    + `<feDisplacementMap in="SourceGraphic" in2="b" scale="${+(2.5 / q).toPrecision(4)}" xChannelSelector="R" yChannelSelector="G" result="d"/>`
+    + `<feTurbulence type="fractalNoise" baseFrequency="${f(0.22)} ${f(0.5)}" numOctaves="3" seed="${s + 50}" result="k"/>`
     + `<feColorMatrix in="k" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.6 0 0 0 2.15" result="m"/>`
     + `<feComposite in="d" in2="m" operator="in"/></filter>`;
 }
@@ -156,4 +168,6 @@ function linjeFarg(bild) {
   } catch { return KRITAN.LINJE; }
 }
 
-if (typeof window !== 'undefined') Object.assign(window, { KRITAN, kritaBild, kritaSkala, ritfart, ritBana, kritaFas, fyllMask, linjeOpacitet, gnistor, kritKorn, linjeFarg });
+const linjeFargAv = url => new Promise(r => { const i = new Image(); i.crossOrigin = 'anonymous'; i.onload = () => r(linjeFarg(i)); i.onerror = () => r(KRITAN.LINJE); i.src = url; });
+
+if (typeof window !== 'undefined') Object.assign(window, { KRITAN, kritaBild, kritaSkala, ritfart, ritBana, kritaFas, fyllMask, linjeOpacitet, gnistor, kritKorn, linjeFarg, linjeFargAv });

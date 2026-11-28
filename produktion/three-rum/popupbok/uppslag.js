@@ -185,7 +185,7 @@ export function kritan(cam) {
     return { m, s, p: ([x, y]) => [s * x + m[4], s * y + m[5]] };
   }
   function rita(t) {
-    let h = `<defs>${kritKorn('kritkorn', t)}</defs>`;
+    let h = '';
     for (const D of RIT) {
       const { T, fyll: [f0, f1], r } = D;
       if (t < T.in[0] || t > Math.max(T.ut[1], f1 + 0.5)) continue;
@@ -193,10 +193,10 @@ export function kritan(cam) {
       D.farg ??= linjeFarg(mesh.material?.map?.image ?? mesh.children?.find(c => c.material?.map)?.material.map.image);
       const A = staende(mesh, r), f = k01((t - f0) / (f1 - f0)), k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0]));
       // linjens bredd i bildens px (inte non-scaling-stroke: då räknas strecket i skärmens px och linjen springer före kritan)
-      const Rb = ritBana(D.drag, k, { attr: `fill="none" stroke="${D.farg}" stroke-width="${(KRITAN.BRED_BOK / A.s).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"` });
+      const Rb = ritBana(D.drag, k, { t, farg: D.farg, attr: `fill="none" stroke="${D.farg}" stroke-width="${(KRITAN.BRED_BOK / A.s).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"` });
       const cx = r.W / 2, cy = r.H / 2, op = 1 - k01((t - f1) / 0.2), M = `matrix(${A.m.map(x => x.toFixed(4)).join(' ')})`;
       if (f > 0 && op > 0) h += `<g transform="${M}">` + fyllMask('fy' + D.namn, cx, cy, Math.hypot(r.W, r.H) / 2, f) + `<image href="${D.href}" width="${r.W}" height="${r.H}" opacity="${op.toFixed(3)}" ${f < 1 ? `clip-path="url(#fy${D.namn})"` : ''}/></g>`;
-      if (k > 0 && f < 1) h += `<g filter="url(#kritkorn)" opacity="${linjeOpacitet(f).toFixed(2)}"><g transform="${M}">${Rb.html}</g></g>`;   // kornet i skärmens px
+      if (k > 0 && f < 1) h += `<g opacity="${linjeOpacitet(f).toFixed(2)}"><g transform="${M}">${Rb.html}</g></g>`;   // vaxkornet lägger ritBana själv
       const [sx, sy] = A.p([cx, cy]), kr = kritaFas(t, T, { start: A.p(Rb.start), spets: A.p(Rb.spets), slut: A.p(Rb.slut), vanta: [sx + D.vanta[0], sy + D.vanta[1]], s: KS });
       if (kr) h += kritaBild(kr.x, kr.y, kr);
       if (f > 0) h += gnistor(sx, sy, A.s * (r.w + r.h) / 4 * 1.1, t - f0);

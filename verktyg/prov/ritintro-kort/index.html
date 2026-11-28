@@ -17,11 +17,11 @@ window.LJUD = [
   { t: NU_KOR, fil: R + 'nu-kor-vi-1.m4a', vol: 2.5 },
 ];
 (async () => {
-  const K = await (await fetch('/assets/rekvisita/banan/cut/banan-v2-kontur.json')).json();
+  const K = await (await fetch('/assets/rekvisita/banan/cut/banan-v2-kontur.json')).json(), FARG = await linjeFargAv('/assets/rekvisita/banan/cut/banan-v2.png');
   const W = 1659, H = 1535, sk = 600 / H, ox = 960 - W / 2 * sk, oy = 560 - H / 2 * sk, mitt = [W / 2, H / 2];
   window.seek = t => {
     const k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0])), f = _kl((t - SVAR) / 0.7);
-    const Rb = ritBana([K.d], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED / sk}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f)}"` });
+    const Rb = ritBana([K.d], k, { t, farg: FARG, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED / sk}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f)}"` });
     const g = (x, y) => [ox + x * sk, oy + y * sk];
     let h = `<g transform="translate(${ox} ${oy}) scale(${sk})">${fyllMask('fy', mitt[0], mitt[1], 1150, f)}<image href="/assets/rekvisita/banan/cut/banan-v2.png" width="${W}" height="${H}" clip-path="url(#fy)"/>${Rb.html}</g>`;
     const kr = kritaFas(t, T, { start: g(...Rb.start), spets: g(...Rb.spets), slut: g(...Rb.slut), vanta: [1530, 280] });

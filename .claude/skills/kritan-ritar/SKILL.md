@@ -31,7 +31,9 @@ Tre saker gör att teckningarna hänger ihop mellan avsnitten (Sanna 2026-11-26:
 ## Linjen och konturen
 
 - **Färg:** en mörk ton av sakens egen färg, `linjeFarg(bild)` (ljushet 30 %, gult blir mörk orangebrun), så att teckningen är lättare att gissa: rosa glass får en vinröd linje, blå kanna en mörkblå. `#3a2c28` bara när saken saknar bild. I färgsångerna en mörk ton av avsnittets färg. Runda ändar och hörn.
-- **Vaxkrita, aldrig en slät linje** (Sanna 2026-11-28: *"no crayon texture"*): linjen ritas genom `kritKorn(id, t)`, ojämn kant och korn med ljusa luckor, nytt korn 6 gånger/s som boilen. Filtret läggs på en `<g>` **utan** transform runt linjen, så att kornet räknas i skärmens px och blir lika stort i närbild och helbild.
+- **Vaxkrita, aldrig en slät linje** (Sanna 2026-11-28: *"no crayon texture"*, *"same everywhere"*): `ritBana` lägger själv på vaxkornet (`kritKorn`: ojämn kant, korn med ljusa luckor), räknat mot linjens egen bredd, så det ser likadant ut i ritintrot, mitt i en scen och i Kritans bok, i alla zoomar. Ge `t` så byts kornet 6 gånger/s som boilen. Ingen egen linje utanför `ritBana`. Gäller alla scener som använder den delade filen, äldre avsnitt också när de renderas om.
+- **Färgen ges med `farg`:** `farg: await linjeFargAv(bildens url)` (eller `linjeFarg(img)`). Utan `farg` blir linjen `#3a2c28`, och då säger `qa-scen.py` inget, så kolla det på arket.
+- **Gissa teckningen** är en egen stil (`produktion/youtube/shorts/gissa/gissa.js`): barnets teckning ritas i flera kritfärger, delarna i sina egna färger (svart ko, rosa mule, gula horn) med filtret `vax`. Den har redan korn och färg och följer inte `ritBana`; ändra den inte till en enda mörk ton.
 - **Aldrig `vector-effect="non-scaling-stroke"` på linjen.** Då räknas `pathLength`/strecket i skärmens px men kritans spets i bildens px, och linjen springer före kritan (1/skalan gånger fortare; Kritans bok före 2026-11-28). Ge i stället bredden i linjens egna enheter: bredden i bild delad med skalan.
 - **Bredd:** 12 px i helbild (ungefär 3 % av sakens höjd). Ritas linjen i bildens egna pixlar, dela bredden med sakens skala.
 - **Konturen ur en urklippt bild:**
@@ -79,9 +81,10 @@ Det här ger den mjuka animationen. Det mesta finns i koden, men det går att f�
 
 ```js
 const T = { in: [0, 0.4], rit: [0.6, 5.6], vanta: [5.8, 6.6], ut: [10.1, 10.9] };   // sekunder i scenen
+const FARG = await linjeFargAv('/assets/rekvisita/<sak>/cut/<sak>.png');           // en gång, före window.ready
 const DETALJ_DRAG = ['M846 44 Q700 86 100 122', 'M94 108 Q96 180 106 250'];        // mätta i bildens pixlar
 const k = ritfart((t - T.rit[0]) / (T.rit[1] - T.rit[0])), f = kl((t - 10.1) / 0.7);
-const R = ritBana([KONTUR.d, ...DETALJ_DRAG], k, { vila: [0.6],  attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED / sk}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f)}"` });
+const R = ritBana([KONTUR.d, ...DETALJ_DRAG], k, { vila: [0.6], t, farg: FARG, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED / sk}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f)}"` });
 // bilden: fyllMask('fy', KONTUR.mitt[0], KONTUR.mitt[1], R, f) + <image clip-path="url(#fy)">, sedan R.html ovanpå
 const kr = kritaFas(t, T, { start: tillScen(R.start), spets: tillScen(R.spets), slut: tillScen(R.slut), vanta: [1430, 300], s: kritaSkala(zoom) });
 if (kr) svg += kritaBild(kr.x, kr.y, kr);
