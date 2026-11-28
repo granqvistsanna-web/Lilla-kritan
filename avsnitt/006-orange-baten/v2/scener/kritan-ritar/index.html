@@ -51,7 +51,7 @@ function rita(t) {
   const k1 = ritfart((E - R1[0]) / (R1[1] - R1[0])), k2 = ritfart((E - R2[0]) / (R2[1] - R2[0])), f = kl((E - SVAR) / 0.7);
   const st = `fill="none" stroke="${LINJE}" stroke-width="${(KRITAN.BRED / PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"`;
   const kd = ritfart((E - RD[0]) / (RD[1] - RD[0]));
-  const A = ritBana([KONTUR.d], k1, { attr: st }), D = ritBana(DETALJ_DRAG, kd, { attr: st }), B = ritBana(FLAGG_DRAG, k2, { attr: st });
+  const A = ritBana([KONTUR.d], k1, { attr: st, t }), D = ritBana(DETALJ_DRAG, kd, { attr: st, t }), B = ritBana(FLAGG_DRAG, k2, { attr: st, t });
   // båten gungar till på svaret, sedan lugnt
   const gung = E > SVAR + 0.2 ? 3 * Math.sin((E - SVAR - 0.2) * 5) * Math.exp(-(E - SVAR - 0.2) * 1.5) + 0.8 * Math.sin(E * 1.7) : 0;
   const fl = Math.sin(E * 6) * 10 * f;

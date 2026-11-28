@@ -109,6 +109,7 @@ const LJUS = [[492, HYLLA - 22, 0.085]];   // [x, ytan ljuset står på (stakens
 // --- Kameror [zoom, cx, cy], bara klipp ------------------------------------------------------------------------------------
 const K = { NARA2: [2.0, 790, 590], HEL: [1, 960, 540], STA: [1.45, 1150, 640], NARA: [2.0, STA[0], 590], GRAN: [1.35, 1450, 514], GOLV: [1.3, 1250, 700] /* QA 2026-11-21: hela musen i bild (1,65 skar huvudet) */,
   SPEGEL: [4.8, KG.rod[0] + 30, KG.rod[1] - 30]   /* tätare (QA 2026-11-15): musens öra helt utanför bild */, FOT: [2.6, 1580, 850], TOPP: [2.4, 1450, 274], RIT: [1.5, 960, 700] };
+const LF = {};   // linjefärg per bild (ur bildens egen färg)
 let KAM = K.HEL, TT = 0, L, G, BLINKA;
 function kamera([z, cx, cy]) {
   const tx = Math.max(1920 - 1920 * z, Math.min(0, 960 - cx * z)), ty = Math.max(1080 - 1080 * z, Math.min(0, 540 - cy * z));
@@ -281,9 +282,9 @@ function bana(pts, nyckel = pts) {
 const banPunkt = (b, f) => { const q = b.el.getPointAtLength(kl(f) * b.L); return [q.x, q.y]; };
 // konturen och sedan detaljerna (sakens det) med ritBana (verktyg/kritan-ritar.js): ett streck per drag, kritan glider i en båge
 // mellan strecken. kk 0–1. Ritar i 'kontur', returnerar { spets, slut } i scenen (spets null när inget ritas just nu).
-function ritKontur(pts, det, kk, [x0, y0], s, bredd, op) {
+function ritKontur(pts, det, kk, [x0, y0], s, bredd, op, farg) {
   const drag = [typeof pts === 'string' ? pts : bana(pts).d, ...(det || []).map(d => typeof d === 'string' ? d : bana(d).d)];
-  const r = ritBana(drag, kl(kk), { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(bredd / s)}" stroke-linecap="round" stroke-linejoin="round"` });
+  const r = ritBana(drag, kl(kk), { farg, t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(bredd / s)}" stroke-linecap="round" stroke-linejoin="round"` });
   lagg('kontur', `<g filter="url(#vax)" opacity="${op.toFixed(3)}"><g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})">${r.html}</g></g>`);
   const i = p => [x0 + p[0] * s, y0 + p[1] * s];
   return { spets: kk > 0 && kk < 1 ? i(r.spets) : null, slut: i(r.slut), start: i(r.start) };
@@ -310,7 +311,7 @@ const vantPlats = ([x, y]) => [x + 95, y - 165];   // till höger om saken, bort
 function ritSak(sak, [x, y], { ritad = 1, fyll = 1, vanta = null }) {
   const x0 = x - sak.fot[0] * sak.s, y0 = y - sak.fot[1] * sak.s;
   let rb = null;
-  if ((ritad < 1 || fyll < 1) && ritad > 0) rb = ritKontur(sak.pts, sak.det, ritad, [x0, y0], sak.s, KRITAN.BRED * 0.75, 1 - del(0, 0.5, fyll));
+  if ((ritad < 1 || fyll < 1) && ritad > 0) rb = ritKontur(sak.pts, sak.det, ritad, [x0, y0], sak.s, KRITAN.BRED * 0.75, 1 - del(0, 0.5, fyll), LF[sak.bild]);
   if (fyll > 0) { $('cirkel-sak').setAttribute('cx', 512); $('cirkel-sak').setAttribute('cy', 512); $('cirkel-sak').setAttribute('r', fyll >= 1 ? 3000 : f1(760 * fyll));
     lagg(sak.lager || 'golvsak', `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${sak.s})"${sak.filter ? ` filter="url(#${sak.filter})"` : ''}><image href="${sak.bild}" width="${sak.w || 1024}" height="${sak.h || 1024}" clip-path="url(#fyll-sak)"/>${sak.dekor ? `<g clip-path="url(#fyll-sak)">${sak.dekor}</g>` : ''}</g>`); }
   if (rb?.spets) ritKrita(rb.spets, KRITAN.VINKEL_RITAR, false, kritSkala());
@@ -324,7 +325,7 @@ function ritaPapper(st, t) {
   papper(); kamera(st.kam);
   const s = IK.s, x0 = IK.mitt[0] - KULA.mitt[0] * s, y0 = IK.mitt[1] - KULA.mitt[1] * s, iP = p => [x0 + p[0] * s, y0 + p[1] * s];
   const b = bana(KONT.kula, KONT.kula), kk = kl(st.kontur), KS = KRITAN.SKALA_PAPPER;
-  const rb = kk > 0 ? ritKontur(KONT.kula, KULA.det, kk, [x0, y0], s, KRITAN.BRED * 1.25, 1 - del(0.5, 1, st.fyll)) : null, spets = rb?.spets;
+  const rb = kk > 0 ? ritKontur(KONT.kula, KULA.det, kk, [x0, y0], s, KRITAN.BRED * 1.25, 1 - del(0.5, 1, st.fyll), LF[KULA.bild]) : null, spets = rb?.spets;
   if (st.fyll > 0) { $('cirkel-sak').setAttribute('cx', KULA.mitt[0]); $('cirkel-sak').setAttribute('cy', KULA.mitt[1]); $('cirkel-sak').setAttribute('r', st.fyll >= 1 ? 3000 : f1(560 * st.fyll));
     lagg('golvsak', `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s})"><image href="${KULA.bild}" width="1024" height="1024" clip-path="url(#fyll-sak)"/><g clip-path="url(#fyll-sak)">${KULA.dekor}</g></g>`); }
   const start = iP(banPunkt(b, 0)), vant = [IK.mitt[0] + 300, IK.mitt[1] - 60];
@@ -733,6 +734,7 @@ async function ljud() {
 window.DURATION = DURATION;
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  for (const u of [KULA.bild, PALL.bild, STJ.bild]) LF[u] = await linjeFargAv(u);
   byggSvg();
   L = await v2rigg('musen-mille');
   G = L.figur(512, 925, 1, $('gomda'));

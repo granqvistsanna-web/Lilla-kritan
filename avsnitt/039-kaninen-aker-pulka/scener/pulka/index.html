@@ -93,7 +93,7 @@ const PULKA = { fil: R + 'pulka/cut/pulka-utan-snore.png', w: 1024, h: 572, mitt
 // Kaninen sitter mitt på sitsen; fötternas ankare 71 px under sitsens ovankant som förut.
 const PK = 0.85, PK_SITS = [(420 - PULKA.mitt[0]) * PK - 5, (243 - PULKA.mitt[1]) * PK + 71];
 // kritan: bild, vinklar, skala, svaj, linje och fyllning kommer ur verktyg/kritan-ritar.js (skillen kritan-ritar, QA 25/11)
-let KONTUR = {};                                    // vantarnas och pulkans konturer (json), laddas i klar
+let LF_PULKA, KONTUR = {};                                    // vantarnas och pulkans konturer (json), laddas i klar
 
 let L, G;                                           // riggen och kaninens grupp
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
@@ -781,7 +781,7 @@ function ritaPapper(st, t) {
   const fyll = st.fyll || 0, KS = KRITAN.SKALA_PAPPER, k = kl(st.k), w = kritaVanta([1560, 260], TT);
   if (fyll > 0) lagg('saker', `<g transform="${PP_T}">${fyll >= 1 ? '<clipPath id="pp"><rect x="-99" y="-99" width="1300" height="800"/></clipPath>' : fyllMask('pp', 512, 330, 700, fyll)}
     <image href="${PULKA.fil}" width="${PULKA.w}" height="${PULKA.h}" clip-path="url(#pp)"/></g>`);
-  const R = ritBana([KONTUR.pulka.d, ...PULKA_DRAG], ritfart(k), { vikt: PULKA_VIKT, vila: [0.3],
+  const R = ritBana([KONTUR.pulka.d, ...PULKA_DRAG], ritfart(k), { vikt: PULKA_VIKT, vila: [0.3], farg: LF_PULKA, t,
     attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PP_S)}" stroke-linecap="round" stroke-linejoin="round"` });
   if (fyll < 1 && k > 0) lagg('pilar', `<g transform="${PP_T}" opacity="${linjeOpacitet(fyll).toFixed(3)}">${R.html}</g>`);
   if (st.ut != null) lagg('fram', gnistor(960, 585, 470, st.ut));
@@ -888,6 +888,7 @@ window.kit = { el: (tag, attrs = {}, parent) => { const e = document.createEleme
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF_PULKA = await linjeFargAv(PULKA.fil);
   const { RADER, ROST, ORD: ord } = await (await fetch('/avsnitt/039-kaninen-aker-pulka/scener/pulka/rader.json')).json();
   ROSTER = ROST; ORD = ord; let acc = 0;
   RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

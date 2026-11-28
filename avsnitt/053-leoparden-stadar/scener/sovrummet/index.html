@@ -22,6 +22,7 @@ const lerp2 = (P, Q, k) => [lerp(P[0], Q[0], k), lerp(P[1], Q[1], k)];
 const HAR = '/avsnitt/053-leoparden-stadar/scener/sovrummet/';
 
 // --- Saker (som storyboarden) ----------------------------------------------------------------------------------------------
+let LF;
 const LADA = { bild: A + 'rekvisita/formlada/cut/formlada.png', w: 1131, h: 815, hal: { cirkel: [292, 131], fyrkant: [566, 122], trekant: [852, 128] } };
 const HAL_DRAG = ['M197 131 A95 62 0 1 0 387 131 A95 62 0 1 0 197 131', 'M476 72 H656 L662 168 H470 Z', 'M847 70 L958 164 L750 164 Z'];
 const KL = { cirkel: [A + 'rekvisita/klossar/cut/kloss-cirkel.png', 400, 396], fyrkant: [A + 'rekvisita/klossar/cut/kloss-fyrkant.png', 391, 393],
@@ -106,7 +107,7 @@ function lada({ fyll = 1, skak = 0 } = {}) {
 function ladaRit(t, fyll) {   // kritan ritar lådans kontur och de tre hålen (10a–10c), väntar, flyger ut efter "Tack, kritan!"
   const s = ladaS(), x0 = LADA_POS.x - LADA.w * s / 2, y0 = LADA_POS.fot - LADA.h * s, iL = ([x, y]) => [x0 + x * s, y0 + y * s];
   const k = ritfart((t - T_LADA.rit[0]) / (T_LADA.rit[1] - T_LADA.rit[0]));
-  const Rb = ritBana([LADA_D, ...HAL_DRAG], k, { vikt: [3, 0.8, 0.8, 0.8], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / ZOOM)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(fyll).toFixed(2)}"` });
+  const Rb = ritBana([LADA_D, ...HAL_DRAG], k, { vikt: [3, 0.8, 0.8, 0.8], farg: LF.lada, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / ZOOM)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(fyll).toFixed(2)}"` });
   if (k > 0 && fyll < 1) lagg('kontur', `<g transform="translate(${f1(x0)} ${f1(y0)}) scale(${s.toFixed(4)})">${Rb.html}</g>`);
   const kr = kritaFas(t, T_LADA, { start: iL(Rb.start), spets: iL(Rb.spets), slut: iL(Rb.slut), vanta: [LADA_POS.x + 210, LADA_POS.fot - 300], s: kritaSkala(ZOOM) });
   if (kr) lagg('krita', kritaBild(kr.x, kr.y, kr));
@@ -418,7 +419,7 @@ function ritaPapper(st, t) {
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   kamera([z, 960, 540]);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([TRE_D], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([TRE_D], k, { farg: LF.trekant, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
   if (f > 0) { const g = st.gung ?? 0, v = 2 * Math.sin(g * 1.7) * del(0.5, 1.2, g), dy = 8 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // trekanten gungar lugnt
     lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyT', 199, 236, 330, f) : ''}<image href="${KL.trekant[0]}" width="411" height="380"${f < 1 ? ' clip-path="url(#fyT)"' : ''}${LILA('trekant')}/></g></g>`); }
@@ -488,6 +489,8 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ lada: LADA.bild, trekant: KL.trekant[0] }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
+  LF.trekant = LF.trekant.replace(/hsl\((\d+)/, (m, h) => `hsl(${(+h + 135) % 360}`);   // klossen visas med filtret lila (hueRotate 135)
   const { RADER, ROST } = await (await fetch(HAR + 'rader.json')).json();
   ROSTER = ROST; let acc = 0;
   RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

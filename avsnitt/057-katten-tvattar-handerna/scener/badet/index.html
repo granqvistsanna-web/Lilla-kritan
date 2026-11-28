@@ -477,14 +477,14 @@ function lage(t) {
 
 // --- Bildrutan ---------------------------------------------------------------------------------------------------------------
 const LAGER = ['platta', 'vagg', 'bak', 'pall', 'mellan', 'kar', 'tvalen', 'fram', 'krita', 'ram'];
-let T_RIT, T_TV, T_MAL;
+let T_RIT, T_TV, T_MAL, LF_PENSEL;
 const kritaRita = kr => { if (kr) lagg('krita', kritaBild(kr.x, kr.y, kr)); };
 function ritaPapper(st, t) {
   $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`;
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   kamera([z, PMITT[0], PMITT[1]]);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([PK, ...HYLSA], k, { vikt: [3, 0.35, 0.35], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([PK, ...HYLSA], k, { vikt: [3, 0.35, 0.35], farg: LF_PENSEL, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
   if (f > 0) { const g = st.gung ?? 0, v = 2 * Math.sin(g * 1.7) * del(0.5, 1.2, g), dy = 8 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // penseln gungar lugnt, bilden står aldrig stilla
     lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyP', 622, 155, 700, f) : ''}<image href="${PENSEL}" width="1244" height="309"${f < 1 ? ' clip-path="url(#fyP)"' : ''}/></g></g>`); }
@@ -609,6 +609,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF_PENSEL = await linjeFargAv(PENSEL);
   const { RADER, ROST, BORTA: B, FARG: FG } = await (await fetch('/avsnitt/057-katten-tvattar-handerna/scener/badet/rader.json')).json();
   ROSTER = ROST; BORTA = B; FARG = FG; let acc = 0;
   RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

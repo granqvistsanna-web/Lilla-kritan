@@ -83,8 +83,8 @@ const ANIM = {
     }
     // konturen (i traktorns pixlar, samma transform som traktorn)
     const attr = `fill="none" stroke="${LINJE}" stroke-width="${(KRITAN.BRED / S).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"`;
-    const R = ritBana(DRAG, ritK(t), { attr });
-    const k2 = ritfart((t - T2.rit[0]) / (T2.rit[1] - T2.rit[0])), R2 = ritBana(DRAG2, k2, { attr });
+    const R = ritBana(DRAG, ritK(t), { attr, t });
+    const k2 = ritfart((t - T2.rit[0]) / (T2.rit[1] - T2.rit[0])), R2 = ritBana(DRAG2, k2, { attr, t });
     if (f < 1) K.lagg('pynt', `<g transform="translate(${K.f1(x - K.TRAKTOR.mitt * S)} ${K.f1(fot - K.TRAKTOR.botten * S)}) scale(${S.toFixed(4)}) rotate(${K.f1(lut)} ${K.TRAKTOR.mitt} ${K.TRAKTOR.botten})">${R.html}${k2 > 0 ? R2.html : ''}</g>`);
 
     // puffar ur avgasröret på "Tut-tut"

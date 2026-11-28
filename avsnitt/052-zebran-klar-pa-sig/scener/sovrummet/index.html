@@ -435,7 +435,7 @@ function lage(t) {
 }
 
 // --- Kritan: tre teckningar i rummet (mössan i tre storlekar), samma förlopp som kritan-ritar.js --------------------------------
-let T_RIT, RITN = [];
+let T_RIT, RITN = [], LF;
 const VANT_RUM = [700, 470];
 function kritanRum(t, z) {
   const s = kritaSkala(z), sv = KRITAN.SVAJ, svaj = p => [p[0] + sv.ax * Math.sin(t * sv.fx), p[1] + sv.ay * Math.sin(t * sv.fy)], vs = KRITAN.VINKEL_VANTAR + sv.av * Math.sin(t * sv.fv);
@@ -463,7 +463,7 @@ function ritaPapper(st, t) {
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   R.kamera([z, PA_X, PA_Y]); boil(z);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana(hdDrag([PA_X, PA_Y], PA_K), k, { vikt: [3, 0.8, 0.6, 0.4, 0.4, 0.3, 0.15, 0.15, 0.15, 0.15, 0.3, 0.15, 0.15, 0.15, 0.15], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana(hdDrag([PA_X, PA_Y], PA_K), k, { farg: LF.hals, t, vikt: [3, 0.8, 0.6, 0.4, 0.4, 0.3, 0.15, 0.15, 0.15, 0.15, 0.3, 0.15, 0.15, 0.15, 0.15], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   if (f > 0) { const g = st.gung ?? 0, bob = 6 * Math.sin(g * 2.0) * del(0.5, 1.2, g);   // halsduken andas lite, bilden står aldrig stilla
     lagg('fram', fyllMask('fyH', PA_X, PA_Y, 760, f) + halsdukSvg([PA_X, PA_Y + bob], PA_W, f < 1 ? 'clip-path="url(#fyH)"' : '')); }
   if (k > 0 && f < 1) lagg('kontur', Rb.html);
@@ -578,6 +578,7 @@ async function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = { hals: await linjeFargAv(HALSDUK.bild), mossa: await linjeFargAv(MOSSA.bild) };
   const data = await (await fetch(E + 'scener/sovrummet/rader.json')).json();
   ROST = data.ROST; PAW = data.PA; let acc = 0;
   RAD = data.RADER.map(r => { const s = acc; acc += r.d; return { ...r, s }; });
@@ -588,7 +589,7 @@ window.ready = (async () => {
   T_RIT = { in: [a + 0.1, a + 0.5], rit: [a + 0.6, a + 3.4], vanta: [b + 0.1, b + 0.9], ut: [c, c + 0.8] };
   // mössans tre teckningar: konturen, väntan, fyllningen (raderna 11, 13 och 14)
   const ny = (typ, rit, fyll, inn) => { const drag = msDrag(LUFT, MS[typ].w * GS, MS[typ].sy), T = { in: inn, rit, fyll };
-    return { typ, T, drag, bana: (t, op = 1, z = 1.9) => ritBana(drag, ritfart((t - rit[0]) / (rit[1] - rit[0])), { vikt: MS_VIKT,
+    return { typ, T, drag, bana: (t, op = 1, z = 1.9) => ritBana(drag, ritfart((t - rit[0]) / (rit[1] - rit[0])), { farg: LF.mossa, t, vikt: MS_VIKT,
       attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(Math.min(10 / Math.sqrt(z), 0.035 * MS[typ].w * GS + 1.5))}" stroke-linecap="round" stroke-linejoin="round" opacity="${op.toFixed(2)}"` }) }; };
   const r11 = RR['11'].s + 0.3 + LN(20), r13 = RR['13'].s + 0.3 + LN(23), r14 = RR['14'].s + 0.3 + LN(26);
   RITN = [ny('liten', [r11, r11 + 2.5], RR['11'].s + M('11', 21) - 0.2, [RR['10'].s + 0.3, r11 - 0.1]), ny('stor', [r13, r13 + 2.0], r13 + 2.0, null), ny('lagom', [r14, r14 + 2.5], r14 + 2.5, null)];

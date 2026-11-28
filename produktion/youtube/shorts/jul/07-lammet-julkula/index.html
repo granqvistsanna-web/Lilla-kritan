@@ -231,7 +231,7 @@ julDjur.kor({ kamBas: KE,
       R.kontur.setAttribute('opacity', 0);
       R.cirkel.setAttribute('r', (R.radie * Math.pow(mj7(f), 1.2)).toFixed(1));
       if (t < r.t0 || f >= 1) { r.lag.innerHTML = ''; } else {
-        const B = ritBana(r.drag, ritfart((t - r.t0) / r.sek), { vila: [0.5], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(Math.min(KRITAN.BRED, Math.max(5, 0.06 * R.kontur.getBBox().height * sk)) / sk).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"` });
+        const B = ritBana(r.drag, ritfart((t - r.t0) / r.sek), { vila: [0.5], farg: r.farg, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(Math.min(KRITAN.BRED, Math.max(5, 0.06 * R.kontur.getBBox().height * sk)) / sk).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"` });
         r.lag.innerHTML = B.html; r.B = B;
         // three-ritaren läser streckningen i riktiga längder: pathLength="1" byts mot banans längd
         r.lag.querySelectorAll('path[pathLength]').forEach(p => { const L = p.getTotalLength(), o = +p.getAttribute('stroke-dashoffset'); p.removeAttribute('pathLength');
@@ -263,6 +263,7 @@ julDjur.kor({ kamBas: KE,
     boilB?.setAttribute('seed', 1 + Math.floor(t * 6) % 4);
     lagra(t); sopArm(t); ritKrita(t); if (t > KVUT) kvastH?.setAttribute('display', 'none');   // lagra efter djur.js, som lägger tillbaka gästen i #gaster varje bildruta
     window.TRE?.(); };
+  await Promise.all(RIT7.map(async r => { const i = r.e.querySelector('image'); r.farg = i ? await linjeFargAv(i.getAttribute('href')) : null; }));   // linjen i sakens egen mörka ton (kvasten ritas i kod: ingen bild, KRITAN.LINJE)
   await treJ07(svg);
 });
 </script>

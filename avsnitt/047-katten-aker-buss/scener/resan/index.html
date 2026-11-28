@@ -612,6 +612,7 @@ const rr = (x0, y0, x1, y1) => `M${x0 + 14} ${y0} H${x1 - 14} Q${x1} ${y0} ${x1}
 const hjul = (x, y, r) => `M${x - r} ${y} A${r} ${r} 0 1 0 ${x + r} ${y} A${r} ${r} 0 1 0 ${x - r} ${y}`;
 // bussen i ritintrot utan snö: buss-utan-sno.png (buss.png med snöpixlarna överst genomskinliga), klippt till konturens mjuka tak
 // (dSlat) med takets röda under, så att taket blir helt där snön låg
+let LF_BUSS;
 const BUSS_INTRO = HAR + 'buss-utan-sno.png';
 // QA 27/11 (Sanna: ja): kritan ritar bussen med den delade verktyg/kritan-ritar.js (ritBana + kritaFas + fyllMask), som alla nya scener.
 // Konturen först (taket som en jämn rundad linje, buss-kontur.json dSlat, utan snö: Sanna 2026-11-20), en kort vila, sedan detaljerna
@@ -625,7 +626,7 @@ const RIT_T = () => ({ in: [0, 0.45], rit: [0.5, 6.7], vanta: [at('01b', 0.2), a
 const tillPB = ([x, y]) => [PB[0] + (x - 521) * PB[2], PB[1] + (y - 249) * PB[2]];
 function ritintro(fyll = 0) {   // TT = scenens tid
   papper(); const T = RIT_T(), k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0])), lo = linjeOpacitet(fyll);
-  const R = ritBana(DRAG(), k, { vila: [0.8], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PB[2])}" stroke-linecap="round" stroke-linejoin="round" opacity="${lo.toFixed(3)}"` });
+  const R = ritBana(DRAG(), k, { vila: [0.8], farg: LF_BUSS, t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PB[2])}" stroke-linecap="round" stroke-linejoin="round" opacity="${lo.toFixed(3)}"` });
   if (fyll > 0) lagg('saker', `<g transform="${pbT()}">${fyllMask('pb', 521, 249, 620, fyll)}<clipPath id="pbform"><path d="${KONTUR.buss.dSlat}"/></clipPath>
     <g clip-path="url(#pb)"><g clip-path="url(#pbform)"><rect x="0" y="0" width="${BUSS.w}" height="90" fill="#c84e3c"/><image href="${BUSS_INTRO}" width="${BUSS.w}" height="${BUSS.h}"/></g></g></g>`);
   if (lo > 0 && R.html) lagg('pilar', `<g transform="${pbT()}">${R.html}</g>`);
@@ -944,6 +945,7 @@ function rita(t) {
 }
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF_BUSS = await linjeFargAv(BUSS_INTRO);
   const { RADER, ROST } = await (await fetch(HAR + 'rader.json')).json();
   ROSTER = ROST; let acc = 0;
   RAD_L = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; }); RR = Object.fromEntries(RAD_L.map(r => [r.id, r]));

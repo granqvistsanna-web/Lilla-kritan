@@ -84,11 +84,12 @@ const TECKNING = {
   tak: ['M352 10 Q505 140 676 300 Q712 330 704 392 L352 142 L14 392 Q6 330 40 300 Q200 140 352 10Z',   // taket (egen kontur: json-konturen har krokiga ben)
     'M32 336 Q190 205 354 78 Q520 205 690 336', 'M89 384 L89 1328', 'M621 384 L621 1328'],   // snökanten, benen
 };
+let LF;
 const VILA = { fagel: [0.8], karve: [0.6], tak: [0.4] };
 // teckning(namn, t, k, sk, f): strecken fram till k (0–1) i bildens transform t (sk = bildens skala), tonas bort med fyllningen f;
 // ger spetsen, start och slut i scenens koordinater (genom samma transform, så att kritan sitter i linjens ände)
 function teckning(namn, t, k, sk, f = 0) {
-  const R = ritBana(TECKNING[namn], k, { vila: VILA[namn], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / sk).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const R = ritBana(TECKNING[namn], k, { vila: VILA[namn], farg: LF[namn], t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / sk).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   lagg('pilar', `<g transform="${t}">${f < 1 ? R.html : ''}</g>`);
   const m = $('kamera').getCTM().inverse().multiply($('pilar').lastElementChild.getCTM()), P = ([x, y]) => { const q = new DOMPoint(x, y).matrixTransform(m); return [q.x, q.y]; };
   return { spets: P(R.spets), start: P(R.start), slut: P(R.slut) };
@@ -491,6 +492,7 @@ function rita(t) {
 }
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ fagel: `${R}smafaglar/cut/fagel-kropp-bla-kod.png`, karve: KARVE, tak: TAKB }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
   const { RADER, ROST } = await (await fetch('/avsnitt/043-grisen-matar-faglarna/scener/snogarden/rader.json')).json();
   ROSTER = ROST; let acc = 0;
   RAD_L = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; }); RR = Object.fromEntries(RAD_L.map(r => [r.id, r]));

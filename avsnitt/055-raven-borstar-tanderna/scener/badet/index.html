@@ -79,7 +79,7 @@ const BAKOM = [MUGGX + MW / 2 - TW / 2 + 18, RIM + 4, -8];                 // tu
 const TASS_L = [168, 655], HA = 125;   // HA: vänstra armen lyft ut förbi kroppens kant (som vinkningen), så att tassen och saken syns                                                 // vänstra tassen i riggens ruta (där en sak hålls)
 let VID, PALL_KS, PALL_X0, PALL_Y0, STEG1;
 
-let L, G, SAKG, BLINKA, PK, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], RAKNA = {}, PLUTT = 0, DURATION = 0;
+let LF, L, G, SAKG, BLINKA, PK, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], RAKNA = {}, PLUTT = 0, DURATION = 0;
 const SVART = 0.6;
 const LN = n => ROSTER[n - 1][1];
 const iFig = ([x, fot], [px, py], s = GS) => [x + (px - 512) * s, fot + (py - L.FOTTER) * s];
@@ -384,7 +384,7 @@ function ritaPapper(st, t) {
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   kamera([z, 960, 540]);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([PK], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([PK], k, { farg: LF.liten, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
   if (f > 0) { const g = st.gung ?? 0, v = 2 * Math.sin(g * 1.7) * del(0.5, 1.2, g), dy = 8 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // borsten gungar lugnt
     lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyP', BW[0] / 2, BW[1] / 2, 520, f) : ''}<image href="${LITEN}" width="${BW[0]}" height="${BW[1]}"${f < 1 ? ' clip-path="url(#fyP)"' : ''}/></g></g>`); }
@@ -417,7 +417,7 @@ function ritaBad(st, t) {
   if (st.luftRit || st.luftFyll) {
     const k = ritfart((t - T_LUFT.rit[0]) / (T_LUFT.rit[1] - T_LUFT.rit[0])), f = st.luftFyll || 0, [cx, cy, v, s] = LUFT;
     const tr = `translate(${f1(cx)} ${f1(cy)}) rotate(${v}) scale(${s}) translate(${-BW[0] / 2} ${-BW[1] / 2})`;
-    const Rb = ritBana([PK], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+    const Rb = ritBana([PK], k, { farg: LF.stor, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (f > 0 && st.storFlyg == null && !st.hall) lagg('fram', `<g transform="${tr}">${f < 1 ? fyllMask('fyL', BW[0] / 2, BW[1] / 2, 520, f) : ''}<image href="${STOR}" width="${BW[0]}" height="${BW[1]}"${f < 1 ? ' clip-path="url(#fyL)"' : ''}/></g>`);
     if (k > 0 && f < 1) lagg('krita', `<g transform="${tr}">${Rb.html}</g>`);
     kritaRita(kritaFas(t, T_LUFT, { start: iLuft(Rb.start), spets: iLuft(Rb.spets), slut: iLuft(Rb.slut), vanta: [LUFT[0] + 130, LUFT[1] - 140], s: kritaSkala(ZOOM) * 0.7 }));
@@ -476,6 +476,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ liten: LITEN, stor: STOR }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
   const J = await (await fetch('/avsnitt/055-raven-borstar-tanderna/scener/badet/rader.json')).json();
   ROSTER = J.ROST; RAKNA = J.RAKNA; PLUTT = J.PLUTT; let acc = 0;
   RAD = J.RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

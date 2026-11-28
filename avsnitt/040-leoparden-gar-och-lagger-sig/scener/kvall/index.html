@@ -75,6 +75,7 @@ const KL = '/avsnitt/040-leoparden-gar-och-lagger-sig/klader-lager/';
 const lagg = (id, h) => $(id).insertAdjacentHTML('beforeend', h);
 const bild = (href, w, h, t, extra = '') => `<image href="${href}" width="${w}" height="${h}" transform="${t}" ${extra}/>`;
 const SKJORTA = { fil: R + 'pyjamasskjorta/cut/pyjamasskjorta.png', w: 876, h: 736 };
+let LF_STJ;
 const STJ = { fil: R + 'adventsstjarna/cut/adventsstjarna.png', w: 766, h: 874, mitt: [383, 470] };
 let KONTUR = {};
 
@@ -130,7 +131,7 @@ const STJ_HAL = [[382, 335], [542, 490], [382, 645], [222, 490]].map(([x, y]) =>
 function ritStjarna(T, [x, y, s], bredd, { fyll = 0, tand = 0, vanta, ks = kritaSkala(ZOOM), farg = KRITAN.LINJE }) {
   const snore = iFonster(x, y, s) ? [`M382 30 Q403 ${((30 + (FON.y0 + 6 - y) / s + STJ.mitt[1]) / 2).toFixed(1)} 382 ${((FON.y0 + 6 - y) / s + STJ.mitt[1]).toFixed(1)}`] : [];
   const k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0]));
-  const R = ritBana([KONTUR.stjarna.d, ...STJ_HAL, ...snore], k, { vila: [0.5],
+  const R = ritBana([KONTUR.stjarna.d, ...STJ_HAL, ...snore], k, { vila: [0.5], farg: farg === KRITAN.LINJE ? LF_STJ : null, t: TT,
     attr: `fill="none" stroke="${farg}" stroke-width="${(bredd / s).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"` });
   stjarna(x, y, s, { fyll, tand, rit: TT >= T.rit[0] ? R : null });
   const sc = ([px, py]) => [x + (px - STJ.mitt[0]) * s, y + (py - STJ.mitt[1]) * s];
@@ -713,6 +714,7 @@ function rita(t) {
 }
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF_STJ = await linjeFargAv(STJ.fil);
   const { RADER, ROST } = await (await fetch('/avsnitt/040-leoparden-gar-och-lagger-sig/scener/kvall/rader.json')).json();
   ROSTER = ROST; let acc = 0;
   RAD_L = RADER.map(r => { const s = acc; acc += r.d; return { ...r, s }; }); RR = Object.fromEntries(RAD_L.map(r => [r.id, r]));

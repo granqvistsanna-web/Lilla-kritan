@@ -249,7 +249,7 @@ const ritTakt = f => 0.5 * kl(f) + 0.5 * mjuk(f);
 
 // --- Kritan --------------------------------------------------------------------------------------------------------------------
 const kritaVanta = ([x, y], tw) => [[x + 3 * Math.sin(tw * 1.1), y + 5 * Math.sin(tw * 1.6)], 125 + 4 * Math.sin(tw * 1.3)];
-let TT = 0;
+let TT = 0, LF;
 function ritKrita(p, v = 125, redan = false) {
   if (!redan) krita(p, v);
   const z = KAM ? KAM[0] : 1, e = 1 / Math.sqrt(z); let h = '';
@@ -653,7 +653,7 @@ function rita(t) {
 function ritaPapper(st, t) {
   papper(); kamera(st.kam);
   const k = ritfart((t - 2.5) / 7), f = st.fyll, lo = linjeOpacitet(f), tr = `translate(${f1(PAK_X)} ${f1(PAK_Y)}) scale(${PAK_PS})`;
-  const RB = ritBana(PAK_DRAG(), k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / PAK_PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` });
+  const RB = ritBana(PAK_DRAG(), k, { farg: LF, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / PAK_PS).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` });
   if (f > 0) lagg('saker', `<defs>${fyllMask('fyp', KONT.paket.mitt[0], KONT.paket.mitt[1], 620, f)}</defs><g transform="${tr}"><image href="${PAKETB[0].bild}" width="1024" height="1024" clip-path="url(#fyp)"/></g>`);
   if (t >= 2.5 && lo > 0) lagg('kontur', `<g filter="url(#vax)" opacity="${lo.toFixed(3)}"><g transform="${tr}">${RB.html}</g></g>`);
   const kr = kritaFas(t, T_RIT(), { start: pakTill(RB.start), spets: pakTill(RB.spets), slut: pakTill(RB.slut), vanta: [1450, 330], s: KRITAN.SKALA_PAPPER });
@@ -777,6 +777,7 @@ function ljud() {
 window.DURATION = DURATION;
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = await linjeFargAv(PAKETB[0].bild);
   window.HAND = HAND;   // kattens tassar för riggens ARMROR (uttryck.html har inget HAND än)
   L = await v2rigg('katten-kaj');
   L.RORELSE.lagga = { ...(L.RORELSE.lagga || {}), kropp: [510, 521, 282, 305] };   // kattens kroppsellips (kaj-body.png), för ARMROR.fri

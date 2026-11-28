@@ -92,7 +92,7 @@ const KORG_DETALJ = ['M215 485 C215 412 805 412 805 485 C805 552 215 552 215 487
   'M165 560 C380 612 650 612 860 550', 'M262 612 C300 700 340 780 380 860', 'M690 618 C675 690 660 750 640 805'];
 const PALL_DETALJ = ['M32 300 C130 304 250 304 350 300', 'M360 96 C480 100 630 100 748 94'];
 
-let L, G, BLINKA, BK, PK, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0;
+let LF, L, G, BLINKA, BK, PK, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0;
 let T_RIT, T_K, T_P, KORG_STORA, STEG1, STEG2, FLYG = [], HAND = [], KORGN = [];
 const LN = n => ROSTER[n - 1][1];
 const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];
@@ -153,7 +153,7 @@ function korg(pos, n = 0, { inne = '', k = 1, f = 1, skugga = true } = {}) {
     if (skugga && f > 0.5) lagg('fram', `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(KORG_H * 0.42)}" ry="${f1(KORG_H * 0.06)}" fill="#3a2a1a" opacity="0.2" filter="url(#mjukskugga)"/>`);
     lagg('fram', `<g transform="${t}">${mask}<g${cl}><image href="${KORG.bild}" width="1024" height="1024"/>${hog}</g></g>${inne}<g transform="${t}"><g${cl}><image href="${KORG.bild}" width="1024" height="1024" clip-path="url(#korgfram)"/></g></g>`);
   }
-  if (k < 1 || f < 1) { Rb = ritBana([KORG.d, ...KORG_DETALJ], ritfart(k), { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  if (k < 1 || f < 1) { Rb = ritBana([KORG.d, ...KORG_DETALJ], ritfart(k), { farg: LF.korg, t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (k > 0) lagg('fram', `<g transform="${t}">${Rb.html}</g>`); }
   const i = iKorg(pos);
   return Rb ? { spets: i(Rb.spets), start: i(Rb.start), slut: i(Rb.slut) } : null;
@@ -165,7 +165,7 @@ function pall({ k = 1, f = 1 } = {}) {
   let html = '', Rb = null;
   if (f > 0) { if (f > 0.5) lagg('mitt', `<ellipse cx="${PALLPOS[0]}" cy="${PALLPOS[1]}" rx="${f1(PALL_H * 0.78)}" ry="${f1(PALL_H * 0.06)}" fill="#3a2a1a" opacity="0.2" filter="url(#mjukskugga)"/>`);
     html += `${f < 1 ? fyllMask('fyP', 390, 300, 520, f) : ''}<image href="${PALL.bild}" width="${PALL.w}" height="${PALL.h}"${f < 1 ? ' clip-path="url(#fyP)"' : ''}/>`; }
-  if (k < 1 || f < 1) { Rb = ritBana([PK.d, ...PALL_DETALJ], ritfart(k), { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  if (k < 1 || f < 1) { Rb = ritBana([PK.d, ...PALL_DETALJ], ritfart(k), { farg: LF.pall, t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (k > 0) html += Rb.html; }
   lagg('mitt', `<g transform="${t}">${html}</g>`);
   return Rb ? { spets: iPall(Rb.spets), start: iPall(Rb.start), slut: iPall(Rb.slut) } : null;
@@ -356,7 +356,7 @@ function ritaPapper(st, t) {
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   kamera([z, 960, 540]);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([BUSK_KONTUR, ...PAPPER_DRAG], k, { vila: [0.6], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([BUSK_KONTUR, ...PAPPER_DRAG], k, { vila: [0.6], farg: LF.buske, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
   if (f > 0) { const g = st.gung ?? 0, v = 1.5 * Math.sin(g * 1.7) * del(0.5, 1.2, g);   // busken gungar lugnt
     lagg('bak', `<g transform="rotate(${f1(v)} 960 760)"><g transform="${tr}">${f < 1 ? fyllMask('fyB', 509, 356, 640, f) : ''}<g${f < 1 ? ' clip-path="url(#fyB)"' : ''}><image href="${BUSKE.bild}" width="${BUSKE.w}" height="${BUSKE.h}"/>${PAPPER_BAR.map(([x, y]) => bar(x, y, 29)).join('')}</g></g></g>`); }
@@ -554,6 +554,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ korg: KORG.bild, pall: PALL.bild, buske: BUSKE.bild }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
   const J = await (await fetch('/avsnitt/059-raven-plockar-blabar/scener/skogen/rader.json')).json();
   ROSTER = J.ROST; let acc = 0;
   RAD = J.RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

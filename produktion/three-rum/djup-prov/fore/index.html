@@ -94,7 +94,7 @@ const LITEN_VID_FOTEN = [1305, RIM + 6], LITEN_VID_NALLE = [1255, RIM + 6];
 const BULA = [1220, RIM - 50];                     // nallen under täcket (bulan, örat)
 const SVART = 0.6;
 
-let L, G, BLINKA, KN, KL, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, VID;
+let LF, L, G, BLINKA, KN, KL, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, VID;
 let T_RIT, T_L1, T_L2, T_L3, TID = {};
 const LN = n => ROSTER[n - 1][1];
 const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];
@@ -157,7 +157,7 @@ function lampa(id, [x, y], h, { k = 1, f = 1, tand = 0, lager = 'golv', skugga =
   if (f > 0) html += `${f < 1 ? fyllMask('fy' + id, skarm[0], 450, 560, f) : ''}<image href="${LAMPBILD.bild}" width="${w}" height="${ih}"${f < 1 ? ` clip-path="url(#fy${id})"` : ''}/>`
     + (tand > 0.01 ? `<circle cx="${skarm[0]}" cy="${skarm[1]}" r="235" fill="#FFF6C8" opacity="${(0.55 * tand).toFixed(3)}"${f < 1 ? ` clip-path="url(#fy${id})"` : ''}/>` : '');
   let Rb = null;
-  if (k < 1 || f < 1) { Rb = ritBana([KL], ritfart(k), { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  if (k < 1 || f < 1) { Rb = ritBana([KL], ritfart(k), { farg: LF.lampa, t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (k > 0 && f < 1) html += Rb.html; }
   lagg(lager, `<g transform="${tr}">${html}</g>`);
   const i = iLampa([x, y], h);
@@ -314,7 +314,7 @@ function ritaPapper(st, t) {
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp;
   kamera([z, 960, 540]);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([KN.d, ...NALLE_ANS_DRAG], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([KN.d, ...NALLE_ANS_DRAG], k, { farg: LF.nalle, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / PS / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   const tr = `translate(${f1(PX0)} ${f1(PY0)}) scale(${PS})`;
   if (f > 0) { const g = st.gung ?? 0, v = 2 * Math.sin(g * 1.7) * del(0.5, 1.2, g), dy = 8 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // nallen gungar lugnt
     lagg('bak', `<g transform="translate(0 ${f1(dy)}) rotate(${f1(v)} 960 540)"><g transform="${tr}">${f < 1 ? fyllMask('fyP', 424, 430, 620, f) : ''}<g${f < 1 ? ' clip-path="url(#fyP)"' : ''}><image href="${NALLE.bild}" width="${NALLE.w}" height="${NALLE.h}"/>${nalleAns()}</g></g></g>`); }
@@ -538,6 +538,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ lampa: LAMPBILD.bild, nalle: NALLE.bild }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
   const J = await (await fetch('rader.json')).json();
   ROSTER = J.ROST; let acc = 0;
   RAD = J.RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

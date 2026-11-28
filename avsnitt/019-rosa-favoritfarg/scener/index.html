@@ -431,7 +431,7 @@ const SKOTT = [
   ['02', -FORSPEL, s => {   // innan sången: kritan (verktyg/kritan-ritar.js) ritar konturen och detaljerna, väntar och svajar; på "En blomma!" fylls bilden i inifrån, gnistor, kritan flyger ut
     visa('papper');
     const k = ritfart((s - RT.rit[0]) / (RT.rit[1] - RT.rit[0])), f = clamp((s - RT.svar) / 0.7);
-    const R = ritBana([BKONTUR.d, ...BDETALJ], s < RT.rit[0] ? 0 : k, { vikt: BVIKT, vila: BVILA,
+    const R = ritBana([BKONTUR.d, ...BDETALJ], s < RT.rit[0] ? 0 : k, { vikt: BVIKT, vila: BVILA, t: s,
       attr: `fill="none" stroke="${BLINJE}" stroke-width="${(KRITAN.BRED * DK / BSK).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"` });
     ritBild.innerHTML = (f > 0 ? fyllMask('bfyll', BKONTUR.mitt[0], BKONTUR.mitt[1], 470, f) + `<image href="${BLOMMA}" width="599" height="732" clip-path="url(#bfyll)"/>` : '') + (f < 1 ? R.html : '');
     const nar = mjuk(del(RT.rit[0], RT.rit[0] + 2, s)), kryp = mjuk(del(RT.vanta[1], RT.svar, s)), zoom = 1 + 0.04 * nar + 0.08 * kryp;   // lite närmare medan den ritar, kryper in i pausen (+12 %)

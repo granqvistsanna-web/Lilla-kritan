@@ -387,10 +387,11 @@ const ansikte = (farg, b) => `${OGON.map(([x, y]) => `<circle cx="${x}" cy="${y}
 // Glasyrprickarna ritas inte längre (mönster, inte detaljer). Ögonen och leendet finns inte i bilden och läggs på fyllningen i kod.
 const GUBBE_DRAG = () => [KONTUR.gubbe.d, ...OGON.map(([x, y]) => ring(x, y, 7)), LE, ...KNAPPAR.map(([x, y, r]) => ring(x, y, r))];
 const RIT1 = () => { const a = at('01a'), c = at('01c'); return { in: [a, a + 0.4], rit: [a + 0.5, a + 5.3], vanta: [a + 5.4, a + 6.2], ut: [c + 0.2, c + 1.0] }; };
+let LF;
 const linje = (bredd, o) => `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(bredd)}" stroke-linecap="round" stroke-linejoin="round" opacity="${o.toFixed(3)}"`;
 function papperGubbe(fyll) {
   papper(); const T = RIT1(), k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0]));
-  const R = ritBana(GUBBE_DRAG(), k, { vila: [0.6], attr: linje(KRITAN.BRED / 0.82, linjeOpacitet(fyll)) });
+  const R = ritBana(GUBBE_DRAG(), k, { vila: [0.6], farg: LF.gubbe, t: TT, attr: linje(KRITAN.BRED / 0.82, linjeOpacitet(fyll)) });
   if (fyll > 0) lagg('saker', `<g transform="${gT}">${fyllMask('pg', 512, 512, 560, fyll)}<g clip-path="url(#pg)"><image href="${GB}" width="1024" height="1024"/>${ansikte('#fbf4e6', 10)}</g></g>`);
   if (fyll < 1 && k > 0) lagg('pilar', `<g transform="${gT}">${R.html}</g>`);
   const kr = kritaFas(TT, T, { start: pS(...R.start), spets: pS(...R.spets), slut: pS(...R.slut), vanta: [1430, 300] });
@@ -403,7 +404,7 @@ const KLOCKA_DRAG = () => [KONTUR.klocka.d, ring(352, 453, 226), visare(-60, 140
 const RIT2 = () => { const a = at('21a'), b = at('21b'); return { in: [a, a + 0.4], rit: [a + 0.5, a + 4.3], vanta: [a + 4.4, a + 5.2], ut: [b + 0.2, b + 1.0] }; };
 function ritKlocka(zoom) {
   const T = RIT2(), k = ritfart((TT - T.rit[0]) / (T.rit[1] - T.rit[0])), fyll = del(at('21b'), at('21b', 0.9), TT);
-  const R = ritBana(KLOCKA_DRAG(), k, { vila: [0.5], attr: linje(KRITAN.BRED / KS, linjeOpacitet(fyll)) });
+  const R = ritBana(KLOCKA_DRAG(), k, { vila: [0.5], farg: LF.klocka, t: TT, attr: linje(KRITAN.BRED / KS, linjeOpacitet(fyll)) });
   if (fyll < 1 && k > 0) lagg('pilar', `<g transform="translate(${KL_X} ${MAT_Y + 4}) scale(${KS}) translate(-355 -833)">${R.html}</g>`);
   const kr = kritaFas(TT, T, { start: pK(...R.start), spets: pK(...R.spets), slut: pK(...R.slut), vanta: [KL_X + 170, MAT_Y - 230], s: kritaSkala(zoom) });
   if (kr) lagg('pilar', kritaBild(kr.x, kr.y, kr));
@@ -614,6 +615,7 @@ function rita(t) {
 // bildrutan, så lammet blinkade på tomt papper. seek väntar nu tills alla bilder är avkodade innan bilden tas.
 window.seek = t => { window.stilla = true; rita(t); return Promise.all([...document.querySelectorAll("image")].map(i => i.decode?.().catch(() => {}))); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ gubbe: GB, klocka: KLOCKA }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
   const { RADER, ROST } = await (await fetch('/avsnitt/045-lammet-bakar-pepparkakor/scener/julkoket/rader.json')).json();
   ROSTER = ROST; let acc = 0;
   RAD_L = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; }); RR = Object.fromEntries(RAD_L.map(r => [r.id, r]));

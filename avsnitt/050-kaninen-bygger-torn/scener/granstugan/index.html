@@ -163,6 +163,7 @@ function julpynt(x, fot, h, o = 1) {
 // Konturerna är kontur.py:s (…-kontur.json, ytterkontur + hålet), detaljerna mätta i bilderna (bildens px): hinkens kantlinje och glans,
 // spadens fog mellan skaft och blad och bladets inre kant, ljusets framkant upptill och veken (lågan i scenens px).
 // Hinken och spaden ritas i följd: kritan glider från hinken till spadens början och svajar där tills den ritar (som J02).
+let LF;
 const KONTUR = {};   // kontur.py:s konturer, laddas i window.ready
 const DETALJ = {
   hink: ['M226 470 Q512 452 798 458', 'M730 532 Q706 625 686 722'],
@@ -199,7 +200,7 @@ function ritaKritan(t, lista, lager, s, z = 1) {
   let kr = null;
   for (const r of lista) {
     const f = kl((t - r.fyll) / r.fd), k = ritfart(kl((t - r.t0) / r.sek));
-    if (t >= r.t0 && f < 1) lagg(lager, ritBana(r.drag, k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(r.w)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"` }).html);
+    if (t >= r.t0 && f < 1) lagg(lager, ritBana(r.drag, k, { farg: LF[r.namn], t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(r.w)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(3)}"` }).html);
     const u = t - r.fyll; if (u >= 0 && u < 2.6) { const [cx, cy, Rg] = r.gn;
       lagg(lager, `<g transform="translate(${f1(cx)} ${f1(cy)}) scale(${(1 / z).toFixed(3)}) translate(${f1(-cx)} ${f1(-cy)})">${gnistor(cx, cy, Rg * z, u)}</g>`); }
     if (t < r.fran || t >= r.av) continue;
@@ -533,6 +534,7 @@ function rita(t) {
 }
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries(SAK).map(async ([n, [u]]) => [n, await linjeFargAv(u)])));
   L = await v2rigg('kaninen-kanel');
   G = L.figur(512, L.FOTTER, 1, $('gomda'));
   G.querySelector('.skugga')?.setAttribute('display', 'none');

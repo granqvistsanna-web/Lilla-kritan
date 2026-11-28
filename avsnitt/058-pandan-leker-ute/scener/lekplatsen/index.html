@@ -99,7 +99,7 @@ const B_TRAD = [436, 914 - BR], B_TRADF = [520, BY], B_KRONA = [HINK[0], 470], B
 const APPLE_FRAN = [570, 640], APPLE_LAND = [560, 978], APPLE_STOPP = [790, 982], APPLE_GUNG = [700, 982], APPLE_H = 58;
 const GPAPP = [960, 940, 760];
 
-let L, G, BLINKA, KONT = {}, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, J = {};
+let L, G, BLINKA, LF, KONT = {}, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, J = {};
 let T_RIT, T_B, T_H, T_SITT;
 const LN = n => ROSTER[n - 1][1];
 const MO = (id, i = 0) => RR[id].malin[i][1];          // replik nr i (i raden) in i raden
@@ -141,7 +141,7 @@ function sak(namn, [x, fot, h], { lager = 'saker', vrid = null, k = 1, f = 1, o 
   if (klipp) { lagg(lager, `<g transform="${tr}"><clipPath id="kl${namn}"><path d="${klipp}"/></clipPath><image href="${fil}" width="${w}" height="${hh}" clip-path="url(#kl${namn})"/></g>`); return {}; }
   let html = '', Rb = null;
   if (f > 0) html += `${f < 1 ? fyllMask('fy' + namn, cx, cy, Math.max(w, hh) * 0.75, f) : ''}<image href="${fil}" width="${w}" height="${hh}" opacity="${o}"${f < 1 ? ` clip-path="url(#fy${namn})"` : ''}/>`;
-  if (k < 1 || f < 1) { Rb = ritBana([KONT[namn].d, ...DETALJ[namn]], ritfart(k), { vila: [0.5], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  if (k < 1 || f < 1) { Rb = ritBana([KONT[namn].d, ...DETALJ[namn]], ritfart(k), { vila: [0.5], farg: LF[namn], t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / s / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (k > 0) html += Rb.html; }
   lagg(lager, `<g transform="${tr}">${html}</g>`);
   const iS = ([px, py]) => { const p = [x + (px - cx) * s, fot + (py - y1) * s]; return vrid ? rotP(p, vrid[0], [vrid[1], vrid[2]]) : p; };
@@ -569,6 +569,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries(SAK).map(async ([n, [u]]) => [n, await linjeFargAv(u)])));
   J = await (await fetch('/avsnitt/058-pandan-leker-ute/scener/lekplatsen/rader.json')).json();
   ROSTER = J.ROST; let acc = 0;
   RAD = J.RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

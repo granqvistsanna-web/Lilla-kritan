@@ -525,14 +525,14 @@ function reaktion(st, r, tl) {
 // --- Bildrutan ---------------------------------------------------------------------------------------------------------------------
 const LAGER = ['platta', 'vagg', 'bak', 'anga', 'angaFram', 'anka', 'figurer', 'figurerFram', 'saker', 'fram', 'pilar', 'ram'];
 const PA = { s: 5.2, X: 960, Y: 540 + 0.5 * ANKA_H * 5.2 };   // ankan på papperet
-let T_RIT, T_HD, T_BAT;
+let T_RIT, T_HD, T_BAT, LF;
 function ritaPapper(st, t) {
   $('platta').innerHTML = `<rect x="-200" y="-200" width="2400" height="1500" fill="#FBF7EE"/><rect x="-200" y="-200" width="2400" height="1500" filter="url(#korn)"/>`;
   const kryp = 1 + 0.12 * (st.kryp || 0), z = (st.zoom || 1) * kryp, mk = PA.s * ANKA_H / 661;
   const mx = PA.X + (ANKA_MITT[0] - 358) * mk, my = PA.Y + (ANKA_MITT[1] - 658) * mk;
   kamera(z, mx, my);
   const f = st.fyll || 0, k = ritfart((t - T_RIT.rit[0]) / (T_RIT.rit[1] - T_RIT.rit[0]));
-  const Rb = ritBana([ankaKontur([PA.X, PA.Y], PA.s)], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([ankaKontur([PA.X, PA.Y], PA.s)], k, { farg: LF.anka, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / z)}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   if (f > 0) { lagg('saker', fyllMask('fyA', mx, my, 420, f)); const g = st.gung ?? 0, bob = 10 * Math.sin(g * 2.2) * del(0.5, 1.2, g);   // ankan guppar lugnt, bilden står aldrig stilla
     anka([PA.X, PA.Y + bob], { s: PA.s, rot: 2.5 * Math.sin(g * 1.7) * del(0.5, 1.2, g), lager: 'saker', klipp: f < 1 ? 'fyA' : '', blink: st.blink || 0 }); }
   if (k > 0 && f < 1) lagg('pilar', Rb.html);
@@ -548,7 +548,7 @@ function ritaBad(st, t) {
   // handduken som kritan ritar (12a–13)
   if (fran(st.id, '12a') && !fran(st.id, '15')) {   // rad 14 ("Ska vi säga tack?") struken 27/11
     const k = ritfart((t - T_HD.rit[0]) / (T_HD.rit[1] - T_HD.rit[0])), f = st.hdFyll || 0;
-    const Rb = ritBana(HD_DRAG, k, { vikt: HD_VIKT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(10 / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+    const Rb = ritBana(HD_DRAG, k, { vikt: HD_VIKT, farg: LF.hd, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(10 / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (f > 0 && f < 1) lagg('vagg', fyllMask('fyH', HD_MITT[0], HD_MITT[1], 330, f) + `<image href="${HD}" x="${f1(KROK[0] - HD_W / 2)}" y="${KROK[1]}" width="${f1(HD_W)}" height="${HD_H}" clip-path="url(#fyH)"/>`);
     if (k > 0 && f < 1) lagg('pilar', Rb.html);
     kritaRita(kritaFas(t, T_HD, { start: Rb.start, spets: Rb.spets, slut: Rb.slut, vanta: [470, 190], s: kritaSkala(ZOOM) }));
@@ -557,7 +557,7 @@ function ritaBad(st, t) {
   // båten som kritan ritar (b1–b3), sedan i badet
   if (fran(st.id, 'b1') && !fran(st.id, 'b4')) {
     const k = ritfart((t - T_BAT.rit[0]) / (T_BAT.rit[1] - T_BAT.rit[0])), f = st.batFyll || 0;
-    const Rb = ritBana([batKontur(BATP)], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(10 / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+    const Rb = ritBana([batKontur(BATP)], k, { farg: LF.bat, t, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(10 / Math.sqrt(ZOOM))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
     if (f > 0) { lagg('anka', fyllMask('fyB', BAT_MITT[0], BAT_MITT[1], 120, f)); const [p, r] = gupp(BATP, t, del(0.4, 1.2, st.tl || 0)); bat(p, r * 0.7, f < 1 ? 'fyB' : ''); }
     if (k > 0 && f < 1) lagg('pilar', Rb.html);
     kritaRita(kritaFas(t, T_BAT, { start: Rb.start, spets: Rb.spets, slut: Rb.slut, vanta: [BATP[0] + 150, BATP[1] - 190], s: kritaSkala(ZOOM) }));
@@ -624,6 +624,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries({ anka: ANKA_BILD, hd: HD, bat: BAT_BILD }).map(async ([n, u]) => [n, await linjeFargAv(u)])));
   const { RADER, ROST, BORTA_T } = await (await fetch('/avsnitt/054-lammet-badar/scener/badet/rader.json')).json();
   ROSTER = ROST; BORTA = BORTA_T; let acc = 0;
   RAD = RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });

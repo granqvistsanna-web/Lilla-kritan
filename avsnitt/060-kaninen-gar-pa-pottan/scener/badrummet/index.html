@@ -89,7 +89,7 @@ const VID_KAR = [FOT_V - 150, GOLV], MELLAN = [1320, GOLV], TOA_STA = [905, GOLV
 const BOLL_P = POTTA[0] + 150;   // bollen bredvid pottan
 let VID, PALL_KS, PALL_X0, PALL_Y0, KNAPP_ARM = 100;
 
-let L, G, BLINKA, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, KONTUR = {};
+let LF = {}, L, G, BLINKA, TT = 0, ZOOM = 1, RAD = [], RR = {}, ROSTER = [], DURATION = 0, KONTUR = {};
 let T_RIT, T_BOK, T_STJ;
 const LN = n => ROSTER[n - 1][1];
 const M = (id, n) => RR[id].malin.find(x => x[0] === n)[1];
@@ -173,7 +173,7 @@ const DETALJ = {
 // rit en sak med foten i (x, fot) och höjden h; k = hur långt konturen ritats, f = fyllningen; ger kritans punkter i scenen
 function ritSak(lager, namn, [x, fot, h], k, f, { rot = 0, z = ZOOM, rita = true } = {}) {
   const [fil, [w, hh], [x0, y0, x1, y1]] = SAK[namn], T = sakT(namn, x, fot, h, rot);
-  const Rb = ritBana([KONTUR[namn].d, ...DETALJ[namn]], ritfart(kl(k)), { vila: [0.5], attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / T.s / Math.sqrt(z))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
+  const Rb = ritBana([KONTUR[namn].d, ...DETALJ[namn]], ritfart(kl(k)), { vila: [0.5], farg: LF[namn], t: TT, attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${f1(KRITAN.BRED / T.s / Math.sqrt(z))}" stroke-linecap="round" stroke-linejoin="round" opacity="${linjeOpacitet(f).toFixed(2)}"` });
   if (rita) {
     if (f > 0) lagg(lager, `<g transform="${T.t}">${f < 1 ? fyllMask('fy' + namn, (x0 + x1) / 2, (y0 + y1) / 2, Math.hypot(x1 - x0, y1 - y0) / 2, f) : ''}<image href="${fil}" width="${w}" height="${hh}"${f < 1 ? ` clip-path="url(#fy${namn})"` : ''}/></g>`);
     if (k > 0 && f < 1) lagg('krita', `<g transform="${T.t}">${Rb.html}</g>`);
@@ -580,6 +580,7 @@ function ljud() {
 
 window.seek = t => { window.stilla = true; rita(t); };
 window.ready = (async () => {
+  LF = Object.fromEntries(await Promise.all(Object.entries(SAK).map(async ([n, a]) => [n, await linjeFargAv(a[0])])));
   const J = await (await fetch('/avsnitt/060-kaninen-gar-pa-pottan/scener/badrummet/rader.json')).json();
   ROSTER = J.ROST; let acc = 0;
   RAD = J.RADER.filter(r => r.id !== '00').map(r => { const s = acc; acc += r.d; return { ...r, s }; });
