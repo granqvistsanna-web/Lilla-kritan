@@ -81,11 +81,11 @@ export const RADER = [
     bild: 'Kameran har glidit in mot himlen och kullarna. Allt är frostigt och kalt, molnen glider', ljudtext: '–', s: { vy: 'himmel' } },
   { id: '03', d: 0.4 + L(4) + 0.6 + L(5) + GISS, plats: 'Himlen, närbild', malin: [[4, 0.4], [5, 0.4 + L(4) + 0.6]], ljud: [['krita-ritar/krita-ritar-1', 0.2]],
     bild: '**Gissa 1.** Kritan ritar snöflingans kontur på himlen: mitten och de sex armarna, sidogrenarna som detaljstreck. Gisspaus 3 s, kritan svajar', ljudtext: 'kritan ritar', s: { vy: 'flinga', flinga: 'kontur', kritan: true } },
-  { id: '04', d: 0.5 + L(6) + 0.8, plats: 'Himlen, närbild', malin: [[6, 0.5]], ljud: [['glitter/glitter-1', 0.1], ['tindra/tindra-1', 0.5 + ORD.snoflinga]],
+  { id: '04', d: 0.5 + L(6) + 0.8, plats: 'Himlen, närbild', malin: [[6, 0.5]], ljud: [['glitter/glitter-1', 0.1], ['tindra/tindra-3', 0.5 + ORD.snoflinga]],
     bild: 'Snöflingan fylls i inifrån och glimtar på *"snöflinga"*', ljudtext: 'glitter, tindra', s: { flinga: 'ja', kritan: false } },
   { id: '05', d: 0.3 + L(7) + 1.0, plats: 'Uppslaget, bred', malin: [[7, 0.3]],
     bild: 'Snön börjar falla, långsamt och glest: små platta vita kritflingor som vajar', ljudtext: 'vinterljud', s: { vy: 'bred', snofall: 1 } },
-  { id: '05b', d: 0.3 + L(8) + 1.5, plats: 'Uppslaget, bred', malin: [[8, 0.3]], ljud: [['tindra/tindra-2', 0.3, 0.4]],
+  { id: '05b', d: 0.3 + L(8) + 1.5, plats: 'Uppslaget, bred', malin: [[8, 0.3]], ljud: [['tindra/tindra-4', 0.3, 0.4]],
     bild: 'Marken blir vit nerifrån och upp, snön växer in på kullarna, granarna och trädet uppifrån och ner (ca 5 s, lugnt). Fåglarna sitter ovanpå snön', ljudtext: 'tindra svagt', s: { sno: 1, snofall: 2 } },
 
   // --- Hej, kaninen ---
