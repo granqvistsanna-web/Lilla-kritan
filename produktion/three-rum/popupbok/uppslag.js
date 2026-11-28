@@ -230,8 +230,9 @@ export function djupskarpa({ R, scen, cam, W, H, PR }) {
 export const lage = (pos, mal, P) => [Math.atan2(pos.x - P[0], pos.z - P[2]) * 180 / Math.PI, Math.hypot(pos.x - P[0], pos.z - P[2]), pos.y - P[1], mal.x - P[0], mal.y - P[1]];
 export const fran3 = (l, P) => { const a = l[0] * Math.PI / 180; return [v3(P[0] + l[1] * Math.sin(a), P[1] + l[2], P[2] + l[1] * Math.cos(a)), v3(P[0] + l[3], P[1] + l[4], P[2])]; };
 export const skjut = l => [l[0] + 1.2, l[1] * 0.965, l[2] * 0.985, l[3], l[4]];   // svag push in i varje vy
+export const BOKVYER = { bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32], slut: () => [v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), 32] };   // den stängda boken; boken stängs
 export function kamera(cam, vyerna, { blur, lyft = () => 0 }) {
-  const VY = { bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32], slut: () => [v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), 32], ...vyerna };
+  const VY = { ...BOKVYER, ...vyerna };
   const platser = {}, VYER = [], P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0);
   function vy(t, namn, g, o = {}) {   // klipp till en vy; o: P (punkten kameran går runt), fran, till, mal
     const [pos, mal, fov] = VY[namn](g), P = o.P || [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
