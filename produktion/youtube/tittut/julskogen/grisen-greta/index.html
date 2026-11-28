@@ -19,6 +19,10 @@
 <script src="../../tittut.js"></script>
 <script>
 tittut({
+  // v3 (format/tittut.md, Sanna 2026-11-28): kortare, ett lägesord per runda (bakom pepparkakshuset, under granen, i säcken),
+  // snö på huvudet under granen, klipp till närbilder och en final mot kameran. Malins nya repliker: julskogen/tagning-v3.txt
+  varv: 1, bortaVarje: true, svarVarje: true, enKik: true, klippKamera: true, final: true,
+  snoHatt: { runda: 1, at: [470, 95, 1.5] },
   plats: 'julskogen',
   platta: 'assets/bakgrunder/vinterkvallen-tom/vinterkvallen-tom.jpeg',   // Sanna 2026-11-27: "use bg vinterkvällen tom" (blå kväll, platt snö på y ca 820, bakgrunder/vinterkvallen.md); förr julskogen-v3
   badd: 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', baddVol: 0.2,   // QA 2026-11-27 (J12): "xmas soundtrack on low" (Sanna), fyller hålen av tystnad
@@ -38,28 +42,23 @@ tittut({
     sack:          [1690, 950, { h: 420, farg: '#D9382E', inSida: true }],   // inSida: QA 2026-11-27, inget högt hopp in i säcken   // framför granens nedersta gren till höger
   },
   retas: 'oron',                  // första kiken är öronspetsarna (grisens hängöron), sedan huvudet
-  svansKik: true,                 // "Jag ser en liten svans…": knorren sticker upp ur säcken
   svansSkala: 3.2,                // knorren större än standard 1,7, annars syntes den knappt ovanför säcken (Sanna 2026-11-13); kräver g.svansSkala i tittut.js
   retasSkala: 0.7,                // kortare kikar där inget sägs, som hunden
   gang: true,                     // v2-gången
   tydligVink: true,               // QA 2026-11-27: vinkar tydligt tillbaka efter "Kan du vinka till grisen?" (armen syntes knappt)
   mjukaSteg: true, klattra: false,   // mjuka tassteg; går på snön framför sakerna, aldrig uppe på taket (som björnen)
-  varv: 2,
   // Sanna 2026-11-19 (som J06 björnen): ingen "Var gömmer du dig nu?", "tittut" lite senare, tätare närbilder, fler reaktionsansikten,
   // samtal med barnet och ett slut där barnet hittar grisen. sag-med-1, nej-1, nej-2 och ropa-1 är kopior av björnens (inget djur sägs)
   gomma: false,
   tittutSen: 0.3,
   narbild: 1.7,
   reaktioner: true,
-  reaktion: 0.6,
-  samtal: { leta: ['gran', 'pepparkakshus'], tofs: -0.12 },   // tofs: bara mössan över säcken (säcken är smal upptill, huvudet syntes bredvid),
-  rost: 'gris-jul',               // egna repliker (rost.txt här)
+  reaktion: 0.3,                  // v3 2026-11-28: 0,6 → 0,3, kortare
+  rost: 'gris-jul-v3',               // egna repliker (rost.txt här)
   rundor: [
-    ['pepparkakshus', 'ur'],                 // huvudet kommer upp över taket 
+    ['pepparkakshus', 'ur'],
     ['gran', 'sida'],
     ['sack', 'ur'],
-    ['sack', 'ur'],                           // knorren sticker upp (svansKik, runda 4)
-    ['sack', 'ur'],                           // 2026-11-19: sista rundan letar vi (samtal): granen? pepparkakshuset? tofsen syns ur säcken, vi ropar tittut
   ],
   utSida: { gran: -1 },           // Sanna 2026-11-14: gick ut åt höger genom säcken och snödrivan; ut åt vänster i den fria gången
   skakar: ['sack'],

@@ -1,8 +1,103 @@
 # Tittut – en serie för små barn
 
-**Status:** två filmer byggda (kaninen i skogen, lammet i skogen 2). Omskrivet 2026-11-06 från kurragömma till riktig tittut. Uppdaterat 2026-11-07 efter QA av båda filmerna; det som står under *Beslutat 2026-11-07 (QA-rundorna)* gäller före äldre beslut.
+**Status:** elva filmer byggda i v2 (2:16–3:12). **Från 2026-11-28 gäller recept v3 nedan** för nya filmer: kortare, ett lägesord per runda, bus och närbilder. v2-filmerna var för långa och lika varje runda (Sanna 2026-11-28). Beslut längre ner gäller fortfarande där v3 inte säger något annat (röstfiler, rörelser, klipplinjer, gången, inget genom något).
 
-**Målgrupp: ettåringar.** Långsamt, tydligt och mycket upprepning.
+**Målgrupp: ettåringar.** Tydligt och mycket upprepning, men inte segt.
+
+## Recept v3 (2026-11-28): ca 1:20
+
+En figur gömmer sig tre gånger: **bakom**, **under** och **i**. Malin säger ordet i pausen och igen när figuren kommer fram, så att barnet hör ordet och ser vad det betyder. Varje runda har ett eget litet bus, och kameran klipper till närbilder i stället för att zooma.
+
+| Del | Tid | Vad händer |
+|---|---|---|
+| Intro | 3 s | Kortet *"tittut!"* på jingeln, som förut |
+| Hej | 6 s | Närbild. *"Hej grisen!"* *"Ska vi leka tittut?"* Nick och fniss. Bara en fråga |
+| Runda 1: bakom | 15 s | Vanlig tittut, så att barnet lär sig rytmen |
+| Runda 2: under | 15 s | Figuren kommer upp med något på huvudet (ett löv, hö, snö) |
+| Runda 3: i | 15 s | Figuren tittar ut i ena änden, duckar och kommer ut i andra |
+| Finalen | 8 s | Figuren går fram till kameran och tittar tittut på barnet |
+| Hej då + slutkort | 6 + 10 s | Som förut. Slutkortet är 10 s för YouTubes slutskärm |
+
+### Rytmen i en runda
+
+1. **Halvnära (60 %).** Figuren går till saken, tittar busigt på barnet och gömmer sig. *"Borta!"*
+2. **Klipp till närbild på gömstället.** Malin frågar med ordet: *"Bakom busken?"* Figuren retas **en gång** (öronspetsarna, en tass eller toppen av huvudet), med ett kvävt fniss. Pausen är högst 2,5 s efter frågan.
+3. **"Tittut!"** Figuren kommer fram på "ut", **klipp till närbild på ansiktet** (vickar på huvudet, glada ögon).
+4. **Klipp till halvnära.** Glädjehopp och djurljud. Malin säger ordet igen: *"Där är du! Bakom busken!"*
+
+### Gömställena: en sak per ord
+
+Varje film behöver en sak att vara **bakom**, en att vara **under** och en att vara **i**. Under-saken är något mjukt som täcker figuren (löv, hö, snö, täcke), så att den buktar och skakar lite och figuren kommer upp ur den med löv eller snö som yr.
+
+| Tema | Bakom | Under | I |
+|---|---|---|---|
+| Skogen | busken | löven (lövhögen) | stocken |
+| Julskogen | pepparkakshuset | granen (snö faller på huvudet) | säcken |
+| Hemma | soffan | täcket | lådan |
+| Bondgården | ladugårdsdörren | höet | tunnan |
+| Lekplatsen | rutschkanan | sanden | lådan i sandlådan |
+
+### Bus
+
+- **Runda 2:** figuren kommer upp med en bit av under-saken på huvudet (ett löv, en tuss hö, en snöhätta). Malin skrattar: *"Ett löv på huvudet!"* Figuren skakar av sig den.
+- **Runda 3:** figuren tittar ut i ena änden av saken, duckar och kommer ut i den andra. Det är ingen falsk ledtråd: figuren är verkligen i saken hela tiden.
+- **Finalen:** figuren går fram till kameran tills magen eller pälsen fyller bilden (ljust, aldrig mörkt), Malin skrattar *"Så nära!"*, figuren backar och tittar fram: *"Tittut!"* Den här måste provas i första filmen: blir det obehagligt eller för mörkt tas den bort.
+
+### Kameran
+
+Klipp, inte zoom (`format/bildutsnitt.md`): halvnära när figuren gömmer sig, närbild på gömstället i pausen, närbild på ansiktet vid "Tittut!", halvnära vid hoppet. Hej och hej då i närbild på fri mark. Öronen klipps aldrig. Alla djur är lika stora (430 px i halvnära).
+
+### Shorten
+
+Runda 1 och finalen, ca 30 s, aldrig över 40 s. I data: `kort: [0, 'final']`.
+
+### Malins repliker (exempel: skogen)
+
+En fil per replik, varje fil högst en gång per film. Ordet sägs två gånger per runda: som fråga i pausen och som svar efteråt. Filerna hamnar i `assets/ljud/roster/tittut/<djur>/`.
+
+```
+[happy] Ska vi leka tittut?
+[happy] Ja! Nu leker vi.
+[playful] Borta!
+[curious] Bakom busken?
+[happy] Tittut!
+[happy] Där är du! Bakom busken!
+[playful] Borta igen!
+[curious] Under löven?
+[happy] Tittut!
+[happy] Under löven!
+[laughs] Ett löv på huvudet!
+[playful] Borta!
+[curious] I stocken?
+[happy] Tittut!
+[happy] Där! I stocken!
+[laughs] Så nära!
+[happy] Tittut!
+[warm] Nu är leken slut.
+```
+
+*"Hej grisen!"* och *"Hej då grisen!"* är de delade filerna (`roster/tittut/<djur>-hej.m4a`, `<djur>-hejda.m4a`). Ett nytt tema behöver bara de sju raderna med saken i (fråga, svar, lövet) i nya tagningar. Resten kan delas mellan filmerna i samma djurmapp.
+
+### I motorn (`tittut.js`, byggt 2026-11-28)
+
+Första v3-filmerna är jultittutarna (`julskogen/grisen-greta`, `julskogen/bjornen-bulle`), ca 1:55 + 10 s slutkort. Raden i data:
+
+```js
+varv: 1, bortaVarje: true, svarVarje: true, enKik: true, klippKamera: true, final: true,
+snoHatt: { runda: 1, at: [470, 95, 1.5] },   // snöklumpen på huvudet: rundan, [x, y, skala] i figurens 1024-ruta
+rundor: [['pepparkakshus', 'ur'], ['gran', 'sida'], ['sack', 'ur']],
+```
+
+- `bortaVarje`: borta-repliken med frågan (*"Borta! … Under granen?"*) sägs varje runda.
+- `svarVarje`: *"Där är du! …"* (`dar-ar-du-N`) efter varje tittut. I `snoHatt`-rundan följer `busig-1` (*"Snö på huvudet!"*), sedan skakar figuren av sig snön.
+- `enKik`: en kik per paus, strax efter frågan.
+- `klippKamera`: klipp i stället för zoom (halvnära → närbild på gömstället → ansiktet på "ut" → tillbaka före hoppet).
+- `final`: närbild, figuren växer mot kameran, *"Så nära!"* (`nara-1`), dyker ner ur bild och poppar upp på `tittut-4`.
+- Röstmappar: `roster/tittut/gris-jul-v3/`, `bjorn-jul-v3/` (rader i `produktion/youtube/tittut/julskogen/tagning-v3.txt`).
+
+Inte byggt än: rörelsen för mjuk under-sak (löv, hö, täcke som buktar), och ut i andra änden i runda 3. Julskogen klarar sig utan, eftersom granen och säcken redan fungerar med `sida` och `ur`.
+
+## Recept v2 (2026-11-06 till 11-27)
 
 En figur försvinner och kommer tillbaka, om och om igen. Kaninen glider ner bakom busken, berättaren säger *"Borta!"*, det blir tyst och spännande en stund och så: *"Tittut!"* Hon kommer fram med ett busigt ansikte, fnissar och hoppar till. Samma sak bakom stenen och stocken, tre varv.
 
@@ -55,10 +150,10 @@ Serien bygger på samma grund som Gissa teckningen ([`shorts.md`](shorts.md)): k
 
 | | Tittut | Gissa teckningen | Avsnitten (`regler.md`) |
 |---|---|---|---|
-| Längd | lång: ca 2:15 (5 rundor). Short: ca 30 s, högst 40 s (runda 1) | ca 23–31 s | 3–4 min |
+| Längd | v3: ca 1:20 (3 rundor + finalen). Short: ca 30 s, högst 40 s (runda 1 + finalen) | ca 23–31 s | 3–4 min |
 | Platser | **1** | 1: papperet | max 2 |
 | Figurer | **1** | inga | max 3 |
-| Gömställen | **3** saker på platsen, samma genom hela filmen | – | – |
+| Gömställen | **3** saker på platsen: en bakom, en under, en i (v3) | – | – |
 | Intro | kortet *"tittut!"* poppar i takt med jingeln, röst B säger *"Titut!"* | *"Gissa teckningen!"* | fast intro |
 | Slut | *"Nu är leken slut."*, vinkar, kortet fälls ner: *"Tittut! Hej då!"* | teckningen lämnar bilden | kritirisen och outrot |
 | Musik | en instrumental slinga för alla filmer, lågt och jämnt | samma | en sång per avsnitt |

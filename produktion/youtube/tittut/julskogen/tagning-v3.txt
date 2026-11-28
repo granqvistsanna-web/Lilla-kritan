@@ -1,0 +1,12 @@
+borta-1          [playful] Borta! … Bakom pepparkakshuset?
+tittut-1         [happy] Tittut!
+dar-ar-du-1      [happy] Där är du! Bakom pepparkakshuset!
+borta-2          [playful] Borta! … Under granen?
+tittut-2         [happy] Tittut!
+dar-ar-du-2      [happy] Under granen!
+busig-1          [laughs] Snö på huvudet!
+borta-3          [playful] Borta! … I säcken?
+tittut-3         [happy] Tittut!
+dar-ar-du-3      [happy] Där! I säcken!
+nara-1           [laughs] Så nära!
+tittut-4         [happy] Tittut!
