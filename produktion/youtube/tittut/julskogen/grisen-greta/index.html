@@ -22,9 +22,9 @@ tittut({
   // v3 (format/tittut.md, Sanna 2026-11-28): kortare, ett lägesord per runda (bakom pepparkakshuset, under granen, i säcken),
   // snö på huvudet under granen, klipp till närbilder och en final mot kameran. Malins nya repliker: julskogen/tagning-v3.txt
   varv: 1, bortaVarje: true, svarVarje: true, enKik: true, klippKamera: true, final: true,
+  kul: false, lugn: 0.7,          // granskning 2026-11-28: kortare hej och kortare promenader mellan rundorna
   snoHatt: { runda: 1, at: [470, 95, 1.5] },
   plats: 'julskogen',
-  platta: 'assets/bakgrunder/vinterkvallen-tom/vinterkvallen-tom.jpeg',   // Sanna 2026-11-27: "use bg vinterkvällen tom" (blå kväll, platt snö på y ca 820, bakgrunder/vinterkvallen.md); förr julskogen-v3
   badd: 'assets/ljud/musik/jul/karol-up-on-the-housetop-slinga.m4a', baddVol: 0.2,   // QA 2026-11-27 (J12): "xmas soundtrack on low" (Sanna), fyller hålen av tystnad
   platsVol: 0,                    // inget vindljud (Sanna 2026-11-19, J06: "remove winter wind sound", samma för grisen); förr vinterljud-2 på 0,6
   voEfter: 0.5,                   // Sanna 2026-11-19 (J12 0:02): "match VO with animations" – Malin 0,5 s efter att rörelsen landat
@@ -58,7 +58,7 @@ tittut({
   rundor: [
     ['pepparkakshus', 'ur'],
     ['gran', 'sida'],
-    ['sack', 'ur'],
+    ['sack', 'upp'],          // granskning 2026-11-28: upp ur säcken och hoppar ut över kanten (inte ut genom sidan)
   ],
   utSida: { gran: -1 },           // Sanna 2026-11-14: gick ut åt höger genom säcken och snödrivan; ut åt vänster i den fria gången
   skakar: ['sack'],

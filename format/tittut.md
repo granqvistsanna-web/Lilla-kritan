@@ -80,18 +80,23 @@ En fil per replik, varje fil högst en gång per film. Ordet sägs två gånger 
 
 ### I motorn (`tittut.js`, byggt 2026-11-28)
 
-Första v3-filmerna är jultittutarna (`julskogen/grisen-greta`, `julskogen/bjornen-bulle`), ca 1:55 + 10 s slutkort. Raden i data:
+Första v3-filmerna är jultittutarna (`julskogen/grisen-greta`, `julskogen/bjornen-bulle`), ca 1:44 + 10 s slutkort efter granskningen 2026-11-28 (först 1:55, v2 var 3:08). Raden i data:
 
 ```js
 varv: 1, bortaVarje: true, svarVarje: true, enKik: true, klippKamera: true, final: true,
 snoHatt: { runda: 1, at: [470, 95, 1.5] },   // snöklumpen på huvudet: rundan, [x, y, skala] i figurens 1024-ruta
-rundor: [['pepparkakshus', 'ur'], ['gran', 'sida'], ['sack', 'ur']],
+rundor: [['pepparkakshus', 'ur'], ['gran', 'sida'], ['sack', 'upp']],
 ```
 
 - `bortaVarje`: borta-repliken med frågan (*"Borta! … Under granen?"*) sägs varje runda.
 - `svarVarje`: *"Där är du! …"* (`dar-ar-du-N`) efter varje tittut. I `snoHatt`-rundan följer `busig-1` (*"Snö på huvudet!"*), sedan skakar figuren av sig snön.
 - `enKik`: en kik per paus, strax efter frågan.
 - `klippKamera`: klipp i stället för zoom (halvnära → närbild på gömstället → ansiktet på "ut" → tillbaka före hoppet).
+- `kul: false`, `lugn: 0.7` (granskning 2026-11-28): utan *"Okej! Vad roligt!"*, och promenaderna (in, mellan rundorna, till mitten) 30 % kortare.
+- *"Där är du! …"* sägs medan ansiktet syns, inte efter hoppet. Kameran klipper från ansiktet halvvägs genom framkomsten, innan figuren går ur bild.
+- I snörundan står figuren still i närbild medan Malin säger *"Snö på huvudet!"*. Flingor faller från grenarna när den kommer fram och när den skakar av sig snön.
+- Kiken ska vara liten (`retas: 'oron'`). Visar kiken hela huvudet ser den ut som själva tittut.
+- Säcken: `upp` (upp ur säcken, sedan hopp ut över kanten), inte `ur` (såg ut som att gå ut genom sidan).
 - `final`: närbild, figuren växer mot kameran, *"Så nära!"* (`nara-1`), dyker ner ur bild och poppar upp på `tittut-4`.
 - Röstmappar: `roster/tittut/gris-jul-v3/`, `bjorn-jul-v3/` (rader i `produktion/youtube/tittut/julskogen/tagning-v3.txt`).
 

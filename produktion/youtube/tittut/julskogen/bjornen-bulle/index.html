@@ -16,6 +16,7 @@ tittut({
   // v3 (format/tittut.md, Sanna 2026-11-28): kortare, ett lägesord per runda (bakom pepparkakshuset, under granen, i säcken),
   // snö på huvudet under granen, klipp till närbilder och en final mot kameran. Malins nya repliker: julskogen/tagning-v3.txt
   varv: 1, bortaVarje: true, svarVarje: true, enKik: true, klippKamera: true, final: true,
+  kul: false, lugn: 0.7,          // granskning 2026-11-28: kortare hej och kortare promenader mellan rundorna
   snoHatt: { runda: 1, at: [490, 125, 1.3] },
   plats: 'julskogen',
   platsVol: 0,                    // Sanna 2026-11-19 (J06): "remove winter wind sound" (vinterljud-2 var 0,6)
@@ -33,7 +34,7 @@ tittut({
     gran:          [800, 900, { h: 1300, farg: '#397653' }],  // Sanna 2026-11-14: större och mer i mitten, bara nedre delen syns; 2026-11-15: "place tree back", bakom säcken
     pepparkakshus: [1650, 940, { h: 460, farg: '#B5743B', inSida: true }],  // lite större och lägre (närmare); 2026-11-15: "avoid … going through house": går runt hörnet och in bakom, hoppar inte över taket
   },
-  retas: 'huvud',
+  retas: 'oron',                 // granskning 2026-11-28: bara öronen i kiken (hela huvudet över taket såg ut som själva tittut)
   ben: 0.4,
   gang: true,
   mjukaSteg: true, klattra: false,   // går på snön framför sakerna, aldrig uppe på taket
@@ -47,10 +48,10 @@ tittut({
   rundor: [
     ['pepparkakshus', 'ur'],
     ['gran', 'sida'],
-    ['sack', 'ur'],
+    ['sack', 'upp'],          // granskning 2026-11-28: upp ur säcken och hoppar ut över kanten (inte ut genom sidan)
   ],
   skakar: ['sack'],
-  utSida: { gran: -1 },           // 2026-11-15: granens grenar når nästan till huset, ingen plats för björnen emellan; ut på den öppna vänstra sidan
+  utSida: { gran: 1 },   // granskning 2026-11-28: ut åt höger, bort från säcken (läste som 'bakom säcken'); förr -1          // 2026-11-15: granens grenar når nästan till huset, ingen plats för björnen emellan; ut på den öppna vänstra sidan
   hejdaDjur: true,                // "Hej då björnen!" (roster/tittut/bjorn-hejda.m4a) vid vinket
   kort: [0],
   // Sanna 2026-11-13: "add clothes to bear", "add light falling snow in bg"
