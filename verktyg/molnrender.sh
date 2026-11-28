@@ -17,7 +17,8 @@ GREN=$(git rev-parse --abbrev-ref HEAD)
 git fetch -q origin "$GREN"
 # Arbetskopian mot origin, även ocommittat, för det scenerna läser. ponytail: andra avsnitt som scenen lånar från
 # (004 läser 003) kontrolleras inte här; ändrade filer där syns inte, saknade fångas av saknas-kontrollen nedan.
-ANDRAT=$(git diff --name-only "origin/$GREN" -- "$AVSNITT/scener" verktyg assets | grep -E '^avsnitt/|\.(png|jpe?g|json|js)$' || true)
+# Bokavsnitten (Kritans bok) läser också storyboard/rader.mjs och uppslaget.js och den delade koden i produktion/three-rum.
+ANDRAT=$(git diff --name-only "origin/$GREN" -- "$AVSNITT/scener" "$AVSNITT/storyboard/*.mjs" "$AVSNITT/storyboard/*.js" verktyg assets produktion/three-rum/popupbok produktion/three-rum/render.mjs | grep -E '^avsnitt/|\.(png|jpe?g|json|m?js)$' || true)
 if [ -n "$ANDRAT" ]; then echo "Molnet skulle rendera en annan version. Committa och pusha först:"; echo "$ANDRAT" | head -20; exit 1; fi
 
 STD=$(node "$R" "$SCEN" "${FLAGGOR[@]+"${FLAGGOR[@]}"}" --langd 2>/dev/null | tail -1 | node -pe 'JSON.parse(require("fs").readFileSync(0)).ut')
