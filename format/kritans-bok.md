@@ -210,6 +210,8 @@ Allt via `verktyg/kritan-ritar.js` (skillen `kritan-ritar`) och `kritan()` i `up
 5. **Samma tider.** Kritan kommer på 0,4 s, ritar 2–4,5 s, glider till väntplatsen på 0,7 s, svajar under gisspausen (3 s), fyllningen tar 0,5–0,8 s. Kritan × 1,25 i närbild (runda 4: *"bigger crayon"*).
 6. **Godkänn på stillbilder före omrendering.** `render.mjs <scen> --krita` ger ett ark per teckning (`stills/krita/`) på någon minut, och `--snabb --fran --till` en kort film av bara ritandet. Sanna säger ja till arken innan avsnittet renderas om (ca en timme). Proven för 062–065 ligger i `produktion/three-rum/popupbok/krita-prov/` (`fore/` och `efter/`).
 
+**En omrendering i taget (Sanna 2026-11-28, *"after layout"*):** en rendering av ett bokavsnitt tar ungefär en timme. Samla allt som väntar (kritan, uppslagets layout, rättningar) och rendera **en gång** när allt är godkänt på stillbilder. Rendera inte om ett avsnitt medan en annan session har ocommittade ändringar i dess `boken.js` eller `uppslaget.js`; vänta tills den rundan är godkänd och committad.
+
 Den första teckningen ritas på pärmens insida (himlen), den andra i uppslaget, där kortet sedan fälls upp med ett `pop`.
 
 ### Puts att pröva (genomgången 2026-11-27, inte beslutat av Sanna)
@@ -286,4 +288,5 @@ De fyra årstiderna är gjorda (raderna visar hur avsnitten blev, inte de först
 - `uppslag.js` och `avsnitt/_mall-kritans-bok/` finns inte än (avsnitt 5). Arbetet är startat i en egen session 2026-11-27.
 - Bokkollen i `verktyg/qa-scen.py` (`--bok`: kanten, skuggorna, längden) finns inte än, listan under *Bokkollen* görs för hand.
 - Punkterna under *Puts att pröva* är förslag och väntar på Sannas val.
+- **Kritan (2026-11-28):** de nya reglerna under *Kritan ritar i boken* är godkända (ark i `produktion/three-rum/popupbok/krita-prov/`). 063 och 064 renderas om med dem. **062 och 065 renderas om efter layoutrundan** (luftigare uppslag, 065 bakom `?prov=l`), i samma rendering. 064:s pannband ska fällas ner efter fyllningen (regel 3) och vattenkannans detaljstreck göras större (regel 4) innan de avsnitten renderas nästa gång.
 - Namnet på serien i bild och på YouTube (*Kritans bok*) är inte bestämt.
