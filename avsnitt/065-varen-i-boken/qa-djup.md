@@ -8,6 +8,13 @@ Metod: `qa-film.sh` och `qa-scen.py`, hela filmen i kontaktark med 6 bilder/s, 3
 
 Rättat i `scener/boken/boken.js`, `storyboard/rader.mjs` och `scener/boken/rader.json`, plus två ljudstarka kopior i `assets/ljud/effekter/`. Inget är committat. Varje rättning är kontrollerad i stillbilder och täta bitar (`--snabb`, varje bildruta runt varje ändrad rörelse). Status står under varje fynd.
 
+**Efter sammanslagningen med uppslag.js-refaktorn (28/11):** rättningarna är flyttade till den nya strukturen och kontrollerade igen i stillbilder och i bildskillnaderna vid glidstarterna. Ljudet mättes om, med samma nivåer som före sammanslagningen. Alla 36 referensbilder från commit 3562070d (Commit-sessionens `stills.sh`) är identiska, med en medelskillnad på 0,00. Fördelningen:
+- **Delad rättning A:** `paZ`, `iFov`, kort vy som står still före en glidning, fokus och oskärpa tonade i `kamera().aktiv`. Allt ligger nu i `produktion/three-rum/popupbok/uppslag.js` och gäller alla fyra avsnitten. Öppningens glidning (`oppning`) behåller också bordets fov, så att den inte zoomhoppar i avsnitt vars första vy har en annan fov.
+- **Delad rättning B:** valfria `fallning(…, { ner, parm })` och `kamera().stangning(t, { klar })`. Standard är som förut, och 065 använder `{ ner: [1.25, 0.4], parm: [1.8, 2.5] }` och `klar: STANG + 1.5`.
+- **Vyerna och `MUSPOS.start`:** i `storyboard/uppslaget.js`, som också storyboarden läser.
+- **Fågelkvittret:** går som `matta` i `starta`.
+- **Musens baksida och kontaktskugga:** ligger kvar i `boken.js`, på `figurKort`.
+
 - **Delad rättning A (ryck vid glidstart):** `paZ(p, m, z)` som i receptet, i `glid()` och i rad 28.
   - Mätningen visade tre ryck till, och de är rättade:
     - `iFov` behåller fov genom glidningen och skalar avståndet;

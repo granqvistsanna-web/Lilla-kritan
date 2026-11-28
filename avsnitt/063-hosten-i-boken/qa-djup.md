@@ -8,6 +8,25 @@ Radnummer nedan gäller `scener/boken/boken.js@96687ff5` om inget annat står (i
 
 **Sett** = sett i bildrutor (kontaktark 6 bilder/s över hela filmen, plus täta 15 bilder/s runt ca 15 rörelser). **Härlett** = läst ur koden eller mätt i ljudet, inte sett.
 
+## Rättat 28/11 (sammanfattning)
+
+Alla fynd har en status nedan. Kontrollerat i stillbilder och korta avsnitt i `--snabb` (första och sista bildrutan i alla 36 vyer, täta bilder runt varje ändrad rörelse). Ingen hel rendering och `boken.mp4` är inte ersatt.
+
+- **Delad rättning A (ryck när en glidning börjar):** från `uppslag.js` (`paZ`, `aktiv`, `fovGlid: true`), inte egen kod. Med `fovGlid` glider fov till nästa vys egen under glidningen, så ekens vy står kvar i fov 21 (himlens och bokens kant syns inte) och stammens vy i fov 30. Första och sista bildrutorna i alla fem glidningarna (0:05,55, 0:08,43, 0:19,98, 2:38,64, 3:41,64) är sammanhängande. Ekens vy 0:07,15–0:08,43 är kortare än 1,5 s före nästa glidning och står därför still (ingen push), med flit.
+- **Delad rättning B (stängningen):** från `uppslag.js` med 063:s tal: `fallning(…, { ner: [0,3, 0,5], parm: [1,5, 2,2], parmLinjar: true })`, `stangning(r.s, { klar: r.s + 1,5 })` och 063:s egen `slut`-vy (−0,1, 2,3, 2,9 mot 0, 0,1, 0,05). Rad 26 är 3,6 s. Korten fälls 0,3–0,8 s framifrån, ekorren 0,9 s och räven 1,05 s (ligger överst). Pärmen syns stängas på ca 0,4 s (3:43,3–3:43,7) när kameran redan är ute, och korsar aldrig blicken. `landa-mjuk` 2,15 s. Sista bilden visar den stängda boken hel och i mitten. Pushen är × 0,97 (förut × 0,95), och glidningen ut behåller förra vyns fov (28), därför är boken lite mindre än förut.
+- **Djurljud:** rävens läten ligger 3 dB under Malins medelnivå. Varje fil får sin förstärkning ur sin uppmätta ljudstyrka, högst 5 så att topparna stannar under −3 dBFS. `rav-gullig-7b` når därför bara 6,7 dB under.
+- **Längden:** 3:45,2 (förut 3:47). Inga repliker eller slag strukna.
+- **Sammanslagningen (28/11):** `scener/boken/boken.js` är flyttad till den delade `uppslag.js` (Sannas beslut), utan konfliktmarkörer. Allt från omgång 76160deb och QA-rättningarna är med: gröna eken med mjukt färgbyte, rad 03, marklöven, svampen, halsduken, puffen, vinden, siffrorna, huvudlöven, `nos`-vyn, glidningarna 03 och 21c, ljudnivåerna (`RAV_LUFS`) och vindstötarnas uttoning (läggs in som `extra`, `uppslag.js` är orörd). Jämfört med Commit-sessionens 36 stillbilder (gjorda från `3562070d`): 9 är identiska. Resten skiljer i de två placeringarna efter `3562070d` (gula marklövet 0:40–2:09, svampen 2:57–3:41), ekens vy 0:08 (står still före glidningen, se A) och stängningen (3:42–3:45, se B). Ekens vy 0:24 och 0:32 och stammens vy 2:40 och 2:48 är åter som förut. `qa-scen.py` är ren. Inte staged, inte committad.
+
+## Kvar att kontrollera
+
+- **Hel rendering:** inte gjord. `scener/boken/boken.mp4` är den gamla filmen och visar inte rättningarna. Rendera om (molnet), sätt ihop slutfilmen igen och kör `bash verktyg/qa-film.sh` på den, med täta bilder runt varje rörelse som når fram till något (regeln om att inget går genom något).
+- **Ljudet i den nya filmen:** mät rävens läten mot Malin igen (3 dB under), och kontrollera att vindstötarna tonas ut och att skogsljudet hörs i pauserna.
+- **Rörelse 2 (delvis):** 2:21–2:25 har ingen ny händelse.
+- **Förbättring 2 (delvis):** halsduken är större, men vyn måste visa hela räven. Se efter i filmen om teckningen läses.
+- **Förbättring 7 (väntar på Sanna):** längden är 3:45,2. Ska pauserna kortas, eller gäller 3:48 från grind 5?
+- **Pushen i slutet:** × 0,97 från `uppslag.js` (förut × 0,95). Boken är lite mindre i sista bilden men hel och i mitten. Behåll eller ändra?
+
 ## Omdöme
 
 1. Berättelsen, rösten och tajmingen på orden håller (räkningen och svampen sitter på ordet), men bildutsnitten är det stora felet: bokens kant och skrivbordet syns i fem vyer, och rävens huvud skärs av eller räven står halvt utanför bild i tre.
@@ -26,6 +45,7 @@ Radnummer nedan gäller `scener/boken/boken.js@96687ff5` om inget annat står (i
 - **Varför:** bryter `format/kritans-bok.md:140` ("Boken fyller bilden", Sannas runda 5 i 062). Illusionen av en värld i boken spricker, och det är den första regeln Sanna gav om boken.
 - **Orsak (härlett):** vykoordinaterna i `VY`. Kameran står för långt ut eller tittar för långt åt sidan för bokens storlek: `ek` :486, `bred` :490, `uppslag` :493 (kommentaren säger "bokens kant syns inte", men den syns), `stam` :496, `stubbe` :497, `rav-svamp` :498.
 - **Förslag:** för varje vy, flytta kameran närmare eller minska fov (32 → 28) tills sidan fyller bilden i både början och slutet av glidningen och push-rörelsen (`skjut`). Gör boken större i `skapaBok` om vyerna inte räcker. Kontrollera med en stillbild per vy (grind 6a i receptet) före renderingen. **Storlek:** liten ändring i koden (6 vyer), men alla rader med dessa vyer måste renderas om.
+- **Status 28/11: rättat.** `ek` längre bort med fov 21, `gren` närmare, `bred` och `uppslag` fov 28, `stam`, `stubbe` och `rav-svamp` tittar lite åt vänster, ny `slut`. Glidningarna glider fov med (kamera3d bytte fov tvärt). Första och sista bildrutan i alla 36 vyer kontrollerade: ingen kant eller skrivbord inne i boken (bara i glidningen in från bordet, rad 01b–02, och ut i rad 26, som ska).
 
 ### F2. Rävens huvud skärs av upptill
 - **Sett:**
@@ -34,12 +54,14 @@ Radnummer nedan gäller `scener/boken/boken.js@96687ff5` om inget annat står (i
 - **Varför:** bryter `format/bildutsnitt.md` (huvudet skärs aldrig i helbild eller halvnära). Rävens min är det enda sättet räven "svarar" på, och här syns den inte.
 - **Orsak (härlett):** `VY.halsduk` :491 tittar mot y 0,12 (marken) från y 0,42, så räven på `PLATS.mitt` :219 (kortet 0,34 högt, `ENHET` :186) hamnar för högt. `VY.stubbe` :497 är byggd för stubben (0,17) och svampen (0,13), inte för räven som går dit i rad 22c.
 - **Förslag:** `halsduk`: höj målpunkten till ca y 0,22 och backa kameran (z 0,95 → ca 1,15) så att halsduken på marken och hela räven ryms. Ett annat sätt är att klippa till `halv` på räven när kritan är klar. För rad 22c och 25, byt till en egen vy som rymmer räven och svampen (`rav-svamp` med högre mål och bredare fov). **Storlek:** liten (2–3 vyer).
+- **Status 28/11: rättat.** `halsduk` visar hela räven och halsduken på marken; i `stubbe` och `rav-svamp` är öronen med.
 
 ### F3. Räven står halvt utanför bild i högerkanten
 - **Sett:** `stam` 2:41,2–2:54,4 (13 s, rad 21c–21d): halva räven och halva ansiktet är utanför bild, så vinkningen 2:49,8 syns knappt. Ekorrens svans syns knappt i början.
 - **Varför:** `bildutsnitt.md`: ingen figur halvt ute vid kanten (minst 5 % luft). Det här är också ekorrens första stund i bild, och då ska både ekorren och räven synas.
 - **Orsak (härlett):** `VY.stam` :496 (x −0,5) mot `PLATS.ekollon` [−0,11, 0,15] :219. Kommentaren på :219 flyttade räven för att det tredje ekollonet skulle synas, men vyn följde inte med.
 - **Förslag:** flytta vyns x till ca −0,38 och backa lite, eller flytta räven till x ca −0,2. Kontrollera att ekorren (`EKORREN` :150) och räven båda har luft. **Storlek:** liten.
+- **Status 28/11: rättat.** `stam` flyttad (x −0,3): hela räven och ekorrens svans i bild.
 
 ### F4. Halsduken: spökarmar och ett hopp när kortet byts mot riggens halsduk
 - **Sett:**
@@ -54,29 +76,34 @@ Radnummer nedan gäller `scener/boken/boken.js@96687ff5` om inget annat står (i
   - Mät riggens halsduk (mitt och bredd i 1024-riggen) och låt kortet landa exakt där i exakt den storleken. Tona sedan över under 2 bildrutor.
   - Låt kortet glida in under hakan i stället för över ansiktet (lägre båge, `0.12 * sin` → ca 0,04).
   - **Storlek:** liten–medel.
+- **Status 28/11: rättat.** Spökarmarna var halsdukskortets skugga på räven: skuggan stängs av under glidningen. Kortet landar på riggens halsduk (mått ur riggen) och har samma ljus som rävens kort, så bytet syns inte i bildrutorna.
 
 ### F5. Lövhögen har en rak, vågrät kant tvärs över rävens ansikte
 - **Sett:** 1:44,57–1:51,8 och 1:52,3–1:52,6: när räven sitter i högen skär en rak linje (högens främre halva) tvärs över ansiktet.
 - **Varför:** högen ser ut som två papper med en rak klippkant, inte som löv. Räven ser avklippt ut.
 - **Orsak (härlett):** `HOGFRAM = kort(nedre(LOVHOG, 0.5), …)` :148 med `nedre()` :77 klipper bilden rakt vid 50 %.
 - **Förslag:** klipp med en ojämn kant som följer löven (en lövformad mask, eller några fristående lövkort framför kanten), eller sänk räven så att kanten hamnar under hakan. **Storlek:** medel.
+- **Status 28/11: rättat.** Framhalvan har en lövkant (11 bågar) i stället för den raka klippkanten, högen är 0,32 (förbättring 3), och räven sjunker 30 px så att ögonen syns över kanten.
 
 ### F6. Hoppet ut ur högen sker över ett klipp
 - **Sett:** närbilden i rad 17 börjar 1:52,43 medan räven är mitt i hoppet. Räven flyger in delvis avskuren i överkanten till 1:53,2.
 - **Varför:** handlingen hackas sönder. Barnet ser inte hoppet, bara en räv som dyker upp.
 - **Orsak (härlett):** `HOPP[2]` :224 börjar på `S('17') + 0.15`, samma ögonblick som rad 17:s vy klipper in.
 - **Förslag:** låt hoppet ske i högens vy (flytta det till slutet av rad 16b), eller klipp till närbilden först när räven landat (`S('17') + 0.9`). **Storlek:** liten.
+- **Status 28/11: rättat.** `HOPP[2]` = `S('17')` − 0,8 till − 0,1: räven landar framför högen i högens vy, före klippet. Texten för rad 16b/17 ändrad i `rader.mjs`, `manus.md` och `storyboard.md`.
 
 ### F7. Andningspuffen är en vit klump över högra ögat
 - **Sett:** 0:49,0–0:52,3: en vit, rund klump växer och tonas bort över ögat, inte vid nosen.
 - **Varför:** den läses som ett fel i bilden, inte som andedräkt i kylan.
 - **Orsak (härlett):** `PUFF` :169 är en vit sfär (0,014) och placeras på `fig2varld([510, 470])` :412, som är vid ögat i riggen.
 - **Förslag:** mät nosspetsen i riggen och placera puffen framför den, en bit ut åt sidan rävens nos pekar. Gör den till ett litet krit-moln (tre små cirklar, halvgenomskinligt) som i stilen. **Storlek:** liten.
+- **Status 28/11: rättat.** Puffen är ett litet blåvitt krit-moln som börjar vid nosen (läst ur riggen varje bildruta) och driver ut åt höger under ögat. Den ritas alltid framför räven.
 
 ### F8. Kronan växer bakom de kala grenarna och poppar
 - **Sett:** 0:23,4–0:23,73 krymper och försvinner kritans löv, och 0:23,80 byts den kala eken på en bildruta mot den höstiga med en annan stam.
 - **Orsak (härlett):** `EKKAL.m.visible = t < KRONA[1]` :443, `LOVET` :444.
-- **Status:** **rättat i 76160deb** (grön ek, mjuk övergång, lövet ritas in i kronan). Ta med i nästa förhandsvisning och kontrollera att den gröna och den höstiga bilden ligger exakt på varandra.
+- **Status (27/11):** **rättat i 76160deb** (grön ek, mjuk övergång, lövet ritas in i kronan). Ta med i nästa förhandsvisning och kontrollera att den gröna och den höstiga bilden ligger exakt på varandra.
+- **Status 28/11:** kontrollerat i stillbilder 0:07–0:32: den gröna och den höstiga eken ligger på varandra, ingen pop.
 
 ## Rörelse och flyt
 
@@ -92,25 +119,39 @@ Att rätta:
    - **Sett:** 0:28–0:33 ("faller ner … sakta, sakta") är löven ca 10 px stora prickar, orange mot den orange kronan. Nästan osynliga. Också i 07b (0:39–0:43) är lövet räven tittar på pyttelitet och faller bakom räven, så blicken läses inte.
    - **Orsak (härlett):** `FALLER = smalov(9, 0.045)` :161.
    - **Förslag:** färre och större löv (ca 0,08–0,1), som faller framför himlen eller framför räven och inte mot kronan, gärna i kontrastfärg (brunt och rött mot det gula). I 07b ska ett enda stort löv falla nära rävens nos. **Storlek:** liten.
+   - **Status 28/11: rättat.** Löven 0,085 (lövyran 0,06). I 07b seglar ett brunt löv ner framför räven, bredvid nosen.
 2. **Långa stillastående bilder.**
    - **Sett:** 0:18,3–0:21,2 (lövet), 0:23,8–0:34,0 (eken med nästan osynliga löv, ca 10 s), 1:36,9–1:43,7 (framför högen), 2:15,3–2:21,1 (pausen vid ekens fot), 2:21,2–2:25,2 (ekollonen före räkningen) och 2:41–2:47,5 (stammen och halva räven).
    - Gisspauserna är avsiktliga. Men utan mattan (se Ljud) och med lite rörelse känns de döda.
    - **Förslag:** en liten händelse i varje lång paus, i den lugna takten (receptets "lugnt"): ett löv som singlar, räven som vänder huvudet eller blinkar, ekollonet som gungar. Eller korta pausen med 0,5–1 s där ingen gissning väntas. **Storlek:** liten per paus.
+   - **Status 28/11: delvis.** Nya händelser: ett löv singlar från högens topp i 15b och ett från eken i gisspausen i rad 20; marklöven vajar; de fallande löven i 06–07 syns nu; 21c glider in i stället för att klippa. Inga pauser kortade (Sanna godkände replikerna och 3:48). **Kvar:** 2:21–2:25 (ekollonen före räkningen) har ingen ny händelse.
 3. **Hårt klipp från eken till grenen, 0:09,74.** Det är samma träd, och receptet säger att kameran glider mellan närliggande vyer. `GLID` :518 har bara rad 02 och 05. **Förslag:** lägg till `'03': [0, 1.2]`. **Storlek:** liten.
+   - **Status 28/11: rättat** (`GLID['03']`).
 4. **Räven fälls upp på 2 bildrutor, 0:34,3.** `reser((t - RAV_UPP) / 0.45)` :466. Med efterstudsen ser det ut som ett hopp. **Förslag:** 0,6–0,7 s, som korten i öppningen. **Storlek:** liten.
+   - **Status 28/11: rättat** (0,65 s).
 5. **Vindkrumeluren i närbild, 1:26,6–1:28**, läses som en blek fläck över överkanten. `VIND` :163 ligger på `SIDA + 0,42` och skalas inte efter vyn. **Förslag:** i närbild en mindre krumelur som går över bilden framför räven, eller lövyran ensam. **Storlek:** liten.
+   - **Status 28/11: rättat.** I närbilden en mindre krumelur (skala 0,32) som blåser förbi längs halsduken, framför räven och under ansiktet.
 6. **Ekorren skuttar åt fel håll.** **Sett:** ca 2:48,6 är första skuttet åt vänster medan ekorren tittar åt höger. **Förslag:** spegla ekorren eller vänd skuttet. **Storlek:** liten.
+   - **Status 28/11: rättat.** Skutten går rakt fram mot kameran. Ekorren speglas inte (figurer vänds aldrig runt).
 7. **Stängningen går för fort, 3:44–3:47.** **Sett:** högen fälls ner före räven, och sista bilden är en beskuren pärm (samma som 062). **Härlett:** `RAVKORT.z = PLATS.svamp[1]` :341 sorteras in efter högen i `NER` :342–343. **Förslag:** fäll räven och ekorren sist (de är huvudpersonerna, hej då-känslan), och låt sista bilden visa hela pärmen. **Storlek:** liten.
+   - **Status 28/11: rättat** (delad rättning B, se nedan).
 
 ## Förbättringar (rangordnade)
 
 1. **Löven på marken (rad 19–19b, 2:01–2:15) syns inte som något att hitta.** **Sett:** tre platta löv på 0,07 i en vid bild, och glimten är liten. I 062 är blommorna stora stående kort. **Härlett:** `MARKLOV` :152 (`platt(m, 0.07, …)`). **Förslag:** stående lövkort ca 0,12, eller en närbild per löv när Malin säger färgen (30/31/32). Det är barnets "hittar"-stund. **Storlek:** medel.
+   - **Status 28/11: rättat.** Tre stående lövkort 0,12 som vajar lätt och fälls upp med de andra korten: det röda vid eken, det gula framme till höger (framför högen), det bruna vid stubben. Alla tre syns i helbilden i rad 19, och inget står framför räven.
 2. **Kritans teckning är för liten, ca 17 % av bildhöjden** (lövet 0:10–0:18 och halsduken 0:58–1:06). I 062 är solen ca 50 %, och regeln för detaljbilder är 40–60 %. **Förslag:** en närmare `gren`-vy (:487, z 0,78 → ca 0,45) och en närmare `halsduk`-vy (fast se F2). **Storlek:** liten.
+   - **Status 28/11: delvis.** Lövet är ca 45 % av bildhöjden. Halsduken är större (0,26, förut 0,2), men vyn måste visa hela räven (F2), så den når inte 40 %.
 3. **"En stor lövhög" är mindre än räven.** `HOGBAK` 0,26 :148 mot räven 0,34. **Förslag:** högen ca 0,36–0,4, så att räven kan försvinna i den. Kombinera med F5. **Storlek:** medel.
+   - **Status 28/11: rättat** (0,32 mot rävens 0,34).
 4. **Räven "luktar" på ekollon som inte syns i bild (rad 21b, 2:36–2:41).** **Förslag:** ett ekollon i bild nära nosen, eller en vy som har med båda. **Storlek:** liten.
+   - **Status 28/11: rättat.** Ny vy `nos` i rad 21b: hela räven och ekollonen vid fötterna, sedan en glidning till stammen i 21c.
 5. **Svampen är liten och delvis skymd av rävens svans i 22c (3:08–3:15).** `SVAMPEN` 0,13 :147. **Förslag:** större (0,16–0,18) eller räven en bit åt sidan. **Storlek:** liten.
+   - **Status 28/11: rättat.** 0,17 och flyttad till x 0,74, bredvid räven i stället för framför benen.
 6. **Hoppen på "hopp" är olika.** I rad 16 landar räven på "Hopp!" (`HOPP[0]` :222). I 16b börjar hoppet först när ordet tar slut (1:49,3 mot ordet 1:48,6–1:49,4). **Förslag:** lägg `HOPP[1]` så att landningen sitter på ordet, som i rad 16. **Storlek:** liten.
+   - **Status 28/11: rättat.** `HOPP[1]` landar på "hopp".
 7. **Längden.** Scenen är 3:47, och med logga, prenumerera och outro blir det över 4 min. Receptet säger nu 3:15–4:00 (062: 3:33), och Sanna godkände 3:48 i grind 5. Kortare pauser enligt Rörelse 2 ger 10–20 s utan att stryka något. **Storlek:** liten.
+   - **Status 28/11: väntar på Sanna.** Scenen är nu 3:45,2. Ska pauserna kortas (10–20 s), eller gäller 3:48 från grind 5?
 
 ## Ljud och röst
 
@@ -128,12 +169,14 @@ Att rätta:
   - Rävens kalla vind blåser därför fortfarande genom halsduken, lövhögen och räkningen, och sedan blir det helt tyst.
 - **Samma fel i 062:** 062:s film har tysta partier från 1:10,6 och framåt (`silencedetect` −60 dB). `render.mjs` i 063 är en kopia av 062:s. Troligen gäller det också 064 och 065. Receptet (`kritans-bok.md:136`) säger "kritans ritljud som slinga, mattan lågt under allt".
 - **Förslag:** i `render.mjs`, för ljud med `loop`, lägg `-stream_loop -1` före `-i`, och `atrim=duration=<langd>` plus `afade=t=in` och `afade=t=out:st=<langd-fade>:d=<fade>` i kedjan. Korta vinden till själva vindstöten i rad 08 och 13b (t.ex. 6–8 s med fade). Det är delad kod för alla bokavsnitt, så det bör rättas en gång för alla. Ljudet kan mixas om utan att bilden renderas om, om `render.mjs` delar upp stegen. **Storlek:** liten kodändring, stor effekt.
+- **Status 28/11: rättat.** Huvudsessionen rättade `render.mjs` (loop, langd, fade). Mattan finns i de sena pauserna (ca −16 till −18 LUFS i fönster vid 2:59 och 3:19, förut −91 dB). Vinden är kortad till själva stöten: 6,5 s i rad 08 och 6,0 s i rad 13b, med 2 s fade (`{ langd, fade }` som fjärde fält i ljudraden).
 
 **L2. Kritans ritljud går ca 2 s efter att lövet är klart (rad 03).**
 - **Härlett:** `rit` = 0:10,34–0:12,28 (1,9 s, :377–379), men `krita-ritar-1` är 4 s och spelas hela, eftersom `langd` och `fade` ignoreras.
 - **Mätt:** diskanten (över 2,5 kHz) faller först 0:13,0–0:14,2, under Malins "Vad blir det nu?".
 - Rad 10 (halsduken, 4,1 s) täcks ungefär av 4 s-filen.
 - Rättas av samma ändring som L1.
+- **Status 28/11: rättat** av `render.mjs` (kritans ritljud har `langd` och `fade`).
 
 **Röst (stickprov med ordtider ur whisper):**
 - "Ett/två/tre" i 34 sitter på ekollonens glimtar (se Rörelse).

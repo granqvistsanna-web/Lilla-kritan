@@ -33,11 +33,14 @@ Samma som bilderboken (`manus.md`, `rost*.txt`, `ljud-effekter.md`, `storyboard/
 | `grind2/`, `prov/`, `kod/` | kontrollbilder för konturer och kort sida vid sida (`grind2/`), stillbildsprov som Sanna väljer mellan (`prov/<sak>/`), och det som ritas i kod för temat (064: `kod/vinter.js`) |
 | `storyboard/rader.mjs` | raderna som i bilderboken, plus `s` per rad: bokens läge (vy, pärm, kort, saker, figurens plats). Varje rad ärver läget från raden före |
 | `storyboard/scen.js`, `scen.html`, `bygg.mjs` | stillbilderna i three.js-boken till animatiken (grind 5). Figuren är ett platt kort här, riggen kommer i grind 6 |
+| `storyboard/uppslaget.js` | **uppslaget, byggt en gång** (065 och mallen): boken, korten, koordinaterna och vyerna (`byggUppslaget(scen)`). Både `storyboard/scen.js` och `scener/boken/boken.js` läser den. 062–064 har uppslaget kvar i båda filerna (se avsnitt 5) |
 | `scener/boken/index.html` | sidan: canvasen, den dolda SVG:n `#kort` där riggen ritas, `#ov` där kritan ritar, vinjetten |
 | `scener/boken/boken.js` | scenen. Läser `rader.mjs` direkt och sätter `window.seek`, `window.LJUD`, `window.DURATION` |
-| `scener/render.mjs` | kopia av `produktion/three-rum/render.mjs`. `--snabb` för förhandsvisning, tider för stillbilder |
+| `scener/render.mjs` | en rad som pekar på den delade renderaren `produktion/three-rum/render.mjs` (filen finns kvar för att `render-delat.mjs` och `molnrender.sh` letar efter den bredvid scenmappen). `--snabb` för förhandsvisning, tider för stillbilder |
 | `produktion/three-rum/popupbok/bok-parm.js` | **delad:** skrivbordet, boken (`skapaBok`), krit-ytor, `trim`, `tex`, `SIDA` |
+| `produktion/three-rum/popupbok/uppslag.js` | **delad:** motorn för uppslaget (kortmotorn, ordningen upp och ner, figuren på sitt kort, kritan på en 3D-yta, kameran, skärpedjupet, ljuset, ljudet). Se avsnitt 5 |
 | `produktion/three-rum/popupbok/bilder/` | Sannas Flow-bilder för boken (himmel, moln, kullar, sol, glass, sand …) |
+| `avsnitt/_mall-kritans-bok/` | **mallen:** ett litet körbart bokavsnitt (`storyboard/` och `scener/`) som pekar på modulen. Kopiera den och byt det som är temat |
 
 ### Rendera
 
@@ -214,21 +217,28 @@ Det här syntes när de fyra förhandsvisningarna lades bredvid varandra. Pröva
 
 Som bilderboken: figurens ljudfamilj (8 känslor), `pop` när kort fälls upp, `prassel-tyg` när pärmen slås upp och igen, `landa-mjuk` när den stängs, `krita-ritar` som slinga medan kritan ritar, `glitter` och `tindra` när teckningen fylls i, `glimt` per sak som barnet hittar. **En matta under hela scenen** som hör till temat (062: `skogsljud` 0,3), Openverse först. Ingen ny musik.
 
-## 5. Förslag: en delad modul
+## 5. Den delade modulen
 
-Nästa avsnitt blir mycket lättare om det som är gemensamt i 062:s `boken.js` (ca två tredjedelar av filen) flyttas till **`produktion/three-rum/popupbok/uppslag.js`**, bredvid `bok-parm.js`. Gör det **när 062 är godkänt**, ur den sista versionen, och låt 062 importera modulen: samma stillbilder före och efter visar att inget ändrats.
+Det som är gemensamt för bokavsnitten ligger i **`produktion/three-rum/popupbok/uppslag.js`**, bredvid `bok-parm.js`, och alla fyra avsnitten (062–065) importerar den (2026-11-28). Där ligger bara det som minst två avsnitt gör likadant. Flytten ändrade ingenting i bild: stillbilder före och efter på 20–40 valda tider och var 2,5:e sekund i varje avsnitt skiljer 0, och ljudlistorna är identiska.
 
-| Export | Vad den gör (ur 062) |
+| Export | Vad den gör |
 |---|---|
-| `skapaUppslag(scen, { stor })` | `kort`, `platt`, `pa`, `bredare`, `vik`, `reser`, markarket (`mark(farg)`), kontaktskuggan, listan `KORT` |
-| `kortOrdning(korten, oppna, stang)` och `fallKort(t, korten)` | upp bakifrån och fram, ner framifrån, vajande kort, kontaktskuggan bara när kortet står |
-| `figurKort(scen, { rigg, fot, topp, hojd, hand })` | v2-riggen på ett kort: SVG → canvas → textur varje bildruta, boil och vit kant räknade mot kamerans avstånd, `fig2varld`, hoppen (`HOPP`, `SKUTT`) |
-| `kritanPaYta(cam)` | `affin`, `teckning(namn, …)`, `rita(t)` för `#ov` |
-| `djupskarpa(R, scen, cam, W, H, PR)` | kompositören med `BokehPass` och kortens djupmaterial, `fokus(vy)` |
-| `kameraVyer(VY, RAD, { alias, glid, oppning, stangning })` | `vy`, `glid`, `lage`, `fran3`, `skjut`, öppningens och stängningens glidning, ger `platser` och `vyer` till `kameraplan` |
-| `ljudUrRader(RAD, ROST, rostmapp, vol)` | Malin, effekterna, kritans ritslinga, mattan |
+| `rader(await import('…/rader.mjs'))` | radernas tider: `RAD`, `S(id)`, `LN(n)`, `MAL(id, n)` (när repliken börjar), `SVAR(id, n)` (figurens svar 0,2 s efter repliken), `rad(t)`, `DURATION` |
+| `scenen()` | renderaren, scenen och kameran (`?snabb` ger 960 × 540) |
+| `bild`, `lad`, `ruta`, `dataUrl`, `kontur`, `bredare`, `mark(färg, ljus, mörk)` | bilderna: urklipp som textur, bildens synliga ruta (till kritans kontur), `kontur.json`, kullar och himmel utdragna på bredden, markarket |
+| `kortmotor(scen, insida, { kskugga, paSkuggsida })` | `kort()` (står, med vit baksida och kontaktskugga), `platt()` (ligger på sidan), `pa()` (på pärmens insida). `vik(k, e)` och `stall(k, e)` fäller kortet |
+| `fallning(satt, OPPNA, STANG)` | `upp(korten)` (bakifrån och fram när pärmen slås upp), `ner(korten)` (framifrån när boken stängs), `e(k, t)` (hur uppfällt kortet är), `parm(t)` |
+| `figurKort(scen, cam, L, G, { fot, topp, hojd })` | v2-riggen på ett kort: `#kort` → textur varje bildruta (`textur(t)`), boil 2,5 px och vit kant 3 px i bild räknat mot kamerans avstånd, `fig2varld`, `nick`. `vink()` och `gaRikt()` för figurer som 063 och 064 |
+| `kritan(cam)` | `teckning(namn, bild, drag, ruta, yta, tider, fyllning, väntplats)`, `rita(t)` för `#ov`, `glimt(t, t0, punkt)` (gnistor på en sak), `skarm`, `affin` |
+| `ljuset(scen, { himmel, sol })`, `djupskarpa(SC)` | ljuset med skuggorna; kompositören med `BokehPass` och kortens djupmaterial, `fokus(vy)` |
+| `kamera(cam, VY, { blur, lyft })` | `vy()` (klipp), `glid()`, `oppning()` (driver mot den stängda boken och glider in), `stangning()`, `aktiv(t)`, `plan(längd)` (till `verktyg/kamera3d.mjs`). Vyerna `bord` och `slut` finns i modulen |
+| `starta(RD, plan, bildruta, { rost, vol, matta, RIT })` | ljudet ur raderna (Malin, effekterna, kritans ritslinga, mattan) och `window.seek`, `LJUD`, `DURATION`, `TIDER`, `ready` |
 
-Kvar i avsnittets `boken.js` blir det som är temat: bildlistan, uppslagets koordinater, figurens platser, vyernas koordinater, rörelserna per rad och temats effekter. Effekterna (ringar, stänk, droppar) flyttas till modulen först när ett andra avsnitt använder dem. Gör sedan `avsnitt/_mall-kritans-bok/` med `storyboard/` och `scener/` som pekar på modulen.
+Kvar i avsnittets `boken.js` är det som är temat: bilderna, uppslagets kort och koordinater, figurens platser och rörelser per rad, vyerna, det som händer i bildrutan och temats effekter (062: 570 rader av 747, 063: 361 av 548, 064: 387 av 570, 065: 400 av 655). Effekter (ringar, stänk, snöfall, löv, insekter i kod) flyttas hit först när ett andra avsnitt använder dem likadant.
+
+**Uppslaget byggs en gång** (065 och mallen): `storyboard/uppslaget.js` har boken, korten, koordinaterna och vyerna i `byggUppslaget(scen)`, och både `storyboard/scen.js` (grind 5) och `scener/boken/boken.js` (grind 6) anropar den. Storyboarden lägger bara till sitt eget (figuren som platt kort, kritans konturer som platta ark, lägena per rad i `window.rad(s)`), scenen sitt (riggen, kritan, rörelserna). Flyttar man ett kort eller en vy efter Sannas kommentarer ändras båda. 062–064 har uppslaget kvar i båda filerna; flytta ut det på samma sätt om storyboarden ska byggas om.
+
+**Nytt avsnitt:** kopiera `avsnitt/_mall-kritans-bok/` (se dess `README.md`). **Ändra modulen** bara med stillbilder före och efter i alla avsnitt som importerar den: `node avsnitt/NNN/scener/render.mjs avsnitt/NNN/scener/boken <tider>` till en egen mapp före och efter, jämförda bild för bild. Renderingen är deterministisk, så skillnaden ska vara 0.
 
 ## 6. Steg för steg
 
