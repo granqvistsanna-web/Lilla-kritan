@@ -1860,9 +1860,9 @@
   "name": "064-1128-0553.mp4"
  },
  "065": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/065-1127-2213.mp4",
-  "duration": 233.9,
-  "rendered": "2026-11-27 22:13 (grind 6, snabb förhandsvisning (960 px, 15 fps), utan logga)",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/065-1128-0808.mp4",
+  "duration": 234.7,
+  "rendered": "2026-11-28 08:08 (djup-QA 27–28/11 rättad och flyttad till uppslag.js: ljudmattan loopar, mjuk glidstart, stängningen, bildutsnitten (--snabb))",
   "file": "avsnitt/065-varen-i-boken/scener/boken/boken.mp4",
   "status": "granska",
   "name": "065 Våren i boken"
