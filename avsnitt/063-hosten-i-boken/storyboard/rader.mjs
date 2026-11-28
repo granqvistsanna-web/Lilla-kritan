@@ -120,7 +120,7 @@ export const RADER = [
     bild: 'Räven tittar på oss. Pausen: förtjust, nick', ljudtext: 'rav-gullig-2c', s: {} },
   { id: '16', d: 0.5 + L(25) + 1.2, plats: 'Lövhögen, halvbild', malin: [[25, 0.5]], ljud: [['hopp-mjuk/hopp-mjuk-2', 0.1], ['hostlov/lovhog.mp3', 0.5, 0.6]],
     bild: 'Räven hukar och hoppar lugnt in i lövhögen. På *"Hopp!"* sjunker den ner mellan högens två halvor, bara huvudet och öronen syns, löven yr upp', ljudtext: 'hopp-mjuk, hostlov', s: { plats: 'hog', yra: true } },
-  { id: '16b', d: 0.6 + L(26) + 1.2, plats: 'Lövhögen, halvbild', malin: [[26, 0.6]], ljud: [['hopp-mjuk/hopp-mjuk-3', 0.6 + 1.55], ['hostlov/lovhog.mp3', 0.6 + 2.0, 0.6]],
+  { id: '16b', d: 0.6 + L(26) + 1.2, plats: 'Lövhögen, halvbild', malin: [[26, 0.6]], ljud: [['hopp-mjuk/hopp-mjuk-3', 0.6 + 0.55], ['hostlov/lovhog.mp3', 0.6 + 1.0, 0.6]],
     bild: 'En lugn paus, sedan upp ur högen och ner igen på *"hopp"*, löven yr', ljudtext: 'hopp-mjuk, hostlov', s: {} },
   { id: '17', d: 0.5 + L(27) + 1.2, plats: 'Räven vid högen, närbild', malin: [[27, 0.5]], ljud: [['rav-fniss/rav-fniss-1', 0.5 + L(27) + 0.2]],
     bild: 'Räven kliver ut ur högen med tre små löv på huvudet. Den tittar upp mot dem, skakar lugnt, ett faller av', ljudtext: 'rav-fniss', s: { vy: 'nara', plats: 'framfor-hog', yra: false, huvudlov: true } },
@@ -140,7 +140,7 @@ export const RADER = [
   { id: '21', d: 2.0 + L(35) + 1.0, plats: 'Under eken, halvbild', malin: [[35, 2.0]], ljud: [R('4b', 2.0 + L(35) + 0.2)],
     bild: 'Räven går långsamt till ekollonen (riktningsposen, speglas aldrig) och tittar på dem', ljudtext: 'rav-gullig-4b', s: { vy: 'ekmark', plats: 'ekollon', glimt: null } },
   { id: '21b', d: 0.4 + L(36) + 1.2, plats: 'Räven och ekollonen, närbild', malin: [[36, 0.4]], ljud: [['nos/nos-1', 0.2], R('4c', 0.4 + L(36) + 0.2)],
-    bild: 'Räven luktar på ekollonen, nosen ner, blundar', ljudtext: 'nos, mysig suck', s: { vy: 'nara' } },
+    bild: 'Räven luktar på ekollonen, nosen ner, blundar. Räven hel och ekollonen vid fötterna i bild', ljudtext: 'nos, mysig suck', s: { vy: 'nos' } },
   { id: '21c', d: 0.4 + L(37) + 0.8, plats: 'Ekens stam, halvbild', malin: [[37, 0.4]],
     bild: 'Halvbild mot ekollonen och stammen. Ekorrens svans syns lite bakom stammen', ljudtext: '–', s: { vy: 'stam', ekorre: 'svans' } },
   { id: '21d', d: 0.3 + L(38) + 1.0, plats: 'Ekens stam, halvbild', malin: [[38, 0.3]], ljud: [['pop/pop-1', 0.35], ['hopp-mjuk/hopp-mjuk-4', 0.3 + 0.8, 0.6], ['hopp-mjuk/hopp-mjuk-5', 0.3 + 1.3, 0.6], R('1b', 0.3 + 3.2)],
@@ -169,8 +169,8 @@ export const RADER = [
     bild: 'Svampen studsar', ljudtext: 'glimt', s: { vy: 'stubbe' } },
   { id: '25', d: 0.3 + L(49) + 1.4, plats: 'Uppslaget, halvbild', malin: [[49, 0.3]], ljud: [R('8b', 0.3 + L(49) + 0.2)],
     bild: 'Räven vinkar klart', ljudtext: 'rav-gullig-8b', s: { vy: 'hejda' } },
-  { id: '26', d: 2.9, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 1.7]],
-    bild: 'Kameran glider ut ur boken. Korten fälls ner, räven först, sedan ekorren, pärmen slås igen och lövets siluett syns', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, rav: 'nere', ekorre: 'nere', svamp: 'nere', huvudlov: false } },
+  { id: '26', d: 3.6, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 2.15]],
+    bild: 'Kameran glider ut ur boken (1,5 s). Korten fälls ner framifrån, ekorren och räven sist, pärmen slås igen (1,5–2,2 s) och lövets siluett syns, kameran skjuter långsamt in mot den stängda boken', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, rav: 'nere', ekorre: 'nere', svamp: 'nere', huvudlov: false } },
 ];
 RADER.reduce((f, r) => (r.s = { ...f, ...r.s }), START);
 // Lugnt tempo (manus: GLES 1,1 s, reaktionsslaget i slutet av varje rad; öppningen och slutet utan)

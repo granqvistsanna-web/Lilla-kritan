@@ -19,6 +19,7 @@
     <clipPath id="torka"><path id="torka-yta" d="M0 0"/></clipPath>
     <clipPath id="ovanhorisont"><rect x="-400" y="-400" width="2800" height="988"/></clipPath>
     <clipPath id="ovanvatten"><rect x="-200" y="-400" width="2400" height="1268"/></clipPath>
+    <clipPath id="ovanvattenbak"><rect x="-200" y="-400" width="2400" height="1126"/></clipPath>
   </defs>
   <g id="kamera">
     <g id="sjon"><image href="/assets/bakgrunder/sjon-v2/sjon-v2.png" width="1920" height="1080"/><image href="/assets/bakgrunder/sjon-v2/sjon-v2.png" x="1918" width="1920" height="1080"/></g>
@@ -26,6 +27,7 @@
       <g clip-path="url(#ovanhorisont)"><g filter="url(#boil)"><g id="sol"></g><g id="bage"></g></g></g></g>
     <g filter="url(#boil)">
       <g id="fagelbak"></g>
+      <g id="fiskbak" clip-path="url(#ovanvattenbak)"></g>
       <g id="batlager"></g>
       <g id="fram">
         <g id="fisk" clip-path="url(#ovanvatten)"></g>
@@ -49,14 +51,20 @@ const E0 = 33.2, E1 = 119.4, DURATION = E1 - E0;   // avsnittstid; kritsvepet 11
 // Tätare som v1 (Sanna 2026-11-26 "match close crops better to og video"): helbilden har båten på ca 60 % av bredden, närbilden Disa på ca 70 % av höjden.
 // HEL 25 px högre (Sanna 2026-11-26 "flytta kameran upp lite" vid 0:53). REF = HEL: refrängen börjar utan ett litet hoppklipp
 // (förut 5 % zoom vid 1:01, "klippen ser för hackiga ut").
-const HEL = [975, 560, 1.95], HEL0 = [975, 600, 1.7], NAR = [975, 490, 2.7], HALV = [1130, 590, 1.8], REF = HEL, REFIN = [1090, 520, 2.1], VAST_K = [985, 620, 3.2];
+const HEL = [975, 560, 1.95], HEL0 = [975, 600, 1.7], NAR = [975, 490, 2.7], HALV = [1130, 590, 1.8], REF = HEL, REFIN = [1090, 520, 2.1];
+// QA 2026-11-27: VAST_K högre och vidare (förut [985, 620, 3.2] skar bort ögonen på "Kan du se?"); FIA_K: Disa och Fia på
+// flaggstången, båda hela (041); FLAGG_K: hela flaggan och Disa ("och flaggan med!"); TITTA_K: Disa och fågeln där hon pekar
+// ("Titta ut!", förut flög fågeln bakom huvudet och klipptes av överkanten).
+const VAST_K = [975, 545, 2.9], FIA_K = [905, 450, 2.1], FLAGG_K = [925, 470, 2.4], TITTA_K = [1100, 480, 2.3];
 // FISK_K: fisken guppar och hoppar framför fören (06a–06b). Lägre och lite vidare än HALV, så att fisken och plasken syns hela
 // (Sanna 2026-11-26 "show the fish more clearly" vid 1:21: förut låg vattenytan i bildens underkant och fisken klipptes av).
-const FISK_K = [1190, 650, 1.5];
+const FISK_K = [1190, 650, 1.5], FISK_N = [1250, 590, 1.85];   // FISK_K också för hoppet (06), så att hela bågen och plasket syns; FISK_N: Disa och fisken som guppar
+const FACE = [987, 455];   // Disas ansikte i scenen (båtens gungning räknas inte), för blicken
+const titta = ([f, p], mal, k = 1) => mal ? tittaPa(f, p, FACE, mal, k) : [f, p];
 const B_X = 960, B_Y = 760;
 const REF0 = [61.3, 105.0];   // refrängernas början (avsnittstid)   // båtens vattenlinje mitt
 
-let B, FIA, LF;   // båten (kit.js), Fias grupp och rigg
+let B, FIA, LF, FAGELP;   // båten (kit.js), Fias grupp och rigg, fågeln på fören (refräng 2)
 const G = n => B.L.param(n), BP = (a, b, k = 1) => B.L.blandaPose(a, b, k), BF = (a, b, k) => B.L.blanda(a, b, k);
 const NEU = () => ({ ...B.L.POSE0 });
 // pekar med en arm: höger = Disas egen pekpose, vänster = samma speglad; huvudet vänds dit (aldrig bada: båda armarna på en sida)
@@ -70,35 +78,58 @@ function refrang(E, nr) {
   const upp = u => 0.5 + 0.5 * Math.cos(Math.PI * Math.max(0, u - 0.12) / SLAG);   // upp på rösten, ner på ekot
   return [
     R(0, `${nr}a`, REF, tl => [G('jatteglad'), BP('neutral', 'hurra', upp(tl))]),
-    R(2.3, `${nr}b`, REF, tl => [G('glad'), { ...BP('neutral', 'magen'), luta: 4 * Math.sin(Math.PI * tl / (2 * SLAG)) }]),
+    // kritan ritar regnbågen över henne (E + 2.4–4.0): hon tittar upp, förvånad, sedan jätteglad (QA 2026-11-27)
+    R(2.3, `${nr}b`, REF, tl => [tl < 1.0 ? BF('glad', 'forvanad', del(0.15, 0.45, tl)) : BF('forvanad', 'jatteglad', del(1.0, 1.4, tl)),
+      { ...BP('neutral', 'magen'), luta: 4 * Math.sin(Math.PI * tl / (2 * SLAG)), upp: 0.6 * del(0.1, 0.5, tl) * (1 - del(1.8, 2.3, tl)) }]),
     R(4.6, `${nr}c`, REF, tl => [G('jatteglad'), BP('neutral', 'hurra', upp(tl))]),
-    R(6.9, `${nr}d`, REFIN, tl => [BF('glad', 'kawaii', del(0, 0.4, tl)), { ...BP('neutral', 'pekar'), upp: -0.6 }]),   // kawaii (1 och 2 av 3)
+    // pekar på bubblan och tittar upp på den (förut tittade hon ner: upp −0,6)
+    R(6.9, `${nr}d`, REFIN, tl => titta([BF('glad', 'kawaii', del(0, 0.4, tl)), { ...BP('neutral', 'pekar'), upp: 0.3 }], BUB, del(0.1, 0.5, tl))),   // kawaii (1 och 2 av 3)
     R(9.2, `${nr}e`, REF, tl => [G('jatteglad'), { ...NEU(), armar: Array(2).fill(30 * pulsar(tl, [2 * SLAG, 3 * SLAG], 0.4)) }]),
-    R(11.5, `${nr}f`, NAR, tl => tl < 1.15 ? [G('nyfiken'), pekH(1)] : [G('nyfiken'), pekV(del(1.15, 1.6, tl))]),
+    // "Titta ut!": pekar åt höger, dit fågeln flyger in, och följer den med blicken tills den flyger ut
+    R(11.5, `${nr}f`, TITTA_K, tl => titta([G('nyfiken'), pekH(del(0, 0.4, tl))], fagelXY(E + 11.5 + tl), del(0, 0.3, tl))),
   ];
 }
 
 // --- Skottlistan: [avsnittstid, namn, kamera, fart, (tl, d) => [ansikte, pose]] --------------------------------------------------
+// Tider på slagen: B(n) = refrängens första slag + n slag (104 bpm). "leta med – jag och du!": jag B(−7), du B(−6).
+const B_ = n => REF0[0] + n * SLAG, JAG = B_(-7), DU = B_(-6);
 const S = [
   [33.2, '03', HEL, 1, () => [G('glad'), NEU()]],
-  [35.2, '03a', NAR, 1, tl => [G('jatteglad'), { ...NEU(), ...vink(tl, 2.2) }]],
+  [35.2, '03a', NAR, 1, tl => [G('jatteglad'), { ...NEU(), ...vinkV(tl, 2.2) }]],   // vinkar med vänster arm, ut mot himlen (QA 2026-11-27)
   [37.4, '03b', NAR, 1, tl => [G('glad'), { ...NEU(), rikt: 0.6 * del(0, 0.5, tl) }]],
-  [39.3, '04', HEL0, 1, () => [G('glad'), NEU()]],                       // kameran glider in (se kam()); Fia fladdrar in och landar
-  [43.2, '041', NAR, 1, tl => [G('fnissig'), { ...NEU(), rikt: -0.5, armar: Array(2).fill(-6 - 14 * Math.abs(Math.sin(Math.PI * tl / SLAG))) }]],   // klappar på relingen, tittar mot Fia
+  // kameran glider in (se kam()); Fia fladdrar in och landar, Disa följer henne med blicken
+  [39.3, '04', HEL0, 1, tl => titta([G('glad'), NEU()], fiaXY(39.3 + tl), del(0.6, 1.2, tl) * (1 - del(3.4, 3.9, tl)))],
+  // klappar på relingen på slagen (tassarna lyfts mellan slagen och slår ner på slaget), tittar på Fia: ett kort fniss, sedan glad
+  [43.2, '041', FIA_K, 1, tl => { const E = 43.2 + tl, ph = (((E - REF0[0]) / SLAG) % 1 + 1) % 1, a = -4 + 26 * Math.sin(Math.PI * ph) ** 2;
+    return titta([tl < 0.7 ? G('fnissig') : BF('fnissig', 'glad', del(0.7, 1.1, tl)), { ...NEU(), armar: [a, a] }], fiaXY(E), del(0.2, 0.6, tl)); }],
   [47.6, '042', HEL, 1, () => [G('jatteglad'), NEU()]],                  // båten hoppar på varje tut
-  // pekar åt vänster och åt höger: bara den armen lyfts (Disas pekpose, speglad åt vänster) och huvudet vänds dit; riktningsposen
-  // (bada) lade båda armarna på samma sida, den ena under den andra.
-  [51.2, '04a', HEL, 1, tl => [G('nyfiken'), pekV(del(0, 0.5, tl) - del(4.5, 5.0, tl))]],
-  [56.2, '04b', HEL, 1, tl => [G('nyfiken'), pekH(del(0, 0.5, tl))]],
+  // "Dinon letar orange nu": tittar först efter Fia som flyger ut uppe till vänster, sedan sveper huvudet vänster–höger på slagen
+  [51.2, '04a', HEL, 1, tl => { const E = 51.2 + tl;
+    if (E < 54.0) return titta([BF('jatteglad', 'nyfiken', del(0, 0.4, tl)), NEU()], fiaXY(E), del(0.2, 0.6, tl));
+    const sv = Math.sin(Math.PI * (E - 54.0) / (2 * SLAG)) * del(54.0, 54.5, E), ef = titta([G('nyfiken'), NEU()], fiaXY(53.99));
+    const [f, p] = [{ ...G('nyfiken'), titt: [11 * sv, -2] }, { ...NEU(), rikt: 0.6 * sv }], k = del(54.0, 54.4, E);
+    return [B.L.blanda(ef[0], f, k), { ...p, ...B.L.blandaPose(ef[1], p, k) }]; }],
+  // "leta med – jag och du!": närbild, hon tittar på tittaren och blir glad, händerna på västen på "jag", pekar på "du" och nickar
+  [56.2, '04b', NAR, 1, tl => { const E = 56.2 + tl;
+    const f = { ...BF('nyfiken', 'glad', del(56.3, 56.8, E)), titt: [0, 0] };   // ögonen öppna, mot tittaren
+    const pek = BP('neutral', 'pekar');
+    const p = E < DU ? BP('neutral', 'magen', del(JAG - 0.25, JAG + 0.1, E)) : { ...BP('magen', pek, del(DU - 0.15, DU + 0.2, E)) };
+    return E > DU + 0.5 && E < DU + 2.1 ? B.L.nicka(f, p, E - DU - 0.5) : [f, p]; }],
   ...refrang(61.3, '05'),
-  // fisken hoppar (75.3): förvånad medan den är i luften, jätteglad med armarna upp när den plaskar ner (reaktionsslaget)
-  [74.9, '06', HEL, 1, tl => [tl < 1.6 ? BF('glad', 'forvanad', del(0.3, 0.6, tl)) : BF('forvanad', 'jatteglad', del(1.6, 1.95, tl)),
-    { ...NEU(), rikt: 0.6 * del(0.2, 0.6, tl) * (1 - del(1.7, 2.2, tl)), armar: Array(2).fill(34 * pulsar(tl, [1.75], 0.7)) }]],
-  [77.5, '06a', FISK_K, 0, tl => tl > 0.4 && tl < 2.8 ? B.L.nicka(G('glad'), BP('neutral', 'pekar'), tl - 0.4) : [G('glad'), BP('neutral', 'pekar')]],
-  [80.9, '06b', FISK_K, 0, tl => [G('jatteglad'), klapp(0.5 + tl)]],         // klapp 81.4, 81.9, 82.4 = fiskens plask
-  // fågeln flyger in (82.9–85.4): nyfiken uppåt mot den, förvånad när den stannar framför fören
-  [82.7, '07', HEL, 1, tl => [BF('nyfiken', 'forvanad', del(2.5, 2.9, tl)), { ...NEU(), rikt: 0.6 * del(0.8, 1.4, tl), upp: -0.4 * del(0.8, 1.4, tl) }]],
-  [86.8, '07a', HEL, 0, () => [G('glad'), { ...BP('neutral', 'pekar'), upp: -0.4 }]],
+  // fisken hoppar (75.3): hon följer den med blicken, förvånad medan den är i luften, jätteglad med armarna upp när den plaskar ner
+  [74.9, '06', FISK_K, 1, tl => titta([tl < 1.6 ? BF('glad', 'forvanad', del(0.3, 0.6, tl)) : BF('forvanad', 'jatteglad', del(1.6, 1.95, tl)),
+    { ...NEU(), armar: Array(2).fill(34 * pulsar(tl, [1.75], 0.7)) }], fiskXY(74.9 + tl) || [1560, 860], del(0.2, 0.5, tl))],
+  // fisken guppar och tittar upp på henne; hon pekar och tittar på fisken, på tittaren (nickar), och på fisken igen
+  [77.5, '06a', FISK_N, 0, tl => { const E = 77.5 + tl, mot = 1 - del(78.6, 78.9, E) + del(79.5, 79.8, E), f0 = G('glad'), p0 = BP('neutral', 'pekar');
+    const [f, p] = titta([f0, p0], fiskXY(E) || [1560, 830], mot);
+    return E > 78.8 && E < 80.4 ? B.L.nicka(f, p, E - 78.8) : [f, p]; }],
+  [80.9, '06b', FISK_K, 0, tl => titta([G('jatteglad'), klapp(0.5 + tl)], fiskXY(80.9 + tl), 0.7)],   // klapp 81.4, 81.9, 82.4 = fiskens plask
+  // fågeln flyger in (82.9–85.4): nyfiken, följer den med blicken, förvånad när den stannar framför fören
+  [82.7, '07', HEL, 1, tl => titta([BF('nyfiken', 'forvanad', del(2.5, 2.9, tl)), NEU()], fagelXY(82.7 + tl), del(0.3, 0.8, tl))],
+  // pekar på fågeln, tittar på tittaren (nickar) och tillbaka
+  [86.8, '07a', HEL, 0, tl => { const E = 86.8 + tl, mot = 1 - del(87.9, 88.2, E) + del(88.9, 89.2, E);
+    const [f, p] = titta([G('glad'), BP('neutral', 'pekar')], fagelXY(E), mot);
+    return E > 88.1 && E < 89.7 ? B.L.nicka(f, p, E - 88.1) : [f, p]; }],
   [90.0, '07b', HALV, 0, tl => [G('fnissig'), { ...NEU(), armar: Array(2).fill(10 + 34 * pulsar(tl, [0, 0.6, 1.2], 0.5)) }]],   // flaxar på pip, pip, pip
   // "Vad mer är orange?" (Sanna 2026-11-26 "more expressions from the dino" vid 1:37): vinkar hej då till fågeln, tänker
   // (tittar upp åt sidan), letar åt höger och vänster, och på "Kan du se?" (08a) tittar hon ner, blir förvånad och sedan glad över västen.
@@ -107,11 +138,15 @@ const S = [
     : [BF('tanker', 'nyfiken', del(3.4, 3.8, tl)), { ...NEU(), luta: lerp(-3, 4, del(3.4, 3.9, tl)), rikt: 0.6 * Math.sin(2 * Math.PI * kl((tl - 3.4) / 1.6)) }]],
   [97.2, '08a', NAR, 1, tl => [tl < 0.9 ? BF('nyfiken', 'forvanad', del(0.2, 0.55, tl)) : BF('forvanad', 'jatteglad', del(0.9, 1.3, tl)),
     { ...NEU(), upp: -0.6 * del(0, 0.5, tl) * (1 - del(1.0, 1.5, tl)) }]],   // tittar ner på västen, kameran glider in
-  [99.0, '08b', NAR, 1, tl => tl < 1.9 ? [G('stolt'), BP('neutral', 'magen', del(0, 0.4, tl))] : [G('stolt'), { ...pekV(del(1.9, 2.4, tl)), upp: -0.6 }]],
+  // "Västen är orange": händerna på västen, glad med ett kort stolt slag (förut stolt i 3 s: såg sömnig ut, QA 2026-11-27);
+  // "och flaggan med!": pekar bakåt på flaggan och tittar på den, flaggan fladdrar extra
+  [99.0, '08b', FLAGG_K, 1, tl => tl < 1.9 ? [B.L.blanda(BF('glad', 'jatteglad', del(1.2, 1.5, tl)), 'stolt', 0.85 * Math.sin(Math.PI * kl((tl - 0.45) / 0.7))), BP('neutral', 'magen', del(0, 0.4, tl))]
+    : titta([G('glad'), pekV(del(1.9, 2.4, tl))], FLAGGA, del(1.9, 2.3, tl))],
   [103.0, '08c', HEL, 1, tl => [G('jatteglad'), { ...NEU(), armar: Array(2).fill(-6 - 16 * pulsar(tl, [0, 0.6, 1.2], 0.35)) }]],
   ...refrang(105.0, '09'),
   [118.6, '10', HEL, 1, () => [G('glad'), NEU()]],
 ];
+const FLAGGA = [650, 455];   // flaggans mitt i scenen
 
 // Vattnets fart: varje skott har fart 0 eller 1, bytet glider över 0,8 s. Sträckan integreras en gång (samma varje rendering).
 const fartAt = E => { const { i, tl } = skott(S, E), f0 = i ? S[i - 1][3] : S[0][3]; return lerp(f0, S[i][3], mjuk(tl / 0.8)); };
@@ -149,74 +184,107 @@ const hoppAt = E => HOPP.reduce((a, t0) => a + (E >= t0 && E < t0 + 0.4 ? 16 * M
   + DUNK.reduce((a, t0) => a + (E >= t0 && E < t0 + 0.3 ? -6 * Math.sin(Math.PI * (E - t0) / 0.3) : 0), 0);
 
 // --- Fia (fjärilen) i båtens koordinater: fladdrar in från höger, landar på flaggstångens topp, skuttar på tut, lyfter i 04a -----
+// QA 2026-11-27: lägre in- och utbana, så att hon syns i bild i minst 1,5 s (förut ovanför bilden till de sista 0,7 s).
 const FIA_SK = 0.2, FIA_IN = [39.8, 42.2], FIA_UT = [51.6, 54.0];
+function fiaBat(E) {   // [x, y] i båtens koordinater, och fasen
+  const [mx, my] = MAST;
+  // in från vänster och ut åt vänster, på flaggans sida: banorna går aldrig över Disas huvud
+  if (E < FIA_IN[1]) { const u = mjuk((E - FIA_IN[0]) / (FIA_IN[1] - FIA_IN[0])); return [lerp(-300, mx, u), lerp(60, my, u) - 20 * Math.sin(Math.PI * u), 'in', u]; }
+  if (E < FIA_UT[0]) return [mx, my, 'vila', 0];
+  const u = mjuk((E - FIA_UT[0]) / (FIA_UT[1] - FIA_UT[0])); return [lerp(mx, -380, u), lerp(my, -90, u) - 40 * Math.sin(Math.PI * u), 'ut', u];
+}
+const fiaXY = E => { const [x, y] = fiaBat(E); return batPunkt(B_X, B_Y, [x, y - 70]); };   // hennes mitt i scenen
 function fia(E) {
   if (E < FIA_IN[0] || E > FIA_UT[1]) { FIA.g.style.display = 'none'; return; }
   FIA.g.style.display = '';
-  const [mx, my] = MAST, tf = E - FIA_IN[0];
-  let x = mx, y = my, f, p;
+  const [x, y, fas, u] = fiaBat(E), tf = E - FIA_IN[0];
+  let f, p;
   const [ff, pf] = LF.ROR.flaxa(tf), [fv, pv] = LF.ROR.vila(E - FIA_IN[1]);
-  if (E < FIA_IN[1]) { const u = mjuk((E - FIA_IN[0]) / (FIA_IN[1] - FIA_IN[0]));
-    x = lerp(1500, mx, u); y = lerp(-420, my, u) - 120 * Math.sin(Math.PI * u); const k = del(0.75, 1, u);
-    f = ff; p = { ...LF.blandaPose(pf, pv, k), rikt: -0.8 * (1 - k) };
-  } else if (E < FIA_UT[0]) { f = fv; p = { ...pv, lyft: -60 * pulsar(E, HOPP.slice(0, 3), 0.4) };   // skuttar på tut
-  } else { const u = mjuk((E - FIA_UT[0]) / (FIA_UT[1] - FIA_UT[0]));
-    x = lerp(mx, 1600, u); y = lerp(my, -560, u) - 80 * Math.sin(Math.PI * u); f = ff; p = { ...LF.blandaPose(pv, pf, del(0, 0.2, u)), rikt: 0.8 * del(0, 0.3, u) }; }
+  if (fas === 'in') { const k = del(0.75, 1, u); f = ff; p = { ...LF.blandaPose(pf, pv, k), rikt: 0.8 * (1 - k) }; }
+  else if (fas === 'vila') { f = fv; p = { ...pv, lyft: -60 * pulsar(E, HOPP.slice(0, 3), 0.4) }; }   // skuttar på tut
+  else { f = ff; p = { ...LF.blandaPose(pv, pf, del(0, 0.2, u)), rikt: -0.8 * del(0, 0.3, u) }; }
   FIA.g.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`);
   LF.rita(FIA.fig, FIA.blinka(f, E), p);
 }
 
 // --- Fisken (06–06b): hopp i bågar framför fören, plask med droppar och en ring. Bilden 756 × 574, nosen åt höger. -------------
-const FISK = '/assets/rekvisita/fisk-orange-v2/cut/fisk-orange-v2.png', FS = 0.4, VY = 860;   // vattenytan framför båten
+// QA 2026-11-27: hoppet (06) börjar fritt från skrovet (förut x 1250, inne i förens kontur) och filmas i FISK_K, så att hela bågen
+// och plasket syns. Ekohoppen i refräng 1 sker längre bort, bakom båten (mindre fisk, vattnet y 720), helt i bild i REF = HEL
+// (förut klipptes de av höger- och underkanten).
+const FISK = '/assets/rekvisita/fisk-orange-v2/cut/fisk-orange-v2.png', FS = 0.4, VY = 860, FS_R = 0.25, VY_R = 720;   // vattenytan framför båten / bakom
 // hopp: [start, längd, x0, x1, höjd]
-const EKO = REF0.flatMap(r => [0.576, 1.73, 4.6 + 0.576, 4.6 + 1.73].map(d => r + d - 0.1));
-const FISKREF = EKO.map((t, i) => [t, 0.6, i % 2 ? 1440 : 1300, i % 2 ? 1300 : 1440, 170]);
-const FISKHOPP = [[75.3, 1.4, 1250, 1420, 300], [81.15, 0.5, 1430, 1530, 130], [81.65, 0.5, 1530, 1450, 130], [82.15, 0.5, 1450, 1560, 130]];
+const EKO = REF0.map(r => [0.576, 1.73, 4.6 + 0.576, 4.6 + 1.73].map(d => r + d - 0.1));
+const FISKREF = EKO[0].map((t, i) => [t, 0.6, i % 2 ? 1372 : 1340, i % 2 ? 1340 : 1372, 110]);   // bara refräng 1; i refräng 2 hoppar fågeln
+const FISKHOPP = [[75.3, 1.4, 1400, 1560, 300], [81.15, 0.5, 1560, 1650, 130], [81.65, 0.5, 1650, 1570, 130], [82.15, 0.5, 1570, 1670, 130]];
+const BOB = [1560, 76.7, 81.15];   // 06a: fisken guppar där den landade
+function hoppXY(E, [t0, D, x0, x1, H], vy) { const u = (E - t0) / D; if (u < 0 || u > 1) return null;
+  return [lerp(x0, x1, u), vy + 40 * (vy === VY ? 1 : 0.6) - (H + 40) * 4 * u * (1 - u), Math.atan2((H + 40) * 4 * (1 - 2 * u), (x1 - x0)) * -180 / Math.PI * 0.7]; }
+const bobK = E => del(76.9, 77.4, E) * (1 - del(80.9, 81.15, E));
+function fiskXY(E) {   // fiskens mitt i scenen (för Disas blick)
+  for (const h of FISKHOPP) { const q = hoppXY(E, h, VY); if (q) return q; }
+  if (E >= BOB[1] && E < BOB[2]) return [BOB[0], VY + 70 - 95 * bobK(E)];
+  return null;
+}
 function fisk(E) {
-  let h = '', plask = '';
-  const rita = (x, y, v, speg = 1) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${v.toFixed(1)}) scale(${(speg * FS).toFixed(3)} ${FS})">
+  let h = '', hb = '', plask = '';
+  const rita = (x, y, v, speg = 1, fs = FS, sx = 1) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${v.toFixed(1)}) scale(${(speg * fs * sx).toFixed(3)} ${fs})">
     <image href="${FISK}" x="-378" y="-287" width="756" height="574"/>
     <ellipse cx="${620 - 378}" cy="${250 - 287}" rx="24" ry="30" fill="#2a1d1a"/><circle cx="${614 - 378}" cy="${240 - 287}" r="8" fill="#fff"/>
     <path d="M${650 - 378} ${318 - 287} Q${676 - 378} ${342 - 287} ${702 - 378} ${314 - 287}" fill="none" stroke="#3a2a22" stroke-width="9" stroke-linecap="round"/></g>`;
-  for (const [t0, D, x0, x1, H] of [...FISKHOPP, ...FISKREF]) {
-    const u = (E - t0) / D;
-    if (u >= 0 && u <= 1) { const x = lerp(x0, x1, u), y = VY + 40 - (H + 40) * 4 * u * (1 - u), v = Math.atan2((H + 40) * 4 * (1 - 2 * u), (x1 - x0)) * -180 / Math.PI * 0.7;
-      h = rita(x, y, kl(v, -40, 40), x1 >= x0 ? 1 : -1); }
-    [[t0 - 0.05, x0], [t0 + D - 0.08, x1]].forEach(([tp, xp]) => { const w = (E - tp) / 0.7; if (w > 0 && w < 1) plask += plaskRita(xp, VY, w); });
-  }
-  // 06a: fisken guppar i vattenytan bredvid fören och tittar upp (bara överdelen syns)
-  if (E >= 76.7 && E < 81.15) { const k = del(76.9, 77.4, E) * (1 - del(80.9, 81.15, E)); const rr = 70 + 60 * k + 6 * Math.sin(E * 2.4); plask += `<path d="M${(1420 - rr).toFixed(1)} ${VY + 6} A${rr.toFixed(1)} 13 0 0 0 ${(1420 + rr).toFixed(1)} ${VY + 6}" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="40 14" opacity="${(0.75 * k).toFixed(2)}"/>`;
-      h = rita(1420, VY + 70 - 95 * k + 6 * Math.sin(E * 3), -12 + 4 * Math.sin(E * 2), -1); }   // en ring på vattnet runt fisken
-  $('fisk').innerHTML = h; $('plask').innerHTML = plask;
+  for (const hp of FISKHOPP) { const [t0, D, x0, x1] = hp, q = hoppXY(E, hp, VY);
+    if (q) h = rita(q[0], q[1], kl(q[2], -40, 40), x1 >= x0 ? 1 : -1);
+    [[t0 - 0.05, x0], [t0 + D - 0.08, x1]].forEach(([tp, xp]) => { const w = (E - tp) / 0.7; if (w > 0 && w < 1) plask += plaskRita(xp, VY, w); }); }
+  for (const hp of FISKREF) { const [t0, D, x0, x1] = hp, q = hoppXY(E, hp, VY_R);
+    if (q) hb = rita(q[0], q[1], kl(q[2], -40, 40), x1 >= x0 ? 1 : -1, FS_R);
+    [[t0 - 0.05, x0], [t0 + D - 0.08, x1]].forEach(([tp, xp]) => { const w = (E - tp) / 0.7; if (w > 0 && w < 1) hb += plaskRita(xp, VY_R, w, 0.55); }); }
+  // 06a: fisken guppar i vattenytan, vickar på stjärten och tittar upp på Disa (nosen upp mot båten), en ring runt den
+  if (E >= BOB[1] && E < BOB[2]) { const k = bobK(E), rr = 70 + 60 * k + 6 * Math.sin(E * 2.4), [bx, by] = fiskXY(E);
+    plask += `<path d="M${(bx - rr).toFixed(1)} ${VY + 6} A${rr.toFixed(1)} 13 0 0 0 ${(bx + rr).toFixed(1)} ${VY + 6}" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="40 14" opacity="${(0.75 * k).toFixed(2)}"/>`;
+    h = rita(bx, by + 6 * Math.sin(E * 3), 16 + 5 * Math.sin(E * 2.2), -1, FS, 1 + 0.07 * Math.sin(E * 11)); }
+  $('fisk').innerHTML = h; $('fiskbak').innerHTML = hb; $('plask').innerHTML = plask;
 }
 
 // --- Fågeln (07–08): flyger in från höger (vänd åt vänster), flaxar på stället framför fören, flyger ut uppåt i 08 -------------
-const FAGEL = '/assets/rekvisita/fagel-orange-v2/delar/', FG = 0.26, FAGEL_IN = [82.9, 85.4], FAGEL_UT = [92.6, 95.0], SVAV = [1360, 470];
-const FAGEL_F = REF0.map(r => [r + 11.6, r + 13.8]);   // rad 8 "Titta ut!": fågeln flyger förbi från höger till vänster, dit Disa pekar
-function fagel(E) {
-  const ff = FAGEL_F.find(([a, b]) => E >= a && E <= b);
-  $('fagelbak').innerHTML = '';
-  if (ff) { const u = (E - ff[0]) / (ff[1] - ff[0]), x = lerp(1600, 320, u), y = 320 - 25 * Math.sin(Math.PI * u) + 10 * Math.sin(E * 4.2), sy = 0.65 + 0.35 * Math.cos(2 * Math.PI * 2.5 * E);
-    $('fagel').innerHTML = `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${-FG} ${FG}) translate(-511 -511)">
-      <g transform="translate(0 613) scale(1 ${sy.toFixed(3)}) translate(0 -613)"><image href="${FAGEL}fagel-vinge.png" width="1024" height="1024"/></g>
-      <image href="${FAGEL}fagel-kropp.png" width="1024" height="1024"/>
-      <ellipse cx="818" cy="655" rx="15" ry="18" fill="#2a1d1a"/><circle cx="814" cy="648" r="5" fill="#fff"/></g>`;
-    $('fagelbak').innerHTML = $('fagel').innerHTML; $('fagel').innerHTML = ''; return; }   // långt bort: bakom Disa
-  if (E < FAGEL_IN[0] || E > FAGEL_UT[1]) { $('fagel').innerHTML = ''; return; }
-  let [x, y] = SVAV;
-  if (E < FAGEL_IN[1]) { const u = mjuk((E - FAGEL_IN[0]) / (FAGEL_IN[1] - FAGEL_IN[0])); x = lerp(2150, SVAV[0], u); y = lerp(300, SVAV[1], u) - 60 * Math.sin(Math.PI * u); }
-  else if (E > FAGEL_UT[0]) { const u = mjuk((E - FAGEL_UT[0]) / (FAGEL_UT[1] - FAGEL_UT[0])); x = lerp(SVAV[0], 2200, u); y = lerp(SVAV[1], 80, u); }
-  y += 14 * Math.sin(E * 4.2);
-  const fr = E >= 90 && E < 92.3 ? 3 : 2, sy = 0.65 + 0.35 * Math.cos(2 * Math.PI * fr * E);   // flaxar 2 gånger/s, 3 på pip
-  const vand = E > FAGEL_UT[0] ? 1 : -1;   // vänd åt vänster (mot Disa) tills den flyger ut åt höger
-  $('fagel').innerHTML = `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(vand * FG).toFixed(3)} ${FG}) translate(-511 -511)">
+// QA 2026-11-27: SVAV längre in (förut 1360: vingen klipptes av högerkanten). "Titta ut!" (05f/09f): fågeln flyger in från höger
+// dit Disa pekar, flaxar där en stund och flyger ut till höger (förut bakom hennes huvud, av överkanten).
+// Refräng 2 (QA 2026-11-27, en liten variation): fågeln flyger in på första raden och sitter på fören, hoppar och flaxar på ekona,
+// och lyfter på "Titta ut!".
+const FAGEL = '/assets/rekvisita/fagel-orange-v2/delar/', FG = 0.26, FAGEL_IN = [82.9, 85.4], FAGEL_UT = [92.6, 95.0], SVAV = [1300, 455];
+const FAGEL_F = REF0.map(r => [r + 11.6, r + 13.8]), TITTA_P = [1350, 470];
+const R2_IN = [105.0, 106.3], FOR_P = [FOREN[0] + 6, FOREN[1] - 36], FGP = 0.2;   // fören i båtens koordinater
+const fagelSvg = (x, y, sk, sy, vand = -1) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(vand * sk).toFixed(3)} ${sk.toFixed(3)}) translate(-511 -511)">
     <g transform="translate(0 613) scale(1 ${sy.toFixed(3)}) translate(0 -613)"><image href="${FAGEL}fagel-vinge.png" width="1024" height="1024"/></g>
     <image href="${FAGEL}fagel-kropp.png" width="1024" height="1024"/>
     <ellipse cx="818" cy="655" rx="15" ry="18" fill="#2a1d1a"/><circle cx="814" cy="648" r="5" fill="#fff"/></g>`;
+const flax = (E, fr = 2.5) => 0.65 + 0.35 * Math.cos(2 * Math.PI * fr * E);
+function fagelXY(E) {   // fågelns mitt i scenen, eller null
+  const forP = batPunkt(B_X, B_Y, FOR_P);
+  const ff = FAGEL_F.find(([a, b]) => E >= a && E <= b);
+  if (ff) { const u = (E - ff[0]) / (ff[1] - ff[0]), fran = ff[0] > 100 ? forP : [1760, 420];
+    if (u < 0.35) { const m = mjuk(u / 0.35); return [lerp(fran[0], TITTA_P[0], m), lerp(fran[1], TITTA_P[1], m) - 50 * Math.sin(Math.PI * m)]; }
+    if (u < 0.65) return [TITTA_P[0], TITTA_P[1] + 10 * Math.sin(E * 4.2)];
+    const m = mjuk((u - 0.65) / 0.35); return [lerp(TITTA_P[0], 1780, m), lerp(TITTA_P[1], 380, m)]; }
+  if (E >= R2_IN[0] && E < FAGEL_F[1][0]) { if (E >= R2_IN[1]) return forP;
+    const m = mjuk((E - R2_IN[0]) / (R2_IN[1] - R2_IN[0])); return [lerp(1760, forP[0], m), lerp(400, forP[1], m) - 60 * Math.sin(Math.PI * m)]; }
+  if (E < FAGEL_IN[0] || E > FAGEL_UT[1]) return null;
+  if (E < FAGEL_IN[1]) { const u = mjuk((E - FAGEL_IN[0]) / (FAGEL_IN[1] - FAGEL_IN[0])); return [lerp(2150, SVAV[0], u), lerp(300, SVAV[1], u) - 60 * Math.sin(Math.PI * u)]; }
+  if (E > FAGEL_UT[0]) { const u = mjuk((E - FAGEL_UT[0]) / (FAGEL_UT[1] - FAGEL_UT[0])); return [lerp(SVAV[0], 2200, u), lerp(SVAV[1], 80, u)]; }
+  return [SVAV[0], SVAV[1] + 14 * Math.sin(E * 4.2)];
+}
+function fagel(E) {
+  $('fagelbak').innerHTML = ''; FAGELP.innerHTML = '';
+  // refräng 2: sitter på fören (i båtens grupp, gungar med), vingen hopfälld, hoppar och flaxar på ekona
+  if (E >= R2_IN[1] && E < FAGEL_F[1][0]) { const hopp = pulsar(E, EKO[1], 0.45);
+    FAGELP.innerHTML = fagelSvg(FOR_P[0], FOR_P[1] - 34 * hopp, FGP, hopp > 0.05 ? flax(E, 4) : 0.45 + 0.04 * Math.sin(E * 3)); $('fagel').innerHTML = ''; return; }
+  const q = fagelXY(E); if (!q) { $('fagel').innerHTML = ''; return; }
+  const ff = FAGEL_F.find(([a, b]) => E >= a && E <= b), inR2 = E >= R2_IN[0] && E < R2_IN[1];
+  const ut = (ff && E > ff[0] + 0.65 * (ff[1] - ff[0])) || E > FAGEL_UT[0];   // vänd åt höger när den flyger ut
+  const fr = E >= 90 && E < 92.3 ? 3 : 2;   // flaxar 2 gånger/s, 3 på pip
+  $('fagel').innerHTML = fagelSvg(q[0], q[1], ff ? 0.24 : inR2 ? lerp(FG, FGP, mjuk((E - R2_IN[0]) / 1.3)) : FG, flax(E, ff ? 2.5 : fr), ut ? 1 : -1);
 }
 
 // --- Apelsinbubblan (05d/09d): poppar upp till höger med glitter, står kvar raden ut och nästa, poppar bort ---------------------
-const APELSIN = '/assets/rekvisita/apelsin-v2/cut/apelsin-v2.png', BUB = [1300, 400];
+const APELSIN = '/assets/rekvisita/apelsin-v2/cut/apelsin-v2.png', BUB = [1245, 375];   // QA 2026-11-27: lite till vänster, fri från solen
 function bubbla(E) {
   let h = '';
   for (const t0 of [61.3 + 6.9, 105 + 6.9]) {
@@ -225,14 +293,14 @@ function bubbla(E) {
     h += `<g transform="translate(${BUB[0]} ${BUB[1]}) scale(${Math.max(0, 0.7 * s).toFixed(3)})">
       <path d="M-60 100 L-150 190 L-10 118Z" fill="#fff"/><circle r="150" fill="#fff"/><circle r="138" fill="#FFF3E2"/>
       <image href="${APELSIN}" x="-117" y="-107" width="234" height="214"/></g>`;
-    h += gnistor(BUB[0], BUB[1], 135, u);
+    h += gnistor(BUB[0], BUB[1], 118, u);
   }
   $('bubbla').innerHTML = h;
 }
 
 // --- Refrängens värld (som v1 refrang.js): sjön torkas över till orange på första slaget och tillbaka på sista, en låg sol går
 // upp, kritan ritar en regnbåge (det orange bandet bredast) på rad 3 och den ligger kvar; fisken hoppar på ekona i rad 1–2 och 4–5.
-const HOR = 588, SOL = [600, 345];
+const HOR = 588, SOL = [1408, 342];   // QA 2026-11-27: solen uppe till höger, ovanför bågen (förut [600, 345]: av överkanten, i bågens ände och flaggan)
 const IN = r => [r, r + 0.7], UT = r => [r + 12.9, r + 13.6], BAGE_RIT = r => [r + 2.4, r + 4.0];
 const REGNBAGE = [['#E8483A', 14], ['#F28C28', 26], ['#F6C431', 14], ['#5DB65A', 14], ['#3E8EDB', 14], ['#5B5FC7', 12], ['#9A5BC4', 12]];
 const BC = [960, HOR], BRX = 470, BRY = 300;   // bågens yttre kant: halvellips över Disa, benen ner bakom horisonten
@@ -251,11 +319,11 @@ function varld(E) {
   // solen: går upp bakom horisonten på första raden, vrider sig sakta. Putsad (Sanna 2026-11-26 "den vita linjen ser konstig ut"):
   // ingen vit ring, en kritkant i en mörkare ton, mjuk ljusare fläck, strålar som smalnar utåt i två längder.
   const su = mjuk((E - r - 0.3) / 1.4), [sx, sy] = [SOL[0], +lerp(HOR + 70, SOL[1], su).toFixed(1)];
-  const strale = Array.from({ length: 10 }, (_, i) => { const a = (i * 36 + E * 8) * Math.PI / 180, c = Math.cos(a), s = Math.sin(a), L = i % 2 ? 76 : 86, n = 6;
-    return `M${(sx + 56 * c - n * s).toFixed(1)} ${(sy + 56 * s + n * c).toFixed(1)} L${(sx + L * c).toFixed(1)} ${(sy + L * s).toFixed(1)} L${(sx + 56 * c + n * s).toFixed(1)} ${(sy + 56 * s - n * c).toFixed(1)}Z`; }).join(' ');
+  const strale = Array.from({ length: 10 }, (_, i) => { const a = (i * 36 + E * 8) * Math.PI / 180, c = Math.cos(a), s = Math.sin(a), L = i % 2 ? 52 : 58, n = 5, r0 = 40;
+    return `M${(sx + r0 * c - n * s).toFixed(1)} ${(sy + r0 * s + n * c).toFixed(1)} L${(sx + L * c).toFixed(1)} ${(sy + L * s).toFixed(1)} L${(sx + r0 * c + n * s).toFixed(1)} ${(sy + r0 * s - n * c).toFixed(1)}Z`; }).join(' ');
   $('sol').innerHTML = `<path d="${strale}" fill="#FFB23E" stroke="#FFB23E" stroke-width="6" stroke-linejoin="round"/>
-    <circle cx="${sx}" cy="${sy}" r="45" fill="#FFB23E" stroke="#F39A28" stroke-width="5"/>
-    <ellipse cx="${sx - 12}" cy="${sy - 13}" rx="19" ry="15" fill="#FFCF73" opacity="0.8"/>`;
+    <circle cx="${sx}" cy="${sy}" r="32" fill="#FFB23E" stroke="#F39A28" stroke-width="4"/>
+    <ellipse cx="${sx - 9}" cy="${sy - 9}" rx="13" ry="10" fill="#FFCF73" opacity="0.8"/>`;
   // regnbågen: ritas från vänster till höger längs bågen
   const [b0, b1] = BAGE_RIT(r), k = kl((E - b0) / (b1 - b0));
   if (k <= 0) { $('bage').innerHTML = ''; return; }
@@ -272,7 +340,7 @@ function rita(t) {
   $('sjon').setAttribute('transform', `translate(${-Math.round(s % 1918)} 0)`);
   varld(E);
   const [f, p] = lage(E);
-  batRita(B, E, { x: B_X, y: B_Y, s, fart, hopp: hoppAt(E), f, p });
+  batRita(B, E, { x: B_X, y: B_Y, s, fart, hopp: hoppAt(E), f, p, fl: 1 + 1.2 * del(100.8, 101.2, E) * (1 - del(102.6, 103.0, E)) });   // flaggan fladdrar extra på "och flaggan med!"
   fia(E); fisk(E); fagel(E); bubbla(E);
   const [cx, cy, z] = kam(E); kamera(cx, cy, z, E);
   orangesvep((E - 118.6) / 1.6);
@@ -301,6 +369,7 @@ window.ready = (async () => {
   FIA = { g: document.createElementNS(NS, 'g'), blinka: skapaBlinka(23) }; B.mast.appendChild(FIA.g);
   FIA.fig = LF.figur(0, 0, FIA_SK, FIA.g);
   FIA.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none');
+  FAGELP = document.createElementNS(NS, 'g'); B.mast.appendChild(FAGELP);
   await Promise.all(['/assets/bakgrunder/sjon-v2/sjon-v2.png', FISK, APELSIN, FAGEL + 'fagel-vinge.png', FAGEL + 'fagel-kropp.png', KORN]
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();

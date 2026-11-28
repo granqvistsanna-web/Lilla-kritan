@@ -155,9 +155,10 @@ def langd(f):
     return _langd[f]
 
 def rostmapp(rj):
-    """Röstmappen som scenkoden bredvid rader.json läser (assets/ljud/roster/<namn>/)."""
-    for f in glob.glob(os.path.join(os.path.dirname(rj), '**/index.html'), recursive=True):
-        m = re.search(r'assets/ljud/roster/([^/`\'"$]+)/', open(f, encoding='utf-8', errors='ignore').read())
+    """Röstmappen som scenkoden bredvid rader.json läser (assets/ljud/roster/<namn>/). Bokscenerna har sökvägen i boken.js, inte i index.html."""
+    d = os.path.dirname(rj)
+    for f in glob.glob(os.path.join(d, '**/index.html'), recursive=True) + glob.glob(os.path.join(d, '**/*.js'), recursive=True):
+        m = re.search(r'assets/ljud/roster/([^/`\'"$]+)[/`\'"]', open(f, encoding='utf-8', errors='ignore').read())
         if m: return os.path.join(REPO, 'assets/ljud/roster', m.group(1))
 
 def rost_rader(rj):

@@ -2,11 +2,12 @@
 <html lang="sv"><head><meta charset="utf-8"><title>006 v2 · discot (15a–16f, 17)</title>
 <style>html,body{margin:0;background:#222;overflow:hidden}svg{display:block;width:100vw;height:auto}</style></head>
 <body>
-<!-- 006 v2, scen discot: storyboard-v2 15a–16f och kritirisen (17), avsnittstid 2:50.6–3:41.9 (sångtid 2:41.6–3:32.9). Rakt klipp
+<!-- 006 v2, scen discot: storyboard-v2 15a–16f, avsnittstid 2:50.6–3:41.9 (sångtid 2:41.6–3:32.9). Rakt klipp
      från bryggan. v1:s ljusorange discoplatta och orange kula (../../../scener/lager/), fyra v2-figurer live ur riggarna: Disa,
      Agda, Gurra och Fia (Sanna 2026-11-26: fyra dansare, ingen Mille). Solona: Gurra hoppar, Fia flyger en ögla (vänds aldrig),
-     Agda klappar. Fisken, fågeln, västen, apelsinen och båten poppar upp i bågen. Hej då: alla vinkar en i taget, Disa med
-     riggens vink (kit.js). Sist sluter sig kritirisen runt Disas ansikte och det blir svart; prenumerera-kortet öppnar ur svart. -->
+     Agda klappar. Fisken, fågeln, västen, apelsinen och båten poppar upp i bågen. Hej då (QA 2026-11-27, punkt 22): ett orange
+     kritsvep, Disa kör in i båten och vinkar (riggens vink, kit.js), de andra vinkar en i taget med öppna ögon. Ingen iris här
+     (punkt 8): filmen klipps rakt till prenumerera-kortet, vars iris är den enda i slutet (film/satt-ihop.sh). -->
 <svg id="scen" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="boil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280">
@@ -25,8 +26,6 @@
     </filter>
     <filter id="ikonkant" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7"/></filter>
     <filter id="dekalskugga" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
-    <filter id="irisrand" filterUnits="userSpaceOnUse" x="-200" y="-200" width="2320" height="1480">
-      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="9"/><feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G"/></filter>
   </defs>
   <g id="kamera">
     <image href="../lager/disco-orange.png" width="1920" height="1080"/>   <!-- 013:s disco-rod.png omfärgad till orange (mallen) -->
@@ -40,7 +39,6 @@
   </g>
   <g id="symbol"></g>
   <g id="ram"></g>
-  <g id="iris"></g>
 </svg>
 <script src="/verktyg/blinka.js"></script>
 <script src="/produktion/youtube/shorts/godnatt/v2-rigg.js"></script>
@@ -57,41 +55,87 @@ const FIG = {
   disa: { slug: 'dinon-disa', s: 0.8, x: 960, y: 1050, fro: 11 },
   agda: { slug: 'ankan-agda', s: 0.72, x: 1480, y: 1005, fro: 37 },
   gurra: { slug: 'grodan-gurra', s: 0.72, x: 440, y: 1005, fro: 53 },
-  fia: { slug: 'fjarilen-fia', s: 0.42, x: 1800, y: 600, fro: 23 },
+  fia: { slug: 'fjarilen-fia', s: 0.42, x: 1700, y: 440, fro: 23 },   // in från högerkanten, ovanför Agda, inte på henne (QA 2026-11-27, punkt 25)
 };
-const HEL = [960, 540, 1], GURRA = [500, 630, 1.2], FIAK = [1560, 470, 1.2], AGDAK = [1430, 630, 1.2], ALLA = [960, 570, 1.05];
+// Solona (QA 2026-11-27, punkt 25): figurerna står så brett att en närbild skär grannen mitt itu, så kameran glider bara in
+// lite mot den som dansar och alla är hela i bild (Gurra 146–608, Disa 665–1271, Agda 1300–1718, Fia 1545–1860 × 140–415).
+const HEL = [960, 540, 1], GURRA = [870, 600, 1.12], FIAK = [1020, 500, 1.08], AGDAK = [1000, 560, 1.1], ALLA = [960, 570, 1.05];
+const KAMKF = [[180.2, GURRA], [182.6, FIAK], [184.8, AGDAK], [186.7, HEL]];
+function soloKam(E) { let k = ALLA; for (const [a, m] of KAMKF) k = kamMix(k, m, (E - a + 0.3) / 0.9); return k; }
 
 // Tider (avsnittstid, storyboard-v2): 15a 170.6 danspaus, 15c 180.2 Gurra, 15d 182.6 Fia, 15e 184.8 Agda, 15f 187.3 alla,
-// 16a 199.0 fisken, 16b 200.4 fågeln, 16c 202.7 väst/apelsin/båt, 16d 207.8 magen, 16e 209.9, 16f 212.4 hej då, iris 219.5.
-const AGDA_IN = [173.0, 173.8], IKON_T = [199.2, 200.6, 202.9, 203.8, 204.8], HEJ = 212.4, IRIS = 219.5;
-const kamAt = E => E < 180.2 ? kamMix(HEL, ALLA, (E - 173.8) / 6) : E < 182.6 ? GURRA : E < 184.8 ? FIAK : E < 187.3 ? AGDAK
-  : E < 199.0 ? kamMix(ALLA, HEL, 0.5 - 0.5 * Math.cos((E - 187.3) / 11.7 * 2 * Math.PI)) : E < 212.4 ? HEL : kamMix(HEL, [960, 540, 1.35], (E - 216.5) / 3);
-const syns = (n, E) => n === 'disa' || (n === 'agda' && E >= AGDA_IN[0]) || (n === 'gurra' && E >= 180.2) || (n === 'fia' && E >= 182.6);
+// 16a 199.0 fisken, 16b 200.4 fågeln, 16c 202.7 väst/apelsin/båt, 16d 207.8 magen, 16e 209.9, 16f 212.4 hej då (kritsvep, Disa i båten) till slutet 221.9.
+const AGDA_IN = [173.0, 173.8], IKON_T = [199.2, 200.6, 202.9, 203.8, 204.8], HEJ = 212.4;
+// Ekona i 15f (QA 2026-11-27, punkt 3): på varje "orange dans" gör en dansare sitt drag, 4 slag var: Gurra hoppar, Fia flyger
+// en ögla, Agda klappar, Disa hurra. De andra gungar lugnt och tittar på den som dansar; kameran glider in lite mot den.
+const SL = n => B0 + n * SLAG, EKO_D = 4 * SLAG;
+const EKO = [[SL(222), 'gurra'], [SL(226), 'fia'], [SL(230), 'agda'], [SL(234), 'disa']];
+const eko = E => { for (const [a, n] of EKO) if (E >= a && E < a + EKO_D) return [n, E - a]; return null; };
+const MITT = { gurra: [380, 590], disa: [960, 615], agda: [1510, 590], fia: [1640, 290] };   // ungefär ansiktena (blicken, kameran)
+function ekoKam(E) {
+  let cx = 940; for (const [a, n] of EKO) cx = lerp(cx, kl(MITT[n][0], 940, 1031), del(a - 0.4, a + 0.6, E));   // 1031: Gurra hel
+  return [cx, 520, lerp(1, 1.08, del(188.2, 190.0, E) * (1 - del(197.4, 199.0, E)))];
+}
+// Hej då (punkt 22): Disa kör in i båten från vänster, bakom Gurra (längre bort på golvet), och stannar i mitten och vinkar.
+// De andra vinkar en i taget. Kameran står still (en inzoomning skar Gurra och Agda vid kanterna).
+const BAT_S = 1.15, BAT_Y = 965, BAT_IN = [HEJ, 214.6], VINK0 = { disa: 213.9, gurra: 214.7, agda: 215.3, fia: 215.9 };
+const HEJ_DX = { gurra: -120, agda: 120 };   // Gurra och Agda flyttar ut lite för båten (klippet döljs av kritsvepet)
+const batX = E => lerp(-420, 960, 1 - (1 - kl((E - BAT_IN[0]) / (BAT_IN[1] - BAT_IN[0]))) ** 3) + 18 * kl(E - BAT_IN[1]) / 7;
+const BATFACE = () => [batX(E_nu) - 8, 600], BAT = {};
+let E_nu = 0;
+const kamAt = E => E < 179.9 ? kamMix(HEL, ALLA, (E - 173.8) / 6)
+  : E < 187.3 ? soloKam(E) : E < 199.0 ? ekoKam(E) : HEL;
+const syns = (n, E) => (n === 'disa' && E < HEJ) || (n === 'agda' && E >= AGDA_IN[0]) || (n === 'gurra' && E >= 180.2) || (n === 'fia' && E >= 182.6);
+// Öppna ögon (punkt 14): dansens ansikte (blundar och ler) varvas med glad med öppna ögon, en takt på 8 slag: 5 slag öppna,
+// 3 blundar. Disa och Agda i motfas (blundar aldrig samtidigt). Med öppna ögon tittar de omväxlande på tittaren och en granne.
+const OGON = { gurra: 2, disa: 0, agda: 4, fia: 6 }, GRANNE = { gurra: ['disa', 'disa'], disa: ['gurra', 'agda'], agda: ['disa', 'fia'], fia: ['agda', 'disa'] };
+function ogon(n, L, f, p, E) {
+  const x = (E - B0) / SLAG + OGON[n], c = ((x % 8) + 8) % 8, k = del(0, 0.7, c) * (1 - del(4.3, 5, c));
+  if (k <= 0) return [f, p];
+  const varv = Math.floor(x / 8), [g, pg] = [L.blanda(f, 'glad', k), p];
+  if (varv % 2 === 0) return [{ ...g, titt: g.titt.map(v => v * (1 - k)) }, pg];   // tittar på tittaren
+  return tittaPa(g, pg, MITT[n], MITT[GRANNE[n][Math.floor(varv / 2) % 2]], k);
+}
 
 // Varje figurs [ansikte, pose, dx, dy] vid avsnittstid E (dx, dy flyttar gruppen; poserna tar figurens egen rigg).
 function lage(n, F, E) {
   const L = F.L, P = o => ({ ...L.POSE0, ...o }), takt = (E - B0) / (2 * SLAG);   // dansa: ett gung per två slag
   const tittaUpp = E >= 199.0 && E < 207.8, magen = E >= 207.8 && E < 212.4, hej = E >= HEJ;
-  if (hej) {   // vinkar en i taget, 0,25 s isär: Gurra, Disa, Agda, Fia
-    const u = E - HEJ - { gurra: 0, disa: 0.25, agda: 0.5, fia: 0.75 }[n];
-    if (n === 'fia') { const [f, p] = L.ROR.flaxa(E); return [f, p, 0, 0]; }
-    if (n === 'disa') return [L.param('jatteglad'), { ...P({}), ...vink(Math.max(0, u), 7.5) }, 0, 0];
-    return [L.param('jatteglad'), P({ armar: [0, mjuk(u / 0.45) * (60 + 15 * Math.sin(2 * Math.PI * 1.25 * u))], luta: 2 * Math.sin(2 * Math.PI * 1.25 * u) }), 0, 0];
+  if (hej) {   // tittar på båten som kör in, sedan på tittaren och vinkar en i taget (riggens vink, kit.js), öppna ögon
+    const u = Math.max(0, E - VINK0[n]), k = 1 - del(VINK0[n] - 0.5, VINK0[n], E), fran = [MITT[n][0] + (HEJ_DX[n] || 0), MITT[n][1]];
+    if (n === 'fia') { const [, p] = L.ROR.flaxa(E), [f2, p2] = tittaPa(L.param('glad'), p, fran, BATFACE(), k);
+      return [f2, p2, 0, -34 * Math.sin(Math.PI * kl(u / 0.9)) - 22 * Math.sin(Math.PI * kl((u - 0.9) / 0.9))]; }   // två små lyft
+    const v = (n === 'gurra' ? vinkV : vink)(u, 6, { bas: 60, amp: 15 });
+    const [f2, p2] = tittaPa(L.param('glad'), P(v), fran, BATFACE(), k);
+    return [f2, p2, HEJ_DX[n], 0];
   }
   if (magen) return [L.param('glad'), { ...L.blandaPose('neutral', 'magen', 1), luta: 3 * Math.sin(Math.PI * (E - B0) / (2 * SLAG)) }, 0, 0];
+  const ek = E >= 187.3 && E < 199.0 ? eko(E) : null;
+  const ogla = u => { const a = mjuk(kl(u / (4 * SLAG))) * 2 * Math.PI, [, p] = L.ROR.flaxa(E);   // ögla på fyra slag, aldrig vänd
+    return [L.param('glad'), p, -65 * Math.sin(a), -65 + 65 * Math.cos(a)]; };
+  if (ek && ek[0] === n) {   // ekots drag (punkt 3), öppna ögon
+    const u = ek[1];
+    if (n === 'gurra') { const [, p] = L.ROR.hoppa(u * 2.08); return [L.param('glad'), p, 0, 0]; }
+    if (n === 'fia') return ogla(u);
+    if (n === 'agda') { const [, p] = L.ROR.klappa(((u + 0.5) % 1.5) + 0.5); return [L.param('glad'), p, 0, 0]; }
+    const k = del(0, 0.4, u) * (1 - del(EKO_D - 0.45, EKO_D, u)), fi = 2 * Math.PI * slagFas(E);   // Disa: hurra, studsar på slaget
+    return [L.param('glad'), P({ armar: [100 * k, 100 * k], strack: 0.03 * k, oron: [-6 * k, -6 * k], lyft: -14 * k * (1 - Math.cos(fi)) / 2 }), 0, 0];
+  }
+  if (ek) {   // de andra gungar lugnt och tittar på den som dansar
+    const p0 = n === 'fia' ? L.ROR.flaxa(E)[1] : { ...P({}), luta: 2 * Math.sin(E * 2) };
+    const [f, p] = tittaPa(L.param('glad'), p0, MITT[n], MITT[ek[0]]); return [f, p, 0, 0];
+  }
   if (n === 'fia') {
-    if (E < 185.4 && E >= 182.6) {   // ögla på fyra slag (182.8–185.1), sedan svävar hon; aldrig vänd
-      const u = kl((E - 182.8) / (4 * SLAG)), a = mjuk(u) * 2 * Math.PI, [f, p] = L.ROR.flaxa(E);
-      return [L.param('jatteglad'), p, -130 * Math.sin(a), -130 + 130 * Math.cos(a) - 0];
-    }
-    const [f, p] = L.ROR.flaxa(E); return [tittaUpp ? L.param('forvanad') : f, { ...p, upp: tittaUpp ? -1 : 0 }, 0, 0];
+    if (E < 185.4 && E >= 182.6) return ogla(E - 182.8);   // solot 182.8–185.1, sedan svävar hon
+    const [f0, p0] = L.ROR.flaxa(E), [f, p] = tittaUpp ? [L.param('forvanad'), p0] : ogon(n, L, f0, p0, E);
+    return [f, { ...p, upp: tittaUpp ? -1 : (p.upp || 0) }, 0, 0];
   }
   if (n === 'agda' && E < AGDA_IN[1]) { const u = kl((E - AGDA_IN[0]) / (AGDA_IN[1] - AGDA_IN[0])), x = 1 - (1 - u) ** 2;   // hoppar in från höger, saktar in mot landningen
     return [L.param('jatteglad'), P({ armar: [50, 50] }), (1 - x) * 900, -360 * Math.sin(Math.PI * u)]; }
   const solo = { gurra: [180.2, 182.6], agda: [184.8, 187.3] }[n];
   if (solo && E >= solo[0] && E < solo[1]) {
     if (n === 'gurra') { const [f, p] = L.ROR.hoppa((E - solo[0]) * 2.08); return [f, p, 0, 0]; }   // ett hopp per två slag
-    const [f, p] = L.ROR.klappa(((E - solo[0] + 0.5) % 1.5) + 0.5); return [L.param('fnissig'), p, 0, 0];   // klapp på slagen
+    const [, p] = L.ROR.klappa(((E - solo[0] + 0.5) % 1.5) + 0.5); return [L.param('glad'), p, 0, 0];   // klapp på slagen, öppna ögon (punkt 14)
   }
   // dansar (i solot för någon annan: lugnt gung). Riggens dansa tonas ut till stillastående var 4:e sekund och har ett ryck
   // (hoppet på sjätte studsen), så här används bara mittdelen (T 1–2, full styrka) som en jämn slinga, och studsen är mjuk
@@ -100,11 +144,12 @@ function lage(n, F, E) {
   const p = { ...p0, lyft: -12 * (1 - Math.cos(2 * fi)) / 2, strack: 0.02 * (1 - Math.cos(2 * fi)) / 2 };
   const iSolo = E >= 180.2 && E < 187.3;
   if (tittaUpp) { const k = del(199.0, 199.6, E); return [L.blanda('forvanad', 'glad', del(199.6, 200.2, E)), { ...p, armar: p.armar.map(a => a * (1 - k)), upp: -k }, 0, 0]; }
-  return [iSolo ? L.param('glad') : f, iSolo ? { ...P({}), luta: 2 * Math.sin(E * 2) } : p, 0, 0];
+  if (iSolo) return [L.param('glad'), { ...P({}), luta: 2 * Math.sin(E * 2) }, 0, 0];
+  const [f2, p2] = ogon(n, L, f, p, E); return [f2, p2, 0, 0];
 }
 
 // Byten mellan lägena (solo, titta upp, magen, hej då) glider över 0,4 s i stället för att hoppa.
-const BYTEN = [173.8, 180.2, 182.6, 184.8, 187.3, 199.0, 207.8, 212.4];
+const BYTEN = [173.8, 180.2, 182.6, 184.8, 187.3, ...EKO.map(e => e[0]), EKO[3][0] + EKO_D, 199.0, 207.8];   // hej då: klipp under kritsvepet
 function lageMjuk(n, F, E) {
   const b = BYTEN.findLast(b => E >= b && E < b + 0.4), nu = lage(n, F, E);
   if (b === undefined || (n === 'agda' && b === AGDA_IN[1])) return nu;
@@ -114,8 +159,11 @@ function lageMjuk(n, F, E) {
 
 // Ikonerna i bågen överst: fisken, fågeln, västen, apelsinen, båten.
 const IKON_X = [250, 470, 690, 1230, 1450], ikonY = x => 120 + 0.00022 * (x - 960) ** 2;   // 013:s plats: två och två runt kulan
-const VAST_IKON = `<g><path d="M-58 50 L-58 -20 Q-50 -48 -20 -50 L-6 -50 L-6 50Z M58 50 L58 -20 Q50 -48 20 -50 L6 -50 L6 50Z" fill="#FF7A21" stroke="#fff" stroke-width="8" stroke-linejoin="round" paint-order="stroke"/>
-  <rect x="-58" y="6" width="52" height="9" fill="#FFF6E8"/><rect x="6" y="6" width="52" height="9" fill="#FFF6E8"/><rect x="-10" y="2" width="20" height="16" rx="4" fill="#5b5b66"/></g>`;
+// Västen (QA 2026-11-27, punkt 28: den gamla lästes som ett fönster eller paket): axelband, V-ringning, ärmhål, mittsöm,
+// det vita bandet och spännet, som Disas väst.
+const VAST_IKON = `<g stroke-linejoin="round"><path d="M-38 -58 L-20 -58 Q-18 -24 0 -18 Q18 -24 20 -58 L38 -58 Q40 -22 58 -14 L58 40 Q58 52 46 52 L-46 52 Q-58 52 -58 40 L-58 -14 Q-40 -22 -38 -58Z" fill="#FF7A21" stroke="#fff" stroke-width="8" paint-order="stroke"/>
+  <path d="M0 -18 V52" stroke="#B85A14" stroke-width="4"/><path d="M-36 -52 Q-34 -30 -52 -18 M36 -52 Q34 -30 52 -18" fill="none" stroke="#FFA35C" stroke-width="5" stroke-linecap="round"/>
+  <rect x="-58" y="10" width="116" height="11" fill="#FFF6E8"/><rect x="-12" y="5" width="24" height="20" rx="5" fill="#5b5b66"/></g>`;
 const IKON = [
   `<image href="${R}fisk-orange-v2/cut/fisk-orange-v2.png" x="-75" y="-57" width="150" height="114"/>`,
   `<image href="${R}fagel-orange-v2/delar/fagel-hel.png" x="-95" y="-95" width="190" height="190"/>`,
@@ -165,7 +213,7 @@ function ljus(E) {
 // Slås upp på radens första slag och dras av (krymper med en vickning) när raden slutar. Ingen text, inga pilar.
 // Raderna: Hoppa (Gurra), Snurra runt (Fia), Klappa (Agda), Alla dansar (noter) till listan börjar.
 const SYM = [[180.2, 182.6, 'hoppa'], [182.6, 184.8, 'snurra'], [184.8, 187.3, 'klappa'], [187.3, 198.8, 'noter']];
-const BRUN = '#8A4A22', SYMX = 185, SYMY = 150, SYMR = 104, FALL = 0.18;
+const BRUN = '#8A4A22', SYMX = 185, SYMY = 185, SYMR = 104, FALL = 0.18;   // SYMY 185: hela märket i bild även när det faller in (punkt 28)
 function slagUpp(q) {   // 013:s: faller ner och studsar till som ett klistermärke
   let dy = 0, rot = 0, sx = 1, sy = 1;
   if (q < 0) { const k = kl(1 + q / FALL); dy = -46 * (1 - k * k); rot += 10 * (1 - k); sx = sy = 1.15 - 0.15 * k; }
@@ -179,10 +227,15 @@ const noten = (x, y, k) => `<g transform="translate(${x} ${y}) scale(${k})" fill
   <ellipse cx="0" cy="0" rx="14" ry="10" transform="rotate(-22)" stroke="none"/><path d="M12 -4V-64" fill="none"/><path d="M12 -64Q16 -48 34 -42" fill="none"/></g>`;
 function symbolMotiv(typ, E) {
   const x = (E - B0) / SLAG, n = Math.floor(x), p = x - n, q = p * SLAG, qn = q - SLAG;
-  if (typ === 'hoppa') {    // en prickad båge mellan två markstreck, bollen hoppar fram och tillbaka längs den, ett hopp per slag
-    const f = n % 2 ? 1 - p : p, bx = lerp(-48, 48, f), by = 30 - 248 * f * (1 - f);
-    const prickar = Array.from({ length: 9 }, (_, i) => { const g = i / 8; return `<circle cx="${lerp(-48, 48, g).toFixed(1)}" cy="${(30 - 248 * g * (1 - g)).toFixed(1)}" r="4.5" fill="#C98A5E"/>`; }).join('');
-    return `${prickar}<path d="M-62 40H-34M34 40H62" stroke="${BRUN}" stroke-width="6" stroke-linecap="round"/><circle cx="${bx.toFixed(1)}" cy="${(by - 12).toFixed(1)}" r="13" fill="${ORANGE}" stroke="#fff" stroke-width="4"/>`;
+  if (typ === 'hoppa') {    // en liten grön groda (rund kropp, två ögonbulor) som hoppar på ett markstreck, ett hopp per slag (punkt 28)
+    const h = Math.sin(Math.PI * p), sq = p < 0.1 ? 1 - p / 0.1 : p > 0.92 ? (p - 0.92) / 0.08 : 0, sx = 1 + 0.2 * sq, sy = 1 - 0.2 * sq;
+    const form = `<ellipse cx="0" cy="-24" rx="34" ry="25"/><circle cx="-16" cy="-46" r="12"/><circle cx="16" cy="-46" r="12"/>`;
+    return `<ellipse cx="0" cy="44" rx="${(32 - 16 * h).toFixed(1)}" ry="6" fill="#8a3a10" opacity="0.25"/>
+      <path d="M-66 46H66" stroke="${BRUN}" stroke-width="6" stroke-linecap="round"/>
+      <g transform="translate(0 ${(44 - 74 * h).toFixed(1)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)})">
+        <g fill="#fff" stroke="#fff" stroke-width="9">${form}</g><g fill="#6CBF4A">${form}</g>
+        <circle cx="-16" cy="-47" r="5" fill="#2b2b2b"/><circle cx="16" cy="-47" r="5" fill="#2b2b2b"/>
+        <path d="M-12 -16 Q0 -8 12 -16" fill="none" stroke="#2b2b2b" stroke-width="3.5" stroke-linecap="round"/></g>`;
   }
   if (typ === 'snurra') {   // en prickad ring, bollen går runt ett varv på fyra slag (som Fias ögla)
     const a = 2 * Math.PI * ((x / 4) % 1) - Math.PI / 2;
@@ -210,50 +263,49 @@ function symbol(E) {
   $('symbol').innerHTML = h;
 }
 
-// Kritirisen (som prenumerera-kortets): krämvit vinglig ring runt Disas ansikte, 1400 → 240 på 1,1 s, står 0,35 s, → 0 på 0,5 s, svart.
-function iris(E) {
-  if (E < IRIS) { $('iris').innerHTML = ''; return; }
-  const u = E - IRIS, r = u < 1.1 ? lerp(1400, 240, mjuk(u / 1.1)) : u < 1.45 ? 240 : lerp(240, 0, mjuk((u - 1.45) / 0.5));
-  const fig = FIG.disa.fig;
-  const c = punkt($('iris'), fig.querySelector('.kropp'), 512, 430);
-  $('iris').innerHTML = r < 1 ? '<rect width="1920" height="1080" fill="#000"/>' : `<path fill="#000" fill-rule="evenodd" d="M-50 -50 H1970 V1130 H-50Z M${(c.x - r).toFixed(1)} ${c.y.toFixed(1)} a${r.toFixed(1)} ${r.toFixed(1)} 0 1 0 ${(2 * r).toFixed(1)} 0 a${r.toFixed(1)} ${r.toFixed(1)} 0 1 0 ${(-2 * r).toFixed(1)} 0Z"/>
-    <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="${r.toFixed(1)}" fill="none" stroke="#FBF3E0" stroke-width="${Math.min(22, r * 0.12).toFixed(1)}" filter="url(#irisrand)"/>`;
-}
-
 function rita(t) {
   if (!FIG.fia.fig) return;
   const E = E0 + t;
   ljus(E); ikoner(E);
+  E_nu = E;
   for (const [n, F] of Object.entries(FIG)) {
     F.g.style.display = syns(n, E) ? '' : 'none'; if (!syns(n, E)) continue;
     const [f, p, dx, dy] = lageMjuk(n, F, E);
     F.g.setAttribute('transform', `translate(${(F.x + dx).toFixed(1)} ${(F.y + dy).toFixed(1)})`);
     F.L.rita(F.fig, F.blinka(f, E), p);
   }
+  BAT.yttre.style.display = E >= HEJ ? '' : 'none';
+  if (E >= HEJ) {   // Disa i båten: kör in, tittar framåt, sedan på tittaren och vinkar med vänster arm (vinkV, kit.js), öppna ögon
+    const u = Math.max(0, E - VINK0.disa), k = del(VINK0.disa - 0.5, VINK0.disa, E), fart = 1 - del(BAT_IN[1] - 0.8, BAT_IN[1] + 0.4, E);
+    const p = { ...BAT.L.POSE0, ...vinkV(u, 7.5, { bas: 62 }) }, f = BAT.L.param('glad');
+    batRita(BAT, E, { x: batX(E) / BAT_S, y: BAT_Y / BAT_S, s: batX(E) / BAT_S, fart: 0.2 + 0.8 * fart, f: { ...f, titt: [10 * (1 - k), 0] }, p });
+  }
   const [cx, cy, z] = kamAt(E); kamera(cx, cy, z, E);
   symbol(E);
-  orangesvep((E - 169.8) / 1.6);   // bryggans kritsvep glider undan
-  iris(E);
+  orangesvep(E < HEJ - 1 ? (E - 169.8) / 1.6 : (E - HEJ + 0.8) / 1.6);   // bryggans kritsvep glider undan; hej då: nytt svep, klippet i mitten
 }
 
 const EF = 'assets/ljud/effekter/';
 function ljud() {
   const ut = [{ t: AGDA_IN[1], fil: EF + 'boing/boing-1.m4a', vol: 0.6 }, { t: 182.8, fil: EF + 'vingflax/vingflax-1.m4a', vol: 0.6 }];
   IKON_T.forEach((t, i) => ut.push({ t, fil: EF + `pop/pop-${1 + i % 2}.m4a`, vol: 0.7 }));
+  ut.push({ t: HEJ - 0.8, fil: EF + 'swoosh/swoosh-1.m4a', vol: 0.7 });   // kritsvepet till hej då
   SYM.forEach(([a, , typ], i) => typ !== 'klappa' && ut.push({ t: a, fil: EF + `klistra/klistra-${1 + i % 2}.m4a`, vol: 0.5 }));   // dansmärket slås upp (svagt, som 013)
-  ut.push({ t: IRIS + 1.3, fil: EF + 'tindra/tindra-3.m4a', vol: 0.7 });
+
   return ut.map(c => ({ ...c, t: c.t - E0 }));
 }
 
 window.DURATION = DURATION;
-window.SANG = [E0 - SANG0, E1 - SANG0 - 0.4];   // sången tonas ut under kritirisen (render.mjs: 0,4 s uttoning i slutet)
+window.SANG = [E0 - SANG0, E1 - SANG0 - 0.4];   // sången tonas ut de sista 0,4 s (render.mjs), sedan klipps det till prenumerera-kortet
 window.seek = t => { window.stilla = true; rita(t); };
 window.render = window.seek;
 window.ready = (async () => {
   for (const n of ['gurra', 'disa', 'agda', 'fia']) { const F = FIG[n];
     F.L = await v2rigg(F.slug); F.g = document.createElementNS(NS, 'g'); $('figurer').appendChild(F.g);
     F.fig = F.L.figur(0, 0, F.s, F.g); F.blinka = skapaBlinka(F.fro);
-    if (n === 'fia') F.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none'); }
+    if (n === 'fia') F.fig.querySelectorAll('.skugga').forEach(e => e.style.display = 'none');
+    if (n === 'disa') { BAT.yttre = document.createElementNS(NS, 'g'); BAT.yttre.setAttribute('transform', `scale(${BAT_S})`);
+      $('figurer').prepend(BAT.yttre); Object.assign(BAT, await batBygg(BAT.yttre)); } }   // längst bak: båten kör bakom Gurra
   await Promise.all([LAGER + 'disco-orange.png', LAGER + 'discokula-orange.png', R + 'fisk-orange-v2/cut/fisk-orange-v2.png', R + 'fagel-orange-v2/delar/fagel-hel.png']
     .map(u => new Promise(r => { const i = new Image(); i.onload = i.onerror = r; i.src = u; })));
   window.LJUD = ljud();

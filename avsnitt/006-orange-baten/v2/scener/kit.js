@@ -29,6 +29,15 @@ function vink(u, W = 2.9, { bas = 42, amp = 14, kropp = 3 } = {}) {
   return { armar: [0, upp * (bas + amp * sv) + dipp], luta: -kropp * sv * upp, boj: 2 * upp, rikt: 0.12 * upp, upp: -0.15 * upp,
     vink: kl(upp * 1.5), vinkFart: Math.cos(2 * Math.PI * 1.25 * v) * env * upp };
 }
+// Samma vinkning med vänster arm (bildens vänster). Disas högra arm ligger på svanssidan och flöt ihop med svansen
+// (samma ljuslila, QA 2026-11-27), så i båten vinkar hon med den andra armen, ut mot himlen.
+const vinkV = (u, W, o) => { const v = vink(u, W, o); return { ...v, armar: [v.armar[1], v.armar[0]], luta: -v.luta, boj: -v.boj, rikt: -v.rikt }; };
+// Blicken mot en punkt i scenen: ögonen (titt, högst ca 12) och lite av huvudet (rikt, upp) vänds dit. fran = ansiktets mitt.
+function tittaPa(f, p, fran, mal, k = 1) {
+  const dx = mal[0] - fran[0], dy = mal[1] - fran[1], L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L;
+  return [{ ...f, titt: [lerp(f.titt[0], 16 * ux, k), lerp(f.titt[1], 13 * uy, k)] },
+    { ...p, rikt: lerp(p.rikt || 0, 0.45 * ux, k), upp: lerp(p.upp || 0, -0.5 * uy, k) }];
+}
 // --- Båten med Disa -------------------------------------------------------------------------------------------------------
 // I båtens egna koordinater: urklippet 883 × 325 i skala 0,7 med övre vänstra hörnet i (0, 0). Botten (y 313) är vattenlinjen.
 // Disa SKALA 0,5, relingen (y ≈ 84 vid x 480) skär henne vid y 720 i hennes ruta. Flaggan i aktern på motorn, bakom Disa.
@@ -64,14 +73,14 @@ async function batBygg(parent) {
 }
 
 // x, y: var skrovets botten mitt ligger (vattenlinjen). s: hur långt båten kört (skummet och flaggan), fart 0–1, hopp px uppåt.
-function batRita(B, t, { x = 960, y = 760, s = 0, fart = 1, hopp = 0, f, p }) {
+function batRita(B, t, { x = 960, y = 760, s = 0, fart = 1, hopp = 0, f, p, fl = 1, blink = true }) {
   const gung = Math.sin(t * 2.2) * 5 * (0.4 + 0.6 * fart) - hopp, lut = Math.sin(t * 1.7) * 1.2;
   B.g.setAttribute('transform', `translate(${(x - BW / 2).toFixed(1)} ${(y - BH + gung).toFixed(1)}) rotate(${lut.toFixed(2)} ${BW / 2} ${BH - 20})`);
-  const v = Math.sin(t * 6) * 10 * (0.5 + 0.5 * fart);
+  const v = Math.sin(t * 6) * 10 * (0.5 + 0.5 * fart) * fl;   // fl > 1: fladdrar extra ("och flaggan med!")
   B.flagga.setAttribute('d', `M60 -170 Q0 ${-160 + v} -70 ${-130 + v * 0.6} Q0 ${-110 + v} 60 -90Z`);   // fladdrar bakåt, båten kör åt höger
   let d = ''; for (let x0 = 90 * BS; x0 <= 820 * BS; x0 += 15) d += `${d ? ' L' : 'M'}${x0.toFixed(0)} ${(BH - 8 + Math.sin(x0 / 30 + t * 4) * 3).toFixed(1)}`;
   B.vag.setAttribute('d', d); B.vag.setAttribute('stroke-dashoffset', (s * 0.85).toFixed(1)); B.vag.setAttribute('opacity', (0.25 + 0.6 * fart).toFixed(2));
-  B.L.rita(B.fig, B.blinka(f, t), p);   // inga rörelsestreck när hon vinkar (Sanna 2026-11-26)
+  B.L.rita(B.fig, blink ? B.blinka(f, t) : f, p);   // inga rörelsestreck när hon vinkar (Sanna 2026-11-26)
 }
 // En punkt i båtens koordinater → scenens (utan gungningen, räcker för att sikta).
 const batPunkt = (x, y, [lx, ly]) => [x - BW / 2 + lx, y - BH + ly];

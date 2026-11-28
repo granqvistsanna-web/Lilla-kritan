@@ -46,8 +46,10 @@ const till = tillArg ?? DURATION, ut = UT ?? join(dir, `${basename(dir)}${fran |
 // blandat till <scen>-effekter.wav i scenens hela längd. Filmen får den (avklippt till --fran/--till); render-delat.mjs lägger på samma wav.
 async function effektWav() {
   const ljud = await p.evaluate(() => window.LJUD || []), ing = ['-f', 'lavfi', '-t', DURATION, '-i', 'anullsrc=r=48000:cl=stereo'], ked = [], nmn = ['[0:a]'];
-  ljud.forEach((c, i) => { ing.push('-i', join(ROT, c.fil));
-    ked.push(`[${i + 1}:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=${(c.vol * 0.4).toFixed(3)},adelay=${Math.round(c.t * 1000)}:all=1[e${i}]`); nmn.push(`[e${i}]`); });
+  ljud.forEach((c, i) => { if (c.loop) ing.push('-stream_loop', -1); ing.push('-i', join(ROT, c.fil));   // loop, langd, fade och fadeIn som i avsnittens render.mjs (055): utan dem tog mattan slut efter ett varv
+    let f = `[${i + 1}:a]aformat=sample_rates=48000:channel_layouts=stereo,afade=t=in:d=${c.fadeIn ?? 0.02}`;
+    if (c.langd != null) { const fade = c.fade ?? 0.3; f += `,atrim=0:${c.langd.toFixed(3)},afade=t=out:st=${Math.max(0, c.langd - fade).toFixed(3)}:d=${(+fade).toFixed(3)}`; }   // toFixed: 5.55e-15 får ffmpeg att fela
+    ked.push(f + `,volume=${(c.vol * 0.4).toFixed(3)},adelay=${Math.round(c.t * 1000)}:all=1[e${i}]`); nmn.push(`[e${i}]`); });
   const wav = join(dir, `${basename(dir)}-effekter.wav`);
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...ing, '-filter_complex', [...ked, `${nmn.join('')}amix=inputs=${nmn.length}:normalize=0:duration=first,alimiter=limit=0.95[a]`].join(';'),
     '-map', '[a]', '-t', DURATION, '-c:a', 'pcm_s16le', wav].map(String));

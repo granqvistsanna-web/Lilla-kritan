@@ -36,10 +36,12 @@ const FLAGG_DRAG = ['M60 90 L60 -170', 'M60 -170 Q0 -160 -70 -130 Q0 -110 60 -90
 // Detaljerna (Sanna 2026-11-26 "fler detaljer så den blir lättare att gissa"), mätta i bilden: den ljusa kanten längs relingen,
 // aktern där motorn sitter, och motorns huvud mot skaftet. Ritas medan kritan förut stod still efter konturen.
 const DETALJ_DRAG = ['M846 44 Q790 66 700 86 Q600 104 450 116 Q260 124 100 122', 'M94 108 Q96 180 106 250', 'M28 160 Q44 168 60 166'];
-// Tider (avsnittstid): kontur 9.8–12.6 (2,8 s); står kvar; glider till stången 15.4–15.8; stången och flaggan 15.8–17.4;
-// väntar 17.6–18.4 och svajar genom gissningen (sjungen 13.2 + pausen); svaret 28.1: fyllning 0,7 s, kritan ut 28.1–28.9.
-// Detaljerna 12.95–15.1 (glider dit 12.65–12.95).
-const T = { in: [9.3, 9.75], rit: [9.8, 17.4], vanta: [17.6, 18.4], ut: [28.1, 28.9] }, R1 = [9.8, 12.6], GLID0 = [12.65, 12.95], RD = [12.95, 15.1], GLID = [15.35, 15.8], R2 = [15.8, 17.4];
+// Tider (avsnittstid), spridda över de sjungna raderna (QA 2026-11-27: teckningen var klar 17.4 och sedan svajade bara kritan
+// i 10,5 s): konturen på "Kritan ritar …" 9.8–13.0; kritan svävar långsamt över papperet till detaljerna 13.0–15.8; detaljerna på
+// första "vad kan det vara?" 15.8–19.4; svävar till stången 19.4–22.2; stången och flaggan på andra "vad kan det vara?" 22.2–24.2;
+// väntar 24.4–25.2 och knackar två gånger på papperet i gissningspausen (KNACK); svaret 28.1: fyllning 0,7 s, kritan ut 28.1–28.9.
+const T = { in: [9.3, 9.75], rit: [9.8, 24.2], vanta: [24.4, 25.2], ut: [28.1, 28.9] }, R1 = [9.8, 13.0], GLID0 = [13.0, 15.8], RD = [15.8, 19.4], GLID = [19.4, 22.2], R2 = [22.2, 24.2];
+const KNACK = [25.9, 26.8];
 const SVAR = 28.1, KRYP = [22.2, 28.1], ZOOM = [31.4, 33.2];
 let KONTUR;
 
@@ -60,10 +62,14 @@ function rita(t) {
         <image href="${BATEN}" width="883" height="325"/></g>
       ${B.html}${D.html}${A.html}</g>`;
   // kritan: kontur, glider till relingen och ritar detaljerna, glider i en båge till stången, ritar flaggan, väntar, flyger ut
-  const glid = (P0, P1, G) => { const m = mjuk((E - G[0]) / (G[1] - G[0])); return [lerp(P0[0], P1[0], m), lerp(P0[1], P1[1], m) - 40 / PS * Math.sin(Math.PI * m)]; };
+  // glidningen är lång (2,8 s): en hög, lugn båge över papperet med kritans svaj, så att den aldrig står still
+  const glid = (P0, P1, G) => { const m = mjuk((E - G[0]) / (G[1] - G[0])), b = Math.sin(Math.PI * m);
+    return [lerp(P0[0], P1[0], m) + 6 / PS * b * Math.sin(E * 1.2), lerp(P0[1], P1[1], m) - 110 / PS * b + 5 / PS * b * Math.sin(E * 1.7)]; };
   const spets = E < R1[1] ? A.spets : E < RD[0] ? glid(A.slut, D.start, GLID0) : E < RD[1] ? D.spets : E < R2[0] ? glid(D.slut, B.start, GLID) : B.spets;
   const z = zoomAt(E);
-  const kr = kritaFas(E, T, { start: tillScen(A.start), spets: tillScen(spets), slut: tillScen(B.slut), vanta: [1640, 250], s: KRITAN.SKALA_PAPPER / z });
+  const kr = kritaFas(E, T, { start: tillScen(A.start), spets: tillScen(spets), slut: tillScen(B.slut), vanta: [1500, 330], s: KRITAN.SKALA_PAPPER / z });
+  // väntplatsen bredvid fören, hela kritan i bild även när den knackar (QA 2026-11-28: [1640, 250] gled ut över högerkanten)
+  if (kr) { const kn = pulsar(E, KNACK, 0.32); kr.y += 34 * kn; kr.v -= 6 * kn; }   // knackar på papperet: spetsen ner och upp
   $('kritan').innerHTML = kr ? kritaBild(kr.x, kr.y, kr) : '';
   $('gnistor').innerHTML = gnistor(960, BY + 120 * PS, 440, E - SVAR);
   const [cx, cy] = E < ZOOM[0] ? [960, 540] : kamMix([960, 540], [BX + 480 * PS, BY + 170 * PS], (E - ZOOM[0]) / (ZOOM[1] - ZOOM[0]));
@@ -71,6 +77,7 @@ function rita(t) {
   orangesvep(0.5 + t / 1.6);   // introts orange kritsvep glider undan åt höger
 }
 // gissningen: kryper in 12 %; zoom in i båten på "Tut-tut, nu kör vi!" (accelererar in, klippet till sjön sker i full fart)
+const pulsar = (E, ts, d) => ts.reduce((a, t0) => a + (E >= t0 && E < t0 + d ? Math.sin(Math.PI * (E - t0) / d) : 0), 0);
 const zoomAt = E => E < ZOOM[0] ? 1 + 0.12 * mjuk((E - KRYP[0]) / (KRYP[1] - KRYP[0])) * (1 - mjuk((E - SVAR) / 0.8))
   : 1 + 3 * Math.pow(kl((E - ZOOM[0]) / (ZOOM[1] - ZOOM[0])), 2.2);
 
@@ -78,6 +85,7 @@ const EF = 'assets/ljud/effekter/';
 function ljud() {
   const ut = [{ t: E0, fil: EF + 'skogsljud/skogsljud-1.m4a', vol: 0.4, langd: DURATION, loop: true, fadeIn: 0.5, fade: 1 }];
   [R1, RD, R2].forEach(([a, b], i) => ut.push({ t: a, fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: b - a + 0.1, loop: true, fade: 0.4 }));
+  KNACK.forEach(t => ut.push({ t: t + 0.16, fil: EF + 'knack/knack-1.m4a', vol: 0.5 }));
   ut.push({ t: SVAR, fil: EF + 'pling/pling-1.m4a', vol: 1.0 }, { t: SVAR + 0.2, fil: EF + 'tindra/tindra-3.m4a', vol: 0.7 });
   ut.push({ t: ZOOM[0], fil: EF + 'swoosh/swoosh-1.m4a', vol: 0.6 });
   return ut.map(c => ({ ...c, t: c.t - E0 }));

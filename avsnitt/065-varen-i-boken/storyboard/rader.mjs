@@ -61,7 +61,7 @@ export const L = n => ROST[n - 1][1];
 // Musens röst (grind 4, Sanna 2026-11-27 "Ta dina förslag"): befintliga ljud, valen i ../ljud-effekter.md.
 const M = (f, o) => [f.replace(/-\d+$/, '') + '/' + f, o];
 const SVAR = 1.6;   // musens svar i pausen mellan Malins fråga och hennes reaktion (som 062)
-const VATTEN = 'regn-droppar/regn-droppar-1';
+const VATTEN = 'regn-droppar/regn-droppar-1-stark';   // kopia +26 dB (originalet −52 LUFS hördes inte)
 
 // Lägena. Varje rad ändrar bara det som är nytt, resten ärvs från raden före.
 // rod/gul/lila: 'knopp' | 'uppe' | 'hanger' | 'kontur' (bara gul: kritans teckning) · kanna: 'nej' | 'kontur' | 'gras' | 'hand'
@@ -97,8 +97,8 @@ export const RADER = [
     bild: 'Tulpanerna hänger sakta ner, en i taget (röd, gul, lila, 1 s mellan), med en långsam vickning', ljudtext: '–', s: { vy: 'rabatt', rod: 'hanger', gul: 'hanger', lila: 'hanger' } },
   { id: '08', d: 0.4 + L(13) + 1.2, plats: 'Musen, närbild', malin: [[13, 0.4]], ljud: [M('mus-nyfiken-3', 0.4 + L(13) + 0.2)],
     bild: 'Musen lutar huvudet, öronen sjunker lite', ljudtext: 'mus-nyfiken', s: { vy: 'nara' } },
-  { id: '08b', d: 0.2 + L(14) + SVAR + 0.4, plats: 'Musen, närbild', malin: [[14, 0.2]], ljud: [M('mus-pratar-3', 0.2 + L(14) + 0.2)],
-    bild: 'Musen tittar på oss. Pausen: nyfiket pip', ljudtext: 'mus-pratar', s: {} },
+  { id: '08b', d: 0.2 + L(14) + SVAR + 0.4, plats: 'Musen, halvbild', malin: [[14, 0.2]], ljud: [M('mus-pratar-3', 0.2 + L(14) + 0.2)],
+    bild: 'Musen tittar på oss. Pausen: nyfiket pip', ljudtext: 'mus-pratar', s: { vy: 'halv' } },
 
   // --- Vattenkannan ---
   { id: '09', d: 0.4 + L(15) + 3.0, plats: 'Gräset bredvid musen, nära', malin: [[15, 0.4]], ljud: [['krita-ritar/krita-ritar-1', 0.2]],
@@ -108,7 +108,7 @@ export const RADER = [
   { id: '11', d: 0.3 + L(17) + 1.2, plats: 'Musen, närbild', malin: [[17, 0.3]], ljud: [M('mus-hej-3', 0.3 + L(17) + 0.2)],
     bild: 'Musen nickar', ljudtext: 'glatt pip (mus-hej)', s: { vy: 'nara' } },
   { id: '12', d: 1.6 + L(18) + 1.2, plats: 'Musen, halvbild', malin: [[18, 1.6]],
-    ljud: [['swoosh/swoosh-1', 0.1], ['droppar/droppar-1', 1.0], ['droppar/droppar-1', 1.15], ['droppar/droppar-1', 1.3], M('oj-oj-1', 1.6 + L(18) + 0.2)],
+    ljud: [['swoosh/swoosh-1', 0.1], ['droppar/droppar-1', 1.35], ['droppar/droppar-1', 1.5], ['droppar/droppar-1', 1.65], M('oj-oj-1', 1.6 + L(18) + 0.2)],
     bild: 'Kannan glider i en båge till musens hand. Musen lutar den för tidigt: några droppar ur pipen landar på fötterna', ljudtext: 'swoosh mjukt, droppar ×3, oj-oj (förvånad)', s: { vy: 'halv', kanna: 'hand', droppar: 'fotter' } },
   { id: '12b', d: 0.5 + L(19) + 2.6, plats: 'Musen, halvbild', malin: [[19, 0.5]],
     ljud: [['hopp-mjuk/hopp-mjuk-1', 0.15], ['hopp-mjuk/hopp-mjuk-2', 0.55], M('mus-fniss-4', 0.5 + L(19) + 0.1)],
@@ -125,8 +125,8 @@ export const RADER = [
     bild: 'Musen går lugnt till den gula (svansen vickar), vattnar, och den reser sig på "upp"', ljudtext: 'steg, regn-droppar lågt, glimt på "upp"', s: { vy: 'gul-nara', pos: 'gul', droppar: 'gul', siffra: '' } },
   { id: '15b', d: 0.3 + L(25) + 1.2, plats: 'Den gula, närbild', malin: [[25, 0.3]], ljud: [['tindra/tindra-2', 0.3 + L(25) - 0.5], M('mus-hej-2', 0.3 + L(25) + 0.2)],
     bild: 'En 2:a glimtar vid den gula', ljudtext: 'tindra svagt, glatt pip (mus-hej)', s: { gul: 'uppe', droppar: false, siffra: '2' } },
-  { id: '16', d: 0.3 + L(26) + 1.0, plats: 'Musen, halvbild', malin: [[26, 0.3]], ljud: [M('mus-nyfiken-1', 0.3 + L(26) + 0.2)],
-    bild: 'Musen tittar runt', ljudtext: 'frågande pip (mus-nyfiken)', s: { vy: 'halv', siffra: '' } },
+  { id: '16', d: 0.3 + L(26) + 1.0, plats: 'Rabatten, halvbild', malin: [[26, 0.3]], ljud: [M('mus-nyfiken-1', 0.3 + L(26) + 0.2)],
+    bild: 'Musen tittar runt. Den lila hänger fortfarande, i bild när den nämns', ljudtext: 'frågande pip (mus-nyfiken)', s: { vy: 'rabatt', siffra: '' } },
   { id: '17', d: 0.2 + L(27) + 4.0, plats: 'Hela rabatten', malin: [[27, 0.2]], ljud: [['glimt/glimt-2', 0.2 + L(27) + 2.0]],
     bild: 'Hela rabatten. Barnet tittar (4 s). Den lila hänger fortfarande och skimrar svagt efter 2 s', ljudtext: 'tyst, glimt svagt när skimret börjar', s: { vy: 'rabatt-hel' } },
   { id: '18', d: 0.3 + L(28) + 1.0, plats: 'Den lila, närbild', malin: [[28, 0.3]], ljud: [['glimt/glimt-1', 0.1], M('mus-fortjust-3', 0.3 + L(28) + 0.2)],
@@ -155,7 +155,7 @@ export const RADER = [
 
   // --- Fågelboet ---
   { id: '24', d: 0.8 + L(38) + 3.0, plats: 'Lövträdet, halvbild', malin: [[38, 0.8]], ljud: [['fagel-pip/fagel-pip-1', 0.4]],
-    bild: 'Musen tittar upp mot trädet. Boet ligger i grenen (har stått där hela tiden). En fågel piper svagt. Gissning 3: paus 3 s', ljudtext: 'fågel-pip svagt', s: { vy: 'trad' } },
+    bild: 'Halvbilden står kvar: musen tittar upp mot trädet på "Titta upp i trädet". Klipp till lövträdet före "Vad finns där?". Boet ligger i grenen (har stått där hela tiden). En fågel piper svagt. Gissning 3: paus 3 s', ljudtext: 'fågel-pip svagt', s: { vy: 'trad' } },
   { id: '24b', d: 0.3 + L(39) + 1.0, plats: 'Boet, nära', malin: [[39, 0.3]], ljud: [['glimt/glimt-1', 0.3], M('mus-fortjust-1', 0.3 + L(39) + 0.2)],
     bild: 'Boet glimtar på sitt ord. Musen får kawaii-ögon', ljudtext: 'glimt, mus-fortjust', s: { vy: 'bo' } },
   { id: '24c', d: 0.3 + L(40) + 0.6, plats: 'Boet, närbild', malin: [[40, 0.3]], ljud: [['glimt/glimt-1', 0.4], ['glimt/glimt-2', 0.9], ['glimt/glimt-1', 1.4]],
@@ -169,15 +169,15 @@ export const RADER = [
   { id: '26', d: 0.5 + L(44) + 1.2, plats: 'Musen, halvbild', malin: [[44, 0.5]], ljud: [M('mus-hejda-1', 0.5 + L(44) + 0.2)],
     bild: 'Musen vinkar (armen bakom kroppen, på den sida som inte skyms av en tulpan)', ljudtext: 'mus-hejda', s: { vy: 'hejda' } },
   { id: '26b', d: 0.3 + L(45) + 0.6, plats: 'Rabatten, halvbild', malin: [[45, 0.3]], ljud: [['glimt/glimt-1', 0.5]],
-    bild: 'Tulpanerna vajar och glimtar', ljudtext: 'glimt', s: { vy: 'rabatt' } },
+    bild: 'Tulpanerna vajar och glimtar. Musen står hel vid blommorna och går tillbaka efter repliken', ljudtext: 'glimt', s: { vy: 'rabatt-hej' } },
   { id: '26c', d: 0.3 + L(46) + 0.6, plats: 'Fjärilen och nyckelpigan, nära', malin: [[46, 0.3]], ljud: [['glimt/glimt-1', 0.5], ['glimt/glimt-2', 0.3 + L(46) * 0.55]],
     bild: 'Fjärilen och nyckelpigan glimtar, var och en på sitt ord', ljudtext: 'glimt ×2', s: { vy: 'insekter' } },
   { id: '26d', d: 0.3 + L(47) + 0.8, plats: 'Lövträdet, halvbild', malin: [[47, 0.3]], ljud: [['glimt/glimt-2', 0.5], ['fagel-pip/fagel-pip-1', 0.3 + L(47) + 0.1]],
     bild: 'Boet glimtar', ljudtext: 'glimt, fågel-pip svagt', s: { vy: 'trad' } },
   { id: '27', d: 0.3 + L(48) + 1.2, plats: 'Musen, halvbild', malin: [[48, 0.3]], ljud: [M('mus-hejda-3', 0.3 + L(48) + 0.1)],
     bild: 'Musen vinkar klart', ljudtext: 'mus-hejda', s: { vy: 'hejda', pos: 'start' } },
-  { id: '28', d: 2.9, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 1.7]],
-    bild: 'Kameran glider ut ur boken. Korten fälls ner, musen först, pärmen slås igen. Tulpanknoppen syns på pärmen', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, mus: 'nere' } },
+  { id: '28', d: 3.6, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 1.15], ['landa-mjuk/landa-mjuk-1', 2.45]],
+    bild: 'Kameran glider ut ur boken (1,4 s). Sedan fälls korten ner, musen först, och pärmen slås igen. Den stängda boken står 1,1 s, tulpanknoppen på pärmen', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, mus: 'nere' } },
 ];
 // varje rad ärver läget från raden före
 RADER.reduce((f, r) => (r.s = { ...f, ...r.s }), START);

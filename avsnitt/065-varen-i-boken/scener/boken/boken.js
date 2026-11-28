@@ -238,7 +238,10 @@ const kortCanvas = duk(VB.w, VB.h), kortCtx = kortCanvas.getContext('2d'), kortT
 const gg = new THREE.PlaneGeometry(VB.w * ENHET, VB.h * ENHET);
 gg.translate((VB.x + VB.w / 2 - 512) * ENHET, (FOT - (VB.y + VB.h / 2)) * ENHET, 0);   // origo i fötterna
 const mus = new THREE.Mesh(gg, new THREE.MeshLambertMaterial({ map: kortTex, emissiveMap: kortTex, emissive: new THREE.Color(0.3, 0.3, 0.3), alphaTest: 0.5, side: THREE.FrontSide }));
-mus.add(new THREE.Mesh(gg, new THREE.MeshLambertMaterial({ map: kortTex, color: 0x000000, emissive: '#F4ECDD', alphaTest: 0.5, side: THREE.BackSide })));
+const MUSBAK = new THREE.MeshLambertMaterial({ map: kortTex, color: 0x000000, emissive: '#F4ECDD', alphaTest: 0.5, side: THREE.BackSide });
+mus.add(new THREE.Mesh(gg, MUSBAK));
+// kontaktskugga under musen som under de andra korten (KSKUGGA-fliken)
+const MUSFLIK = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.07), KSKUGGA); MUSFLIK.rotation.x = -Math.PI / 2; MUSFLIK.renderOrder = 1; scen.add(MUSFLIK);
 mus.castShadow = mus.receiveShadow = true;
 mus.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: kortTex, alphaTest: 0.5 });
 scen.add(mus);
@@ -271,24 +274,28 @@ const OPPNA = S('02'), STANG = S('28');
 const SLOT = f => TULPAN[f].knopp;
 const ORDNING = [...BAK, ...SKOG, LOVTRAD, BUSKE_K, ...['rod', 'gul', 'lila'].map(SLOT), ROSA_K, GULA_K].sort((a, b) => a.z - b.z);
 ORDNING.forEach((k, i, a) => { k.upp = OPPNA + 0.6 + i * 0.8 / (a.length - 1); k.hog = 0.004 + 0.001 * (a.length - i); });
+// stängningen (rad 28, 3,6 s): kameran glider ut till slut (0,1–1,5), musen fälls först (1,2), korten (1,25–1,65), pärmen (1,8–2,5),
+// den stängda boken står 1,1 s medan kameran trycker in sakta
+const UT_KLAR = STANG + 1.5, MUS_NER = STANG + 1.2;
 const NER = [...ORDNING, KANNA_K].sort((a, b) => b.z - a.z);
-NER.forEach((k, i, a) => k.ner = STANG + 0.3 + i * 0.5 / (a.length - 1));
-const PARM_NER = [STANG + 1.05, STANG + 1.75];
+NER.forEach((k, i, a) => k.ner = STANG + 1.25 + i * 0.4 / (a.length - 1));
+const PARM_NER = [STANG + 1.8, STANG + 2.5];
 const MUS_UPP = S('06') + 0.2;   // musens kort sist, på pop
 // den gula: knoppen fälls ner när kritan kommer (rad 04), teckningen ligger på sidan, fylls i och fälls upp (rad 05)
-const GUL_NER = S('04') + 0.05, GUL_KLAR = S('05') + 0.7, GUL_UPP = S('05') + 0.85;
+const GUL_NER = S('04') + 0.05, GUL_KLAR = S('05') + 0.7, GUL_UPP = S('05') + 0.95;
 // knopparna slår ut (rad 05b), blommorna hänger (rad 07b), reser sig på "upp"
-const SLAR_UT = { rod: S('05b') + 0.3, lila: S('05b') + 1.3 }, HANGER = { rod: S('07b') + 0.1, gul: S('07b') + 1.1, lila: S('07b') + 2.1 };
+const SLAR_UT = { rod: S('05b') + 0.3, lila: S('05b') + 1.3 }, HANGER = { rod: S('07b') + 1.1, gul: S('07b') + 2.1, lila: S('07b') + 3.1 };   // efter kamerans glidning
 // kannan: ritas (09), fylls och fälls upp (10), glider till handen (12), ställs tillbaka i gräset (20)
-const KANNA_KLAR = S('10') + 0.55, KANNA_UPP = S('10') + 0.75, GLIDA = [S('12') + 0.1, S('12') + 0.9], SATT_NER = [S('20') + 0.1, S('20') + 0.9];
+const KANNA_KLAR = S('10') + 0.55, KANNA_UPP = S('10') + 0.75, GLIDA = [S('12') + 0.1, S('12') + 0.9], SATT_NER = [S('19b') + 2.5, S('19b') + 3.3];   // efter "Tre!", inte under rad 20:s glidning
 const FOTLUT = [S('12') + 0.85, S('12') + 1.55];   // lutar kannan för tidigt
-const FOTDROPPAR = [1.0, 1.15, 1.3].map(s => S('12') + s - 0.3);   // landar på fötterna med droppljuden
+const FOTDROPPAR = [1.0, 1.15, 1.3].map(s => S('12') + s);   // ur pipen när kannan är i handen (GLIDA[1]), landar 0,35 s senare med droppljuden
 // vattna: kannan lutas, dropparna faller i en båge på blomman, den reser sig på "upp"
 const VATTNA = { rod: [S('14') + 0.1, UPP.rod], gul: [S('15') + 1.0, UPP.gul], lila: [S('19') + 1.0, UPP.lila] };
 // musens platser och promenader (storyboardens MUSPOS): till vänster om blomman den vattnar, kannan i höger hand
-const MUSPOS = { start: [0.2, 0.26], rod: [-0.66, 0.22], gul: [-0.22, 0.2], lila: [0.2, 0.26], blommor: [0.56, 0.28] };
+const MUSPOS = { start: [0.27, 0.27],   // bredvid den gula, så att dess hängande blomma inte sticker upp som en krona
+  rod: [-0.66, 0.22], gul: [-0.22, 0.2], lila: [0.2, 0.26], blommor: [0.56, 0.28] };
 const GA = [[S('13') + 3.0, S('14') - 0.05, 'start', 'rod'], [S('15') - 0.7, S('15') + 0.9, 'rod', 'gul'], [S('19') - 0.7, S('19') + 0.9, 'gul', 'lila'],
-  [S('21') + 2.6, S('21') + 4.8, 'lila', 'blommor'], [S('26b') + 0.1, S('26b') + 1.8, 'blommor', 'start']];
+  [S('21') + 0.1, S('21') + 1.9, 'lila', 'blommor'], [S('26b') + 1.5, S('26b') + 3.0, 'blommor', 'start']];   // 21: kameran följer med, pausen stilla; 26b: hem efter "Hej då, blommorna!"
 const SKUTT = [{ t0: S('12b') + 0.15, d: 0.38, h: 0.03 }, { t0: S('12b') + 0.6, d: 0.34, h: 0.022 }];   // två små glädjeskutt
 function musPos(t) {
   let [x, z] = MUSPOS.start, y = 0;
@@ -345,7 +352,7 @@ const SIFFRA_D = [['M30 38 L56 14 L56 128'], ['M20 46 C20 6 88 4 86 46 C84 78 40
 function siffror(t) {
   const r = rad(t), id = r.id; let h = '';
   const visa = (i, t0, t1) => { if (t < t0 || t > t1) return; const f = ['rod', 'gul', 'lila'][i], T = TULPAN[f];
-    const p = v3(T.x + 0.16, SIDA + 0.2, T.z + 0.03), [x, y] = skarm(p), [, y2] = skarm(p.clone().add(v3(0, 0.08, 0))), s = Math.abs(y - y2) / 140;
+    const p = v3(T.x + 0.16, SIDA + 0.32, T.z + 0.03), [x, y] = skarm(p), [, y2] = skarm(p.clone().add(v3(0, 0.08, 0))), s = Math.abs(y - y2) / 140;
     const k = ritfart((t - t0) / 0.4), op = Math.min(1, (t1 - t) / 0.3);
     h += `<g transform="translate(${(x - 50 * s).toFixed(1)} ${(y - 70 * s).toFixed(1)}) scale(${s.toFixed(4)})" opacity="${op.toFixed(2)}">`
       + ritBana(SIFFRA_D[i], k, { attr: `fill="none" stroke="#FFF" stroke-width="${(KRITAN.BRED * 2.4).toFixed(1)}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"` }).html
@@ -368,7 +375,7 @@ function vink(f, p, tl, d, i, stor) {   // armens hela vinkel (uttrycket + posen
   const armar = [...p.armar], fram = [...(p.fram || [0, 0])]; armar[i] = lerp(armar[i], a + b * s - f2.armar[i], upp); armar[1 - i] *= 1 - upp; fram[i] = 0;
   return [f2, { ...p, armar, fram, luta: (p.luta || 0) + (i ? -1 : 1) * upp * (1.5 + 1.0 * s) }];
 }
-const REAKTION = { '06b': 'kawaii', '07': 'nyfiken', '07b': 'ledsen', '08b': 'tanker', '09': 'nyfiken', '10': 'kawaii', '11': OPPEN, '12': 'forvanad',
+const REAKTION = { '06b': 'kawaii', '07': 'nyfiken', '07b': 'ledsen', '08': 'ledsen', '08b': 'tanker', '09': 'nyfiken', '10': 'kawaii', '11': OPPEN, '12': 'forvanad',
   '12b': OPPEN, '13': 'stolt', '14': OPPEN, '14b': 'kawaii', '15': OPPEN, '15b': 'kawaii', '16': 'nyfiken', '17': 'tanker', '18': 'kawaii', '19': OPPEN,
   '19b': 'stolt', '20': 'kawaii', '20b': OPPEN, '21': 'nyfiken', '22': 'kawaii', '22b': 'nyfiken', '23': 'forvanad', '23b': OPPEN, '24': 'nyfiken',
   '24b': 'kawaii', '24c': 'kawaii', '24d': OPPEN, '25': OPPEN };
@@ -397,7 +404,7 @@ function musen(t) {
     case '12b': { f = L.blanda(BU('forvanad'), OPPEN, mjuk(tl / 0.4)); f.titt = [0, 8]; const sk = bump(1.0, 2.2, tl, 0.2);   // skakar foten lite
       p.benY = [0, -22 * sk * Math.max(0, Math.sin(2 * Math.PI * 3 * tl))]; p.ben = [0, 8 * sk]; break; }
     case '13': { const sv = SVAR('13', 20) - r.s; f = { ...f, titt: [-6, -2] }; [f, p] = nick(f, p, tl - sv); f = L.blanda(f, OPPEN, bump(sv, sv + 1.2, tl)); break; }
-    case '14': case '15': case '19': { const fl = id === '14' ? 'rod' : id === '15' ? 'gul' : 'lila'; f = { ...BU('glad'), titt: [9, 4] }; p.rikt = 0.35;
+    case '14': case '15': case '19': { const fl = id === '14' ? 'rod' : id === '15' ? 'gul' : 'lila'; f = { ...BU('glad'), titt: [9, 4] }; p.rikt = 0.35 * mjuk(tl / 0.5);
       f = L.blanda(f, OPPEN, mjuk((t - UPP[fl] - 0.1) / 0.3)); break; }
     case '14b': case '15b': case '19b': f = L.blanda(BU('glad'), 'stolt', 0.5); break;
     case '16': p.rikt = 0.5 * Math.sin(tl * 1.4); f = BU('nyfiken'); f.titt = [10 * Math.sin(tl * 1.4), -2]; break;
@@ -428,7 +435,7 @@ function musen(t) {
   p.sakV = 34 * lut;
   // reaktionsslaget i radens slut (GLES)
   const RE = REAKTION[id];
-  if (RE) { const k = bump(r.d - GLES - 0.15, r.d + 0.1, tl, 0.3); f = L.blanda(f, RE, 0.85 * k); p.luta = (p.luta || 0) + (RAD.indexOf(r) % 2 ? 2.5 : -2.5) * k; }
+  if (RE) { const k = bump(r.d - GLES - 0.15, r.d, tl, 0.3); f = L.blanda(f, RE, 0.85 * k); p.luta = (p.luta || 0) + (RAD.indexOf(r) % 2 ? 2.5 : -2.5) * k; }   // klart till radens slut, inget hopp i nästa rad
   p.strack = (p.strack || 0) + 0.006 * Math.sin(t * 2.4);   // andas
 
   return [BL(f, t), p];
@@ -468,7 +475,7 @@ async function ritaMus(t) {
 
 // vattnet ur kannan: små droppar i en båge från pipen ner på bladen vid stjälkens fot, framför kortet
 const DROPPAR = new THREE.Group();
-for (let i = 0; i < 12; i++) DROPPAR.add(new THREE.Mesh(new THREE.SphereGeometry(0.0065 + 0.002 * (i % 2), 12, 10), mat(null, { color: '#BFE6FF', emissive: '#3f86c0', emissiveIntensity: 0.35 })));
+for (let i = 0; i < 12; i++) DROPPAR.add(new THREE.Mesh(new THREE.SphereGeometry(0.013 + 0.003 * (i % 2), 12, 10), mat(null, { color: '#BFE6FF', emissive: '#3f86c0', emissiveIntensity: 0.35 })));
 scen.add(DROPPAR);
 function vattna(t) {
   DROPPAR.visible = false; if (!PIPV) return;
@@ -481,6 +488,7 @@ function vattna(t) {
 }
 
 const glimt = (t, a, d = 0.6) => bump(a, a + d, t, 0.2);
+const PIP_T = ['24', '24d'].map(id => S(id) + RR[id].ljud.find(l => /fagel-pip/.test(l[0]))[1]);
 async function bildruta(t) {
   const oppen = t < STANG ? k01((t - OPPNA) / 0.9) : 1 - mjuk((t - PARM_NER[0]) / (PARM_NER[1] - PARM_NER[0]));
   satt(PARM0 + (PARM1 - PARM0) * oppen);
@@ -495,7 +503,7 @@ async function bildruta(t) {
     else lage = t < SLAR_UT[fl] ? 'knopp' : t < HANGER[fl] ? 'uppe' : t < UPP[fl] ? 'hanger' : 'uppe';
     for (const l of ['knopp', 'uppe', 'hanger']) { const k = T[l]; k.m.visible = l === lage; vik(k, e); k.m.rotation.z = 0; k.m.scale.setScalar(1); k.m.material.emissive.setScalar(0); }
     if (fl === 'gul') {   // knoppen fälls ner, teckningen ligger platt bakåt, fylls i och fälls upp
-      const kn = T.knopp; if (t >= GUL_NER && t < GUL_NER + 0.4) { kn.m.visible = true; vik(kn, 1 - mjuk((t - GUL_NER) / 0.4)); kn.m.position.y += 0.006; }
+      const kn = T.knopp; if (t >= GUL_NER && t < GUL_NER + 0.4) { const u = mjuk((t - GUL_NER) / 0.4); kn.m.visible = true; kn.m.rotation.x = -Math.PI / 2 * u; kn.m.scale.setScalar(1 - 0.9 * u); }   // bakåt (mot teckningen) och krymper: ingen krämvit baksida
       if (t >= GUL_NER && t < GUL_UPP + 0.5) { const u = T.uppe.m, up = reser((t - GUL_UPP) / 0.45);
         u.visible = t >= GUL_KLAR - 0.05; u.rotation.x = -Math.PI / 2 * (1 - up); u.position.y = SIDA + 0.0025 * (1 - up); }
       if (T.knopp.flik) T.knopp.flik.visible = t < GUL_NER || t > GUL_UPP + 0.25 ? T.knopp.flik.visible : false;
@@ -512,7 +520,9 @@ async function bildruta(t) {
   const sk0 = S('17') + 0.2 + LN(27) + 2.0, skim = t < S('18') ? 0.35 * k01((t - sk0) / 0.6) * (0.6 + 0.4 * Math.sin((t - sk0) * 5)) : t < S('19') ? 0.7 + 0.3 * Math.sin((t - S('18')) * 5) : 0;
   TULPAN.lila.hanger.m.material.emissive.setScalar(0.12 * skim);
   // musens kort: fälls upp sist (rad 06) med en efterstudsning, ner först när boken stängs
-  vik(MUSKORT, reser((t - MUS_UPP) / 0.5) * (1 - mjuk((t - STANG - 0.25) / 0.35)));
+  vik(MUSKORT, reser((t - MUS_UPP) / 0.5) * (1 - mjuk((t - MUS_NER) / 0.35)));
+  MUSBAK.emissive.set(t < MUS_UPP ? '#93D663' : '#F4ECDD');   // nedfälld i gräset före rad 06: grön baksida, inte en krämvit fläck
+  { const e = mus.rotation.x < 0.3, [x, y, z] = musPos(t); MUSFLIK.visible = e; MUSFLIK.position.set(x, SIDA + 0.0009, z + 0.012); MUSFLIK.scale.setScalar(1 - 4 * y); }
   // solen glimtar (rad 07, 20b)
   SOLEN.scale.setScalar(1 + 0.1 * Math.max(glimt(t, S('07') + 0.3, 0.8), glimt(t, S('20b') + 0.2, 0.8)));
   for (const k of MOLNEN) k.m.position.x = k.x + 0.012 * t * (k.i % 2 ? -1 : 1) * (1 + k.i * 0.3);
@@ -520,7 +530,7 @@ async function bildruta(t) {
   const K = KANNA_K, ke = fallE(K);
   K.m.scale.setScalar(1); K.m.position.set(K.x, K.y, K.z); K.m.visible = t >= KANNA_KLAR - 0.05 && (t < GLIDA[1] || t >= SATT_NER[1] - 0.02);
   if (t < GLIDA[1]) { K.m.rotation.x = -Math.PI / 2 * (1 - reser((t - KANNA_UPP) / 0.45)); K.m.position.y = SIDA + 0.0025 * (t < KANNA_UPP ? 1 : 0); }
-  else vik(K, t >= STANG ? ke : 1);
+  else vik(K, t >= K.ner ? 1 - mjuk((t - K.ner) / 0.35) : 1);   // fälls som de andra korten (fallE ger 0 utan upp)
   K.flik.visible = K.m.visible && (t > KANNA_UPP + 0.3 && t < GLIDA[0] || t >= SATT_NER[1]) && t < K.ner + 0.1;
   const hand = () => { const h = fig2varld(window.HAND.r); h.y -= (323 - 36) * KSKALA * ENHET; h.x += (194 - 144) * KSKALA * ENHET; return h; };   // kannans fot under greppet
   if (t >= GLIDA[0] && t < GLIDA[1]) { const u = mjuk((t - GLIDA[0]) / (GLIDA[1] - GLIDA[0])), mal = hand();
@@ -529,8 +539,9 @@ async function bildruta(t) {
     K.m.visible = true; K.m.rotation.x = 0; K.m.position.set(lerp(fr.x, K.x, u), lerp(fr.y, K.y, u) + 0.06 * Math.sin(Math.PI * u), lerp(fr.z, K.z, u)); }
   // boet i lövträdets grenklyka, fälls med trädet; glimtar på "fågelbo" och "Hej då, fågelboet!"
   LOVTRAD.m.updateMatrixWorld(true);
-  { const p = LOVTRAD.m.localToWorld(BO_OFF.clone()); BOET.m.position.copy(p); BOET.m.rotation.x = LOVTRAD.m.rotation.x;
-    BOET.m.scale.setScalar(1 + 0.12 * Math.max(glimt(t, ORD_BO, 0.7), glimt(t, HEJ_BO, 0.7))); BOET.m.visible = LOVTRAD.m.rotation.x < 1.5; }
+  { const p = LOVTRAD.m.localToWorld(BO_OFF.clone()); BOET.m.position.copy(p); BOET.m.rotation.x = LOVTRAD.m.rotation.x; BOET.m.rotation.z = 0;
+    BOET.m.scale.setScalar(1 + 0.12 * Math.max(glimt(t, ORD_BO, 0.7), glimt(t, HEJ_BO, 0.7))); BOET.m.visible = LOVTRAD.m.rotation.x < 1.5;
+    for (const a of PIP_T) if (t > a && t < a + 1.6) BOET.m.rotation.z = 0.06 * Math.exp(-(t - a) * 2.5) * Math.sin((t - a) * 11); }   // äggen gungar när fågeln piper
   // fjärilen: på den rosa blomman (fälls med den), vingarna fälls sakta; flyger till huvudet och tillbaka
   ROSA_K.m.updateMatrixWorld(true); GULA_K.m.updateMatrixWorld(true);
   const paRosa = ROSA_K.m.localToWorld(v3(0, 0.12, 0.008)), paHuvud = fig2varld(HUVUD).add(v3(0, FH * 0.32, 0.012));
@@ -551,8 +562,10 @@ async function bildruta(t) {
   await ritaMus(t);
   vattna(t);
   // fokus på vyns mål
-  const v = VYER[Math.max(0, VYER.findLastIndex(w => w.t <= t))];
-  bokeh.uniforms.focus.value = cam.position.distanceTo(v.mal); bokeh.uniforms.maxblur.value = v.blur; bokeh.uniforms.aperture.value = v.blur > 0.003 ? 0.012 : 0.002;
+  // i en glidning följer fokus och oskärpa med (annars ett skärpehopp i första rutan)
+  const vi = Math.max(0, VYER.findLastIndex(w => w.t <= t)), v = VYER[vi], fv = VYER[vi - 1], ap = w => w.blur > 0.003 ? 0.012 : 0.002;
+  const e = v.rorelse === 'glid' && fv ? 0.5 - 0.5 * Math.cos(Math.PI * k01((t - v.t) / ((VYER[vi + 1]?.t ?? DURATION) - v.t))) : 1, ff = fv ?? v;
+  bokeh.uniforms.focus.value = cam.position.distanceTo(ff.mal.clone().lerp(v.mal, e)); bokeh.uniforms.maxblur.value = lerp(ff.blur, v.blur, e); bokeh.uniforms.aperture.value = lerp(ap(ff), ap(v), e);
   scen.updateMatrixWorld(true);
   // kritan, siffrorna och glimtarnas gnistor i #ov
   let ov = ritaKritan(t) + siffror(t);
@@ -574,59 +587,73 @@ async function bildruta(t) {
 
 // ---- kameran: storyboardens vyer, glid mellan närliggande vyer, klipp när platsen byts ----
 const BOPOS = [TRADET[0] + BO_OFF.x, SIDA + BO_OFF.y, TRADET[1] + BO_OFF.z];
-const tulpanNara = f => () => { const [x, z] = TPOS[f]; return [v3(x - 0.1, 0.4, z + 1.0), v3(x - 0.1, 0.2, z + 0.08), 30]; };
+const tulpanNara = (f, dx = -0.1) => () => { const [x, z] = TPOS[f]; return [v3(x + dx, 0.4, z + 1.0), v3(x + dx, 0.2, z + 0.08), 30]; };
 const VY = {
   bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32],
   bred: () => [v3(0, 0.7, 1.8), v3(0, 0.3, -0.2), 32],
-  rabatt: () => [v3(0.04, 0.42, 1.22), v3(0.02, 0.15, 0.05), 30],
-  'rabatt-hel': () => [v3(0.06, 0.52, 1.5), v3(0.06, 0.14, 0.08), 32],
+  rabatt: () => [v3(0.07, 0.42, 1.3), v3(0.06, 0.15, 0.05), 30],   // den lila hela, också när den hänger åt höger
+  'rabatt-hej': () => [v3(0.1, 0.42, 1.3), v3(0.1, 0.15, 0.05), 35],   // rad 26b: hela rabatten och musen vid blommorna (före gången)
+  'rabatt-hel': () => [v3(0.04, 0.42, 1.38), v3(0.04, 0.2, 0.04), 32],
   'gul-rita': () => [v3(0.02, 0.66, 0.5), v3(0.0, 0.02, -0.19), 30],   // teckningen ligger platt bakåt från foten
-  'gul-nara': tulpanNara('gul'), 'rod-nara': tulpanNara('rod'), 'lila-nara': tulpanNara('lila'),
+  'gul-nara': tulpanNara('gul'), 'rod-nara': tulpanNara('rod'), 'lila-nara': tulpanNara('lila', 0.03),   // musen vid den gula och kannan i handen hamnar utanför, inte halvt i kanten
   halv: g => [g.clone().add(v3(0.12, 0.24, 0.84)), g.clone().add(v3(0.08, 0.14, -0.05)), 30],
-  'halv-sol': () => { scen.updateMatrixWorld(true); const s = SOLEN.getWorldPosition(v3()), m = v3(0.1, 0.17, 0.05).lerp(s, 0.36); return [v3(m.x, 0.4, 1.3), m, 30]; },
-  nara: g => [g.clone().add(v3(0.02, 0.24, 0.62)), g.clone().add(v3(0, 0.17, 0)), 30],
-  kanna: () => [v3(KANNAPOS[0] - 0.1, 0.44, KANNAPOS[1] + 0.66), v3(KANNAPOS[0] - 0.1, 0.1, KANNAPOS[1] - 0.08), 30],
-  uppslag: () => [v3(0, 0.8, 1.8), v3(0, 0.2, -0.05), 32],
+  'halv-sol': () => { scen.updateMatrixWorld(true); const s = SOLEN.getWorldPosition(v3()), m = v3(0.1, 0.17, 0.05).lerp(s, 0.5); return [v3(m.x, 0.52, 1.3), m, 30]; },   // solen hel, tulpanerna nedtill, musen utanför (inte halva huvudet)
+  nara: g => [g.clone().add(v3(0.05, 0.2, 0.52)), g.clone().add(v3(0.03, 0.15, 0)), 30],   // musen ca 85 % av bildhöjden (062)
+  kanna: () => [v3(KANNAPOS[0] - 0.07, 0.33, KANNAPOS[1] + 0.64), v3(KANNAPOS[0] - 0.07, 0.15, KANNAPOS[1] - 0.06), 30],   // lägre och närmare: kannan större, musens öron med
+  uppslag: () => [v3(0.55, 0.5, 1.45), v3(0.55, 0.15, 0.25), 32],   // rad 21: lila, musen och båda blommorna med djuren
   fjaril: () => [v3(ROSA[0] - 0.02, 0.3, ROSA[1] + 0.5), v3(ROSA[0] - 0.02, 0.14, ROSA[1]), 26],
-  nyckelpiga: () => [v3(GULA[0] - 0.02, 0.24, GULA[1] + 0.4), v3(GULA[0], 0.12, GULA[1]), 24],
-  insekter: () => [v3(0.84, 0.36, 1.08), v3(0.84, 0.12, 0.32), 30],
-  trad: () => [v3(-0.3, 0.6, 0.82), v3(-0.48, 0.4, -0.22), 28],
+  nyckelpiga: () => [v3(GULA[0] - 0.12, 0.26, GULA[1] + 0.36), v3(GULA[0] + 0.01, 0.13, GULA[1]), 20],   // snett från vänster: musen (bakom till vänster) hamnar utanför bildför
+  insekter: () => [v3(0.86, 0.3, 0.86), v3(0.85, 0.12, 0.32), 30],
+  trad: () => [v3(-0.98, 0.5, 0.5), v3(-0.64, 0.42, -0.2), 30],   // snett från vänster: boet större, den röda tulpanen utanför bild
   bo: () => [v3(BOPOS[0] + 0.1, BOPOS[1] + 0.06, BOPOS[2] + 0.55), v3(...BOPOS).add(v3(0, 0.03, 0)), 26],
   'bo-nara': () => [v3(BOPOS[0] + 0.04, BOPOS[1] + 0.06, BOPOS[2] + 0.34), v3(...BOPOS).add(v3(0, 0.04, 0)), 22],
   hejda: g => [g.clone().add(v3(-0.06, 0.28, 0.8)), g.clone().add(v3(-0.02, 0.15, -0.1)), 32],   // närmare, så att vinkningen syns
-  slut: () => [v3(-0.15, 1.45, 2.45), v3(0, 0.2, -0.1), 32],
+  slut: () => [v3(0, 2.55, 4.05), v3(0, 0.12, -0.12), 32],   // hela den stängda boken, centrerad (bordets höjd)
 };
 const lage = (pos, mal, P) => [Math.atan2(pos.x - P[0], pos.z - P[2]) * 180 / Math.PI, Math.hypot(pos.x - P[0], pos.z - P[2]), pos.y - P[1], mal.x - P[0], mal.y - P[1]];
 const fran3 = (l, P) => { const a = l[0] * Math.PI / 180; return [v3(P[0] + l[1] * Math.sin(a), P[1] + l[2], P[2] + l[1] * Math.cos(a)), v3(P[0] + l[3], P[1] + l[4], P[2])]; };
+// planeraren tittar alltid på platsen + [x, y, 0]: flytta blickpunkten längs blickens stråle till den nya platsens z-plan,
+// annars vrids blicken i glidningens första bildruta (062/064: ryck)
+const paZ = (p, m, z) => { const k = (z - p.z) / (m.z - p.z); return k > 0 && isFinite(k) ? p.clone().lerp(m, k) : m; };
 const skjut = l => [l[0] + 1.2, l[1] * 0.965, l[2] * 0.985, l[3], l[4]];   // svag push in i varje vy
 satt(PARM1); scen.updateMatrixWorld(true);
 const platser = {}, VYER = [];
 const blurFor = n => /nara|rita|nyckelpiga|fjaril/.test(n) ? 0.008 : /halv|kanna|bo|hejda|insekter/.test(n) ? 0.006 : 0.003;
+// planeraren byter fov i vyns första bildruta: en glidning behåller förra vyns fov och flyttar i stället kameran längs blicken,
+// så att målet ser lika stort ut (avståndet × tan(fov/2) lika), annars blev det ett zoomhopp i glidningens första ruta
+const iFov = ([pos, mal, fov], ny) => !ny || ny === fov ? [pos, mal, fov]
+  : [mal.clone().add(pos.clone().sub(mal).multiplyScalar(Math.tan(fov * Math.PI / 360) / Math.tan(ny * Math.PI / 360))), mal, ny];
 function vy(t, namn, g, o = {}) {
-  const [pos, mal, fov] = VY[namn](g), P = o.P || [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
+  const [pos, mal, fov] = iFov(VY[namn](g), o.fov), P = o.P || [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
   if (!o.fran) pos.y += 0.06;
   const fran = o.fran || lage(pos, mal, P);
   VYER.push({ t, mot: key, fran, till: o.till || skjut(fran), fov, mal: o.mal || mal, blur: blurFor(namn) });
 }
 function glid(t0, d, namn, g) {
-  const f = VYER.at(-1), [p0, m0] = fran3(f.till ?? f.fran, platser[f.mot]), [pos, mal, fov] = VY[namn](g); pos.y += 0.06;
+  const f0 = VYER.at(-1); if (t0 - f0.t < 1.5 && f0.rorelse !== 'glid') f0.till = f0.fran;   // en kort vy före glidningen står still (annars hela pushen på en ruta, rad 14)
+  const f = f0, [p0, m0] = fran3(f.till ?? f.fran, platser[f.mot]), [pos, mal, fov] = iFov(VY[namn](g), f.fov); pos.y += 0.06;
   const P = [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
-  VYER.push({ t: t0, mot: key, fran: lage(p0, m0, P), till: lage(pos, mal, P), fov, mal, blur: blurFor(namn), rorelse: 'glid' });
-  vy(t0 + d, namn, g);
+  VYER.push({ t: t0, mot: key, fran: lage(p0, paZ(p0, m0, P[2]), P), till: lage(pos, mal, P), fov, mal, blur: blurFor(namn), rorelse: 'glid' });
+  vy(t0 + d, namn, g, { fov });
 }
-// 05 klipps i stället för att glida: gul-rita tittar på z -0.19 och glidningen (bana runt den nya punkten) hoppade
-const GLID = { '03': 1.4, '05b': 1.0, '06': 1.0, '07': 1.1, '07b': 1.0, '08': 0.9, '09': 0.9, '11': 0.8, '12': 0.8, '14': 0.8, '16': 0.9, '17': 1.0,
-  '20': 1.0, '20b': 1.1, '21': 1.2, '24b': 0.8, '24c': 0.6, '26': 0.8 };
+// 05 klipps när den gula reser sig (se slingan). 21 glider med musen till blommorna (GA[3]), som rad 13.
+const GLID = { '03': 1.4, '05b': 1.0, '06': 1.0, '07': 1.1, '07b': 1.0, '08': 0.9, '08b': 0.9, '09': 0.9, '11': 0.8, '12': 0.8, '14': 0.8, '16': 0.9, '17': 1.0,
+  '20': 1.0, '20b': 1.1, '21': 1.8, '24b': 0.8, '26': 0.8 };
 const gPos = n => v3(MUSPOS[n][0], SIDA, MUSPOS[n][1]);
 const P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0), bredL = lage(...VY.bred().slice(0, 2), P0);
 let forra = '';
 for (const r of RAD) {
-  const namn = r.st.vy === 'in' ? 'bred' : r.st.vy, g = gPos(r.st.pos), key = namn + r.st.pos;
+  // nyckeln: bara vyer som följer musen (halv, nara, hejda) byts när musen flyttar; annars startade samma vy om (ryck i pushen)
+  const namn = r.st.vy === 'in' ? 'bred' : r.st.vy, g = gPos(r.st.pos), key = namn + (VY[namn].length ? r.st.pos : '');
+  if (r.id === '05') { vy(GUL_UPP - 0.05, 'gul-nara', g); forra = key; continue; }   // fyllningen ses uppifrån, klipp när kortet reser sig
+  if (r.id === '24') { vy(r.s + 1.9, 'trad', g); forra = 'trad'; continue; }   // halvbilden från 23b står kvar: musen tittar upp på "Titta upp i trädet", klipp till trädet före "Vad finns där?"
+  if (r.id === '24b') { glid(r.s, GLID[r.id], namn, g); vy(r.s + 1.6, 'nara', g); forra = 'nara-bo'; continue; }   // musens kawaii-reaktion på boet
   if (r.id === '01') { vy(r.s, 'bord', g, { P: P0, fran: [bordL[0] - 7, bordL[1] * 1.07, bordL[2] * 1.05, bordL[3], bordL[4]], till: bordL, mal: v3(0, 0.25, -0.1) }); forra = 'bord'; continue; }
   if (r.id === '02') { VYER.at(-1).till = bordL; vy(r.s + 0.9, 'bred', g, { P: P0, fran: bordL, till: bredL, mal: v3(0, 0.3, -0.2) }); forra = 'bred'; continue; }
-  if (r.id === '28') {   // ut ur boken medan korten fälls ner och pärmen slås igen
-    const f = VYER.at(-1), [pos, mal] = fran3(f.till, platser[f.mot]);
-    VYER.push({ t: r.s + 0.1, mot: 'pBord', fran: lage(pos, mal, P0), till: lage(...VY.slut().slice(0, 2), P0), fov: 32, mal: v3(0, 0.2, -0.1), blur: 0.003, rorelse: 'glid' }); platser.pBord = P0; continue; }
+  if (r.id === '28') {   // ut ur boken först (glid till slut), sedan fälls korten och pärmen medan kameran sakta trycker in
+    const f = VYER.at(-1), [pos, mal] = fran3(f.till, platser[f.mot]), [sp, sm, fov] = iFov(VY.slut(), f.fov), slutL = lage(sp, sm, P0); platser.pBord = P0;
+    VYER.push({ t: r.s + 0.1, mot: 'pBord', fran: lage(pos, paZ(pos, mal, P0[2]), P0), till: slutL, fov, mal: sm, blur: 0.003, rorelse: 'glid' });
+    VYER.push({ t: UT_KLAR, mot: 'pBord', fran: slutL, till: [slutL[0], slutL[1] * 0.97, slutL[2] * 0.97, slutL[3], slutL[4]], fov, mal: sm, blur: 0.003, rorelse: 'push' }); continue; }
   if (r.id === '13') { vy(r.s, 'halv', gPos('start')); glid(GA[0][0], GA[0][1] - GA[0][0], 'halv', gPos('rod')); forra = 'halvrod'; continue; }   // följer musen till den röda
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s, GLID[r.id], namn, g); else vy(r.s, namn, g);
@@ -637,7 +664,12 @@ const planK = kameraplan({ cam, canvas: $('bild'), platser, vyer: VYER, langd: D
 
 // ---- ljudet: Malin, musen och effekterna ur raderna, kritans ritljud som slinga, fågelkvitter lågt under allt ----
 const EF = 'assets/ljud/effekter/';
-const VOL = f => /mus-|oj-oj|ooh/.test(f) ? 1.5 : /(glitter|glimt)/.test(f) ? 0.85 : /tindra/.test(f) ? 0.6 : /prassel-tyg/.test(f) ? 0.9
+// musens ljud: 3 dB under Malin (−18,4 LUFS med vol 2,5), räknat ur varje fils egen nivå (LUFS utan tystnad, uppmätt 2026-11-28)
+const MUS_LUFS = { 'mus-hej-1': -15.4, 'mus-hej-2': -13.9, 'mus-hej-3': -13.7, 'mus-fortjust-1': -20.1, 'mus-fortjust-2': -19.9, 'mus-fortjust-3': -20.0,
+  'mus-fortjust-4': -20.2, 'mus-nyfiken-1': -19.4, 'mus-nyfiken-3': -19.5, 'mus-pratar-1': -19.4, 'mus-pratar-3': -19.5, 'oj-oj-1': -16.0, 'mus-fniss-4': -17.2,
+  'mus-suck-1': -11.5, 'mus-suck-2': -15.6, 'ooh-1': -14.2, 'mus-fniss-kort-1': -20.1, 'mus-hejda-1': -16.0, 'mus-hejda-3': -14.1 };
+const musVol = f => { const L = MUS_LUFS[f.split('/').pop()]; return L == null ? 1.5 : 2.5 * 10 ** ((-18.4 - 3 - L) / 20); };
+const VOL = f => /mus-|oj-oj|ooh/.test(f) ? musVol(f) : /regn-droppar-1-stark/.test(f) ? 2.0 : /(glitter|glimt)/.test(f) ? 0.85 : /tindra/.test(f) ? 0.6 : /prassel-tyg/.test(f) ? 0.9
   : /(pop|swoosh|hopp-mjuk|landa-mjuk)/.test(f) ? 0.7 : /regn-droppar|fagel-pip/.test(f) ? 0.5 : /droppar/.test(f) ? 0.8 : 1.0;
 const LJUD = [];
 for (const r of RAD) {
@@ -645,7 +677,8 @@ for (const r of RAD) {
   for (const [f, o] of r.ljud || []) if (!/^(krita-ritar|fagelkvitter)\//.test(f)) LJUD.push({ t: r.s + o, fil: EF + f + '.m4a', vol: VOL(f) });
 }
 for (const [i, D] of RIT.entries()) LJUD.push({ t: D.T.rit[0], fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: D.T.rit[1] - D.T.rit[0] + 0.3, loop: true, fade: 0.4 });
-LJUD.push({ t: 0, fil: EF + 'fagelkvitter/fagelkvitter-1.m4a', vol: 0.3, langd: DURATION, loop: true, fadeIn: 1.0, fade: 2.0 });
+LJUD.push({ t: 0, fil: EF + 'fagelkvitter/fagelkvitter-1-stark.m4a', vol: 0.4,   // kopian +22,8 dB (−26,8 LUFS som 062:s skogsljud)
+  langd: DURATION, loop: true, fadeIn: 1.0, fade: 2.0 });
 LJUD.push(...[0.5, 1.0].map((k, i) => ({ t: KLAPP + 1.0 + k, fil: EF + `klapp/klapp-${2 - i}.m4a`, vol: 1.0 })));   // riggens andra och tredje klapp
 LJUD.push(...planK.ljud);
 window.LJUD = LJUD.filter(c => c.t < DURATION).sort((a, b) => a.t - b.t);

@@ -28,19 +28,19 @@ Alla rörelser börjar före Malins replik (0,4–0,8 s in eller när de har lan
 | Kritan ritar på sidan | samma, en glass på gräset bredvid dammen: strutens kontur, rutmönstret som två streck, kulan. Gisspaus 3 s. Teckningen fylls i, och kortet fälls upp med ett `pop` |
 | Grodans kort fälls upp | som de andra korten, med en liten efterstudsning, `pop`. Grodan står på sitt näckrosblad |
 | Varm | ljuset blir varmare (gradering), grodan tittar upp mot solen (`rikt` uppåt), kinderna rosigare, en lugn suck med axlarna nedåt. Inget svettigt eller ledset |
-| Glassen i handen | kortet fälls ner, glassen glider i en båge till handens spets. Tassen ritas framför struten, armen får en mörkare kritkant (receptets "hålla en sak") |
+| Glassen i handen | glassen glider i en båge till handen och är ca en tredjedel av grodans höjd (`GS` 0,75). Tassen ritas framför struten, armen får en mörkare kritkant (receptets "hålla en sak") |
 | Smakar | glassen lyfts till munnen, en liten bit av kulan är borta **på ordet "Mums"**, `slick` |
 | Droppen på näsan | en rosa droppe faller från kulan och landar på grodans näsa (ritad i kod). Grodan tittar i kors upp mot den, skakar lugnt på huvudet (±4°), droppen faller ner i dammen, `plupp` |
-| Glassen är slut | grodan håller en tom strut, den glider ner på gräset och kortet fälls ner |
-| Hopp … plask | grodan hukar, ett lugnt hopp i en båge (30 px, ingen studs) till nästa blad. **På ordet "plask"** landar hon, och vattnet stänker upp runt bladet (droppar i kod), `plask`. Droppar faller på grodan, som blundar glatt |
-| Blommorna bakom busken | från rad 17 sticker blommornas toppar fram bakom buskens kort, bara lite |
-| Blommorna hittas | topparna skimrar svagt efter 3 s, tydligt på *"Ja, där är blommorna!"*, och blommornas kort fälls upp framför busken |
-| Blommorna och sandslottet | blommorna fälls upp på *"Ja, där är blommorna!"* och sandslottet **på ordet** "sandslott", med ett `pop` var. Grodan vänder sig mot dem (riktningsposen, figuren speglas aldrig) |
+| Glassen är slut | grodan slickar upp det sista av kulan (tre slick) och äter upp struten i två tuggor, handen är tom |
+| Hopp … plask | grodan hukar, ett lugnt hopp i en båge ut i dammen. **På ordet "plask"** landar hon mitt i vattnet och sjunker ner till axlarna (bad 4), vattnet stänker och ringar sig, `plask`. Droppar faller på grodan, som blundar glatt |
+| Badar | hon simmar ett varv (helbild, simtagen syns över ytan) och plaskar med händerna på *"Plask, plask, plask!"*; upp ur vattnet i själva hoppet upp på bladet |
+| Blommorna | fyra enskilda blommor (röd, gul, lila, rosa) står vid stranden från början. De skimrar svagt när barnet letar, tydligt på *"Ja, där är blommorna!"*, och varje blomma studsar på sitt färgord. Grodans ansikte och blommorna är i samma bild |
+| Sandslottet | grodan tar spaden ur hinken, fyller hinken, vänder den över sandhögen och lyfter på *"lyft!"* (två torn). Hela slottet reser sig **på ordet** "sandslott", grodan lägger spaden i hinken och klappar. Grodan vänder sig mot det (riktningsposen, figuren speglas aldrig) |
 | Luktar | grodan lutar sig mot blommorna, blundar, en lugn suck |
 | Vinkar | armen bakom kroppen, snett ut förbi kanten, hela armen syns |
-| Boken stängs | korten fälls ner i omvänd ordning (grodan sist), pärmen slås igen, siluetten syns. Ersätter kritirisen (Öppet 2) |
+| Boken stängs | kameran glider ut till bordet (1,5 s) medan korten fälls ner (grodan först, det som reste sig sist ligger underst), sedan slås pärmen igen (0,7 s) och den stängda boken står kvar mitt i bild ca 1 s med en svag push in. Ersätter kritirisen (Öppet 2) |
 
-**Inget går genom något:** korten fälls ner åt samma håll och i den ordningen att det som reser sig först ligger överst (provets regel). Pärmen slås igen först när alla kort ligger platt. Grodan landar **på** bladet, aldrig i vattnet eller genom sidan. Glassen ligger i handens spets, framför tassen. Blommorna sticker fram **bakom** buskens kort och fälls upp framför det. Täta bilder (6 per sekund) i QA runt raderna 01b, 9, 11, 12, 15, 19, 20, 22 och 26.
+**Inget går genom något:** korten fälls ner åt samma håll och i den ordningen att det som reser sig först ligger överst (provets regel). Pärmen slås igen först när alla kort ligger platt. Grodan landar **på** bladen eller mitt i dammen (badet), aldrig genom sidan. Glassen ligger i handens spets, framför tassen. Pärmen faller först när kameran är ute, aldrig genom kamerans siktlinje. Täta bilder (6 per sekund) i QA runt raderna 01b, 9, 11, 12, 15, 19, 20, 22 och 26.
 
 ## INTRO
 

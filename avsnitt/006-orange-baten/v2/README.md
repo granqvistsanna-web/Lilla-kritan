@@ -27,7 +27,7 @@ v1 (`../film/avsnitt-006.mp4`, publicerad på https://youtu.be/EMhD7juFARg) rör
 | Fisken och fågeln | v2-urklipp (nästa omgång i Flow) | – |
 | Kamera | `verktyg/utsnitt.js`, `format/bildutsnitt.md` | – |
 | Kritsvep | `rodsvep` i orange, 1,6 s, ingen sak i svepet | 013 `scen-kit.js` |
-| Slut | prenumerera-kortet före outrot, kritirisen | `produktion/youtube/prenumerera/` |
+| Slut | hej då, rakt klipp till prenumerera-kortet (utan dess öppnings-iris), kortets iris är slutet | `produktion/youtube/prenumerera/` |
 | Line boil | 2,5 px i bild, delad med zoomen | CLAUDE.md |
 
 ## Att se upp med
@@ -43,6 +43,7 @@ v1 (`../film/avsnitt-006.mp4`, publicerad på https://youtu.be/EMhD7juFARg) rör
 3. **Storyboard (utkast 2026-11-26):** [`storyboard-v2/storyboard.md`](storyboard-v2/storyboard.md), avsnittstid = sångtid + 9,0. Inga repliker, fyra dansare utan Mille (Sanna 2026-11-26). Godkänd att bygga på.
 4. **Scener (påbörjade 2026-11-26):** `scener/kit.js` (båten med Disa, kameran och boil, 033:s vinkning, orange kritsvep, skottlistan), `scener/render.mjs` (033:s). Klara som förhandsvisning: `scener/kritan-ritar` (01a–01e, avsnitt 0:09.0–0:33.2) och `scener/sjon` (03–09f, 0:33.2–1:59.4, slutar mitt i kritsvepet); ihop med sången i `film/forhand-ritar-sjon.mp4` (börjar vid avsnitt 0:09.0). Kvar: introt (013), `bryggan` (11–14g), `discot` (15a–16f), prenumerera och kritirisen, grovklipp.
 5. QA (`verktyg/qa-film.sh`), feedbacksidan, slutrendering.
+6. **QA-fixar 2026-11-27 (29 punkter):** alla fyra scenerna och `film/satt-ihop.sh` ändrade, grovklippet byggt om (`film/avsnitt-006-v2-grovklipp.mp4`, förhandsvisning `--snabb`). Ritscenen: lugnare tajming och knackningar. Sjön: blickar, vinkning med vänster arm, Fia in och ut till vänster, fisken och fågeln (refräng 2: fågeln på fören), mindre sol. Bryggan: pantomimen äpple/banan/apelsin, överlämningen, närbild på Agda, apelsinen driver ut, hoppet rakt fram, kritringen på "rund", halvorna på "halva". Discot: ekona (ett drag per dansare), öppna ögon varvat, alla hela i bild, ny väst och hoppa-märke, hej då med Disa i båten. Slutet: ett slut, rakt klipp till kortet utan dess öppnings-iris. Detaljer i storyboarden.
 
 ## Flow-prompterna (omgång 1, Nano Banana Pro, 0 krediter)
 

@@ -111,9 +111,9 @@ export const RADER = [
     bild: 'Kaninen nickar', ljudtext: 'kanin-tack-1', s: { vy: 'nara' } },
   { id: '11', d: 0.6 + L(19) + 0.8, plats: 'Kaninens plats, halvbild', malin: [[19, 0.6]], ljud: [['swoosh/swoosh-1', 0.1, 0.5]],
     bild: 'Pannbandet glider lugnt i en båge ner över öronen (ca 1 s), öronen trycks ihop under bandet, flingorna faller av', ljudtext: 'swoosh mjukt', s: { vy: 'halv', pannband: 'pa', oronsno: false } },
-  { id: '12', d: 0.4 + L(20) + 1.2, plats: 'Kaninen, närbild', malin: [[20, 0.4]], ljud: [['pop/pop-3', 0.4 + ORD.plopp1, 0.5], K('kanin-ny-fragande-2', 0.4 + L(20) + 0.2)],
+  { id: '12', d: 0.4 + L(20) + 1.2, plats: 'Kaninen, närbild', malin: [[20, 0.4]], ljud: [['pop/pop-1', 0.4 + ORD.plopp1, 0.5], K('kanin-ny-fragande-2', 0.4 + L(20) + 0.2)],
     bild: 'På *"Plopp!"* kommer vänster öra upp ur bandet, det högra stannar under. Kaninen tittar upp mot det och vickar lite på huvudet', ljudtext: 'pop litet, kanin-ny-fragande-2', s: { vy: 'nara' } },
-  { id: '12b', d: 0.4 + L(21) + 1.2, plats: 'Kaninen, närbild', malin: [[21, 0.4]], ljud: [['pop/pop-4', 0.4 + ORD.plopp2, 0.5], K('kanin-ny-fniss-1', 0.4 + L(21) + 0.2)],
+  { id: '12b', d: 0.4 + L(21) + 1.2, plats: 'Kaninen, närbild', malin: [[21, 0.4]], ljud: [['pop/pop-2', 0.4 + ORD.plopp2, 0.5], K('kanin-ny-fniss-1', 0.4 + L(21) + 0.2)],
     bild: 'På *"Plopp!"* kommer det högra örat upp. Kaninen fnissar', ljudtext: 'pop litet, kanin-ny-fniss-1', s: {} },
   { id: '13', d: 0.2 + L(22) + SVAR + L(23) + 1.0, plats: 'Kaninen, närbild', malin: [[22, 0.2], [23, 0.2 + L(22) + SVAR]], ljud: [K('kanin-ny-mmm-1', 0.2 + L(22) + 0.2)],
     bild: 'Frosten på spetsarna tonas bort, öronen reser sig. Pausen: mysig suck, kaninen blundar glatt', ljudtext: 'kanin-ny-mmm-1', s: {} },
@@ -138,7 +138,7 @@ export const RADER = [
     bild: 'Varje boll studsar lite på sitt räkneord: *"En, två, tre"*', ljudtext: 'glimt per boll', s: {} },
 
   // --- Snö på huvudet, det piper ---
-  { id: '17', d: 0.5 + L(29) + 1.2, plats: 'Kaninen vid granen, närbild', malin: [[29, 0.5]], ljud: [['sno-duns/sno-duns-2', 0.2, 0.5], K('kanin-gullig-3', 0.5 + L(29) + 0.2)],
+  { id: '17', d: 1.15 + L(29) + 1.2, plats: 'Kaninen vid granen, närbild', malin: [[29, 1.15]], ljud: [['sno-duns/sno-duns-2', 0.7, 0.5], K('kanin-gullig-3', 1.15 + L(29) + 0.2)],
     bild: 'Kaninen står vid granen. En snötuss glider av grenen och landar ovanpå huvudet mellan öronen. Kaninen tittar i kors upp, skakar lugnt på huvudet, tussen faller ner bredvid', ljudtext: 'sno-duns, kanin-gullig-3 (fniss)', s: { vy: 'nara', plats: 'gran', tuss: true, glimt: null } },
   { id: '18', d: 1.4 + L(30) + GISS, plats: 'Kaninen vid granen, närbild', malin: [[30, 1.4]],
     ljud: [['fagel-pip/fagel-pip-1', 0.1], ['fagel-pip/fagel-pip-2', 0.7], K('kanin-gullig-7', 1.4 + L(30) + 0.4), ['fagel-pip/fagel-pip-3', 1.4 + L(30) + 1.8]],
@@ -147,19 +147,19 @@ export const RADER = [
     bild: 'Kameran glider till trädet: fåglarna sitter där de suttit hela tiden och lyfter vingarna', ljudtext: 'glimt, kanin-ny-fortjust-1', s: { vy: 'trad' } },
   { id: '19b', d: 0.4 + L(32) + 0.5 + L(33) + 0.5 + L(34) + 0.8, plats: 'Trädet, närbild',
     malin: [[32, 0.4], [33, 0.4 + L(32) + 0.5], [34, 0.4 + L(32) + 0.5 + L(33) + 0.5]],
-    ljud: [['fagel-pip/fagel-pip-4', 0.4 + ORD.rod], ['glimt/glimt-1', 0.4 + ORD.rod + 0.1], ['fagel-pip/fagel-pip-5', 0.4 + L(32) + 0.5 + ORD.bla], ['glimt/glimt-2', 0.4 + L(32) + 0.5 + ORD.bla + 0.1],
+    ljud: [['fagel-pip/fagel-pip-4', 0.4 + ORD.rod], ['glimt/glimt-1', 0.4 + ORD.rod + 0.1], ['fagel-pip/fagel-pip-5', 0.4 + L(32) + 0.5 + ORD.bla - 0.3], ['glimt/glimt-2', 0.4 + L(32) + 0.5 + ORD.bla + 0.1],
       ['fagel-pip/fagel-pip-6', 0.4 + L(32) + 0.5 + L(33) + 0.5 + ORD.gul], ['glimt/glimt-1', 0.4 + L(32) + 0.5 + L(33) + 0.5 + ORD.gul + 0.1]],
     bild: 'Varje fågel lyfter vingen, piper, studsar och glimtar på sitt färgord: den röda, den blå, den gula', ljudtext: 'fagel-pip + glimt per fågel', s: { vy: 'tradnara', glimt: 'faglar' } },
   { id: '20', d: 1.2 + L(35) + 1.6, plats: 'Trädet, halvbild', malin: [[35, 1.2]],
     ljud: [['knarr-sno/knarr-sno-2', 0.2, 0.5], ['knarr-sno/knarr-sno-3', 0.7, 0.5], K('kanin-ny-hej-2', 1.2 + L(35) + 0.1),
       ['fagel-pip/fagel-pip-1', 1.2 + L(35) + 0.7], ['fagel-pip/fagel-pip-3', 1.2 + L(35) + 1.0], ['fagel-pip/fagel-pip-5', 1.2 + L(35) + 1.3]],
-    bild: 'Kaninen skuttar lugnt till trädet och vinkar upp mot fåglarna. De piper i tur och ordning', ljudtext: 'knarr-sno, kanin-ny-hej-2, fagel-pip ×3', s: { vy: 'halv', plats: 'trad', glimt: null } },
+    bild: 'Kaninen skuttar lugnt till trädet och vinkar upp mot fåglarna. De piper i tur och ordning', ljudtext: 'knarr-sno, kanin-ny-hej-2, fagel-pip ×3', s: { vy: 'tradkanin', plats: 'trad', glimt: null } },
 
   // --- Snögubben ---
   { id: '21', d: 0.3 + L(36) + GISS, plats: 'Snöbollarna, halvbild', malin: [[36, 0.3]], ljud: [K('kanin-gullig-5', 0.3 + L(36) + 0.4)],
     bild: '**Gissa 4.** Halvbild mot de tre snöbollarna, kaninen står bredvid och tittar på dem. Gisspaus 3 s, bollarna glimtar svagt', ljudtext: 'kanin-gullig-5 (nyfiken)', s: { vy: 'bollar', plats: 'vid-bollar', glimt: 'bollar' } },
   { id: '22', d: 0.4 + L(37) + 1.2, plats: 'Snöbollarna, halvbild', malin: [[37, 0.4]],
-    ljud: [['pop/pop-1', 0.4 + ORD.snogubbe], ['glitter/glitter-3', 0.4 + ORD.snogubbe + 0.05], ['klapp/klapp-1', 0.4 + L(37) + 0.1], K('kanin-ny-fniss-2', 0.4 + L(37) + 0.6)],
+    ljud: [['pop/pop-1', 0.4 + ORD.snogubbe], ['glitter/glitter-3', 0.4 + ORD.snogubbe + 0.05], ['klapp/klapp-1', 0.4 + L(37) + 0.15], ['klapp/klapp-2', 0.4 + L(37) + 0.65], ['klapp/klapp-1', 0.4 + L(37) + 1.15], K('kanin-ny-fniss-2', 0.4 + L(37) + 0.6)],
     bild: 'På *"snögubbe"* fälls bollarnas kort ner och snögubbens kort fälls upp på samma plats. Kaninen klappar', ljudtext: 'pop, glitter, klapp, kanin-ny-fniss-2', s: { bollar: 0, gubbe: true, glimt: null } },
 
   // --- Hej då ---
@@ -175,7 +175,7 @@ export const RADER = [
     bild: 'Snögubben studsar lite och glimtar', ljudtext: 'glimt', s: { vy: 'gubbe', glimt: 'gubbe' } },
   { id: '25', d: 0.3 + L(43) + 1.4, plats: 'Uppslaget, halvbild', malin: [[43, 0.3]], ljud: [K('kanin-hejda-3', 0.3 + L(43) + 0.2)],
     bild: 'Kaninen vinkar klart, snön faller lätt', ljudtext: 'kanin-hejda-3', s: { vy: 'hejda', glimt: null } },
-  { id: '26', d: 2.9, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 1.7]],
+  { id: '26', d: 3.6, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 2.3]],
     bild: 'Kameran glider ut ur boken. Korten fälls ner, kaninen först, pärmen slås igen och snöflingans siluett syns', ljudtext: 'prassel-tyg, landa-mjuk',
     s: { vy: 'bord', parm: 0, kort: 0, kanin: 'nere', gubbe: false, snofall: 0, spar: false } },
 ];
