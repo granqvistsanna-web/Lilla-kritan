@@ -11868,9 +11868,10 @@
   "sec": 14,
   "tags": [],
   "note": "polish drawing, the lines looks odd",
-  "fixed": false,
+  "fixed": true,
   "at": 1795854541870,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "gsha8lzwojmx05fomn": {
   "ep": "065",
@@ -11878,9 +11879,10 @@
   "sec": 7,
   "tags": [],
   "note": "move camera up a bit, remove apple tree",
-  "fixed": false,
+  "fixed": true,
   "at": 1795854557039,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "aax16pnstnmx05gkk0": {
   "ep": "065",
@@ -11888,9 +11890,10 @@
   "sec": 39,
   "tags": [],
   "note": "make flowers a bit smaller",
-  "fixed": false,
+  "fixed": true,
   "at": 1795854598416,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "1z0m08lccgmx06174q": {
   "ep": "065",
@@ -11898,9 +11901,10 @@
   "sec": 81,
   "tags": [],
   "note": "place in the left hand so it makes better sense pouring water on feet",
-  "fixed": false,
+  "fixed": true,
   "at": 1795855560794,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "schq1jeskomx0622vs": {
   "ep": "065",
@@ -11908,9 +11912,10 @@
   "sec": 106,
   "tags": [],
   "note": "thicker number with white circle number",
-  "fixed": false,
+  "fixed": true,
   "at": 1795855601944,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "p08v9eiw54mx062g8b": {
   "ep": "065",
@@ -11918,9 +11923,10 @@
   "sec": 111,
   "tags": [],
   "note": "zoom out a bit, raise camera a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795855619243,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "qbwxdmjcvwmx0637rr": {
   "ep": "065",
@@ -11928,9 +11934,10 @@
   "sec": 152,
   "tags": [],
   "note": "slight zoom effect camera, happy face on sun, bigger sun, lower sun a bit",
-  "fixed": false,
+  "fixed": true,
   "at": 1795855654935,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "ue1b8mw4fpmx063liw": {
   "ep": "065",
@@ -11938,9 +11945,10 @@
   "sec": 162,
   "tags": [],
   "note": "butterfly looks clipped.",
-  "fixed": false,
+  "fixed": true,
   "at": 1795855672760,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "01yzdmf0r6mx06og94": {
   "ep": "065",
@@ -11948,9 +11956,10 @@
   "sec": 196,
   "tags": [],
   "note": "Incl bird in scene too.",
-  "fixed": false,
+  "fixed": true,
   "at": 1795856645704,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  },
  "vl5fbmp342mx06oxg4": {
   "ep": "065",
@@ -11958,8 +11967,9 @@
   "sec": 196,
   "tags": [],
   "note": "new tree in googleflow, with a branch where the fågelbo can sit more naturally",
-  "fixed": false,
+  "fixed": true,
   "at": 1795856667988,
-  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)"
+  "render": "2026-11-28 09:12 (slutrendering (lokalt) med logotyp och prenumerera, alla djup-QA-fynd rättade, 4:02)",
+  "fixedAt": 1795862875714
  }
 }
