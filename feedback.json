@@ -11846,9 +11846,10 @@
   "sec": 21,
   "tags": [],
   "note": "have leaf falling down",
-  "fixed": false,
+  "fixed": true,
   "at": 1795854162209,
-  "render": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)"
+  "render": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)",
+  "fixedAt": 1795862788983
  },
  "jynz7oaokamx059fnm": {
   "ep": "063",
@@ -11856,9 +11857,10 @@
   "sec": 167,
   "tags": [],
   "note": "try to avoid thing going through things such as ekorre and tree, and lövhög , try to go around",
-  "fixed": false,
+  "fixed": true,
   "at": 1795854265474,
-  "render": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)"
+  "render": "2026-11-28 08:09 (slutrendering (molnet) med logotyp och prenumerera, alla djup-QA-fynd rättade, 3:53)",
+  "fixedAt": 1795862788983
  },
  "dd5zwadvbzmx05fcxa": {
   "ep": "065",
