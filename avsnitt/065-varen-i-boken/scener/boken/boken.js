@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { duk, kritYta, tex, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
 import { $, kl, k01, lerp, mjuk, bump, reser, v3, rader, scenen, dataUrl, kontur, mat, djup, vik, stall, PARM, fallning, figurKort,
-  kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
+  kritan, ljuset, djupskarpa, kamera, starta, SLUTET } from '/produktion/three-rum/popupbok/uppslag.js';
 import { RQ, KH, BO_OFF, MH, MUSPOS, byggUppslaget } from '/avsnitt/065-varen-i-boken/storyboard/uppslaget.js';
 
 // ---- raderna ----
@@ -24,7 +24,7 @@ const HEJ_BLOMMOR = ORD('26b', 45, 0.3), HEJ_FJARIL = ORD('26c', 46, 0.45), HEJ_
 const SC = scenen(), { scen, cam } = SC;
 
 // ---- uppslaget: boken, korten, koordinaterna och vyerna ur storyboard/uppslaget.js (samma som storyboarden) ----
-const { satt, kort, BAK, SOLEN, MOLNEN, SKOG, LOVTRAD, BUSKE_K, TULPAN, GUL_R, ROSA_K, GULA_K, KANNA_K, KANNA_R, BOET, VY } = await byggUppslaget(scen);
+const { insida, satt, kort, BAK, SOLEN, MOLNEN, SKOG, LOVTRAD, BUSKE_K, TULPAN, GUL_R, ROSA_K, GULA_K, KANNA_K, KANNA_R, BOET, VY } = await byggUppslaget(scen);
 const KONTUR = Object.fromEntries(await Promise.all(['tulpan-gul', 'vattenkanna'].map(async s => [s, await kontur(`${RQ}${s}/cut/${s}-kontur.json`)])));
 const KANNA_URL = await dataUrl(RQ + 'vattenkanna/cut/vattenkanna.png');
 
@@ -121,8 +121,8 @@ const OPPNA = S('02'), STANG = S('28');
 const SLOT = f => TULPAN[f].knopp;
 // stängningen (rad 28, 3,6 s): kameran glider ut till slut (0,1–1,5), musen fälls först (1,2), korten (1,25–1,65), pärmen (1,8–2,5),
 // den stängda boken står 1,1 s medan kameran trycker in sakta
-const UT_KLAR = STANG + 1.5, MUS_NER = STANG + 1.2;
-const FALL = fallning(satt, OPPNA, STANG, { ner: [1.25, 0.4], parm: [1.8, 2.5] });
+const MUS_NER = STANG + SLUTET.ner[0];   // musen fälls ner först (SLUTET)
+const FALL = fallning(satt, OPPNA, STANG, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true });   // slutet ur uppslag.js (Sanna 28/11 "more snappy")
 const ORDNING = FALL.upp([...BAK, ...SKOG, LOVTRAD, BUSKE_K, ...['rod', 'gul', 'lila'].map(SLOT), ROSA_K, GULA_K]);
 FALL.ner([...ORDNING, KANNA_K]);
 const MUS_UPP = S('06') + 0.2;   // musens kort sist, på pop
@@ -400,7 +400,7 @@ for (const r of RAD) {
   if (r.id === '05') { vy(GUL_UPP - 0.05, 'gul-nara', g); forra = key; continue; }   // fyllningen ses uppifrån, klipp när kortet reser sig
   if (r.id === '24') { vy(r.s + 1.9, 'trad', g); forra = 'trad'; continue; }   // halvbilden från 23b står kvar: musen tittar upp på "Titta upp i trädet", klipp till trädet före "Vad finns där?"
   if (r.id === '24b') { glid(r.s, GLID[r.id], namn, g); vy(r.s + 1.6, 'nara', g); forra = 'nara-bo'; continue; }   // musens kawaii-reaktion på boet
-  if (r.id === '28') { KAM.stangning(r.s + 0.1, { klar: UT_KLAR }); continue; }   // ut ur boken först, sedan fälls korten och pärmen medan kameran sakta trycker in
+  if (r.id === '28') { KAM.slutet(r.s, insida); continue; }   // ut ur boken, pärmen slår igen, kameran åker upp mot medaljongen, kritirisen sluter sig (Sanna 28/11)
   if (r.id === '13') { vy(r.s, 'halv', gPos('start')); glid(GA[0][0], GA[0][1] - GA[0][0], 'halv', gPos('rod')); forra = 'halvrod'; continue; }   // följer musen till den röda
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s, GLID[r.id], namn, g); else vy(r.s, namn, g);

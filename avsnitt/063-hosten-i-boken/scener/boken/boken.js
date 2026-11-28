@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { duk, kritYta, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
 import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, dataUrl, kontur, bredare, urklipp, djup, mark, vik, stall, kortmotor,
-  PARM, fallning, figurKort, vink, gaRikt, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
+  PARM, SLUTET, fallning, figurKort, vink, gaRikt, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
 import { halsduk, halsdukPa } from '/avsnitt/063-hosten-i-boken/prov/halsduk/halsduk.js';
 
 // ---- raderna ----
@@ -239,13 +239,13 @@ async function ritaRav(t) {
 
 // ---- korten: upp när boken öppnas, ner när den stängs (det främsta först, så att inget går genom något) ----
 // fix B (065): kameran är ute innan korten och pärmen fälls; pärmen 1,5–2,2 s efter STANG, när kameran är ute vid slut, linjärt in i satt() (annars slår den igen på 0,2 s)
-const OPPNA = S('01b'), STANG = S('26'), SLUT_GLID = 1.5;
-const KORTEN = fallning(satt, OPPNA, STANG, { ner: [0.3, 0.5], parm: [SLUT_GLID, SLUT_GLID + 0.7], parmLinjar: true });
+const OPPNA = S('01b'), STANG = S('26');
+const KORTEN = fallning(satt, OPPNA, STANG, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true });   // slutet ur uppslag.js (Sanna 28/11 "more snappy")
 const ORDNING = KORTEN.upp([...BAK, ...SKOG, TRADET, EKHOST, STUBBEN, HOGBAK, HOGFRAM, ...EKOLLONEN, ...MARKLOV]);
 RAVKORT.upp = RAV_UPP; EKORREN.upp = S('21c') + 0.1; SVAMPEN.upp = S('18') + 0.2;
 // ner: sakerna framifrån och bakåt, räven och ekorren sist (huvudpersonerna säger hej då längst), sedan pärmen
 KORTEN.ner([...ORDNING, SVAMPEN]);
-EKORREN.ner = STANG + 0.9; RAVKORT.ner = STANG + 1.05; EKORREN.hog = RAVKORT.hog = 0.02;   // ligger överst när de fällts (över högen och svampen)
+EKORREN.ner = STANG + SLUTET.ner[0] + 0.25; RAVKORT.ner = STANG + SLUTET.ner[0] + 0.35; EKORREN.hog = RAVKORT.hog = 0.02;   // ligger överst när de fällts (över högen och svampen)
 const SVAMP_UPP = MAL('22', 39) + 0.5, SVAMP_ORD = MAL('22b', 40) + 0.45;   // helt upp på "Titta, vid stubben" (Sanna 27/11), studsar på "svamp"
 
 // ---- kritan ritar ----
@@ -411,7 +411,7 @@ for (const r of RAD) {
   const namn = r.st.vy === 'logga' ? 'bord' : r.st.vy, pl = PLATS[r.st.plats] || PLATS.mitt, g = v3(pl[0], SIDA, pl[1]), key = namn + (KAM.VY[namn].length ? r.st.plats : '');
   if (r.id === '01a') { KAM.oppning(r.s, S('01b') + 0.9, 'in'); forra = 'in'; continue; }
   if (r.id === '01b') continue;
-  if (r.id === '26') { KAM.stangning(r.s, { klar: r.s + SLUT_GLID }); continue; }   // ut ur boken innan pärmen fälls (den får aldrig gå genom blicken)
+  if (r.id === '26') { KAM.slutet(r.s, insida); continue; }   // ut ur boken, pärmen slår igen, kameran åker upp mot medaljongen, kritirisen sluter sig (Sanna 28/11)
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s + GLID[r.id][0], GLID[r.id][1], namn, g); else vy(r.s, namn, g);
 }

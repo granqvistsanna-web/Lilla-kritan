@@ -176,8 +176,8 @@ export const RADER = [
     bild: 'Boet glimtar', ljudtext: 'glimt, fågel-pip svagt', s: { vy: 'trad' } },
   { id: '27', d: 0.3 + L(48) + 1.2, plats: 'Musen, halvbild', malin: [[48, 0.3]], ljud: [M('mus-hejda-3', 0.3 + L(48) + 0.1)],
     bild: 'Musen vinkar klart', ljudtext: 'mus-hejda', s: { vy: 'hejda', pos: 'start' } },
-  { id: '28', d: 3.6, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 1.15], ['landa-mjuk/landa-mjuk-1', 2.45]],
-    bild: 'Kameran glider ut ur boken (1,4 s). Sedan fälls korten ner, musen först, och pärmen slås igen. Den stängda boken står 1,1 s, tulpanknoppen på pärmen', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, mus: 'nere' } },
+  { id: '28', d: 3.05, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.8], ['landa-mjuk/landa-mjuk-1', 1.3]],   // SLUTET i uppslag.js (Sanna 28/11 "more snappy"): d = langd, ljuden vid prassel och landa
+    bild: 'Kameran glider ut ur boken (0,9 s). Korten fälls ner, musen först, pärmen slår igen med en liten studs, kameran åker upp mot tulpanknoppen på pärmen och kritirisen sluter sig runt den till svart', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, mus: 'nere' } },
 ];
 // varje rad ärver läget från raden före
 RADER.reduce((f, r) => (r.s = { ...f, ...r.s }), START);

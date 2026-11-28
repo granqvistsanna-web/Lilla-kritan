@@ -169,8 +169,8 @@ export const RADER = [
     bild: 'Svampen studsar', ljudtext: 'glimt', s: { vy: 'stubbe' } },
   { id: '25', d: 0.3 + L(49) + 1.4, plats: 'Uppslaget, halvbild', malin: [[49, 0.3]], ljud: [R('8b', 0.3 + L(49) + 0.2)],
     bild: 'Räven vinkar klart', ljudtext: 'rav-gullig-8b', s: { vy: 'hejda' } },
-  { id: '26', d: 3.6, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 2.15]],
-    bild: 'Kameran glider ut ur boken (1,5 s). Korten fälls ner framifrån, ekorren och räven sist, pärmen slås igen (1,5–2,2 s) och lövets siluett syns, kameran skjuter långsamt in mot den stängda boken', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, rav: 'nere', ekorre: 'nere', svamp: 'nere', huvudlov: false } },
+  { id: '26', d: 3.05, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.8], ['landa-mjuk/landa-mjuk-1', 1.3]],   // SLUTET i uppslag.js (Sanna 28/11 "more snappy"): d = langd, ljuden vid prassel och landa
+    bild: 'Kameran glider ut ur boken (0,9 s). Korten fälls ner framifrån, pärmen slår igen med en liten studs, kameran åker upp mot lövet på pärmen och kritirisen sluter sig runt det till svart', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, rav: 'nere', ekorre: 'nere', svamp: 'nere', huvudlov: false } },
 ];
 RADER.reduce((f, r) => (r.s = { ...f, ...r.s }), START);
 // Lugnt tempo (manus: GLES 1,1 s, reaktionsslaget i slutet av varje rad; öppningen och slutet utan)

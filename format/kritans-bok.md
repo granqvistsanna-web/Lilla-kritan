@@ -18,7 +18,7 @@ Förlagan för berättelsen är `avsnitt/062-sommaren-i-boken/` (grind 6, runda 
 | Barnet hittar och säger | saker som syns i uppslaget hela tiden, barnet tittar och Malin säger dem med färgorden (*"Ser du några blommor?"* … *"En röd blomma! En gul blomma!"*), och figuren går dit och luktar | 119–149 |
 | En sista sak | i 062 **bygger figuren den** (sandslottet: spaden, hinken vänds två gånger, hela slottet på *"sandslott"*, runda 7). I 063–065 poppar den upp på sitt ord (svampen, snögubben av de tre bollarna, fågelboet i trädet) | 149–187 |
 | Hej då | hej då till figuren och till varje sak i boken, sedan *"Hej då! Vi ses snart!"* | 187–211 |
-| Boken stängs | kameran glider ut, korten fälls ner i omvänd ordning (figuren först), pärmen slås igen. Ersätter kritirisen | 211–214 |
+| Boken stängs | kameran glider ut (0,9 s), korten fälls ner i omvänd ordning (figuren först), pärmen slår igen med en liten studs (1,3 s), kameran åker upp över den stängda boken mot medaljongen och kritirisen sluter sig runt den till svart (3,05 s). Prenumerera-kortet öppnar sig ur svart med samma iris (`SLUTET`, Sanna 28/11) | 211–214 |
 
 **Längden:** 062 är 3:34 i runda 7 (2:16 i animatiken, den har vuxit med badet, sandslottet och hej då). De godkända animatikerna för 063–065 är 3:48, 3:21 och 3:55 med loggan (*"Behåll 3:55"*, Sanna 27/11). Räkna med **3:15–4:00**, och **räkna längden ur raderna** innan du lovar något: röstfilernas längd + `GLES` × antalet rader + gisspauserna (3 s var) + öppningens och stängningens rörelse. 065 uppskattades till 3:00–3:15 och blev 3:55, för `GLES` 1,0 s på 43 rader (43 s) räknades inte med. Prenumerera-kortet och outrot läggs på efter stängningen som i alla avsnitt (`format/intro-outro.md`).
 
@@ -194,7 +194,7 @@ Gå igenom stillbilderna i grind 6a och förhandsvisningen med den här listan, 
 - **Introt är kort med lite rörelse:** kameran driver lugnt mot den stängda boken redan innan den öppnas (runda 4: *"we need a faster intro"*).
 - **Kameran lite högre och lite längre bort** än man tror (runda 3).
 - **Hela uppslaget i bild** när barnet ska titta efter sakerna (runda 3: *"show full scene"*).
-- **Stängningen** närmare och snabbare: korten ner på 0,5 s, pärmen 0,7 s (runda 3).
+- **Slutet** (Sanna 28/11: *"more snappy closing book, camera move on book, nicer transition to the final prenumerera"*): `SLUTET` och `KAM.slutet(r.s, insida)` i `uppslag.js`, samma i alla bokavsnitt. Ut ur boken 0,9 s, korten ner 0,35–1,05 s, pärmen faller allt fortare och slår igen 0,85–1,3 s (`slag`, liten studs), kameran åker upp mot medaljongen 1,3–2,6 s, kritirisen 2,0–2,95 s (runt medaljongen, står, → 0), stängningsraden 3,05 s med `prassel-tyg` vid 0,8 och `landa-mjuk` vid 1,3. Ingen stillastående bok och inget hårt klipp till svart. Prov: `avsnitt/062-sommaren-i-boken/prov/slutet-prov.mp4`.
 - Fokus på vyns mål, mer oskärpa i närbilder (0,008) än i halvbilder (0,006) och helbilder (0,003).
 
 ### Kritan ritar i boken
@@ -240,11 +240,11 @@ Det som är gemensamt för bokavsnitten ligger i **`produktion/three-rum/popupbo
 | `scenen()` | renderaren, scenen och kameran (`?snabb` ger 960 × 540) |
 | `bild`, `lad`, `ruta`, `dataUrl`, `kontur`, `bredare`, `mark(färg, ljus, mörk)` | bilderna: urklipp som textur, bildens synliga ruta (till kritans kontur), `kontur.json`, kullar och himmel utdragna på bredden, markarket |
 | `kortmotor(scen, insida, { kskugga, paSkuggsida })` | `kort()` (står, med vit baksida och kontaktskugga), `platt()` (ligger på sidan), `pa()` (på pärmens insida). `vik(k, e)` och `stall(k, e)` fäller kortet |
-| `fallning(satt, OPPNA, STANG)` | `upp(korten)` (bakifrån och fram när pärmen slås upp), `ner(korten)` (framifrån när boken stängs), `e(k, t)` (hur uppfällt kortet är), `parm(t)` |
+| `fallning(satt, OPPNA, STANG, { slag })` | `upp(korten)` (bakifrån och fram när pärmen slås upp), `ner(korten)` (framifrån när boken stängs), `e(k, t)` (hur uppfällt kortet är), `parm(t)` |
 | `figurKort(scen, cam, L, G, { fot, topp, hojd })` | v2-riggen på ett kort: `#kort` → textur varje bildruta (`textur(t)`), boil 2,5 px och vit kant 3 px i bild räknat mot kamerans avstånd, `fig2varld`, `nick`. `vink()` och `gaRikt()` för figurer som 063 och 064 |
 | `kritan(cam)` | `teckning(namn, bild, drag, ruta, yta, tider, fyllning, väntplats)`, `rita(t)` för `#ov`, `glimt(t, t0, punkt)` (gnistor på en sak), `skarm`, `affin` |
 | `ljuset(scen, { himmel, sol })`, `djupskarpa(SC)` | ljuset med skuggorna; kompositören med `BokehPass` och kortens djupmaterial, `fokus(vy)` |
-| `kamera(cam, VY, { blur, lyft })` | `vy()` (klipp), `glid()`, `oppning()` (driver mot den stängda boken och glider in), `stangning()`, `aktiv(t)`, `plan(längd)` (till `verktyg/kamera3d.mjs`). Vyerna `bord` och `slut` finns i modulen |
+| `kamera(cam, VY, { blur, lyft })` | `vy()` (klipp), `glid()`, `oppning()` (driver mot den stängda boken och glider in), `slutet(t, insida)` (stängningen, kameran mot medaljongen och kritirisen, tiderna i `SLUTET`), `stangning()` (den gamla), `aktiv(t)`, `plan(längd)` (till `verktyg/kamera3d.mjs`). Vyerna `bord` och `slut` finns i modulen |
 | `starta(RD, plan, bildruta, { rost, vol, matta, RIT })` | ljudet ur raderna (Malin, effekterna, kritans ritslinga, mattan) och `window.seek`, `LJUD`, `DURATION`, `TIDER`, `ready` |
 
 Kvar i avsnittets `boken.js` är det som är temat: bilderna, uppslagets kort och koordinater, figurens platser och rörelser per rad, vyerna, det som händer i bildrutan och temats effekter (062: 570 rader av 747, 063: 361 av 548, 064: 387 av 570, 065: 400 av 655). Effekter (ringar, stänk, snöfall, löv, insekter i kod) flyttas hit först när ett andra avsnitt använder dem likadant.

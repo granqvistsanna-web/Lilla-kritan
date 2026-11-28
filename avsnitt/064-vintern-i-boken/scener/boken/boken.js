@@ -6,7 +6,7 @@
 import * as THREE from 'three';
 import { duk, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
 import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, dataUrl, kontur, bredareC, mat, mark, vik, stall, kortmotor,
-  PARM, fallning, figurKort, vink, gaRikt, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
+  PARM, SLUTET, fallning, figurKort, vink, gaRikt, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
 import { kaltTrad, sittplats, W as TW, H as TH } from '/avsnitt/064-vintern-i-boken/prov/trad/trad.js';
 import { granSno, kulleSno, frost } from '/avsnitt/064-vintern-i-boken/kod/vinter.js';
 
@@ -268,8 +268,7 @@ async function ritaKanin(t) {
 }
 
 // ---- korten: upp när boken öppnas, ner när den stängs (det främsta först, så att inget går genom något) ----
-const SLUT_GLID = 1.5;   // gemensam rättning B: kameran glider ut till slut (1,5 s) innan pärmen börjar fällas
-const FALL = fallning(satt, OPPNA, STANG, { parm: [0.1 + SLUT_GLID, 2.3] });
+const FALL = fallning(satt, OPPNA, STANG, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true });   // slutet ur uppslag.js (Sanna 28/11 "more snappy")
 const ORDNING = FALL.upp([...BAK, ...GRANAR, TRADET]);
 KANKORT.upp = KANIN_UPP; SNOGUBBEN.upp = GUBBE_UPP;
 KANKORT.z = PLATS['vid-bollar'][1];   // där kaninen står när boken stängs
@@ -405,7 +404,7 @@ for (const r of RAD) {
   const namn = r.st.vy === 'logga' ? 'bord' : r.st.vy, pl = PLATS[r.st.plats] || PLATS.mitt, g = v3(pl[0], SIDA, pl[1]), key = namn + (KAM.VY[namn].length ? r.st.plats : '');
   if (r.id === '01a') { KAM.oppning(r.s, S('01b') + 0.9, 'in'); forra = 'in'; continue; }
   if (r.id === '01b') continue;
-  if (r.id === '26') { KAM.stangning(r.s + 0.1, { klar: r.s + 0.1 + SLUT_GLID }); continue; }   // gemensam rättning B: ute vid slut (1,5 s) innan pärmen fälls, sedan en långsam push
+  if (r.id === '26') { KAM.slutet(r.s, insida); continue; }   // ut ur boken, pärmen slår igen, kameran åker upp mot medaljongen, kritirisen sluter sig (Sanna 28/11)
   if (r.id === '24c') { vy(r.s, 'tradhej', g); forra = 'tradhej'; continue; }   // närbild: kaninen vid bollarna kommer inte med i bild
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s + GLID[r.id][0], GLID[r.id][1], namn, g); else vy(r.s, namn, g);

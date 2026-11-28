@@ -108,8 +108,14 @@ export function kortmotor(scen, insida, { kskugga: [rgb, a0, a1], paSkuggsida = 
 export const PARM = [0.5, 1.4];   // pärmens vinkel stängd och öppen (skapaBok oppna)
 // stang: { ner: [start, spann], parm: [a, b] } efter STANG. Standard: korten 0,3–0,8, pärmen 1,05–1,75 (065 fixen B: korten efter att kameran är ute).
 // parmLinjar: pärmen matas linjärt, så att bara satt():s egen kurva verkar (annars mjuk ovanpå den: pärmen slår igen på ca 0,2 s, 063)
-export function fallning(satt, OPPNA, STANG, { ner: [n0, nd] = [0.3, 0.5], parm = [1.05, 1.75], parmLinjar = false } = {}) {
+// slag (SLUTET, Sanna 28/11 "more snappy"): pärmen faller allt fortare och slår igen, med en liten studs när den landar
+const slaInv = v => v < 0.5 ? Math.cbrt(v / 4) : 1 - Math.cbrt(2 * (1 - v)) / 2;   // bok-parm.js slaUpp baklänges: pärmens öppning → satt():s tid
+export function fallning(satt, OPPNA, STANG, { ner: [n0, nd] = [0.3, 0.5], parm = [1.05, 1.75], parmLinjar = false, slag = false } = {}) {
   const PARM_NER = [STANG + parm[0], STANG + parm[1]];
+  if (slag) return { ...fallning(satt, OPPNA, STANG, { ner: [n0, nd], parm }),
+    parm(t) { if (t < STANG) return satt(PARM[0] + (PARM[1] - PARM[0]) * k01((t - OPPNA) / 0.9));
+      const k = (t - PARM_NER[0]) / (PARM_NER[1] - PARM_NER[0]), o = k < 1 ? 1 - k01(k) ** 2 : 0.035 * Math.sin(Math.PI * k01((t - PARM_NER[1]) / 0.2));
+      satt(PARM[0] + (PARM[1] - PARM[0]) * slaInv(o)); } };
   return {
     upp(korten) { const a = [...korten].sort((p, q) => p.z - q.z); a.forEach((k, i) => { k.upp = OPPNA + 0.6 + i * 0.8 / (a.length - 1); k.hog = 0.004 + 0.001 * (a.length - i); }); return a; },
     ner(korten) { const a = [...korten].sort((p, q) => q.z - p.z); a.forEach((k, i) => k.ner = STANG + n0 + i * nd / (a.length - 1)); return a; },
@@ -235,6 +241,37 @@ export function djupskarpa({ R, scen, cam, W, H, PR }) {
   return { komp, fokus };
 }
 
+// ---- slutet: boken stängs snabbt, kameran åker upp mot medaljongen, kritirisen sluter sig (Sanna 28/11) ----
+// Tider i s från stängningsradens början (rad 26). Avsnittet: fallning(…, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true }),
+// KAM.slutet(r.s, insida) i stället för stangning, och stängningsraden d: SLUTET.langd med prassel-tyg vid SLUTET.ljud.prassel och landa-mjuk vid .landa.
+export const SLUTET = {
+  ut: 0.9,                  // kameran glider ut ur boken till slut-vyn
+  ner: [0.35, 0.35],        // korten fälls ner (start, spann; 0,35 s var), när kameran är en bit ut
+  parm: [0.85, 1.3],        // pärmen faller allt fortare och slår igen (slag), liten studs efter
+  aka: [1.3, 2.6],          // kameran åker upp över den stängda boken mot medaljongen, i en liten båge
+  vinkel: [0.17, 1.02],     // kamerans slutläge: 10° åt höger, 58° uppifrån
+  avstand: 1.05,            // × pärmens djup
+  medaljong: 0.04,          // medaljongens mitt från pärmens mitt, × djupet (mot framkanten)
+  iris: [2.0, 2.5, 2.7, 2.95],   // kritirisen: helbild → runt medaljongen, står, → 0 (som prenumerera-kortets slut)
+  ring: 300,                // irisens radie runt medaljongen (px i 1920 × 1080)
+  langd: 3.05,              // svart sista 0,1 s, sedan prenumerera-kortet (som öppnar sig ur svart)
+  ljud: { prassel: 0.8, landa: 1.3 },
+};
+// kritirisen (produktion/youtube/prenumerera, ur 020/034): svart utanför, krämvit vinglig ring med boil 2,5 px, ny brusbild 6 gånger/s
+function kritiris(e, C, cam, t) {
+  let ov = document.getElementById('slutiris');
+  if (!ov) { ov = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); ov.id = 'slutiris'; ov.setAttribute('viewBox', '0 0 1920 1080'); ov.setAttribute('preserveAspectRatio', 'none');
+    ov.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:10'; document.body.appendChild(ov); }
+  const [i0, i1, i2, i3] = SLUTET.iris, R0 = 1400, r = e < i0 ? R0 : e < i2 ? lerp(R0, SLUTET.ring, mjuk((e - i0) / (i1 - i0))) : lerp(SLUTET.ring, 0, mjuk((e - i2) / (i3 - i2)));
+  if (r >= R0) { ov.innerHTML = ''; return; }
+  const p = C.clone().project(cam), cx = (p.x + 1) * 960, cy = (1 - p.y) * 540;
+  const ring = 'M' + Array.from({ length: 145 }, (_, j) => { const a = j / 144 * 2 * Math.PI, rr = r * (1 + 0.07 * Math.sin(9 * a + t * 0.8));
+    return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join('L') + 'Z';
+  ov.innerHTML = `<defs><filter id="slutBoil" filterUnits="userSpaceOnUse" x="-100" y="-100" width="2120" height="1280"><feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="${Math.floor(t * 6) % 50 + 1}"/><feDisplacementMap in="SourceGraphic" scale="2.5"/></filter></defs>
+    <path d="M-50 -50H1970V1130H-50Z ${r > 1 ? ring : ''}" fill="#101010" fill-rule="evenodd"/>
+    ${r > 1 ? `<path d="${ring}" fill="none" stroke="#fff8e0" stroke-width="${Math.min(14, r / 4).toFixed(1)}" stroke-linejoin="round" filter="url(#slutBoil)"/>` : ''}`;
+}
+
 // ---- kameran: vyer till verktyg/kamera3d.mjs ----
 // VY: { namn: g => [kamerans plats, målet, fov] } (g = figurens plats). blur: namn → oskärpa (0,008 närbild, 0,006 halvbild, 0,003 helbild).
 // lyft: (namn, glid) → hur mycket högre kameran står än vyns plats. Vyerna bord (den stängda boken) och slut läggs till här.
@@ -252,7 +289,7 @@ export const BOKVYER = { bord: () => [v3(-0.3, 2.55, 4.1), v3(0, 0.25, -0.1), 32
 // inget zoomhopp i första rutan). Utan den behåller nästa vy förra vyns fov hela vyn (063:s trädvy fov 21 blev 32).
 export function kamera(cam, vyerna, { blur, lyft = () => 0, fovGlid = false }) {
   const VY = { ...BOKVYER, ...vyerna };
-  let LANGD = Infinity; const platser = {}, VYER = [], P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0);
+  let LANGD = Infinity, IRIS = null; const platser = {}, VYER = [], P0 = [0, 0, -0.2], bordL = lage(...VY.bord().slice(0, 2), P0);
   function vy(t, namn, g, o = {}) {   // klipp till en vy; o: P (punkten kameran går runt), fran, till, mal, fov (behåll förra fov)
     const [pos, mal, fov] = iFov(VY[namn](g), o.fov), P = o.P || [mal.x, 0, mal.z], key = 'p' + VYER.length; platser[key] = P;
     if (!o.fran) pos.y += lyft(namn, false);
@@ -296,8 +333,24 @@ export function kamera(cam, vyerna, { blur, lyft = () => 0, fovGlid = false }) {
       VYER.push({ t, mot: 'pBord', fran: lage(pos, paZ(pos, mal, P0[2]), P0), till: slutL, fov, mal: m1, blur: 0.003, rorelse: 'glid' }); platser.pBord = P0;
       if (klar) VYER.push({ t: klar, mot: 'pBord', fran: slutL, till: [slutL[0], slutL[1] * 0.97, slutL[2] * 0.97, slutL[3], slutL[4]], fov, mal: m1, blur: 0.003, rorelse: 'push' });
     },
+    // slutet (SLUTET, Sanna 28/11 "snappy closing, camera move on book, nicer transition to prenumerera"): ut ur boken till slut-vyn,
+    // pärmen slår igen, kameran åker upp över den stängda boken mot medaljongen och kritirisen sluter sig runt den till svart.
+    // Prenumerera-kortet öppnar sig ur svart med samma iris, så klippet dit syns inte. insida: skapaBok():s insida (pärmen är dess förälder).
+    slutet(t, insida) {
+      const S = SLUTET, parm = insida.parent, fram = parm.children[0], DJ = 2 * fram.position.z, r = parm.rotation.x;
+      parm.rotation.x = 0; parm.updateMatrixWorld(true); const C = fram.localToWorld(v3(0, 0.02, S.medaljong * DJ)); parm.rotation.x = r; parm.updateMatrixWorld(true);
+      this.stangning(t);
+      const f = VYER.at(-1), slutL = f.till, [p0, m0] = fran3(slutL, P0), P = [C.x, 0, C.z], a = S.vinkel, R = S.avstand * DJ;
+      VYER.push({ ...f, t: t + S.ut, fran: slutL, till: slutL, rorelse: 'hold' });
+      const pos = C.clone().add(v3(R * Math.cos(a[1]) * Math.sin(a[0]), R * Math.sin(a[1]), R * Math.cos(a[1]) * Math.cos(a[0]))), omL = lage(pos, C, P);
+      platser.pOmslag = P;
+      VYER.push({ t: t + S.aka[0], mot: 'pOmslag', fran: lage(p0, paZ(p0, m0, C.z), P), till: omL, fov: f.fov, mal: C, blur: 0.003, rorelse: 'glid' });
+      VYER.push({ t: t + S.aka[1], mot: 'pOmslag', fran: omL, till: [omL[0] + 1, omL[1] * 0.97, omL[2] * 0.97, omL[3], omL[4]], fov: f.fov, mal: C, blur: 0.003, rorelse: 'push' });
+      IRIS = { t, C };
+    },
     plan(langd) { LANGD = langd; VYER.sort((a, b) => a.t - b.t); const pk = kameraplan({ cam, canvas: $('bild'), platser, vyer: VYER, langd });
-      return fovGlid ? { ...pk, rita: (t, bild) => pk.rita(t, () => { fovJustera(t); return bild(); }) } : pk; } };
+      const pk2 = fovGlid ? { ...pk, rita: (t, bild) => pk.rita(t, () => { fovJustera(t); return bild(); }) } : pk;
+      return IRIS ? { ...pk2, rita: async (t, bild) => { const r = await pk2.rita(t, bild); kritiris(t - IRIS.t, IRIS.C, cam, t); return r; } } : pk2; } };
 }
 
 // ---- ljudet och sidans gränssnitt mot render.mjs (window.seek, LJUD, DURATION, TIDER, ready) ----

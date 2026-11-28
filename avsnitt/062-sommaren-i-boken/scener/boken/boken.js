@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { duk, kritYta, tex, trim, skrivbord, skapaBok, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
 import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, dataUrl, kontur, bredare, mat, urklipp, djup, skugga, mark, vik, stall, kortmotor,
-  PARM, fallning, figurKort, kritan, ljuset, djupskarpa, kamera, skjut, starta } from '/produktion/three-rum/popupbok/uppslag.js';
+  PARM, SLUTET, fallning, figurKort, kritan, ljuset, djupskarpa, kamera, skjut, starta } from '/produktion/three-rum/popupbok/uppslag.js';
 
 
 // Stillbildsprov runda 4 (Sanna 27/11): ?prov=s mindre saker och bredare bild ("bigger scene and smaller objects"), t lövträd
@@ -219,7 +219,7 @@ const DOF = djupskarpa(SC);
 const OPPNA = S('01b'), STANG = S('26');
 // runda 5 (Sanna 27/11 "flip up all", "flip up frog too"): allt fälls upp när boken öppnas, också sandslottet och grodan
 // pärmen slås igen först när kameran är ute (QA 28/11 F2; uppslag.js 1,05/1,75 som standard)
-const KAM_UT = 1.5, FALL = fallning(satt, OPPNA, STANG, { parm: [1.5, 2.2] });
+const FALL = fallning(satt, OPPNA, STANG, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true });   // slutet ur uppslag.js (Sanna 28/11 "more snappy")
 const ORDNING = FALL.upp([...BAK, ...SKOG, ...BUSKAR, ...(BLOM ? BLOMS_K : [BLOMMOR_BAK]), ...SMATT, HINKEN, SLOTTET]);
 FALL.ner([BLOMMOR_UPPE, ...ORDNING]);
 const UPP_SLOTT = SVAR('22g', 36) - 0.2 - LN(36) + 1.0, UPP_BLOMMOR = S('19') + 0.1;   // sandslottet studsar på ordet "sandslott", blommorna på "Ja, där"
@@ -612,7 +612,7 @@ for (const r of RAD) {
     vy(S('02') + 1.0, 'bred', g, { P: KAM.P0, fran: bredL, till: skjut(bredL), mal: v3(0, 0.36, -0.25) }); forra = 'bred1'; continue; }
   if (r.id === '01b' || r.id === '02') continue;
   // ut ur boken: kameran är ute vid slut innan pärmen faller, sedan en långsam push in mot den stängda boken (QA 28/11 F2, uppslag.js klar)
-  if (r.id === '26') { KAM.stangning(r.s + 0.1, { klar: r.s + 0.1 + KAM_UT }); continue; }
+  if (r.id === '26') { KAM.slutet(r.s, insida); continue; }   // ut ur boken, pärmen slår igen, kameran åker upp mot medaljongen, kritirisen sluter sig (Sanna 28/11)
   // rad 22: hela uppslaget medan grodan hoppar över bladen, sedan glider kameran till sandhörnet när hon landar (QA 28/11 R6)
   if (r.id === '22') { vy(r.s, 'helhet', g); glid(r.s + 1.0, 1.4, namn, g); forra = key; continue; }
   if (key === forra) continue; forra = key;

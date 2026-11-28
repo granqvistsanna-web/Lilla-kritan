@@ -175,8 +175,8 @@ export const RADER = [
     bild: 'Snögubben studsar lite och glimtar', ljudtext: 'glimt', s: { vy: 'gubbe', glimt: 'gubbe' } },
   { id: '25', d: 0.3 + L(43) + 1.4, plats: 'Uppslaget, halvbild', malin: [[43, 0.3]], ljud: [K('kanin-hejda-3', 0.3 + L(43) + 0.2)],
     bild: 'Kaninen vinkar klart, snön faller lätt', ljudtext: 'kanin-hejda-3', s: { vy: 'hejda', glimt: null } },
-  { id: '26', d: 3.6, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 2.3]],
-    bild: 'Kameran glider ut ur boken. Korten fälls ner, kaninen först, pärmen slås igen och snöflingans siluett syns', ljudtext: 'prassel-tyg, landa-mjuk',
+  { id: '26', d: 3.05, plats: 'Skrivbordet, kameran glider ut', ljud: [['prassel-tyg/prassel-tyg-1', 0.8], ['landa-mjuk/landa-mjuk-1', 1.3]],   // SLUTET i uppslag.js (Sanna 28/11 "more snappy"): d = langd, ljuden vid prassel och landa
+    bild: 'Kameran glider ut ur boken. Korten fälls ner, kaninen först, pärmen slår igen med en liten studs, kameran åker upp mot snöflingan på pärmen och kritirisen sluter sig runt den till svart', ljudtext: 'prassel-tyg, landa-mjuk',
     s: { vy: 'bord', parm: 0, kort: 0, kanin: 'nere', gubbe: false, snofall: 0, spar: false } },
 ];
 RADER.reduce((f, r) => (r.s = { ...f, ...r.s }), START);

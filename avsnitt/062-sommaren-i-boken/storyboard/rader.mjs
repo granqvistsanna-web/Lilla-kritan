@@ -189,8 +189,8 @@ export const RADER = [
     bild: 'Vattnet ringar sig lugnt runt bladen', ljudtext: 'vågor, plupp', s: { vy: 'damm' } },
   { id: '25', d: 0.3 + L(39) + 1.4, plats: 'Uppslaget, halvbild', malin: [[39, 0.3]], ljud: [G('groda-hejda-2', 0.3 + L(39) + 0.2)],
     bild: 'Grodan vinkar klart', ljudtext: 'mus-hejda', s: { vy: 'hejda' } },
-  { id: '26', d: 3.6, plats: 'Skrivbordet, kameran glider ut en bit', ljud: [['prassel-tyg/prassel-tyg-1', 0.3], ['landa-mjuk/landa-mjuk-1', 2.15]],   // landar när pärmen landar (QA 28/11)
-    bild: 'Kameran glider ut ur boken (1,5 s) medan korten fälls ner, grodan först. Sedan slås pärmen igen och den stängda boken står kvar ca 1 s', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, groda: 'nere', vink: false } },
+  { id: '26', d: 3.05, plats: 'Skrivbordet, kameran glider ut en bit', ljud: [['prassel-tyg/prassel-tyg-1', 0.8], ['landa-mjuk/landa-mjuk-1', 1.3]],   // SLUTET i uppslag.js (Sanna 28/11 "more snappy"): d = langd, ljuden vid prassel och landa
+    bild: 'Kameran glider ut ur boken (0,9 s) medan korten fälls ner, grodan först. Pärmen slår igen med en liten studs, kameran åker upp mot solen på pärmen och kritirisen sluter sig runt den till svart', ljudtext: 'prassel-tyg, landa-mjuk', s: { vy: 'bord', parm: 0, kort: 0, groda: 'nere', vink: false } },
 ];
 // varje rad ärver läget från raden före
 RADER.reduce((f, r) => (r.s = { ...f, ...r.s }), START);
