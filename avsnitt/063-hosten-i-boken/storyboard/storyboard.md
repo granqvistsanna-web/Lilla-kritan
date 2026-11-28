@@ -30,15 +30,15 @@ Räven är ett platt kort (`produktion/three-rum/popupbok/bilder/rut.png`, rigge
 | [15](frames/15.jpg) | 1:33.2 | 4.8 s | Lövhögen, halvbild | *"Titta, en stor lövhög."* (1:33.6) | Räven vänder sig mot den stora lövhögen | – |
 | [15b](frames/15b.jpg) | 1:38.0 | 6.7 s | Lövhögen, halvbild | *"Ska du hoppa i löven?"* (1:38.2) … *"Ja, bra idé!"* (1:41.3) | Räven tittar på oss. Pausen: förtjust, nick | rav-gullig-2c |
 | [16](frames/16.jpg) | 1:44.7 | 3.5 s | Lövhögen, halvbild | *"Hopp!"* (1:45.2) | Räven hukar och hoppar lugnt in i lövhögen. På *"Hopp!"* sjunker den ner mellan högens två halvor, bara huvudet och öronen syns, löven yr upp | hopp-mjuk, hostlov |
-| [16b](frames/16b.jpg) | 1:48.2 | 5.2 s | Lövhögen, halvbild | *"En gång till … hopp!"* (1:48.8) | En lugn paus, sedan upp ur högen och ner igen på *"hopp"*, löven yr | hopp-mjuk, hostlov |
-| [17](frames/17.jpg) | 1:53.4 | 5.4 s | Räven vid högen, närbild | *"Ha ha, löv på huvudet."* (1:53.9) | Räven kliver ut ur högen med tre små löv på huvudet. Den tittar upp mot dem, skakar lugnt, ett faller av | rav-fniss |
+| [16b](frames/16b.jpg) | 1:48.2 | 5.2 s | Lövhögen, halvbild | *"En gång till … hopp!"* (1:48.8) | En lugn paus, sedan upp ur högen och ner igen på *"hopp"*, löven yr. I slutet hoppar räven ut ur högen och landar framför den, före klippet | hopp-mjuk, hostlov |
+| [17](frames/17.jpg) | 1:53.4 | 5.4 s | Räven vid högen, närbild | *"Ha ha, löv på huvudet."* (1:53.9) | Räven står framför högen med tre små löv på huvudet. Den tittar upp mot dem, skakar lugnt, ett faller av | rav-fniss |
 | [18](frames/18.jpg) | 1:58.8 | 4.1 s | Räven, halvbild | *"Vad mer finns på hösten?"* (1:59.1) | Räven tittar runt. Vid stubben syns svampens röda hatt lite över gräset | rav-gullig-5b |
 | [19](frames/19.jpg) | 2:02.9 | 6.3 s | Hela uppslaget | *"Ser du några löv på marken?"* (2:03.2) | Hela uppslaget. Barnet tittar (3 s): tre löv ligger på marken, ett vid eken, ett mitt fram, ett vid stubben | tyst |
 | [19b](frames/19b.jpg) | 2:09.2 | 7.2 s | Hela uppslaget | *"Ett rött löv."* (2:09.6) … *"Ett gult löv."* (2:11.1) … *"Och ett brunt löv."* (2:12.8) | Varje löv studsar lugnt och glimtar på sitt färgord: det röda, det gula, det bruna | glimt per löv |
 | [20](frames/20.jpg) | 2:16.4 | 5.8 s | Under eken, halvbild | *"Och ser du ekollonen?"* (2:16.7) | Halvbild mot eken. Tre ekollon i gräset under den. Barnet tittar (3 s) | tyst |
 | [20b](frames/20b.jpg) | 2:22.2 | 9.2 s | Ekollonen, närbild | *"Där är ekollonen. Vi räknar. Ett … två … tre."* (2:22.6) | Ekollonen glimtar ett i taget på *"Ett … två … tre"* | glimt per ekollon |
 | [21](frames/21.jpg) | 2:31.4 | 5.7 s | Under eken, halvbild | *"Vad fina ekollon."* (2:33.4) | Räven går långsamt till ekollonen (riktningsposen, speglas aldrig) och tittar på dem | rav-gullig-4b |
-| [21b](frames/21b.jpg) | 2:37.1 | 5.0 s | Räven och ekollonen, närbild | *"Mmm … de luktar skog."* (2:37.5) | Räven luktar på ekollonen, nosen ner, blundar | nos, mysig suck |
+| [21b](frames/21b.jpg) | 2:37.1 | 5.0 s | Räven och ekollonen, närbild | *"Mmm … de luktar skog."* (2:37.5) | Räven luktar på ekollonen, nosen ner, blundar. Räven hel och ekollonen vid fötterna i bild | nos, mysig suck |
 | [21c](frames/21c.jpg) | 2:42.1 | 6.5 s | Ekens stam, halvbild | *"Ekorren tycker om ekollon. Den samlar dem till vintern."* (2:42.5) | Halvbild mot ekollonen och stammen. Ekorrens svans syns lite bakom stammen | – |
 | [21d](frames/21d.jpg) | 2:48.5 | 6.9 s | Ekens stam, halvbild | *"Titta, där är den ju! Hej, ekorren! Hej, hej!"* (2:48.8) | På *"Titta"* fälls ekorrens kort upp bredvid stammen, två små skutt fram till ekollonen, den tar ett och skuttar tillbaka. Räven vinkar på *"Hej, ekorren"* | pop, hopp-mjuk litet ×2, rav-gullig-1b |
 | [22](frames/22.jpg) | 2:55.4 | 7.5 s | Stubben, halvbild | *"Titta, vid stubben. Vad växer där?"* (2:55.7) | Halvbild mot stubben. Svampens röda hatt syns lite över gräset. Barnet gissar (3 s) | tyst |
@@ -51,5 +51,5 @@ Räven är ett platt kort (`produktion/three-rum/popupbok/bilder/rut.png`, rigge
 | [24d](frames/24d.jpg) | 3:32.3 | 3.5 s | Lövhögen, halvbild | *"Hej då, lövhögen!"* (3:32.6) | Lövhögen prasslar lite, ett par löv lyfter och lägger sig | prassel-lov |
 | [24e](frames/24e.jpg) | 3:35.7 | 3.5 s | Stubben, halvbild | *"Hej då, svampen!"* (3:36.0) | Svampen studsar | glimt |
 | [25](frames/25.jpg) | 3:39.2 | 5.9 s | Uppslaget, halvbild | *"Hej då! Vi ses snart!"* (3:39.5) | Räven vinkar klart | rav-gullig-8b |
-| [26](frames/26.jpg) | 3:45.1 | 2.9 s | Skrivbordet, kameran glider ut | – | Kameran glider ut ur boken. Korten fälls ner, räven först, sedan ekorren, pärmen slås igen och lövets siluett syns | prassel-tyg, landa-mjuk |
+| [26](frames/26.jpg) | 3:45.1 | 3.6 s | Skrivbordet, kameran glider ut | – | Kameran glider ut ur boken (1,5 s). Korten fälls ner framifrån, ekorren och räven sist, pärmen slås igen (1,5–2,2 s) och lövets siluett syns, kameran skjuter långsamt in mot den stängda boken | prassel-tyg, landa-mjuk |
 <!-- /tabell -->

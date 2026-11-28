@@ -96,7 +96,7 @@ export const RADER = [
     bild: 'Räven tittar upp på ett fallande löv och följer det med blicken ner till marken. Pausen: förtjust', ljudtext: 'rav-gullig-2 (förtjust)', s: {} },
 
   // --- Det blåser, räven fryser ---
-  { id: '08', d: 0.3 + L(12) + 1.0, plats: 'Uppslaget, bred', malin: [[12, 0.3]], ljud: [['vind-host/vind-host-1', 0.3, 0.4], ['prassel-lov/prassel-lov-1', 0.9, 0.5]],
+  { id: '08', d: 0.3 + L(12) + 1.0, plats: 'Uppslaget, bred', malin: [[12, 0.3]], ljud: [['vind-host/vind-host-1', 0.3, 0.4, { langd: 6.5, fade: 2.0 }], ['prassel-lov/prassel-lov-1', 0.9, 0.5]],
     bild: 'På *"blåser"*: vita vindkrumelurer över bilden, fler löv i luften, molnen fortare. Rävens öron fladdrar bakåt, den blundar och lutar sig bakåt', ljudtext: 'vind-host, prassel-lov', s: { vy: 'bred', vind: true, falla: 5 } },
   { id: '09', d: 0.4 + L(13) + 1.4, plats: 'Räven, närbild', malin: [[13, 0.4]], ljud: [R('6', 0.4 + L(13) + 0.2)],
     bild: 'Räven darrar lätt, armarna in mot magen, svansen runt benen, en liten andningspuff vid nosen. Besvärad, inte ledsen', ljudtext: 'rav-gullig-6 (frusen)', s: { vy: 'nara', vind: false, falla: 1, puff: true } },
@@ -110,7 +110,7 @@ export const RADER = [
     bild: 'Räven nickar', ljudtext: 'rav-gullig-7 (pratar)', s: { vy: 'nara' } },
   { id: '13', d: 0.6 + L(19) + 0.8, plats: 'Rävens plats, halvbild', malin: [[19, 0.6]], ljud: [['swoosh/swoosh-1', 0.1], ['prassel-tyg/prassel-tyg-1', 0.6 + 2.4, 0.5]],
     bild: 'Halsduken glider sakta i en båge till räven och lägger sig runt halsen. Darrandet slutar på *"Så där"*', ljudtext: 'swoosh mjukt, prassel-tyg', s: { vy: 'halv', halsduk: 'pa' } },
-  { id: '13b', d: 0.2 + L(20) + SVAR + L(21) + 0.8, plats: 'Räven, närbild', malin: [[20, 0.2], [21, 0.2 + L(20) + SVAR]], ljud: [R('4', 0.2 + L(20) + 0.2), ['vind-host/vind-host-1', 0.2 + L(20) + SVAR + 0.8, 0.25]],
+  { id: '13b', d: 0.2 + L(20) + SVAR + L(21) + 0.8, plats: 'Räven, närbild', malin: [[20, 0.2], [21, 0.2 + L(20) + SVAR]], ljud: [R('4', 0.2 + L(20) + 0.2), ['vind-host/vind-host-1', 0.2 + L(20) + SVAR + 0.8, 0.25, { langd: 6.0, fade: 2.0 }]],
     bild: 'Räven trycker nosen ner i halsduken och blundar. Pausen: mysig suck. En svag vindkrumelur glider förbi, räven sitter kvar varm', ljudtext: 'rav-gullig-4 (mysig), vind svagt', s: { vy: 'nara' } },
 
   // --- Lövhögen ---
@@ -121,9 +121,9 @@ export const RADER = [
   { id: '16', d: 0.5 + L(25) + 1.2, plats: 'Lövhögen, halvbild', malin: [[25, 0.5]], ljud: [['hopp-mjuk/hopp-mjuk-2', 0.1], ['hostlov/lovhog.mp3', 0.5, 0.6]],
     bild: 'Räven hukar och hoppar lugnt in i lövhögen. På *"Hopp!"* sjunker den ner mellan högens två halvor, bara huvudet och öronen syns, löven yr upp', ljudtext: 'hopp-mjuk, hostlov', s: { plats: 'hog', yra: true } },
   { id: '16b', d: 0.6 + L(26) + 1.2, plats: 'Lövhögen, halvbild', malin: [[26, 0.6]], ljud: [['hopp-mjuk/hopp-mjuk-3', 0.6 + 0.55], ['hostlov/lovhog.mp3', 0.6 + 1.0, 0.6]],
-    bild: 'En lugn paus, sedan upp ur högen och ner igen på *"hopp"*, löven yr', ljudtext: 'hopp-mjuk, hostlov', s: {} },
+    bild: 'En lugn paus, sedan upp ur högen och ner igen på *"hopp"*, löven yr. I slutet hoppar räven ut ur högen och landar framför den, före klippet', ljudtext: 'hopp-mjuk, hostlov', s: {} },
   { id: '17', d: 0.5 + L(27) + 1.2, plats: 'Räven vid högen, närbild', malin: [[27, 0.5]], ljud: [['rav-fniss/rav-fniss-1', 0.5 + L(27) + 0.2]],
-    bild: 'Räven kliver ut ur högen med tre små löv på huvudet. Den tittar upp mot dem, skakar lugnt, ett faller av', ljudtext: 'rav-fniss', s: { vy: 'nara', plats: 'framfor-hog', yra: false, huvudlov: true } },
+    bild: 'Räven står framför högen med tre små löv på huvudet. Den tittar upp mot dem, skakar lugnt, ett faller av', ljudtext: 'rav-fniss', s: { vy: 'nara', plats: 'framfor-hog', yra: false, huvudlov: true } },
 
   // --- Löven och ekollonen ---
   { id: '18', d: 0.3 + L(28) + 1.2, plats: 'Räven, halvbild', malin: [[28, 0.3]], ljud: [R('5b', 0.3 + L(28) + 0.2)],

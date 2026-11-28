@@ -60,7 +60,7 @@ Alla rörelser börjar före Malins replik (0,4–0,8 s in eller när de har lan
 | Halsduken på | kortet fälls ner, halsduken glider i en båge till räven och lägger sig runt halsen under kindbandet (ett eget lager i riggen, följer kroppens gungning). Den hängande änden åt det håll räven inte tittar. Darrandet slutar och svansen viftar igen **på "Så där!"** |
 | Mjuk och varm | räven trycker nosen ner i halsduken, blundar, mysig suck |
 | Hopp | räven hukar och gör ett lugnt hopp i en båge in i lövhögen. **På "Hopp!"** sjunker den ner bakom högens främre halva så att bara huvudet, öronen och svansspetsen syns, löven yr upp (8–10 löv ritade i kod) och singlar ner igen, `hostlov`. Andra hoppet: upp ur högen och ner igen |
-| Löv på huvudet | räven kliver ut ur högen med tre små löv på huvudet och mellan öronen (ritade i riggen, följer huvudet). Den tittar upp mot dem, skakar lugnt (±4°), ett löv faller av och de andra sitter kvar. `rav-fniss` |
+| Löv på huvudet | räven hoppar ut ur högen i högens bild (landar före närbilden) och har tre små löv på huvudet och mellan öronen (ritade i riggen, följer huvudet). Den tittar upp mot dem, skakar lugnt (±4°), ett löv faller av och de andra sitter kvar. `rav-fniss` |
 | Barnet tittar efter löven | hela uppslaget. Barnet tittar 3 s. Sedan studsar och glimtar varje löv på marken **på sitt färgord** (rad 28–30), `glimt` |
 | Ekollonen | samma: barnet tittar 3 s, sedan glimtar ekollonen ett i taget **på "Ett, två, tre!"**. Räven går dit (riktningsposen, speglas aldrig) och luktar: nosen ner, blundar, `nos` |
 | Ekorren | rad 37: ekorrens svansspets syns bakom ekens stam (ett litet kort, rör sig lite). **På "Titta, där är den ju!"** fälls ekorrens kort upp bredvid stammen med `pop`, den gör två små skutt fram till ekollonen, tar ett och skuttar tillbaka. **På "Hej, ekorren!"** gör den ett glatt skutt, och räven vinkar |
@@ -101,7 +101,7 @@ Lilla Kritans logotyp 1 s, sedan skrivbordet med den stängda bruna boken (recep
 | 15b ✱ | Samma, räven tittar på oss. **Pausen:** förtjust, nick | Ska du hoppa i löven? *(paus: förtjust, nick)* Ja, bra idé! | `rav-gullig-2c` |
 | 16 | Halvbild: räven hoppar in i lövhögen, löven yr på *"Hopp!"* | Hopp! | `hopp-mjuk`, `hostlov` |
 | 16b | Samma, en lugn paus, sedan upp ur högen och ner igen | En gång till … hopp! | `hopp-mjuk`, `hostlov` |
-| 17 | Närbild: räven kliver ut med löv på huvudet, skakar lugnt, ett faller av | Ha ha, löv på huvudet. | `rav-fniss` |
+| 17 | Närbild: räven står framför högen med löv på huvudet, skakar lugnt, ett faller av | Ha ha, löv på huvudet. | `rav-fniss` |
 | 18 | Halvbild, räven tittar runt | Vad mer finns på hösten? | `rav-gullig-5b` |
 | 19 | Hela uppslaget. Barnet tittar (3 s) | Ser du några löv på marken? *(paus 3 s)* | tyst |
 | 19b | Samma. Varje löv studsar lugnt och glimtar på sitt färgord, med en paus mellan | Ett rött löv. Ett gult löv. Och ett brunt löv. | `glimt` per löv |

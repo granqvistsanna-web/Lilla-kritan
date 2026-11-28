@@ -600,11 +600,17 @@ const plan = kameraplan({ cam, canvas: $('bild'), platser, vyer: VYER, langd: DU
 
 // ---- ljudet: Malin, räven och effekterna ur raderna, kritans ritljud som slinga, skogen lågt under allt ----
 const EF = 'assets/ljud/effekter/';
-const VOL = f => /rav-/.test(f) ? 1.5 : /(glitter|tindra|glimt)/.test(f) ? 0.85 : /prassel/.test(f) ? 0.9 : /(pop|swoosh|hopp-mjuk|landa-mjuk)/.test(f) ? 0.7 : 1.0;
+// rävens läten 3 dB under Malin (QA: djurljuden 2–4 dB under rösten): Malin ligger på ca −17,6 LUFS × 2,5 = −9,6, varje läte får sin egen förstärkning ur
+// filens uppmätta ljudstyrka (ffmpeg ebur128, 28/11), högst 5 så att topparna stannar under −3 dBFS (rav-gullig-7b når därför bara −16)
+const RAV_LUFS = { 'rav-gullig-1b': -23.8, 'rav-gullig-2': -19.9, 'rav-gullig-2b': -20.0, 'rav-gullig-2c': -19.9, 'rav-gullig-2d': -20.0, 'rav-gullig-4': -19.9,
+  'rav-gullig-4b': -20.0, 'rav-gullig-4c': -22.0, 'rav-gullig-5': -22.7, 'rav-gullig-5b': -22.4, 'rav-gullig-6': -24.7, 'rav-gullig-7': -24.6, 'rav-gullig-7b': -30.3,
+  'rav-gullig-8': -25.6, 'rav-gullig-8b': -23.6, 'rav-fniss-1': -26.4 };
+const ravVol = f => Math.min(5, 10 ** ((-9.6 - 3 - (RAV_LUFS[f.split('/').pop()] ?? -20)) / 20));
+const VOL = f => /rav-/.test(f) ? ravVol(f) : /(glitter|tindra|glimt)/.test(f) ? 0.85 : /prassel/.test(f) ? 0.9 : /(pop|swoosh|hopp-mjuk|landa-mjuk)/.test(f) ? 0.7 : 1.0;
 const LJUD = [];
 for (const r of RAD) {
   for (const [n, o] of r.malin || []) LJUD.push({ t: r.s + o, fil: `assets/ljud/roster/hosten-i-boken/${ROST[n - 1][0]}.m4a`, vol: 2.5 });
-  for (const [f, o, v] of r.ljud || []) if (!/^(krita-ritar|skogsljud)\//.test(f)) LJUD.push({ t: r.s + o, fil: EF + f + (/\.\w+$/.test(f) ? '' : '.m4a'), vol: VOL(f) * (v != null ? v / 0.7 : 1) });
+  for (const [f, o, v, x] of r.ljud || []) if (!/^(krita-ritar|skogsljud)\//.test(f)) LJUD.push({ t: r.s + o, fil: EF + f + (/\.\w+$/.test(f) ? '' : '.m4a'), vol: VOL(f) * (v != null ? v / 0.7 : 1), ...x });   // x: { langd, fade } (vindstötarna)
 }
 for (const [i, D] of RIT.entries()) LJUD.push({ t: D.T.rit[0], fil: EF + `krita-ritar/krita-ritar-${i + 1}.m4a`, vol: 1.2, langd: D.T.rit[1] - D.T.rit[0] + 0.3, loop: true, fade: 0.4 });
 LJUD.push({ t: 0, fil: EF + 'skogsljud/skogsljud-1.m4a', vol: 0.25, langd: DURATION, loop: true, fadeIn: 1.0, fade: 2.0 });
