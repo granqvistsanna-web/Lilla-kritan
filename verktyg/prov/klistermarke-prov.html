@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8">
+<!-- Provsida för verktyg/klistermarke.js (skillen klistermarken): 1, 2, 3 och en sak, på ord 1,0 / 1,8 / 2,6 / 3,6 s. ?t=2.0 visar en tid. -->
+<style>html,body{margin:0;background:#C9A24A}svg{display:block;width:100vw;height:auto}</style>
+<svg id="s" viewBox="0 0 1920 1080"><rect width="1920" height="1080" fill="#C9A24A"/><rect y="640" width="1920" height="440" fill="#B98F3A"/><g id="ov"></g></svg>
+<script src="../kritan-ritar.js"></script><script src="../klistermarke.js"></script>
+<script>
+const APPLE = '../../assets/rekvisita/applet-rott/cut/applet-rott-v3-tunn.png';
+function rita(t) {
+  document.getElementById('ov').innerHTML =
+      klistermarke(t, { x: 330, y: 330, d: 280, t0: 1.0, t1: 6, siffra: '1', tilt: -5 })
+    + klistermarke(t, { x: 790, y: 330, d: 280, t0: 1.8, t1: 6, siffra: '2', tilt: 4 })
+    + klistermarke(t, { x: 1250, y: 330, d: 280, t0: 2.6, t1: 6, siffra: '3', tilt: -4 })
+    + klistermarke(t, { x: 1640, y: 760, d: 300, t0: 3.6, t1: 6, bild: APPLE, hb: 836 / 729, skiva: '#FCE4E2', tilt: 5 });
+}
+window.seek = rita;
+const q = new URLSearchParams(location.search).get('t');
+if (q) rita(+q); else { const s = performance.now(); (function f() { rita(((performance.now() - s) / 1000) % 6.5); requestAnimationFrame(f); })(); }
+</script>
