@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { duk, kritYta, tex, SIDA } from '/produktion/three-rum/popupbok/bok-parm.js';
 import { $, kl, k01, lerp, mjuk, bump, reser, v3, rader, scenen, dataUrl, kontur, mat, djup, vik, stall, PARM, fallning, figurKort,
   kritan, ljuset, djupskarpa, kamera, starta, SLUTET } from '/produktion/three-rum/popupbok/uppslag.js';
-import { RQ, KH, BO_OFF, MH, MUSPOS, byggUppslaget } from '/avsnitt/065-varen-i-boken/storyboard/uppslaget.js';
+import { RQ, KH, BO_OFF, MH, TH, MUSPOS, LUFT, byggUppslaget } from '/avsnitt/065-varen-i-boken/storyboard/uppslaget.js';
 
 // ---- raderna ----
 const RD = rader(await import('/avsnitt/065-varen-i-boken/storyboard/rader.mjs')), { RAD, RR, S, LN, MAL, SVAR, DURATION, rad, GLES } = RD;
@@ -26,6 +26,10 @@ const SC = scenen(), { scen, cam } = SC;
 // ---- uppslaget: boken, korten, koordinaterna och vyerna ur storyboard/uppslaget.js (samma som storyboarden) ----
 const { insida, satt, kort, BAK, SOLEN, MOLNEN, SKOG, LOVTRAD, BUSKE_K, TULPAN, GUL_R, ROSA_K, GULA_K, KANNA_K, KANNA_R, BOET, VY } = await byggUppslaget(scen);
 const KONTUR = Object.fromEntries(await Promise.all(['tulpan-gul', 'vattenkanna'].map(async s => [s, await kontur(`${RQ}${s}/cut/${s}-kontur.json`)])));
+// den gula tulpanens detaljstreck (Sanna 28/11 0:14 "polish drawing, the lines looks odd"): konturen ger stjälken två linjer, så inget
+// tredje streck i stjälken; inga mittnerver (bladen är så smala i bild att de blev dubbellinjer); bara de två korta kronbladslinjerna
+// från skårorna (tulpan-gul.png px 95/172, y 56)
+KONTUR['tulpan-gul'] = [KONTUR['tulpan-gul'][0], 'M95 56 Q100 96 106 128', 'M172 56 Q168 96 162 128'];
 const KANNA_URL = await dataUrl(RQ + 'vattenkanna/cut/vattenkanna.png');
 
 // ---- fjärilen och nyckelpigan: ritade i kod (prov/insekter/prov.js, Sanna valde kod 2026-11-27) ----
@@ -94,14 +98,32 @@ function ritaInsekter(t, steg) {   // ny brusbild 6 gånger/s, kanten och boilen
   s = pxPerTex(FJARIL) * FH / NH; BOIL = kl(1, 12, 2.5 / s); KANT = kl(6, 30, 3 / s); byt(vl, vinge(-1)); byt(vr, vinge(1)); byt(kr, fjarilKropp());
 }
 
+// ---- fågeln vid boet (Sanna 28/11 3:16 "Incl bird in scene too"): 043:s fagel.js som 064:s tre fåglar (kroppen urklippt, vinge,
+// näbb och öga i kod). En liten gul fågel på boets bortre kant till höger, bakom äggen (boet täcker fötterna), näbben utåt. Piper på
+// fagel-pip (rad 24 och 24d) med ett litet hopp, blinkar ibland. Följer trädet som boet.
+const FB = { x: -150, y: -330, w: 1100, h: 1050 }, FE = 0.04 / 689, FAGEL_PLATS = v3(0.046, 0.048, -0.004);   // fötterna i boets ruta (boets fot = 0)
+const FAGEL_URL = await dataUrl(`${RQ}smafaglar/cut/fagel-kropp-gul-kod.png`);
+const FAGEL = (() => { const c = duk(440, 420), T = tex(c), g = new THREE.PlaneGeometry(FB.w * FE, FB.h * FE);
+  g.translate((FB.x + FB.w / 2 - 400) * FE, (689 - (FB.y + FB.h / 2)) * FE, 0);   // origo i fötterna
+  const m = new THREE.Mesh(g, mat(T, { alphaTest: 0.5, side: THREE.DoubleSide })); m.castShadow = true; m.customDepthMaterial = djup(T); scen.add(m);
+  return { c, T, m, nyckel: '', img: new Image() }; })();
+async function ritaFagel(o) {   // ritar om bara när läget ändras (064)
+  const F = FAGEL, q = { flax: 0, oppen: +o.oppen.toFixed(2), blink: +o.blink.toFixed(1), t: 0 }, n = JSON.stringify(q);
+  if (n === F.nyckel) return; F.nyckel = n;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${FB.x} ${FB.y} ${FB.w} ${FB.h}" width="440" height="420">${window.fagelSvg('gul', { ...q, href: FAGEL_URL })}</svg>`;
+  const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); F.img.src = url; await F.img.decode(); URL.revokeObjectURL(url);
+  const x = F.c.getContext('2d'); x.clearRect(0, 0, 440, 420); x.drawImage(F.img, 0, 0, 440, 420); F.T.needsUpdate = true;
+}
+
 // ---- musen: v2-riggen på ett kort ----
 // HAND finns inte i musens uttryck.html: händerna mätta ur mille-arm-l/-r.png (punkten längst från axeln, en bit in), munnen ur
 // munbågen (y ca 460). Bara i den här scenen, riggen ändras inte.
 window.HAND = { l: [172, 624], r: [851, 623], kant: 8, mun: [511, 460] };
 const FOT = 924, TOPP = 103;   // TOPP: öronens topp (mille-ear-r.png)
 const L = await v2rigg('musen-mille'), G = L.figur(512, FOT, 1, $('figurer'));
-// kannan i höger hand: greppet mitt på handtagets ovankant, upprätt (folj 0), pipen åt höger mot blommorna
-const PIP = [368, 78], KSKALA = KH / (0.26 / (FOT - TOPP)) / 339;
+// kannan i vänster hand framför magen (Sanna 28/11 1:21 "place in the left hand so it makes better sense pouring water on feet"):
+// greppet mitt på handtagets ovankant, upprätt (folj 0), pipen åt höger in över fötterna och mot blomman till höger om musen
+const PIP = [368, 78], KSKALA = KH / (MH / (FOT - TOPP)) / 339;   // musens höjd MH (0,235 i ?prov=l): kannan i handen lika stor som 3D-kannan
 const SAK = L.sakBild(KANNA_URL, 388, 339, { grepp: [144, 36], fot: [194, 323], skala: KSKALA, folj: 0, kant: 4 });
 L.sakIn(G, SAK);
 const MUSKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: MH, blink: 31, hog: 0.008 }), { m: mus, ENHET, fig2varld, BL, nick } = MUSKORT;
@@ -132,7 +154,7 @@ const GUL_NER = S('04') + 0.05, GUL_KLAR = S('05') + 0.7, GUL_UPP = S('05') + 0.
 const SLAR_UT = { rod: S('05b') + 0.3, lila: S('05b') + 1.3 }, HANGER = { rod: S('07b') + 1.1, gul: S('07b') + 2.1, lila: S('07b') + 3.1 };   // efter kamerans glidning
 // kannan: ritas (09), fylls och fälls upp (10), glider till handen (12), ställs tillbaka i gräset (20)
 const KANNA_KLAR = S('10') + 0.55, KANNA_UPP = S('10') + 0.75, GLIDA = [S('12') + 0.1, S('12') + 0.9], SATT_NER = [S('19b') + 2.5, S('19b') + 3.3];   // efter "Tre!", inte under rad 20:s glidning
-const FOTLUT = [S('12') + 0.85, S('12') + 1.55];   // lutar kannan för tidigt
+const FOTLUT = [S('12') + 0.9, S('12') + 1.55];   // lutar kannan för tidigt (först när den är i handen)
 const FOTDROPPAR = [1.0, 1.15, 1.3].map(s => S('12') + s);   // ur pipen när kannan är i handen (GLIDA[1]), landar 0,35 s senare med droppljuden
 // vattna: kannan lutas, dropparna faller i en båge på blomman, den reser sig på "upp"
 const VATTNA = { rod: [S('14') + 0.1, UPP.rod], gul: [S('15') + 1.0, UPP.gul], lila: [S('19') + 1.0, UPP.lila] };
@@ -161,18 +183,13 @@ const KR = kritan(cam), { skarm } = KR;
     { in: [a + 0.5, a + 0.9], rit: [a + 1.0, a + 4.3], vanta: [a + 4.4, a + 5.1], ut: [b + 0.1, b + 0.9] }, [b + 0.1, b + 0.7], [330, -60]);
   KR.teckning('vattenkanna', RQ + 'vattenkanna/cut/vattenkanna.png', KONTUR.vattenkanna, KANNA_R, KANNA_K.m,
     { in: [c + 0.1, c + 0.5], rit: [c + 0.6, c + 3.2], vanta: [c + 3.3, c + 4.0], ut: [d + 0.1, d + 0.9] }, [d + 0.05, d + 0.55], [300, 20]); }
-// siffrorna 1, 2, 3 i krita: bara linjen (ritBana ur kritan-ritar.js), ritas på ordet vid blomman, i en 100 × 140-ruta
-const SIFFRA_D = [['M30 38 L56 14 L56 128'], ['M20 46 C20 6 88 4 86 46 C84 78 40 96 18 128 L90 128'],
-  ['M22 26 C44 4 90 12 82 44 C77 64 52 68 44 68 C62 68 92 76 86 102 C80 136 30 136 16 112']];
+// siffrorna 1, 2, 3 (Sanna 28/11 1:46 "thicker number with white circle number"): det delade klistermärket (skillen klistermarken,
+// verktyg/klistermarke.js, som 063): vit kant, gyllene platta, tjock kritsiffra, slås upp på ordet snett ovanför kronan till höger (rakt ovanför hamnade i bildkanten i halvbilderna), aldrig över blomman eller musen
 function siffror(t) {
-  const r = rad(t), id = r.id; let h = '';
-  const visa = (i, t0, t1) => { if (t < t0 || t > t1) return; const f = ['rod', 'gul', 'lila'][i], T = TULPAN[f];
-    const p = v3(T.x + 0.16, SIDA + 0.32, T.z + 0.03), [x, y] = skarm(p), [, y2] = skarm(p.clone().add(v3(0, 0.08, 0))), s = Math.abs(y - y2) / 140;
-    const k = ritfart((t - t0) / 0.4), op = Math.min(1, (t1 - t) / 0.3);
-    h += `<g transform="translate(${(x - 50 * s).toFixed(1)} ${(y - 70 * s).toFixed(1)}) scale(${s.toFixed(4)})" opacity="${op.toFixed(2)}">`
-      + ritBana(SIFFRA_D[i], k, { attr: `fill="none" stroke="#FFF" stroke-width="${(KRITAN.BRED * 2.4).toFixed(1)}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"` }).html
-      + ritBana(SIFFRA_D[i], k, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${KRITAN.BRED}" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"` }).html + '</g>';
-    if (t - t0 < 1) h += gnistor(x, y, 70 * s * 2, t - t0 - 0.3, 4); };
+  let h = '';
+  const visa = (i, t0, t1) => { if (t < t0 - 0.2 || t > t1) return; const T = TULPAN[['rod', 'gul', 'lila'][i]];
+    const p = v3(T.x + 0.13, SIDA + TH * 0.86, T.z + 0.03), [x, y] = skarm(p), [, y2] = skarm(p.clone().add(v3(0, 0.075, 0)));
+    h += klistermarke(t, { x, y, d: Math.abs(y - y2), t0, t1, siffra: String(i + 1), tilt: [-5, 4, -4][i] }); };
   visa(0, SIFFRA_T[0], S('15') + 0.3); visa(1, SIFFRA_T[1], S('16') + 0.3); visa(2, SIFFRA_T[2], S('20'));
   const slut = S('20') + RR['20'].d - 0.7; RAKNA.forEach((a, i) => visa(i, a, slut));
   return h;
@@ -199,11 +216,9 @@ function musen(t) {
   let f = BU('glad'), p = { ...L.POSE0, armar: [0, 0], fram: [0, 0] };
   [f, p] = L.vila(f, p, t); p = { ...p, armar: p.armar || [0, 0], fram: p.fram || [0, 0] };
   handIDetta = t >= GLIDA[1] && t < SATT_NER[0];
-  if (handIDetta) p.hall = [0, 1];
   // lutar kannan: för tidigt (rad 12) och när den vattnar
   let lut = bump(FOTLUT[0], FOTLUT[1], t, 0.2);
   for (const [a, b] of Object.values(VATTNA)) lut = Math.max(lut, bump(a, b + 0.45, t, 0.35));
-  p.sakV = 34 * lut; p.armar = [p.armar[0], p.armar[1] + 14 * lut];
   switch (id) {
     case '06b': { const sv = SVAR('06b', 9) - r.s; f = { ...f, titt: tl < 1.4 ? [-9, -9] : [0, 0] }; p.rikt = tl < 1.4 ? -0.3 * mjuk(tl / 0.4) : 0;
       f = L.blanda(f, 'kawaii', bump(sv, sv + 1.4, tl)); [f, p] = nick(f, p, tl - sv); break; }
@@ -245,7 +260,9 @@ function musen(t) {
     f = { ...f, titt: [6 * g.dir * g.k, 2] }; }
   // glädjeskutten: hukar före, landar mjukt
   for (const K of SKUTT) p = L.blandaPose(p, 'huka', 0.5 * bump(K.t0 - 0.18, K.t0 + 0.03, t, 0.1) + 0.35 * bump(K.t0 + K.d - 0.02, K.t0 + K.d + 0.18, t, 0.08));
-  if (handIDetta) p.hall = [0, 1];
+  // kannan: vänster arm kommer fram över magen medan kannan glider till handen (riggens bara med fram, efter gången) och går tillbaka när den ställs ner
+  const fk = t < GLIDA[0] ? 0 : t < GLIDA[1] ? mjuk((t - GLIDA[0]) / (GLIDA[1] - GLIDA[0])) : t < SATT_NER[0] ? 1 : 1 - mjuk((t - SATT_NER[0]) / (SATT_NER[1] - SATT_NER[0]));
+  if (fk > 0) [f, p] = L.ARMROR.bara(f, p, fk, { fram: true, hand: 0 });
   p.sakV = 34 * lut;
   // reaktionsslaget i radens slut (GLES)
   const RE = REAKTION[id];
@@ -256,22 +273,26 @@ function musen(t) {
 }
 
 // ---- en bildruta ----
-let PIPV = null;   // pipens spets i världen (räknas efter att riggen ritats)
-const pipPunkt = () => { const ting = G.querySelector('.sak-plats[display="inline"] .sak-ting'); if (!ting) return null;
-  const M = DOMMatrix.fromMatrix($('figurer').getCTM()).inverse().multiply(DOMMatrix.fromMatrix(ting.getCTM())); const q = M.transformPoint(new DOMPoint(...PIP)); return [q.x, q.y]; };
+let PIPV = null;
+const FOTMAL = [[575, 884], [628, 888], [600, 880]];   // dropparna landar på högra foten, under pipen   // pipens spets i världen (räknas efter att riggen ritats)
+const sakPunkt = pt => { const ting = G.querySelector('.sak-plats[display="inline"] .sak-ting'); if (!ting) return null;
+  const M = DOMMatrix.fromMatrix($('figurer').getCTM()).inverse().multiply(DOMMatrix.fromMatrix(ting.getCTM())); const q = M.transformPoint(new DOMPoint(...pt)); return [q.x, q.y]; };
+const pipPunkt = () => sakPunkt(PIP);
+let KFOT = null;   // kannans fot i riggen (i världen), dit 3D-kannan glider
 async function ritaMus(t) {
   const [x, y, z] = musPos(t); mus.position.set(x, MUSKORT.y + y, z);
   const [f, p] = musen(t);
   L.rita(G, f, p); L.sakRita(G, p);
   G.querySelectorAll('.sak-plats image').forEach(im => im.setAttribute('opacity', handIDetta ? 1 : 0));
-  const pp = handIDetta ? pipPunkt() : null; PIPV = pp ? fig2varld(pp) : null;
+  const pp = handIDetta ? pipPunkt() : null; PIPV = pp ? fig2varld(pp).add(v3(0, 0, 0.015)) : null;   // dropparna börjar framför kortet
+  const fot = sakPunkt([194, 323]); KFOT = fot ? fig2varld(fot) : null;
   // dropparna på fötterna (rad 12): ur pipen i en båge ner på högra foten, delar sig och rinner av
   let d = '';
   const dr = (x, y, s, op = 1) => `<path d="M${x.toFixed(1)} ${(y - 24 * s).toFixed(1)} Q${(x + 14 * s).toFixed(1)} ${y.toFixed(1)} ${x.toFixed(1)} ${(y + 9 * s).toFixed(1)} Q${(x - 14 * s).toFixed(1)} ${y.toFixed(1)} ${x.toFixed(1)} ${(y - 24 * s).toFixed(1)}Z" fill="#9FD8F5" stroke="#fff" stroke-width="5" opacity="${op.toFixed(2)}"/>`;
-  if (pp) FOTDROPPAR.forEach((a, i) => { const u = (t - a) / 0.35, mal = [[575, 884], [628, 888], [600, 880]][i];
+  if (pp) FOTDROPPAR.forEach((a, i) => { const u = (t - a) / 0.35, mal = FOTMAL[i];
     if (u > 0 && u < 1) d += dr(lerp(pp[0], mal[0], u), lerp(pp[1], mal[1], u * u) - 90 * Math.sin(Math.PI * u) * (1 - u), 2.0);
     const v = (t - a - 0.35) / 0.3; if (v > 0 && v < 1) for (const sd of [-1, 1]) d += `<circle cx="${(mal[0] + sd * 60 * v).toFixed(1)}" cy="${(mal[1] - 40 * Math.sin(Math.PI * v)).toFixed(1)}" r="${(13 * (1 - v * 0.5)).toFixed(1)}" fill="#BDE7FA" stroke="#fff" stroke-width="5"/>`; });
-  for (const [i, a] of FOTDROPPAR.entries()) { const w = (t - a - 0.35) / 1.2, mal = [[575, 884], [628, 888], [600, 880]][i];   // pärlan rinner av foten
+  for (const [i, a] of FOTDROPPAR.entries()) { const w = (t - a - 0.35) / 1.2, mal = FOTMAL[i];   // pärlan rinner av foten
     if (w > 0 && w < 1) d += dr(mal[0] + 12 * mjuk(w), mal[1] + 30 * mjuk(w), 1.3, Math.min(1, (1 - w) * 4)); }
   $('dropparG').innerHTML = d;
   await MUSKORT.textur(t);
@@ -307,8 +328,10 @@ async function bildruta(t) {
     for (const l of ['knopp', 'uppe', 'hanger']) { const k = T[l]; k.m.visible = l === lage; vik(k, e); k.m.rotation.z = 0; k.m.scale.setScalar(1); k.m.material.emissive.setScalar(0); }
     if (fl === 'gul') {   // knoppen fälls ner, teckningen ligger platt bakåt, fylls i och fälls upp
       const kn = T.knopp; if (t >= GUL_NER && t < GUL_NER + 0.4) { const u = mjuk((t - GUL_NER) / 0.4); kn.m.visible = true; kn.m.rotation.x = -Math.PI / 2 * u; kn.m.scale.setScalar(1 - 0.9 * u); }   // bakåt (mot teckningen) och krymper: ingen krämvit baksida
-      if (t >= GUL_NER && t < GUL_UPP + 0.5) { const u = T.uppe.m, up = reser((t - GUL_UPP) / 0.45);
-        u.visible = t >= GUL_KLAR - 0.05; u.rotation.x = -Math.PI / 2 * (1 - up); u.position.y = SIDA + 0.0025 * (1 - up); }
+      if (t >= GUL_NER && t < GUL_UPP + 0.5) { const u = T.uppe.m, up = LUFT ? 1 : reser((t - GUL_UPP) / 0.45);
+        u.visible = t >= GUL_KLAR - 0.05; u.rotation.x = -Math.PI / 2 * (1 - up); u.position.y = SIDA + 0.0025 * (1 - up);
+        // ?prov=l: kritan ritar stående (uppslag.js staende()), så kortet står redan där teckningen fylldes; ett litet pop på pop-ljudet
+        if (LUFT) u.scale.setScalar(1 + 0.06 * bump(GUL_UPP - 0.1, GUL_UPP + 0.35, t, 0.15)); }
       if (T.knopp.flik) T.knopp.flik.visible = t < GUL_NER || t > GUL_UPP + 0.25 ? T.knopp.flik.visible : false;
     }
     const k = T[lage].m;
@@ -328,6 +351,7 @@ async function bildruta(t) {
   { const e = mus.rotation.x < 0.3, [x, y, z] = musPos(t); MUSFLIK.visible = e; MUSFLIK.position.set(x, SIDA + 0.0009, z + 0.012); MUSFLIK.scale.setScalar(1 - 4 * y); }
   // solen glimtar (rad 07, 20b)
   SOLEN.scale.setScalar(1 + 0.1 * Math.max(glimt(t, S('07') + 0.3, 0.8), glimt(t, S('20b') + 0.2, 0.8)));
+  SOLEN.rotation.z = 0.04 * Math.sin(t * 1.1);   // vajar lugnt fram och tillbaka (±2°), snurrar aldrig
   for (const k of MOLNEN) k.m.position.x = k.x + 0.012 * t * (k.i % 2 ? -1 : 1) * (1 + k.i * 0.3);
   // kannan: ligger platt där kritan ritade den, reser sig, glider till handen; ställs tillbaka i gräset (rad 20)
   const K = KANNA_K, ke = fallE(K);
@@ -335,34 +359,38 @@ async function bildruta(t) {
   if (t < GLIDA[1]) { K.m.rotation.x = -Math.PI / 2 * (1 - reser((t - KANNA_UPP) / 0.45)); K.m.position.y = SIDA + 0.0025 * (t < KANNA_UPP ? 1 : 0); }
   else vik(K, t >= K.ner ? 1 - mjuk((t - K.ner) / 0.35) : 1);   // fälls som de andra korten (fallE ger 0 utan upp)
   K.flik.visible = K.m.visible && (t > KANNA_UPP + 0.3 && t < GLIDA[0] || t >= SATT_NER[1]) && t < K.ner + 0.1;
-  const hand = () => { const h = fig2varld(window.HAND.r); h.y -= (323 - 36) * KSKALA * ENHET; h.x += (194 - 144) * KSKALA * ENHET; return h; };   // kannans fot under greppet
-  if (t >= GLIDA[0] && t < GLIDA[1]) { const u = mjuk((t - GLIDA[0]) / (GLIDA[1] - GLIDA[0])), mal = hand();
-    K.m.visible = true; K.m.rotation.x = 0; K.m.position.set(lerp(K.x, mal.x, u), lerp(K.y, mal.y, u) + 0.08 * Math.sin(Math.PI * u), lerp(K.z, mal.z, u)); }
-  if (t >= SATT_NER[0] && t < SATT_NER[1]) { const u = mjuk((t - SATT_NER[0]) / (SATT_NER[1] - SATT_NER[0])), fr = hand();
-    K.m.visible = true; K.m.rotation.x = 0; K.m.position.set(lerp(fr.x, K.x, u), lerp(fr.y, K.y, u) + 0.06 * Math.sin(Math.PI * u), lerp(fr.z, K.z, u)); }
   // boet i lövträdets grenklyka, fälls med trädet; glimtar på "fågelbo" och "Hej då, fågelboet!"
   LOVTRAD.m.updateMatrixWorld(true);
   { const p = LOVTRAD.m.localToWorld(BO_OFF.clone()); BOET.m.position.copy(p); BOET.m.rotation.x = LOVTRAD.m.rotation.x; BOET.m.rotation.z = 0;
     BOET.m.scale.setScalar(1 + 0.12 * Math.max(glimt(t, ORD_BO, 0.7), glimt(t, HEJ_BO, 0.7))); BOET.m.visible = LOVTRAD.m.rotation.x < 1.5;
-    for (const a of PIP_T) if (t > a && t < a + 1.6) BOET.m.rotation.z = 0.06 * Math.exp(-(t - a) * 2.5) * Math.sin((t - a) * 11); }   // äggen gungar när fågeln piper
+    for (const a of PIP_T) if (t > a && t < a + 1.6) BOET.m.rotation.z = 0.06 * Math.exp(-(t - a) * 2.5) * Math.sin((t - a) * 11);   // äggen gungar när fågeln piper
+    // fågeln: piper (näbben öppnas två gånger) och hoppar lite på varje pip
+    const pip = Math.max(0, ...PIP_T.map(a => Math.max(bump(a, a + 0.22, t, 0.07), bump(a + 0.32, a + 0.54, t, 0.07)))), hopp = Math.max(0, ...PIP_T.map(a => bump(a - 0.05, a + 0.35, t, 0.12)));
+    FAGEL.m.position.copy(LOVTRAD.m.localToWorld(BO_OFF.clone().add(FAGEL_PLATS))).add(v3(0, 0.008 * hopp, 0)); FAGEL.m.rotation.x = LOVTRAD.m.rotation.x;
+    FAGEL.m.scale.set(1, 1 + 0.05 * hopp, 1); FAGEL.m.visible = BOET.m.visible;
+    await ritaFagel({ oppen: pip, blink: (t % 3.7) < 0.12 ? 1 : 0 }); }
   // fjärilen: på den rosa blomman (fälls med den), vingarna fälls sakta; flyger till huvudet och tillbaka
   ROSA_K.m.updateMatrixWorld(true); GULA_K.m.updateMatrixWorld(true);
-  const paRosa = ROSA_K.m.localToWorld(v3(0, 0.12, 0.008)), paHuvud = fig2varld(HUVUD).add(v3(0, FH * 0.32, 0.012));
+  const paRosa = ROSA_K.m.localToWorld(v3(0, 0.12, 0.022)), paHuvud = fig2varld(HUVUD).add(v3(0, FH * 0.32, 0.022));   // 2 cm framför kortet: lutningen och vingarna går aldrig in i det
   const flyger = FLYG.find(([a, b]) => t >= a && t < b), paHuvudet = t >= FLYG[0][1] && t < FLYG[1][0];
   let fp = paHuvudet ? paHuvud : paRosa, flaxa = 0.12 + 0.32 * (0.5 - 0.5 * Math.cos(2 * Math.PI * 0.35 * t));
   if (flyger) { const [a, b] = flyger, u = (t - a) / (b - a), [p0, p1] = flyger === FLYG[0] ? [paRosa, paHuvud] : [paHuvud, paRosa];
     fp = p0.clone().lerp(p1, mjuk(u)); fp.y += 0.12 * Math.sin(Math.PI * u); flaxa = 0.25 + 0.55 * (0.5 - 0.5 * Math.cos(2 * Math.PI * 3 * (t - a))); }
   FJARIL.position.copy(fp); FJARIL.rotation.set(paHuvudet || flyger ? -0.25 : ROSA_K.m.rotation.x - 0.25, 0, flyger ? 0.15 * Math.sin(t * 4) : 0);
-  VL.rotation.y = -flaxa; VR.rotation.y = flaxa;
+  VL.rotation.y = flaxa; VR.rotation.y = -flaxa;   // vingarna fälls fram mot kameran, inte bakåt in i blomkortet (Sanna 28/11 2:42 "butterfly looks clipped": blomman skar av dem)
   FJARIL.scale.setScalar(1 + 0.15 * Math.max(glimt(t, ORD_FJARIL), glimt(t, HEJ_FJARIL)));
   FJARIL.visible = ROSA_K.m.rotation.x < 1.5 || paHuvudet || !!flyger;
   // nyckelpigan på de gula blommorna: kryper lite (benen växlar 4 gånger/s) på rad 22b och 26c
   const kryp = Math.max(bump(S('22b') + 0.2, S('22b') + 2.6, t, 0.3), bump(S('26c') + 0.2, S('26c') + 2.0, t, 0.3));
   const kx = 0.014 * Math.sin(Math.min(t - S('22b'), 9) * 0.9) * (t > S('22b') ? 1 : 0);
-  NYCKELPIGA.position.copy(GULA_K.m.localToWorld(v3(kx, 0.1, 0.008))); NYCKELPIGA.rotation.set(GULA_K.m.rotation.x - 0.5, 0, 0);
+  NYCKELPIGA.position.copy(GULA_K.m.localToWorld(v3(kx, 0.1, 0.02))); NYCKELPIGA.rotation.set(GULA_K.m.rotation.x - 0.5, 0, 0);
   NYCKELPIGA.scale.setScalar(1 + 0.15 * Math.max(glimt(t, ORD_PIGA), glimt(t, HEJ_PIGA))); NYCKELPIGA.visible = GULA_K.m.rotation.x < 1.5;
   ritaInsekter(t, kryp > 0.1 ? Math.floor(t * 4) % 2 : 0);
   await ritaMus(t);
+  // kannan glider till handen och tillbaka: målet är kannans fot i riggen just nu (KFOT, räknad i ritaMus), lite framför kortet
+  const kannaGlid = (a, b, fr, mot, h) => { if (t < a || t >= b || !KFOT) return; const u = mjuk((t - a) / (b - a)), [p0, p1] = fr ? [KFOT, v3(K.x, K.y, K.z)] : [v3(K.x, K.y, K.z), KFOT.clone().add(v3(0, 0, 0.004))];
+    K.m.visible = true; K.m.rotation.x = 0; K.m.position.set(lerp(p0.x, p1.x, u), lerp(p0.y, p1.y, u) + h * Math.sin(Math.PI * u), lerp(p0.z, p1.z, u)); };
+  kannaGlid(GLIDA[0], GLIDA[1], false, null, 0.08); kannaGlid(SATT_NER[0], SATT_NER[1], true, null, 0.06);
   vattna(t);
   DOF.fokus(KAM.aktiv(t));   // i en glidning tonas fokus och oskärpa från förra vyn (uppslag.js)
   scen.updateMatrixWorld(true);
@@ -405,6 +433,9 @@ for (const r of RAD) {
   if (key === forra) continue; forra = key;
   if (GLID[r.id]) glid(r.s, GLID[r.id], namn, g); else vy(r.s, namn, g);
 }
+// rad 20b (Sanna 28/11 2:32 "slight zoom effect camera"): efter glidningen till solen trycker kameran sakta in mot vyns mål (avståndet × 0,86)
+{ const v = KAM.VYER.find(w => Math.abs(w.t - (S('20b') + GLID['20b'])) < 1e-6 && w.rorelse !== 'glid'), [vk, d, dy, mx, my] = v.fran;
+  v.till = [vk, d * 0.86, my + (dy - my) * 0.86, mx, my]; }
 const planK = KAM.plan(DURATION);
 
 // ---- ljudet: Malin, musen och effekterna ur raderna, kritans ritljud som slinga, fågelkvitter lågt under allt ----

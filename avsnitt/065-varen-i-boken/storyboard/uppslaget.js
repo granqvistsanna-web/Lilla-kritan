@@ -9,7 +9,7 @@ export const P = '/produktion/three-rum/popupbok/bilder/', B = '/assets/bakgrund
 export const BOK = 1.3;
 // ?prov=l luftigare uppslag (Sanna 28/11, som 062: "remove all pine trees, remove bush, make flowers smaller, all content a bit smaller"):
 // inga granar och ingen buske, tre lövträd utspridda (plus trädet med boet), tulpanerna 0,30 i stället för 0,38, musen och småblommorna × 0,9
-export const LUFT = (new URLSearchParams(location.search).get('prov') || '').includes('l');
+export const LUFT = (new URLSearchParams(location.search).get('prov') ?? 'l').includes('l');   // standard sedan Sanna 28/11 ("Yes, make default"); ?prov=gammal ger det gamla uppslaget
 // rabatten: tre tulpaner i tre lägen på samma fot. Den hängande bilden är bredare med foten vid 0,39–0,40 av bredden (bildlista.md):
 // dx flyttar den så att foten hamnar på samma punkt, höjden i samma px-skala som den stående.
 export const TH = LUFT ? 0.3 : 0.38, TPOS = { rod: [-0.42, 0.0], gul: [0.0, -0.02], lila: [0.42, 0.06] }, FOTFR = { rod: 0.396, gul: 0.388, lila: 0.404 };
@@ -21,8 +21,9 @@ export const KANNAPOS = [0.42, 0.42], KH = 0.097;
 // ?gren=kod|flow (Sanna 28/11 "need new tree for bird nest … maybe a branch"): trädet med boet får en gren åt höger under kronan, och boet
 // sitter i grenens klyka. kod = grenen ritad på trad.png i kritYta med vit kant; flow = popupbok/bilder/trad-gren.png (Flow-edit av trad.png).
 // Klykan ligger vid px (745, 648) i trad.png (896 × 1200, synligt 92–804 × 60–1142): x (745 − 448) / 1082 × 0,78, y (1142 − 648) / 1082 × 0,78.
-export const GREN = new URLSearchParams(location.search).get('gren') || '';
-export const TRADET = [-0.68, -0.24], BO_OFF = GREN === 'kod' ? v3(0.214, 0.356, 0.03) : v3(0.05, 0.4, 0.03), BOPOS = [TRADET[0] + BO_OFF.x, SIDA + BO_OFF.y, TRADET[1] + BO_OFF.z];
+export const GREN = new URLSearchParams(location.search).get('gren') || 'flow';   // Sanna 28/11: Flow-trädet gäller (?gren=kod eller ?gren=gammal för de andra)
+export const TRADET = [-0.68, -0.24], BO_OFF = GREN === 'kod' ? v3(0.214, 0.356, 0.03) : GREN === 'flow' ? v3(0.195, 0.329, 0.03) : v3(0.05, 0.4, 0.03),
+  BOPOS = [TRADET[0] + BO_OFF.x, SIDA + BO_OFF.y, TRADET[1] + BO_OFF.z];   // flow: klykan vid px (715, 685) i trad-gren.png (synligt 98–797 × 67–1136)
 // musen: höjden (öronen till fötterna) och platserna, till vänster om blomman den vattnar, kannan i höger hand
 export const MH = LUFT ? 0.235 : 0.26, MUSPOS = { start: [0.27, 0.27], rod: [-0.66, 0.22], gul: [-0.22, 0.2], lila: [0.2, 0.26], blommor: [0.56, 0.28] };
 
@@ -42,9 +43,11 @@ export async function byggUppslaget(scen) {
   const { kort, platt, pa } = kortmotor(scen, insida, { kskugga: ['28,52,18', 0.42, 0.16], paSkuggsida: true });
   const BAK = [kort(bredare(KULLE_BAK, 5.2 * BOK), 2.15 / 5.2, 0, -0.6), kort(bredare(KULLE_FRAM, 6.2 * BOK), 1.95 / 6.2, 0.05, -0.47)];
   pa(bredare(HIMMEL, 1.5), 2.03, 0, 0.07 + 2.03 / 2, 0.004, 2.3 * BOK);
-  // solen: liten, högt upp till höger, utan ansikte (huvudsaken är tulpanen)
-  const SOLEN = pa(SOL, 0.24, 0.18, 1.15);
-  const MOLNEN = [[MOLN1, 0.22, -0.7, 1.0], [MOLN2, 0.16, -0.2, 1.22], [MOLN3, 0.13, 0.3, 1.08]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
+  // solen: högt upp till höger. ?prov=l (Sanna 28/11 feedback 2:32 "happy face on sun, bigger sun, lower sun a bit", och "another sun
+  // with sun lights further away"): sjon-saker/sol-orange.png (strålarna fria från skivan), glatt ansikte i kod som 062:s sol, lite lägre; 0,5 hög som 062:s (Sanna 28/11 "bigger sun" igen)
+  const SOLEN = LUFT ? pa(tex(trim(solAnsikte(await bild(B + 'sjon-saker/sol-orange.png'), 511, 512, 1.36))), 0.5, 0.18, 1.05) : pa(SOL, 0.24, 0.18, 1.15);
+  // ?prov=l: molnen 6 mm framför solen (glider förbi framför den, ingen z-fight med den större solen), de två närmaste startar utanför den
+  const MOLNEN = [[MOLN1, 0.22, -0.7, 1.0], [MOLN2, 0.16, LUFT ? -0.34 : -0.2, 1.22], [MOLN3, 0.13, LUFT ? 0.62 : 0.3, 1.08]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y, LUFT ? 0.016 : 0.01), x, i }));
   // granarna och två lövträd ut mot kanterna; lövträdet med boet står till vänster (storyboarden)
   // runda 2 (som 062 runda 2–5, Sanna 28/11): större träd ut mot sidorna (inget träd bakom tulpanerna), en sten vid två trädfötter
   const SKOG = LUFT ? [[-1.3, -0.42, 0.6, TRAD1], [0.98, -0.42, 0.58, TRAD1], [1.42, -0.34, 0.5, TRAD1],   // mellanstora: vårens kamera är låg, större träd blev stammar utan krona; framför den främre kullen (z −0,47)
@@ -71,16 +74,20 @@ export async function byggUppslaget(scen) {
   const BOET = kort(BO, 0.085, 0, 0, { flik: false });
 
   // ---- vyerna: [kamerans plats, målet, fov], g = musens plats ----
-  const tulpanNara = (f, dx = -0.1) => () => { const [x, z] = TPOS[f]; return [v3(x + dx, 0.4, z + 1.0), v3(x + dx, 0.2, z + 0.08), 30]; };
+  // ?prov=l (feedback 1:51 "zoom out a bit, raise camera a bit"): lite längre bort och lite högre, likadant för alla tre tulpanerna
+  const tulpanNara = (f, dx = -0.1) => () => { const [x, z] = TPOS[f], u = LUFT ? 0.03 : 0, b = LUFT ? 0.12 : 0;
+    return [v3(x + dx, 0.4 + u, z + 1.0 + b), v3(x + dx, 0.2 + u, z + 0.08), 30]; };
   const VY = {
     bred: () => [v3(0, 0.7, 1.8), v3(0, 0.3, -0.2), 32],
-    rabatt: () => [v3(0.07, 0.42, 1.3), v3(0.06, 0.15, 0.05), 30],   // den lila hela, också när den hänger åt höger
+    rabatt: () => LUFT ? [v3(0.07, 0.48, 1.3), v3(0.06, 0.21, 0.05), 30] : [v3(0.07, 0.42, 1.3), v3(0.06, 0.15, 0.05), 30],   // ?prov=l (0:07 "move camera up a bit")   // den lila hela, också när den hänger åt höger
     'rabatt-hej': () => [v3(0.1, 0.42, 1.3), v3(0.1, 0.15, 0.05), 35],   // rad 26b: hela rabatten och musen vid blommorna (före gången)
     'rabatt-hel': () => [v3(0.04, 0.42, 1.38), v3(0.04, 0.2, 0.04), 32],
-    'gul-rita': () => [v3(0.02, 0.66, 0.5), v3(0.0, 0.02, -0.19), 30],   // teckningen ligger platt bakåt från foten
+    // teckningen står mot kameran (uppslag.js staende()): ?prov=l framifrån och lite ovanför, tulpanen hel med luft ovanför
+    'gul-rita': () => LUFT ? [v3(0.0, 0.33, 0.84), v3(0.0, 0.19, -0.02), 30] : [v3(0.02, 0.66, 0.5), v3(0.0, 0.02, -0.19), 30],
     'gul-nara': tulpanNara('gul'), 'rod-nara': tulpanNara('rod'), 'lila-nara': tulpanNara('lila', 0.03),   // musen vid den gula och kannan i handen hamnar utanför, inte halvt i kanten
     halv: g => [g.clone().add(v3(0.12, 0.24, 0.84)), g.clone().add(v3(0.08, 0.14, -0.05)), 30],
-    'halv-sol': () => { scen.updateMatrixWorld(true); const s = SOLEN.getWorldPosition(v3()), m = v3(0.1, 0.17, 0.05).lerp(s, 0.5); return [v3(m.x, 0.52, 1.3), m, 30]; },   // solen hel, tulpanerna nedtill, musen utanför (inte halva huvudet)
+    // ?prov=l: målet närmare solen (0,68), så att den stannar i bild när kameran trycker in (rad 20b)
+    'halv-sol': () => { scen.updateMatrixWorld(true); const s = SOLEN.getWorldPosition(v3()), m = v3(0.1, 0.17, 0.05).lerp(s, LUFT ? 0.68 : 0.5); return [v3(m.x, 0.52, 1.3), m, 30]; },   // solen hel, tulpanerna nedtill, musen utanför (inte halva huvudet)
     nara: g => [g.clone().add(v3(0.05, 0.2, 0.52)), g.clone().add(v3(0.03, 0.15, 0)), 30],   // musen ca 85 % av bildhöjden (062)
     kanna: () => [v3(KANNAPOS[0] - 0.07, 0.33, KANNAPOS[1] + 0.64), v3(KANNAPOS[0] - 0.07, 0.15, KANNAPOS[1] - 0.06), 30],   // lägre och närmare: kannan större, musens öron med
     uppslag: () => [v3(0.55, 0.5, 1.45), v3(0.55, 0.15, 0.25), 32],   // rad 21: lila, musen och båda blommorna med djuren
@@ -94,6 +101,18 @@ export async function byggUppslaget(scen) {
     slut: () => [v3(0, 2.55, 4.05), v3(0, 0.12, -0.12), 32],   // hela den stängda boken, centrerad (bordets höjd)
   };
   return { insida, satt, kort, platt, pa, TB, KANNA_I, KANNA, BAK, SOLEN, MOLNEN, SKOG, LOVTRAD, BUSKE_K, TULPAN, GUL_R, ROSA_K, GULA_K, KANNA_K, KANNA_R, BOET, VY };
+}
+
+// solens ansikte (062 scener/boken/boken.js SOL_C, skivans r ca 250 px; k skalar till en annan skiva): ögon med glans, rosiga kinder, leende.
+// sol-orange.png: skivan i (511, 512), r ca 340 px (k 1,36)
+function solAnsikte(i, cx, cy, k) {
+  const c = duk(i.width, i.height), x = c.getContext('2d'); x.drawImage(i, 0, 0);
+  x.translate(cx, cy); x.scale(k, k); x.translate(-433, -434); cx = 433; cy = 434;
+  x.fillStyle = 'rgba(236,92,96,0.5)'; for (const s of [-1, 1]) { x.beginPath(); x.ellipse(cx + s * 128, cy + 50, 42, 28, 0, 0, 7); x.fill(); }
+  x.fillStyle = '#3A2414'; for (const s of [-1, 1]) { x.beginPath(); x.ellipse(cx + s * 78, cy - 30, 24, 32, 0, 0, 7); x.fill(); }
+  x.fillStyle = '#FFF'; for (const s of [-1, 1]) { x.beginPath(); x.arc(cx + s * 78 + 8, cy - 42, 9, 0, 7); x.fill(); }
+  x.strokeStyle = '#3A2414'; x.lineWidth = 16; x.lineCap = 'round'; x.beginPath(); x.arc(cx, cy + 22, 62, 0.22 * Math.PI, 0.78 * Math.PI); x.stroke();
+  return c;
 }
 
 // grenen i kod: en avsmalnande gren ut från stammens högra sida under kronan, med en liten klyka i änden, i samma bruna krita som stammen
