@@ -8,6 +8,12 @@ import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, da
   PARM, SLUTET, fallning, figurKort, vink, gaRikt, kritan, ljuset, djupskarpa, kamera, starta } from '/produktion/three-rum/popupbok/uppslag.js';
 import { halsduk, halsdukPa } from '/avsnitt/063-hosten-i-boken/prov/halsduk/halsduk.js';
 
+// Luftigare uppslag (Sanna 28/11 "clean up höst too", samma recept som 062 och 065): inga granar, två gula lövträd ut mot sidorna
+// som ramar (det bakom högen flyttat ut till höger) med en sten vid foten, eken × 0,85 på samma plats (dess händelser oförändrade), lövhögen
+// × 0,8, räven × 0,9, sakerna × 0,85, ekollonen mindre och förskjutna, kameran lite längre bort
+const LUFT = !(new URLSearchParams(location.search).get('prov') || '').includes('f');   // gäller (Sanna 28/11 "Yes, make default"); ?prov=f visar det gamla
+const L85 = LUFT ? 0.85 : 1, KDRAG = LUFT ? 1.065 : 1;
+
 // ---- raderna ----
 const RD = rader(await import('/avsnitt/063-hosten-i-boken/storyboard/rader.mjs')), { RAD, S, LN, MAL, SVAR, DURATION, rad, GLES } = RD;
 
@@ -16,9 +22,9 @@ const SC = scenen(), { scen, cam } = SC;
 
 // ---- bilderna ----
 const P = '/produktion/three-rum/popupbok/bilder/', B = '/assets/bakgrunder/', RQ = '/assets/rekvisita/';
-const [GRAN, HIMMEL, KULLE_BAK, KULLE_FRAM, MOLN1, MOLN2, MOLN3, EK_GRON, EK_HOST, TRAD, LOVHOG, SVAMP, EKOLLON, STUBBE,
+const [GRAN, STEN, HIMMEL, KULLE_BAK, KULLE_FRAM, MOLN1, MOLN2, MOLN3, EK_GRON, EK_HOST, TRAD, LOVHOG, SVAMP, EKOLLON, STUBBE,
   LOV_R, LOV_G, LOV_B] = await Promise.all([
-  B + 'skogen-gron-saker/gran.png',
+  B + 'skogen-gron-saker/gran.png', B + 'skogen-saker/sten.png',
   ...['himmel', 'kulle-bak-host', 'kulle-fram-host', 'moln-stor', 'moln-mellan', 'moln-liten', 'ek-gron', 'ek-host', 'trad-gult', 'lovhog', 'svamp', 'ekollon'].map(n => P + n + '.png'),
   RQ + 'stubbe/cut/stubbe.png', ...['rott', 'gult', 'brunt'].map(n => `${RQ}lov/cut/lov-${n}.png`)].map(lad));
 const [LOV_I, EKORRE_I] = await Promise.all([bild(RQ + 'lov/cut/lov-orange.png'), bild(RQ + 'ekorre-orange/cut/ekorre-orange.png')]);
@@ -52,17 +58,19 @@ const { insida, satt } = await skapaBok(scen, { farg: '#8A5A34', figur: LOV_I, d
 // ---- uppslaget (som storyboarden) ----
 const { kort, platt, pa } = kortmotor(scen, insida, { kskugga: ['52,40,14', 0.42, 0.16] });
 const BAK = [kort(bredare(KULLE_BAK, 5.2), 2.15 / 5.2, 0, -0.6), kort(bredare(KULLE_FRAM, 6.2), 1.95 / 6.2, 0.05, -0.47)];
-pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.07 + 1.53 / 2, 0.004, 2.3, '#E4EAEC');   // höstljus: svalare och lite blekare
+pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.07 + 1.53 / 2, 0.004, LUFT ? 2.5 : 2.3, '#E4EAEC');   // ?prov=l: bredare, granarna dolde förut pärmens kant bredvid himlen   // höstljus: svalare och lite blekare
 const MOLNEN = [[MOLN1, 0.22, -0.66, 0.9], [MOLN2, 0.16, -0.26, 1.05], [MOLN3, 0.13, 0.62, 1.0]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
-const SKOG = [[-1.0, -0.36, 0.5], [-0.8, -0.42, 0.6], [0.88, -0.38, 0.56], [1.02, -0.32, 0.44]].map(([x, z, h]) => kort(GRAN, h, x, z));
-const TRADET = kort(TRAD, 0.62, 0.42, -0.4, { vaj: 1 });
+const SKOG = LUFT ? [kort(TRAD, 0.6, -1.16, -0.43, { vaj: 3 }), kort(STEN, 0.08, -1.04, -0.36), kort(STEN, 0.07, 1.14, -0.37)]   // vänster ram och stenarna vid trädens fötter
+  : [[-1.0, -0.36, 0.5], [-0.8, -0.42, 0.6], [0.88, -0.38, 0.56], [1.02, -0.32, 0.44]].map(([x, z, h]) => kort(GRAN, h, x, z));
+const TRADET = LUFT ? kort(TRAD, 0.66, 1.04, -0.43, { vaj: 1 }) : kort(TRAD, 0.62, 0.42, -0.4, { vaj: 1 });
+if (LUFT) TRADET.m.castShadow = false;   // stammens skugga skar stubben på mitten med en rak kant
 // eken: grön från början (Sanna 27/11: "a green tree changed to autumn colors"). ek-gron.png är ek.png nedskalad till ek-host.png:s
 // ruta med samma tunna kant, så att de ligger exakt på varandra. Höstfärgen breder ut sig från kritans löv (rad 05) i en växande
 // cirkel med mjuk kant, ritad på kortets egen bild, och lövet ritas in i kronan när den är klar
-const EK = { x: -0.42, z: -0.2, h: 1.0 };
+const EK = { x: -0.42, z: -0.2, h: L85 };
 const EKHOST_C = duk(EK_HOST.image.width, EK_HOST.image.height), EKHOST_T = tex(EKHOST_C);
 const EKHOST = kort(EKHOST_T, EK.h, EK.x, EK.z), EKFARG_C = duk(EKHOST_C.width, EKHOST_C.height);
-const LOVPOS = v3(EK.x + 0.2, SIDA + 0.7, EK.z + 0.006), LOVH = 0.15;   // kritans löv på en gren
+const LOVPOS = v3(EK.x + 0.2 * EK.h, SIDA + 0.7 * EK.h, EK.z + 0.006), LOVH = 0.15 * EK.h;   // kritans löv på en gren
 const LOVET = kort(LOV_O, LOVH, LOVPOS.x, LOVPOS.z, { y: LOVPOS.y, flik: false });
 const LOVRUTA = ruta(LOV_I), HD_R = ruta(HD_C);
 let kronaK = -1;
@@ -75,21 +83,21 @@ function krona(k) {   // 0 = grön, 1 = hela kronan höstfärgad (med kritans l�
     g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
     y.globalCompositeOperation = 'source-over'; y.clearRect(0, 0, iw, ih); y.drawImage(EK_HOST.image, 0, 0);
     y.globalCompositeOperation = 'destination-in'; y.fillStyle = g; y.fillRect(0, 0, iw, ih); x.drawImage(EKFARG_C, 0, 0); }
-  if (k >= 1) { const lh = LOVH / EK.h * ih, lw = lh * LOV_O.image.width / LOV_O.image.height;   // kritans löv sitter kvar i kronan
-    x.drawImage(LOV_O.image, cx - lw / 2, cy - lh / 2, lw, lh); }
   EKHOST_T.needsUpdate = true;
 }
 platt(tex(mark('#B99A45', '#CDB264', '#8F8A3A')), 2.26, 0, 0.0, 1.5, SIDA + 0.0004);   // marken: höstgräs, ockrabrunt med gröna fläckar
-const STUBBEN = kort(STUBBE, 0.17, 0.78, -0.08);
-const SVAMPEN = kort(SVAMP, 0.17, 0.74, 0.14, { flik: false });   // 0,13 skymdes av svansen (QA förbättring 5); en bit åt höger så att den står bredvid räven, inte framför benen
-const HOG = { x: 0.37, z: 0.34 }, HOGH = 0.32;   // "en stor lövhög": nästan lika hög som räven (0,26 var mindre än räven), fri från svampen och räven på mitten
+const STUBBEN = kort(STUBBE, 0.17 * L85, 0.78, -0.08);
+const SVAMPEN = kort(SVAMP, LUFT ? 0.11 : 0.17, 0.74, 0.14, { flik: false });   // Sanna 28/11 "make svamp smaller"   // 0,13 skymdes av svansen (QA förbättring 5); en bit åt höger så att den står bredvid räven, inte framför benen
+const HOG = { x: 0.37, z: 0.34 }, HOGH = LUFT ? 0.256 : 0.32;   // "en stor lövhög": nästan lika hög som räven (0,26 var mindre än räven), fri från svampen och räven på mitten
 const HOGBAK = kort(LOVHOG, HOGH, HOG.x, HOG.z), HOGFRAM = kort(nedre(LOVHOG, 0.5), HOGH * (0.5 + NEDRE_KANT), HOG.x, HOG.z + 0.06, { flik: false });
-const EKOLLON_POS = [[-0.5, 0.06], [-0.38, 0.1], [-0.26, 0.05]], EKOLLONEN = EKOLLON_POS.map(([x, z]) => kort(EKOLLON, 0.05, x, z, { flik: false }));
-const EKORREN = kort(EKORRE, 0.15, EK.x - 0.1, EK.z - 0.06, { flik: false });
+const EKOLLON_POS = LUFT ? [[-0.53, 0.03], [-0.38, 0.13], [-0.23, 0.04]] : [[-0.5, 0.06], [-0.38, 0.1], [-0.26, 0.05]];   // ?prov=l: förskjutna, inte på en rad
+const EKOLLONEN = EKOLLON_POS.map(([x, z]) => kort(EKOLLON, LUFT ? 0.042 : 0.05, x, z, { flik: false }));
+const EKORREN = kort(EKORRE, 0.15 * L85, EK.x - 0.1, EK.z - 0.06, { flik: false });
 // tre löv på marken, stående kort (0,07 platta syntes inte, QA förbättring 1): det röda vid eken, det gula framme till höger (framför högen, inte framför räven), det bruna vid stubben mellan räven och svampen (syns också i helbilden i rad 19)
-const MARKLOV = [[LOV_R, -0.66, 0.24], [LOV_G, 0.36, 0.64], [LOV_B, 0.66, 0.0]].map(([m, x, z], i) => kort(m, 0.12, x, z, { flik: false, vaj: i * 2.1 }));
+const MARKLOV = [[LOV_R, -0.66, 0.24, 0.5], [LOV_G, 0.36, 0.64, -0.4], [LOV_B, 0.66, 0.0, 0.9]].map(([m, x, z, rz]) => { const h = 0.16 * L85, k = kort(m, h, x, z + h / 2, { flik: false });
+  k.m.rotation.set(-Math.PI / 2, 0, rz); k.m.position.y = SIDA + 0.0015; k.y = k.m.position.y; return k; });   // ligger platt (Sanna 28/11 "all leaves lay on ground"), mitten där det stående kortet stod
 // halsduken: ligger (bildsidan upp) där kritan ritar den, reser sig, glider till räven
-const HDPOS = [-0.17, 0.36], HDW = 0.26;   // större teckning (0,2 var för liten för att läsas i bilden)
+const HDPOS = [-0.17, 0.36], HDW = LUFT ? 0.235 : 0.26;   // större teckning (0,2 var för liten för att läsas i bilden)
 const HALSDUKKORT = kort(HALSDUK, HDW * HALSDUK.image.height / HALSDUK.image.width, ...HDPOS, { y: SIDA + 0.003 });
 Object.assign(HALSDUKKORT.m.material, { emissiveMap: HALSDUK, emissive: new THREE.Color(0.3, 0.3, 0.3) });   // samma ljus som rävens kort: ingen färgskiftning när kortet byts mot riggens halsduk
 
@@ -97,7 +105,8 @@ Object.assign(HALSDUKKORT.m.material, { emissiveMap: HALSDUK, emissive: new THRE
 const LOVSORT = [LOV_O, LOV_R, LOV_G, LOV_B];
 const smalov = (n, s) => Array.from({ length: n }, (_, i) => { const map = LOVSORT[i % 4], m = new THREE.Mesh(new THREE.PlaneGeometry(s * map.image.width / map.image.height, s), urklipp(map));
   m.castShadow = true; m.customDepthMaterial = djup(map); m.visible = false; scen.add(m); return m; });
-const FALLER = smalov(9, 0.085), YRA = smalov(10, 0.06), SINGEL = smalov(2, 0.085);   // större löv, så att de syns i helbild (0,045 försvann)
+const FALLER = smalov(13, 0.085), YRA = smalov(10, 0.06), SINGEL = smalov(2, 0.085);   // större löv, så att de syns i helbild (0,045 försvann)
+FALLER.slice(9).forEach(m => m.scale.setScalar(1.6));   // kronans löv i rad 05 syns i ekens vy (0,085 var för små där)
 // vinden: öppna krumelurer i vit krita på en genomskinlig skiva
 const VIND = (() => { const c = duk(2048, 700), x = c.getContext('2d'); x.strokeStyle = '#FFFFFF'; x.lineCap = 'round'; x.lineWidth = 14;
   for (const [cx, cy, s] of [[300, 220, 1], [900, 420, 0.8], [1450, 180, 1.1], [1800, 480, 0.7]]) {
@@ -124,7 +133,7 @@ G.querySelector('.mage').insertAdjacentHTML('afterend', `<image id="halsen" href
 G.querySelector('.kropp').insertAdjacentHTML('beforeend', `<g id="huvudLov">${[[440, 196, -35], [516, 178, 10], [594, 198, 38]].map(([x, y, r], i) =>
   `<image class="hlov" href="${LOVSMA_URL[i]}" x="-48" y="-48" width="96" height="96" transform="translate(${x} ${y}) rotate(${r})" data-x="${x}" data-y="${y}" data-r="${r}"/>`).join('')}</g>`);
 // lika hög som rut.png-kortet i storyboarden (0,34)
-const RAVKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: 0.34 }), { m: rav, fig2varld, BL, nick, ENHET } = RAVKORT;
+const RAVKORT = await figurKort(scen, cam, L, G, { fot: FOT, topp: TOPP, hojd: LUFT ? 0.306 : 0.34 }), { m: rav, fig2varld, BL, nick, ENHET } = RAVKORT;
 L.rita(G, L.NEUTRAL, L.POSE0);
 // halsdukPa:s ruta i riggens px (uppmätt: x 204–811, y 551–813), lagt så att kortets band hamnar på riggens band
 const HD_MAL = { x: 507, y: 625, b: 607 * ENHET, h: 230 * ENHET };
@@ -143,15 +152,16 @@ const HOPP = [
 ];
 const GA = [   // går lugnt: [start, slut, från, till]
   [S('15') + 0.5, S('15') + 1.7, PLATS.mitt, PLATS['fore-hog']],   // fram till högen (hoppar in framifrån, över den låga främre halvan)
-  [S('21') + 0.2, S('21') + 1.9, PLATS['framfor-hog'], PLATS.ekollon],
+  [S('21') + 0.2, S('21') + 1.9, PLATS['framfor-hog'], PLATS.ekollon, [-0.2, 0.47]],   // i en båge: först åt vänster framför lövhögen, sedan bakåt (Sanna 28/11: inte genom högen)
   [S('22b') + 1.0, S('22b') + 2.6, PLATS.ekollon, PLATS.svamp],
 ];
 function ravPos(t) {   // hoppen och gångerna i tidsordning
   const E = [...HOPP.map(H => ({ a: H.t0, b: H.t1, f: H.fran, g: H.till, y: u => H.h * Math.sin(Math.PI * u), m: u => mjuk((u - H.xz[0]) / (H.xz[1] - H.xz[0])) })),
-    ...GA.map(([a, b, f, g]) => ({ a, b, f, g, y: u => 0.008 * Math.abs(Math.sin(Math.PI * 4 * u)), m: mjuk }))].sort((p, q) => p.a - q.a);
+    ...GA.map(([a, b, f, g, c]) => ({ a, b, f, g, c, y: u => 0.008 * Math.abs(Math.sin(Math.PI * 4 * u)), m: mjuk }))].sort((p, q) => p.a - q.a);
   let [x, z] = PLATS.mitt, y = 0;
   for (const e of E) { if (t >= e.b) [x, z] = e.g; else if (t >= e.a) { const u = (t - e.a) / (e.b - e.a), m = e.m(u);
-    x = lerp(e.f[0], e.g[0], m); z = lerp(e.f[1], e.g[1], m); y = e.y(u); } }
+    const c = e.c || [(e.f[0] + e.g[0]) / 2, (e.f[1] + e.g[1]) / 2];   // c: båge runt något (kvadratisk Bézier)
+    x = (1 - m) ** 2 * e.f[0] + 2 * m * (1 - m) * c[0] + m * m * e.g[0]; z = (1 - m) ** 2 * e.f[1] + 2 * m * (1 - m) * c[1] + m * m * e.g[1]; y = e.y(u); } }
   return [x, y, z];
 }
 // i lövhögen: figuren sjunker i sitt kort (allt under kortets fot klipps bort), högens främre halva döljer kanten; bara huvudet syns
@@ -164,7 +174,7 @@ const YR = [HOPP[0].t1, HOPP[1].t1];   // lövyran
 const HD_KLAR = S('11') + 0.6, HD_UPP = S('11') + 0.8, HD_GLID = [S('13') + 0.3, S('13') + 1.9], HD_PA = HD_GLID[1];
 const DARR = [S('09') - 0.2, MAL('13', 19) + 2.4];   // fryser: från "Brr" till "Så där"
 const HUVUDLOV = [S('17') - 0.75, S('26') + 0.3], LOV_AV = MAL('17', 27) + LN(27) + 0.4;   // ett löv faller av när räven skakar
-const LOV_AV_ALLA = [S('21b') + 0.55, LOV_AV, S('21b') + 0.85];   // de två andra glider av när räven luktar på ekollonen (Sanna 27/11 "have leaves fall off head")
+const LOV_AV_ALLA = [LOV_AV - 0.25, LOV_AV, LOV_AV + 0.25];   // alla tre faller av när räven skakar på huvudet (Sanna 28/11 "leaves fall off fox head earlier"; förut två av dem först vid ekollonen, rad 21b)
 const VINK = (id, n, d = 1.8) => [MAL(id, n) + 0.3, d];
 const REAKTION = { '07': 'jatteglad', '07b': 'kawaii', '09': 'tanker', '09b': 'nyfiken', '11': 'kawaii', '12': 'jatteglad', '13': 'stolt', '13b': 'kawaii',
   '15': 'nyfiken', '15b': 'jatteglad', '16': 'skrattar', '16b': 'skrattar', '17': 'fnissig', '18': 'nyfiken', '19b': 'kawaii', '20': 'nyfiken',
@@ -230,7 +240,7 @@ async function ritaRav(t) {
   // löven på huvudet: ett faller av när räven skakar, de två andra när räven luktar på ekollonen
   $('huvudLov').setAttribute('display', t >= HUVUDLOV[0] && t < HUVUDLOV[1] ? 'inline' : 'none');
   $('huvudLov').querySelectorAll('.hlov').forEach((im, i) => { const a = LOV_AV_ALLA[i], u = k01((t - a) / 0.9), sid = i === 0 ? -1 : 1, [x0, y0, r0] = ['x', 'y', 'r'].map(k => +im.dataset[k]);
-    im.setAttribute('transform', `translate(${x0 + sid * 70 * Math.sin(Math.PI * u)} ${lerp(y0, FOT - 30, u * u)}) rotate(${r0 + sid * 200 * u})`); im.setAttribute('opacity', (1 - k01((t - a - 1.0) / 0.4)).toFixed(2)); });
+    im.setAttribute('transform', `translate(${x0 + sid * 70 * Math.sin(Math.PI * u)} ${lerp(y0, FOT - 30, u * u)}) rotate(${r0 + sid * 200 * u}) scale(1 ${(1 - 0.6 * k01((t - a - 0.8) / 0.2)).toFixed(2)})`); im.setAttribute('opacity', (1 - k01((t - a - 1.0) / 0.4)).toFixed(2)); });
   // lövhögen: figuren nedåt i kortet, allt under kortets fot klipps bort
   const sj = SJUNK * iHogen(t); $('figurer').setAttribute('transform', `translate(0 ${sj.toFixed(1)})`);
   $('vattenKant').setAttribute('d', sj > 0.5 ? `M-400 -400H1600V${(FOT - 200 * iHogen(t)).toFixed(1)}H-400Z` : 'M-400 -400H1600V2000H-400Z'); $('vattenYta').innerHTML = '';
@@ -241,7 +251,7 @@ async function ritaRav(t) {
 // fix B (065): kameran är ute innan korten och pärmen fälls; pärmen 1,5–2,2 s efter STANG, när kameran är ute vid slut, linjärt in i satt() (annars slår den igen på 0,2 s)
 const OPPNA = S('01b'), STANG = S('26');
 const KORTEN = fallning(satt, OPPNA, STANG, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true });   // slutet ur uppslag.js (Sanna 28/11 "more snappy")
-const ORDNING = KORTEN.upp([...BAK, ...SKOG, TRADET, EKHOST, STUBBEN, HOGBAK, HOGFRAM, ...EKOLLONEN, ...MARKLOV]);
+const ORDNING = KORTEN.upp([...BAK, ...SKOG, TRADET, EKHOST, STUBBEN, HOGBAK, HOGFRAM, ...EKOLLONEN]);
 RAVKORT.upp = RAV_UPP; EKORREN.upp = S('21c') + 0.1; SVAMPEN.upp = S('18') + 0.2;
 // ner: sakerna framifrån och bakåt, räven och ekorren sist (huvudpersonerna säger hej då längst), sedan pärmen
 KORTEN.ner([...ORDNING, SVAMPEN]);
@@ -256,6 +266,18 @@ const KR = kritan(cam), { skarm } = KR;
   KR.teckning('halsduk', HD_URL, KONTUR.halsduk, HD_R, () => HALSDUKKORT.m,
     { in: [c + 0.1, c + 0.5], rit: [c + 0.6, vc - 0.2], vanta: [vc, d - 0.1], ut: [d + 0.1, d + 0.9] }, [d + 0.05, HD_KLAR], [260, 40]); }
 const LOV_KLAR = S('04') + 0.6;
+// Sanna 28/11 "make main leaf that kritan drew fall down too": lossnar på "Och sedan faller de ner" (rad 06) och singlar sakta ner framför
+// ekens kort till marken (fram mot kameran, bort från stammen och ekollonen), ligger platt tills de andra fallna löven tas bort (rad 10)
+const LOV_FALL = [S('06') + 0.4, 4.0], LOV_LAND = [-0.12, 0.0];
+const LOVFALL = (() => { const m = new THREE.Mesh(new THREE.PlaneGeometry(LOVH * LOV_O.image.width / LOV_O.image.height, LOVH), urklipp(LOV_O));
+  m.castShadow = true; m.customDepthMaterial = djup(LOV_O); m.visible = false; scen.add(m); return m; })();
+function lovFall(t) {
+  const [t0, d] = LOV_FALL, u = k01((t - t0) / d); LOVFALL.visible = t >= t0 && t < S('10'); if (!LOVFALL.visible) return;
+  if (u < 1) { const m = mjuk(u);
+    LOVFALL.position.set(lerp(LOVPOS.x, LOV_LAND[0], m) + 0.05 * Math.sin(2 * Math.PI * 1.2 * u), lerp(LOVPOS.y + LOVH / 2, SIDA + 0.004, u), lerp(LOVPOS.z, LOV_LAND[1], m));
+    LOVFALL.rotation.set(-Math.PI / 2 * mjuk((u - 0.7) / 0.3) + 0.3 * Math.sin(u * 7) * (1 - u), 0.5 * Math.sin(u * 5) * (1 - u), 0.5 * Math.sin(2 * Math.PI * 1.2 * u) * (1 - u)); }
+  else { LOVFALL.position.set(LOV_LAND[0], SIDA + 0.003, LOV_LAND[1]); LOVFALL.rotation.set(-Math.PI / 2, 0, 0); }
+}
 const KRONA = [S('05') + 0.9, S('05') + 3.6];   // höstfärgen breder ut sig från lövet, från "Så många löv" till "röda och gula"
 // glimtarnas gnistor i 60 % storlek (Sanna 27/11 "smaller sparkles"); kritans gnistor när en teckning fylls är kvar som förut
 const glimt = (t, t0, p, r = 90, n = 4, s = 0.6) => { if (t < t0 || t > t0 + 1.2) return ''; const [x, y] = skarm(p);
@@ -265,7 +287,11 @@ const glimt = (t, t0, p, r = 90, n = 4, s = 0.6) => { if (t < t0 || t > t0 + 1.2
 // [start, längd, x0, y0 (över sidan), z, dx (vinden)]
 const FALL = [[S('06') + 0.6, 3.2, -0.3, 0.6, -0.06, 0.06], [S('06') + 2.0, 3.0, -0.52, 0.55, -0.02, -0.05], [S('07') + 0.2, 3.0, -0.24, 0.62, 0.04, 0.05],
   [S('07b') - 0.4, 3.2, 0.07, 0.5, 0.33, 0.12],   // räven följer det med blicken: det bruna lövet seglar ner framför nosen
-  ...[0, 1, 2, 3, 4].map(i => [MAL('08', 12) + 0.5 + i * 0.25, 2.4, -0.62 + i * 0.1, 0.55 + 0.05 * (i % 3), -0.08 + 0.03 * i, 0.6 + 0.08 * i])];
+  ...[0, 1, 2, 3, 4].map(i => [MAL('08', 12) + 0.5 + i * 0.25, 2.4, -0.62 + i * 0.1, 0.55 + 0.05 * (i % 3), -0.08 + 0.03 * i, 0.6 + 0.08 * i]),
+  // Sanna 28/11 (0:21) "have leaf falling down": medan kronan blir höstfärgad (rad 05) lossnar ett löv i taget ur den färgade delen, ca 1,4 s
+  // isär och 3,4 s långsamt ner, framför ekens kort (z > −0,2) och bredvid ekollonen
+  ...[[1.6, -0.24, 0.6, -0.1, 0.05], [3.0, -0.62, 0.66, -0.12, -0.06], [4.4, -0.08, 0.56, -0.04, 0.06], [5.8, -0.72, 0.58, -0.08, 0.04]]
+    .map(([o, x, y, z, dx]) => [S('05') + o, 3.4, x, y, z, dx])];
 const FALL_UT = S('10');   // borta när kritan ritar halsduken (de skulle annars räknas som markens löv i rad 19)
 // två löv som singlar ner i långa pauser (QA Rörelse 2): från högens topp när räven tittar på oss (15b), från eken medan barnet letar ekollon (20)
 const SING = [[S('15b') + 3.0, 2.4, HOG.x - 0.08, 0.32, HOG.z + 0.14, -0.14, S('17')], [S('20') + 1.6, 3.0, -0.7, 0.62, 0.12, 0.08, S('22')]];
@@ -303,9 +329,11 @@ function puff(t) {   // andningspuffen vid nosen (rad 09): ut från nosen, fram 
 
 // ---- ekorren (rad 21c, 21d, 24b): tittar fram bakom stammen, skuttar till ekollonen, tar ett och skuttar tillbaka ----
 // ekorren tittar åt höger och vänds aldrig: skutten går rakt fram mot kameran, inte baklänges åt vänster (QA Rörelse 6)
-const EKP = { svans: [EK.x - 0.1, EK.z - 0.06], uppe: [EK.x - 0.11, EK.z + 0.14], mitt: [EK.x - 0.115, EK.z + 0.19], ekollon: [EKOLLON_POS[0][0] - 0.04, EKOLLON_POS[0][1] - 0.04] };
+// Sanna 28/11 (2:47) "avoid things going through": stammen är x −0,56 … −0,29 i kortet (z −0,2). Ekorren skuttar först åt vänster bakom
+// stammen (ut), sedan fram förbi stammens vänstra kant, där kortet är genomskinligt, och vidare till ekollonen
+const EKP = { svans: [EK.x - 0.1, EK.z - 0.06], ut: [EK.x - 0.27, EK.z - 0.06], uppe: [EK.x - 0.27, EK.z + 0.14], mitt: [EK.x - 0.19, EK.z + 0.19], ekollon: [EKOLLON_POS[0][0] - 0.04, EKOLLON_POS[0][1] - 0.04] };
 const E0 = MAL('21d', 38);
-const SKUTT = [[E0 + 0.05, E0 + 0.45, 'svans', 'uppe', 0.05], [E0 + 0.8, E0 + 1.1, 'uppe', 'mitt', 0.04], [E0 + 1.3, E0 + 1.6, 'mitt', 'ekollon', 0.04],
+const SKUTT = [[E0 + 0.05, E0 + 0.4, 'svans', 'ut', 0.04], [E0 + 0.45, E0 + 0.8, 'ut', 'uppe', 0.05], [E0 + 0.95, E0 + 1.15, 'uppe', 'mitt', 0.04], [E0 + 1.3, E0 + 1.6, 'mitt', 'ekollon', 0.04],
   [E0 + 2.3, E0 + 2.8, 'ekollon', 'uppe', 0.06], [MAL('24b', 45) + 0.1, MAL('24b', 45) + 0.6, 'uppe', 'uppe', 0.06]];
 const TAR = E0 + 1.9;
 function ekorrPos(t) {
@@ -318,14 +346,20 @@ function ekorrPos(t) {
 // ---- siffrorna 1, 2, 3 i krita över ekollonen när Malin räknar (Sanna 27/11 "show numbers too"; samma siffror som 065) ----
 const SIFFRA_D = [['M30 38 L56 14 L56 128'], ['M20 46 C20 6 88 4 86 46 C84 78 40 96 18 128 L90 128'],
   ['M22 26 C44 4 90 12 82 44 C77 64 52 68 44 68 C62 68 92 76 86 102 C80 136 30 136 16 112']];
+const SIFFRA_MITT = [43, 54, 53];   // siffrornas mitt i x (banornas ruta)
 function siffror(t, ord) {
   const slut = S('21') + 0.6; if (t > slut + 0.1) return ''; let h = '';
   EKOLLONEN.forEach((k, i) => { const t0 = ord[i]; if (t < t0) return;
-    const p = k.m.position.clone().add(v3(0, 0.078, 0)), [x, y] = skarm(p), [, y2] = skarm(p.clone().add(v3(0, 0.045, 0))), s = Math.abs(y - y2) / 140;
+    const p = k.m.position.clone().add(v3(0, 0.09, 0)), [x, y] = skarm(p), [, y2] = skarm(p.clone().add(v3(0, 0.045, 0))), s = Math.abs(y - y2) / 140;
     const kk = ritfart((t - t0) / 0.4), op = k01((slut - t) / 0.3);
+    const rc = 70 * reser((t - t0) / 0.3);   // vit klistermärkescirkel bakom siffran (Sanna 28/11), poppar upp med siffran
     h += `<g transform="translate(${(x - 50 * s).toFixed(1)} ${(y - 70 * s).toFixed(1)}) scale(${s.toFixed(4)})" opacity="${op.toFixed(2)}">`
-      + ritBana(SIFFRA_D[i], kk, { attr: `fill="none" stroke="#FFF" stroke-width="${(KRITAN.BRED * 2.4 / s).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` }).html
-      + ritBana(SIFFRA_D[i], kk, { attr: `fill="none" stroke="${KRITAN.LINJE}" stroke-width="${(KRITAN.BRED / s).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` }).html + '</g>'; });
+      // vit kant som alla klistermärken (verktyg/kant.js: 3 px + 1 % av höjden i bild) runt en ljust gyllene platta (Sanna 28/11 "add rim to the sticker")
+      + `<circle cx="53" cy="75" r="${rc.toFixed(1)}" fill="rgba(70,45,20,0.22)"/><circle cx="50" cy="70" r="${rc.toFixed(1)}" fill="#FFFFFF"/>`
+      + `<circle cx="50" cy="70" r="${Math.max(0, rc - (3 + 0.01 * 140 * s) / s).toFixed(1)}" fill="#F6DC94"/>`
+      // siffran i mitten av märket, ca två tredjedelar av det, i en tjock varmbrun krita (ekollonens hatt) (Sanna 28/11 "make numbers in stickers look better")
+      + `<g transform="translate(50 70) scale(0.64) translate(${-SIFFRA_MITT[i]} -70)">`
+      + ritBana(SIFFRA_D[i], kk, { attr: `fill="none" stroke="#6B3F1D" stroke-width="${(KRITAN.BRED * 1.5 / s / 0.64).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"` }).html + '</g></g>'; });
   return h;
 }
 
@@ -341,7 +375,7 @@ async function bildruta(t) {
   // eken: grön, kritans löv, höstfärgen som breder ut sig från lövet
   krona(t < KRONA[0] ? 0 : (t - KRONA[0]) / (KRONA[1] - KRONA[0]));
   // kritans löv vajar lite på grenen och lugnar sig medan kronan byter färg; när den är klar sitter lövet inritat i kronan
-  LOVET.m.visible = t >= LOV_KLAR - 0.05 && t < KRONA[1];
+  LOVET.m.visible = t >= LOV_KLAR - 0.05 && t < LOV_FALL[0];
   LOVET.m.rotation.z = 0.06 * Math.sin((t - LOV_KLAR) * 1.6) * k01((t - LOV_KLAR) / 0.8) * (1 - mjuk((t - KRONA[0]) / (KRONA[1] - KRONA[0])));
   EKHOST.m.scale.setScalar(1 + 0.025 * bump(MAL('24c', 46) + 0.3, MAL('24c', 46) + 1.0, t, 0.2) + 0.015 * bump(KRONA[1] - 0.5, KRONA[1] + 0.5, t, 0.3));
   // svampen studsar (rad 22b, 24e), stubben och svampen glimtar
@@ -350,7 +384,7 @@ async function bildruta(t) {
   // markens löv studsar på sina färgord (rad 19b)
   const ORD = [30, 31, 32].map(n => MAL('19b', n) + 0.25), hejLov = MAL('24c', 46) + 0.3;
   MARKLOV.forEach((k, i) => { const h = Math.max(bump(ORD[i], ORD[i] + 0.6, t, 0.2), 0.7 * bump(hejLov + i * 0.12, hejLov + 0.6 + i * 0.12, t, 0.2));
-    k.m.position.y += 0.03 * h; k.m.scale.setScalar(1 + 0.2 * h); });
+    k.m.position.y = k.y + 0.03 * h; k.m.rotation.x = -Math.PI / 2 + 0.7 * h; k.m.scale.setScalar(1 + 0.2 * h); });   // lyfter lite och tippar upp mot oss på färgordet
   // ekorren
   { const [x, y, z] = ekorrPos(t); EKORREN.m.position.set(x, SIDA + y, z);
     const bl = ((t + 1.3) % 3.6) < 0.14; EKORREN.m.material.map = EKORREN.m.customDepthMaterial.map = bl ? EKORRE_BLUND : EKORRE; }
@@ -364,20 +398,20 @@ async function bildruta(t) {
     K.m.castShadow = t < HD_GLID[0];
     if (t >= HD_GLID[0] && t < HD_PA) { const u = mjuk((t - HD_GLID[0]) / (HD_GLID[1] - HD_GLID[0])), mal = fig2varld([HD_MAL.x, HD_MAL.y]), sx = lerp(1, HD_MAL.b / K.w, u), sy = lerp(1, HD_MAL.h / K.h, u);
       K.m.position.set(lerp(K.x, mal.x, u), lerp(K.y, mal.y - K.h * sy / 2, u) + 0.025 * Math.sin(Math.PI * u), lerp(K.z, mal.z + 0.02, u)); K.m.scale.set(sx, sy, 1); } }
-  lov(t);
+  lov(t); lovFall(t);
   vik(RAVKORT, KORTEN.e(RAVKORT, t, reser((t - RAV_UPP) / 0.65))); rav.visible = t >= RAV_UPP;
   await ritaRav(t); puff(t);
   DOF.fokus(KAM.aktiv(t));
   scen.updateMatrixWorld(true);
   // kritan och glimtarna i #ov
   let ov = KR.rita(t);
-  MARKLOV.forEach((k, i) => { const p = k.m.position.clone().add(v3(0, 0.07, 0)); ov += glimt(t, ORD[i], p); ov += glimt(t, hejLov + i * 0.12, p, 70, 3); });
+  MARKLOV.forEach((k, i) => { const p = k.m.position.clone().add(v3(0, 0.04, -0.08)); ov += glimt(t, ORD[i], p); ov += glimt(t, hejLov + i * 0.12, p, 70, 3); });
   const ORD3 = [3.08, 4.01, 4.94].map(s => MAL('20b', 34) + s);   // "Ett … två … tre" (34-vi-raknar-snabb, pauserna kortade)
   ov += siffror(t, ORD3);
   EKOLLONEN.forEach((k, i) => { const h = bump(ORD3[i], ORD3[i] + 0.5, t, 0.15); k.m.scale.setScalar(1 + 0.25 * h); ov += glimt(t, ORD3[i], k.m.position.clone().add(v3(0, 0.03, 0)), 60, 3); });
-  ov += glimt(t, KRONA[1] - 0.4, v3(EK.x + 0.05, SIDA + 0.72, EK.z), 150, 5);   // kronan är klar
-  ov += glimt(t, SVAMP_ORD, SVAMPEN.m.position.clone().add(v3(0, 0.1, 0)), 80, 4);
-  ov += glimt(t, hejLov, v3(EK.x, SIDA + 0.75, EK.z), 160, 5) + glimt(t, MAL('24e', 48) + 0.2, SVAMPEN.m.position.clone().add(v3(0, 0.1, 0)), 80, 4)
+  ov += glimt(t, KRONA[1] - 0.4, v3(EK.x + 0.05, SIDA + 0.72 * EK.h, EK.z), 150, 5);   // kronan är klar
+  ov += glimt(t, SVAMP_ORD, SVAMPEN.m.position.clone().add(v3(0, LUFT ? 0.075 : 0.1, 0)), 80, 4);
+  ov += glimt(t, hejLov, v3(EK.x, SIDA + 0.75 * EK.h, EK.z), 160, 5) + glimt(t, MAL('24e', 48) + 0.2, SVAMPEN.m.position.clone().add(v3(0, LUFT ? 0.075 : 0.1, 0)), 80, 4)
     + glimt(t, MAL('24b', 45) + 0.3, EKORREN.m.position.clone().add(v3(0, 0.12, 0)), 70, 3) + glimt(t, S('01a') + 0.2, v3(0, SIDA + 0.1, 0.2), 120, 4);
   $('ov').innerHTML = ov;
   DOF.komp.render();
@@ -386,15 +420,15 @@ async function bildruta(t) {
 // ---- kameran: vyerna ur storyboarden, en svag glidning i varje ----
 const VY = {
   in: () => [v3(-0.1, 1.25, 2.4), v3(0, 0.32, -0.2), 32],
-  ek: () => [v3(EK.x + 0.28, 0.66, 2.6), v3(EK.x + 0.38, 0.52, EK.z), 21],   // längre bort och smalare: hela kronan, men himlens kanter och bordet syns inte
+  ek: () => LUFT ? [v3(EK.x + 0.28, 0.6, 2.6), v3(EK.x + 0.36, 0.47, EK.z), 18.5] : [v3(EK.x + 0.28, 0.66, 2.6), v3(EK.x + 0.38, 0.52, EK.z), 21],   // längre bort och smalare: hela kronan, men himlens kanter och bordet syns inte
   gren: () => [LOVPOS.clone().add(v3(0.04, LOVH / 2, 0.58)), LOVPOS.clone().add(v3(0, LOVH / 2, 0)), 32],   // lövet ca 45 % av bildhöjden
   halv: g => [g.clone().add(v3(0.06, 0.26, 0.78)), g.clone().add(v3(0, 0.16, 0)), 30],
   nara: g => [g.clone().add(v3(0.03, 0.26, 0.64)), g.clone().add(v3(0, 0.21, 0)), 28],   // öronen med
   nos: g => [g.clone().add(v3(-0.07, 0.22, 0.8)), g.clone().add(v3(-0.07, 0.17, 0)), 28],   // räven hel och ekollonen vid fötterna (21b: räven luktar på dem, QA förbättring 4)
-  bred: () => [v3(0, 0.6, 1.8), v3(0, 0.34, -0.2), 28],
+  bred: () => [v3(0, 0.6, 1.8), v3(0, 0.34, -0.2), LUFT ? 26 : 28],   // ?prov=l: pärmens kant syntes nere till vänster utan granarna
   halsduk: () => [v3(-0.06, 0.36, 1.12), v3(-0.06, 0.17, 0.26), 30],   // hela räven och halsduken på marken
   hog: () => [v3(HOG.x - 0.14, 0.5, HOG.z + 1.08), v3(HOG.x - 0.14, 0.25, HOG.z + 0.02), 30],   // vidare än storyboarden: hoppet syns helt
-  uppslag: () => [v3(0, 0.98, 1.8), v3(0, 0.12, 0.0), 28],   // fov 28: bokens kant syns inte
+  uppslag: () => [v3(0, 0.98, 1.8), v3(0, 0.12, 0.0), LUFT ? 25 : 28],   // ?prov=l: utan granarna syntes bordet uppe till vänster   // fov 28: bokens kant syns inte
   ekmark: () => [v3(-0.3, 0.42, 0.95), v3(-0.33, 0.13, 0.02), 30],
   ekollon: () => [v3(-0.38, 0.22, 0.42), v3(-0.38, 0.1, 0.06), 28],
   stam: () => [v3(-0.3, 0.42, 0.95), v3(-0.3, 0.2, -0.04), 30],   // ekorren vid stammen och hela räven vid ekollonen
@@ -403,6 +437,9 @@ const VY = {
   hejda: g => [g.clone().add(v3(0.18, 0.34, 0.95)), g.clone().add(v3(-0.18, 0.2, -0.3)), 32],
   slut: () => [v3(-0.1, 2.3, 2.9), v3(0, 0.1, 0.05), 32],   // den stängda boken hel och i mitten, också efter pushen (062:s läge skar pärmens främre hörn)
 };
+// ?prov=l: kameran lite längre bort i figurens och sakernas vyer (som 062); öppningen, de breda vyerna och stängningen som förut
+if (LUFT) for (const [n, f] of Object.entries(VY)) if (!['in', 'bord', 'slut', 'bred', 'uppslag', 'gren', 'ek', 'stam', 'stubbe', 'rav-svamp', 'ekmark'].includes(n))
+  VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(KDRAG)), mal, fov]; };
 satt(PARM[1]); scen.updateMatrixWorld(true);
 const KAM = kamera(cam, VY, { fovGlid: true, blur: n => /nara|ekollon|gren/.test(n) ? 0.008 : /halv|halsduk|hog|stam|stubbe|svamp|ekmark/.test(n) ? 0.006 : 0.003 }), { vy, glid } = KAM;
 const GLID = { '02': [0, 1.6], '03': [0, 1.2], '05': [0.1, 1.3], '21c': [0, 1.2] };   // in mot eken; in mot grenen (samma träd: glid, inte klipp); ut från grenen till eken; från räven och ekollonen till stammen (21c)
