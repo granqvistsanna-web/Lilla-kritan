@@ -60,10 +60,10 @@ const { kort, platt, pa } = kortmotor(scen, insida, { kskugga: ['52,40,14', 0.42
 const BAK = [kort(bredare(KULLE_BAK, 5.2), 2.15 / 5.2, 0, -0.6), kort(bredare(KULLE_FRAM, 6.2), 1.95 / 6.2, 0.05, -0.47)];
 pa(bredare(HIMMEL, 1.5), 1.53, 0, 0.07 + 1.53 / 2, 0.004, LUFT ? 2.5 : 2.3, '#E4EAEC');   // ?prov=l: bredare, granarna dolde förut pärmens kant bredvid himlen   // höstljus: svalare och lite blekare
 const MOLNEN = [[MOLN1, 0.22, -0.66, 0.9], [MOLN2, 0.16, -0.26, 1.05], [MOLN3, 0.13, 0.62, 1.0]].map(([m, h, x, y], i) => ({ m: pa(m, h, x, y), x, i }));
-const SKOG = LUFT ? [kort(TRAD, 0.78, -1.18, -0.43, { vaj: 3 }), kort(STEN, 0.08, -1.04, -0.36), kort(STEN, 0.07, 1.14, -0.37)]   // vänster ram och stenarna vid trädens fötter
+const SKOG = LUFT ? [kort(TRAD, 0.78, -1.18, -0.43, { vaj: 3 }), kort(STEN, 0.08, -1.04, -0.36)]   // vänster ram och stenarna vid trädens fötter
   : [[-1.0, -0.36, 0.5], [-0.8, -0.42, 0.6], [0.88, -0.38, 0.56], [1.02, -0.32, 0.44]].map(([x, z, h]) => kort(GRAN, h, x, z));
 const TRADET = LUFT ? kort(TRAD, 0.92, 0.98, -0.43, { vaj: 1 }) : kort(TRAD, 0.62, 0.42, -0.4, { vaj: 1 });   // större (Sanna 28/11 "make tree larger")
-if (LUFT) TRADET.m.castShadow = false;   // stammens skugga skar stubben på mitten med en rak kant
+if (LUFT) { TRADET.m.visible = false; if (TRADET.flik) TRADET.flik.visible = false; }   // trädet vid stubben borta (Sanna 28/11 "remove the tree")
 // eken: grön från början (Sanna 27/11: "a green tree changed to autumn colors"). ek-gron.png är ek.png nedskalad till ek-host.png:s
 // ruta med samma tunna kant, så att de ligger exakt på varandra. Höstfärgen breder ut sig från kritans löv (rad 05) i en växande
 // cirkel med mjuk kant, ritad på kortets egen bild, och lövet ritas in i kronan när den är klar
@@ -86,7 +86,7 @@ function krona(k) {   // 0 = grön, 1 = hela kronan höstfärgad (med kritans l�
   EKHOST_T.needsUpdate = true;
 }
 platt(tex(mark('#B99A45', '#CDB264', '#8F8A3A')), 2.26, 0, 0.0, 1.5, SIDA + 0.0004);   // marken: höstgräs, ockrabrunt med gröna fläckar
-const STUBBEN = kort(STUBBE, 0.17 * L85, LUFT ? 0.88 : 0.78, LUFT ? -0.22 : -0.08);   // ?prov=l: bakom svampen och fri från trädstammen (Sanna 28/11 "polish position of stubbe")   // Sanna 28/11 "move stubbe more to the right"
+const STUBBEN = kort(STUBBE, LUFT ? 0.2 : 0.17, LUFT ? 0.88 : 0.78, LUFT ? -0.22 : -0.08);   // ?prov=l: bakom svampen och fri från trädstammen (Sanna 28/11 "polish position of stubbe")   // Sanna 28/11 "move stubbe more to the right"
 // svampen en bit till vänster om stubben med luft emellan (Sanna 28/11 "move mushroom more to the left", "create some air between them")
 const SVAMPEN = kort(SVAMP, LUFT ? 0.11 : 0.17, LUFT ? 0.76 : 0.74, 0.16, { flik: false });   // Sanna 28/11 "make svamp smaller"   // 0,13 skymdes av svansen (QA förbättring 5); en bit åt höger så att den står bredvid räven, inte framför benen
 const HOG = { x: 0.37, z: 0.34 }, HOGH = LUFT ? 0.256 : 0.32;   // "en stor lövhög": nästan lika hög som räven (0,26 var mindre än räven), fri från svampen och räven på mitten
@@ -252,7 +252,7 @@ async function ritaRav(t) {
 // fix B (065): kameran är ute innan korten och pärmen fälls; pärmen 1,5–2,2 s efter STANG, när kameran är ute vid slut, linjärt in i satt() (annars slår den igen på 0,2 s)
 const OPPNA = S('01b'), STANG = S('26');
 const KORTEN = fallning(satt, OPPNA, STANG, { ner: SLUTET.ner, parm: SLUTET.parm, slag: true });   // slutet ur uppslag.js (Sanna 28/11 "more snappy")
-const ORDNING = KORTEN.upp([...BAK, ...SKOG, TRADET, EKHOST, STUBBEN, HOGBAK, HOGFRAM, ...EKOLLONEN]);
+const ORDNING = KORTEN.upp([...BAK, ...SKOG, ...(LUFT ? [] : [TRADET]), EKHOST, STUBBEN, HOGBAK, HOGFRAM, ...EKOLLONEN]);
 RAVKORT.upp = RAV_UPP; EKORREN.upp = S('21c') + 0.1; SVAMPEN.upp = S('18') + 0.2;
 // ner: sakerna framifrån och bakåt, räven och ekorren sist (huvudpersonerna säger hej då längst), sedan pärmen
 KORTEN.ner([...ORDNING, SVAMPEN]);
@@ -433,13 +433,13 @@ const VY = {
   ekmark: () => [v3(-0.3, 0.42, 0.95), v3(-0.33, 0.13, 0.02), 30],
   ekollon: () => [v3(-0.38, 0.22, 0.42), v3(-0.38, 0.1, 0.06), 28],
   stam: () => [v3(-0.3, 0.42, 0.95), v3(-0.3, 0.2, -0.04), 30],   // ekorren vid stammen och hela räven vid ekollonen
-  stubbe: () => LUFT ? [v3(0.72, 0.5, 1.1), v3(0.55, 0.29, 0.0), 27] : [v3(0.72, 0.4, 1.1), v3(0.48, 0.2, 0.0), 28],   // tittar lite åt vänster (sidans högra kant syns inte); räven ryms vid svampen (22b, 24e)
-  'rav-svamp': () => LUFT ? [v3(0.7, 0.5, 1.02), v3(0.57, 0.28, 0.08), 29] : [v3(0.68, 0.42, 1.0), v3(0.5, 0.2, 0.08), 30],
+  stubbe: () => LUFT ? [v3(0.62, 0.4, 1.1), v3(0.5, 0.2, 0.0), 26] : [v3(0.72, 0.4, 1.1), v3(0.48, 0.2, 0.0), 28],   // tittar lite åt vänster (sidans högra kant syns inte); räven ryms vid svampen (22b, 24e)
+  'rav-svamp': () => LUFT ? [v3(0.6, 0.42, 1.02), v3(0.52, 0.2, 0.08), 28] : [v3(0.68, 0.42, 1.0), v3(0.5, 0.2, 0.08), 30],
   hejda: g => [g.clone().add(v3(0.18, 0.34, 0.95)), g.clone().add(v3(-0.18, 0.2, -0.3)), 32],
   slut: () => [v3(-0.1, 2.3, 2.9), v3(0, 0.1, 0.05), 32],   // den stängda boken hel och i mitten, också efter pushen (062:s läge skar pärmens främre hörn)
 };
 // ?prov=l: kameran lite längre bort i figurens och sakernas vyer (som 062); öppningen, de breda vyerna och stängningen som förut
-if (LUFT) for (const [n, f] of Object.entries(VY)) if (!['in', 'bord', 'slut', 'bred', 'uppslag', 'gren', 'ek', 'stam', 'stubbe', 'rav-svamp', 'ekmark'].includes(n))
+if (LUFT) for (const [n, f] of Object.entries(VY)) if (!['in', 'bord', 'slut', 'bred', 'uppslag', 'gren', 'ek', 'stam', 'stubbe', 'rav-svamp', 'ekmark', 'hog'].includes(n))
   VY[n] = g => { const [pos, mal, fov] = f(g); return [mal.clone().add(pos.clone().sub(mal).multiplyScalar(KDRAG)), mal, fov]; };
 satt(PARM[1]); scen.updateMatrixWorld(true);
 const KAM = kamera(cam, VY, { fovGlid: true, blur: n => /nara|ekollon|gren/.test(n) ? 0.008 : /halv|halsduk|hog|stam|stubbe|svamp|ekmark/.test(n) ? 0.006 : 0.003 }), { vy, glid } = KAM;
