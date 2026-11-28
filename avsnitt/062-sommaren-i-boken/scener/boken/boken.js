@@ -10,7 +10,7 @@ import { $, k01, lerp, mjuk, bump, reser, v3, rader, scenen, bild, lad, ruta, da
 
 // Stillbildsprov runda 4 (Sanna 27/11): ?prov=s mindre saker och bredare bild ("bigger scene and smaller objects"), t lövträd
 // bland granarna, f enskilda blommor som syns hela tiden; ?bad=2|3 andra bad (rad 15–16, "needs lots of polish")
-const Q = new URLSearchParams(location.search), PROV = Q.get('prov') || '', BAD = +(Q.get('bad') || 4);   // bad 4 vald (Sanna 27/11 "Yes, use bad 4"), förut bad 3
+const Q = new URLSearchParams(location.search), PROV = Q.get('prov') ?? 'l',   /* luftiga uppslaget (l) är standard, godkänt av Sanna 28/11; ?prov= ger det gamla */ BAD = +(Q.get('bad') || 4);   // bad 4 vald (Sanna 27/11 "Yes, use bad 4"), förut bad 3
 // lövträden och de enskilda blommorna gäller nu (Sanna 27/11 "more individual flower assets", "new trees too"); prov=g visar de gamla
 // ?prov=l luftigare uppslag (Sanna 28/11 "remove all pine trees, remove bush, make flowers smaller, all content a bit smaller"):
 // inga granar och buskar, fyra lövträd utspridda, blommorna × 0,75, sakerna × 0,85 och kameran lite längre bort
