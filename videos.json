@@ -1844,9 +1844,9 @@
   "approved": 1795805314782
  },
  "063": {
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/063-1127-2217.mp4",
-  "duration": 224.5,
-  "rendered": "2026-11-27 22:17 (feedback grind 6: grön ek blir höst, siffror vid räkningen, snabbare räkning, mindre darr, löven faller av huvudet, svampen upp på 'Titta, vid stubben', mindre gnistor (--snabb))",
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/063-1128-0807.mp4",
+  "duration": 225.2,
+  "rendered": "2026-11-28 08:07 (djup-QA 27–28/11 rättad och flyttad till uppslag.js: ljudmattan loopar, mjuk glidstart, stängningen, bildutsnitten (--snabb))",
   "file": "avsnitt/063-hosten-i-boken/scener/boken/boken.mp4",
   "status": "granska",
   "name": "063 Hösten i boken"
