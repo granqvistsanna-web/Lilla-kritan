@@ -1717,11 +1717,11 @@
   "name": "Räven plockar blåbär"
  },
  "062": {
-  "duration": 213.7,
-  "rendered": "2026-11-28 08:07 (djup-QA 27–28/11 rättad och flyttad till uppslag.js: ljudmattan loopar, mjuk glidstart, stängningen, bildutsnitten (--snabb))",
-  "file": "avsnitt/062-sommaren-i-boken/scener/boken/boken.mp4",
+  "duration": 221.3,
+  "rendered": "2026-11-28 10:03 (slutrendering (molnet) med logotyp och prenumerera, 3:41; obs: bordet och sidans kant syns i sandvyn 2:30–3:05)",
+  "file": "avsnitt/062-sommaren-i-boken/film/avsnitt-062.mp4",
   "status": "granska",
-  "name": "Stillbildsprov runda 4",
+  "name": "062 Sommaren i boken",
   "stills": [
    {
     "label": "Skala: nu vänster, ny höger",
@@ -1736,7 +1736,7 @@
     "src": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1127-1456-3.jpg"
    }
   ],
-  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1128-0807.mp4"
+  "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/062-1128-1003.mp4"
  },
  "ABC-SH-a1": {
   "video": "https://github.com/granqvistsanna-web/Lilla-kritan/releases/download/forhandsvisningar/ABC-SH-a1-1127-1518.mp4",
